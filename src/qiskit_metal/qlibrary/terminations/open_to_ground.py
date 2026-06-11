@@ -35,10 +35,11 @@ class OpenToGround(QComponent):
 
     Values (unless noted) are strings with units included, (e.g., '30um')
     """
-    component_metadata = Dict(short_name='term', _qgeometry_table_poly='True')
+
+    component_metadata = Dict(short_name="term", _qgeometry_table_poly="True")
     """Component metadata"""
 
-    default_options = Dict(width='10um', gap='6um', termination_gap='6um')
+    default_options = Dict(width="10um", gap="6um", termination_gap="6um")
     """Default connector options"""
 
     TOOLTIP = """A basic open to ground termination. """
@@ -48,8 +49,9 @@ class OpenToGround(QComponent):
         p = self.p  # p for parsed parameters. Access to the parsed options.
 
         port_line = draw.LineString([(0, -p.width / 2), (0, p.width / 2)])
-        open_termination = draw.box(0, -(p.width / 2 + p.gap),
-                                    p.termination_gap, (p.width / 2 + p.gap))
+        open_termination = draw.box(
+            0, -(p.width / 2 + p.gap), p.termination_gap, (p.width / 2 + p.gap)
+        )
         # Rotates and translates the connector polygons (and temporary port_line)
         polys = [open_termination, port_line]
         polys = draw.rotate(polys, p.orientation, origin=(0, 0))
@@ -57,9 +59,9 @@ class OpenToGround(QComponent):
         [open_termination, port_line] = polys
 
         # Subtracts out ground plane on the layer its on
-        self.add_qgeometry('poly', {'open_to_ground': open_termination},
-                           subtract=True,
-                           layer=p.layer)
+        self.add_qgeometry(
+            "poly", {"open_to_ground": open_termination}, subtract=True, layer=p.layer
+        )
 
         # Generates the pins
-        self.add_pin('open', port_line.coords, p.width)
+        self.add_pin("open", port_line.coords, p.width)

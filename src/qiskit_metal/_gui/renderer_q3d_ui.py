@@ -12,7 +12,6 @@ from PySide6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(651, 544)
@@ -62,27 +61,23 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.selectAllButton.clicked.connect(
-            MainWindow.select_all)  # type: ignore
-        self.deselectAllButton.clicked.connect(
-            MainWindow.deselect_all)  # type: ignore
+        self.selectAllButton.clicked.connect(MainWindow.select_all)  # type: ignore
+        self.deselectAllButton.clicked.connect(MainWindow.deselect_all)  # type: ignore
         self.refreshButton.clicked.connect(MainWindow.refresh)  # type: ignore
-        self.confirmButton.clicked.connect(
-            MainWindow.choose_checked_components)  # type: ignore
+        self.confirmButton.clicked.connect(MainWindow.choose_checked_components)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Q3D Renderer"))
         self.instructionsLabel.setText(
-            _translate("MainWindow", "Check off components to export:"))
-        self.instructionsLabel_2.setText(
-            _translate("MainWindow", "Renderer options"))
+            _translate("MainWindow", "Check off components to export:")
+        )
+        self.instructionsLabel_2.setText(_translate("MainWindow", "Renderer options"))
         self.refreshButton.setText(_translate("MainWindow", "Refresh List"))
         self.selectAllButton.setText(_translate("MainWindow", "Select All"))
         self.deselectAllButton.setText(_translate("MainWindow", "Deselect All"))
-        self.confirmButton.setText(_translate("MainWindow",
-                                              "Confirm Selection"))
+        self.confirmButton.setText(_translate("MainWindow", "Confirm Selection"))
 
 
 from qiskit_metal._gui import main_window_rc_rc

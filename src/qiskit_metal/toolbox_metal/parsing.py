@@ -12,10 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=broad-except
-# pylint: disable-msg=relative-beyond-top-level
-# pylint: disable-msg=import-error
-# pylint: disable-msg=line-too-long
+
 """Parsing module Qiskit Metal.
 
 The main function in this module is `parse_value`, and it explains what
@@ -169,12 +166,11 @@ Returns:
         'dict1': {'key1': 4e-06, '2mm': 0.1}}
 """
 
-from collections.abc import Iterable
-from collections.abc import Mapping
+import ast
+from collections.abc import Iterable, Mapping
 from numbers import Number
 from typing import Union
 
-import ast
 import numpy as np
 import pint
 from pint import UnitRegistry
@@ -182,12 +178,12 @@ from pint import UnitRegistry
 from qiskit_metal import Dict, config, logger
 
 __all__ = [
-    'parse_value',  # Main function
-    'is_variable_name',  # extra helpers
-    'is_numeric_possible',
-    'is_for_ast_eval',
-    'is_true',
-    'parse_options'
+    "parse_value",  # Main function
+    "is_variable_name",  # extra helpers
+    "is_numeric_possible",
+    "is_for_ast_eval",
+    "is_true",
+    "parse_options",
 ]
 
 #########################################################################
@@ -195,12 +191,34 @@ __all__ = [
 
 # Values that can represent True bool
 TRUE_STR = [
-    'true', 'True', 'TRUE', True, '1', 't', 'y', 'Y', 'YES', 'yes', 'yeah', 1,
-    1.0
+    "true",
+    "True",
+    "TRUE",
+    True,
+    "1",
+    "t",
+    "y",
+    "Y",
+    "YES",
+    "yes",
+    "yeah",
+    1,
+    1.0,
 ]
 FALSE_STR = [
-    'false', 'False', 'FALSE', False, '0', 'f', 'n', 'N', 'NO', 'no', 'na', 0,
-    0.0
+    "false",
+    "False",
+    "FALSE",
+    False,
+    "0",
+    "f",
+    "n",
+    "N",
+    "NO",
+    "no",
+    "na",
+    0,
+    0.0,
 ]
 
 
@@ -287,8 +305,9 @@ def is_for_ast_eval(test_str: str):
     Returns:
         bool: Is test_str a valid list of dict strings
     """
-    return ('[' in test_str and ']' in test_str) or \
-           ('{' in test_str and '}' in test_str)
+    return ("[" in test_str and "]" in test_str) or (
+        "{" in test_str and "}" in test_str
+    )
 
 
 def is_numeric_possible(test_str: str):
@@ -300,12 +319,10 @@ def is_numeric_possible(test_str: str):
     Returns:
         bool: Is the test string a valid possible numerical
     """
-    return test_str[0].isdigit() or test_str[0] in ['+', '-', '.']
+    return test_str[0].isdigit() or test_str[0] in ["+", "-", "."]
     # look into pyparsing
 
 
-# pylint: disable-msg=too-many-branches
-# pylint: disable-msg=too-many-return-statements
 def parse_value(value: str, variable_dict: dict):
     """Parse a string, mappable (dict, Dict), iterable (list, tuple) to account
     for units conversion, some basic arithmetic, and design variables. This is
@@ -348,7 +365,6 @@ def parse_value(value: str, variable_dict: dict):
     """
 
     if isinstance(value, str):
-
         # remove trailing and leading white spaces in the name
         val = str(value).strip()
 
@@ -376,17 +392,18 @@ def parse_value(value: str, variable_dict: dict):
                 if isinstance(evaluated, list):
                     # check if list, parse each element of the list
                     return [
-                        parse_value(element, variable_dict)
-                        for element in evaluated
+                        parse_value(element, variable_dict) for element in evaluated
                     ]
                 if isinstance(evaluated, dict):
-                    return Dict({
-                        key: parse_value(element, variable_dict)
-                        for key, element in evaluated.items()
-                    })
+                    return Dict(
+                        {
+                            key: parse_value(element, variable_dict)
+                            for key, element in evaluated.items()
+                        }
+                    )
 
                 logger.error(
-                    f'Unknown error in `is_for_ast_eval`\nval={val}\nevaluated={evaluated}'
+                    f"Unknown error in `is_for_ast_eval`\nval={val}\nevaluated={evaluated}"
                 )
                 return evaluated
 
@@ -398,16 +415,18 @@ def parse_value(value: str, variable_dict: dict):
         # then parse that dictionary. return Dict
         return Dict(
             map(
-                lambda item:  # item = [key, value]
-                [item[0], parse_value(item[1], variable_dict)],
-                value.items()))
+                lambda item: (  # item = [key, value]
+                    [item[0], parse_value(item[1], variable_dict)]
+                ),
+                value.items(),
+            )
+        )
 
     elif isinstance(value, Iterable):
         # list, tuple, ... Return the same type
-        return {
-            np.ndarray: np.array
-        }.get(type(value),
-              type(value))([parse_value(val, variable_dict) for val in value])
+        return {np.ndarray: np.array}.get(type(value), type(value))(
+            [parse_value(val, variable_dict) for val in value]
+        )
 
     elif isinstance(value, Number):
         # If it is an int it will return an int, not a float, etc.
@@ -433,14 +452,12 @@ def parse_options(params: dict, parse_names: str, variable_dict=None):
         variable_dict = {}
 
     res = []
-    for name in parse_names.split(','):
-        name = name.strip(
-        )  # remove trailing and leading white spaces in the name
+    for name in parse_names.split(","):
+        name = name.strip()  # remove trailing and leading white spaces in the name
 
         # is the name in the options at all?
-        if not name in params:
-            logger.warning(
-                f'Missing key {name} from params {params}. Skipping ...\n')
+        if name not in params:
+            logger.warning(f"Missing key {name} from params {params}. Skipping ...\n")
             continue
 
         # option_dict[name] should be a string
@@ -457,11 +474,11 @@ def parse_options(params: dict, parse_names: str, variable_dict=None):
 # UNITS
 # LENGTH_UNIT         --- HFSS UNITS
 # #Assumed default input units for ansys hfss
-LENGTH_UNIT = 'meter'
+LENGTH_UNIT = "meter"
 # LENGTH_UNIT_ASSUMED --- USER UNITS
 # if a user inputs a blank number with no units in `parse_fix`,
 # we can assume the following using
-LENGTH_UNIT_ASSUMED = 'mm'
+LENGTH_UNIT_ASSUMED = "mm"
 
 try:
     u_reg = UnitRegistry()
@@ -476,7 +493,6 @@ def extract_value_unit(expr, units):
     :type units: str
     :return: float
     """
-    # pylint: disable=broad-except
     try:
         return Q(expr).to(units).magnitude
     except Exception:
@@ -487,14 +503,14 @@ def extract_value_unit(expr, units):
 
 
 def fix_units(x, unit_assumed=None):
-    '''
+    """
     Convert all numbers to string and append the assumed units if needed.
     For an iterable, returns a list
-    '''
+    """
     unit_assumed = LENGTH_UNIT_ASSUMED if unit_assumed is None else unit_assumed
     if isinstance(x, str):
         # Check if there are already units defined, assume of form 2.46mm  or 2.0 or 4.
-        if x[-1].isdigit() or x[-1] == '.':  # number
+        if x[-1].isdigit() or x[-1] == ".":  # number
             return x + unit_assumed
         else:  # units are already applied
             return x
@@ -509,10 +525,10 @@ def fix_units(x, unit_assumed=None):
 
 
 def parse_entry(entry, convert_to_unit=LENGTH_UNIT):
-    '''
+    """
     Should take a list of tuple of list... of int, float or str...
     For iterables, returns lists
-    '''
+    """
     if not isinstance(entry, list) and not isinstance(entry, tuple):
         return extract_value_unit(entry, convert_to_unit)
     else:
@@ -524,7 +540,7 @@ def parse_entry(entry, convert_to_unit=LENGTH_UNIT):
 
 
 def parse_units(x):
-    '''
+    """
     Convert number, string, and lists/arrays/tuples to numbers scaled
     in HFSS units.
 
@@ -532,5 +548,5 @@ def parse_units(x):
     Assumes input units  LENGTH_UNIT_ASSUMED = mm      [USER UNITS]
 
     [USER UNITS] ----> [HFSS UNITS]
-    '''
+    """
     return parse_entry(fix_units(x))

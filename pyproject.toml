@@ -10,7 +10,6 @@
     classifiers = [
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: Apache Software License",
         "Operating System :: MacOS",
         "Operating System :: Microsoft :: Windows",
         "Operating System :: POSIX :: Linux",
@@ -26,7 +25,24 @@
     readme = { file = "README.md", content-type = "text/markdown" }
     requires-python = ">=3.10,<3.13"
     urls = { bugtracker = "https://github.com/qiskit-community/qiskit-metal/issues", documentation = "https://qiskit-community.github.io/qiskit-metal/", source = "https://github.com/qiskit-community/qiskit-metal" }
-    version = "0.5.3.post1"
+    version = "0.7.3"
+    # ────────────────────────────────────────────────────────────────
+    # v0.7.0: LITE-BY-DEFAULT. Core deps only — what's needed to
+    # ``import qiskit_metal``, build designs, run ``qm.view()``,
+    # export GDS, and run pure-Python analyses.
+    #
+    # Heavy / optional backends live in ``[project.optional-dependencies]``
+    # below and must be opted into:
+    #
+    #   pip install "quantum-metal[gui]"    # MetalGUI + PySide6
+    #   pip install "quantum-metal[ansys]"  # HFSS/Q3D + pyEPR
+    #   pip install "quantum-metal[mesh]"   # gmsh mesher (for Elmer/Palace/etc.)
+    #   pip install "quantum-metal[fem]"    # alias for [mesh] (v0.7.x compat)
+    #   pip install "quantum-metal[full]"   # v0.6.x batteries-included
+    #
+    # Users upgrading from v0.6.x who want zero behavior change should
+    # install ``quantum-metal[full]``. See ``docs/migration-to-v0.7.0.rst``.
+    # ────────────────────────────────────────────────────────────────
     dependencies = [
         "addict>=2.4.0",
         "gdstk>=0.9",
@@ -35,18 +51,49 @@
         "numpy>=1.24.2,<2",
         "pandas>=2.1.1",
         "pint>=0.21.0",
-        "pyEPR-quantum>=0.9.0",
-        "pygments>=2.14.0", # Needed for docs and GUI widgets.
-        "pyside6>=6.8",
-        "qdarkstyle>=3.1", # Needed for GUI styling.
+        "pygments>=2.14.0", # Used by docs builders + some GUI widgets.
         "qutip>=5.0.0",
         "scipy>=1.10.0",
         "shapely>=2.0.1",
         "scqubits>=4.1.0",
-        "gmsh>=4.11.1",
-        "pyaedt>=0.21,<0.24", # pyaedt 0.24 has some bugs (Jan 23, 2026)
-        "pyyaml>=6.0", # Used for the Elmer runner. 
+        "pyyaml>=6.0", # Used for the Elmer runner config (pure-Python).
     ]
+
+    # Opt-in extras. As of v0.7.0 these are NO LONGER duplicated in the
+    # base ``dependencies`` list above — installing the package without
+    # an extra gives you the lite install. The CI ``tests-lite`` job
+    # validates that path; ``tests-extras`` validates each individual
+    # extra. ``[full]`` is the v0.6.x compatibility set.
+    [project.optional-dependencies]
+        gui = [
+            "pyside6>=6.8",
+            "qdarkstyle>=3.1",
+        ]
+        ansys = [
+            "pyaedt>=0.21,<0.24",
+            "pyEPR-quantum>=0.9.5",
+        ]
+        # gmsh — the universal mesher. Used by Elmer (today), Palace
+        # (future), and any other open FEM backend. The mesher itself is
+        # decoupled from any specific solver, so [mesh] is the right
+        # primary name; [fem] below remains as a backward-compatible
+        # alias for v0.7.x users.
+        mesh = [
+            "gmsh>=4.15.0,<5",
+        ]
+        # Backward-compatible alias of [mesh]. Kept so v0.7.0/v0.7.1
+        # users who installed quantum-metal[fem] keep working through
+        # the rename. Prefer [mesh] in new docs and error messages.
+        fem = [
+            "gmsh>=4.15.0,<5",
+        ]
+        full = [
+            "pyside6>=6.8",
+            "qdarkstyle>=3.1",
+            "pyaedt>=0.21,<0.24",
+            "pyEPR-quantum>=0.9.5",
+            "gmsh>=4.15.0,<5",
+        ]
 
 [build-system]
     requires      = [ "uv_build>=0.9.23,<0.10.0" ]
@@ -71,6 +118,27 @@
         "sphinx-intl>=2.1.0",
         "sphinx-design>=0.6.0",
         "sphinx-autobuild>=2024.10.3",
+        # Registers the "ipython3" Pygments lexer that nbsphinx emits for
+        # code cells. Without it, ~1500 warnings on every docs build.
+        "ipython>=8.0",
+        # Silences "nbsphinx_widgets_path not given and ipywidgets module
+        # unavailable" — required by any tutorial that uses ipywidgets.
+        "ipywidgets>=8.1",
+        # JupyterLite-powered "Try it live" launcher buttons under each
+        # tutorial notebook. Builds a complete in-browser Jupyter env
+        # into ``docs/_build/html/lite/`` so visitors can run the
+        # tutorials without installing anything locally.
+        # See docs/conf.py jupyterlite_* settings.
+        "jupyterlite-sphinx>=0.16.0",
+        "jupyterlite-pyodide-kernel>=0.4.0",
+        # Renders ``.. mermaid::`` directives — used by the architecture
+        # diagrams in docs/contributor-guide.rst and tutorial 1.1 to
+        # show the design-flow + internal-data-flow charts. Mermaid
+        # diagrams in plain markdown (e.g. ``CLAUDE.md``,
+        # ``.claude/context/architecture.md``) render natively on
+        # GitHub so they don't need any extension; the Sphinx side
+        # picks up the same syntax through this package.
+        "sphinxcontrib-mermaid>=1.0.0",
 ]
     lint = [ "ruff>=0.14.2" ]
     test = [
@@ -86,22 +154,36 @@
     testpaths  = [ "tests/" ]
 
 
+[tool.ruff]
+    # ``_dev/`` is the dev/design-doc scratch directory (prototype notebooks,
+    # planning markdown, throwaway scripts). Not user-facing code; should
+    # not be lint-gated. Same goes for the ``_archive/`` historical
+    # directories under ``docs/``.
+    extend-exclude = [
+        "_dev",
+        "docs/_archive",
+        "docs/_build",
+    ]
+
 [tool.ruff.lint]
-    ignore = [ "E402", "F401", "F841", "E731", "F403", "E712", "E722", "E741", "F821" ]
+    ignore = [ "E402", "F401", "E731", "E722", "E741", "F821" ]
     # Ruff ignore codes:
     # To be sorted out in the future.
     # E402: module level import not at top of file
     # F401: module imported but unused
-    # F841: local variable is assigned to but never used
     # E731: do not assign a lambda expression, use a def
-    # F403: import * only allowed to namespace packages
-    # E712: use "if cond:" instead of "if cond" in comparisons to True or False
     # E722: do not use bare except
     # E741: do not use ambiguous variable names
     # F821 Undefined names. Mostly used for type hints.
-    per-file-ignores = { "**.ipynb" = [ "F811", "E703" ] }
+
+[tool.ruff.lint.per-file-ignores]
+    "**.ipynb" = ["F811", "E703", "F403", "F405"]
     # F811: redefinition of unused name
     # E703: unnecessary semicolons
+    # F403: import * only allowed to namespace packages
+    # F405: wildcard imports
+    "tests/**" = [ "F841" ]
+    # F841: local variable is assigned to but never used
 
 [tool.tox]
     requires = [ "tox>=4", "tox-uv>=1.29" ]
@@ -113,6 +195,13 @@
     description       = "Run tests against the wheel using pytest"
     packages          = [ "wheel" ]
     set_env           = { VIRTUAL_ENV = "{envdir}", LANGUAGE = "en_US", QISKIT_METAL_HEADLESS = "1", LC_ALL = "en_US.utf-8" }
+    # As of v0.7.0 (lite-by-default), base deps don't include the
+    # heavies. The ``tests`` matrix needs all of them so existing
+    # HFSS / gmsh / GUI test files can collect — pull ``[full]``.
+    # The ``tests-lite`` and ``tests-extras-*`` jobs install
+    # differently (see ``.github/workflows/main.yml``) and don't
+    # use this tox env.
+    extras            = [ "full" ]
     dependency_groups = [ "test" ]
     commands          = [ [ "python", "-m", "pytest", { replace = "posargs", default = [  ], extend = true } ] ]
 
@@ -138,6 +227,20 @@
     description = "Build the documentation using sphinx"
     base_python = [ "py3.12" ]
     pass_env = [ "DOCS_FROM_MASTER", "QISKIT_DOCS_BUILD_TUTORIALS" ]
+    # Lite install only. The heavy backends (PySide6, pyaedt, pyEPR,
+    # gmsh) are mocked via ``autodoc_mock_imports`` in
+    # ``docs/conf.py`` so Sphinx autodoc can walk renderer modules
+    # without those packages on disk. Keeps docs CI fast and
+    # decoupled from native-lib availability on the runner.
+    #
+    # IMPORTANT: ``extras = []`` is REQUIRED to override the
+    # ``extras = ["full"]`` set in ``[tool.tox.env_run_base]``.
+    # Without this explicit empty list, tox env inheritance would
+    # install ``[full]`` here too — and PySide6's ``libEGL.so.1``
+    # is absent on the CI runner, crashing ``import qiskit_metal``
+    # at the top of ``conf.py`` (autodoc_mock_imports only kicks
+    # in when a module is *absent*, not present-but-broken).
+    extras            = []
     dependency_groups = [ "docs" ]
     commands = [
         [

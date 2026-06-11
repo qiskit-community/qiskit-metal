@@ -4,7 +4,7 @@ Recordings of live tutorials and Q&A sessions with researchers, developers, and 
 
 [VIDEOS: YouTube Playlist of tutorial recordings - click here](https://www.youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb).
 
-Join the [Qiskit](https://qisk.it/join-slack) `#metal` Slack channel to request topics of interest, give feedback, and participate in all Qiskit Metal discussions.
+Join the [Quantum Metal Discord](https://discord.gg/kaZ3UFuq) to request topics of interest, give feedback, and participate in all Quantum Metal discussions. (The legacy [Qiskit `#metal` Slack channel](https://qisk.it/join-slack) is being phased out.)
 
 ## 🗓️ Recording Log
 

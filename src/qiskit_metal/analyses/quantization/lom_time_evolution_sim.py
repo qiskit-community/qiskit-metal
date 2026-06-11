@@ -3,14 +3,22 @@ import numpy as np
 import scqubits as scq
 from typing import List
 
-from qiskit_metal.analyses.quantization.lom_core_analysis import CompositeSystem, Subsystem
-from qiskit_metal.analyses.quantization.lom_extensions import LOM_SUBSYSTEM_TO_SEQ_MODE, to_external_system
+from qiskit_metal.analyses.quantization.lom_core_analysis import (
+    CompositeSystem,
+    Subsystem,
+)
+from qiskit_metal.analyses.quantization.lom_extensions import (
+    LOM_SUBSYSTEM_TO_SEQ_MODE,
+    to_external_system,
+)
 
 
-def lom_composite_sys_to_seq_sys(lom_composite: CompositeSystem,
-                                 hilbertspace: scq.HilbertSpace,
-                                 levels: List[int] = None,
-                                 system_name='system') -> seq.System:
+def lom_composite_sys_to_seq_sys(
+    lom_composite: CompositeSystem,
+    hilbertspace: scq.HilbertSpace,
+    levels: List[int] = None,
+    system_name="system",
+) -> seq.System:
     ## TODO: params for setting detuning and levels
     """Convert LOM composite system to Sequencing system. A 'subsystem' in
     LOM composite system corresponds to a 'mode' in Sequencing system
@@ -32,9 +40,8 @@ def lom_composite_sys_to_seq_sys(lom_composite: CompositeSystem,
     if levels is None:
         levels = hilbertspace.subsystem_dims
 
-    h_results = lom_composite.hamiltonian_results(hilbertspace,
-                                                  print_info=False)
-    chi_mat = h_results['chi_in_MHz']
+    h_results = lom_composite.hamiltonian_results(hilbertspace, print_info=False)
+    chi_mat = h_results["chi_in_MHz"]
     chi_mat_ghz = chi_mat * 1e-3
     for ii, sub1 in enumerate(lom_composite.subsystems):
         seq_cls = to_external_system(sub1, LOM_SUBSYSTEM_TO_SEQ_MODE)

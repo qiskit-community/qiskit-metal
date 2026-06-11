@@ -37,10 +37,9 @@ class Rectangle(QComponent):
         * helper: 'False'
     """
 
-    default_options = Dict(width='500um',
-                           height='300um',
-                           subtract='False',
-                           helper='False')
+    default_options = Dict(
+        width="500um", height="300um", subtract="False", helper="False"
+    )
     """Default drawing options"""
 
     TOOLTIP = """A single configurable square"""
@@ -58,8 +57,11 @@ class Rectangle(QComponent):
         rect = draw.rotate(rect, p.orientation)
         ##############################################
         # add qgeometry
-        self.add_qgeometry('poly', {'rectangle': rect},
-                           subtract=p.subtract,
-                           helper=p.helper,
-                           layer=p.layer,
-                           chip=p.chip)
+        self.add_qgeometry(
+            "poly",
+            {"rectangle": rect},
+            subtract=p.subtract,
+            helper=p.helper,
+            layer=p.layer,
+            chip=p.chip,
+        )

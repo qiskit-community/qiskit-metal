@@ -1,0 +1,146 @@
+Header
+  CHECK KEYWORDS "Warn"
+  Mesh DB "." "."
+End
+
+! steady_3D
+Simulation
+  Max Output Level = 5
+  Coordinate System = Cartesian
+  Coordinate Mapping(3) = 1 2 3
+  Simulation Type = Steady state
+  Steady State Max Iterations = 1
+  Output Intervals = 1
+  Timestepping Method = BDF
+  BDF Order = 1
+  Solver Input File = case.sif
+  Post File = case.ep
+  Output File = case.result
+End
+
+Constants
+  Permittivity of Vacuum = 1
+  Unit Charge = 1
+End
+
+! poisson
+Equation 1
+  ! 1: capacitance
+  ! 2: postprocessing_gmsh
+  Active Solvers(2) = 1 2
+End
+
+
+! capacitance
+Solver 1
+  Equation = Electrostatics
+  Calculate Electric Field = True
+  Calculate Capacitance Matrix = True
+  Capacitance Matrix Filename = cap_matrix.txt
+  Procedure = "StatElecSolve" "StatElecSolver"
+  Variable = Potential
+  Calculate Electric Energy = True
+  Exec Solver = Always
+  Stabilize = True
+  Bubbles = False
+  Lumped Mass Matrix = False
+  Optimize Bandwidth = True
+  Steady State Convergence Tolerance = 1e-05
+  Nonlinear System Convergence Tolerance = 1e-07
+  Nonlinear System Max Iterations = 20
+  Nonlinear System Newton After Iterations = 3
+  Nonlinear System Newton After Tolerance = 0.001
+  Nonlinear System Relaxation Factor = 1
+  Linear System Solver = Iterative
+  Linear System Iterative Method = BiCGStab
+  Linear System Max Iterations = 500
+  Linear System Convergence Tolerance = 1e-10
+  BiCGstabl polynomial degree = 2
+  Linear System Preconditioning = ILU0
+  Linear System ILUT Tolerance = 0.001
+  Linear System Abort Not Converged = False
+  Linear System Residual Output = 10
+  Linear System Precondition Recompute = 1
+  Capacitance Bodies = 5
+End
+
+! postprocessing_gmsh
+Solver 2
+  Exec Solver = Always
+  Equation = Result Output
+  Procedure = "ResultOutputSolve" "ResultOutputSolver"
+  Output File Name = "case"
+  Output Format = gmsh
+End
+
+
+! vacuum
+Material 1
+  Electric Conductivity = 0.0
+  Relative Permittivity = 1
+End
+
+! silicon
+Material 2
+  Relative Permittivity = 11.45
+End
+
+
+! vacuum_box
+Body 1
+  Target Bodies(1) = 21
+  Equation = 1 ! poisson
+  Material = 1 ! vacuum
+End
+
+! dielectric_(layer 3)
+Body 2
+  Target Bodies(1) = 19
+  Equation = 1 ! poisson
+  Material = 2 ! silicon
+End
+
+
+! Q1_readout_connector_pad
+Boundary Condition 1
+  Target Boundaries(2) = 2 12
+  Capacitance Body = 1
+End
+
+! Q1_coupler1_connector_pad
+Boundary Condition 2
+  Target Boundaries(2) = 4 14
+  Capacitance Body = 2
+End
+
+! Q1_coupler2_connector_pad
+Boundary Condition 3
+  Target Boundaries(2) = 6 16
+  Capacitance Body = 3
+End
+
+! Q1_pad_top
+Boundary Condition 4
+  Target Boundaries(1) = 8
+  Capacitance Body = 4
+End
+
+! Q1_pad_bot
+Boundary Condition 5
+  Target Boundaries(1) = 10
+  Capacitance Body = 5
+End
+
+! ground_plane
+Boundary Condition 6
+  Target Boundaries(1) = 18
+  Capacitance Body = 0
+End
+
+! FarField
+Boundary Condition 7
+  Target Boundaries(1) = 22
+  Electric Infinity BC = True
+End
+
+

@@ -19,21 +19,23 @@ from PySide6.QtCore import QTimer
 from qiskit_metal._gui.utility._handle_qt_messages import slot_catch_error
 
 
-class AnimatedText():
+class AnimatedText:
     """Class that animates text."""
 
-    def __init__(self,
-                 ax: plt.Axes,
-                 text: str,
-                 canvas,
-                 kw: dict = None,
-                 anim_start=0.9,
-                 anim_dt_ms=25,
-                 anim_delta=-0.0005,
-                 anim_stop=0,
-                 anim_accel=-0.0005,
-                 start=True,
-                 loc=[0.5, 0.5]):
+    def __init__(
+        self,
+        ax: plt.Axes,
+        text: str,
+        canvas,
+        kw: dict = None,
+        anim_start=0.9,
+        anim_dt_ms=25,
+        anim_delta=-0.0005,
+        anim_stop=0,
+        anim_accel=-0.0005,
+        start=True,
+        loc=[0.5, 0.5],
+    ):
         """
         Args:
             ax (plt.Axes): The axis.
@@ -61,15 +63,17 @@ class AnimatedText():
         # MPL text
         # Create the text
         kw = {
-            **dict(fontsize=35,
-                   fontweight='bold',
-                   va='center',
-                   ha='center',
-                   alpha=anim_start,
-                   transform=ax.transAxes,
-                   color='#00356B',
-                   zorder=200),
-            **(kw if kw else {})
+            **dict(
+                fontsize=35,
+                fontweight="bold",
+                va="center",
+                ha="center",
+                alpha=anim_start,
+                transform=ax.transAxes,
+                color="#00356B",
+                zorder=200,
+            ),
+            **(kw if kw else {}),
         }
 
         self.text = ax.text(*loc, text, **kw)
@@ -117,7 +121,7 @@ class AnimatedText():
                 try:
                     # remove text from axis
                     self.text.remove()
-                except ValueError as e:
+                except ValueError:
                     # could raise ValueError: list.remove(x): x not in list
                     pass
 

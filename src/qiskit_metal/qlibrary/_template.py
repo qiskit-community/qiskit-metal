@@ -17,15 +17,18 @@ from qiskit_metal.qlibrary.core import QComponent
 
 
 class MyQComponent(QComponent):
-    """Use this class as a template for your components."""
+    """.. image::
+        user_template.png
+
+    Use this class as a template for your components."""
 
     # Edit these to define your own tempate options for creation
     # Default drawing options
-    default_options = Dict(width='500um', height='300um')
+    default_options = Dict(width="500um", height="300um")
     """Default drawing options"""
 
     # Name prefix of component, if user doesn't provide name
-    component_metadata = Dict(short_name='component')
+    component_metadata = Dict(short_name="component")
     """Component metadata"""
 
     TOOLTIP = """This is a QComponent brief summary"""
@@ -41,5 +44,5 @@ class MyQComponent(QComponent):
         # Use autocompletion for the `draw.` module (use tab key)
         rect = draw.rectangle(p.width, p.height, p.pos_x, p.pos_y)
         rect = draw.rotate(rect, p.orientation)
-        geom = {'my_polygon': rect}
-        self.add_qgeometry('poly', geom, layer=p.layer, subtract=False)
+        geom = {"my_polygon": rect}
+        self.add_qgeometry("poly", geom, layer=p.layer, subtract=False)

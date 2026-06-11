@@ -12,10 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=unnecessary-pass
-# pylint: disable-msg=broad-except
-# pylint: disable-msg=too-many-public-methods
-# pylint: disable-msg=import-error
 """Qiskit Metal unit tests for speed."""
 
 import unittest
@@ -43,5 +39,5 @@ class TestSpeed(unittest.TestCase):
         self.assertEqual(4, 2 + 2)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main(verbosity=2)

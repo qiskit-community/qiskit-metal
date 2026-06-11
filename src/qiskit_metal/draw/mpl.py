@@ -13,7 +13,16 @@
 # that they have been altered from the originals.
 """Matplotlib draw utility functions for shapely objects, for qgeometry, and
 for components."""
-# pylint: disable=ungrouped-imports
 
 # allow full access to all functions and code in the toolbox
-from qiskit_metal.renderers.renderer_mpl.mpl_toolbox import *
+from qiskit_metal.renderers.renderer_mpl.mpl_toolbox import (
+    _axis_set_watermark_img,
+    _render_poly_zkm,
+    clear_axis,
+    figure_spawn,
+    get_prop_cycle,
+    render,
+    render_poly,
+    style_axis_simple,
+    style_axis_standard,
+)

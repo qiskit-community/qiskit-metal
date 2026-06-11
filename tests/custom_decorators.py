@@ -40,9 +40,9 @@ def timeout(timeout_seconds: int):
             self.assertLessEqual(
                 end - start,
                 timeout_seconds,
-                msg=
-                f"{test_function.__name__} ran in {end - start:0.4f} seconds but "
-                + "needed to run sub {timeout_seconds}")
+                msg=f"{test_function.__name__} ran in {end - start:0.4f} seconds but "
+                + "needed to run sub {timeout_seconds}",
+            )
 
         return timer_wrapper
 

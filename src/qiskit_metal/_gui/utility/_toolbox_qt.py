@@ -12,7 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """This is a utility module used for qt."""
-# pylint: disable=invalid-name
 
 from types import MethodType
 
@@ -21,13 +20,10 @@ from PySide6.QtCore import QTimer
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QDockWidget
 
-__all__ = ['blend_colors']
+__all__ = ["blend_colors"]
 
 
-def blend_colors(color1: QColor,
-                 color2: QColor,
-                 r: float = 0.2,
-                 alpha=255) -> QColor:
+def blend_colors(color1: QColor, color2: QColor, r: float = 0.2, alpha=255) -> QColor:
     """Blend two qt colors together.
 
     Args:
@@ -39,13 +35,16 @@ def blend_colors(color1: QColor,
     Returns:
         QColor: new color
     """
-    color3 = QColor(color1.red() * (1 - r) + color2.red() * r,
-                    color1.green() * (1 - r) + color2.green() * r,
-                    color1.blue() * (1 - r) + color2.blue() * r, alpha)
+    color3 = QColor(
+        color1.red() * (1 - r) + color2.red() * r,
+        color1.green() * (1 - r) + color2.green() * r,
+        color1.blue() * (1 - r) + color2.blue() * r,
+        alpha,
+    )
     return color3
 
 
-#------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------
 
 STYLE_HIGHLIGHT_ = r"""
 QWidget {
@@ -64,9 +63,9 @@ def doShowHighlighWidget(self: QDockWidget, timeout=1500, style_highlight=None):
     self.show()
     self.raise_()
 
-    def doResetStyle(self: 'QDockWidget'):
+    def doResetStyle(self: "QDockWidget"):
         """Reset the style of the widget."""
-        self.setStyleSheet('')
+        self.setStyleSheet("")
 
     # Bind the method dynamically to the instance using MethodType
     self.doResetStyle = MethodType(doResetStyle, self)
@@ -103,4 +102,4 @@ def doShowHighlighWidget(self: QDockWidget, timeout=1500, style_highlight=None):
 # # Alternative see:
 # https://stackoverflow.com/questions/58458323/how-to-use-qt-stylesheet-to-customize-only-partial-qwidget-border
 
-#------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------

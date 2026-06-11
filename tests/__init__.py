@@ -12,8 +12,4 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable-msg=relative-beyond-top-level
-# pylint: disable-msg=import-error
 """Unit tests"""
-
-

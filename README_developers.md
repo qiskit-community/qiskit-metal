@@ -1,9 +1,16 @@
-# Qiskit Metal For Developers
+# Quantum Metal — Developer Guide
 
+> Companion to [`README.md`](./README.md) (user-facing) and
+> [`docs/contributor-guide.rst`](./docs/contributor-guide.rst) (rendered into
+> the docs site). This file collects the practical recipes — env setup,
+> tests, docs build, tutorials sync, common gotchas — for working on
+> Quantum Metal itself.
 
-## Development Setup for version 0.5+
+## Development Setup
 
-The new version of Qiskit Metal (soon to be Quantum Metal) has transitioned to [uv](https://docs.astral.sh/uv/) for project/dependency management. This guide describes how to set up your local development environment in light of these updates. First, you should install uv on your system, as described by the [instructions here](https://docs.astral.sh/uv/getting-started/installation/).
+Quantum Metal uses [`uv`](https://docs.astral.sh/uv/) for project/dependency
+management. Install uv first, following the
+[official instructions](https://docs.astral.sh/uv/getting-started/installation/).
 
 
 ### Development (virtual) environments
@@ -59,11 +66,77 @@ Note that we have not yet settled on a formatting configuration other than defau
 
 ### Building docs
 
-Documentation is built using Sphinx. Please refer to the guide presented in the [package documentation](https://qiskit-community.github.io/qiskit-metal/contributor-guide.html#contributing-to-documentation) for an extensive description. Briefly, docs can be built using tox with the following command: 
+Documentation is built using Sphinx + nbsphinx. The detailed guide lives in the
+[contributor guide](https://qiskit-community.github.io/qiskit-metal/contributor-guide.html#contributing-to-documentation).
+Quick recipes:
 
+```bash
+# Full build (fast — ~1–2 min; skips notebook re-execution by default)
+uvx --with tox-uv tox -e docs
+
+# Full build, re-execute every tutorial notebook (slow; needs all extras
+# installed, e.g. [full] — used for releases / docs deploys)
+QISKIT_DOCS_BUILD_TUTORIALS=always uvx --with tox-uv tox -e docs
+
+# Open the result
+open docs/_build/html/index.html
 ```
-tox -e docs
+
+For iterative `.rst` editing — live reload at `http://localhost:8000`:
+
+```bash
+uv sync --group docs          # one-time
+uv run sphinx-autobuild docs docs/_build/html
 ```
+
+If autodoc emits stale or duplicated stubs, blow them away and rebuild clean:
+
+```bash
+rm -rf docs/_build docs/stubs && uvx --with tox-uv tox -e docs
+```
+
+### Tutorials sync — dual-folder workflow
+
+Every numbered tutorial notebook lives in **two places** that must stay
+content-identical:
+
+| Path                | Why                                                            |
+|---------------------|----------------------------------------------------------------|
+| `tutorials/`        | User-facing — spaces in filenames, browsable on GitHub         |
+| `docs/tut/`         | Sphinx + nbsphinx source — hyphenated filenames for clean URLs |
+
+**CI fails any PR where the two folders drift** (`scripts/check_tutorials_sync.py`
+runs on every push). The check compares **cell source content** only, so
+metadata churn (kernel ids, execution counts) doesn't cause false drift.
+
+Recipes:
+
+```bash
+# 1. Authoritative drift check — use this as the source of truth
+uv run scripts/check_tutorials_sync.py
+#    → "✓ All 54 notebook pairs in sync."  = you're done.
+
+# 2. If drift IS detected: dry-run the sync to see what will change
+python3 _dev/sync_two_folders.py
+#    Reports per-pair: in-sync vs. would-copy, with the chosen direction.
+
+# 3. Apply the sync (overwrites the non-canonical side)
+python3 _dev/sync_two_folders.py --write
+
+# 4. Re-run the check to confirm
+uv run scripts/check_tutorials_sync.py
+```
+
+Per-notebook canonical choices ("which folder wins on conflict") live in the
+`CANONICAL` dict in `_dev/sync_two_folders.py`. Update it there if you
+intentionally want the other folder to be authoritative for a specific
+notebook, then re-sync.
+
+> **Gotcha:** `_dev/sync_two_folders.py`'s "src→dst" column shows the
+> *direction it would copy if there's drift*. The actual decision of whether
+> to copy is in the `status` column (`in-sync` vs. `would copy`). Don't be
+> alarmed if every row prints — what matters is the summary line at the
+> bottom and the `status` column per row.
 
 
 ## Old Instructions
@@ -80,7 +153,7 @@ To do that, you will need to `git clone` this repository's main branch following
 
 1. Open any command line shell that has been configured with git and execute the following command:
 ```sh
-git clone https://github.com/Qiskit/qiskit-metal.git
+git clone https://github.com/qiskit-community/qiskit-metal.git
 ```
 2. Alternatively, you can download and use the user interface [GitHub Desktop GUI](https://desktop.github.com/) and refer to these [notes](https://help.github.com/en/desktop/contributing-to-projects/cloning-a-repository-from-github-to-github-desktop).
 
@@ -180,16 +253,16 @@ where `<virtual_env_path/name>` is the name of your new Python virtual environme
 
 Here are some things to consider when setting up a development environment:
 * Remember to type the period (".") at the end of the pip install command.
-* If using a virtual environment, make sure `pip` is up to date. In initial environment testing, PySide2 is installable with only the latest version of `pip`.
+* If using a virtual environment, make sure `pip` is up to date. PySide6 (used by the optional `[gui]` extra) requires a recent `pip`.
 * In some setups, you might need to add the qiskit-metal folder path to your PATH variable
 * Library errors when activating conda environments, or initializing jupyter notebook/lab, might indicate a conflict between python libraries in the base and sub environments. Go ahead and manually delete the library from the base environment `site-packages` folder, shown in the error message. You might need to reinstall them in the sub environment, or create a new one.
 * If Jupyter notebook has trouble finding a dll for a package that works in the new environment outside of Jupyter, then try opening Jupyter notebook from the new environment instead of from `base`
 
 ### Installing other dependencies for Open-source Renderers (Gmsh and ElmerFEM)
 
-If you want to use the recently added open-source renderers for [Gmsh](./qiskit_metal/renderers/renderer_gmsh) and [ElmerFEM](./qiskit_metal/renderers/renderer_elmer) for simulation of your design, please make sure that both of them have been installed successfully in your system before running Qiskit Metal. On Windows, Linux, and MacOS (with x86_64 architecture CPUs), Gmsh will be installed automatically using the `environment.yml` file during the conda installation step above. For more detailed steps to install ElmerFEM, please refer to [this](./README_Gmsh_Elmer.md) document.
+If you want to use the open-source renderers for [Gmsh](./qiskit_metal/renderers/renderer_gmsh) and [ElmerFEM](./qiskit_metal/renderers/renderer_elmer) for simulation of your design, install the `[mesh]` extra (`pip install "quantum-metal[mesh]"` — or its alias `[fem]`) to get the gmsh Python binding, and install ElmerFEM separately (it's an external CLI binary, not a Python package). For the full open FEM toolchain setup — gmsh, Elmer, and the planned Palace path — see [`README_Open_FEM_Stack.md`](./README_Open_FEM_Stack.md).
 
-**NOTE:** We would like to give a disclaimer for users on Apple silicon Macs (M1 and M2-series). Currently, Qiskit Metal uses PySide2 which is not natively supported on the ARM architecture. This will lead to error in instantiating the `MetalGUI` as of now. However, if you still want to use Qiskit Metal without the GUI, the process for installing Gmsh software is a bit different and can be found in [this](./README_Gmsh_Elmer.md) document.
+**NOTE on Apple Silicon (M1/M2/M3/M4):** As of v0.5+, Quantum Metal uses **PySide6** (Qt 6), which is native on Apple Silicon — `MetalGUI` works out of the box with `pip install "quantum-metal[gui]"`. For the headless lite install (default in v0.7.0+) you don't need PySide6 at all; use `qm.view(design)` instead. See [`docs/headless-usage.rst`](./docs/headless-usage.rst). Gmsh on Apple Silicon may still need extra setup — see [`README_Open_FEM_Stack.md`](./README_Open_FEM_Stack.md).
 
 # Other Common Issues
 
@@ -203,26 +276,48 @@ python -m pip install -r requirements-dev.txt
 ```
 You may also want to also use these instructions to [setup user environment](/docs/NEW_DEVELOPER_SETUP.md)
 
-## Setting up precommit hooks
+## Setting up git hooks (recommended)
 
-If are planning on committing, you can run the following in the root of your project to link the available precommit hooks.
-```
-./hook_setup
-```
-Please make sure the command is run from the same shell you plan on using to commit. If running on Windows, please make sure that this script is run from git-bash or another Linux-style shell. Currently, the precommit hook will check for yapf formatting.
+`./hook_setup.sh` installs two hooks that mirror the cheapest CI gates locally — so most "passed locally, fails in CI" surprises get caught at commit/push time instead of after a cloud round-trip:
 
-## Get more information when you commit code and CI gives linting error(s)
+| Hook | Runs | When |
+|---|---|---|
+| **pre-commit** | `ruff check` + `ruff format --check` on **staged** Python files | every `git commit` (fast — ~2s) |
+| **pre-push** | full-repo `ruff check` + `ruff format --check` + `check_env_consistency.py` + `check_tutorials_sync.py` (notebook touches only) | every `git push` (~15s) |
 
-If are planning on committing, code and get a linting error. Sometimes the log does not have enough details to fix the error.
-```
-yapf --diff --recursive --style .style.yapf qiskit_metal
-```
-Go to directory with qiskit-metal/.style.yapf  file and run the above command to lint locally. This may give more meaningful feedback for linting failure.
+Install once:
 
-## Uninstall precommit hook
+```bash
+./hook_setup.sh
+```
+
+This symlinks `.git/hooks/{pre-commit,pre-push}` → `hooks/{pre-commit,pre-push}`. On Windows, run from Git Bash or another POSIX-compatible shell. Both hooks invoke `ruff` via `uvx ruff@<pinned-version>` (matching CI), so no global ruff install needed.
+
+Example output on commit:
 
 ```
-rm /hooks/pre-commit
+Pre-commit: checking 3 staged Python file(s) with ruff 0.15.14
+  → ruff check
+  → ruff format --check
+  ✓ ruff checks pass
+```
+
+If something needs reformatting, the hook prints the exact command. **Emergency bypass** (e.g. WIP push of a draft branch): `git commit --no-verify` / `git push --no-verify`.
+
+### Reproducing CI's lint/format locally without the hooks
+
+```bash
+uvx ruff@0.15.14 check .              # lint
+uvx ruff@0.15.14 format --check .     # format check
+uvx ruff@0.15.14 format .             # auto-fix formatting
+uv run scripts/check_env_consistency.py
+uv run scripts/check_tutorials_sync.py
+```
+
+## Uninstall git hooks
+
+```bash
+rm .git/hooks/pre-commit .git/hooks/pre-push
 ```
 
 If you need to uninstall the precommit hook, go to the root of the project and run the above command.

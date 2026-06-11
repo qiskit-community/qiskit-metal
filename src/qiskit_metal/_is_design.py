@@ -12,8 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable=wrong-import-order
-# pylint: disable=wrong-import-position
 """File contains utility functions for check for object types."""
 
 from qiskit_metal import Dict
@@ -34,7 +32,7 @@ def is_design(obj):
     if isinstance(obj, Dict):
         return False
 
-    return hasattr(obj, '__i_am_design__')
+    return hasattr(obj, "__i_am_design__")
 
 
 def is_component(obj):
@@ -52,4 +50,4 @@ def is_component(obj):
     if isinstance(obj, Dict):
         return False
 
-    return hasattr(obj, '__i_am_component__')
+    return hasattr(obj, "__i_am_component__")

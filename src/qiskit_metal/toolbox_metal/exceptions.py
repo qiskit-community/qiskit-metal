@@ -12,11 +12,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable=invalid-name
-# pylint: disable=unused-import
 """Custom Exceptions."""
-
-from sys import prefix
 
 
 class QiskitMetalExceptions(Exception):
@@ -27,15 +23,13 @@ class QiskitMetalExceptions(Exception):
         message (str): String describing the error raised from qiskit-metal
     """
 
-    # pylint: disable=super-init-not-called
     def __init__(self, message: str) -> None:
         prefix = "Qiskit Metal - "
-        self.args = [prefix + message]
+        self.args = (prefix + message,)
 
 
 class QLibraryGUIException(QiskitMetalExceptions):
-    """Custom Exception for the QLibrary GUI feature
-    """
+    """Custom Exception for the QLibrary GUI feature"""
 
 
 class QiskitMetalDesignError(QiskitMetalExceptions):
@@ -64,5 +58,4 @@ class IncorrectQtException(Exception):
 
 
 class InputError(QiskitMetalExceptions):
-    """Custom exception to indicate input errors
-    """
+    """Custom exception to indicate input errors"""

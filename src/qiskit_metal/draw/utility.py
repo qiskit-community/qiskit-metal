@@ -27,14 +27,18 @@ from numpy import array
 from numpy.linalg import norm
 from shapely.geometry import MultiPolygon, Polygon
 
-from qiskit_metal import logger
-from qiskit_metal import is_component
+from qiskit_metal import is_component, logger
 from qiskit_metal.draw import BaseGeometry
 
 __all__ = [
-    'get_poly_pts', 'get_all_component_bounds', 'get_all_geoms',
-    'flatten_all_filter', 'remove_colinear_pts', 'array_chop',
-    'vec_unit_planar', 'Vector'
+    "get_poly_pts",
+    "get_all_component_bounds",
+    "get_all_geoms",
+    "flatten_all_filter",
+    "remove_colinear_pts",
+    "array_chop",
+    "vec_unit_planar",
+    "Vector",
 ]
 
 # Used for numpy.round()
@@ -57,7 +61,7 @@ def get_poly_pts(poly: Polygon):
     return np.array(poly.exterior.coords)[:-1]
 
 
-def get_all_geoms(obj, func=lambda x: x, root_name='components'):
+def get_all_geoms(obj, func=lambda x: x, root_name="components"):
     """Get a dict of dict of all shapely objects, from components, dict, etc.
 
     Used to compute the bounding box.
@@ -73,8 +77,8 @@ def get_all_geoms(obj, func=lambda x: x, root_name='components'):
 
     # Prelim
     # Calculate the new name
-    def new_name(name):        return root_name + '.' + \
-name if not (root_name == '') else name
+    def new_name(name):
+        return root_name + "." + name if not (root_name == "") else name
 
     # Check what we have
 
@@ -95,7 +99,7 @@ name if not (root_name == '') else name
             get_all_geoms(sub_obj, root_name=new_name(name))
             for name, sub_obj in obj.items()
         }
-        '''
+        """
         RES = {}
         for name, sub_obj in obj.items():
             if is_component(obj):
@@ -109,11 +113,11 @@ name if not (root_name == '') else name
             elif isinstance(sub_obj, BaseGeometry):
                 RES[name] = func(obj)
         return RES
-        '''
+        """
 
     else:
         logger.debug(
-            f'warning: {root_name} was not an object or dict or the right handle'
+            f"warning: {root_name} was not an object or dict or the right handle"
         )
         return None
 
@@ -141,7 +145,7 @@ def flatten_all_filter(components: dict, filter_obj=None):
                 if isinstance(obj, filter_obj):
                     RES += [obj]
                 else:
-                    print('flatten_all_filter: ', name)
+                    print("flatten_all_filter: ", name)
 
     return RES
 
@@ -179,7 +183,8 @@ def round_coordinate_sequence(geom_ref, precision):
     """
 
     new_geom_ref = shapely.wkt.loads(
-        shapely.wkt.dumps(geom_ref, rounding_precision=precision))
+        shapely.wkt.dumps(geom_ref, rounding_precision=precision)
+    )
 
     return new_geom_ref
 
@@ -213,10 +218,7 @@ def array_chop(vec, zero=0, rtol=0, machine_tol=100):
         array: Chopped array
     """
     vec = np.array(vec)
-    mask = np.isclose(vec,
-                      zero,
-                      rtol=rtol,
-                      atol=machine_tol * np.finfo(float).eps)
+    mask = np.isclose(vec, zero, rtol=rtol, atol=machine_tol * np.finfo(float).eps)
     vec[mask] = 0
     return vec
 
@@ -327,7 +329,7 @@ def vec_unit_planar(vector: np.array):
         _norm = norm(vector)
 
         if not bool(_norm):  # zero length vector
-            logger.debug(f'Warning: zero vector length')
+            logger.debug("Warning: zero vector length")
             return vector
 
         return vector / _norm
@@ -337,10 +339,9 @@ def vec_unit_planar(vector: np.array):
         return np.append(v2, vector[2])
 
     else:
-        raise Exception('You did not give a 2 or 3 vec')
+        raise Exception("You did not give a 2 or 3 vec")
 
 
-# pylint: disable=invalid-name
 def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
     """Adds 3rd point to list of 2D points. For the given design, get the z
     values in HFSS UNITS! Manually specify z dimension.
@@ -354,8 +355,9 @@ def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
     """
     add_me = [z]
 
-    vec3d = np.array([list(a_2d_pt) + add_me for a_2d_pt in list_of_2d_pts],
-                     dtype="object")
+    vec3d = np.array(
+        [list(a_2d_pt) + add_me for a_2d_pt in list_of_2d_pts], dtype="object"
+    )
     return vec3d
 
 
@@ -387,8 +389,7 @@ class Vector:
     """ Noraml Z array """
 
     @staticmethod
-    def rotate_around_point(xy: Vec2D, radians: float,
-                            origin=(0, 0)) -> np.ndarray:
+    def rotate_around_point(xy: Vec2D, radians: float, origin=(0, 0)) -> np.ndarray:
         r"""Rotate a point around a given point.
         Positive angles are counter-clockwise and negative are clockwise rotations.
 
@@ -410,8 +411,8 @@ class Vector:
         # see: https://gist.github.com/LyleScott/d17e9d314fbe6fc29767d8c5c029c362
         x, y = xy
         offset_x, offset_y = origin
-        adjusted_x = (x - offset_x)
-        adjusted_y = (y - offset_y)
+        adjusted_x = x - offset_x
+        adjusted_y = y - offset_y
         cos_rad = math.cos(radians)
         sin_rad = math.sin(radians)
         qx = offset_x + cos_rad * adjusted_x - sin_rad * adjusted_y
@@ -435,7 +436,7 @@ class Vector:
         sin_rad = math.sin(radians)
         qx = cos_rad * x - sin_rad * y
         qy = sin_rad * x + cos_rad * y
-        return np.array([qx, qy])  #ADD ARRAY CHOP - draw_utility
+        return np.array([qx, qy])  # ADD ARRAY CHOP - draw_utility
 
     @staticmethod
     def angle(vector: Vec2D) -> float:
@@ -489,7 +490,7 @@ class Vector:
         return np.arccos(np.clip(np.dot(v1_u, v2_u), -1.0, 1.0))
 
     @staticmethod
-    def add_z(vec2D: np.array, z: float = 0.):
+    def add_z(vec2D: np.array, z: float = 0.0):
         """Turn a 2D vector into a 3D vector by adding the z coorindate.
 
         Args:
@@ -562,9 +563,11 @@ class Vector:
         return float(norm(vec)) < tol * np.finfo(float).eps
 
     @staticmethod
-    def get_distance(u: Union[tuple, list, np.ndarray],
-                     v: Union[tuple, list, np.ndarray],
-                     precision: int = 9) -> float:
+    def get_distance(
+        u: Union[tuple, list, np.ndarray],
+        v: Union[tuple, list, np.ndarray],
+        precision: int = 9,
+    ) -> float:
         """Get the Euclidean distance between points u and v to the specified
         precision.
 
@@ -606,13 +609,13 @@ class Vector:
         # unit vector along the direction of the two point
         unit_vec = distance_vec / norm(distance_vec)
         # tangent vector counter-clockwise 90 deg rotation
-        tangent_vec = np.round(Vector.rotate(unit_vec, np.pi / 2),
-                               decimals=PRECISION)
+        tangent_vec = np.round(Vector.rotate(unit_vec, np.pi / 2), decimals=PRECISION)
 
         if Vector.is_zero(distance_vec):
             logger.debug(
-                f'Function `two_points_described` encountered a zero vector'
-                ' length. The two points should not be the same.')
+                "Function `two_points_described` encountered a zero vector"
+                " length. The two points should not be the same."
+            )
 
         return distance_vec, unit_vec, tangent_vec
 
@@ -627,7 +630,7 @@ class Vector:
         Returns:
             Vec2D: Snapped vector
         """
-        #TODO: done silly, fix up
+        # TODO: done silly, fix up
         m = np.argmax(abs(vec_n))
         m = m if flip is False else int(not m)
         v = np.array([0, 0])
@@ -684,7 +687,7 @@ class Vec3D(Vector):
             vec = np.array(vec)
         if not isinstance(other, np.ndarray):
             other = np.array(other)
-        return (vec + other)
+        return vec + other
 
     @staticmethod
     def dot(vec: np.ndarray, other: np.ndarray) -> float:
@@ -731,7 +734,7 @@ class Vec3D(Vector):
             vec = np.array(vec)
         if not isinstance(other, np.ndarray):
             other = np.array(other)
-        return (vec - other)
+        return vec - other
 
     @staticmethod
     def scale(vec: np.ndarray, value: Union[int, float]):
@@ -746,7 +749,7 @@ class Vec3D(Vector):
         """
         if not isinstance(vec, np.ndarray):
             vec = np.array(vec)
-        return (vec * value)
+        return vec * value
 
     @staticmethod
     def get_distance(vec: np.ndarray, other: np.ndarray) -> float:
@@ -779,12 +782,14 @@ class Vec3D(Vector):
         return Vec3D.add(vec, translate_vec)
 
     @staticmethod
-    def rotate(vec: np.ndarray,
-               cvec: np.ndarray,
-               ax: bool = False,
-               ay: bool = False,
-               az: bool = False,
-               radians: float = 0.0):
+    def rotate(
+        vec: np.ndarray,
+        cvec: np.ndarray,
+        ax: bool = False,
+        ay: bool = False,
+        az: bool = False,
+        radians: float = 0.0,
+    ):
         """Rotate a vector
 
         Args:
@@ -804,25 +809,35 @@ class Vec3D(Vector):
             cvec = np.array(cvec)
 
         if ax:
-            rot_x = np.array([[1, 0, 0], [0,
-                                          np.cos(radians), -np.sin(radians)],
-                              [0, np.sin(radians),
-                               np.cos(radians)]])
+            rot_x = np.array(
+                [
+                    [1, 0, 0],
+                    [0, np.cos(radians), -np.sin(radians)],
+                    [0, np.sin(radians), np.cos(radians)],
+                ]
+            )
             translate_vec = np.array([0, cvec[1], cvec[2]])
             new_vec = rot_x.dot((vec - translate_vec)) + translate_vec
 
         if ay:
-            rot_y = np.array([[np.cos(radians), 0,
-                               np.sin(radians)], [0, 1, 0],
-                              [-np.sin(radians), 0,
-                               np.cos(radians)]])
+            rot_y = np.array(
+                [
+                    [np.cos(radians), 0, np.sin(radians)],
+                    [0, 1, 0],
+                    [-np.sin(radians), 0, np.cos(radians)],
+                ]
+            )
             translate_vec = np.array([cvec[0], 0, cvec[2]])
             new_vec = rot_y.dot((vec - translate_vec)) + translate_vec
 
         if az:
-            rot_z = np.array([[np.cos(radians), -np.sin(radians), 0],
-                              [np.sin(radians),
-                               np.cos(radians), 0], [0, 0, 1]])
+            rot_z = np.array(
+                [
+                    [np.cos(radians), -np.sin(radians), 0],
+                    [np.sin(radians), np.cos(radians), 0],
+                    [0, 0, 1],
+                ]
+            )
             translate_vec = np.array([cvec[0], cvec[1], 0])
             new_vec = rot_z.dot((vec - translate_vec)) + translate_vec
 
@@ -872,7 +887,8 @@ class Vec3D(Vector):
             valid_snap_to = ["x", "y", "z"]
             if snap_to not in valid_snap_to:
                 raise ValueError(
-                    "The argument 'snap_to' should be one of 'x', 'y', or 'z'.")
+                    "The argument 'snap_to' should be one of 'x', 'y', or 'z'."
+                )
             idx = valid_snap_to.index(snap_to)
 
         new_vec = np.array([0, 0, 0])
@@ -880,8 +896,9 @@ class Vec3D(Vector):
         return new_vec
 
     @staticmethod
-    def two_points_described(points3D: List[np.ndarray],
-                             user_plane: np.ndarray) -> Tuple[np.ndarray]:
+    def two_points_described(
+        points3D: List[np.ndarray], user_plane: np.ndarray
+    ) -> Tuple[np.ndarray]:
         """Get the distance, units and tangents.
 
         Args:
@@ -898,7 +915,8 @@ class Vec3D(Vector):
         if len(user_plane) != 4:
             raise ValueError(
                 f"""Expected all four coefficients A,B,C,D for the plane.
-                Found {len(user_plane)} instead.""")
+                Found {len(user_plane)} instead."""
+            )
 
         if not isinstance(user_plane, np.ndarray):
             user_plane = np.array(user_plane)
@@ -906,12 +924,26 @@ class Vec3D(Vector):
             points3D = np.array(points3D)
 
         # Check if both points are on the user_plane
-        pt1_on_plane = True if (np.round(user_plane.dot(
-            np.append(points3D[0], [1])),
-                                         decimals=PRECISION) == 0) else False
-        pt2_on_plane = True if (np.round(user_plane.dot(
-            np.append(points3D[1], [1])),
-                                         decimals=PRECISION) == 0) else False
+        pt1_on_plane = (
+            True
+            if (
+                np.round(
+                    user_plane.dot(np.append(points3D[0], [1])), decimals=PRECISION
+                )
+                == 0
+            )
+            else False
+        )
+        pt2_on_plane = (
+            True
+            if (
+                np.round(
+                    user_plane.dot(np.append(points3D[1], [1])), decimals=PRECISION
+                )
+                == 0
+            )
+            else False
+        )
 
         if pt1_on_plane and pt2_on_plane:
             distance_vec = points3D[0] - points3D[1]
@@ -923,19 +955,19 @@ class Vec3D(Vector):
             raise ValueError("Either one or both points not on the user_plane.")
 
     @staticmethod
-    def add_z(vec2D: np.array, z: float = 0.):
-        raise NotImplementedError(
-            "This method does not need to be implemented for 3D.")
+    def add_z(vec2D: np.array, z: float = 0.0):
+        raise NotImplementedError("This method does not need to be implemented for 3D.")
 
     @staticmethod
     def angle(vector: Vec2D) -> float:
         raise NotImplementedError(
             """This method is implemented by 'angle_azimuth' method for 3D vector.
-            Please use that instead.""")
+            Please use that instead."""
+        )
 
     @staticmethod
-    def rotate_around_point(xy: Vec2D, radians: float,
-                            origin=(0, 0)) -> np.ndarray:
+    def rotate_around_point(xy: Vec2D, radians: float, origin=(0, 0)) -> np.ndarray:
         raise NotImplementedError(
             """This method is implemented by 'rotate' method for 3D vector.
-            Please use that instead.""")
+            Please use that instead."""
+        )

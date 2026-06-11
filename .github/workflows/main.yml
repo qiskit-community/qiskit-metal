@@ -1,12 +1,12 @@
 name: Testing and Linting
-on: 
+on:
   # Run this workflow every time a new commit is pushed to or a pull request is created from one of these branches
   push:
     branches: [main, "stable/*"]
   pull_request:
     branches: [main, "stable/*"]
   workflow_dispatch:
-  
+
 jobs:
   # OLD NOTE: The ubuntu-24.04 and macos-latest tests have been separated out because ubuntu
   # requires installing some additional libraries (libglu1-mesa) for Gmsh to run. Please
@@ -29,7 +29,7 @@ jobs:
           - ubuntu-24.04
           - macos-15
           - windows-2025
-        python-version: 
+        python-version:
           - "3.10"
           - "3.11"
           - "3.12"
@@ -42,7 +42,7 @@ jobs:
           # Install a specific version of uv.
           version: "0.9.24"
           enable-cache: true
-      # Install OS dependencies 
+      # Install OS dependencies
       - name: Install Gmsh dependencies for Ubuntu
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
@@ -63,7 +63,311 @@ jobs:
       - uses: astral-sh/ruff-action@v3
         with:
           ## TODO: Remove --exit-zero once linting is finalized.
-          args: "check --exit-zero"
+          args: "check"
 
+  format:
+    name: format
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/ruff-action@v3
+        with:
+          args: "format --check"
 
+  env-consistency:
+    name: env.yml ↔ pyproject.toml drift
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      - name: Check environment.yml against pyproject.toml
+        run: uv run --quiet scripts/check_env_consistency.py
 
+  tutorials-sync:
+    name: docs/tut/ ↔ tutorials/ sync
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      - name: Check docs/tut/ and tutorials/ contain identical cell content
+        # The two folders carry every numbered notebook twice — see the
+        # script docstring for why and how to fix drift.
+        run: uv run --quiet scripts/check_tutorials_sync.py
+      - name: Check qlibrary thumbnails resolve (case-sensitive)
+        # Every QComponent docstring ``.. image::`` directive must point
+        # at a file that actually exists under ``_gui/_imgs/components/``
+        # (case-sensitive — macOS's HFS+ masks broken refs locally) and
+        # must use the two-line form the MetalGUI scanner accepts.
+        run: uv run --quiet scripts/check_qlibrary_images.py
+
+  tests-lite:
+    # Exercises the "lite" install path — no PySide6, no pyaedt, no
+    # gmsh. Catches accidental top-level Qt/Ansys/FEM imports that
+    # would break Colab / Binder / cloud Jupyter users.
+    #
+    # Once v0.7.0 flips the default install to lite, this matrix entry
+    # becomes the canonical test runner; until then it's a focused
+    # gate.
+    name: tests-lite
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+      QISKIT_METAL_HEADLESS: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      - name: Install lite dependency set (no PySide6, pyaedt, gmsh)
+        # Build a venv that has every core dep EXCEPT the GUI / Ansys
+        # / FEM extras. Uses ``--no-deps`` for our package then
+        # explicitly installs core deps so we can omit the heavy ones.
+        # Bypasses ``pyproject.toml``'s base deps so we get a true
+        # lite install regardless of what's in [project.dependencies].
+        run: |
+          uv venv --python 3.12
+          uv pip install \
+            'addict>=2.4.0' \
+            'gdstk>=0.9' \
+            'geopandas>=1.0' \
+            'matplotlib>=3.7.0' \
+            'numpy>=1.24.2,<2' \
+            'pandas>=2.1.1' \
+            'pint>=0.21.0' \
+            'pygments>=2.14.0' \
+            'qutip>=5.0.0' \
+            'scipy>=1.10.0' \
+            'shapely>=2.0.1' \
+            'scqubits>=4.1.0' \
+            'pyyaml>=6.0' \
+            'pytest>=8.4.1' \
+            'pytest-rich>=0.2.0'
+          uv pip install --no-deps -e .
+      - name: Confirm PySide6 is NOT installed
+        # ``uv pip show`` queries the venv directly without
+        # triggering a sync. ``uv run`` would auto-sync to match
+        # pyproject.toml deps and silently undo our lite install, so
+        # all subsequent steps invoke ``.venv/bin/python`` directly.
+        run: |
+          if uv pip show pyside6 2>/dev/null; then
+            echo "::error::PySide6 is installed in the lite venv — test setup is wrong"
+            exit 1
+          fi
+          echo "OK: PySide6 absent from lite venv"
+      - name: Smoke test — import qiskit_metal + qm.view()
+        # This is the critical assertion: import + view must work
+        # with PySide6 absent. Failure here means someone added a
+        # top-level Qt import to a non-GUI module.
+        #
+        # ``.venv/bin/python`` instead of ``uv run python`` —
+        # ``uv run`` would auto-sync the venv to match
+        # pyproject.toml's full dependency set, defeating the
+        # lite-install premise.
+        run: |
+          .venv/bin/python -c "
+          import qiskit_metal as qm
+          from qiskit_metal.designs import DesignPlanar
+          from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
+          design = DesignPlanar()
+          TransmonPocket(design, 'Q1',
+                         options={'connection_pads': {'a': {}}})
+          fig = qm.view(design)
+          assert fig is not None, 'qm.view returned None'
+          print('OK: qm.view(design) returned', type(fig).__name__)
+          "
+      - name: Run no-Qt test files
+        # Same rationale as above — direct venv python invocation to
+        # avoid uv auto-sync. Tests must work without Qt; failure
+        # here means we have unintentional Qt coupling somewhere.
+        run: |
+          .venv/bin/python -m pytest \
+            tests/test_viewer.py \
+            tests/test_qlibrary_idempotency.py \
+            tests/test_qlibrary_pin_sanity.py \
+            tests/test_solution_types.py \
+            -v
+      - name: Execute whitelisted tutorial notebooks
+        # Run two lists under the lite install:
+        #
+        #   ↻ ``_dev/notebooks-auto-refresh.txt`` (--inplace) — pure-Python
+        #     / matplotlib tutorials. Outputs written back to source.
+        #
+        #   ✱ ``_dev/notebooks-frozen-qt.txt`` (check-only) — tutorials
+        #     whose committed outputs are hand-curated full Qt-window
+        #     screenshots of MetalGUI. The published docs rely on those
+        #     to show the desktop IDE experience. CI verifies pass/fail
+        #     to ``/tmp`` but NEVER clobbers the committed outputs with
+        #     headless matplotlib renders.
+        #
+        # Both lists explicitly exclude notebooks that need Ansys /
+        # gmsh / KLayout (see the comment block at the bottom of the
+        # auto-refresh whitelist).
+        #
+        # Typical wall time 3-5 minutes; per-notebook 240s timeout.
+        #
+        # If this step starts failing on a notebook, two options:
+        #   1. Fix the notebook (most likely — qm.gui is the
+        #      headless-friendly entry point everywhere now).
+        #   2. If the notebook actually requires an external tool the
+        #      whitelists already exclude, move its path into the
+        #      "External-gated" comment block at the bottom of the
+        #      auto-refresh whitelist.
+        #
+        # ``uv pip install`` is used (not ``python -m pip``) because
+        # the lite venv was created by ``uv venv``, which does not
+        # ship pip inside. The kernel must be registered explicitly —
+        # nbconvert defaults to a kernel named ``python3`` that isn't
+        # tied to our venv.
+        run: |
+          uv pip install --quiet \
+            'jupyter>=1.0' 'nbconvert>=7.0' 'ipykernel>=6.0'
+          .venv/bin/python -m ipykernel install --user --name qm_lite
+          # Patch the executor to use our registered kernel by name.
+          # ``_dev/rerun_auto.py`` invokes ``jupyter nbconvert`` directly;
+          # we shadow it with a wrapper that injects the kernel flag.
+          export JUPYTER_KERNEL_NAME=qm_lite
+          export PATH=".venv/bin:$PATH"
+          .venv/bin/python _dev/rerun_auto.py --run --jobs 2
+
+  tests-extras:
+    # Exercises each opt-in extra independently. As of v0.7.0
+    # (lite-by-default), ``[gui]`` / ``[ansys]`` / ``[mesh]`` are the
+    # three install pathways most users actually take after the lite
+    # path. ``[fem]`` is included to validate it still works as the
+    # backward-compatible alias of ``[mesh]``. Without this matrix, a
+    # regression on (say) ``[gui]`` would only surface after release.
+    name: tests-extras-${{ matrix.extra }}
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+      QISKIT_METAL_HEADLESS: "1"
+    strategy:
+      fail-fast: false
+      matrix:
+        extra: [gui, ansys, mesh, fem]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      - name: Install Gmsh OS deps (only needed for mesher extras)
+        if: matrix.extra == 'mesh' || matrix.extra == 'fem'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libglu1-mesa libglu1-mesa-dev libegl1-mesa-dev
+      - name: Install with extra
+        # Install the package WITH the matrix extra (e.g.,
+        # ``quantum-metal[gui]``). Uses ``uv pip install`` against a
+        # fresh venv so we control exactly what's present — same
+        # rationale as tests-lite.
+        run: |
+          uv venv --python 3.12
+          uv pip install -e '.[${{ matrix.extra }}]'
+          uv pip install 'pytest>=8.4.1' 'pytest-rich>=0.2.0'
+      - name: Smoke test — import qiskit_metal + qm.view()
+        # The same smoke test as tests-lite. With the extra
+        # installed, this should still work (the extra is additive,
+        # not replacing the lite path).
+        run: |
+          .venv/bin/python -c "
+          import qiskit_metal as qm
+          from qiskit_metal.designs import DesignPlanar
+          from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
+          design = DesignPlanar()
+          TransmonPocket(design, 'Q1',
+                         options={'connection_pads': {'a': {}}})
+          fig = qm.view(design)
+          assert fig is not None, 'qm.view returned None'
+          print('OK: qm.view(design) with extra ${{ matrix.extra }}')
+          "
+      - name: Run no-Qt test files
+        # Same set as tests-lite. Ensures the extra doesn't break
+        # core behavior.
+        run: |
+          .venv/bin/python -m pytest \
+            tests/test_viewer.py \
+            tests/test_qlibrary_idempotency.py \
+            tests/test_qlibrary_pin_sanity.py \
+            tests/test_solution_types.py \
+            -v
+
+  coverage:
+    name: coverage
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+      UV_MANAGED_PYTHON: "True"
+      UV_PYTHON: "3.12"
+      QISKIT_METAL_HEADLESS: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      - name: Install Gmsh + Qt OS dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libglu1-mesa libglu1-mesa-dev libegl1-mesa-dev
+      - name: Run tests with coverage
+        # Sync into the project venv so pytest can import the package by
+        # name; then run via uv to use the same Python the matrix uses.
+        run: |
+          uv sync --group test --quiet
+          uv run --quiet pytest tests/ \
+            --cov=src/qiskit_metal \
+            --cov-report=term \
+            --cov-report=xml:coverage.xml \
+            --cov-report=html:htmlcov \
+            | tee coverage_output.txt
+      - name: Coverage summary
+        if: always()
+        run: |
+          {
+            echo "## Test coverage"
+            echo ""
+            echo '```'
+            # Emit the per-file table from pytest-cov's terminal report.
+            sed -n '/^Name.*Stmts.*Miss.*Cover/,/^TOTAL/p' coverage_output.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload coverage HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: htmlcov/
+          retention-days: 14
+      - name: Upload coverage XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
+          retention-days: 14

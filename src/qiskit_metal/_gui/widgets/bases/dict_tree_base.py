@@ -12,7 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """Dict tree base."""
-# pylint: disable=invalid-name
 
 import ast
 from typing import Union, TYPE_CHECKING
@@ -20,7 +19,7 @@ from typing import Union, TYPE_CHECKING
 from PySide6 import QtCore
 from PySide6.QtCore import QAbstractItemModel, QModelIndex, QTimer, Qt
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import (QWidget, QTreeView)
+from PySide6.QtWidgets import QWidget, QTreeView
 # from .... import logger
 
 if TYPE_CHECKING:
@@ -28,7 +27,7 @@ if TYPE_CHECKING:
     from ....qlibrary.core import QComponent
     from ...main_window import MetalGUI
 
-__all__ = ['get_nested_dict_item', 'parse_param_from_str']
+__all__ = ["get_nested_dict_item", "parse_param_from_str"]
 
 KEY, NODE = range(2)
 
@@ -215,8 +214,7 @@ class QTreeModel_Base(QAbstractItemModel):
 
     # NOTE: __init__ takes in design as extra parameter compared to table_model_options!
 
-    def __init__(self, parent: QWidget, gui: 'MetalGUI', view: QTreeView,
-                 child: str):
+    def __init__(self, parent: QWidget, gui: "MetalGUI", view: QTreeView, child: str):
         """Editable table with drop-down rows for a generic options menu.
         Organized as a tree model where child nodes are more specific
         properties of a given parent node.
@@ -233,11 +231,11 @@ class QTreeModel_Base(QAbstractItemModel):
         self._row_count = -1
         self._view = view
         self.optionstype = child
-        if self.optionstype == 'component':
+        if self.optionstype == "component":
             self._component_widget = parent
 
-        self.root = BranchNode('')
-        self.headers = ['Name', 'Value']
+        self.root = BranchNode("")
+        self.headers = ["Name", "Value"]
         self.paths = []
 
         self._start_timer()
@@ -249,14 +247,14 @@ class QTreeModel_Base(QAbstractItemModel):
         return self._gui
 
     @property
-    def design(self) -> 'QDesign':
+    def design(self) -> "QDesign":
         """Returns the QDesign."""
         return self._gui.design
 
     @property
-    def component(self) -> 'QComponent':
+    def component(self) -> "QComponent":
         """Returns the component if this is the components options menu."""
-        if self.optionstype == 'component':
+        if self.optionstype == "component":
             return self._component_widget.component
         return None
 
@@ -278,7 +276,6 @@ class QTreeModel_Base(QAbstractItemModel):
             # Wrap the reset logic in beginResetModel and endResetModel
             self.beginResetModel()
             try:
-
                 # When a model is reset it should be considered that all
                 # information previously retrieved from it is invalid.
                 # This includes but is not limited to the rowCount() and
@@ -299,8 +296,7 @@ class QTreeModel_Base(QAbstractItemModel):
         """
         # self.beginResetModel()  # load handles refresh, cant nest
         # try:
-        self.load(
-        )  # rebuild the tree; handles beginResetModel and endResetModel
+        self.load()  # rebuild the tree; handles beginResetModel and endResetModel
         parent_index = self.createIndex(0, 0, self.root)
         self._row_count = self.rowCount(parent_index)
         # finally:
@@ -316,7 +312,7 @@ class QTreeModel_Base(QAbstractItemModel):
 
     def load(self):
         """Builds a tree from a dictionary (self.data_dict)"""
-        if (self.optionstype == 'component') and (not self.component):
+        if (self.optionstype == "component") and (not self.component):
             return
 
         self.beginResetModel()
@@ -371,7 +367,7 @@ class QTreeModel_Base(QAbstractItemModel):
             return 0
         return len(node)
 
-    def columnCount(self, parent: QModelIndex):  # pylint: disable=unused-argument
+    def columnCount(self, parent: QModelIndex):
         """Get the number of columns.
 
         Args:
@@ -417,7 +413,7 @@ class QTreeModel_Base(QAbstractItemModel):
                     # Handle a branch (which is a nested subdictionary, which can be expanded)
                     if index.column() == 0:
                         return node.name
-                    return ''
+                    return ""
                 # We have a leaf
                 elif index.column() == 0:
                     return str(node.label)  # key
@@ -428,10 +424,9 @@ class QTreeModel_Base(QAbstractItemModel):
 
         return None
 
-    def setData(self,
-                index: QModelIndex,
-                value,
-                role: Qt.ItemDataRole = Qt.EditRole) -> bool:
+    def setData(
+        self, index: QModelIndex, value, role: Qt.ItemDataRole = Qt.EditRole
+    ) -> bool:
         """Set the LeafNode value and corresponding data entry to value.
         Returns true if successful; otherwise returns false. The dataChanged()
         signal should be emitted if the data was successfully set.
@@ -449,7 +444,6 @@ class QTreeModel_Base(QAbstractItemModel):
             return False
 
         elif role == QtCore.Qt.EditRole:
-
             if index.column() == 1:
                 node = self.nodeFromIndex(index)
 
@@ -466,8 +460,9 @@ class QTreeModel_Base(QAbstractItemModel):
                         lbl = node.label  # option key
 
                         self.logger.info(
-                            f'Setting {self.optionstype} option {lbl:>10s}:'
-                            f' old value={old_value}; new value={value};')
+                            f"Setting {self.optionstype} option {lbl:>10s}:"
+                            f" old value={old_value}; new value={value};"
+                        )
 
                         ##### Parse value if not str ##############################
                         # Somewhat legacy code for extended handling of non string options
@@ -475,12 +470,13 @@ class QTreeModel_Base(QAbstractItemModel):
                         # so not so releavnt, but keep here for now
                         # to allow extended use in te future
                         if not isinstance(old_value, str):
-                            processed_value, used_ast = parse_param_from_str(
-                                value)
-                            self.logger.info(f'  Used paring:  Old value type={type(old_value)}; '\
-                                             f'New value type={type(processed_value)};'\
-                                             f'  New value={processed_value};'\
-                                             f'; Used ast={used_ast}')
+                            processed_value, used_ast = parse_param_from_str(value)
+                            self.logger.info(
+                                f"  Used paring:  Old value type={type(old_value)}; "
+                                f"New value type={type(processed_value)};"
+                                f"  New value={processed_value};"
+                                f"; Used ast={used_ast}"
+                            )
                             value = processed_value
                         #################################################
 
@@ -490,14 +486,15 @@ class QTreeModel_Base(QAbstractItemModel):
                             dic[node.path[-1]] = value
                         else:  # if top-level option
                             dic[lbl] = value
-                        if self.optionstype == 'component':
+                        if self.optionstype == "component":
                             self.component.rebuild()
                             self.gui.refresh()
                         return True
         return False
 
-    def headerData(self, section: int, orientation: Qt.Orientation,
-                   role: Qt.ItemDataRole):
+    def headerData(
+        self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole
+    ):
         """Set the headers to be displayed.
 
         Args:

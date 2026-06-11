@@ -1,7 +1,30 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import Union, List, Tuple
 import numpy as np
-import gmsh
+
+# gmsh is an opt-in dependency (``quantum-metal[mesh]``, or its
+# backward-compat alias ``[fem]``). Keep this module importable on
+# the lite install — the free functions below that call into
+# ``gmsh.model`` raise via ``_require_gmsh()`` at use time rather
+# than at ``import qiskit_metal`` time.
+try:
+    import gmsh
+except ImportError:  # pragma: no cover — exercised on lite installs
+    gmsh = None
+
+
+def _require_gmsh() -> None:
+    """Raise a clear error if gmsh isn't installed."""
+    if gmsh is None:
+        raise ImportError(
+            "renderer_gmsh requires gmsh. Install with: "
+            "pip install 'quantum-metal[mesh]' "
+            "(or the legacy alias 'quantum-metal[fem]')"
+        )
+
+
 from qiskit_metal.draw.utility import Vec3D
 
 
@@ -16,6 +39,7 @@ class Vec3DArray:
     Returns:
         Vec3DArray: Array of np.ndarray objects
     """
+
     points: List[np.ndarray]
     path_vecs: List[np.ndarray] = field(init=False)
 
@@ -41,10 +65,7 @@ class Vec3DArray:
         """
         self.points += vecs
 
-    def get_angle_between(self,
-                          i: int,
-                          j: int,
-                          ret_path_angle: bool = True) -> float:
+    def get_angle_between(self, i: int, j: int, ret_path_angle: bool = True) -> float:
         """Return acute angle between two vectors depending on "ret_path_angle"
 
         Args:
@@ -66,8 +87,7 @@ class Vec3DArray:
         return np.round(np.pi - np.arccos(Vec3D.dot(v1, v2)), decimals=9)
 
     @staticmethod
-    def make_vec3DArray(points: List[List[Union[int, float]]],
-                        layer_z: float = None):
+    def make_vec3DArray(points: List[List[Union[int, float]]], layer_z: float = None):
         """Create a Vec3DArray object from list of points
 
         Args:
@@ -91,7 +111,7 @@ class Vec3DArray:
                     vecs.append(np.array([xyz[0], xyz[1], layer_z]))
                 else:
                     raise TypeError(
-                        f"Expected a layer_z value for 2D geometry, found NoneType."
+                        "Expected a layer_z value for 2D geometry, found NoneType."
                     )
             else:
                 raise ValueError(
@@ -119,11 +139,13 @@ def vecs_to_gmsh_points(vecs: List[np.ndarray], layer_z: float) -> list:
     return points
 
 
-def line_width_offset_pts(pt_vec: np.ndarray,
-                          path_vec: np.ndarray,
-                          width: float,
-                          layer_z: float,
-                          ret_pts: bool = True) -> list:
+def line_width_offset_pts(
+    pt_vec: np.ndarray,
+    path_vec: np.ndarray,
+    width: float,
+    layer_z: float,
+    ret_pts: bool = True,
+) -> list:
     """Create offset points for straight line
 
     Args:
@@ -154,8 +176,9 @@ def line_width_offset_pts(pt_vec: np.ndarray,
         return [v1, v2]
 
 
-def arc_width_offset_pts(vec1: np.ndarray, vec3: np.ndarray, angle: float,
-                         width: float, layer_z: float) -> list:
+def arc_width_offset_pts(
+    vec1: np.ndarray, vec3: np.ndarray, angle: float, width: float, layer_z: float
+) -> list:
     """Create offset points for Circle Arcs
 
     Args:
@@ -187,8 +210,9 @@ def arc_width_offset_pts(vec1: np.ndarray, vec3: np.ndarray, angle: float,
     return pts
 
 
-def make_arc_vecs(angle: float,
-                  fillet: float) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def make_arc_vecs(
+    angle: float, fillet: float
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Create vectors for the circle arc
 
     Args:
@@ -217,8 +241,7 @@ def make_arc_vecs(angle: float,
     return v1, v2, v3
 
 
-def transform_arc_points(pts: list, translate: np.ndarray,
-                         path_vecs: list) -> list:
+def transform_arc_points(pts: list, translate: np.ndarray, path_vecs: list) -> list:
     """Apply transformation to arc points
 
     Args:
@@ -244,20 +267,14 @@ def transform_arc_points(pts: list, translate: np.ndarray,
         new_pts.append(p4)
         gmsh.model.occ.mirror(dim_tags, a=0, b=1, c=0, d=0)
 
-    gmsh.model.occ.rotate(dim_tags,
-                          x=0,
-                          y=0,
-                          z=0,
-                          ax=0,
-                          ay=0,
-                          az=1,
-                          angle=angle1)
+    gmsh.model.occ.rotate(dim_tags, x=0, y=0, z=0, ax=0, ay=0, az=1, angle=angle1)
     gmsh.model.occ.translate(dim_tags, translate[0], translate[1], 0)
     return new_pts
 
 
-def draw_curves(recent_pts: list, curves1: list,
-                curves2: list) -> Tuple[list, list, list]:
+def draw_curves(
+    recent_pts: list, curves1: list, curves2: list
+) -> Tuple[list, list, list]:
     """Draw the curves using control points
 
     Args:
@@ -285,10 +302,8 @@ def draw_curves(recent_pts: list, curves1: list,
     curves2 += [l2]
 
     if len(recent_pts) == 7:
-        a1 = gmsh.model.occ.addCircleArc(recent_pts[2], recent_pts[4],
-                                         recent_pts[5])
-        a2 = gmsh.model.occ.addCircleArc(recent_pts[3], recent_pts[4],
-                                         recent_pts[6])
+        a1 = gmsh.model.occ.addCircleArc(recent_pts[2], recent_pts[4], recent_pts[5])
+        a2 = gmsh.model.occ.addCircleArc(recent_pts[3], recent_pts[4], recent_pts[6])
         curves1 += [a1]
         curves2 += [a2]
 
@@ -297,12 +312,14 @@ def draw_curves(recent_pts: list, curves1: list,
     return rec_pts, curves1, curves2
 
 
-def render_path_curves(vecs: Vec3DArray,
-                       layer_z: float,
-                       fillet: float,
-                       width: float,
-                       bad_fillet_idxs: List[int],
-                       straight_line_tol: float = 1e-9) -> list:
+def render_path_curves(
+    vecs: Vec3DArray,
+    layer_z: float,
+    fillet: float,
+    width: float,
+    bad_fillet_idxs: List[int],
+    straight_line_tol: float = 1e-9,
+) -> list:
     """Helper function for rendering path QGeometry curves
 
     Args:
@@ -330,8 +347,7 @@ def render_path_curves(vecs: Vec3DArray,
             continue
 
         if i == len(vecs.points) - 1:
-            p1, p2 = line_width_offset_pts(v, vecs.path_vecs[i - 1], width,
-                                           layer_z)
+            p1, p2 = line_width_offset_pts(v, vecs.path_vecs[i - 1], width, layer_z)
             recent_pts += [p1, p2]
             curves1 += [gmsh.model.occ.addLine(p1, p2)]
             continue
@@ -351,12 +367,10 @@ def render_path_curves(vecs: Vec3DArray,
 
             else:
                 v1, v2, v3 = make_arc_vecs(angle12, fillet)
-                p1, p2, p4, p5 = arc_width_offset_pts(v1, v3, angle12, width,
-                                                      layer_z)
+                p1, p2, p4, p5 = arc_width_offset_pts(v1, v3, angle12, width, layer_z)
                 p3 = vecs_to_gmsh_points([v2], layer_z)[0]
 
-                new_pts = transform_arc_points([p1, p2, p3, p4, p5], v,
-                                               [pv1, pv2])
+                new_pts = transform_arc_points([p1, p2, p3, p4, p5], v, [pv1, pv2])
                 recent_pts += new_pts
 
         else:
@@ -368,21 +382,20 @@ def render_path_curves(vecs: Vec3DArray,
             turn_pt_vec = vecs.points[i]
             pv1_normed = Vec3D.normed(pv1)
             pv1_scaled = Vec3D.scale(
-                pv1_normed, width / (2 * np.cos(np.pi / 2 - half_angle)))
+                pv1_normed, width / (2 * np.cos(np.pi / 2 - half_angle))
+            )
             pv1_trans = Vec3D.translate(pv1_scaled, turn_pt_vec)
-            offset_vec1 = Vec3D.rotate(pv1_trans,
-                                       turn_pt_vec,
-                                       az=True,
-                                       radians=right_turn * half_angle)
-            offset_vec2 = Vec3D.rotate(pv1_trans,
-                                       turn_pt_vec,
-                                       az=True,
-                                       radians=-right_turn *
-                                       (np.pi - half_angle))
-            p1 = gmsh.model.occ.addPoint(offset_vec1[0], offset_vec1[1],
-                                         layer_z)
-            p2 = gmsh.model.occ.addPoint(offset_vec2[0], offset_vec2[1],
-                                         layer_z)
+            offset_vec1 = Vec3D.rotate(
+                pv1_trans, turn_pt_vec, az=True, radians=right_turn * half_angle
+            )
+            offset_vec2 = Vec3D.rotate(
+                pv1_trans,
+                turn_pt_vec,
+                az=True,
+                radians=-right_turn * (np.pi - half_angle),
+            )
+            p1 = gmsh.model.occ.addPoint(offset_vec1[0], offset_vec1[1], layer_z)
+            p2 = gmsh.model.occ.addPoint(offset_vec2[0], offset_vec2[1], layer_z)
             recent_pts += [p1, p2] if right_turn > 0 else [p2, p1]
 
         recent_pts, curves1, curves2 = draw_curves(recent_pts, curves1, curves2)

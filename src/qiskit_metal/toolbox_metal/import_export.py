@@ -12,16 +12,14 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-# pylint: disable=protected-access
-# pylint: disable-msg=relative-beyond-top-level
-# pylint: disable-msg=broad-except
 """Saving and load metal data."""
 
 import pickle
-#from ..designs.base
+
+# from ..designs.base
 from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
-__all__ = ['save_metal', 'load_metal_design']
+__all__ = ["save_metal", "load_metal_design"]
 
 
 def save_metal(filename: str, design):
@@ -53,7 +51,7 @@ def save_metal(filename: str, design):
         result = True
     except Exception as e:
         # handle errors here? such as PermissionError
-        text = f'ERROR WHILE SAVING: {e}'
+        text = f"ERROR WHILE SAVING: {e}"
         log_error_easy(logger, post_text=text)
         # print(text)
         # logger.error(text)
@@ -64,7 +62,6 @@ def save_metal(filename: str, design):
     return result
 
 
-# pylint: disable-msg=import-outside-toplevel
 def load_metal_design(filename: str):
     """Load metal design.
 
@@ -75,11 +72,11 @@ def load_metal_design(filename: str):
         picked QDesign: The pickled design object and updates if asked the param dicts for defaults
     """
     design = pickle.load(open(filename, "rb"))
-    design.save_path = str(
-        filename)  # Set the place from where we loaded the design
+    design.save_path = str(filename)  # Set the place from where we loaded the design
 
     # Restore
     from .. import logger
-    design.logger = logger  #TODO: fix from save pikcle
+
+    design.logger = logger  # TODO: fix from save pikcle
 
     return design

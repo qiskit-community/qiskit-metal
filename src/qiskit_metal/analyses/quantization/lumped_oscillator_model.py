@@ -16,11 +16,10 @@ import pandas as pd
 from pint import UnitRegistry
 from typing import Optional
 
-from pyEPR.calcs.convert import Convert
-
-from qiskit_metal.designs import QDesign  # pylint: disable=unused-import
+from qiskit_metal.designs import QDesign
 from qiskit_metal.analyses.core import QAnalysis
 from qiskit_metal.analyses.simulation import LumpedElementsSim
+from qiskit_metal.analyses.quantization.constants import Ic_from_Lj
 from qiskit_metal import Dict, config
 
 if not config.is_building_docs():
@@ -45,16 +44,19 @@ class LOManalysis(QAnalysis):
             at every pass of the simulation
 
     """
-    default_setup = Dict(junctions=Dict(Lj=12, Cj=2),
-                         freq_readout=7.0,
-                         freq_bus=[6.0, 6.2])
+
+    default_setup = Dict(
+        junctions=Dict(Lj=12, Cj=2), freq_readout=7.0, freq_bus=[6.0, 6.2]
+    )
     """Default setup."""
 
     # supported labels for data generated from the simulation
-    data_labels = ['lumped_oscillator', 'lumped_oscillator_all']
+    data_labels = ["lumped_oscillator", "lumped_oscillator_all"]
     """Default data labels."""
 
-    def __init__(self, design: Optional['QDesign'] = None, renderer_name: Optional[str] = None):
+    def __init__(
+        self, design: Optional["QDesign"] = None, renderer_name: Optional[str] = None
+    ):
         """Initialize the Lumped Oscillator Model analysis.
 
         Args:
@@ -66,8 +68,11 @@ class LOManalysis(QAnalysis):
         # QAnalysis are expected to either run simulation or use pre-saved sim outputs
         # we use a Dict() to store the sim outputs previously saved. Its key names need
         # to match those found in the correspondent simulation class.
-        self.sim = Dict() if renderer_name is None else LumpedElementsSim(
-            design, renderer_name)
+        self.sim = (
+            Dict()
+            if renderer_name is None
+            else LumpedElementsSim(design, renderer_name)
+        )
         super().__init__()
 
     @property
@@ -77,7 +82,7 @@ class LOManalysis(QAnalysis):
         Returns:
             dict: Lumped oscillator result at the last simulation pass.
         """
-        return self.get_data('lumped_oscillator')
+        return self.get_data("lumped_oscillator")
 
     @lumped_oscillator.setter
     def lumped_oscillator(self, data: dict):
@@ -88,10 +93,11 @@ class LOManalysis(QAnalysis):
         """
         if not isinstance(data, dict):
             self.logger.warning(
-                'Unsupported type %s. Only accepts dict. Please try again.',
-                {type(data)})
+                "Unsupported type %s. Only accepts dict. Please try again.",
+                {type(data)},
+            )
             return
-        self.set_data('lumped_oscillator', data)
+        self.set_data("lumped_oscillator", data)
 
     @property
     def lumped_oscillator_all(self) -> pd.DataFrame:
@@ -101,7 +107,7 @@ class LOManalysis(QAnalysis):
             pd.DataFrame: each line corresponds to a simulation pass number
                 and the remainder of the data is the respective lump oscillator information.
         """
-        return self.get_data('lumped_oscillator_all')
+        return self.get_data("lumped_oscillator_all")
 
     @lumped_oscillator_all.setter
     def lumped_oscillator_all(self, data: pd.DataFrame):
@@ -113,10 +119,11 @@ class LOManalysis(QAnalysis):
         """
         if not isinstance(data, pd.DataFrame):
             self.logger.warning(
-                'Unsupported type %s. Only accepts pd.DataFrame. Please try again.',
-                {type(data)})
+                "Unsupported type %s. Only accepts pd.DataFrame. Please try again.",
+                {type(data)},
+            )
             return
-        self.set_data('lumped_oscillator_all', data)
+        self.set_data("lumped_oscillator_all", data)
 
     def run(self, *args, **kwargs):
         """Executes sequentially the system capacitance simulation (if a renderer was provided
@@ -146,18 +153,18 @@ class LOManalysis(QAnalysis):
         if not isinstance(self.sim.capacitance_matrix, pd.DataFrame):
             if self.sim.capacitance_matrix == {}:
                 self.logger.warning(
-                    'Please initialize the capacitance_matrix before executing this method.'
-                    '`self.sim.capacitance_matrix = pd.DataFrame(...)`')
+                    "Please initialize the capacitance_matrix before executing this method."
+                    "`self.sim.capacitance_matrix = pd.DataFrame(...)`"
+                )
                 return
             if self.sim.capacitance_all_passes == {}:
-                self.sim.capacitance_all_passes[
-                    1] = self.sim.capacitance_matrix.values
+                self.sim.capacitance_all_passes[1] = self.sim.capacitance_matrix.values
 
         ureg = UnitRegistry()
-        ic_amps = Convert.Ic_from_Lj(s.junctions.Lj, 'nH', 'A')
-        cj = ureg(f'{s.junctions.Cj} fF').to('farad').magnitude
-        fread = ureg(f'{s.freq_readout} GHz').to('GHz').magnitude
-        fbus = [ureg(f'{freq} GHz').to('GHz').magnitude for freq in s.freq_bus]
+        ic_amps = Ic_from_Lj(s.junctions.Lj, "nH", "A")
+        cj = ureg(f"{s.junctions.Cj} fF").to("farad").magnitude
+        fread = ureg(f"{s.freq_readout} GHz").to("GHz").magnitude
+        fbus = [ureg(f"{freq} GHz").to("GHz").magnitude for freq in s.freq_bus]
 
         # derive number of coupling pads
         num_cpads = 2
@@ -177,13 +184,13 @@ class LOManalysis(QAnalysis):
                 fbus,
                 fread,
                 g_scale=1,
-                print_info=bool(
-                    idx_cmat == len(self.sim.capacitance_all_passes)))
+                print_info=bool(idx_cmat == len(self.sim.capacitance_all_passes)),
+            )
             all_res[idx_cmat] = res
         self.lumped_oscillator = all_res[len(self.sim.capacitance_all_passes)]
         all_res = pd.DataFrame(all_res).transpose()
-        all_res['χr MHz'] = abs(all_res['chi_in_MHz'].apply(lambda x: x.iloc[0]))
-        all_res['gr MHz'] = abs(all_res['gbus'].apply(lambda x: x.iloc[0]))
+        all_res["χr MHz"] = abs(all_res["chi_in_MHz"].apply(lambda x: x.iloc[0]))
+        all_res["gr MHz"] = abs(all_res["gbus"].apply(lambda x: x.iloc[0]))
         self.lumped_oscillator_all = all_res
         return self.lumped_oscillator_all
 

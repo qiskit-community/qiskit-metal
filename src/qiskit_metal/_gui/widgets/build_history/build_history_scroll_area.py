@@ -1,7 +1,10 @@
-from PySide6.QtWidgets import (QLabel, QScrollArea, QVBoxLayout, QLabel,
-                               QGroupBox)
 from typing import List
-from qiskit_metal._gui.widgets.build_history.build_history_scroll_area_ui import Ui_BuildHistory
+
+from PySide6.QtWidgets import QGroupBox, QLabel, QScrollArea, QVBoxLayout
+
+from qiskit_metal._gui.widgets.build_history.build_history_scroll_area_ui import (
+    Ui_BuildHistory,
+)
 
 
 class BuildHistoryScrollArea(QScrollArea, Ui_BuildHistory):
@@ -10,11 +13,7 @@ class BuildHistoryScrollArea(QScrollArea, Ui_BuildHistory):
     This class extends the `QScrollArea` class
     """
 
-    def __init__(self,
-                 previous_builds: List[str],
-                 parent=None,
-                 *args,
-                 **kwargs):
+    def __init__(self, previous_builds: List[str], parent=None, *args, **kwargs):
         """
         Args:
             previous_builds (List[str]):
@@ -36,8 +35,8 @@ class BuildHistoryScrollArea(QScrollArea, Ui_BuildHistory):
         """Create UI for BuildHistoryScrollAreas."""
         for build_log_indx in range(len(self._previous_builds)):
             label = QLabel(self._previous_builds[build_log_indx])
-            if 'ERROR' in self._previous_builds[build_log_indx]:
-                label.setStyleSheet('color: red')
+            if "ERROR" in self._previous_builds[build_log_indx]:
+                label.setStyleSheet("color: red")
             self.build_display_vertical_layout.addWidget(label)
         self.adjustSize()
         self.show()

@@ -17,14 +17,17 @@ from qiskit_metal.qlibrary import QRoute
 
 
 class RouteStraight(QRoute):
-    """
+    """.. image::
+        RouteStraight.png
+
+
     Draw a straight Route connecting two pins.
-    
+
     .. meta::
         :description: Route Straight
     """
 
-    component_metadata = Dict(short_name='cpw')
+    component_metadata = Dict(short_name="cpw")
     """Component metadata"""
 
     TOOLTIP = """Draw a straight Route connecting two pins."""

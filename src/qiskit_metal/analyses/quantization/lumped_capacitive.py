@@ -18,7 +18,6 @@ using the Duffing model. Typical input is the capacitance matrix calculated from
 
 Each function prints out the parameters and outputs a dictionary.
 """
-# pylint: disable=invalid-name
 
 import io
 import re
@@ -30,9 +29,14 @@ import numpy as np
 import pandas as pd
 import scipy.optimize as opt
 from pint import UnitRegistry
-from pyEPR.calcs.convert import Convert
 
-from qiskit_metal.analyses.quantization.constants import e, h, hbar, phi0, phinot
+from qiskit_metal.analyses.quantization.constants import (
+    e,
+    h,
+    hbar,
+    phi0,
+    phinot,
+)
 
 __all__ = [
     "Ic_from_Lj",
@@ -798,7 +802,8 @@ def lumped_oscillator_from_path(
         dict: A single dataframe corresponding to a single capacitance matrix
     """
     ureg = UnitRegistry()
-    IC_Amps = Convert.Ic_from_Lj(Lj_nH, "nH", "A")
+    # Local Ic_from_Lj (defined above) takes SI Henries — convert nH inline
+    IC_Amps = Ic_from_Lj(Lj_nH * 1e-9)
     CJ = ureg(f"{Cj_fF} fF").to("farad").magnitude
     fr = ureg(f"{fr} GHz").to("GHz").magnitude
     fb = [ureg(f"{freq} GHz").to("GHz").magnitude for freq in fb]

@@ -12,4 +12,6 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from qiskit_metal._gui.widgets.variable_table.prop_val_table_gui import PropertyTableWidget
+from qiskit_metal._gui.widgets.variable_table.prop_val_table_gui import (
+    PropertyTableWidget,
+)

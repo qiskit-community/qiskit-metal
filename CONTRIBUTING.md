@@ -1,19 +1,20 @@
-# Contributing to Qiskit Metal
-Qiskit Metal follows the overall Qiskit project contributing guidelines. These are all included in the [Qiskit Documentation](https://github.com/Qiskit/qiskit/blob/main/CONTRIBUTING.md).
+# Contributing to Quantum Metal
+
+Quantum Metal (formerly Qiskit Metal) is community-maintained — see [ROADMAP.md](./ROADMAP.md) for the direction. Contributions follow the guidelines below, with the original Qiskit-project guidelines as background reading: [Qiskit Documentation](https://github.com/Qiskit/qiskit/blob/main/CONTRIBUTING.md).
 
 Please read those general guidelines first, then the specific details for contributing to Metal below.
 
 ## CLA - Contributor License Agreement
-Contributors need to submit a CLA before they can be granted write access to the repository. The CLA is a one time action that allows you to contribute to all the Qiskit repositories.
+Contributors sign a CLA before their first contribution is merged. It's a one-time action and applies to all future contributions.
 
-During the early-access phase, follow the prompts at this link: https://cla-assistant.io/Qiskit/qiskit . After you are done, contact us via slack or e-mail to be granted write access to the repository.
+Sign here: https://cla-assistant.io/qiskit-community/qiskit-metal
 
-Past the early-access phase, the qiskit-metal repository will become public, which will allow to fully streamline and automate this process.
+Once you open a pull request, the CLA bot will leave a comment with a link to sign if you haven't already. The PR's required `license/cla` check turns green once signed.
 
 ## Adding a New Issue
 ### Reporting a Bug
 When you encounter a problem while using Metal, please open an issue in the
-[Issue Tracker](https://github.com/Qiskit/qiskit-metal/issues).
+[Issue Tracker](https://github.com/qiskit-community/qiskit-metal/issues).
 
 When reporting an issue, please follow this template::
 
@@ -36,44 +37,35 @@ Opening an issue initiates a discussion with the team about your idea, how it fi
 
 ## Contributing Code
 ### Code Formatting
-To enforce a consistent code style in the project, we use customized [Pylint](https://www.pylint.org) for linting and
-[YAPF](https://github.com/google/yapf) with the [Google style](
-https://google.github.io/styleguide/pyguide.html) for auto formatting. The custom
-`.pylintrc` and `.style.yapf` files are located in the root of the repository. Our CI pipeline will enforce these styles when you make the pull request.
+We use [Ruff](https://docs.astral.sh/ruff/) for both linting and auto formatting. Configuration lives under `[tool.ruff.lint]` in the root `pyproject.toml`; there are no separate `.pylintrc` or `.style.yapf` files. Our CI pipeline runs `tox -e lint` on every pull request — please run it locally before pushing.
+
+Common commands:
+- `tox -e lint` — lint the `qiskit_metal/` source tree
+- `tox -e format` — auto-format the `qiskit_metal/` source tree
+- `uvx ruff check src` — lint without tox (faster, same result)
+- `uvx ruff format src` — format without tox
 
 #### VSCode Setup
 
 Steps:
-1. Install the following extensions: `python` and `yapf` if you have not yet.
-2. Add the following workspace setting in the workspace `settings.json`.
+1. Install the [Ruff extension](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff) (publisher `charliermarsh`).
+2. Add the following workspace setting in the workspace `settings.json` so format-on-save and lint-on-save both go through Ruff:
 
-If you are using VSCode for your code editor, you can add these settings
-to your `settings.json` to enforce your code to our style. Make sure to add PySide2 to the linter:
-```json
-{
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true,
-    "python.formatting.provider": "yapf",
-    "editor.formatOnSave": true,
-    "files.trimTrailingWhitespace": true,
-    "files.trimFinalNewlines": true
-}
-```
-
-
-In newer versions of VS Code:
 ```json
 {
     "editor.formatOnSave": true,
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
-    "editor.defaultFormatter": "eeyore.yapf",
-    "notebook.defaultFormatter": "eeyore.yapf",
     "[python]": {
-        "editor.defaultFormatter": "eeyore.yapf"
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": "explicit"
+        }
     }
 }
 ```
+
+(If you previously had `python.linting.pylintEnabled` or `python.formatting.provider = yapf` in your settings, remove them — they are no longer used by this project.)
 
 ### Code Review
 Code review is done in the open and open to anyone. While only maintainers have access to merge commits, providing feedback on pull requests is very valuable and helpful. It is also a good mechanism to learn about the code base. You can view a list of all open pull requests to review any open pull requests and provide feedback on it.
@@ -85,13 +77,18 @@ If you would like to contribute to Qiskit Metal, but aren't sure of where to get
 
 Once you've made a code change, it is important to verify that your change does not break any existing tests and that any new tests that you've added also run successfully. Before you open a new pull request for your change, you'll want to run the test suite locally.
 
-The easiest way to do this is to execute the `run_all_tests.py` script in the `tests` directory.  It executes all test files in that directory.  You'll receive a message informing you if the tests were successful or not.  Alternatively you may run an individual suite of tests by executing individual `test_XYZ.py` files individually.  All test files utilize the `unittest` module - no further setup is needed.
+The easiest way to do this is `tox` (which builds an isolated environment and runs the full suite the same way CI does):
 
-Additionally, CI will run the test suite on all pushes made to any branch in the repository.
+- `tox` — run the test suite on every supported Python (3.10, 3.11, 3.12)
+- `tox -e py3.12` — run on a specific Python only
+- `pytest tests/` — run tests in your current environment (faster iteration; use this once you've confirmed the env is set up)
+- `pytest tests/test_<file>.py` — run a single test file
+
+CI also runs the suite on every push to any branch in the repository.
 
 ### Pull Requests
 
-To submit your contribution, make a pull request from your forked repository to the `master` branch of Metal. Please ensure
+To submit your contribution, make a pull request from your forked repository to the `main` branch of Metal. Please ensure
 
 -  The code follows the code style of the project (discussed above) and
    successfully passes all tests.
@@ -190,4 +187,4 @@ If you make changes to the codebase and want to rebuild the documentation: `tox 
 Sometimes Sphinx can have bad cache state. Run `tox -e docs-clean` to reset Tox.
 
 ## Check-list for specific types of Pull Requests
-Please refer to [these instructions](https://github.com/Qiskit/qiskit-metal/blob/main/contributor_guidelines/pull_request_rules.md)
+Please refer to [these instructions](https://github.com/qiskit-community/qiskit-metal/blob/main/contributor_guidelines/pull_request_rules.md)

@@ -37,7 +37,7 @@ class NetListWindow(QMainWindow):
         Extensions in qt designer on signals/slots are linked to this class
     """
 
-    def __init__(self, gui: 'MetalGUI', parent_window: 'QMainWindowExtension'):
+    def __init__(self, gui: "MetalGUI", parent_window: "QMainWindowExtension"):
         """
         Args:
             gui (MetalGUI): The GUI
@@ -84,6 +84,7 @@ class NetListTableModel(QAbstractTableModel):
             index = model.index(1,0)
             model.data(index)
     """
+
     __timer_interval = 500  # ms
 
     def __init__(self, gui, parent=None):
@@ -150,12 +151,11 @@ class NetListTableModel(QAbstractTableModel):
 
         # if the number of rows have changed
         if self._row_count != new_count:
-            #self.logger.info('Number of components changed')
+            # self.logger.info('Number of components changed')
 
             # Wrap the reset logic in beginResetModel and endResetModel
             self.beginResetModel()
             try:
-
                 # When a model is reset it should be considered that all
                 # information previously retrieved from it is invalid.
                 # This includes but is not limited to the rowCount() and
@@ -167,7 +167,7 @@ class NetListTableModel(QAbstractTableModel):
             finally:
                 self.endResetModel()
 
-    def rowCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
+    def rowCount(self, parent: QModelIndex = None):
         """Counts all the rows.
 
         Args:
@@ -180,7 +180,7 @@ class NetListTableModel(QAbstractTableModel):
             return 0
         return self.net_info.shape[0]
 
-    def columnCount(self, parent: QModelIndex = None):  # pylint: disable=unused-argument
+    def columnCount(self, parent: QModelIndex = None):
         """Counts all the columns.
 
         Args:
@@ -212,7 +212,7 @@ class NetListTableModel(QAbstractTableModel):
             if section < self.columnCount() - 1:
                 return str(self.net_info.columns[section])
             elif section == self.columnCount() - 1:
-                return 'component_name'
+                return "component_name"
 
     def flags(self, index: QModelIndex):
         """Set the item flags at the given index. Seems like we're implementing
@@ -231,8 +231,8 @@ class NetListTableModel(QAbstractTableModel):
             return QtCore.Qt.ItemIsEnabled
 
         return QtCore.Qt.ItemFlags(
-            QAbstractTableModel.flags(self, index) |
-            QtCore.Qt.ItemIsSelectable)  # ItemIsEditable
+            QAbstractTableModel.flags(self, index) | QtCore.Qt.ItemIsSelectable
+        )  # ItemIsEditable
 
     def data(self, index: QModelIndex, role=QtCore.Qt.DisplayRole):
         """Depending on the index and role given, return data. If not returning
@@ -256,5 +256,4 @@ class NetListTableModel(QAbstractTableModel):
             if column < self.columnCount() - 1:
                 return self.net_info.iloc[row, column]
             elif column == self.columnCount() - 1:
-                return self.gui.design._components[self.net_info.iloc[row,
-                                                                      1]].name
+                return self.gui.design._components[self.net_info.iloc[row, 1]].name

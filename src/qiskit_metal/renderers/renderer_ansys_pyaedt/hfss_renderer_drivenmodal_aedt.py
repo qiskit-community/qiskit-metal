@@ -1,23 +1,34 @@
+from __future__ import annotations
+
 from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import QHFSSPyaedt
 from qiskit_metal.toolbox_metal.parsing import parse_entry
 from qiskit_metal import Dict
 from typing import Union
 from collections import OrderedDict
 import pandas as pd
-from ansys.aedt.core import settings
-from ansys.aedt.core.visualization.post.solution_data import SolutionData
+
+# pyaedt is an opt-in dep; the friendly error comes via QPyaedt.__init__
+# (inherited through QHFSSPyaedt). Lazy module-level handles let this
+# file import without ansys.aedt.core installed.
+try:
+    from ansys.aedt.core import settings
+    from ansys.aedt.core.visualization.post.solution_data import SolutionData
+except ImportError:  # pragma: no cover — exercised on lite installs
+    settings = None
+    SolutionData = None
 
 
 class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
     """Subclass of pyaedt HFSS renderer for methods unique to driven-modal solutions within HFSS.
-     QPyaedt Default Options:
+    QPyaedt Default Options:
 
     """
-    name = 'aedt_hfss_drivenmodal'
+
+    name = "aedt_hfss_drivenmodal"
 
     default_setup = Dict(
         name="QHFSSDrivenmodalPyaedt_setup",
-        SolveType='Single',
+        SolveType="Single",
         Frequency="5.0",  # GHz
         MaxDeltaE="0.01",
         MaximumPasses="10",
@@ -25,24 +36,26 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
         MinimumConvergedPasses="1",
         PercentRefinement="30",
         BasisOrder="1",
-        MultipleAdaptiveFreqsSetup=OrderedDict([('1GHz', [0.02]),
-                                                ('2GHz', [0.02]),
-                                                ('5GHz', [0.02])]),
+        MultipleAdaptiveFreqsSetup=OrderedDict(
+            [("1GHz", [0.02]), ("2GHz", [0.02]), ("5GHz", [0.02])]
+        ),
         BroadbandLowFreq="2",  # GHz
         BroadbandHighFreq="8",  # GHz
     )
     """aedt HFSS Options"""
     aedt_hfss_drivenmodal_options = Dict()
 
-    __supported_SolveType__ = ['Single', 'MultiFrequency', 'Broadband']
+    __supported_SolveType__ = ["Single", "MultiFrequency", "Broadband"]
     """Supported DrivenModal Solution Types"""
 
-    def __init__(self,
-                 multilayer_design: 'MultiPlanar',
-                 project_name: Union[str, None] = None,
-                 design_name: Union[str, None] = None,
-                 initiate=False,
-                 options: Dict = None):
+    def __init__(
+        self,
+        multilayer_design: "MultiPlanar",
+        project_name: Union[str, None] = None,
+        design_name: Union[str, None] = None,
+        initiate=False,
+        options: Dict = None,
+    ):
         """Create a QRenderer for HFSS simulations using pyaedt and multiplanar design.
         QHFSSPyaedt is subclassed from QPyaedt, subclassed from QRendererAnalysis and
         subclassed from QRenderer.  The default_setup options are expected to be defined by
@@ -60,30 +73,32 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             options (Dict, optional):  Used to override all options. Defaults to None.
         """
 
-        super().__init__(multilayer_design,
-                         renderer_type='HFSS_DM',
-                         project_name=project_name,
-                         design_name=design_name,
-                         initiate=initiate,
-                         options=options)
+        super().__init__(
+            multilayer_design,
+            renderer_type="HFSS_DM",
+            project_name=project_name,
+            design_name=design_name,
+            initiate=initiate,
+            options=options,
+        )
 
-        #make a class to read in pandas table.
+        # make a class to read in pandas table.
         self.tables = None
 
     def add_hfss_dm_setup(
-            self,
-            name: str = None,
-            SolveType: str = None,
-            Frequency: float = None,  # GHz
-            MaxDeltaE: float = None,
-            MaximumPasses: int = None,
-            MinimumPasses: int = None,
-            MinimumConvergedPasses: int = None,
-            PercentRefinement: int = None,
-            BasisOrder: int = None,
-            MultipleAdaptiveFreqsSetup: dict = None,
-            BroadbandLowFreq: float = None,  # GHz
-            BroadbandHighFreq: float = None  # GHz
+        self,
+        name: str = None,
+        SolveType: str = None,
+        Frequency: float = None,  # GHz
+        MaxDeltaE: float = None,
+        MaximumPasses: int = None,
+        MinimumPasses: int = None,
+        MinimumConvergedPasses: int = None,
+        PercentRefinement: int = None,
+        BasisOrder: int = None,
+        MultipleAdaptiveFreqsSetup: dict = None,
+        BroadbandLowFreq: float = None,  # GHz
+        BroadbandHighFreq: float = None,  # GHz
     ):
         """Create a solution setup in Ansys HFSS Driven-Modal solution type. If user does not provide
         arguments, they will be obtained from QHFSSDrivenmodalPyaedt.default_setup dict.
@@ -103,9 +118,9 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             BasisOrder (int, optional): Basis order. Defaults to self.default_setup.
             MultipleAdaptiveFreqsSetup (dict, optional): Frequencies and their associated MaxDeltaS.
                                     Defaults to self.default_setup.
-            BroadbandLowFreq (float, optional): Minimum frequency for Broadband SolveType in GHz. 
+            BroadbandLowFreq (float, optional): Minimum frequency for Broadband SolveType in GHz.
                                     Defaults to self.default_setup.
-            BroadbandHighFreq (float, optional): Maximum frequency for Broadband SolveType in GHz. 
+            BroadbandHighFreq (float, optional): Maximum frequency for Broadband SolveType in GHz.
                                     Defaults to self.default_setup.
 
         Returns:
@@ -117,84 +132,87 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
         dsu = self.default_setup
 
         if not name:
-            name = self.parse_value(dsu['name'])
+            name = self.parse_value(dsu["name"])
 
         if name in self.current_app.setup_names:
             self.logger.warning(
-                f'The setup name already exists within '
-                f'project:{self.project_name} design: {self.design_name}. '
-                f'So a new setup with name={name} was NOT added to design.')
+                f"The setup name already exists within "
+                f"project:{self.project_name} design: {self.design_name}. "
+                f"So a new setup with name={name} was NOT added to design."
+            )
             return
 
         if not Frequency:
-            Frequency = float(self.parse_value(dsu['Frequency']))
+            Frequency = float(self.parse_value(dsu["Frequency"]))
         if not SolveType:
-            SolveType = str(self.parse_value(dsu['SolveType']))
+            SolveType = str(self.parse_value(dsu["SolveType"]))
         if not MaxDeltaE:
-            MaxDeltaE = float(self.parse_value(dsu['MaxDeltaE']))
+            MaxDeltaE = float(self.parse_value(dsu["MaxDeltaE"]))
         if not MaximumPasses:
-            MaximumPasses = int(self.parse_value(dsu['MaximumPasses']))
+            MaximumPasses = int(self.parse_value(dsu["MaximumPasses"]))
         if not MinimumPasses:
-            MinimumPasses = int(self.parse_value(dsu['MinimumPasses']))
+            MinimumPasses = int(self.parse_value(dsu["MinimumPasses"]))
         if not MinimumConvergedPasses:
             MinimumConvergedPasses = int(
-                self.parse_value(dsu['MinimumConvergedPasses']))
+                self.parse_value(dsu["MinimumConvergedPasses"])
+            )
         if not PercentRefinement:
-            PercentRefinement = int(self.parse_value(dsu['PercentRefinement']))
+            PercentRefinement = int(self.parse_value(dsu["PercentRefinement"]))
         if not BasisOrder:
-            BasisOrder = int(self.parse_value(dsu['BasisOrder']))
+            BasisOrder = int(self.parse_value(dsu["BasisOrder"]))
         if not MultipleAdaptiveFreqsSetup:
-            MultipleAdaptiveFreqsSetup = dsu['MultipleAdaptiveFreqsSetup']
+            MultipleAdaptiveFreqsSetup = dsu["MultipleAdaptiveFreqsSetup"]
         if not BroadbandLowFreq:
-            BroadbandLowFreq = float(self.parse_value(dsu['BroadbandLowFreq']))
+            BroadbandLowFreq = float(self.parse_value(dsu["BroadbandLowFreq"]))
         if not BroadbandHighFreq:
-            BroadbandHighFreq = float(self.parse_value(
-                dsu['BroadbandHighFreq']))
+            BroadbandHighFreq = float(self.parse_value(dsu["BroadbandHighFreq"]))
 
         new_setup = self.current_app.create_setup(name)
 
-        if (SolveType == 'Single'):
-            new_setup.props['SolveType'] = 'Single'
-            new_setup.props['Frequency'] = f'{Frequency}GHz'
-            new_setup.props['MaximumPasses'] = MaximumPasses
-            new_setup.props['MaxDeltaE'] = MaxDeltaE
-        elif (SolveType == 'MultiFrequency'):
-            new_setup.props['SolveType'] = 'MultiFrequency'
-            new_setup.props[
-                'MultipleAdaptiveFreqsSetup'] = MultipleAdaptiveFreqsSetup
-            new_setup.props['MaximumPasses'] = MaximumPasses
-        elif (SolveType == 'Broadband'):
+        if SolveType == "Single":
+            new_setup.props["SolveType"] = "Single"
+            new_setup.props["Frequency"] = f"{Frequency}GHz"
+            new_setup.props["MaximumPasses"] = MaximumPasses
+            new_setup.props["MaxDeltaE"] = MaxDeltaE
+        elif SolveType == "MultiFrequency":
+            new_setup.props["SolveType"] = "MultiFrequency"
+            new_setup.props["MultipleAdaptiveFreqsSetup"] = MultipleAdaptiveFreqsSetup
+            new_setup.props["MaximumPasses"] = MaximumPasses
+        elif SolveType == "Broadband":
             new_setup.enable_adaptive_setup_broadband(
-                low_frequency=f'{BroadbandLowFreq}GHz',
-                high_frquency=f'{BroadbandHighFreq}GHz',
+                low_frequency=f"{BroadbandLowFreq}GHz",
+                high_frquency=f"{BroadbandHighFreq}GHz",
                 max_passes=MaximumPasses,
-                max_delta_s=MaxDeltaE)
+                max_delta_s=MaxDeltaE,
+            )
         else:
             raise ValueError(
-                f'SolveType must be one of the following:{self.__supported_SolveType__}'
+                f"SolveType must be one of the following:{self.__supported_SolveType__}"
             )
 
-        new_setup.props['MinimumPasses'] = MinimumPasses
-        new_setup.props['MinimumConvergedPasses'] = MinimumConvergedPasses
-        new_setup.props['PercentRefinement'] = PercentRefinement
-        new_setup.props['BasisOrder'] = BasisOrder
+        new_setup.props["MinimumPasses"] = MinimumPasses
+        new_setup.props["MinimumConvergedPasses"] = MinimumConvergedPasses
+        new_setup.props["PercentRefinement"] = PercentRefinement
+        new_setup.props["BasisOrder"] = BasisOrder
 
         new_setup.update()
 
         return new_setup
 
-    def add_sweep(self,
-                  setup_name="QHFSSDrivenmodalPyaedt_setup",
-                  unit="GHz",
-                  start_ghz=2.0,
-                  stop_ghz=8.0,
-                  count=101,
-                  step_ghz=None,
-                  name="QHFSSDrivenmodalPyaedt_sweep",
-                  type="Fast",
-                  save_fields=False,
-                  interpolation_tol=0.5,
-                  interpolation_max_solutions=250):
+    def add_sweep(
+        self,
+        setup_name="QHFSSDrivenmodalPyaedt_setup",
+        unit="GHz",
+        start_ghz=2.0,
+        stop_ghz=8.0,
+        count=101,
+        step_ghz=None,
+        name="QHFSSDrivenmodalPyaedt_sweep",
+        type="Fast",
+        save_fields=False,
+        interpolation_tol=0.5,
+        interpolation_max_solutions=250,
+    ):
         """Add a frequency sweep to a driven modal setup.
 
         Args:
@@ -214,10 +232,10 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                                 and "Discrete". Defaults to "Fast".
             save_fields (bool, optional): Whether or not to save fields.
                                 Defaults to False.
-            interpolation_tol (float, optional): Error tolerance threshold 
+            interpolation_tol (float, optional): Error tolerance threshold
                                      for the interpolation type sweep. Defaults to 0.5.
             interpolation_max_solutions (int, optional): Maximum number of solutions
-                                     evaluted for the interpolation process. 
+                                     evaluted for the interpolation process.
                                      Defaults to 250.
 
         Returns:
@@ -225,7 +243,6 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
         """
 
         if setup_name in self.current_app.setup_names:
-
             try:
                 sweep = self.current_app.create_linear_count_sweep(
                     setupname=setup_name,
@@ -237,14 +254,15 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                     save_fields=save_fields,
                     sweep_type=type,
                     interpolation_tol=interpolation_tol,
-                    interpolation_max_solutions=interpolation_max_solutions)
+                    interpolation_max_solutions=interpolation_max_solutions,
+                )
                 return sweep
             except Exception as ex:
-                self.design.logger.error(f' The exception is {ex}')
+                self.design.logger.error(f" The exception is {ex}")
         else:
             self.logger.warning(
-                f'Since the setup_name={setup_name} is NOT in the project/design which was used to start HFSS DrivenModal, '
-                f'a new setup_name={setup_name} will be added to design with default settings for HFSS DrivenModal.'
+                f"Since the setup_name={setup_name} is NOT in the project/design which was used to start HFSS DrivenModal, "
+                f"a new setup_name={setup_name} will be added to design with default settings for HFSS DrivenModal."
             )
             self.add_hfss_dm_setup(setup_name)
             try:
@@ -258,10 +276,11 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                     save_fields=save_fields,
                     sweep_type=type,
                     interpolation_tol=interpolation_tol,
-                    interpolation_max_solutions=interpolation_max_solutions)
+                    interpolation_max_solutions=interpolation_max_solutions,
+                )
                 return sweep
             except Exception as ex:
-                self.design.logger.error(f' The exception is {ex}')
+                self.design.logger.error(f" The exception is {ex}")
 
     def analyze_setup(self, setup_name: str, sweep_name: str) -> bool:
         """Run a specific solution setup in Ansys HFSS DrivenModal.
@@ -279,25 +298,24 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
 
         if setup_name not in self.current_app.setup_names:
             self.logger.warning(
-                'Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, '
-                'a new setup will be added to design with default settings for HFSS DrivenModal.'
+                "Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, "
+                "a new setup will be added to design with default settings for HFSS DrivenModal."
             )
             self.add_hfss_dm_setup(setup_name)
 
         if sweep_name not in self.current_app.get_sweeps(setup_name):
             self.logger.warning(
-                'Since the sweep_name is not in the setup, '
-                'a new sweep will be added to setup with default settings for HFSS DrivenModal.'
+                "Since the sweep_name is not in the setup, "
+                "a new sweep will be added to setup with default settings for HFSS DrivenModal."
             )
             self.add_sweep(setup_name=setup_name, name=sweep_name)
 
         return self.current_app.analyze_setup(setup_name)
 
-    #def get_impedance_scattering(self, setup_name:str)-> dict:
-    def get_ansys_solution_data(self,
-                                sweep_name: str,
-                                expressions='S',
-                                output_type=1) -> dict:
+    # def get_impedance_scattering(self, setup_name:str)-> dict:
+    def get_ansys_solution_data(
+        self, sweep_name: str, expressions="S", output_type=1
+    ) -> dict:
         # if 0 mag/phase, 1 is real/imag, 2 both
         """Get the solution data based on expressions.  Return output based on output_type.
 
@@ -322,14 +340,15 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                 The value is data from get_solution_data.
         """
 
-        default_expressions = ['S', 's', 'Y', 'y', 'Z', 'z']
+        default_expressions = ["S", "s", "Y", "y", "Z", "z"]
         dm_solution_data = dict()
 
         valid_output_types = [1, 2, 3]
         if output_type not in valid_output_types:
             self.design.logger.warning(
-                f'The argument output_type={output_type} '
-                f'is not part of a valid_output_types={valid_output_types}')
+                f"The argument output_type={output_type} "
+                f"is not part of a valid_output_types={valid_output_types}"
+            )
             return None
 
         if expressions in default_expressions:
@@ -342,7 +361,8 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
 
         if expressions_dm is None:
             self.design.logger.warning(
-                'Do not have valid string to search on for get_solution_data.')
+                "Do not have valid string to search on for get_solution_data."
+            )
             return None
 
         # Activate project_name and design_name before anything else
@@ -352,7 +372,8 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             expressions=(expressions_dm),
             setup_sweep_name=sweep_name,
             variations={"Freq": ["All"]},
-            primary_sweep_variable='Freq')
+            primary_sweep_variable="Freq",
+        )
         if output_type == 1:
             self.populate_mag_phase(dm_solution_data, dm_data)
         elif output_type == 2:
@@ -373,8 +394,8 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                         the result of get_solution_data.
         """
         # index 0 is magnitude, 1 is phase
-        dm_solution_data['mag'] = dm_data.full_matrix_mag_phase[0]
-        dm_solution_data['phase'] = dm_data.full_matrix_mag_phase[1]
+        dm_solution_data["mag"] = dm_data.full_matrix_mag_phase[0]
+        dm_solution_data["phase"] = dm_data.full_matrix_mag_phase[1]
 
     def populate_real_imag(self, dm_solution_data: dict, dm_data: SolutionData):
         """Update dm_solution_data with real and imaginary format of dm_data.
@@ -386,8 +407,8 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                         the result of get_solution_data.
         """
         # index 0 is real, 1 is imaginary
-        dm_solution_data['real'] = dm_data.full_matrix_real_imag[0]
-        dm_solution_data['imag'] = dm_data.full_matrix_real_imag[1]
+        dm_solution_data["real"] = dm_data.full_matrix_real_imag[0]
+        dm_solution_data["imag"] = dm_data.full_matrix_real_imag[1]
 
     def generate_expressions(self, expressions: str) -> Union[list, None]:
         """Use the information saved within the renderer to obtain the
@@ -409,7 +430,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             # append all names to port_names
             for comp_name, pin_name in self.port_list_dict.keys():
                 # At this method, Ensure that junction is not in the ignored_jjs
-                port_name = f'Port_{comp_name}_{pin_name}'
+                port_name = f"Port_{comp_name}_{pin_name}"
                 port_names += [port_name]
 
         if self.jj_to_port_dict and self.jj_to_port_is_valid:
@@ -418,27 +439,29 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                 if item not in self.ignored_jjs:
                     comp_name, pin_name = item
                     comp_id = str(self.design.components[comp_name].id)
-                    jj_name_port = f'JJ_rect_R_{comp_id}_{pin_name}'
+                    jj_name_port = f"JJ_rect_R_{comp_id}_{pin_name}"
                     port_names += [jj_name_port]
 
         if port_names:
             port_names.sort()
             for name_1 in port_names:
                 for name_2 in port_names:
-                    entry = f'{expressions}({name_1},{name_2})'
+                    entry = f"{expressions}({name_1},{name_2})"
                     combo_names += [entry]
         if combo_names:
             return combo_names
         else:
             return None
 
-    def render_design(self,
-                      selection: Union[list, None] = None,
-                      open_pins: Union[list, None] = None,
-                      port_list: Union[list, None] = None,
-                      jj_to_port: Union[list, None] = None,
-                      ignored_jjs: Union[list, None] = None,
-                      box_plus_buffer: bool = True):
+    def render_design(
+        self,
+        selection: Union[list, None] = None,
+        open_pins: Union[list, None] = None,
+        port_list: Union[list, None] = None,
+        jj_to_port: Union[list, None] = None,
+        ignored_jjs: Union[list, None] = None,
+        box_plus_buffer: bool = True,
+    ):
         """
         This render_design will add additional logic for just drivenmodal design within project.
 
@@ -506,12 +529,14 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
         # along with information from layer stack
         self.fill_info = self.design.ls.get_layer_datatype_when_fill_is_true()
 
-        super().render_design(selection, open_pins, port_list, jj_to_port,
-                              ignored_jjs, box_plus_buffer)
+        super().render_design(
+            selection, open_pins, port_list, jj_to_port, ignored_jjs, box_plus_buffer
+        )
 
         if self.case == 2:
             self.logger.warning(
-                'Unable to proceed with rendering. Please check selection.')
+                "Unable to proceed with rendering. Please check selection."
+            )
             return
 
         self.activate_user_project_design()
@@ -522,10 +547,13 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
 
         return
 
-    def should_render_junction(self, qgeom: pd.Series, port_list: Union[list,
-                                                                        None],
-                               jj_to_port: Union[list, None],
-                               ignored_jjs: Union[list, None]) -> bool:
+    def should_render_junction(
+        self,
+        qgeom: pd.Series,
+        port_list: Union[list, None],
+        jj_to_port: Union[list, None],
+        ignored_jjs: Union[list, None],
+    ) -> bool:
         """Logic just for driven modal.
 
         Args:
@@ -541,8 +569,10 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
         """
 
         if ignored_jjs:
-            search_junction = (self.design._components[qgeom["component"]].name,
-                               qgeom['name'])
+            search_junction = (
+                self.design._components[qgeom["component"]].name,
+                qgeom["name"],
+            )
             if search_junction in ignored_jjs:
                 return False
 
@@ -591,9 +621,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
         """
 
         port_pins = port_list_dict.keys()
-        self.add_endcaps(port_pins,
-                         layer_num=layer_num,
-                         endcap_str='port_endcap')
+        self.add_endcaps(port_pins, layer_num=layer_num, endcap_str="port_endcap")
         self.create_ports(port_list, layer_num)
 
     def create_ports(self, port_list: list, layer_num: int):
@@ -605,15 +633,16 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                         corresponds to a z coordinate in layer stack.
         """
         for comp_name, pin_name, impedance in port_list:
-            port_name = f'Port_{comp_name}_{pin_name}'
-            #self.design.logger.debug(f'Drawing a rectangle: {port_name}')
+            port_name = f"Port_{comp_name}_{pin_name}"
+            # self.design.logger.debug(f'Drawing a rectangle: {port_name}')
 
             pin_dict = self.design.components[comp_name].pins[pin_name]
             width, gap = parse_entry([pin_dict["width"], pin_dict["gap"]])
             mid, normal = parse_entry(pin_dict["middle"]), pin_dict["normal"]
-            chip_name = self.design.components[comp_name].options.chip
+            chip_name = self.design.components[comp_name].options.chip  # noqa: F841
             result = self.design.ls.get_properties_for_layer_datatype(
-                ['thickness', 'z_coord', 'material', 'fill'], layer_num)
+                ["thickness", "z_coord", "material", "fill"], layer_num
+            )
             if result:
                 thickness, z_coord, material, fill = result
             else:
@@ -631,19 +660,19 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                 name=port_name,
                 cover_surface=False,
                 close_surface=False,
-                xsection_type='Line',
-                xsection_width=width)
+                xsection_type="Line",
+                xsection_width=width,
+            )
             poly_port.show_arrow = True
             poly_port.color = (128, 0, 128)
 
-            lumped_port = self.current_app.create_lumped_port_to_sheet(
+            lumped_port = self.current_app.create_lumped_port_to_sheet(  # noqa: F841
                 sheet_name=poly_port.name,
                 # Name is under excitation folder, so can reuse.
                 portname=poly_port.name,
                 axisdir=endpoints_3d,
-                impedance=impedance)
-
-            a = 5
+                impedance=impedance,
+            )
 
     def add_mesh(self):
-        a = 5
+        pass

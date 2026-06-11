@@ -12,23 +12,39 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+from __future__ import annotations
+
+from collections import defaultdict
 from typing import List, Tuple, Union
 
 import pandas as pd
-from collections import defaultdict
 
-import pyEPR as epr
-from pyEPR.ansys import ureg
-from pyEPR.reports import _plot_q3d_convergence_main, _plot_q3d_convergence_chi_f
-from pyEPR.calcs.convert import Convert
-from qiskit_metal import Dict
+# pyEPR is an opt-in dependency (``quantum-metal[ansys]``); see
+# ``ansys_renderer.py`` for the same pattern. The unused ``Convert``
+# import (was at the top of this file before lite-flip) has been
+# removed — it was dead code.
+try:
+    import pyEPR as epr
+    from pyEPR.ansys import ureg
+    from pyEPR.reports import (
+        _plot_q3d_convergence_chi_f,
+        _plot_q3d_convergence_main,
+    )
+except ImportError:  # pragma: no cover — exercised on lite installs
+    epr = None
+    ureg = None
+    _plot_q3d_convergence_chi_f = None
+    _plot_q3d_convergence_main = None
+
+from qiskit_metal import Dict, config
 from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
 from qiskit_metal.renderers.renderer_ansys.solution_types import is_q3d
 from qiskit_metal.toolbox_metal.parsing import is_true
 
-from qiskit_metal import config
 if not config.is_building_docs():
-    from qiskit_metal.analyses.quantization.lumped_capacitive import extract_transmon_coupled_Noscillator
+    from qiskit_metal.analyses.quantization.lumped_capacitive import (
+        extract_transmon_coupled_Noscillator,
+    )
 
 
 class QQ3DRenderer(QAnsysRenderer):
@@ -47,12 +63,12 @@ class QQ3DRenderer(QAnsysRenderer):
         * y_buffer_width_mm: 0.2 -- Buffer between max/min y and edge of ground plane, in mm
     """
 
-    name = 'q3d'
+    name = "q3d"
     """name"""
 
-    q3d_options = Dict(material_type='pec', material_thickness='200nm')
+    q3d_options = Dict(material_type="pec", material_thickness="200nm")
 
-    def __init__(self, design: 'QDesign', initiate=True, options: Dict = None):
+    def __init__(self, design: "QDesign", initiate=True, options: Dict = None):
         """Create a QRenderer for Q3D simulations, subclassed from
         QAnsysRenderer.
 
@@ -75,10 +91,12 @@ class QQ3DRenderer(QAnsysRenderer):
             if self.pinfo.design:
                 return self.pinfo.design._boundaries
 
-    def render_design(self,
-                      selection: Union[list, None] = None,
-                      open_pins: Union[list, None] = None,
-                      box_plus_buffer: bool = True):
+    def render_design(
+        self,
+        selection: Union[list, None] = None,
+        open_pins: Union[list, None] = None,
+        box_plus_buffer: bool = True,
+    ):
         """Initiate rendering of components in design contained in selection,
         assuming they're valid. Components are rendered before the chips they
         reside on, and subtraction of negative shapes is performed at the very
@@ -122,30 +140,29 @@ class QQ3DRenderer(QAnsysRenderer):
 
         if self.case == 2:
             self.logger.warning(
-                'Unable to proceed with rendering. Please check selection.')
+                "Unable to proceed with rendering. Please check selection."
+            )
             return
 
         self.chip_subtract_dict = defaultdict(set)
         self.assign_perfE = []
         self.assign_mesh = []
 
-        chip_list = self.get_chip_names()
+        chip_list = self.get_chip_names()  # noqa: F841
 
         self.render_tables(skip_junction=True)
         self.add_endcaps(open_pins)
 
-        self.render_chips(draw_sample_holder=False,
-                          box_plus_buffer=box_plus_buffer)
+        self.render_chips(draw_sample_holder=False, box_plus_buffer=box_plus_buffer)
         self.subtract_from_ground()
         self.add_mesh()
 
         self.assign_thin_conductor()
         self.assign_nets()
 
-    def assign_thin_conductor(self,
-                              material_type: str = 'pec',
-                              thickness: str = '200 nm',
-                              name: str = None):
+    def assign_thin_conductor(
+        self, material_type: str = "pec", thickness: str = "200 nm", name: str = None
+    ):
         """Assign thin conductor property to all exported shapes. Unless
         otherwise specified, all 2-D shapes are pec's with a thickness of 200
         nm.
@@ -155,12 +172,17 @@ class QQ3DRenderer(QAnsysRenderer):
             thickness (str): Thickness of thin conductor. Must include units.
             name (str): Name assigned to this group of thin conductors.
         """
-        self.boundaries.AssignThinConductor([
-            "NAME:" + (name if name else "ThinCond1"), "Objects:=",
-            self.assign_perfE, "Material:=", material_type if material_type else
-            self.q3d_options['material_type'], "Thickness:=",
-            thickness if thickness else self.q3d_options['material_thickness']
-        ])
+        self.boundaries.AssignThinConductor(
+            [
+                "NAME:" + (name if name else "ThinCond1"),
+                "Objects:=",
+                self.assign_perfE,
+                "Material:=",
+                material_type if material_type else self.q3d_options["material_type"],
+                "Thickness:=",
+                thickness if thickness else self.q3d_options["material_thickness"],
+            ]
+        )
 
     def assign_nets(self):
         """Auto assign nets to exported shapes."""
@@ -171,25 +193,27 @@ class QQ3DRenderer(QAnsysRenderer):
         (deprecated) use activate_ansys_setup()
         """
         self.logger.warning(
-            'This method is deprecated. Change your scripts to use activate_ansys_setup()'
+            "This method is deprecated. Change your scripts to use activate_ansys_setup()"
         )
         self.activate_ansys_setup(setup_name_activate)
 
-    def add_q3d_setup(self,
-                      name: str = None,
-                      freq_ghz: float = None,
-                      save_fields: bool = None,
-                      enabled: bool = None,
-                      max_passes: int = None,
-                      min_passes: int = None,
-                      min_converged_passes: int = None,
-                      percent_error: float = None,
-                      percent_refinement: int = None,
-                      auto_increase_solution_order: bool = None,
-                      solution_order: str = None,
-                      solver_type: str = None,
-                      *args,
-                      **kwargs):
+    def add_q3d_setup(
+        self,
+        name: str = None,
+        freq_ghz: float = None,
+        save_fields: bool = None,
+        enabled: bool = None,
+        max_passes: int = None,
+        min_passes: int = None,
+        min_converged_passes: int = None,
+        percent_error: float = None,
+        percent_refinement: int = None,
+        auto_increase_solution_order: bool = None,
+        solution_order: str = None,
+        solver_type: str = None,
+        *args,
+        **kwargs,
+    ):
         """Create a solution setup in Ansys Q3D. If user does not provide
         arguments, they will be obtained from q3d_options dict.
 
@@ -210,31 +234,29 @@ class QQ3DRenderer(QAnsysRenderer):
         su = self.default_setup.q3d
 
         if not name:
-            name = self.parse_value(su['name'])
+            name = self.parse_value(su["name"])
         if not freq_ghz:
-            freq_ghz = float(self.parse_value(su['freq_ghz']))
+            freq_ghz = float(self.parse_value(su["freq_ghz"]))
         if not save_fields:
-            save_fields = is_true(su['save_fields'])
+            save_fields = is_true(su["save_fields"])
         if not enabled:
-            enabled = is_true(su['enabled'])
+            enabled = is_true(su["enabled"])
         if not max_passes:
-            max_passes = int(self.parse_value(su['max_passes']))
+            max_passes = int(self.parse_value(su["max_passes"]))
         if not min_passes:
-            min_passes = int(self.parse_value(su['min_passes']))
+            min_passes = int(self.parse_value(su["min_passes"]))
         if not min_converged_passes:
-            min_converged_passes = int(
-                self.parse_value(su['min_converged_passes']))
+            min_converged_passes = int(self.parse_value(su["min_converged_passes"]))
         if not percent_error:
-            percent_error = float(self.parse_value(su['percent_error']))
+            percent_error = float(self.parse_value(su["percent_error"]))
         if not percent_refinement:
-            percent_refinement = int(self.parse_value(su['percent_refinement']))
+            percent_refinement = int(self.parse_value(su["percent_refinement"]))
         if not auto_increase_solution_order:
-            auto_increase_solution_order = is_true(
-                su['auto_increase_solution_order'])
+            auto_increase_solution_order = is_true(su["auto_increase_solution_order"])
         if not solution_order:
-            solution_order = self.parse_value(su['solution_order'])
+            solution_order = self.parse_value(su["solution_order"])
         if not solver_type:
-            solver_type = self.parse_value(su['solver_type'])
+            solver_type = self.parse_value(su["solver_type"])
 
         if self.pinfo:
             if self.pinfo.design:
@@ -250,7 +272,8 @@ class QQ3DRenderer(QAnsysRenderer):
                     percent_refinement=percent_refinement,
                     auto_increase_solution_order=auto_increase_solution_order,
                     solution_order=solution_order,
-                    solver_type=solver_type)
+                    solver_type=solver_type,
+                )
 
     def edit_q3d_setup(self, setup_args: Dict):
         """User can pass key/values to edit the setup for active q3d setup.
@@ -285,21 +308,21 @@ class QQ3DRenderer(QAnsysRenderer):
                     if is_q3d(self.pinfo.design.solution_type):
                         if self.pinfo.setup_name != setup_args.name:
                             self.design.logger.warning(
-                                f'The name of active setup={self.pinfo.setup_name} does not match'
-                                f'the name of of setup_args.name={setup_args.name}. '
-                                f'To use this method, activate the desired Setup before editing it. '
-                                f'The setup_args was not used to update the active Setup.'
+                                f"The name of active setup={self.pinfo.setup_name} does not match"
+                                f"the name of of setup_args.name={setup_args.name}. "
+                                f"To use this method, activate the desired Setup before editing it. "
+                                f"The setup_args was not used to update the active Setup."
                             )
                             return
 
                         for key, value in setup_args.items():
                             if key == "name":
-                                continue  #Checked for above.
+                                continue  # Checked for above.
                             if key == "freq_ghz":
                                 if not isinstance(value, float):
                                     self.logger.warning(
-                                        'The value for min_freq_ghz should be a '
-                                        f'float.  The present value is {value}.'
+                                        "The value for min_freq_ghz should be a "
+                                        f"float.  The present value is {value}."
                                     )
                                 else:
                                     ### This EditSetup works if we change all of the arguments
@@ -325,36 +348,39 @@ class QQ3DRenderer(QAnsysRenderer):
                                     #     setup_args.name, args_editsetup)
                                     self.pinfo.setup.frequency = f"{value}GHz"
                                     continue
-                            if key == 'max_passes':
+                            if key == "max_passes":
                                 if not isinstance(value, int):
                                     self.logger.warning(
-                                        'The value for max_passes should be an int. '
-                                        f'The present value is {value}.')
+                                        "The value for max_passes should be an int. "
+                                        f"The present value is {value}."
+                                    )
                                 else:
                                     self.pinfo.setup.max_pass = value
                                     continue
 
-                            if key == 'min_passes':
+                            if key == "min_passes":
                                 if not isinstance(value, int):
                                     self.logger.warning(
-                                        'The value for min_passes should be an int. '
-                                        f'The present value is {value}.')
+                                        "The value for min_passes should be an int. "
+                                        f"The present value is {value}."
+                                    )
                                 else:
                                     self.pinfo.setup.min_pass = value
                                     continue
 
-                            if key == 'percent_error':
+                            if key == "percent_error":
                                 if not isinstance(value, float):
                                     self.logger.warning(
-                                        'The value for percent_error should be a float. '
-                                        f'The present value is {value}.')
+                                        "The value for percent_error should be a float. "
+                                        f"The present value is {value}."
+                                    )
                                 else:
                                     self.pinfo.setup.pct_error = value
                                     continue
 
                             self.design.logger.warning(
-                                f'In setup_args, key={key}, value={value} is not in pinfo.setup, '
-                                'the key/value pair from setup_args not added to Setup in Ansys.'
+                                f"In setup_args, key={key}, value={value} is not in pinfo.setup, "
+                                "the key/value pair from setup_args not added to Setup in Ansys."
                             )
 
                     else:
@@ -363,7 +389,7 @@ class QQ3DRenderer(QAnsysRenderer):
                         )
                 else:
                     self.logger.warning(
-                        'A design is not in active project. The Setup not updated.'
+                        "A design is not in active project. The Setup not updated."
                     )
             else:
                 self.logger.warning(
@@ -385,10 +411,12 @@ class QQ3DRenderer(QAnsysRenderer):
             setup = self.pinfo.get_setup(setup_name)
             setup.analyze(setup_name)
 
-    def get_capacitance_matrix(self,
-                               variation: str = '',
-                               solution_kind: str = 'LastAdaptive',
-                               pass_number: int = 1):
+    def get_capacitance_matrix(
+        self,
+        variation: str = "",
+        solution_kind: str = "LastAdaptive",
+        pass_number: int = 1,
+    ):
         """Obtain capacitance matrix after the analysis.
         Must be executed *after* analyze_setup.
 
@@ -396,7 +424,7 @@ class QQ3DRenderer(QAnsysRenderer):
             variation (str, optional): An empty string returns nominal variation.
                 Otherwise need the list. Defaults to ''.
             solution_kind (str, optional): Solution type. Defaults to 'LastAdaptive'.
-				Set to 'AdaptivePass' to return the capacitance matrix of a specific pass.
+                                Set to 'AdaptivePass' to return the capacitance matrix of a specific pass.
             pass_number (int, optional): Which adaptive pass to acquire the capacitance
                 matrix from. Only in effect with 'AdaptivePass' chosen. Defaults to 1.
 
@@ -407,11 +435,12 @@ class QQ3DRenderer(QAnsysRenderer):
             df_cmat, user_units, _, _ = self.pinfo.setup.get_matrix(
                 variation=variation,
                 solution_kind=solution_kind,
-                pass_number=pass_number)
+                pass_number=pass_number,
+            )
             return df_cmat, user_units
         return None, None
 
-    def get_capacitance_all_passes(self, variation: str = ''):
+    def get_capacitance_all_passes(self, variation: str = ""):
         """Obtain a dictionary of the capacitance matrices from each simulation pass.
         Must be executed *after* analyze_setup.
 
@@ -426,11 +455,12 @@ class QQ3DRenderer(QAnsysRenderer):
         # TODO: is there a way to get all of the matrices in one query?
         #  If yes, change get_capacitance_matrix() to get all the matrices and delete this.
         all_mtx = {}
-        for i in range(1, 1000):  #1000 is an arbitrary large number
+        for i in range(1, 1000):  # 1000 is an arbitrary large number
             try:
                 df_cmat, user_units = self.get_capacitance_matrix(
-                    variation, 'AdaptivePass', pass_number=i)
-                c_units = ureg(user_units).to('farads').magnitude
+                    variation, "AdaptivePass", pass_number=i
+                )
+                c_units = ureg(user_units).to("farads").magnitude
                 all_mtx[i] = df_cmat.values * c_units
             except pd.errors.EmptyDataError:
                 break
@@ -441,24 +471,25 @@ class QQ3DRenderer(QAnsysRenderer):
         (deprecated) use analysis.quantitative.capacitance_lom.run_lom()
         """
         self.logger.warning(
-            'This method is deprecated. Change your scripts to use'
-            'analysis.quantitative.capacitance_lom.run_lom()')
+            "This method is deprecated. Change your scripts to use"
+            "analysis.quantitative.capacitance_lom.run_lom()"
+        )
 
     def get_convergence(self) -> bool:
-        """Extracts convergence from Ansys simulation result
-        """
+        """Extracts convergence from Ansys simulation result"""
         # If 'LastAdaptive' is used, then the pass_number won't affect anything.
         # If 'AdaptivePass' is used, then the pass_number is used.
         convergence_df, convergence_txt = self._pinfo.setup.get_convergence()
         target, current, pass_min = self._parse_text_from_q3d_convergence(
-            convergence_txt)
-        is_converged = self._test_if_q3d_analysis_converged(
-            target, current, pass_min)
+            convergence_txt
+        )
+        is_converged = self._test_if_q3d_analysis_converged(target, current, pass_min)
 
         return is_converged
 
-    def _test_if_q3d_analysis_converged(cls, target: float, current: float,
-                                        passes_min: int) -> Union[bool, None]:
+    def _test_if_q3d_analysis_converged(
+        cls, target: float, current: float, passes_min: int
+    ) -> Union[bool, None]:
         """Use solution-data from Ansys-Q3d to determine if converged.
 
         Args:
@@ -483,8 +514,8 @@ class QQ3DRenderer(QAnsysRenderer):
         return is_converged
 
     def _parse_text_from_q3d_convergence(
-            self,
-            gui_text: str) -> Tuple[Union[None, float], Union[None, float]]:
+        self, gui_text: str
+    ) -> Tuple[Union[None, float], Union[None, float]]:
         """Parse gui_text using a priori known formatting. Ansys-Q3D
         solution-data provides gui_text.
 
@@ -499,13 +530,13 @@ class QQ3DRenderer(QAnsysRenderer):
         text_list = gui_text.splitlines()
 
         # Find Target information in text.
-        target_all = [string for string in text_list if 'Target' in string]
+        target_all = [string for string in text_list if "Target" in string]
 
         # Find Current information in text.
-        current_all = [string for string in text_list if 'Current' in string]
+        current_all = [string for string in text_list if "Current" in string]
 
         # Find Minimum number of passes from solution-data.
-        min_passes_all = [string for string in text_list if 'Minimum' in string]
+        min_passes_all = [string for string in text_list if "Minimum" in string]
 
         target = self._extract_target_delta(target_all)
         current = self._extract_current_delta(current_all)
@@ -528,18 +559,20 @@ class QQ3DRenderer(QAnsysRenderer):
         min_num_of_passes = None
         if len(min_passes_all) == 1:
             if min_passes_all[0]:
-                _, _, min_passes_str = min_passes_all[0].partition(':')
+                _, _, min_passes_str = min_passes_all[0].partition(":")
                 try:
                     min_num_of_passes = int(min_passes_str)
                 except ValueError:
                     self.design.logger.warning(
-                        f'Target={min_passes_str} in GUI is not an int.'
-                        'Force Minimum Number Of Passes to be None.')
+                        f"Target={min_passes_str} in GUI is not an int."
+                        "Force Minimum Number Of Passes to be None."
+                    )
         else:
             self.design.logger.warning(
-                'Either could not find Minimum Number of Passes '
-                'information or too many entries in text. '
-                'Force Minimum Number of Passes to be None.')
+                "Either could not find Minimum Number of Passes "
+                "information or too many entries in text. "
+                "Force Minimum Number of Passes to be None."
+            )
         return min_num_of_passes
 
     def _extract_target_delta(self, target_all: list) -> Union[None, float]:
@@ -556,17 +589,19 @@ class QQ3DRenderer(QAnsysRenderer):
         target = None
         if len(target_all) == 1:
             if target_all[0]:
-                _, _, target_str = target_all[0].partition(':')
+                _, _, target_str = target_all[0].partition(":")
                 try:
                     target = float(target_str)
                 except ValueError:
                     self.design.logger.warning(
-                        f'Target={target_str} in GUI is not a float.'
-                        'Force Target Delta to be None.')
+                        f"Target={target_str} in GUI is not a float."
+                        "Force Target Delta to be None."
+                    )
         else:
             self.design.logger.warning(
-                'Either could not find Target Delta information or too many '
-                'entries in text. Force Target Delta to be None.')
+                "Either could not find Target Delta information or too many "
+                "entries in text. Force Target Delta to be None."
+            )
         return target
 
     def _extract_current_delta(self, current_all: list) -> Union[None, float]:
@@ -583,17 +618,19 @@ class QQ3DRenderer(QAnsysRenderer):
         current = None
         if len(current_all) == 1:
             if current_all[0]:
-                _, _, current_str = current_all[0].partition(':')
+                _, _, current_str = current_all[0].partition(":")
                 try:
                     current = float(current_str)
                 except ValueError:
                     self.design.logger.warning(
-                        f'Target={current_str} in GUI is not a float.'
-                        'Force Current Delta to be None.')
+                        f"Target={current_str} in GUI is not a float."
+                        "Force Current Delta to be None."
+                    )
         else:
             self.design.logger.warning(
-                'Either could not find Current Delta information or too many '
-                'entries in text. Force Current Delta to be None.')
+                "Either could not find Current Delta information or too many "
+                "entries in text. Force Current Delta to be None."
+            )
         return current
 
     def plot_convergence_main(self, RES: pd.DataFrame):
@@ -623,15 +660,15 @@ class QQ3DRenderer(QAnsysRenderer):
         (deprecated) use new_ansys_design()
         """
         self.logger.warning(
-            'This method is deprecated. Change your scripts to use new_ansys_design()'
+            "This method is deprecated. Change your scripts to use new_ansys_design()"
         )
-        self.new_ansys_design(name, 'capacitive', connect)
+        self.new_ansys_design(name, "capacitive", connect)
 
     def activate_q3d_design(self, name: str = "MetalQ3ds"):
         """
         (deprecated) use activate_ansys_design()
         """
         self.logger.warning(
-            'This method is deprecated. Change your scripts to use activate_ansys_design()'
+            "This method is deprecated. Change your scripts to use activate_ansys_design()"
         )
-        self.activate_ansys_design(name, 'capacitive')
+        self.activate_ansys_design(name, "capacitive")

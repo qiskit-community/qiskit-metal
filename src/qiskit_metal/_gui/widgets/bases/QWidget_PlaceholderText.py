@@ -21,6 +21,7 @@ class QWidget_PlaceholderText:
 
     This class acts as a mixin for placeholder text functionality.
     """
+
     __placeholder_text = "The table is empty."
 
     def __init__(self, placeholder_text: str = None, parent=None):
@@ -29,7 +30,9 @@ class QWidget_PlaceholderText:
             placeholder_text (str): Placeholder text. Defaults to None.
             parent: Parent widget.
         """
-        self._placeholder_text = placeholder_text if placeholder_text else self.__placeholder_text
+        self._placeholder_text = (
+            placeholder_text if placeholder_text else self.__placeholder_text
+        )
         self._placeholder_label = QLabel(self._placeholder_text, parent)
         self.setup_placeholder_label(parent)
 

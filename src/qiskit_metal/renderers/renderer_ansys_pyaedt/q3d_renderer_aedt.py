@@ -1,4 +1,6 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+
+from __future__ import annotations
 
 from typing import Union, Tuple, Optional
 
@@ -6,7 +8,13 @@ from qiskit_metal.renderers.renderer_ansys_pyaedt.pyaedt_base import QPyaedt
 from qiskit_metal.toolbox_metal.parsing import is_true
 
 from qiskit_metal import Dict
-from ansys.aedt.core import settings
+
+# pyaedt is an opt-in dep; friendly error propagates via QPyaedt.__init__.
+try:
+    from ansys.aedt.core import settings
+except ImportError:  # pragma: no cover — exercised on lite installs
+    settings = None
+
 import pandas as pd
 import numpy as np
 import shapely
@@ -19,7 +27,8 @@ class QQ3DPyaedt(QPyaedt):
     QPyaedt Default Options:
 
     """
-    name = 'aedt_q3d'
+
+    name = "aedt_q3d"
 
     default_setup = Dict(
         name="QQ3DPyaedt_setup",
@@ -37,15 +46,17 @@ class QQ3DPyaedt(QPyaedt):
     )
     """Default setup."""
 
-    aedt_q3d_options = Dict(material_type='pec', material_thickness='200nm')
+    aedt_q3d_options = Dict(material_type="pec", material_thickness="200nm")
     """aedt Q3D Options"""
 
-    def __init__(self,
-                 multilayer_design: 'MultiPlanar',
-                 project_name: Optional[str] = None,
-                 design_name: Optional[str] = None,
-                 initiate=False,
-                 options: Optional[Dict] = None):
+    def __init__(
+        self,
+        multilayer_design: "MultiPlanar",
+        project_name: Optional[str] = None,
+        design_name: Optional[str] = None,
+        initiate=False,
+        options: Optional[Dict] = None,
+    ):
         """Create a QRenderer for Q3D simulations using pyaedt and multiplanar design.
         QQ3DPyaedt is subclassed from QPyaedt, subclassed from QRendererAnalysis and
         subclassed from QRenderer.
@@ -71,17 +82,19 @@ class QQ3DPyaedt(QPyaedt):
             initiate (bool, optional): True to initiate the renderer. Defaults to False.
             options (Dict, optional):  Used to override all options. Defaults to None.
         """
-        super().__init__(multilayer_design,
-                         renderer_type='Q3D',
-                         project_name=project_name,
-                         design_name=design_name,
-                         initiate=initiate,
-                         options=options)
+        super().__init__(
+            multilayer_design,
+            renderer_type="Q3D",
+            project_name=project_name,
+            design_name=design_name,
+            initiate=initiate,
+            options=options,
+        )
 
         # QRenderer has a "cls" method called load()
-        if_registered_in_design = QQ3DPyaedt.load()
+        if_registered_in_design = QQ3DPyaedt.load()  # noqa: F841
 
-        #make a class to read in pandas table.
+        # make a class to read in pandas table.
         self.tables = None
 
         # Note: desktop is instantiated in the parent's init.
@@ -110,19 +123,21 @@ class QQ3DPyaedt(QPyaedt):
     #     #        be created by the values in default_setup
     #     #        self.add_q3d_setup()
 
-    def add_q3d_setup(self,
-                      name: Optional[str] = None,
-                      AdaptiveFreq: Optional[float] = None,
-                      SaveFields: Optional[bool] = None,
-                      Enabled: Optional[bool] = None,
-                      MaxPass: Optional[int] = None,
-                      MinPass: Optional[int] = None,
-                      MinConvPass: Optional[int] = None,
-                      PerError: Optional[float] = None,
-                      PerRefine: Optional[int] = None,
-                      AutoIncreaseSolutionOrder: Optional[bool] = None,
-                      SolutionOrder: Optional[str] = None,
-                      Solver_Type: Optional[str] = None):
+    def add_q3d_setup(
+        self,
+        name: Optional[str] = None,
+        AdaptiveFreq: Optional[float] = None,
+        SaveFields: Optional[bool] = None,
+        Enabled: Optional[bool] = None,
+        MaxPass: Optional[int] = None,
+        MinPass: Optional[int] = None,
+        MinConvPass: Optional[int] = None,
+        PerError: Optional[float] = None,
+        PerRefine: Optional[int] = None,
+        AutoIncreaseSolutionOrder: Optional[bool] = None,
+        SolutionOrder: Optional[str] = None,
+        Solver_Type: Optional[str] = None,
+    ):
         """Create a solution setup in Ansys Q3D. If user does not provide
         arguments, they will be obtained from QQ3DPyaedt.default_setup dict.
 
@@ -145,37 +160,38 @@ class QQ3DPyaedt(QPyaedt):
         su = self.default_setup
 
         if not name:
-            name = self.parse_value(su['name'])
+            name = self.parse_value(su["name"])
 
         if name in self.current_app.setup_names:
             self.logger.warning(
-                f'The setup name already exists within '
-                f'project:{self.project_name} design: {self.design_name}. '
-                f'So a new setup with name={name} was NOT added to design.')
+                f"The setup name already exists within "
+                f"project:{self.project_name} design: {self.design_name}. "
+                f"So a new setup with name={name} was NOT added to design."
+            )
             return
 
         if not AdaptiveFreq:
-            AdaptiveFreq = float(self.parse_value(su['AdaptiveFreq']))
+            AdaptiveFreq = float(self.parse_value(su["AdaptiveFreq"]))
         if not SaveFields:
-            SaveFields = is_true(su['SaveFields'])
+            SaveFields = is_true(su["SaveFields"])
         if not Enabled:
-            Enabled = is_true(su['Enabled'])
+            Enabled = is_true(su["Enabled"])
         if not MaxPass:
-            MaxPass = int(self.parse_value(su['MaxPass']))
+            MaxPass = int(self.parse_value(su["MaxPass"]))
         if not MinPass:
-            MinPass = int(self.parse_value(su['MinPass']))
+            MinPass = int(self.parse_value(su["MinPass"]))
         if not MinConvPass:
-            MinConvPass = int(self.parse_value(su['MinConvPass']))
+            MinConvPass = int(self.parse_value(su["MinConvPass"]))
         if not PerError:
-            PerError = float(self.parse_value(su['PerError']))
+            PerError = float(self.parse_value(su["PerError"]))
         if not PerRefine:
-            PerRefine = int(self.parse_value(su['PerRefine']))
+            PerRefine = int(self.parse_value(su["PerRefine"]))
         if not AutoIncreaseSolutionOrder:
-            AutoIncreaseSolutionOrder = is_true(su['AutoIncreaseSolutionOrder'])
+            AutoIncreaseSolutionOrder = is_true(su["AutoIncreaseSolutionOrder"])
         if not SolutionOrder:
-            SolutionOrder = self.parse_value(su['SolutionOrder'])
+            SolutionOrder = self.parse_value(su["SolutionOrder"])
         if not Solver_Type:
-            Solver_Type = self.parse_value(su['Solver_Type'])
+            Solver_Type = self.parse_value(su["Solver_Type"])
 
         new_setup = self.current_app.create_setup(name)
 
@@ -192,15 +208,16 @@ class QQ3DPyaedt(QPyaedt):
         new_setup.props['Cap']['SolutionOrder'] = SolutionOrder
         new_setup.props['Cap']['Solver Type'] = Solver_Type
         # yapf: enable
-        new_setup.props.pop('AC', None)
-        new_setup.props.pop('DC', None)
+        new_setup.props.pop("AC", None)
+        new_setup.props.pop("DC", None)
         new_setup.update()
 
-    # pylint: disable=arguments-differ
-    def render_design(self,
-                      selection: Union[list, None] = None,
-                      open_pins: Union[list, None] = None,
-                      box_plus_buffer: bool = True):
+    def render_design(
+        self,
+        selection: Union[list, None] = None,
+        open_pins: Union[list, None] = None,
+        box_plus_buffer: bool = True,
+    ):
         """
         This render_design will add additional logic for Q3D within project.
 
@@ -254,14 +271,14 @@ class QQ3DPyaedt(QPyaedt):
 
         if self.case == 2:
             self.logger.warning(
-                'Unable to proceed with rendering. Please check selection.')
+                "Unable to proceed with rendering. Please check selection."
+            )
             return
 
-        self.open_pins_is_valid = self.confirm_open_pins_are_valid_names(
-            open_pins, [])
+        self.open_pins_is_valid = self.confirm_open_pins_are_valid_names(open_pins, [])
         if not self.open_pins_is_valid:
             self.logger.error(
-                'Check the arguments to render_design, invalid name was probably used.'
+                "Check the arguments to render_design, invalid name was probably used."
             )
         else:
             self.activate_user_project_design()
@@ -279,9 +296,9 @@ class QQ3DPyaedt(QPyaedt):
 
         return
 
-    def aedt_render_by_layer_then_tables(self,
-                                         open_pins: Union[list, None],
-                                         data_type: int = 0):
+    def aedt_render_by_layer_then_tables(
+        self, open_pins: Union[list, None], data_type: int = 0
+    ):
         """_summary_
 
         Args:
@@ -290,43 +307,44 @@ class QQ3DPyaedt(QPyaedt):
             datatype (int, optional): _description_. Defaults to 0.
         """
         # For Q3d skip_junction is always True.
-        super().aedt_render_by_layer_then_tables(skip_junction=True,
-                                                 open_pins=open_pins,
-                                                 port_list=None,
-                                                 jj_to_port=None,
-                                                 ignored_jjs=None,
-                                                 data_type=data_type)
+        super().aedt_render_by_layer_then_tables(
+            skip_junction=True,
+            open_pins=open_pins,
+            port_list=None,
+            jj_to_port=None,
+            ignored_jjs=None,
+            data_type=data_type,
+        )
 
         for layer_num in sorted(
-                self.design.qgeometry.get_all_unique_layers_for_all_tables(
-                    self.qcomp_ids)):
+            self.design.qgeometry.get_all_unique_layers_for_all_tables(self.qcomp_ids)
+        ):
             for table_type in self.design.qgeometry.get_element_types():
-                if table_type != 'junction':
-                    #At this point, we know table type,
-                    self.render_components(table_type,
-                                           layer_num,
-                                           port_list=None,
-                                           jj_to_port=None,
-                                           ignored_jjs=None)
+                if table_type != "junction":
+                    # At this point, we know table type,
+                    self.render_components(
+                        table_type,
+                        layer_num,
+                        port_list=None,
+                        jj_to_port=None,
+                        ignored_jjs=None,
+                    )
 
-            #For each layer, add the endcaps and
+            # For each layer, add the endcaps and
             # add polyline to subtract to self.chip_subtract_dict[layer_num].
 
             if isinstance(open_pins, list):
                 # Only use this method if user defines open pins.
                 if open_pins:
-                    #Confirm there is something in the list.
-                    open_pins_subset = self.get_open_pins_in_layer(
-                        open_pins, layer_num)
+                    # Confirm there is something in the list.
+                    open_pins_subset = self.get_open_pins_in_layer(open_pins, layer_num)
                     self.add_endcaps(open_pins_subset, layer_num)
 
             # The layer is obtained from qgeometry tables, but layer_stack
             # can have multiple data_types.  For now, the subtract will
             # happen from data_type==0.
             self.subtract_from_ground(layer_num, data_type=data_type)
-        #self.current_app.modeler.sheet_names
-
-        a = 5
+        # self.current_app.modeler.sheet_names
 
     # commenting this out for now.
     # def get_data(self):
@@ -350,22 +368,23 @@ class QQ3DPyaedt(QPyaedt):
                 self.current_app.analyze_setup(setup_name)
             else:
                 self.logger.warning(
-                    'Auto Identify Nets returned False. '
-                    'Please review your design to see what is failing. '
-                    'Within Ansys, press simulation in the tab, then validate (green check mark).'
+                    "Auto Identify Nets returned False. "
+                    "Please review your design to see what is failing. "
+                    "Within Ansys, press simulation in the tab, then validate (green check mark)."
                 )
         else:
             self.logger.warning(
-                'Since the setup_name is not in the project/design which was used to start Q3d, '
-                'a new setup will be added with default settings for Q3D.')
+                "Since the setup_name is not in the project/design which was used to start Q3d, "
+                "a new setup will be added with default settings for Q3D."
+            )
             self.add_q3d_setup(setup_name)
             if self.current_app.auto_identify_nets():
                 self.current_app.analyze_setup(setup_name)
             else:
                 self.logger.warning(
-                    'Auto Identify Nets returned False. '
-                    'Please review your design to see what is failing. '
-                    'Within Ansys, press simulation in the tab, then validate (green check mark).'
+                    "Auto Identify Nets returned False. "
+                    "Please review your design to see what is failing. "
+                    "Within Ansys, press simulation in the tab, then validate (green check mark)."
                 )
 
     # Below commands are from a notebook which shows abstraction usage.
@@ -374,7 +393,7 @@ class QQ3DPyaedt(QPyaedt):
     # c2.sim.capacitance_matrix
 
     def get_capacitance_matrix(self):
-        a = 5
+        pass
 
     def get_capacitance_all_passes(self, setup_name: str) -> Union[dict, None]:
         """ASSUME analyze_setup() has already happened.
@@ -398,44 +417,44 @@ class QQ3DPyaedt(QPyaedt):
 
         if len(all_C_matrices) == 0:
             self.design.logger.warning(
-                'There are no capacitance matrixes to return.'
-                'Did you execute analyze_setup()?')
+                "There are no capacitance matrixes to return."
+                "Did you execute analyze_setup()?"
+            )
             return None
 
         # Pandas output should have been set prior to opening Ansys,
         # however, just confirming if changed by user through GUI.
         settings.enable_pandas_output = True
 
-        setup_sweep_name = f'{setup_name}: AdaptivePass'
+        setup_sweep_name = f"{setup_name}: AdaptivePass"
         cap_data = self.current_app.post.get_solution_data(
             expressions=all_C_matrices,
             context="Original",
             setup_sweep_name=setup_sweep_name,
-            variations={"Pass": ["All"]})
+            variations={"Pass": ["All"]},
+        )
 
-        c1_units = cap_data.units_data
+        c1_units = cap_data.units_data  # noqa: F841
 
         all_cap_data_magnitude = []
         all_cap_data_magnitude_freqs = {}
 
-        confirm_freq = cap_data.active_intrinsic['Freq']  # Is 5.0
+        confirm_freq = cap_data.active_intrinsic["Freq"]  # Is 5.0
         # If a list is not returned, make one so can iterate through it.
         if isinstance(confirm_freq, float):
             confirm_freq = [confirm_freq]
 
         for freq in confirm_freq:
             all_cap_data_magnitude.append(freq)
-            for item in cap_data.intrinsics['Pass']:
-                #cap_real_imag = cap_data.full_matrix_real_imag
+            for item in cap_data.intrinsics["Pass"]:
+                # cap_real_imag = cap_data.full_matrix_real_imag
                 cap_mag = cap_data.full_matrix_mag_phase[0].iloc[int(item) - 1]
                 cap_mag_df = self.convert_to_dataframe(cap_mag)
                 all_cap_data_magnitude.append(cap_mag_df)
             all_cap_data_magnitude_freqs[freq] = all_cap_data_magnitude
         return all_cap_data_magnitude_freqs
 
-    def convert_to_dataframe(
-        self, cap_series: pd.Series
-    ) -> Optional[pd.DataFrame]:
+    def convert_to_dataframe(self, cap_series: pd.Series) -> Optional[pd.DataFrame]:
         """Convert the series to a dataframe based on the column names.
         If the names are missing, then the dataframe will be None.
 
@@ -454,25 +473,26 @@ class QQ3DPyaedt(QPyaedt):
 
         if len_row_names == 0 or len_col_names == 0:
             self.design.logger.warning(
-                f'The dataframe for solution data was not made.'
-                f'The names of rows={row_names} or columns={col_names} are empty.'
-                f'The dataframe was not made and is None.')
+                f"The dataframe for solution data was not made."
+                f"The names of rows={row_names} or columns={col_names} are empty."
+                f"The dataframe was not made and is None."
+            )
         else:
-            df = pd.DataFrame(np.empty((len_row_names, len_col_names),
-                                       dtype=object),
-                              index=pd.Index(row_names),
-                              columns=pd.Index(col_names))
+            df = pd.DataFrame(
+                np.empty((len_row_names, len_col_names), dtype=object),
+                index=pd.Index(row_names),
+                columns=pd.Index(col_names),
+            )
 
-        #for series_name in cap_series.index:
+        # for series_name in cap_series.index:
         for series_name, value in cap_series.items():
             # ASSUME format from pyaedt, C(row_name , col_name)
-            row_name, col_name = series_name[2:-1].split(',', 1)
+            row_name, col_name = series_name[2:-1].split(",", 1)
             df.loc[row_name, [col_name]] = value
 
         return df
 
-    def get_unique_row_and_col_names(
-            self, cap_series: pd.Series) -> Tuple[list, list]:
+    def get_unique_row_and_col_names(self, cap_series: pd.Series) -> Tuple[list, list]:
         """Parse the names in the series and identify the unique names
         for rows and columns
 
@@ -488,18 +508,20 @@ class QQ3DPyaedt(QPyaedt):
         col_names = set()
         for series_name in cap_series.index:
             # ASSUME format from pyaedt, C(row_name , col_name)
-            row_name, col_name = series_name[2:-1].split(',', 1)
+            row_name, col_name = series_name[2:-1].split(",", 1)
             row_names.add(row_name)
             col_names.add(col_name)
 
         return sorted(row_names), sorted(col_names)
 
-    def render_element(self,
-                       qgeom: pd.Series,
-                       is_junction: bool,
-                       port_list: None = None,
-                       jj_to_port: None = None,
-                       ignored_jjs: None = None):
+    def render_element(
+        self,
+        qgeom: pd.Series,
+        is_junction: bool,
+        port_list: None = None,
+        jj_to_port: None = None,
+        ignored_jjs: None = None,
+    ):
         """Render an individual shape whose properties are listed in a row of
         QGeometry table. Junction elements are handled separately from non-
         junction elements. For Q3D, junctions are not rendered.
@@ -513,7 +535,7 @@ class QQ3DPyaedt(QPyaedt):
         qc_shapely = qgeom.geometry
 
         if not is_junction:
-            #Q3D doesn't render junction.
+            # Q3D doesn't render junction.
             if isinstance(qc_shapely, shapely.geometry.Polygon):
                 self.render_element_poly(qgeom)
             elif isinstance(qc_shapely, shapely.geometry.LineString):

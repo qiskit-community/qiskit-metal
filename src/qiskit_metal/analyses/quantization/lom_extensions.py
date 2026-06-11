@@ -22,7 +22,7 @@ def to_external_system(lom_subsystem: Subsystem, mapping: Dict[str, Any]):
     """
     if lom_subsystem.sys_type not in mapping:
         raise ValueError(
-            f'LOM subsystem of type {lom_subsystem.sys_type} cannot be converted to an extern system.'
+            f"LOM subsystem of type {lom_subsystem.sys_type} cannot be converted to an extern system."
         )
 
     return mapping[lom_subsystem.sys_type]
@@ -33,8 +33,8 @@ def to_external_system(lom_subsystem: Subsystem, mapping: Dict[str, Any]):
 ##-----------------------------------------------------------------------------------
 
 LOM_SUBSYSTEM_TO_SEQ_MODE = {
-    'TRANSMON': seq.Transmon,
-    'FLUXONIUM': seq.Qubit,
-    'TL_RESONATOR': seq.Cavity,
-    'LUMPED_RESONATOR': seq.Cavity
+    "TRANSMON": seq.Transmon,
+    "FLUXONIUM": seq.Qubit,
+    "TL_RESONATOR": seq.Cavity,
+    "LUMPED_RESONATOR": seq.Cavity,
 }

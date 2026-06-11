@@ -76,10 +76,12 @@ class LaunchpadWirebondCoupled(QComponent):
         * lead_length: '25um' -- length of the cpw line attached to the end of the launch pad
     """
 
-    default_options = Dict(trace_width='cpw_width',
-                           trace_gap='cpw_gap',
-                           coupler_length='62.5um',
-                           lead_length='25um')
+    default_options = Dict(
+        trace_width="cpw_width",
+        trace_gap="cpw_gap",
+        coupler_length="62.5um",
+        lead_length="25um",
+    )
     """Default options"""
 
     TOOLTIP = """Launch pad to feed/read signals to/from the chip."""
@@ -93,64 +95,81 @@ class LaunchpadWirebondCoupled(QComponent):
         trace_width = p.trace_width
         trace_width_half = trace_width / 2
         trace_gap = p.trace_gap
-        inner_finger_width = .001
+        inner_finger_width = 0.001
         inner_finger_width_half = inner_finger_width / 2
-        inner_finger_offset = .015
-        finger_side_gap = .002
-        outer_finger_tip_gap = .0075
-        inner_finger_tip_gap = .05 + inner_finger_offset
-        outer_finger_width = (trace_width - inner_finger_width -
-                              2 * finger_side_gap) / 2
+        inner_finger_offset = 0.015
+        finger_side_gap = 0.002
+        outer_finger_tip_gap = 0.0075
+        inner_finger_tip_gap = 0.05 + inner_finger_offset
+        outer_finger_width = (
+            trace_width - inner_finger_width - 2 * finger_side_gap
+        ) / 2
         coupler_length = p.coupler_length
         lead_offset = coupler_length + outer_finger_tip_gap
         #########################################################
 
         # Geometry of main launch structure
-        launch_pad = draw.Polygon([
-            (0, trace_width_half), (-.122, trace_width_half + .035),
-            (-.202, trace_width_half + .035), (-.202, -trace_width_half - .035),
-            (-.122, -trace_width_half - .035), (0, -trace_width_half),
-            (coupler_length, -trace_width_half),
-            (coupler_length, -trace_width_half + outer_finger_width),
-            (-inner_finger_tip_gap + inner_finger_offset,
-             -trace_width_half + outer_finger_width),
-            (-inner_finger_tip_gap + inner_finger_offset,
-             trace_width_half - outer_finger_width),
-            (coupler_length, trace_width_half - outer_finger_width),
-            (coupler_length, trace_width_half), (0, trace_width / 2)
-        ])
+        launch_pad = draw.Polygon(
+            [
+                (0, trace_width_half),
+                (-0.122, trace_width_half + 0.035),
+                (-0.202, trace_width_half + 0.035),
+                (-0.202, -trace_width_half - 0.035),
+                (-0.122, -trace_width_half - 0.035),
+                (0, -trace_width_half),
+                (coupler_length, -trace_width_half),
+                (coupler_length, -trace_width_half + outer_finger_width),
+                (
+                    -inner_finger_tip_gap + inner_finger_offset,
+                    -trace_width_half + outer_finger_width,
+                ),
+                (
+                    -inner_finger_tip_gap + inner_finger_offset,
+                    trace_width_half - outer_finger_width,
+                ),
+                (coupler_length, trace_width_half - outer_finger_width),
+                (coupler_length, trace_width_half),
+                (0, trace_width / 2),
+            ]
+        )
 
         # Geometry of coupling structure
-        ind_stub = draw.Polygon([
-            (inner_finger_offset, -inner_finger_width_half),
-            (lead_offset, -inner_finger_width_half),
-            (lead_offset, -trace_width_half),
-            (lead_offset + lead_length, -trace_width_half),
-            (lead_offset + lead_length, trace_width_half),
-            (lead_offset, trace_width_half),
-            (lead_offset, +inner_finger_width_half),
-            (inner_finger_offset, +inner_finger_width_half),
-            (inner_finger_offset, -inner_finger_width_half)
-        ])
+        ind_stub = draw.Polygon(
+            [
+                (inner_finger_offset, -inner_finger_width_half),
+                (lead_offset, -inner_finger_width_half),
+                (lead_offset, -trace_width_half),
+                (lead_offset + lead_length, -trace_width_half),
+                (lead_offset + lead_length, trace_width_half),
+                (lead_offset, trace_width_half),
+                (lead_offset, +inner_finger_width_half),
+                (inner_finger_offset, +inner_finger_width_half),
+                (inner_finger_offset, -inner_finger_width_half),
+            ]
+        )
 
         # Geometry pocket (gap)
-        pocket = draw.Polygon([
-            (0, trace_width_half + trace_gap),
-            (-.122, trace_width_half + trace_gap + .087),
-            (-.25, trace_width_half + trace_gap + .087),
-            (-.25, -trace_width_half - trace_gap - .087),
-            (-.122, -trace_width_half - trace_gap - .087),
-            (0, -trace_width_half - trace_gap),
-            (lead_offset + lead_length, -trace_width_half - trace_gap),
-            (lead_offset + lead_length, +trace_width_half + trace_gap),
-            (0, trace_width_half + trace_gap)
-        ])
+        pocket = draw.Polygon(
+            [
+                (0, trace_width_half + trace_gap),
+                (-0.122, trace_width_half + trace_gap + 0.087),
+                (-0.25, trace_width_half + trace_gap + 0.087),
+                (-0.25, -trace_width_half - trace_gap - 0.087),
+                (-0.122, -trace_width_half - trace_gap - 0.087),
+                (0, -trace_width_half - trace_gap),
+                (lead_offset + lead_length, -trace_width_half - trace_gap),
+                (lead_offset + lead_length, +trace_width_half + trace_gap),
+                (0, trace_width_half + trace_gap),
+            ]
+        )
 
         # These variables are used to graphically locate the pin locations
-        main_pin_line = draw.LineString([
-            (lead_offset + lead_length, trace_width_half),
-            (lead_offset + lead_length, -trace_width_half)
-        ])
+        main_pin_line = draw.LineString(
+            [
+                (lead_offset + lead_length, trace_width_half),
+                (lead_offset + lead_length, -trace_width_half),
+            ]
+        )
 
         # Create polygon object list
         polys1 = [main_pin_line, launch_pad, ind_stub, pocket]
@@ -162,15 +181,12 @@ class LaunchpadWirebondCoupled(QComponent):
         [main_pin_line, launch_pad, ind_stub, pocket] = polys1
 
         # Adds the object to the qgeometry table
-        self.add_qgeometry('poly',
-                           dict(launch_pad=launch_pad, ind_stub=ind_stub),
-                           layer=p.layer)
+        self.add_qgeometry(
+            "poly", dict(launch_pad=launch_pad, ind_stub=ind_stub), layer=p.layer
+        )
 
         # Subtracts out ground plane on the layer its on
-        self.add_qgeometry('poly',
-                           dict(pocket=pocket),
-                           subtract=True,
-                           layer=p.layer)
+        self.add_qgeometry("poly", dict(pocket=pocket), subtract=True, layer=p.layer)
 
         # Generates the pins
-        self.add_pin('tie', main_pin_line.coords, trace_width)
+        self.add_pin("tie", main_pin_line.coords, trace_width)

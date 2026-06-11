@@ -18,7 +18,6 @@ get the Ej, Ec or use input Ej, Ec to find the spectrum of the Cooper Pair Box.
 
 @author: Christopher Warren (Chalmers University of Technology), updated by Zlatko K. Minev (IBM Quantum)
 """
-# pylint: disable=invalid-name
 
 import numpy as np
 import qutip as qt
@@ -40,11 +39,9 @@ class Hcpb:
     Returns all properties of interest for the CPB.
     """
 
-    def __init__(self,
-                 nlevels: int = 15,
-                 Ej: float = None,
-                 Ec: float = None,
-                 ng: float = 0.5):
+    def __init__(
+        self, nlevels: int = 15, Ej: float = None, Ec: float = None, ng: float = 0.5
+    ):
         """Generate a Cooper-pair box (CPB) model.
 
         Args:
@@ -110,7 +107,7 @@ class Hcpb:
     def _diagonalize_H(self):
         """Diagonalize the CPB Hamiltonian using symmetric tridiagonal
         eigensolver for efficient calculation of properties."""
-        ham_diag = 4 * self._Ec * (self._diag - self._ng)**2
+        ham_diag = 4 * self._Ec * (self._diag - self._ng) ** 2
         ham_off = -(self._Ej / 2.0) * self._off
         evals, evecs = linalg.eigh_tridiagonal(ham_diag, ham_off)
         self.evals = np.real(np.array(evals))
@@ -128,7 +125,7 @@ class Hcpb:
         return self.evals[k]
 
     def evec_k(self, k: int):
-        """Return the eigenvector of the CPB Hamiltonian for level k.
+        r"""Return the eigenvector of the CPB Hamiltonian for level k.
 
         Args:
             k (int): Index of eigenvector
@@ -139,7 +136,7 @@ class Hcpb:
         return self.evecs[:, k]
 
     def psi_k(self, k: int, pts: int = 1001):
-        """Return the wavevector of the CPB Hamiltonian in the flux basis. Made
+        r"""Return the wavevector of the CPB Hamiltonian in the flux basis. Made
         compact over the interval of [-pi, pi].
 
         Args:
@@ -167,7 +164,7 @@ class Hcpb:
         return psi, phi
 
     def fij(self, i: int, j: int):
-        """Compute the transition energy (or frequency) between states.
+        r"""Compute the transition energy (or frequency) between states.
 
         \|i> and \|j>.
 
@@ -189,7 +186,7 @@ class Hcpb:
         return self.fij(1, 2) - self.fij(0, 1)
 
     def n_ij(self, i: int, j: int):
-        """Compute the value of the number operator for coupling elements
+        r"""Compute the value of the number operator for coupling elements
         together in the energy eigen-basis.
 
         Args:
@@ -277,16 +274,16 @@ class Hcpb:
             self.Ej = x[0]
             self.Ec = x[1]
             # the 10 on the anharmonicity allows faster convergnce, see Minev
-            return (self.fij(0, 1) - f01)**2 + 10 * (self.anharm() - anharm)**2
+            return (self.fij(0, 1) - f01) ** 2 + 10 * (self.anharm() - anharm) ** 2
 
         # Initial guesses from
         # f01 ~ sqrt(8*Ej*Ec) - Ec
         #  eta ~ -Ec
-        x0 = [(f01 - anharm)**2 / (8 * (-anharm)), -anharm]
+        x0 = [(f01 - anharm) ** 2 / (8 * (-anharm)), -anharm]
         # can converge slowly if cost function not set up well, or alpha<<freq
-        ops = dict(bounds=[(0, 0), (x0[0] * 3, x0[1] * 3)],
-                   f_scale=1 / x0[0],
-                   max_nfev=2000)
+        ops = dict(
+            bounds=[(0, 0), (x0[0] * 3, x0[1] * 3)], f_scale=1 / x0[0], max_nfev=2000
+        )
         res = opt.least_squares(fun, x0, **{**ops, **kwargs})
         self.Ej, self.Ec = res.x
         return res.x
@@ -306,13 +303,11 @@ class Hcpb:
             self.Ej = x[0]
             self.Ec = Ec
             # the 15 on the anharmonicity allows faster convergnce, see Minev
-            return (self.fij(0, 1) - f01)**2 + 15 * (self.anharm() - Ec)**2
+            return (self.fij(0, 1) - f01) ** 2 + 15 * (self.anharm() - Ec) ** 2
 
-        x0 = [(f01 - Ec)**2 / (8 * (Ec))]
+        x0 = [(f01 - Ec) ** 2 / (8 * (Ec))]
         # can converge slowly if cost function not set up well, or alpha<<freq
-        ops = dict(bounds=[(0,), (x0[0] * 3,)],
-                   f_scale=1 / x0[0],
-                   max_nfev=2000)
+        ops = dict(bounds=[(0,), (x0[0] * 3,)], f_scale=1 / x0[0], max_nfev=2000)
         res = opt.least_squares(fun, x0, **{**ops, **kwargs})
         self.Ej = res.x[0]
         self.Ec = Ec

@@ -1,18 +1,30 @@
 #
+from __future__ import annotations
+
 from ast import parse
-from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import QHFSSPyaedt
-from qiskit_metal import Dict
 from typing import List, Tuple, Union
+
 import pandas as pd
-import pyEPR as epr
+
+# pyEPR is an opt-in dep; the friendly error propagates via
+# QAnsysRenderer.__init__ (inherited through QHFSSPyaedt). Module-level
+# try/except keeps this file importable on the lite install.
+try:
+    import pyEPR as epr
+except ImportError:  # pragma: no cover — exercised on lite installs
+    epr = None
+
+from qiskit_metal import Dict
+from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import QHFSSPyaedt
 
 
 class QHFSSEigenmodePyaedt(QHFSSPyaedt):
     """Subclass of pyaedt HFSS renderer for methods unique to driven-modal solutions within HFSS.
-     QPyaedt Default Options:
+    QPyaedt Default Options:
 
     """
-    name = 'aedt_hfss_eigenmode'
+
+    name = "aedt_hfss_eigenmode"
 
     default_setup = Dict(
         name="QHFSSEigenmodePyaedt_setup",
@@ -23,22 +35,27 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         MinimumPasses="1",
         MinimumConvergedPasses="1",
         PercentRefinement="30",
-        BasisOrder="1")
+        BasisOrder="1",
+    )
     """aedt HFSS Options"""
 
     default_pyepr_options = Dict(
-        ansys=Dict(dielectric_layers=[3],),
+        ansys=Dict(
+            dielectric_layers=[3],
+        ),
         hamiltonian=Dict(cos_trunc=7, fock_trunc=8, numeric=True),
         print_result=True,
     )
     """pyEPR options"""
 
-    def __init__(self,
-                 multilayer_design: 'MultiPlanar',
-                 project_name: Union[str, None] = None,
-                 design_name: Union[str, None] = None,
-                 initiate=False,
-                 options: Dict = None):
+    def __init__(
+        self,
+        multilayer_design: "MultiPlanar",
+        project_name: Union[str, None] = None,
+        design_name: Union[str, None] = None,
+        initiate=False,
+        options: Dict = None,
+    ):
         """Create a QRenderer for HFSS simulations using pyaedt and multiplanar design.
         QHFSSPyaedt is subclassed from QPyaedt, subclassed from QRendererAnalysis and
         subclassed from QRenderer.  The default_setup options are expected to be defined by
@@ -56,27 +73,30 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             options (Dict, optional):  Used to override all options. Defaults to None.
         """
 
-        super().__init__(multilayer_design,
-                         renderer_type='HFSS_EM',
-                         project_name=project_name,
-                         design_name=design_name,
-                         initiate=initiate,
-                         options=options)
+        super().__init__(
+            multilayer_design,
+            renderer_type="HFSS_EM",
+            project_name=project_name,
+            design_name=design_name,
+            initiate=initiate,
+            options=options,
+        )
 
-        #make a class to read in pandas table.
+        # make a class to read in pandas table.
         self.tables = None
 
     def add_hfss_em_setup(
-            self,
-            name: str = None,
-            MinimumFrequency: float = None,  # GHz
-            NumModes: int = None,
-            MaxDeltaFreq: float = None,
-            MaximumPasses: int = None,
-            MinimumPasses: int = None,
-            MinimumConvergedPasses: int = None,
-            PercentRefinement: int = None,
-            BasisOrder: int = None):
+        self,
+        name: str = None,
+        MinimumFrequency: float = None,  # GHz
+        NumModes: int = None,
+        MaxDeltaFreq: float = None,
+        MaximumPasses: int = None,
+        MinimumPasses: int = None,
+        MinimumConvergedPasses: int = None,
+        PercentRefinement: int = None,
+        BasisOrder: int = None,
+    ):
         """Create a solution setup in Ansys HFSS Driven-Modal solution type. If user does not provide
         arguments, they will be obtained from QHFSSDrivenmodalPyaedt.default_setup dict.
 
@@ -103,43 +123,45 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         esu = self.default_setup
 
         if not name:
-            name = self.parse_value(esu['name'])
+            name = self.parse_value(esu["name"])
 
         if name in self.current_app.setup_names:
             self.logger.warning(
-                f'The setup name already exists within '
-                f'project:{self.project_name} design: {self.design_name}. '
-                f'So a new setup with name={name} was NOT added to design.')
+                f"The setup name already exists within "
+                f"project:{self.project_name} design: {self.design_name}. "
+                f"So a new setup with name={name} was NOT added to design."
+            )
             return
 
         if not MinimumFrequency:
-            MinimumFrequency = float(self.parse_value(esu['MinimumFrequency']))
+            MinimumFrequency = float(self.parse_value(esu["MinimumFrequency"]))
         if not NumModes:
-            NumModes = int(self.parse_value(esu['NumModes']))
+            NumModes = int(self.parse_value(esu["NumModes"]))
         if not MaxDeltaFreq:
-            MaxDeltaFreq = float(self.parse_value(esu['MaxDeltaFreq']))
+            MaxDeltaFreq = float(self.parse_value(esu["MaxDeltaFreq"]))
         if not MaximumPasses:
-            MaximumPasses = int(self.parse_value(esu['MaximumPasses']))
+            MaximumPasses = int(self.parse_value(esu["MaximumPasses"]))
         if not MinimumPasses:
-            MinimumPasses = int(self.parse_value(esu['MinimumPasses']))
+            MinimumPasses = int(self.parse_value(esu["MinimumPasses"]))
         if not MinimumConvergedPasses:
             MinimumConvergedPasses = int(
-                self.parse_value(esu['MinimumConvergedPasses']))
+                self.parse_value(esu["MinimumConvergedPasses"])
+            )
         if not PercentRefinement:
-            PercentRefinement = int(self.parse_value(esu['PercentRefinement']))
+            PercentRefinement = int(self.parse_value(esu["PercentRefinement"]))
         if not BasisOrder:
-            BasisOrder = int(self.parse_value(esu['BasisOrder']))
+            BasisOrder = int(self.parse_value(esu["BasisOrder"]))
 
         new_setup = self.current_app.create_setup(name)
 
-        new_setup.props['MinimumFrequency'] = f'{MinimumFrequency}GHz'
-        new_setup.props['NumModes'] = NumModes
-        new_setup.props['MaxDeltaFreq'] = MaxDeltaFreq
-        new_setup.props['MaximumPasses'] = MaximumPasses
-        new_setup.props['MinimumPasses'] = MinimumPasses
-        new_setup.props['MinimumConvergedPasses'] = MinimumConvergedPasses
-        new_setup.props['PercentRefinement'] = PercentRefinement
-        new_setup.props['BasisOrder'] = BasisOrder
+        new_setup.props["MinimumFrequency"] = f"{MinimumFrequency}GHz"
+        new_setup.props["NumModes"] = NumModes
+        new_setup.props["MaxDeltaFreq"] = MaxDeltaFreq
+        new_setup.props["MaximumPasses"] = MaximumPasses
+        new_setup.props["MinimumPasses"] = MinimumPasses
+        new_setup.props["MinimumConvergedPasses"] = MinimumConvergedPasses
+        new_setup.props["PercentRefinement"] = PercentRefinement
+        new_setup.props["BasisOrder"] = BasisOrder
 
         new_setup.update()
 
@@ -160,20 +182,22 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
         if setup_name not in self.current_app.setup_names:
             self.logger.warning(
-                f'Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, '
-                f'a new setup will be added to design with default settings for HFSS DrivenModal.'
+                "Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, "
+                "a new setup will be added to design with default settings for HFSS DrivenModal."
             )
             self.add_hfss_dm_setup(setup_name)
 
         return self.current_app.analyze_setup(setup_name)
 
-    def render_design(self,
-                      selection: Union[list, None] = None,
-                      open_pins: Union[list, None] = None,
-                      port_list: Union[list, None] = None,
-                      jj_to_port: Union[list, None] = None,
-                      ignored_jjs: Union[list, None] = None,
-                      box_plus_buffer: bool = True):
+    def render_design(
+        self,
+        selection: Union[list, None] = None,
+        open_pins: Union[list, None] = None,
+        port_list: Union[list, None] = None,
+        jj_to_port: Union[list, None] = None,
+        ignored_jjs: Union[list, None] = None,
+        box_plus_buffer: bool = True,
+    ):
         """
         This render_design will add additional logic for just eigenmode design within project.
 
@@ -228,16 +252,18 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         # jj_to_port SHOULD not bew in eigenmode solution type. So will give error
         if jj_to_port or port_list:
             self.design.logger.error(
-                f'In eigenmode solution, there should NOT be any values for jj_to_port or port_list.'
+                "In eigenmode solution, there should NOT be any values for jj_to_port or port_list."
             )
             return
 
-        super().render_design(selection, open_pins, port_list, jj_to_port,
-                              ignored_jjs, box_plus_buffer)
+        super().render_design(
+            selection, open_pins, port_list, jj_to_port, ignored_jjs, box_plus_buffer
+        )
 
         if self.case == 2:
             self.logger.warning(
-                'Unable to proceed with rendering. Please check selection.')
+                "Unable to proceed with rendering. Please check selection."
+            )
             return
 
         self.activate_user_project_design()
@@ -254,12 +280,15 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         return
 
     def add_mesh(self):
-        a = 5
+        pass
 
-    def should_render_junction(self, qgeom: pd.Series, port_list: Union[list,
-                                                                        None],
-                               jj_to_port: Union[list, None],
-                               ignored_jjs: Union[list, None]) -> bool:
+    def should_render_junction(
+        self,
+        qgeom: pd.Series,
+        port_list: Union[list, None],
+        jj_to_port: Union[list, None],
+        ignored_jjs: Union[list, None],
+    ) -> bool:
         """Logic Just for eigenmode
 
         Args:
@@ -274,19 +303,23 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         """
 
         if ignored_jjs:
-            search_junction = (self.design._components[qgeom["component"]].name,
-                               qgeom['name'])
+            search_junction = (
+                self.design._components[qgeom["component"]].name,
+                qgeom["name"],
+            )
             if search_junction in ignored_jjs:
                 return False
 
         return True
 
-    def run_epr(self,
-                dielectric_layers=None,
-                cos_trunc: int = None,
-                fock_trunc: int = None,
-                numeric: bool = None,
-                print_result: bool = None):
+    def run_epr(
+        self,
+        dielectric_layers=None,
+        cos_trunc: int = None,
+        fock_trunc: int = None,
+        numeric: bool = None,
+        print_result: bool = None,
+    ):
         """Run EPR analysis and return the results dict.
 
         Interpreting results:
@@ -306,7 +339,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         Returns:
             dict: ``self.epr_quantum_analysis.data`` with all EPR results.
         """
-        if (print_result == None):
+        if print_result is None:
             print_result = self.default_pyepr_options.print_result
 
         # Sets ANSYS to project associated with self.design
@@ -326,9 +359,9 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         self.epr_distributed_analysis.do_EPR_analysis()
 
         # Find observable quantities from energy-partipation ratios
-        self.epr_spectrum_analysis(cos_trunc=cos_trunc,
-                                   fock_trunc=fock_trunc,
-                                   print_result=print_result)
+        self.epr_spectrum_analysis(
+            cos_trunc=cos_trunc, fock_trunc=fock_trunc, print_result=print_result
+        )
 
         # Print results?
         if print_result:
@@ -345,46 +378,46 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         """
         # Get all josephson junctions from rendered components table
         geom_table = self.path_poly_and_junction_with_valid_comps
-        all_jjs = geom_table.loc[geom_table['name'].str.contains('rect_jj')]
+        all_jjs = geom_table.loc[geom_table["name"].str.contains("rect_jj")]
         all_jjs = all_jjs.reset_index(drop=True)
 
         for i, row in all_jjs.iterrows():
             ### Parsing Data ###
-            component = str(row['component'])
-            name = str(row['name'])
-            inductance = row['aedt_hfss_inductance']  # Lj in Henries
-            capacitance = row['aedt_hfss_capacitance']  # Cj in Farads
+            component = str(row["component"])
+            name = str(row["name"])
+            inductance = row["aedt_hfss_inductance"]  # Lj in Henries
+            capacitance = row["aedt_hfss_capacitance"]  # Cj in Farads
 
             # Get ANSYS > Model > Sheet corresponding to JJs
-            rect_name = 'JJ_rect_Lj_' + component + '_' + name
+            rect_name = "JJ_rect_Lj_" + component + "_" + name
 
             # Get ANSYS > Model > Lines corresponding to JJs
-            line_name = 'JJ_Lj_' + component + '_' + name + '_'
+            line_name = "JJ_Lj_" + component + "_" + name + "_"
 
             ### Appending data ###
             # Add global Lj and Cj variables to ANSYS (for EPR analysis)
-            ansys_Lj_name = f'Lj_{i}'
-            ansys_Cj_name = f'Cj_{i}'
+            ansys_Lj_name = f"Lj_{i}"
+            ansys_Cj_name = f"Cj_{i}"
 
-            self.set_variable(ansys_Lj_name, str(inductance * 1E9) + 'nH')
-            self.set_variable(ansys_Cj_name, str(capacitance * 1E15) + 'fF')
+            self.set_variable(ansys_Lj_name, str(inductance * 1e9) + "nH")
+            self.set_variable(ansys_Cj_name, str(capacitance * 1e15) + "fF")
 
             # Append data in pyEPR.ProjectInfo.junctions data format
             junction_dict = {
-                'Lj_variable': ansys_Lj_name,
-                'rect': rect_name,
-                'line': line_name,
-                'length': epr.parse_units('100um'),
-                'Cj_variable': ansys_Cj_name
+                "Lj_variable": ansys_Lj_name,
+                "rect": rect_name,
+                "line": line_name,
+                "length": epr.parse_units("100um"),
+                "Cj_variable": ansys_Cj_name,
             }
 
-            self.pinfo.junctions[f'j{i}'] = junction_dict
+            self.pinfo.junctions[f"j{i}"] = junction_dict
 
         self.pinfo.validate_junction_info()
 
     def setup_dielectric_for_epr(self, dielectric_layers=None):
         """
-        Find name of dielectric layer rendered in ANSYS, then 
+        Find name of dielectric layer rendered in ANSYS, then
         define it as a dissipative dielectric surface for pyEPR.
 
         Args:
@@ -394,31 +427,30 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
         """
         # Check for default values
-        if (dielectric_layers == None):
+        if dielectric_layers is None:
             dielectric_layers = self.default_pyepr_options.ansys.dielectric_layers
 
         # Check if layerstack (self.design.ls) is uniquely specified
         ls_unique = self.design.ls.is_layer_data_unique()
-        if (ls_unique != True):
-            raise ValueError('Layer data in `MultiPlanar` design is not unique')
+        if not ls_unique:
+            raise ValueError("Layer data in `MultiPlanar` design is not unique")
 
         dielectric_names = []
         ls_df = self.design.ls.ls_df
         for layer in dielectric_layers:
             # Find layer names
-            selected_ls_df = ls_df[ls_df['layer'] == layer]
-            datatype = selected_ls_df['datatype'].values[0]
-            dielectric_name = f'layer_{layer}_datatype_{datatype}_plane'
+            selected_ls_df = ls_df[ls_df["layer"] == layer]
+            datatype = selected_ls_df["datatype"].values[0]
+            dielectric_name = f"layer_{layer}_datatype_{datatype}_plane"
 
             dielectric_names.append(dielectric_name)
 
         # Define them as dielectrics in pyEPR.ProjectInfo object
-        self.pinfo.dissipative['dielectric_surfaces'] = dielectric_names
+        self.pinfo.dissipative["dielectric_surfaces"] = dielectric_names
 
-    def epr_spectrum_analysis(self,
-                              cos_trunc: int = None,
-                              fock_trunc: int = None,
-                              print_result: bool = None):
+    def epr_spectrum_analysis(
+        self, cos_trunc: int = None, fock_trunc: int = None, print_result: bool = None
+    ):
         """Core EPR analysis method.
 
         Args:
@@ -426,19 +458,19 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             fock_trunc (int, optional): Truncation of the fock. Defaults to self.default_pyepr_options.
             print (boo, optional): Print results of EPR analysis. Defaults to self.default_pyepr_options.
         """
-        if (cos_trunc == None):
+        if cos_trunc is None:
             cos_trunc = self.default_pyepr_options.hamiltonian.cos_trunc
-        if (fock_trunc == None):
+        if fock_trunc is None:
             fock_trunc = self.default_pyepr_options.hamiltonian.fock_trunc
-        if (print_result == None):
+        if print_result is None:
             print_result = self.default_pyepr_options.print_result
 
         self.epr_quantum_analysis = epr.QuantumAnalysis(
-            self.epr_distributed_analysis.data_filename)
+            self.epr_distributed_analysis.data_filename
+        )
         self.epr_quantum_analysis.analyze_all_variations(
-            cos_trunc=cos_trunc,
-            fock_trunc=fock_trunc,
-            print_result=print_result)
+            cos_trunc=cos_trunc, fock_trunc=fock_trunc, print_result=print_result
+        )
 
     def epr_report_hamiltonian(self, numeric=None):
         """Reports in a markdown friendly table the hamiltonian results.
@@ -446,7 +478,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         Args:
             numeric (bool, optional): Use numerical diagonalization. Defaults to self.default_pyepr_options.
         """
-        if (numeric == None):
+        if numeric is None:
             numeric = self.default_pyepr_options.hamiltonian.numeric
 
         self.epr_quantum_analysis.plot_hamiltonian_results()

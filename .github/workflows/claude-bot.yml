@@ -1,0 +1,104 @@
+---
+# Quantum Metal AI Maintainer Bot
+#
+# Status: DRAFT — gated off via `if: false` on the job. Enable by
+# removing that line (or replacing with the real condition) once
+# you've:
+#
+#   1. Installed the @claude GitHub App on this repo:
+#        `claude /install-github-app`  (in your local Claude Code)
+#      This adds the bot identity AND sets up the required
+#      ANTHROPIC_API_KEY secret (or Agent SDK credit linkage).
+#
+#   2. Read `.claude/AGENT.md` end-to-end. That file is what the
+#      bot reads as its system prompt; it governs identity,
+#      hard-touch zones, escalation triggers, label taxonomy,
+#      prompt-injection defenses, and the kill switch.
+#
+#   3. Read `.github/AGENT_POLICY.md` (the public-facing policy)
+#      and decided you're comfortable with the SLA + scope
+#      described there.
+#
+#   4. Verified the bot's GitHub App permissions match what
+#      AGENT.md describes (no admin, no merge-without-review).
+#
+# Once enabled, this workflow fires on:
+#   - Issue opened (auto-triage)
+#   - Comment containing `@claude` (interactive)
+#
+# Scheduled / nightly autonomous work (stale-issue sweep, etc.)
+# lives in a separate cloud Routine — set up at
+# https://claude.ai/code/routines, NOT here.
+
+name: Claude maintainer bot
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+# Critical hardening: scoped permissions, NO admin, NO secrets-write.
+# The bot only needs to read repo content, write issue comments +
+# labels, and open PRs on `claude/*` branches.
+permissions:
+  contents: write          # for opening branches + PRs
+  issues: write            # for comments + labels
+  pull-requests: write     # for opening PRs
+  # Deliberately NOT requested:
+  # - actions: write   (would let bot disable other workflows)
+  # - secrets: write   (would let bot exfiltrate / rotate secrets)
+  # - admin            (would let bot bypass branch protection)
+
+# One job per issue/PR at a time. New events for the same issue
+# queue rather than spawning parallel runs.
+concurrency:
+  group: claude-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  claude:
+    # GATE: this `if: false` keeps the workflow inert until the
+    # maintainer explicitly enables it. To enable, replace with:
+    #
+    #   if: |
+    #     github.event.sender.type != 'Bot' &&
+    #     (github.event_name == 'issues' ||
+    #      contains(github.event.comment.body, '@claude'))
+    #
+    # The `sender.type != 'Bot'` filter prevents bot-to-bot loops
+    # (e.g., the bot triggering itself by replying to its own
+    # comment).
+    if: false
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 10   # hard wall-clock cap; bot gives up cleanly
+
+    # Optional: scope this job to a GitHub Environment that requires
+    # manual approval before secrets are released. Set up the
+    # `claude-bot` environment in repo Settings → Environments,
+    # configure it with the ANTHROPIC_API_KEY secret, and uncomment:
+    #
+    # environment: claude-bot
+
+    steps:
+      - name: Checkout (single commit, no history)
+        uses: actions/checkout@<commit-sha-pinned-after-enable>
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude maintainer
+        uses: anthropics/claude-code-action@<commit-sha-pinned-after-enable>
+        with:
+          # Bills against the Agent SDK credit pool (included in
+          # Max 20x: $200/mo). Add the secret only after installing
+          # the GitHub App via `claude /install-github-app`.
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+
+          # Bound turn-count: the bot must give up cleanly rather
+          # than loop forever. 5 is enough to triage, label, reply,
+          # and (occasionally) open a PR.
+          claude_args: |
+            --max-turns 5
+            --no-auto-update
+            --system-prompt-file .claude/AGENT.md

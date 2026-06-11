@@ -19,17 +19,17 @@ with Hfss as hfss:
 
 """
 
-from qiskit_metal.renderers.renderer_ansys_pyaedt.pyaedt_base import QPyaedt
-from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
-from qiskit_metal.draw.utility import to_vec3D, to_vec3D_list
-from qiskit_metal.toolbox_metal.parsing import parse_entry, parse_units
-
-from qiskit_metal import Dict
 from typing import List, Tuple, Union
+
 import pandas as pd
 import shapely
 
-from qiskit_metal import config
+from qiskit_metal import Dict, config
+from qiskit_metal.draw.utility import to_vec3D, to_vec3D_list
+from qiskit_metal.renderers.renderer_ansys.ansys_renderer import QAnsysRenderer
+from qiskit_metal.renderers.renderer_ansys_pyaedt.pyaedt_base import QPyaedt
+from qiskit_metal.toolbox_metal.parsing import parse_entry, parse_units
+
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import get_clean_name
 
@@ -37,47 +37,52 @@ if not config.is_building_docs():
 class QHFSSPyaedt(QPyaedt):
     """Subclass of pyaedt renderer for running HFSS simulations.
 
-     QPyaedt Default Options:
+    QPyaedt Default Options:
 
     """
 
-    default_setup = Dict(
-        drivenmodal=Dict(
-            name="Setup",
-            freq_ghz="5.0",
-            max_delta_s="0.1",
-            max_passes="10",
-            min_passes="1",
-            min_converged="1",
-            pct_refinement="30",
-            basis_order="1",
+    default_setup = (
+        Dict(
+            drivenmodal=Dict(
+                name="Setup",
+                freq_ghz="5.0",
+                max_delta_s="0.1",
+                max_passes="10",
+                min_passes="1",
+                min_converged="1",
+                pct_refinement="30",
+                basis_order="1",
+            ),
+            eigenmode=Dict(
+                name="Setup",
+                min_freq_ghz="1",
+                n_modes="1",
+                max_delta_f="0.5",
+                max_passes="10",
+                min_passes="1",
+                min_converged="1",
+                pct_refinement="30",
+                basis_order="-1",
+            ),
         ),
-        eigenmode=Dict(
-            name="Setup",
-            min_freq_ghz="1",
-            n_modes="1",
-            max_delta_f="0.5",
-            max_passes="10",
-            min_passes="1",
-            min_converged="1",
-            pct_refinement="30",
-            basis_order="-1",
-        ),
-    ),
-    name = 'aedt_hfss'
+    )
+    name = "aedt_hfss"
 
     aedt_hfss_options = Dict(
         # spacing between port and inductor if junction is drawn both ways
-        port_inductor_gap='10um')
+        port_inductor_gap="10um"
+    )
     """aedt HFSS Options"""
 
-    def __init__(self,
-                 multilayer_design: 'MultiPlanar',
-                 renderer_type: str = 'HFSS',
-                 project_name: Union[str, None] = None,
-                 design_name: Union[str, None] = None,
-                 initiate=False,
-                 options: Dict = None):
+    def __init__(
+        self,
+        multilayer_design: "MultiPlanar",
+        renderer_type: str = "HFSS",
+        project_name: Union[str, None] = None,
+        design_name: Union[str, None] = None,
+        initiate=False,
+        options: Dict = None,
+    ):
         """Create a QRenderer for HFSS simulations using pyaedt and multiplanar design.
         QHFSSPyaedt is subclassed from QPyaedt, subclassed from QRendererAnalysis and
         subclassed from QRenderer.  The default_setup options are expected to be defined by
@@ -97,19 +102,21 @@ class QHFSSPyaedt(QPyaedt):
             options (Dict, optional):  Used to override all options. Defaults to None.
         """
 
-        super().__init__(multilayer_design,
-                         renderer_type=renderer_type,
-                         project_name=project_name,
-                         design_name=design_name,
-                         initiate=initiate,
-                         options=options)
+        super().__init__(
+            multilayer_design,
+            renderer_type=renderer_type,
+            project_name=project_name,
+            design_name=design_name,
+            initiate=initiate,
+            options=options,
+        )
 
         self.current_sweep = None
 
         # Check if user entered valid data
         self.port_list_is_valid = None  # bool
-        self.jj_to_port_is_valid = None  #bool
-        self.ignored_jjs_is_valid = None  #bool
+        self.jj_to_port_is_valid = None  # bool
+        self.ignored_jjs_is_valid = None  # bool
 
         # Reformat the port_list and enter into port_list_dict
         self.port_list_dict = Dict()
@@ -121,18 +128,20 @@ class QHFSSPyaedt(QPyaedt):
         self.ignored_jjs = []
 
         # QRenderer has a "cls" method called load()
-        if_registered_in_design = QHFSSPyaedt.load()
+        if_registered_in_design = QHFSSPyaedt.load()  # noqa: F841
 
-        #make a class to read in pandas table.
+        # make a class to read in pandas table.
         self.tables = None
 
-    def render_design(self,
-                      selection: Union[list, None] = None,
-                      open_pins: Union[list, None] = None,
-                      port_list: Union[list, None] = None,
-                      jj_to_port: Union[list, None] = None,
-                      ignored_jjs: Union[list, None] = None,
-                      box_plus_buffer: bool = True):
+    def render_design(
+        self,
+        selection: Union[list, None] = None,
+        open_pins: Union[list, None] = None,
+        port_list: Union[list, None] = None,
+        jj_to_port: Union[list, None] = None,
+        ignored_jjs: Union[list, None] = None,
+        box_plus_buffer: bool = True,
+    ):
         """
         This render_design will add additional logic for HFSS within project.
         In particular, when used by BOTH solution types of eigenmode and drivenmodal.
@@ -213,20 +222,22 @@ class QHFSSPyaedt(QPyaedt):
 
         if self.case == 2:
             self.logger.warning(
-                'Unable to proceed with rendering. Please check selection.')
+                "Unable to proceed with rendering. Please check selection."
+            )
             return
 
         self.reset_hfss_arguments()
         self.ignored_jjs = ignored_jjs
 
-        #Every time one chooses to render, we have to get the chip names since the
-        #qgeometry tables can be updated between each render_design().
-        chip_list = self.get_chip_names()
+        # Every time one chooses to render, we have to get the chip names since the
+        # qgeometry tables can be updated between each render_design().
+        chip_list = self.get_chip_names()  # noqa: F841
 
-        if not self.valid_input_arguments(open_pins, port_list, jj_to_port,
-                                          ignored_jjs):
+        if not self.valid_input_arguments(
+            open_pins, port_list, jj_to_port, ignored_jjs
+        ):
             self.logger.error(
-                f'Check the arguments to render_design, invalid name was probably used.'
+                "Check the arguments to render_design, invalid name was probably used."
             )
         else:
             # Ansys default units is 'mm'?????, but metal using 'meter'.
@@ -237,22 +248,26 @@ class QHFSSPyaedt(QPyaedt):
 
             self.draw_sample_holder()
 
-            self.aedt_render_by_layer_then_tables(skip_junction=False,
-                                                  open_pins=open_pins,
-                                                  port_list=port_list,
-                                                  jj_to_port=jj_to_port,
-                                                  ignored_jjs=ignored_jjs)
+            self.aedt_render_by_layer_then_tables(
+                skip_junction=False,
+                open_pins=open_pins,
+                port_list=port_list,
+                jj_to_port=jj_to_port,
+                ignored_jjs=ignored_jjs,
+            )
 
         # self.assign_thin_conductor()
         # self.assign_nets()
 
-    def aedt_render_by_layer_then_tables(self,
-                                         open_pins: Union[list, None],
-                                         port_list: Union[list, None],
-                                         jj_to_port: Union[list, None],
-                                         ignored_jjs: Union[list, None],
-                                         skip_junction: bool = False,
-                                         data_type: int = 0):
+    def aedt_render_by_layer_then_tables(
+        self,
+        open_pins: Union[list, None],
+        port_list: Union[list, None],
+        jj_to_port: Union[list, None],
+        ignored_jjs: Union[list, None],
+        skip_junction: bool = False,
+        data_type: int = 0,
+    ):
         """_summary_
 
         Args:
@@ -271,58 +286,70 @@ class QHFSSPyaedt(QPyaedt):
                                                     layer and datatype. Defaults to 0.
         """
 
-        super().aedt_render_by_layer_then_tables(skip_junction=skip_junction,
-                                                 open_pins=open_pins,
-                                                 port_list=port_list,
-                                                 jj_to_port=jj_to_port,
-                                                 ignored_jjs=ignored_jjs,
-                                                 data_type=data_type)
+        super().aedt_render_by_layer_then_tables(
+            skip_junction=skip_junction,
+            open_pins=open_pins,
+            port_list=port_list,
+            jj_to_port=jj_to_port,
+            ignored_jjs=ignored_jjs,
+            data_type=data_type,
+        )
 
         for layer_num in sorted(
-                self.design.qgeometry.get_all_unique_layers_for_all_tables(
-                    self.qcomp_ids)):
-
+            self.design.qgeometry.get_all_unique_layers_for_all_tables(self.qcomp_ids)
+        ):
             # Create subsets per layer for  port_list, jj_to)port, and open_pins.
 
             result_subset = self.get_subset_based_on_layer(
-                open_pins, port_list, jj_to_port, ignored_jjs, layer_num)
-            open_pins_subset, port_list_subset, jj_to_port_subset, ignored_jjs_subset = result_subset
+                open_pins, port_list, jj_to_port, ignored_jjs, layer_num
+            )
+            (
+                open_pins_subset,
+                port_list_subset,
+                jj_to_port_subset,
+                ignored_jjs_subset,
+            ) = result_subset
 
             for table_type in self.design.qgeometry.get_element_types():
-                if table_type != 'junction' or not skip_junction:
-                    #At this point, we know table type,
-                    self.render_components(table_type, layer_num,
-                                           port_list_subset, jj_to_port_subset,
-                                           ignored_jjs_subset)
+                if table_type != "junction" or not skip_junction:
+                    # At this point, we know table type,
+                    self.render_components(
+                        table_type,
+                        layer_num,
+                        port_list_subset,
+                        jj_to_port_subset,
+                        ignored_jjs_subset,
+                    )
 
-            #For each layer, add the endcaps and
+            # For each layer, add the endcaps and
             # add polyline to subtract to self.chip_subtract_dict[layer_num].
 
             if isinstance(open_pins_subset, list) and self.open_pins_is_valid:
                 # Only use this method if user defines open pins.
                 if open_pins_subset:
-                    #Confirm there is something in the list.
+                    # Confirm there is something in the list.
                     self.add_endcaps(open_pins_subset, layer_num)
 
             solution_type = self.current_app.solution_type
 
-            if solution_type == 'Modal' and self.port_list_is_valid and isinstance(
-                    port_list_subset, list):
-
+            if (
+                solution_type == "Modal"
+                and self.port_list_is_valid
+                and isinstance(port_list_subset, list)
+            ):
                 # Only use this method if user defines drivenmodal solution_type,
                 # and  port list is provided by user.
                 if port_list_subset:
-                    #Confirm there is something in the list.
+                    # Confirm there is something in the list.
                     self.port_list_dict_populate(port_list_subset)
-                    self.add_ports(port_list_subset, self.port_list_dict,
-                                   layer_num)
+                    self.add_ports(port_list_subset, self.port_list_dict, layer_num)
 
             # The layer is obtained from qgeometry tables, but layer_stack
             # can have multiple data_types.  For now, the subtract will
             # happen from data_type==0.
             self.subtract_from_ground(layer_num, data_type=data_type)
 
-#yapf: disable
+    # yapf: disable
     def get_subset_based_on_layer(self,
                     open_pins: Union[list, None],
                     port_list: Union[list, None],
@@ -579,7 +606,7 @@ class QHFSSPyaedt(QPyaedt):
                 impedance = self.jj_to_port_dict[search_junction]
                 jj_name_port = "JJ_rect_" + "R_" + str(
                     qgeom["component"]) + "_" + str(qgeom['name'])
-                jj_to_port_boundary = self.current_app.create_lumped_port_to_sheet(
+                jj_to_port_boundary = self.current_app.create_lumped_port_to_sheet(  # noqa: F841
                     sheet_name=poly_sheet.name,
                     portname=jj_name_port,
                     axisdir=endpoints_3d,
@@ -591,7 +618,7 @@ class QHFSSPyaedt(QPyaedt):
             Lvalue = parse_entry(jj_of_interest['aedt_hfss_inductance'][0])
             Cvalue = parse_entry(jj_of_interest['aedt_hfss_capacitance'][0])
 
-            lumped_rlc_boundary = self.current_app.assign_lumped_rlc_to_sheet(
+            lumped_rlc_boundary = self.current_app.assign_lumped_rlc_to_sheet(  # noqa: F841
                 sheet_name=poly_sheet.name,
                 sourcename=f'rlc_{poly_sheet.name}',
                 axisdir=endpoints_3d,
@@ -653,7 +680,7 @@ class QHFSSPyaedt(QPyaedt):
         pass
 
 
-# yapf: disable
+    # yapf: disable
     def valid_input_arguments(self,
                             open_pins: Union[list, None],
                             port_list: Union[list, None],
@@ -678,38 +705,38 @@ class QHFSSPyaedt(QPyaedt):
         if open_pins:
             self.open_pins_is_valid = self.confirm_open_pins_are_valid_names(
                 open_pins, pair_used)
-            if self.open_pins_is_valid == False:
-                self.logger.error(f'Arguments are not in Design for open_pins.')
+            if not self.open_pins_is_valid:
+                self.logger.error('Arguments are not in Design for open_pins.')
         else:
             self.open_pins_is_valid = True
 
         if port_list:
             self.port_list_is_valid = self.confirm_port_list_have_valid_request(
                 port_list, pair_used)
-            if self.port_list_is_valid == False:
-                self.logger.error(f'Arguments are not in Design for port_list.')
+            if not self.port_list_is_valid:
+                self.logger.error('Arguments are not in Design for port_list.')
         else:
-            self.port_list_is_valid == True
+            self.port_list_is_valid
 
         if jj_to_port:
             self.jj_to_port_is_valid = self.confirm_jj_to_port_has_valid_request(
                 jj_to_port, pair_used)
-            if self.jj_to_port_is_valid == False:
+            if not self.jj_to_port_is_valid:
                 self.logger.error(
-                    f'Arguments are not in Design for jj_to_port.')
+                    'Arguments are not in Design for jj_to_port.')
         else:
-            self.jj_to_port_is_valid == True
+            self.jj_to_port_is_valid
 
         if ignored_jjs:
             self.ignored_jjs_is_valid = self.confirm_ignored_jjs_has_valid_request(
                 ignored_jjs, pair_used)
-            if self.ignored_jjs_is_valid == False:
+            if not self.ignored_jjs_is_valid:
                 self.logger.error(
-                    f'Arguments are not in Design for ignored_jjs.')
+                    'Arguments are not in Design for ignored_jjs.')
         else:
             self.ignored_jjs_is_valid = True
 
-        if self.open_pins_is_valid == False or self.port_list_is_valid == False or self.jj_to_port_is_valid == False or self.ignored_jjs_is_valid == False:
+        if not self.open_pins_is_valid or not self.port_list_is_valid or not self.jj_to_port_is_valid or not self.ignored_jjs_is_valid:
             return False
         else:
             return True
@@ -743,8 +770,8 @@ class QHFSSPyaedt(QPyaedt):
         for component_name, element_name, impedance in jj_to_port:
             if self.qcomp_ids:
                 # User wants to render a subset, ensure part of selection.
-                if not self.design.components[
-                        component_name].id in self.qcomp_ids:
+                if self.design.components[
+                        component_name].id not in self.qcomp_ids:
                     self.design.logger.error(
                         f'You entered the component_name='
                         f'{self.design.components[component_name].name} and the corresponding'
@@ -798,8 +825,8 @@ class QHFSSPyaedt(QPyaedt):
             component_name, element_name = item
             if self.qcomp_ids:
                 # User wants to render a subset, ensure part of selection.
-                if not self.design.components[
-                        component_name].id in self.qcomp_ids:
+                if self.design.components[
+                        component_name].id not in self.qcomp_ids:
                     self.design.logger.error(
                         f'You entered the component_name='
                         f'{self.design.components[component_name].name} and the corresponding'
@@ -843,7 +870,7 @@ class QHFSSPyaedt(QPyaedt):
         for comp_name, pin, impedance in port_list:
             if self.qcomp_ids:
                 # User wants to render a subset, ensure part of selection.
-                if not self.design.components[comp_name].id in self.qcomp_ids:
+                if self.design.components[comp_name].id not in self.qcomp_ids:
                     self.design.logger.error(
                         f'You entered the component_name='
                         f'{self.design.components[comp_name].name} and the corresponding'
@@ -901,7 +928,7 @@ class QHFSSPyaedt(QPyaedt):
         Args:
             name (str): Name of variable.
             value (str): Amount and unit associated w/ variable.
-                
+
         """
         variable_manager = self.current_app._variable_manager
         variable_manager[name] = value

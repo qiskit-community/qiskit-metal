@@ -42,20 +42,46 @@ to_poly_patch = np.vectorize(PolygonPatch)
 class QMplRenderer:
     """Matplotlib renderer for Metal designs.
 
-    Notes:
-        Access via ``gui.canvas.metal_renderer``. The axis to render is passed
-        in the ``render`` method.
+    Can be used in two ways:
+
+    1. **Standalone (no Qt):** ``QMplRenderer(design)`` — produces a
+       renderer that plots into any matplotlib ``Axes`` passed to
+       :meth:`render`. This is the path used by
+       :func:`qiskit_metal.view` and by tutorials that want to display
+       a design inline in a Jupyter notebook with no GUI.
+
+    2. **Inside the Qt MetalGUI:** ``QMplRenderer(design, canvas=plot_canvas)``
+       — the desktop GUI's :class:`PlotCanvas` instantiates this way to
+       wire the renderer to its embedded matplotlib figure. The
+       ``canvas`` argument is stored on ``self.canvas`` for callers
+       that need it, but no method in this class uses it directly.
+
+    The ``ax`` to render into is still passed explicitly to
+    :meth:`render` — neither construction path implies a fixed axes.
     """
 
-    def __init__(self, canvas: "PlotCanvas", design: QDesign, logger: logging.Logger):
+    def __init__(
+        self,
+        design: QDesign,
+        *,
+        canvas: Optional["PlotCanvas"] = None,
+        logger: Optional[logging.Logger] = None,
+    ):
         """
         Args:
-            canvas (PlotCanvas): The canvas
-            design (QDesign): The design
-            logger (logging.Logger): The logger
+            design: The design to render. Required.
+            canvas: Optional Qt ``PlotCanvas`` (legacy path used by
+                :class:`MetalGUI`). Pass ``None`` for a standalone /
+                headless renderer.
+            logger: Optional logger. Falls back to a module-level
+                logger if ``None``.
         """
         super().__init__()
-        self.logger = logger
+        self.logger = (
+            logger
+            if logger is not None
+            else logging.getLogger("qiskit_metal.renderer_mpl")
+        )
         self.canvas = canvas
         self.ax = None
         self.design = design
@@ -106,7 +132,7 @@ class QMplRenderer:
         Args:
             name (str): Component name
         """
-        comp_id = self.design.components[name].id
+        comp_id = self.design.components[name].id  # noqa: F841
         self._hidden_components.discard(name)
 
     def hide_layer(self, name):
@@ -158,8 +184,14 @@ class QMplRenderer:
         # TODO: Ideally these should be replaced with interface functions,
         # not direct access to underlying internal representation
 
-        mask = table.layer.isin(self.hidden_layers)
-        mask = table.component.isin(self._hidden_components)
+        # A row is hidden if its layer is in ``hidden_layers`` OR its
+        # component is in ``_hidden_components``. The previous form
+        # rebuilt ``mask`` from scratch on the second line, silently
+        # discarding the ``hidden_layers`` filter — visible from the
+        # Qt GUI only when a user hid both at once.
+        mask = table.layer.isin(self.hidden_layers) | table.component.isin(
+            self._hidden_components
+        )
 
         return ~mask  # not
 
@@ -235,7 +267,7 @@ class QMplRenderer:
             table = table[self.get_mask(table)]
 
             # subtracted
-            mask = table["subtract"] == True
+            mask = table["subtract"]
             render_func = getattr(self, f"render_{element_type}")
             render_func(table[mask], ax, subtracted=True)
 
@@ -268,7 +300,13 @@ class QMplRenderer:
             if len(table1) > 0:
                 table1["geometry"] = table1[["geometry", "width"]].apply(
                     lambda x: x.iloc[0].buffer(
-                        distance=float(x[1]) / 2.0,
+                        # ``x.iloc[1]`` (was ``x[1]``) — in pandas
+                        # 2.2+, integer indexing on a Series with
+                        # string labels raises KeyError rather than
+                        # falling back to positional lookup. The row
+                        # here has labels ``['geometry', 'width']``
+                        # so positional access must be explicit.
+                        distance=float(x.iloc[1]) / 2.0,
                         cap_style=CAP_STYLE.flat,
                         join_style=JOIN_STYLE.mitre,
                         quad_segs=int(self.options["resolution"]),

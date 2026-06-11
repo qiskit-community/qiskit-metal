@@ -1,37 +1,62 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import annotations
+
 from typing import List, Union
 import pandas as pd
 import math
 import numpy as np
 import inspect
 
-from ansys.aedt.core import Desktop, Hfss, Q3d
-from ansys.aedt.core.modeler.cad.primitives import Polyline
+# pyaedt (``ansys.aedt.core``) is an opt-in dependency
+# (``quantum-metal[ansys]``). Keep this module importable on the lite
+# install — the friendly error is raised in ``_require_pyaedt()`` from
+# constructors and entry-point methods. ``from __future__ import
+# annotations`` makes ``Desktop`` / ``Polyline`` type hints lazy.
+try:
+    from ansys.aedt.core import Desktop, Hfss, Q3d
+    from ansys.aedt.core.modeler.cad.primitives import Polyline
+except ImportError:  # pragma: no cover — exercised on lite installs
+    Desktop = None
+    Hfss = None
+    Q3d = None
+    Polyline = None
+
+
+def _require_pyaedt() -> None:
+    """Raise a clear error if pyaedt isn't installed."""
+    if Desktop is None:
+        raise ImportError(
+            "QPyaedt requires pyaedt (ansys.aedt.core). Install with: "
+            "pip install 'quantum-metal[ansys]'"
+        )
+
 
 from qiskit_metal.renderers.renderer_base import QRendererAnalysis
 
-#The below imports are for typecheck and will probably be removed if move to the open side.
+# The below imports are for typecheck and will probably be removed if move to the open side.
 from qiskit_metal.designs import QDesign
-from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import BoundsForPathAndPolyTables
+from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import (
+    BoundsForPathAndPolyTables,
+)
 from qiskit_metal.toolbox_metal.parsing import parse_entry
 from qiskit_metal.draw.utility import to_vec3D_list
 from qiskit_metal import Dict
 
 from qiskit_metal import config
+
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import get_clean_name
     from qiskit_metal.toolbox_python.utility_functions import good_fillet_idxs
 
 
 class QPyaedt(QRendererAnalysis):
-    """  Will fill this out later.
-    """
+    """Will fill this out later."""
 
     # Get name of subclass to set project and design name
     GROUPS = ["Non Model", "Solids", "Unclassified", "Sheets", "Lines"]
 
-    renderer_types = ['HFSS_DM', 'HFSS_EM', 'Q3D']
+    renderer_types = ["HFSS_DM", "HFSS_EM", "Q3D"]
 
     # yapf: disable
     default_options = Dict(
@@ -105,9 +130,10 @@ class QPyaedt(QRendererAnalysis):
 
     element_table_data = dict(
         path=dict(wire_bonds=False),
-        junction=dict(inductance=default_options["Lj"],
-                      capacitance=default_options["Cj"]),
-        #resistance=default_options["_Rj"]),
+        junction=dict(
+            inductance=default_options["Lj"], capacitance=default_options["Cj"]
+        ),
+        # resistance=default_options["_Rj"]),
     )
     """Element table data."""
 
@@ -116,13 +142,15 @@ class QPyaedt(QRendererAnalysis):
         parents = inspect.getmro(cls)
         return parents[0].__name__
 
-    def __init__(self,
-                 design: "QDesign",
-                 renderer_type: str,
-                 project_name: Union[str, None] = None,
-                 design_name: Union[str, None] = None,
-                 initiate=False,
-                 options: Dict = None):
+    def __init__(
+        self,
+        design: "QDesign",
+        renderer_type: str,
+        project_name: Union[str, None] = None,
+        design_name: Union[str, None] = None,
+        initiate=False,
+        options: Dict = None,
+    ):
         """_summary_
 
         Args:
@@ -137,6 +165,8 @@ class QPyaedt(QRendererAnalysis):
             initiate (bool, optional):  True to initiate the renderer. Defaults to False.
             options (Dict, optional): Used to override all options. Defaults to None.
         """
+        _require_pyaedt()
+
         self._desktop = None
         # Initialize renderer first so we can use self.options
 
@@ -180,12 +210,13 @@ class QPyaedt(QRendererAnalysis):
         # self.fill_info will hold the name of newly generated box,
         # along with information from layer stack
         # Moved to each render_design since this method was causing error when trying to make columns of qgeomtry tables.
-        #self.fill_info = self.design.ls.get_layer_datatype_when_fill_is_true()
+        # self.fill_info = self.design.ls.get_layer_datatype_when_fill_is_true()
 
         self.open_pins_is_valid = None
 
         # Before opening the application, activate Pandas before opening Ansys.
         from ansys.aedt.core import settings
+
         settings.enable_pandas_output = True
 
     def initialized(self):
@@ -195,7 +226,6 @@ class QPyaedt(QRendererAnalysis):
         """
         return True
 
-    # pylint: disable=arguments-renamed
     def render_component(self, component):
         """Abstract method. Must be implemented by the subclass.
         Render the specified component.
@@ -205,9 +235,9 @@ class QPyaedt(QRendererAnalysis):
         """
         pass
 
-    def render_chips(self,
-                     draw_sample_holder: bool = True,
-                     box_plus_buffer: bool = True):
+    def render_chips(
+        self, draw_sample_holder: bool = True, box_plus_buffer: bool = True
+    ):
         """Render all chips containing components in self.qcomp_ids.
 
         Args:
@@ -218,12 +248,10 @@ class QPyaedt(QRendererAnalysis):
         # Render all chips of the design.
         # Calls render_chip for each chip.
 
-        a = 5
         pass
 
         chip_list = self.get_chip_names()
         for chip_name in chip_list:
-
             # This is done obtained at the start of render_design
             #  since the box includes all the chips and placed in self.box_for_ansys
             #  We don't do this for just one chip, as was done for planar.
@@ -250,13 +278,16 @@ class QPyaedt(QRendererAnalysis):
 
         # This is for HFSS, will do later.  Also, we may want to do just once, BUT
         # not for every chip.
-        a = 5
         pass
 
-    def render_components(self, table_type: str, layer_num: int,
-                          port_list: Union[list, None], jj_to_port: Union[list,
-                                                                          None],
-                          ignored_jjs: Union[list, None]):
+    def render_components(
+        self,
+        table_type: str,
+        layer_num: int,
+        port_list: Union[list, None],
+        jj_to_port: Union[list, None],
+        ignored_jjs: Union[list, None],
+    ):
         """
         Render components by breaking them down into individual elements.
         Render all components of the design.
@@ -267,55 +298,61 @@ class QPyaedt(QRendererAnalysis):
         """
         table = self.design.qgeometry.tables[table_type]
 
-        #If user selected a subset, then need to use subset of table,
-        #otherwise use the whole table.
+        # If user selected a subset, then need to use subset of table,
+        # otherwise use the whole table.
         if self.qcomp_ids:
-            mask_component = table['component'].isin(self.qcomp_ids)
+            mask_component = table["component"].isin(self.qcomp_ids)
             table = table[mask_component]
 
-        mask_layer = table['layer'] == layer_num
+        mask_layer = table["layer"] == layer_num
         table_to_use = table[mask_layer]
 
         for _, qgeom in table_to_use.iterrows():
-            self.render_element(qgeom,
-                                bool(table_type == 'junction'),
-                                port_list=port_list,
-                                jj_to_port=jj_to_port,
-                                ignored_jjs=ignored_jjs)
+            self.render_element(
+                qgeom,
+                bool(table_type == "junction"),
+                port_list=port_list,
+                jj_to_port=jj_to_port,
+                ignored_jjs=ignored_jjs,
+            )
 
         # if table_type == 'path':
         #     self.auto_wirebonds(table)
 
-    def render_element(self, qgeom: pd.Series, is_junction: bool,
-                       port_list: Union[list, None],
-                       jj_to_port: Union[list, None], ignored_jjs: Union[list,
-                                                                         None]):
-        #Use the method in the child class.
+    def render_element(
+        self,
+        qgeom: pd.Series,
+        is_junction: bool,
+        port_list: Union[list, None],
+        jj_to_port: Union[list, None],
+        ignored_jjs: Union[list, None],
+    ):
+        # Use the method in the child class.
         pass
 
-    # pylint: disable=arguments-renamed
     def render_element_path(self, qgeom: pd.Series):
         """Render one row from the qgeometry table.
 
         Args:
             qgeom (pd.Series): One row from the qgeometry table.
         """
-        #super().render_element_path(qgeom)
+        # super().render_element_path(qgeom)
 
         qc_name = self.design._components[qgeom["component"]].name
         qc_elt = get_clean_name(qgeom["name"])
 
         qc_shapely = qgeom.geometry  # shapely geom
-        subtract = qgeom['subtract']  # expect a bool
+        subtract = qgeom["subtract"]  # expect a bool
         name = f"{qc_elt}{QPyaedt.NAME_DELIM}{qc_name}"
 
         qc_width = parse_entry(qgeom.width)
 
         layer = int(qgeom.layer)
         datatype = 0
-        chip_name = str(qgeom.chip)
+        chip_name = str(qgeom.chip)  # noqa: F841
         result = self.design.ls.get_properties_for_layer_datatype(
-            ['thickness', 'z_coord', 'material', 'fill'], layer, datatype)
+            ["thickness", "z_coord", "material", "fill"], layer, datatype
+        )
         if result:
             thickness, z_coord, material, fill_value = result
         else:
@@ -330,7 +367,8 @@ class QPyaedt(QRendererAnalysis):
             name=name,
             cover_surface=False,
             close_surface=False,
-            matname=material)
+            matname=material,
+        )
 
         # The transparency is hardcoded.  Ugh.
         # However, it was hardcoded without pyaedt, so for now, will leave it alone.
@@ -343,25 +381,27 @@ class QPyaedt(QRendererAnalysis):
 
         if subtract and not fill_value:
             self.logger.warning(
-                '\nsubtract==True and Fill is False'
-                '\nWe don\'t render the geometry since there is nothing to subtract from.'
-                'FYI: The fill value comes from layer_stack, '
-                'and the subtract value comes from component.')
+                "\nsubtract==True and Fill is False"
+                "\nWe don't render the geometry since there is nothing to subtract from."
+                "FYI: The fill value comes from layer_stack, "
+                "and the subtract value comes from component."
+            )
             return
 
         if qc_width > 0:
-            a_polyline_wider = self.add_linestring_width(qc_width,
-                                                         a_polyline,
-                                                         points_3d,
-                                                         material=material)
-            a_name = a_polyline_wider.name
+            a_polyline_wider = self.add_linestring_width(
+                qc_width, a_polyline, points_3d, material=material
+            )
+            a_name = a_polyline_wider.name  # noqa: F841
             a_polyline_width_thickened = self.current_app.modeler.thicken_sheet(
-                a_polyline_wider.id, thickness=thickness, bBothSides=True)
+                a_polyline_wider.id, thickness=thickness, bBothSides=True
+            )
 
         else:
             # no widening, so just thicken it.
             a_polyline_width_thickened = self.current_app.modeler.thicken_sheet(
-                a_polyline.id, thickness=thickness, bBothSides=True)
+                a_polyline.id, thickness=thickness, bBothSides=True
+            )
 
         # # Thicken after fillet.
         # self.q3d.modeler.thicken_sheet(a_polyline.id, thickness=thickness)
@@ -381,29 +421,28 @@ class QPyaedt(QRendererAnalysis):
             # self.chip_subtract_dict[layer].append(
             #     self.q3d.modeler.object_id_dict[name])
 
-    # pylint: disable=arguments-renamed
     def render_element_poly(self, qgeom: pd.Series):
         """Render a closed polygon.
 
         Args:
             qgeom (pd.Series): GeoSeries of element properties.
         """
-        #super().render_element_poly(qgeom)
-        ansys_options = dict(transparency=0.0)
-        # pylint: disable=protected-access
+        # super().render_element_poly(qgeom)
+        ansys_options = dict(transparency=0.0)  # noqa: F841
         qc_name = self.design._components[qgeom["component"]].name
         qc_elt = get_clean_name(qgeom["name"])
 
         qc_shapely = qgeom.geometry  # shapely geom
         layer = int(qgeom.layer)
         datatype = 0
-        chip_name = str(qgeom.chip)
-        subtract = qgeom['subtract']  # expect a bool
+        chip_name = str(qgeom.chip)  # noqa: F841
+        subtract = qgeom["subtract"]  # expect a bool
         # qgeom.helper is ignored since the material for each layer is
         # obtained from the layer_stack.
 
         result = self.design.ls.get_properties_for_layer_datatype(
-            ['thickness', 'z_coord', 'material', 'fill'], layer, datatype)
+            ["thickness", "z_coord", "material", "fill"], layer, datatype
+        )
 
         if result:
             thickness, z_coord, material, fill_value = result
@@ -412,50 +451,54 @@ class QPyaedt(QRendererAnalysis):
 
         if subtract and not fill_value:
             self.logger.warning(
-                '\nsubtract==True and Fill is False'
-                '\nWe don\'t render the geometry since there is nothing to subtract from.'
-                'FYI: The fill value comes from layer_stack, '
-                'and the subtract value comes from component.')
+                "\nsubtract==True and Fill is False"
+                "\nWe don't render the geometry since there is nothing to subtract from."
+                "FYI: The fill value comes from layer_stack, "
+                "and the subtract value comes from component."
+            )
             return
 
-        #still need to deal with fillet for polygons?????
-        qc_fillet = round(qgeom.fillet, 7)
+        # still need to deal with fillet for polygons?????
+        qc_fillet = round(qgeom.fillet, 7)  # noqa: F841
 
         name = f"{qc_elt}{QPyaedt.NAME_DELIM}{qc_name}"
 
-        points_3d = to_vec3D_list(list(qc_shapely.exterior.coords),
-                                  z_coord + (thickness / 2))
+        points_3d = to_vec3D_list(
+            list(qc_shapely.exterior.coords), z_coord + (thickness / 2)
+        )
 
         a_polyline = self.current_app.modeler.create_polyline(
             points_3d,
             name=name,
             cover_surface=True,
             close_surface=True,
-            matname=material)
+            matname=material,
+        )
 
         # Subtract interior shapes, if any
         inner_shape_ids = []
         if len(qc_shapely.interiors) > 0:
             for i, x in enumerate(qc_shapely.interiors):
-                points_3d_interior = to_vec3D_list(list(x.coords),
-                                                   z_coord + (thickness / 2))
+                points_3d_interior = to_vec3D_list(
+                    list(x.coords), z_coord + (thickness / 2)
+                )
                 inner_shape = self.current_app.modeler.create_polyline(
                     points_3d_interior[:-1],
                     close_surface=True,
                     cover_surface=True,
-                    matname=material)
+                    matname=material,
+                )
                 inner_shape_ids.append(inner_shape.id)
-            result = self.current_app.modeler.subtract(name,
-                                                       inner_shape_ids,
-                                                       keepOriginals=False)
-            self.current_app.modeler.thicken_sheet(name,
-                                                   thickness=thickness,
-                                                   bBothSides=True)
+            result = self.current_app.modeler.subtract(
+                name, inner_shape_ids, keepOriginals=False
+            )
+            self.current_app.modeler.thicken_sheet(
+                name, thickness=thickness, bBothSides=True
+            )
         else:  # No interiors
-
-            self.current_app.modeler.thicken_sheet(a_polyline.id,
-                                                   thickness=thickness,
-                                                   bBothSides=True)
+            self.current_app.modeler.thicken_sheet(
+                a_polyline.id, thickness=thickness, bBothSides=True
+            )
 
         if subtract is True and fill_value is True:
             # Need to group subtract geometries by layer from layer stack.
@@ -466,7 +509,8 @@ class QPyaedt(QRendererAnalysis):
                 self.chip_subtract_dict[layer] = list()
 
             self.chip_subtract_dict[layer].append(
-                self.current_app.modeler.object_id_dict[name])
+                self.current_app.modeler.object_id_dict[name]
+            )
 
             # # Input chip info into self.chip_subtract_dict
             # if chip_name not in self.chip_subtract_dict:
@@ -478,8 +522,6 @@ class QPyaedt(QRendererAnalysis):
 
             # self.chip_subtract_dict[chip_name][layer].add(name)
 
-        a = 5
-
     def _initiate_renderer(self):
         """
         Open a session of the default Ansys EDT.
@@ -488,11 +530,13 @@ class QPyaedt(QRendererAnalysis):
         # https://aedtdocs.pyansys.com/API/_autosummary/pyaedt.Desktop.html
         # Don't need to add the version: Version of AEDT to use.
         # The default is None, in which case the active setup or latest installed version is used.
-        desktop = Desktop(version=None,
-                          non_graphical=False,
-                          new_desktop=True,
-                          close_on_exit=False,
-                          student_version=False)
+        desktop = Desktop(
+            version=None,
+            non_graphical=False,
+            new_desktop=True,
+            close_on_exit=False,
+            student_version=False,
+        )
 
         self._desktop = desktop
         if self.options.begin_enable_autosave:
@@ -509,8 +553,7 @@ class QPyaedt(QRendererAnalysis):
         #     # Desktop is automatically released here.
 
     def force_exit_ansys(self):
-        """This will allow user to force closing of Ansys.
-        """
+        """This will allow user to force closing of Ansys."""
 
         self._desktop.force_close_desktop()
 
@@ -523,15 +566,15 @@ class QPyaedt(QRendererAnalysis):
         Returns:
             bool: True
         """
-        #Can use any one of three. In future, we may want to switch.
-        #self._desktop.close_desktop
+        # Can use any one of three. In future, we may want to switch.
+        # self._desktop.close_desktop
         if self.options.close_enable_autosave:
             self._desktop.enable_autosave()
         self._desktop.release_desktop(close_projects=False, close_on_exit=False)
-        #self._desktop.force_close_desktop()
-        #self._desktop.close_on_exit
+        # self._desktop.force_close_desktop()
+        # self._desktop.close_on_exit
 
-        #Could add more logic for returning False.
+        # Could add more logic for returning False.
         return True
 
     def disconnect_ansys(self):
@@ -559,16 +602,14 @@ class QPyaedt(QRendererAnalysis):
         """
         pass
 
-    # pylint: disable=arguments-differ
-    def render_design(self,
-                      selection: Union[List, None] = None,
-                      box_plus_buffer: bool = True):
+    def render_design(
+        self, selection: Union[List, None] = None, box_plus_buffer: bool = True
+    ):
         """Must be implemented by the subclass to finish the logic for HFSS  OR Q3D within project.
 
         Renders all design chips and components.
         Note: This needs to be extended with additional logic for Q3D and HFSS.
         """
-        # pylint: disable=attribute-defined-outside-init
         # # They are reset for each time render_design happens.
         self.box_plus_buffer = box_plus_buffer
 
@@ -588,16 +629,23 @@ class QPyaedt(QRendererAnalysis):
         y_buff = parse_entry(self._options["y_buffer_width_mm"])
 
         result = self.bounds_handler.get_bounds_of_path_and_poly_tables(
-            box_plus_buffer, self.qcomp_ids, self.case, x_buff, y_buff)
+            box_plus_buffer, self.qcomp_ids, self.case, x_buff, y_buff
+        )
 
-        self.box_for_ansys, self.path_and_poly_with_valid_comps, self.path_poly_and_junction_with_valid_comps, self.chip_names_matched, self.valid_chip_names = result
+        (
+            self.box_for_ansys,
+            self.path_and_poly_with_valid_comps,
+            self.path_poly_and_junction_with_valid_comps,
+            self.chip_names_matched,
+            self.valid_chip_names,
+        ) = result
 
         # Possibly this could be done once, but if ALL, the geometries are all cleared within active design,
         # these boxes would need to be generated. We can move this to inti when clear_active_design is customized.
         self.create_fill_true_box()
 
     def create_fill_true_box(self):
-        """ Create 3D box used for both fill and or as a
+        """Create 3D box used for both fill and or as a
         subtract box for geometries when subtract==True from qgeometry table.
         """
         (minx, miny, maxx, maxy) = self.box_for_ansys
@@ -605,40 +653,44 @@ class QPyaedt(QRendererAnalysis):
         for key, value in self.fill_info.items():
             # Don't need to close the polygon. But for now, being consistent with rendering Poly.
             fill_rect = [
-                [minx, miny, value['z_coord'] + (value['thickness'] / 2)],
-                [maxx, miny, value['z_coord'] + (value['thickness'] / 2)],
-                [maxx, maxy, value['z_coord'] + (value['thickness'] / 2)],
-                [minx, maxy, value['z_coord'] + (value['thickness'] / 2)],
-                [minx, miny, value['z_coord'] + (value['thickness'] / 2)]
+                [minx, miny, value["z_coord"] + (value["thickness"] / 2)],
+                [maxx, miny, value["z_coord"] + (value["thickness"] / 2)],
+                [maxx, maxy, value["z_coord"] + (value["thickness"] / 2)],
+                [minx, maxy, value["z_coord"] + (value["thickness"] / 2)],
+                [minx, miny, value["z_coord"] + (value["thickness"] / 2)],
             ]
 
-            box_name = f'layer_{value["layer"]}_datatype_{value["datatype"]}_plane'
+            box_name = f"layer_{value['layer']}_datatype_{value['datatype']}_plane"
 
             box_at_layer_datatype = self.current_app.modeler.create_polyline(
                 fill_rect,
                 name=box_name,
                 cover_surface=True,
                 close_surface=True,
-                matname=value['material'])
+                matname=value["material"],
+            )
 
-            self.current_app.modeler.thicken_sheet(box_at_layer_datatype.id,
-                                                   thickness=value['thickness'],
-                                                   bBothSides=True)
+            self.current_app.modeler.thicken_sheet(
+                box_at_layer_datatype.id, thickness=value["thickness"], bBothSides=True
+            )
 
-            self.fill_info[key]['box_id'] = box_at_layer_datatype.id
-            self.fill_info[key]['box_name'] = box_at_layer_datatype.name
+            self.fill_info[key]["box_id"] = box_at_layer_datatype.id
+            self.fill_info[key]["box_name"] = box_at_layer_datatype.name
 
-    def aedt_render_by_layer_then_tables(self,
-                                         open_pins: Union[list, None],
-                                         port_list: Union[list, None],
-                                         jj_to_port: Union[list, None],
-                                         ignored_jjs: Union[list, None],
-                                         skip_junction: bool = False,
-                                         data_type: int = 0):
+    def aedt_render_by_layer_then_tables(
+        self,
+        open_pins: Union[list, None],
+        port_list: Union[list, None],
+        jj_to_port: Union[list, None],
+        ignored_jjs: Union[list, None],
+        skip_junction: bool = False,
+        data_type: int = 0,
+    ):
         pass
 
-    def add_linestring_width(self, qc_width: float, a_polyline: Polyline,
-                             points_3d: list, material: str) -> Polyline:
+    def add_linestring_width(
+        self, qc_width: float, a_polyline: Polyline, points_3d: list, material: str
+    ) -> Polyline:
         """Determine the orthogonal vector.  Then sweep along a_polyline using qc_width.
         Then return the reference to new polyline with sweep in Ansys.
 
@@ -654,30 +706,26 @@ class QPyaedt(QRendererAnalysis):
 
         x0, y0, z0 = points_3d[0]
         x1, y1, z1 = points_3d[1]
-        vlen = math.sqrt((x1 - x0)**2 + (y1 - y0)**2 + (z1 - z0)**2)
+        vlen = math.sqrt((x1 - x0) ** 2 + (y1 - y0) ** 2 + (z1 - z0) ** 2)
 
         # yapf: disable
         p0 = np.array([x0, y0, z0]) + qc_width / (2 * vlen) * np.array([y0 - y1, x1 - x0, 0])
         p1 = np.array([x0, y0, z0]) + qc_width / (2 * vlen) * np.array([y1 - y0, x0 - x1, 0])
         # yapf: enable
 
-        shortline_name = f'{a_polyline.name}_shortline'
+        shortline_name = f"{a_polyline.name}_shortline"
         shortline = self.current_app.modeler.create_polyline(
-            [p0, p1],
-            name=shortline_name,
-            close_surface=False,
-            matname=material)
+            [p0, p1], name=shortline_name, close_surface=False, matname=material
+        )
 
         a_polyline_width = shortline.sweep_along_path(a_polyline)
-        #a_polyline_width = a_polyline.sweep_along_path(shortline_name)
+        # a_polyline_width = a_polyline.sweep_along_path(shortline_name)
         return a_polyline_width
 
-    def add_one_endcap(self,
-                       comp_name: str,
-                       pin_name: str,
-                       layer: int,
-                       endcap_str: str = 'endcap'):
-        """ Create a rectangle, then add thickness and denote to be
+    def add_one_endcap(
+        self, comp_name: str, pin_name: str, layer: int, endcap_str: str = "endcap"
+    ):
+        """Create a rectangle, then add thickness and denote to be
         subtracted for open pin.
 
         Args:
@@ -689,9 +737,10 @@ class QPyaedt(QRendererAnalysis):
         pin_dict = self.design.components[comp_name].pins[pin_name]
         width, gap = parse_entry([pin_dict["width"], pin_dict["gap"]])
         mid, normal = parse_entry(pin_dict["middle"]), pin_dict["normal"]
-        chip_name = self.design.components[comp_name].options.chip
+        chip_name = self.design.components[comp_name].options.chip  # noqa: F841
         result = self.design.ls.get_properties_for_layer_datatype(
-            ['thickness', 'z_coord', 'material', 'fill'], layer)
+            ["thickness", "z_coord", "material", "fill"], layer
+        )
         if result:
             thickness, z_coord, material, fill = result
         else:
@@ -705,29 +754,29 @@ class QPyaedt(QRendererAnalysis):
         end_vec_xyz = (mid + gap * normal).tolist()
         end_vec_xyz.append(z_coord + (thickness / 2))
 
-        #Give a vector in direction of normal and add a width.
+        # Give a vector in direction of normal and add a width.
         endcap_reference = self.current_app.modeler.create_polyline(
             [start_vec_xyz, end_vec_xyz],
             name=endcap_name,
             cover_surface=False,
             matname=material,
             close_surface=False,
-            xsection_type='Line',
-            xsection_width=2 * gap + width)
+            xsection_type="Line",
+            xsection_width=2 * gap + width,
+        )
 
-        thickened = self.current_app.modeler.thicken_sheet(endcap_reference.id,
-                                                           thickness=thickness,
-                                                           bBothSides=True)
+        thickened = self.current_app.modeler.thicken_sheet(
+            endcap_reference.id, thickness=thickness, bBothSides=True
+        )
         if fill:
             if layer not in self.chip_subtract_dict:
                 self.chip_subtract_dict[layer] = list()
 
             self.chip_subtract_dict[layer].append(thickened.id)
 
-    def add_endcaps(self,
-                    layer_open_pins_list: list,
-                    layer_num: int,
-                    endcap_str: str = 'endcap'):
+    def add_endcaps(
+        self, layer_open_pins_list: list, layer_num: int, endcap_str: str = "endcap"
+    ):
         """Add a list of end-caps for open pins for a specific layer ONLY.
         This method ASSUMES there is something in open_pins list.
         This method ASSUMES that the components and corresponding pins
@@ -747,8 +796,9 @@ class QPyaedt(QRendererAnalysis):
             for comp_name, pin_name in layer_open_pins_list:
                 self.add_one_endcap(comp_name, pin_name, layer_num, endcap_str)
 
-    def add_fillet_linestring(self, qgeom: pd.Series, points_3d: list,
-                              qc_fillet: float, a_polyline: Polyline):
+    def add_fillet_linestring(
+        self, qgeom: pd.Series, points_3d: list, qc_fillet: float, a_polyline: Polyline
+    ):
         """Determine the idx of Polyline vertices to fillet and fillet them.
 
         Args:
@@ -783,9 +833,10 @@ class QPyaedt(QRendererAnalysis):
         key = (layer_num, data_type)
         if key in self.fill_info:
             self.current_app.modeler.subtract(
-                self.fill_info[key]['box_name'],
+                self.fill_info[key]["box_name"],
                 self.chip_subtract_dict[layer_num],
-                keepOriginals=False)
+                keepOriginals=False,
+            )
 
         # if is_rectangle(qc_shapely):  # Draw as rectangle
         #     self.logger.debug(f"Drawing a rectangle: {name}")
@@ -857,8 +908,8 @@ class QPyaedt(QRendererAnalysis):
         # wb_offset = parse_units(self._options["wb_offset"])
 
         # # selecting only the qgeometry which meet criteria
-        # wb_table = table.loc[table["hfss_wire_bonds"] == True]
-        # wb_table2 = wb_table.loc[wb_table["subtract"] == True]
+        # wb_table = table.loc[table["hfss_wire_bonds"]]
+        # wb_table2 = wb_table.loc[wb_table["subtract"]]
 
         # # looping through each qgeometry
         # for _, row in wb_table2.iterrows():
@@ -896,7 +947,7 @@ class QPyaedt(QRendererAnalysis):
         #                     material="pec",
         #                     solve_inside=False,
         #                 )
-        a = 5
+        pass
 
     def get_chip_names(self) -> List[str]:
         """
@@ -906,13 +957,13 @@ class QPyaedt(QRendererAnalysis):
             List[str]: Chips to render.
         """
         if self.case == 2:  # One or more components not in QDesign.
-            self.logger.warning('One or more components not found.')
+            self.logger.warning("One or more components not found.")
             return []
         chip_names = set()
         if self.case == 1:  # All components rendered.
             comps = self.design.components
             for qcomp in comps:
-                if 'chip' not in comps[qcomp].options:
+                if "chip" not in comps[qcomp].options:
                     self.chip_designation_error()
                     return []
                 # elif comps[qcomp].options.chip != 'main':
@@ -922,7 +973,7 @@ class QPyaedt(QRendererAnalysis):
         else:  # Strict subset rendered.
             icomps = self.design._components
             for qcomp_id in self.qcomp_ids:
-                if 'chip' not in icomps[qcomp_id].options:
+                if "chip" not in icomps[qcomp_id].options:
                     self.chip_designation_error()
                     return []
                 # elif icomps[qcomp_id].options.chip != 'main':
@@ -943,21 +994,21 @@ class QPyaedt(QRendererAnalysis):
         """
         layer_open_pins_list = list()
 
-        mask_comp_pin = self.path_and_poly_with_valid_comps[
-            'layer'] == layer_num
+        mask_comp_pin = self.path_and_poly_with_valid_comps["layer"] == layer_num
         path_poly_layer = self.path_and_poly_with_valid_comps[mask_comp_pin]
 
         for comp_name, pin_name in open_pins:
             id = self.design.components[comp_name].id
-            comp_pin_layer_mask = (path_poly_layer['component'] == id)
+            comp_pin_layer_mask = path_poly_layer["component"] == id
             valid_df = path_poly_layer[comp_pin_layer_mask]
             if not valid_df.empty:
                 layer_open_pins_list.append((comp_name, pin_name))
 
         return layer_open_pins_list
 
-    def confirm_open_pins_are_valid_names(self, open_pins: list,
-                                          pair_used: list) -> bool:
+    def confirm_open_pins_are_valid_names(
+        self, open_pins: list, pair_used: list
+    ) -> bool:
         """Check if all names of components and corresponding pins are
         within design.  Otherwise log an error
 
@@ -977,10 +1028,11 @@ class QPyaedt(QRendererAnalysis):
                 # User wants to render a subset, ensure part of selection.
                 if self.design.components[comp_name].id not in self.qcomp_ids:
                     self.design.logger.error(
-                        f'You entered the component_name='
-                        f'{self.design.components[comp_name].name} and the corresponding'
-                        f' name is not selection.'
-                        f'The geometries will not be rendered to Ansys.')
+                        f"You entered the component_name="
+                        f"{self.design.components[comp_name].name} and the corresponding"
+                        f" name is not selection."
+                        f"The geometries will not be rendered to Ansys."
+                    )
                     return False
             if comp_name not in self.design.components.keys():
                 self.open_pin_names_not_valid(comp_name, pin)
@@ -991,8 +1043,9 @@ class QPyaedt(QRendererAnalysis):
                 return False
             if item in pair_used:
                 self.design.logger.error(
-                    f'You entered the component_name={comp_name} and pin={pin} pair twice.  '
-                    f'The geometries will not be rendered to Ansys.')
+                    f"You entered the component_name={comp_name} and pin={pin} pair twice.  "
+                    f"The geometries will not be rendered to Ansys."
+                )
                 return False
 
             pair_used.append(item)
@@ -1012,35 +1065,34 @@ class QPyaedt(QRendererAnalysis):
 
         except Exception as ex:
             self.design.logger.error(
-                f'Was not able to activate user\'s project and design name.  The exception is {ex}'
-                f'\n Project Name:{self.project_name}, Design Name: {self.design_name}'
+                f"Was not able to activate user's project and design name.  The exception is {ex}"
+                f"\n Project Name:{self.project_name}, Design Name: {self.design_name}"
             )
 
     def populate_project_and_design(self):
-        """Add project and design based on user input.
-        """
+        """Add project and design based on user input."""
         if self.renderer_type in self.renderer_types:
             if self.project_name is None:
                 # Can use for future reference.
-                #from pyaedt import generate_unique_project_name
-                self.project_name = f'{self._get_child_class_name()}_project'
+                # from pyaedt import generate_unique_project_name
+                self.project_name = f"{self._get_child_class_name()}_project"
             if self.design_name is None:
-                self.design_name = f'{self._get_child_class_name()}_design'
-            if self.renderer_type == 'Q3D':
+                self.design_name = f"{self._get_child_class_name()}_design"
+            if self.renderer_type == "Q3D":
                 self.current_app = Q3d(self.project_name, self.design_name)
-            elif self.renderer_type == 'HFSS_DM':
+            elif self.renderer_type == "HFSS_DM":
                 # Default solution type is driven modal.
-                self.current_app = Hfss(self.project_name,
-                                        self.design_name,
-                                        solution_type='Modal')
-            elif self.renderer_type == 'HFSS_EM':
+                self.current_app = Hfss(
+                    self.project_name, self.design_name, solution_type="Modal"
+                )
+            elif self.renderer_type == "HFSS_EM":
                 # need to explicitly identify a solution type
-                self.current_app = Hfss(self.project_name,
-                                        self.design_name,
-                                        solution_type='Eigenmode')
+                self.current_app = Hfss(
+                    self.project_name, self.design_name, solution_type="Eigenmode"
+                )
         else:
             self.design.logger.error(
-                f'Need to implement {self.renderer_type.upper()} in pyaedt_base.'
+                f"Need to implement {self.renderer_type.upper()} in pyaedt_base."
             )
 
         self.current_app.set_active_design(self.design_name)
@@ -1050,7 +1102,8 @@ class QPyaedt(QRendererAnalysis):
 
         self.current_app.modeler.model_units = "mm"
         self.current_app.modeler.oeditor.SetModelUnits(
-            ["NAME:Units Parameter", "Units:=", "mm", "Rescale:=", False])
+            ["NAME:Units Parameter", "Units:=", "mm", "Rescale:=", False]
+        )
 
     def clean_user_design(self):
         """Clean the user project and design corresponding to the current_app
@@ -1064,8 +1117,7 @@ class QPyaedt(QRendererAnalysis):
             if self.project_name and self.design_name:
                 self.activate_user_project_design()
                 for group in self.GROUPS:
-                    object_list = self.current_app.modeler.get_objects_in_group(
-                        group)
+                    object_list = self.current_app.modeler.get_objects_in_group(group)
                     if object_list:
                         all_objects.extend(object_list)
                 self.current_app.modeler.delete(all_objects)
@@ -1100,12 +1152,13 @@ class QPyaedt(QRendererAnalysis):
             pin_name (str): Name of pin which should be open.
         """
         self.logger.error(
-            f'\n The component name or pin name within list'
-            f'\nprovided to render_design are not valid.'
-            f'\nYou provided: {comp_name} and {pin_name}'
-            f'\n Valid components: {self.design.components.keys()}'
-            f'\n Valid pins:{self.design.components[comp_name].pins.keys()}'
-            f'\n ALL tuples within open_pins will not be addressed.')
+            f"\n The component name or pin name within list"
+            f"\nprovided to render_design are not valid."
+            f"\nYou provided: {comp_name} and {pin_name}"
+            f"\n Valid components: {self.design.components.keys()}"
+            f"\n Valid pins:{self.design.components[comp_name].pins.keys()}"
+            f"\n ALL tuples within open_pins will not be addressed."
+        )
 
     #########PROPERTIES##################################################
 
