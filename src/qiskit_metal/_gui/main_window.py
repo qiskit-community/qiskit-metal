@@ -75,11 +75,6 @@ if TYPE_CHECKING:
     from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
 
 
-_TEARDOWN_REGISTERED = False
-"""Module flag: the at-exit Qt teardown is registered only once, the first
-time a :class:`MetalGUI` is created (so headless users never pay for it)."""
-
-
 def _teardown_qt_widgets():
     """Delete every top-level Qt widget before the interpreter finalizes.
 
@@ -385,13 +380,13 @@ class MetalGUI(QMainWindowBaseHandler):
         if not self.qApp:
             logging.error("Could not start Qt event loop using QApplication.")
 
-        # Register the at-exit Qt teardown once (issue #1048). Done here, on
-        # first GUI construction, so a pure headless / ``qm.view`` user who
-        # never builds a MetalGUI never registers it.
-        global _TEARDOWN_REGISTERED
-        if not _TEARDOWN_REGISTERED:
-            atexit.register(_teardown_qt_widgets)
-            _TEARDOWN_REGISTERED = True
+        # Register the at-exit Qt teardown exactly once (issue #1048), no
+        # matter how many MetalGUIs are built. Done lazily here so a pure
+        # headless / ``qm.view`` user who never builds a MetalGUI never
+        # registers it. ``unregister`` is a no-op the first time and keeps
+        # this idempotent across repeated construction.
+        atexit.unregister(_teardown_qt_widgets)
+        atexit.register(_teardown_qt_widgets)
 
         super().__init__()
 
