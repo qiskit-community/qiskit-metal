@@ -11,6 +11,7 @@
 # that they have been altered from the originals.
 """GUI front-end interface for Quantum Metal, built on PySide6."""
 
+import atexit
 import logging
 import os
 import webbrowser
@@ -20,6 +21,7 @@ from typing import TYPE_CHECKING, List
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import QIcon, QPixmap, QAction
 from PySide6.QtWidgets import (
+    QApplication,
     QWidget,
     QDialog,
     QDockWidget,
@@ -71,6 +73,33 @@ if not config.is_building_docs():
 
 if TYPE_CHECKING:
     from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
+
+
+def _teardown_qt_widgets():
+    """Delete every top-level Qt widget before the interpreter finalizes.
+
+    Fixes the segfault-at-exit reported in issue #1048. PySide6 otherwise
+    destroys the ``QApplication`` during ``Py_FinalizeEx`` while ``MetalGUI``'s
+    window is still alive; a ``QWidget`` destructor then dispatches an event
+    through the main window's ``QMenuBar`` event filter whose target is already
+    half-deleted, jumping to a null vtable entry and killing the process (in a
+    Jupyter kernel this surfaces as "the kernel appears to have died").
+
+    Deleting the widgets here -- while the interpreter and ``QApplication`` are
+    still alive -- destroys them in the correct order. ``deleteLater`` is used
+    rather than ``close()`` so this never triggers the "save unsaved changes?"
+    dialog (which would block forever on a headless machine). The function is
+    idempotent and exception-safe: it is only a best-effort cleanup.
+    """
+    try:
+        app = QApplication.instance()
+        if app is None:
+            return
+        for widget in list(app.topLevelWidgets()):
+            widget.deleteLater()
+        app.processEvents()
+    except Exception:  # pragma: no cover - cleanup must never raise at exit
+        pass
 
 
 class QMainWindowExtension(QMainWindowExtensionBase):
@@ -350,6 +379,14 @@ class MetalGUI(QMainWindowBaseHandler):
         self.qApp = kick_start_qApp()
         if not self.qApp:
             logging.error("Could not start Qt event loop using QApplication.")
+
+        # Register the at-exit Qt teardown exactly once (issue #1048), no
+        # matter how many MetalGUIs are built. Done lazily here so a pure
+        # headless / ``qm.view`` user who never builds a MetalGUI never
+        # registers it. ``unregister`` is a no-op the first time and keeps
+        # this idempotent across repeated construction.
+        atexit.unregister(_teardown_qt_widgets)
+        atexit.register(_teardown_qt_widgets)
 
         super().__init__()
 
