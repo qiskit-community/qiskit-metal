@@ -470,6 +470,7 @@
 <span class="c1"># that they have been altered from the originals.</span>
 <span class="sd">&quot;&quot;&quot;GUI front-end interface for Quantum Metal, built on PySide6.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">atexit</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">webbrowser</span>
@@ -479,6 +480,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QAction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">QApplication</span><span class="p">,</span>
     <span class="n">QWidget</span><span class="p">,</span>
     <span class="n">QDialog</span><span class="p">,</span>
     <span class="n">QDockWidget</span><span class="p">,</span>
@@ -530,6 +532,33 @@
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..renderers.renderer_mpl.mpl_canvas</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlotCanvas</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_teardown_qt_widgets</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete every top-level Qt widget before the interpreter finalizes.</span>
+
+<span class="sd">    Fixes the segfault-at-exit reported in issue #1048. PySide6 otherwise</span>
+<span class="sd">    destroys the ``QApplication`` during ``Py_FinalizeEx`` while ``MetalGUI``&#39;s</span>
+<span class="sd">    window is still alive; a ``QWidget`` destructor then dispatches an event</span>
+<span class="sd">    through the main window&#39;s ``QMenuBar`` event filter whose target is already</span>
+<span class="sd">    half-deleted, jumping to a null vtable entry and killing the process (in a</span>
+<span class="sd">    Jupyter kernel this surfaces as &quot;the kernel appears to have died&quot;).</span>
+
+<span class="sd">    Deleting the widgets here -- while the interpreter and ``QApplication`` are</span>
+<span class="sd">    still alive -- destroys them in the correct order. ``deleteLater`` is used</span>
+<span class="sd">    rather than ``close()`` so this never triggers the &quot;save unsaved changes?&quot;</span>
+<span class="sd">    dialog (which would block forever on a headless machine). The function is</span>
+<span class="sd">    idempotent and exception-safe: it is only a best-effort cleanup.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">app</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">topLevelWidgets</span><span class="p">()):</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">processEvents</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pragma: no cover - cleanup must never raise at exit</span>
+        <span class="k">pass</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">QMainWindowExtension</span><span class="p">(</span><span class="n">QMainWindowExtensionBase</span><span class="p">):</span>
@@ -811,6 +840,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">qApp</span> <span class="o">=</span> <span class="n">kick_start_qApp</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">qApp</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not start Qt event loop using QApplication.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Register the at-exit Qt teardown exactly once (issue #1048), no</span>
+        <span class="c1"># matter how many MetalGUIs are built. Done lazily here so a pure</span>
+        <span class="c1"># headless / ``qm.view`` user who never builds a MetalGUI never</span>
+        <span class="c1"># registers it. ``unregister`` is a no-op the first time and keeps</span>
+        <span class="c1"># this idempotent across repeated construction.</span>
+        <span class="n">atexit</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">_teardown_qt_widgets</span><span class="p">)</span>
+        <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">_teardown_qt_widgets</span><span class="p">)</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -1516,7 +1553,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/06/11</div>
+              Last updated on 2026/06/14</div>
           </div>
           <div class="right-details">
             
