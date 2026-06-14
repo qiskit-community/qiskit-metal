@@ -6,6 +6,24 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Quantum Metal v0.7.4 (new SNAIL component + crash fixes; no breaking changes)
+
+Patch release. Additive — no breaking changes.
+
+### Added (v0.7.4-only)
+
+- **`SNAIL` QComponent** (`qiskit_metal.qlibrary.qubits.SNAIL`) — a Superconducting Nonlinear Asymmetric Inductive eLement: a loop with three large Josephson junctions on one arm and one smaller junction on the other. Emits the four junctions to the `junction` qgeometry table (three large at `Lj`, one small at `Lj_small`) so it renders as lumped Josephson inductances under HFSS-eigenmode / pyEPR, and exposes pins `a`/`b` for routing. Default junction inductances and the documented physics (`alpha`, Kerr-free flux, `alpha < 1/n` constraint) are grounded in Frattini et al. 2017/2018 and Sivak et al. 2019. (#1100, closes #1099)
+
+### Fixed (v0.7.4-only)
+
+- **`EigenmodeSim.plot_convergences()` raised `NameError: plot_convergence_f_vspass`.** A prior lazify-imports refactor removed the `from pyEPR.reports import (...)` line from `analyses/simulation/eigenmode.py` on the mistaken belief the four plot helpers were unused — they are called inside the method. Restored as a lazy use-site import (keeps the no-pyEPR import path clean). (#1102, closes #1101)
+- **`analyses/sweep_and_optimize/sweeping.py` was entirely unimportable.** `Sweeping._extract_min_passes` used an unquoted `Union[None, float]` return annotation without importing `Union`, so `class Sweeping` raised `NameError` at definition time. It went unnoticed because nothing in the package or tests imported the module. Added the missing `Union` import. (#1102)
+- **`MetalGUI` segfaulted at interpreter exit** (in a Jupyter kernel: "the kernel appears to have died"). At finalization PySide6 destroyed the `QApplication` while the window was still alive, dispatching an event through the main window's `QMenuBar` event filter whose target was half-deleted → SIGSEGV. Fixed with a one-shot `atexit` handler that deletes top-level Qt widgets while the interpreter / `QApplication` are still alive. (#1104, addresses #1048)
+
+### CI (v0.7.4-only)
+
+- **`tests-gui-display`** — first CI job to launch the real on-screen Qt `MetalGUI` (under Xvfb), so GUI-lifecycle crashes like #1048 can't regress unnoticed. Every other job runs headless. (#1104)
+
 ## Quantum Metal v0.7.3 (Qt-mode polish + `qm.show_inline`; no breaking changes)
 
 Patch release rolling up the v0.7.2 line. v0.7.2 was never tagged to PyPI; everything below shipped together as **v0.7.3**.
