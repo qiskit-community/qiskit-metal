@@ -216,7 +216,10 @@ def _apidoc_doc_target(cls) -> str:
     time the runtime attribute is absent and every card would otherwise fall
     back to the index."""
     page = f"qiskit_metal.qlibrary.{cls.__name__}"
-    if cls.__name__ in _autosummary_registry() or (APIDOCS_IMG / f"{page}.rst").exists():
+    if (
+        cls.__name__ in _autosummary_registry()
+        or (APIDOCS_IMG / f"{page}.rst").exists()
+    ):
         return f"apidocs/{page}"
     return "apidocs/qlibrary"
 
