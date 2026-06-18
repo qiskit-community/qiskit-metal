@@ -112,6 +112,20 @@ Hamiltonian models
     4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model
 
 
+Full-Chip Design Examples
+=========================
+
+End-to-end reference layouts built from stock Quantum Metal components,
+adapted with attribution from the open-source `SQDMetal
+<https://github.com/sqdlab/SQDMetal>`_ benchmark devices
+(`arXiv:2511.01220 <https://arxiv.org/abs/2511.01220>`_).
+
+.. nbgallery::
+    :glob:
+
+    full-design-examples/*
+
+
 Quick Topics
 ============
 
