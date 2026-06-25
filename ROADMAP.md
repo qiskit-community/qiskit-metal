@@ -34,8 +34,8 @@ discovery ([SQuADDS](https://github.com/LFL-Lab/SQuADDS)),
 Palace simulation wrappers ([SQDMetal](https://github.com/sqdlab/SQDMetal),
 [pypalace](https://pypalace.readthedocs.io/)),
 mesh utilities, quantization tools. Full map:
-[`docs/ecosystem.rst`](./docs/ecosystem.rst) (rendered at
-the docs site). Items below are about Metal's own
+[Ecosystem doc](https://github.com/qiskit-community/qiskit-metal/blob/main/docs/ecosystem.rst)
+(rendered on the docs site). Items below are about Metal's own
 direction; ecosystem-level coordination is tracked
 alongside.
 
@@ -245,7 +245,8 @@ solving is the Ansys HFSS / Q3D bridge. This is excellent
 for industrial users but excludes everyone without an AEDT
 license — and blocks our own CI from validating the
 HFSS-specific bugs in the deferred list (see
-`tests/test_qlibrary_pin_sanity.py::KNOWN_INWARD_PINS`).
+[`KNOWN_INWARD_PINS`](https://github.com/qiskit-community/qiskit-metal/blob/main/tests/test_qlibrary_pin_sanity.py)
+in the qlibrary pin-sanity test).
 
 The open FEM stack is the long-term answer. Three pieces:
 
@@ -478,8 +479,6 @@ or their employer.*
 
 ---
 
----
-
 ## Adoption, DevRel, and onboarding
 
 Making sure people *find* the project, *try* it, and *stick with* it.
@@ -505,7 +504,7 @@ trial viable).
   in-browser via the Pyodide kernel, zero install. Lives under `/lite/`
   on the published docs site.
 
-### Quick wins on deck (each <2 hours)
+### Quick wins (≤2 hours each)
 
 - **Open Graph image** `[research]` — controls how the repo / docs preview
   when shared on Twitter / Slack / Discord. Currently uses the GitHub
@@ -571,42 +570,21 @@ trial viable).
 
 ## Docs build cleanup `[research]`
 
-Items deferred during the May 2026 docs-build pass (see PR #1085).
-The build is now clean (0 warnings) but a few latent fragilities remain:
+Internal Sphinx fragilities deferred during the May 2026 docs-build pass
+([PR #1085](https://github.com/qiskit-community/qiskit-metal/pull/1085)).
+The build is currently clean (0 warnings), but two latent foot-guns remain
+for future contributors to be aware of:
 
-- **Analyses-module alias-path documentation.** Classes in
-  ``qiskit_metal.analyses`` are reachable through two paths:
-  (1) the alias path via ``__init__.py`` re-export
-  (``qiskit_metal.analyses.EPRanalysis``), and (2) the real submodule
-  path (``qiskit_metal.analyses.quantization.energy_participation_ratio.EPRanalysis``).
-  Autodoc currently registers each class under both, which is
-  benign for users but emits ``duplicate object description``
-  warnings whenever the per-class stubs are reached via *both* an
-  autosummary toctree and an automodule member walk simultaneously.
-  Today this is avoided by careful toctree structuring; ideally we
-  pick one canonical documentation path per class. Options:
-  (a) stop re-exporting from ``__init__.py`` and require users to
-  import from submodules (breaking API change — not desirable);
-  (b) add ``:no-index:`` to all 16 per-class stubs in
-  ``docs/apidocs/qiskit_metal.analyses.*.rst`` so only the
-  ``automodule`` walk wins;
-  (c) regenerate the stubs to use the full submodule path in their
-  ``currentmodule`` directives. (c) is the cleanest if we ever
-  re-run ``sphinx-autogen`` to refresh the stubs.
+- **Analyses-module alias paths** — classes in `qiskit_metal.analyses` are
+  reachable through both the `__init__.py` re-export and the real submodule
+  path; autodoc registers them under both, raising `duplicate object
+  description` warnings if toctree structure ever changes.
+- **Autosummary code-block leak** — Sphinx's autosummary scans `.. autosummary::`
+  directives even inside `.. code-block::` examples, which can generate
+  phantom RST files. PR #1085 worked around by escaping directive names in
+  the contributor guide.
 
-- **Sphinx-autosummary code-block leak.** Sphinx's autosummary
-  extension scans *every* ``.rst`` file for ``.. autosummary::``
-  and ``.. automodule::`` directives, **including those nested
-  inside ``.. code-block:: rst`` / ``.. code-block:: python``
-  blocks** used for documentation examples. PR #1085 worked around
-  this by escaping directive names (``.\.``) in the contributor
-  guide so the examples don't accidentally fire at build time, but
-  the underlying behavior is a foot-gun: any future docs example
-  that includes a real autosummary directive will silently
-  generate phantom RST files in ``docs/``. Possible fixes:
-  (a) replace the in-text examples with ``literalinclude`` of a
-  fixture file (out of scope of autosummary's scanner);
-  (b) configure autosummary to ignore specific directories.
+Full background and remediation options are in PR #1085's discussion.
 
 ---
 
@@ -707,21 +685,14 @@ as part of this repo — version pins float independently.
 ## GUI / UX wishes `[wish-list]`
 
 Small UX improvements collected from real use. Lower priority than the
-roadmap items above, but tracked here so they don't get lost.
+roadmap items above, but tracked so they don't get lost.
 
-- **Thumbnail icons for every qubit / component in the GUI library
-  toolbar** `[wish]` — the left-side component browser currently shows
-  a flat text list of `TransmonPocket`, `TransmonCross`,
-  `TransmonInterdigitated`, etc. A small (~64×64) preview icon next to
-  each name would let users pick a geometry visually instead of having
-  to remember which class is which shape. Applies to both the Qt
-  `MetalGUI` (`src/qiskit_metal/_gui/widgets/qlibrary_display/`) and
-  the future Jupyter `qm.gui()` library panel (planning in
-  `_dev/jupyter_gui/feature-map.md`). Implementation: render each
-  component once headlessly via `qm.view(component)` and cache as PNG
-  in `docs/_static/component_icons/` — same reproducible-asset pattern
-  the hero GIF (`scripts/make_hero_gif.py`) uses. Existing assets in
-  `_imgs/components/` may already cover some.
+- **Thumbnail icons in the GUI library toolbar** `[wish]` — the left-side
+  component browser currently shows a flat text list (`TransmonPocket`,
+  `TransmonCross`, ...). A small preview icon next to each name would let
+  users pick a geometry visually. Applies to both the Qt `MetalGUI` and
+  the future Jupyter `qm.gui()` library panel. Implementation can reuse
+  the same reproducible-asset pattern as the hero GIF.
 
 ---
 
@@ -735,8 +706,8 @@ roadmap items above, but tracked here so they don't get lost.
 - **Bring a backend.** If you maintain or work with an
   open-source EM solver and want to see it as a
   first-class Quantum Metal target, the renderer
-  protocol is documented at
-  `docs/architecture/renderer_protocol.md`.
+  protocol is documented in
+  [`docs/architecture/renderer_protocol.md`](https://github.com/qiskit-community/qiskit-metal/blob/main/docs/architecture/renderer_protocol.md).
 - **Join the conversation.** Discord:
   https://discord.gg/kaZ3UFuq. QDC governance page:
   https://qdc-qcsa.vercel.app.
