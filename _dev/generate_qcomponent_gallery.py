@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import functools
 import importlib
 import inspect
 import os
@@ -72,6 +73,16 @@ CATEGORY_LABELS = {
 IMG_REF_RE = re.compile(r"\.\. image::[\r\n]+\s*(\S+)")
 META_DESC_RE = re.compile(r"\.\. meta::\s*\n\s*:description:\s*([^\n]+)")
 
+# Generic docstring lead-ins that say nothing useful on a gallery card, e.g.
+#   ``The base `TransmonCross` class.``
+#   ``Inherits `BaseQubit` class.``
+#   ``The base "JJ_Dolan" inherits the "QComponent" class.``
+# We skip these so the card subtitle is the first *substantive* sentence.
+BOILERPLATE_RE = re.compile(
+    r"^(the\s+base\b.*\bclass\s*\.?\s*|inherits\b.*\bclass\s*\.?\s*)$",
+    re.IGNORECASE,
+)
+
 
 def _docstring_of(cls):
     return inspect.getdoc(cls) or ""
@@ -90,9 +101,18 @@ def _short_description(cls) -> str:
     # Drop the directives, then take the first real line.
     ds = IMG_REF_RE.sub("", ds)
     ds = META_DESC_RE.sub("", ds)
+    display = _meta_display_name(cls).strip().rstrip(".").lower()
     for line in ds.splitlines():
         line = line.strip()
         if not line or line.startswith(".."):
+            continue
+        # Skip generic "The base X class" / "Inherits Y class" lead-ins and a
+        # line that merely restates the card title — neither helps the reader.
+        if BOILERPLATE_RE.match(line):
+            continue
+        if line.upper().startswith("NOTE TO USER"):
+            continue
+        if line.rstrip(".").lower() == display:
             continue
         if len(line) > 100:
             line = line[:97].rstrip() + "..."
@@ -152,26 +172,63 @@ def _group_by_category():
     return groups
 
 
-def _has_top_level_export(cls) -> bool:
-    """Sphinx autosummary in qlibrary/__init__.py registers each class as
-    ``qiskit_metal.qlibrary.<ClassName>``. Classes not re-exported there
-    (rare; SmileyFace is the only current example) have no per-class
-    apidoc page, so we link to the qlibrary index instead."""
+@functools.lru_cache(maxsize=None)
+def _autosummary_registry() -> frozenset[str]:
+    """Class names Sphinx autosummary registers as
+    ``qiskit_metal.qlibrary.<Name>`` (each gets a per-class apidoc page at
+    build time). Parsed from the ``.. autosummary::`` blocks in
+    ``qlibrary/__init__.py`` so a just-added component — whose generated
+    ``.rst`` isn't committed yet (e.g. SNAIL) — still links to its own page,
+    while a class deliberately left out of the autosummary (e.g. SmileyFace)
+    correctly falls back to the index."""
     try:
-        qlib = importlib.import_module("qiskit_metal.qlibrary")
-        return hasattr(qlib, cls.__name__)
+        doc = ast.get_docstring(ast.parse((QLIB / "__init__.py").read_text())) or ""
     except Exception:
-        return False
+        return frozenset()
+    names: set[str] = set()
+    in_block = False
+    for line in doc.splitlines():
+        if ".. autosummary::" in line:
+            in_block = True
+            continue
+        if in_block:
+            s = line.strip()
+            if not s or s.startswith(":"):  # blank or option line (:toctree:)
+                continue
+            if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", s):
+                names.add(s)
+            else:  # prose / category header ends the block
+                in_block = False
+    return frozenset(names)
+
+
+def _apidoc_doc_target(cls) -> str:
+    """Link target for a component card.
+
+    Prefer the per-class autosummary page
+    ``apidocs/qiskit_metal.qlibrary.<ClassName>`` when that class is in the
+    autosummary registry (or its ``.rst`` already exists on disk), falling
+    back to the qlibrary index otherwise.
+
+    We use the registry rather than a runtime ``hasattr`` on
+    ``qiskit_metal.qlibrary``: the class re-exports in ``qlibrary/__init__``
+    are gated behind ``config.is_building_docs()``, so at gallery-generation
+    time the runtime attribute is absent and every card would otherwise fall
+    back to the index."""
+    page = f"qiskit_metal.qlibrary.{cls.__name__}"
+    if (
+        cls.__name__ in _autosummary_registry()
+        or (APIDOCS_IMG / f"{page}.rst").exists()
+    ):
+        return f"apidocs/{page}"
+    return "apidocs/qlibrary"
 
 
 def _render_card(cls, copied_img: str) -> str:
     """One ``grid-item-card`` block for the gallery."""
     display = _meta_display_name(cls)
     desc = _short_description(cls)
-    if _has_top_level_export(cls):
-        link_doc = f"apidocs/qiskit_metal.qlibrary.{cls.__name__}"
-    else:
-        link_doc = "apidocs/qlibrary"
+    link_doc = _apidoc_doc_target(cls)
     img_rel = f"images/qlibrary/{copied_img}" if copied_img else None
 
     lines = [

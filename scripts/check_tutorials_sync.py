@@ -21,7 +21,7 @@ If you edited only one folder, run::
 to bring the other into sync (per-notebook canonical choices are baked into
 the script). Then re-run this check.
 
-Exits 0 if all 54 pairs are identical, 1 otherwise. Runs in CI on every PR.
+Exits 0 if all 55 pairs are identical, 1 otherwise. Runs in CI on every PR.
 """
 
 import json
@@ -244,6 +244,19 @@ PAIRS = [
     (
         "docs/tut/quick-topics/Testing-QComponents-for-overlap-and-collisions.ipynb",
         "tutorials/Appendix B Quick topics/Testing QComponents for overlap and collisions.ipynb",
+    ),
+    # full-design-examples / Appendix A
+    (
+        "docs/tut/full-design-examples/Reference-design-1-Transmon-with-readout-resonator.ipynb",
+        "tutorials/Appendix A Full design flow examples/Reference design 1 - Transmon with readout resonator.ipynb",
+    ),
+    (
+        "docs/tut/full-design-examples/Reference-design-2-Two-coupled-transmons.ipynb",
+        "tutorials/Appendix A Full design flow examples/Reference design 2 - Two coupled transmons.ipynb",
+    ),
+    (
+        "docs/tut/full-design-examples/Reference-design-3-Four-qubit-multiplexed-readout.ipynb",
+        "tutorials/Appendix A Full design flow examples/Reference design 3 - Four-qubit multiplexed readout.ipynb",
     ),
 ]
 

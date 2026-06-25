@@ -22,7 +22,7 @@ from qiskit_metal.qlibrary.core.base import QComponent
 
 class jj_dolan(QComponent):
     """
-    The base "JJ_Dolan" inherits the "QComponent" class.
+    Dolan-bridge Josephson junction.
 
     NOTE TO USER: Please be aware that when designing with this
     qcomponent, one must take care in accounting for the junction
