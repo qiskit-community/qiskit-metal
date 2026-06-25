@@ -3,10 +3,10 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="FAQ’s" href="faq.html"><link rel="prev" title="The Quantum Metal Ecosystem" href="ecosystem.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="FAQ’s" href="faq.html"><link rel="prev" title="Quantum Metal — Roadmap" href="roadmap.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Roadmap - Quantum Metal 0.7.4</title>
+        <title>Quantum Metal Workflow - Quantum Metal 0.7.4</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -290,8 +290,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Concepts</span></p>
 <ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Roadmap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#quantum-metal-workflow">Quantum Metal Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#quantization-methods-overview">Quantization Methods Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 </ul>
@@ -466,51 +466,8 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="roadmap">
-<span id="workflow"></span><h1>Roadmap<a class="headerlink" href="#roadmap" title="Link to this heading">¶</a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><strong>From IBM to a Community-Maintained Project</strong></p>
-<p>Originally developed at IBM by <strong>Dr. Zlatko K. Minev</strong>, Quantum Metal has transitioned into a
-<strong>community-driven project</strong> supported by universities, research groups, laboratories, and
-individual contributors worldwide. Ongoing work is carried out by the
-<strong>Quantum Device Consortium (QDC)</strong> and active maintainers.</p>
-<p>Current release: <strong>v0.7.0</strong> (lite-by-default install — see <a class="reference internal" href="migration-to-v0.7.0.html"><span class="doc">Migrating to v0.7.0 (lite-by-default install)</span></a>).
-The project follows <a class="reference external" href="https://jacobtomlinson.dev/effver/">EffVer</a> and will switch to
-<a class="reference external" href="https://semver.org">SemVer</a> after v1.0 (date TBD).</p>
-<ul class="simple">
-<li><p>QDC website &amp; governance: <a class="reference external" href="https://qdc-qcsa.org">https://qdc-qcsa.org</a> — Discord: <a class="reference external" href="https://discord.gg/kaZ3UFuq">discord.gg/kaZ3UFuq</a></p></li>
-<li><p>QDW (annual workshop): <a class="reference external" href="https://qdw-ucla.squarespace.com/">https://qdw-ucla.squarespace.com/</a> — sign for 2026: <a class="reference external" href="https://qdw-ucla.squarespace.com/qdw2026">https://qdw-ucla.squarespace.com/qdw2026</a></p></li>
-<li><p>Slack (<a class="reference external" href="https://qiskit.slack.com/archives/C01R8KP5WP7">#metal</a>) remains available but is being phased out in favour of Discord.</p></li>
-</ul>
-</div>
-<p>The full, up-to-date roadmap lives in
-<a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/blob/main/ROADMAP.md">ROADMAP.md</a>
-in the repository root. It is the canonical source of truth — items there are
-linked to open PRs and issues so you can track progress or jump in.</p>
-<p><strong>Current priorities (v0.7.x — v0.8.0):</strong></p>
-<ul class="simple">
-<li><p><strong>Lite-by-default</strong> <code class="docutils literal notranslate"><span class="pre">[shipped</span> <span class="pre">in</span> <span class="pre">v0.7.0]</span></code> — <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code>
-is now small and fast; heavy backends (GUI, Ansys, gmsh) are opt-in extras.</p></li>
-<li><p><strong>pyaedt renderer</strong> <code class="docutils literal notranslate"><span class="pre">[active]</span></code> — the <code class="docutils literal notranslate"><span class="pre">renderer_ansys_pyaedt/</span></code> path is the
-modern replacement for the legacy COM-based HFSS/Q3D bridge. Ongoing validation
-and feature parity work.</p></li>
-<li><p><strong>Jupyter widget viewer</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code> — exploring a Jupyter-widgets-based
-interactive viewer (pan, zoom, click-to-select) as a lighter alternative to the
-PySide6 desktop GUI. Goal: full interactivity in JupyterLab and VS Code notebooks
-without requiring Qt.</p></li>
-<li><p><strong>Open FEM stack</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code> — gmsh mesher (<code class="docutils literal notranslate"><span class="pre">renderer_gmsh/</span></code>) +
-Elmer solver (<code class="docutils literal notranslate"><span class="pre">renderer_elmer/</span></code>) + AWS Palace renderer (planned). Unblocks
-HFSS-free full-field analysis for users without an Ansys license.</p></li>
-<li><p><strong>AI-orchestration profile</strong> <code class="docutils literal notranslate"><span class="pre">[planned,</span> <span class="pre">v0.7.x]</span></code> — stable programmatic API
-contract, determinism guarantees, and renderer dispatch by name so that
-agent-driven design loops can use Quantum Metal predictably.</p></li>
-</ul>
-<p>Have a feature request or want to help? Open an issue or join the conversation
-on <a class="reference external" href="https://discord.gg/kaZ3UFuq">Discord</a>.</p>
-</section>
-<section id="quantum-metal-workflow">
-<h1>Quantum Metal Workflow<a class="headerlink" href="#quantum-metal-workflow" title="Link to this heading">¶</a></h1>
+          <section id="quantum-metal-workflow">
+<span id="workflow"></span><h1>Quantum Metal Workflow<a class="headerlink" href="#quantum-metal-workflow" title="Link to this heading">¶</a></h1>
 <p>Quantum Metal enables chip prototyping in a matter of minutes.
 You can start from a convenient Python Jupyter notebook or take advantage of the user-friendly graphical user interface (GUI). Simply choose from a library of predefined quantum components, such as transmon qubits and coplanar resonators, and customize their parameters in real-time to fit your needs. Use the built-in algorithms to automatically connect components. Easily implement new experimental components using Python templates and examples.</p>
 <a class="reference internal image-reference" href="_images/workflow.jpg"><img alt="Missing Workflow Diagram" height="683" src="_images/workflow.jpg" width="388" />
@@ -653,14 +610,14 @@ set coupling windows, or debug unexpected mode crowding.</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="ecosystem.html">
+          <a class="prev-page" href="roadmap.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">The Quantum Metal Ecosystem</div>
+                <div class="title">Quantum Metal — Roadmap</div>
                 
               </div>
             </a>
