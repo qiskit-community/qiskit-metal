@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="FAQ’s" href="faq.html"><link rel="prev" title="Quantum Metal — Roadmap" href="roadmap.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Quantization Methods Overview" href="quantization.html"><link rel="prev" title="Videos &amp; Education Hub" href="videoseducation.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Quantum Metal Workflow - Quantum Metal 0.7.4</title>
@@ -192,8 +192,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Quantum Metal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tut/1-Overview/1.1-Quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on / with Quantum Metal</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<p class="caption" role="heading"><span class="caption-text">Tutorials &amp; Examples</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tut/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.1-Quick-start.html">1.1 Quick start</a></li>
@@ -284,16 +287,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="videoseducation.html">Videos &amp; Education</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Ecosystem</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on / with Quantum Metal</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Concepts</span></p>
+<p class="caption" role="heading"><span class="caption-text">How It Works</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Quantum Metal Workflow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#quantization-methods-overview">Quantization Methods Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization Methods</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -422,13 +419,16 @@
 </ul>
 </li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Community &amp; Contributing</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributor-guide.html">Contributor Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Using Quantum Metal without Qt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 </ul>
 
@@ -490,110 +490,6 @@ In terms of a high-level description, we aim to perform the following tight feed
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-</section>
-<section id="quantization-methods-overview">
-<h1>Quantization Methods Overview<a class="headerlink" href="#quantization-methods-overview" title="Link to this heading">¶</a></h1>
-<p>We currently support two complementary quantization approaches that cover most day-to-day chip design
-work: a lightweight lumped/ quasi-lumped model and a full-wave, black-box style energy-participation
-ratio (EPR) workflow. Use this section as a quick “why and when” guide before you pick a solver.</p>
-<p><strong>What you give us</strong>
-- Your device geometry (from the QComponent library or your own components)
-- A small set of materials/stack assumptions (dielectrics, metal films, boundaries)
-- The excitation/ports you care about (for scattering or eigenmode solves)</p>
-<p><strong>What you get back</strong>
-- Modal frequencies, anharmonicities, and dispersive shifts
-- Coupling strengths and participation matrices you can plug into Hamiltonians
-- Loss estimates tied to specific volumes (dielectrics, conductors, seams) so you can chase the right bottleneck</p>
-<p>Each method balances speed, fidelity, and required setup. Start with the lumped model when you need
-fast iteration and intuitive circuit pictures; switch to EPR when geometry and field participation
-really matter.</p>
-<img alt="Missing Image" src="_images/quantization.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<section id="lumped-oscillator-model">
-<h2>Lumped-oscillator model<a class="headerlink" href="#lumped-oscillator-model" title="Link to this heading">¶</a></h2>
-<p>In the lumped-oscillator model you treat each component as a compact circuit element whose capacitance
-and inductance can be extracted from fast quasi-static simulations or closed-form formulas. Think of it
-as a guided way to draw a circuit, pull out the C and L values, and then stitch those into a Hamiltonian.</p>
-<p><em>When to use it.</em> Early design and parameter sweeps when you want intuition and speed. Routing,
-connector placement, and first-order coupling strengths are often “good enough” here. Because solves are
-cheap, you can explore a lot of geometry/stack variants before moving to heavier solvers.</p>
-<p><em>How it works.</em> Partition the device into a handful of cells, solve each one quickly to get effective
-C/L values, then assemble the network and quantize. The reduction step preserves the pairwise couplings
-so you keep track of renormalization and loading. The result is a simple Hamiltonian with parameters you
-can iterate on in minutes.</p>
-<p>References:</p>
-<ul class="simple">
-<li><p>Zlatko K. Minev, Thomas G. McConkey, Maika Takita, Antonio Corcoles, Jay M. Gambetta,
-Circuit quantum electrodynamics (cQED) with modular quasi-lumped models. (2021)</p></li>
-</ul>
-<a class="reference internal image-reference" href="_images/lump.png"><img alt="Missing Image" src="_images/lump.png" width="388" />
-</a>
-<a class="reference internal image-reference" href="_images/lumped2.png"><img alt="Missing Image" src="_images/lumped2.png" width="400" />
-</a>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-</section>
-<section id="energy-the-energy-participation-ratio-epr-method">
-<h2>Energy: The energy-participation-ratio (EPR) method<a class="headerlink" href="#energy-the-energy-participation-ratio-epr-method" title="Link to this heading">¶</a></h2>
-<p>The energy-participation-ratio (EPR) method is a general (black-box) quantization method.
-Based on the Quantum Metal integration with <a class="reference external" href="https://github.com/zlatko-minev/pyEPR">pyEPR</a>,
-one can automate the design and quantization of Josephson quantum circuits,
-and even 3D circuits.</p>
-<p>The EPR method is based on the energy-participation ratio (EPR) of a dissipative or nonlinear
-element in an electromagnetic mode. The EPR, a number between zero and one, quantifies how much
-of the energy of a mode is stored in each element. It obeys universal constraints—valid
-regardless of the circuit topology and nature of the nonlinear elements.
-The EPR of the elements are calculated from a unique, efficient electromagnetic eigenmode
-simulation of the linearized circuit, including lossy elements.
-Their set is the key input to the determination of the quantum Hamiltonian of the system.
-The method provides an intuitive and simple-to-use tool to quantize multi-junction circuits.
-It is especially well-suited for finding the Hamiltonian and dissipative parameters of weakly
-anharmonic systems, such as transmon qubits coupled to resonators, or Josephson transmission lines.
-The EPR method is experimentally tested on a variety of Josephson circuits, and demonstrated
-high agreement for nonlinear couplings and modal Hamiltonian parameters, over many order of
-magnitude in energy.</p>
-<p><em>When to use it.</em> When layout details matter: packaging effects, higher-mode participation, junction
-placement, seams, or substrate losses. EPR gives you a field-aware Hamiltonian and ties every loss
-number to a physical volume, so you know which lever to pull next.</p>
-<p><em>What you set up.</em> Draw your design, define materials and boundaries, place ports, and run a single
-eigenmode solve on the linearized circuit. pyEPR reads the fields, computes participations for every
-nonlinear/lossy element, and hands back frequencies, dispersive shifts, anharmonicities, and loss
-budgets. Because it is black-box, it scales to multi-mode, multi-junction systems with minimal
-hand-tuning.</p>
-<p>References:</p>
-<ul class="simple">
-<li><p>Minev, Z. K., Leghtas, Z., Mudhada, S. O., Reinhold, P., Diringer, A., &amp; Devoret, M. H. (2018). <a class="reference external" href="https://github.com/zlatko-minev/pyEPR/blob/master/pyEPR.bib">pyEPR: The energy-participation-ratio (EPR) open-source framework for quantum device design.</a></p></li>
-<li><p>Minev, Z. K., Leghtas, Z., Mundhada, S. O., Christakis, L., Pop, I. M., &amp; Devoret, M. H. (2020). Energy-participation quantization of Josephson circuits. ArXiv. Retrieved from <a class="reference external" href="http://arxiv.org/abs/2010.00620">http://arxiv.org/abs/2010.00620</a> (2020)</p></li>
-<li><p>Z.K. Minev, Ph.D. Dissertation, Yale University (2018), Chapter 4. <a class="reference external" href="https://arxiv.org/abs/1902.10355">arXiv:1902.10355</a>  (2018)</p></li>
-<li><p><a class="reference external" href="https://pyepr-docs.readthedocs.io">pyEPR docs</a></p></li>
-</ul>
-</section>
-<section id="impedance-impedance-based-black-box-quantization-bbq">
-<h2>Impedance: impedance-based black-box quantization (BBQ)<a class="headerlink" href="#impedance-impedance-based-black-box-quantization-bbq" title="Link to this heading">¶</a></h2>
-<p>The impedance formulation of black-box quantization builds the Hamiltonian directly from the
-frequency-dependent impedance seen between nonlinear elements and ground. It shares the “full-wave
-fields first, circuit later” philosophy of EPR, but works in the impedance domain: from a port-defined
-impedance matrix you extract effective mode frequencies, participation factors, and couplings.</p>
-<p><em>When to use it.</em> For strongly multi-port/multi-mode layouts where port impedances are the most natural
-handle (e.g., rich bus networks, Purcell filters, or chip-package assemblies). It is also a good cross
-check to EPR when you want to validate couplings via an independent pipeline.</p>
-<p><em>What you set up.</em> Define ports at the locations of junctions or pins, run an eigenmode or driven solve
-to obtain the impedance matrix versus frequency, then sample around the modes of interest. The resulting
-impedances map to effective inductive/capacitive participations and give you the Hamiltonian parameters.</p>
-<p><em>Outputs.</em> Mode frequencies, nonlinear participation, and cross-Kerr rates derived from the impedance
-matrix, plus a clear picture of how design changes move those impedances. Use it to tune Purcell filters,
-set coupling windows, or debug unexpected mode crowding.</p>
-<img alt="Missing Image" src="_images/epr.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-</section>
 </section>
 
         </article>
@@ -601,23 +497,23 @@ set coupling windows, or debug unexpected mode crowding.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="faq.html">
+          <a class="next-page" href="quantization.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">FAQ’s</div>
+                <div class="title">Quantization Methods Overview</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="roadmap.html">
+          <a class="prev-page" href="videoseducation.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Quantum Metal — Roadmap</div>
+                <div class="title">Videos &amp; Education Hub</div>
                 
               </div>
             </a>

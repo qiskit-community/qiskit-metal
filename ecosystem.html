@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Quantum Metal — Roadmap" href="roadmap.html"><link rel="prev" title="Videos &amp; Education Hub" href="videoseducation.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Tutorials" href="tut/index.html"><link rel="prev" title="Migrating to v0.7.0 (lite-by-default install)" href="migration-to-v0.7.0.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>The Quantum Metal Ecosystem - Quantum Metal 0.7.4</title>
@@ -189,11 +189,14 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Quantum Metal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tut/1-Overview/1.1-Quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Built on / with Quantum Metal</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<p class="caption" role="heading"><span class="caption-text">Tutorials &amp; Examples</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tut/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.1-Quick-start.html">1.1 Quick start</a></li>
@@ -284,16 +287,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="videoseducation.html">Videos &amp; Education</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Ecosystem</span></p>
-<ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Built on / with Quantum Metal</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Concepts</span></p>
+<p class="caption" role="heading"><span class="caption-text">How It Works</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Quantum Metal Workflow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="workflow.html#quantization-methods-overview">Quantization Methods Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization Methods</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -422,13 +419,16 @@
 </ul>
 </li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Community &amp; Contributing</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributor-guide.html">Contributor Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Using Quantum Metal without Qt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 </ul>
 
@@ -689,23 +689,23 @@ or reach out on <a class="reference external" href="https://discord.gg/kaZ3UFuq"
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="roadmap.html">
+          <a class="next-page" href="tut/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Quantum Metal — Roadmap</div>
+                <div class="title">Tutorials</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="videoseducation.html">
+          <a class="prev-page" href="migration-to-v0.7.0.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Videos &amp; Education Hub</div>
+                <div class="title">Migrating to v0.7.0 (lite-by-default install)</div>
                 
               </div>
             </a>

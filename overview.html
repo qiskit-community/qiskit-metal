@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Designs (qiskit_metal.designs)" href="apidocs/designs.html"><link rel="prev" title="FAQ’s" href="faq.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Designs (qiskit_metal.designs)" href="apidocs/designs.html"><link rel="prev" title="Quantization Methods Overview" href="quantization.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Qiskit Metal Overview - Quantum Metal 0.7.4</title>
@@ -192,8 +192,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Quantum Metal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tut/1-Overview/1.1-Quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on / with Quantum Metal</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<p class="caption" role="heading"><span class="caption-text">Tutorials &amp; Examples</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tut/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.1-Quick-start.html">1.1 Quick start</a></li>
@@ -284,16 +287,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="videoseducation.html">Videos &amp; Education</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Ecosystem</span></p>
+<p class="caption" role="heading"><span class="caption-text">How It Works</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on / with Quantum Metal</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Concepts</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Quantum Metal Workflow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="workflow.html#quantization-methods-overview">Quantization Methods Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization Methods</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
@@ -422,13 +419,16 @@
 </ul>
 </li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Community &amp; Contributing</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributor-guide.html">Contributor Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Using Quantum Metal without Qt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 </ul>
 
@@ -761,14 +761,14 @@
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="faq.html">
+          <a class="prev-page" href="quantization.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">FAQ’s</div>
+                <div class="title">Quantization Methods Overview</div>
                 
               </div>
             </a>

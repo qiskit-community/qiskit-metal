@@ -180,10 +180,12 @@ in a simple, open, community-driven framework.
 
     Installing Quantum Metal<installation>
     Quick Start<tut/1-Overview/1.1-Quick-start>
+    Migrating to v0.7.0<migration-to-v0.7.0>
+    Built on / with Quantum Metal<ecosystem>
 
 .. toctree::
     :maxdepth: 1
-    :caption: Tutorials
+    :caption: Tutorials & Examples
     :hidden:
 
     Tutorials<tut/index>
@@ -193,19 +195,11 @@ in a simple, open, community-driven framework.
 
 .. toctree::
     :maxdepth: 1
-    :caption: Ecosystem
+    :caption: How It Works
     :hidden:
 
-    Built on / with Quantum Metal<ecosystem>
-
-.. toctree::
-    :maxdepth: 2
-    :caption: Concepts
-    :hidden:
-
-    Roadmap<roadmap>
     Quantum Metal Workflow<workflow>
-    Frequently Asked Questions<faq>
+    Quantization Methods<quantization>
 
 .. toctree::
     :maxdepth: 2
@@ -222,6 +216,14 @@ in a simple, open, community-driven framework.
     GUI<apidocs/gui>
 
 .. toctree::
+    :maxdepth: 1
+    :caption: Project
+    :hidden:
+
+    Roadmap<roadmap>
+    Frequently Asked Questions<faq>
+
+.. toctree::
     :maxdepth: 2
     :caption: Community & Contributing
     :hidden:
@@ -229,7 +231,6 @@ in a simple, open, community-driven framework.
     Contributor Guide<contributor-guide>
     Architecture<architecture>
     Using Quantum Metal without Qt<headless-usage>
-    Migrating to v0.7.0<migration-to-v0.7.0>
     Code of Conduct<https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md>
 
 .. Per-class autodoc stubs in ``apidocs/`` are reached via the
