@@ -39,11 +39,11 @@ tests runnable on the lite install (no PySide6).
 from __future__ import annotations
 
 import ast
+import sys
 import unittest
 
 import numpy as np
 
-import qiskit_metal
 from qiskit_metal import designs
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 
@@ -84,21 +84,29 @@ class _StubMetalGUI:
 def _exec_exported_script(script: str) -> dict:
     """Execute ``script`` in a clean namespace with ``MetalGUI`` stubbed.
 
+    The patch must target the ``qiskit_metal`` MODULE attribute -- the
+    exported script runs ``from qiskit_metal import designs, MetalGUI``
+    which resolves ``MetalGUI`` from the module's namespace, not the
+    caller's globals. We grab the live module via ``sys.modules`` (rather
+    than ``import qiskit_metal``) to avoid the dual ``import`` /
+    ``from import`` style smell on the same package.
+
     Returns the resulting global namespace so tests can inspect what was
     bound (e.g. ``design``, ``gui``). Re-raises any exception so the
     failing test reports the actual error.
     """
-    original = qiskit_metal.__dict__.get("MetalGUI", None)
-    qiskit_metal.MetalGUI = _StubMetalGUI
+    qm = sys.modules["qiskit_metal"]
+    original = qm.__dict__.get("MetalGUI", None)
+    qm.MetalGUI = _StubMetalGUI
     try:
         ns: dict = {"__name__": "__exported__"}
         exec(compile(script, "<exported.metal.py>", "exec"), ns)
         return ns
     finally:
         if original is None:
-            qiskit_metal.__dict__.pop("MetalGUI", None)
+            qm.__dict__.pop("MetalGUI", None)
         else:
-            qiskit_metal.MetalGUI = original
+            qm.MetalGUI = original
 
 
 class TestToPythonScriptStructure(unittest.TestCase):
