@@ -363,6 +363,22 @@ or their employer.*
   strength of the class-based qlibrary and is currently
   under-used. Pairs with the "When to use Metal" page
   above as the visual half of the answer.
+- **GDS airbridge support** `[planned, PR #962]`
+  Add airbridges to `QGDSRenderer.export_to_gds` so fab-grade
+  GDS files include the bridges that CPW crossings need without
+  a manual post-processing step in KLayout. Most SC qubit
+  chips with multi-crossing CPW routing need this; today
+  users hand-place bridges downstream.
+  The structural work landed in @clarkmiyamoto's PR #962
+  (`_populate_airbridge` + `make_airbridge.py`, mirroring the
+  cheesing flow), but the PR has bit-rotted relative to
+  current main — needs rebase + the v0.7-era housekeeping
+  (lazy `gdstk`, ruff/format pass, headless test). The
+  limitations the original PR called out (uniform-only
+  bridges, single bridge per turn, no overlap warning) can
+  ship as follow-ups; landing the basic path is the unblock.
+  Pairs with the `.lyp` + Metal → KLayout work above for a
+  clean GDS-handoff story.
 
 ### High impact, high effort
 
