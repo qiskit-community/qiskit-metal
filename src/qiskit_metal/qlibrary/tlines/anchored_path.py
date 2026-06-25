@@ -209,11 +209,28 @@ class RouteAnchors(QRoute):
                 np.array([xmax, ymin]),
                 np.array([xmax, ymax]),
             ]
-            if any(
-                intersecting(segment[0], segment[1], k, l)
-                for k, l in [(p, q), (p, r), (r, s), (q, s)]
+            # A segment whose endpoints both lie inside the bounding box does
+            # not cross any box edge, so the edge-intersection test below would
+            # miss it. Detect that case explicitly and still run the contour
+            # check; otherwise a path passing through a (non-rectangular)
+            # component is wrongly reported as unobstructed. See issue #1036.
+            x0, y0 = segment[0][0], segment[0][1]
+            x1, y1 = segment[1][0], segment[1][1]
+            segment_in_box = (
+                xmin <= x0 <= xmax
+                and ymin <= y0 <= ymax
+                and xmin <= x1 <= xmax
+                and ymin <= y1 <= ymax
+            )
+            if (
+                any(
+                    intersecting(segment[0], segment[1], k, l)
+                    for k, l in [(p, q), (p, r), (r, s), (q, s)]
+                )
+                or segment_in_box
             ):
-                # At least 1 intersection with the component bounding box. Check the actual contour.
+                # At least 1 intersection with the component bounding box (or the
+                # segment lies entirely within it). Check the actual contour.
                 if not self.unobstructed_close_up(segment, component):
                     # At least 1 intersection with the actual component contour; do not proceed!
                     return False
