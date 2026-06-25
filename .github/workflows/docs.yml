@@ -28,7 +28,17 @@ jobs:
       # graphviz: used by sphinx.ext.graphviz for inheritance diagrams.
       # pandoc: required by nbsphinx to convert notebook markdown cells.
       - name: Fetch OS updates and upgrade packages
-        run: sudo apt-get update
+        run: |
+          # Harden apt against flaky GitHub-runner third-party sources
+          # (azure-cli/microsoft, chrome) that intermittently 403 or break
+          # signing and fail the whole update, plus a bounded retry so a
+          # stalled mirror can't hang the job. See PRs #1108 and #1111.
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list \
+            /etc/apt/sources.list.d/azure-cli.list \
+            /etc/apt/sources.list.d/google-chrome.list || true
+          for i in 1 2 3; do
+            sudo timeout 180 apt-get update && break || { echo "apt-get update attempt $i failed"; sleep 5; }
+          done
       - name: Install OS dependencies
         run: sudo apt-get install -y graphviz=2.42.2-9ubuntu0.1 pandoc=3.1.3+ds-2
       - name: Build docs

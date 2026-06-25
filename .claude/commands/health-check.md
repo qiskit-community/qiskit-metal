@@ -54,24 +54,20 @@ Investigate any drop in test count.
 uvx ruff check src 2>&1 | tail -10
 ```
 
-Expected output as of v0.6.1:
+Expected output as of v0.7.4:
 
 ```
-8  E721  type-comparison
-6  E711  none-comparison
-5  F811  redefined-while-unused
-2  F405  undefined-local-with-import-star-usage
-1  F822  undefined-export
-Found 22 errors.
+All checks passed!
 ```
 
-**13 of these are deferred** (HFSS / `_gui/` zones, see
-`lessons-learned.md`). If the count changes:
+`src` is currently **clean (0 findings)** — the 13 findings that
+used to be deferred (E721/E711/F811/F822 in HFSS / `_gui/` zones)
+have since been resolved. If findings reappear:
 
 - ↑ Someone added new lint debt. Look at the new findings;
   triage.
-- ↓ Someone fixed deferred findings. Verify they had HFSS / Qt
-  validation. If not, raise a flag.
+- New findings in HFSS / `_gui/` zones — verify they had HFSS / Qt
+  validation before any fix lands. If not, raise a flag.
 
 ### 5. Environment-drift gate
 
@@ -79,7 +75,7 @@ Found 22 errors.
 uv run scripts/check_env_consistency.py
 ```
 
-Expect: `OK: 17 shared packages, no drift.` Any drift is a real
+Expect: `OK: 12 shared packages, no drift.` Any drift is a real
 issue — see `lessons-learned.md` for context.
 
 ### 6. Coverage

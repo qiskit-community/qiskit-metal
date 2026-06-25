@@ -46,7 +46,16 @@ jobs:
       - name: Install Gmsh dependencies for Ubuntu
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
-          sudo apt-get update
+          # Harden apt against flaky GitHub-runner third-party sources
+          # (azure-cli/microsoft, chrome) that intermittently 403 or break
+          # signing and fail the whole update, plus a bounded retry so a
+          # stalled mirror can't hang the job. See PRs #1108 and #1111.
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list \
+            /etc/apt/sources.list.d/azure-cli.list \
+            /etc/apt/sources.list.d/google-chrome.list || true
+          for i in 1 2 3; do
+            sudo timeout 180 apt-get update && break || { echo "apt-get update attempt $i failed"; sleep 5; }
+          done
           sudo apt-get install -y libglu1-mesa libglu1-mesa-dev libegl1-mesa-dev
       - name: Run Tests
         run: uvx --with tox-uv tox -vv -e py
@@ -277,7 +286,16 @@ jobs:
       - name: Install Gmsh OS deps (only needed for mesher extras)
         if: matrix.extra == 'mesh' || matrix.extra == 'fem'
         run: |
-          sudo apt-get update
+          # Harden apt against flaky GitHub-runner third-party sources
+          # (azure-cli/microsoft, chrome) that intermittently 403 or break
+          # signing and fail the whole update, plus a bounded retry so a
+          # stalled mirror can't hang the job. See PRs #1108 and #1111.
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list \
+            /etc/apt/sources.list.d/azure-cli.list \
+            /etc/apt/sources.list.d/google-chrome.list || true
+          for i in 1 2 3; do
+            sudo timeout 180 apt-get update && break || { echo "apt-get update attempt $i failed"; sleep 5; }
+          done
           sudo apt-get install -y libglu1-mesa libglu1-mesa-dev libegl1-mesa-dev
       - name: Install with extra
         # Install the package WITH the matrix extra (e.g.,
@@ -339,7 +357,16 @@ jobs:
         # PySide6's xcb platform plugin needs these system libs to load and
         # show a window; Xvfb provides the headless X server.
         run: |
-          sudo apt-get update
+          # Harden apt against flaky GitHub-runner third-party sources
+          # (azure-cli/microsoft, chrome) that intermittently 403 or break
+          # signing and fail the whole update, plus a bounded retry so a
+          # stalled mirror can't hang the job. See PRs #1108 and #1111.
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list \
+            /etc/apt/sources.list.d/azure-cli.list \
+            /etc/apt/sources.list.d/google-chrome.list || true
+          for i in 1 2 3; do
+            sudo timeout 180 apt-get update && break || { echo "apt-get update attempt $i failed"; sleep 5; }
+          done
           sudo apt-get install -y \
             xvfb \
             libegl1 libgl1 libglib2.0-0 \
@@ -435,7 +462,16 @@ jobs:
           enable-cache: true
       - name: Install Gmsh + Qt OS dependencies
         run: |
-          sudo apt-get update
+          # Harden apt against flaky GitHub-runner third-party sources
+          # (azure-cli/microsoft, chrome) that intermittently 403 or break
+          # signing and fail the whole update, plus a bounded retry so a
+          # stalled mirror can't hang the job. See PRs #1108 and #1111.
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list \
+            /etc/apt/sources.list.d/azure-cli.list \
+            /etc/apt/sources.list.d/google-chrome.list || true
+          for i in 1 2 3; do
+            sudo timeout 180 apt-get update && break || { echo "apt-get update attempt $i failed"; sleep 5; }
+          done
           sudo apt-get install -y libglu1-mesa libglu1-mesa-dev libegl1-mesa-dev
       - name: Run tests with coverage
         # Sync into the project venv so pytest can import the package by
