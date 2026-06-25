@@ -496,6 +496,13 @@ the GUI will immediately populate docks and the canvas from this
 design. Defaults to None.</p>
 </dd>
 </dl>
+<dl class="simple">
+<dt>Diagnostic switch (issues #1048 / #1109):</dt><dd><p>Set <code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_DEBUG_INIT=1</span></code> to trace each init step to
+stderr with explicit flushes. Useful for users seeing the GUI
+silently abort mid-init on Windows – the last printed step
+identifies the failing call without needing a custom branch.</p>
+</dd>
+</dl>
 <p class="rubric">Attributes</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.axes">

@@ -495,6 +495,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python._logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui._init_trace</span><span class="w"> </span><span class="kn">import</span> <span class="n">trace_init</span> <span class="k">as</span> <span class="n">_trace_init</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.utility._handle_qt_messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">slot_catch_error</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.log_widget.log_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogHandler_for_QTextLog</span>
 
@@ -779,26 +780,35 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
         <span class="c1"># Main Window and App level</span>
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;base: _QMainWindowClass()&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_QMainWindowClass</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;base: _setup_qApp&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">qApp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_qApp</span><span class="p">()</span>
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;base: _setup_main_window_tray&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_main_window_tray</span><span class="p">()</span>
 
         <span class="c1"># Style and window</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_style_sheet_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;base: style_window&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">style_window</span><span class="p">()</span>
 
         <span class="c1"># UI</span>
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;base: __UI__().setupUi&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__UI__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">log_text</span><span class="o">.</span><span class="n">dock_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span>
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;base: _setup_logger&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_logger</span><span class="p">()</span>
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;base: _setup_window_size&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_window_size</span><span class="p">()</span>
 
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;base: _ui_adjustments (subclass)&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ui_adjustments</span><span class="p">()</span>  <span class="c1"># overwrite</span>
 
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;base: restore_window_settings&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">restore_window_settings</span><span class="p">()</span>
 
     <span class="nd">@property</span>
@@ -878,16 +888,31 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">qApp</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup_main_window_tray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets up the main window tray.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets up the main window tray icon.</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_imgs</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-            <span class="n">icon</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_imgs</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_img_logo_name</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
+<span class="sd">        Only attaches a ``QSystemTrayIcon`` when one is actually available</span>
+<span class="sd">        per ``QSystemTrayIcon.isSystemTrayAvailable()`` — Qt&#39;s docs state</span>
+<span class="sd">        that constructing/showing a tray icon without a tray present is</span>
+<span class="sd">        undefined behavior, and on Windows 11 with a hidden notification</span>
+<span class="sd">        area / VDI / &quot;compact&quot; taskbar that path can abort silently.</span>
+<span class="sd">        Task/window icons are always set; only the tray is gated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_imgs</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="k">return</span>
 
-            <span class="c1"># not sure if this works, but let&#39;s try</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_icon_tray</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSystemTrayIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_icon_tray</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">icon</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_imgs</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_img_logo_name</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">qApp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">qApp</span><span class="o">.</span><span class="n">setWindowIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSystemTrayIcon</span><span class="o">.</span><span class="n">isSystemTrayAvailable</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;No system tray available; skipping QSystemTrayIcon setup.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_icon_tray</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QSystemTrayIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_icon_tray</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">create_log_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name_toshow</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a log handler.</span>
