@@ -210,19 +210,20 @@ CI matrix on every PR: 9 test combos (py3.10/3.11/3.12 ×
 ubuntu/macos/windows) + `lint` + `env-consistency` + `coverage` +
 `tests-lite` (including notebook-execute).
 
-## Status snapshot (as of v0.6.1, May 2026)
+## Status snapshot (as of v0.7.4, June 2026)
 
-- Latest release: **v0.6.1** on PyPI (after the v0.6.0 tag-only
-  failure — see `.claude/commands/release.md`)
-- Test count: **~475 passing**, 0 failing, 0 flaky
-- New no-Qt path: `qm.view(design)` works with `pip install
-  quantum-metal[lite]` (and the default install too — additive in
-  v0.6.x; planned default flip in v0.7.0)
+- Latest release: **v0.7.4** on PyPI
+- Test count: **~496 collected** (lite local run; the `_gui` suite
+  adds more under the Qt/Xvfb CI jobs), 0 failing, 0 flaky in CI
+- Lite-by-default (shipped in v0.7.0): `qm.view(design)` and headless
+  use work with the default `pip install quantum-metal`; the desktop
+  GUI moved to the `[gui]` extra
 - HFSS 2024.1+ solution-type rename: handled via
   `solution_types.py` + pyEPR 0.9.5 normalisation
 - qutip 5+ compatibility: shipped in v0.6.0/0.6.1
-- 13 ruff findings deferred (all in HFSS/`_gui/` zones — need
-  validation)
+- **`ruff check src` is clean (0 findings)** — the 13 previously
+  deferred findings (E721/E711/F811/F822 in HFSS/`_gui/`) have since
+  been resolved in `src`
 - 1 known HFSS bug deferred: `LaunchpadWirebondDriven.in` pin points
   inward (see `tests/test_qlibrary_pin_sanity.py` `KNOWN_INWARD_PINS`)
 - AWS Palace integration on the roadmap — will unblock HFSS-free
