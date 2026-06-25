@@ -203,6 +203,7 @@ in a simple, open, community-driven framework.
     :caption: Concepts
     :hidden:
 
+    Roadmap<roadmap>
     Quantum Metal Workflow<workflow>
     Frequently Asked Questions<faq>
 
