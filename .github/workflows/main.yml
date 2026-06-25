@@ -364,11 +364,58 @@ jobs:
           "
       - name: Run GUI tests on a virtual display (issue #1048 regression)
         # NOTE: deliberately NOT headless — we want the real MetalGUI.
+        # ``test_gui_init.py`` was added to guard the on-screen
+        # initialization branch of #1048 / #1109; ``test_gui_teardown.py``
+        # already guards the exit segfault PR #1104 fixed.
         run: |
           xvfb-run -a .venv/bin/python -m pytest \
             tests/test_gui_basic.py \
             tests/test_gui_teardown.py \
+            tests/test_gui_init.py \
             -v
+
+  tests-gui-display-windows:
+    # Sibling of tests-gui-display, but on a real Windows runner. The
+    # on-screen MetalGUI init crash that several reporters hit on Windows
+    # 11 (#1109, the still-open branch of #1048) does NOT reproduce under
+    # Linux Xvfb -- we need an actual Windows session to chase it. GHA's
+    # windows-2025 runner has a console session that Qt's ``windows``
+    # platform plugin can attach to without any virtual-display shim.
+    #
+    # ``continue-on-error: true`` keeps this from blocking PRs while the
+    # bug is still being diagnosed -- we want the *signal* (does the
+    # repro fire on the GHA Windows image?) without gating unrelated
+    # work on a hunt that may still be in progress.
+    name: tests-gui-display-windows
+    runs-on: windows-2025
+    continue-on-error: true
+    env:
+      FORCE_COLOR: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      - name: Install with the GUI extra
+        run: |
+          uv venv --python 3.12
+          uv pip install -e ".[gui]"
+          uv pip install "pytest>=8.4.1" "pytest-rich>=0.2.0"
+      - name: Sanity — a raw Qt window shows on the Windows runner
+        # If this fails it's the GHA Windows image (no console session),
+        # not metal. Splits "Qt can't show" from "MetalGUI can't init".
+        run: |
+          .venv\Scripts\python -c "from PySide6.QtWidgets import QApplication, QMainWindow; app = QApplication([]); QMainWindow().show(); print('OK: raw Qt window shown on Windows runner')"
+      - name: Run GUI init + teardown tests on Windows native (issues #1048 / #1109)
+        # Targets the *on-screen* init crash branch of #1048 that PR #1104
+        # could not reproduce under Xvfb. Faulthandler-instrumented; if
+        # the kernel-death symptom fires here, we have a deterministic
+        # reproducer for the first time.
+        run: |
+          .venv\Scripts\python -m pytest tests/test_gui_basic.py tests/test_gui_teardown.py tests/test_gui_init.py -v
 
   coverage:
     name: coverage

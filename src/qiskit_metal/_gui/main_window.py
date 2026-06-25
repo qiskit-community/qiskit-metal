@@ -75,6 +75,13 @@ if TYPE_CHECKING:
     from ..renderers.renderer_mpl.mpl_canvas import PlotCanvas
 
 
+# Issues #1048 / #1109: opt-in init-tracing for reporters whose MetalGUI
+# silently aborts mid-init on Windows. When QISKIT_METAL_DEBUG_INIT is
+# set, each init step prints to stderr with an explicit flush -- the
+# last printed line identifies the failing call. No-op when unset.
+from qiskit_metal._gui._init_trace import trace_init as _trace_init
+
+
 def _teardown_qt_widgets():
     """Delete every top-level Qt widget before the interpreter finalizes.
 
@@ -363,19 +370,30 @@ class MetalGUI(QMainWindowBaseHandler):
                 also call ``set_design`` after constructing the GUI. When passed,
                 the GUI will immediately populate docks and the canvas from this
                 design. Defaults to None.
+
+        Diagnostic switch (issues #1048 / #1109):
+            Set ``QISKIT_METAL_DEBUG_INIT=1`` to trace each init step to
+            stderr with explicit flushes. Useful for users seeing the GUI
+            silently abort mid-init on Windows -- the last printed step
+            identifies the failing call without needing a custom branch.
         """
+
+        _trace_init("MetalGUI.__init__ entered")
 
         # Qt backend setup used to run at ``import qiskit_metal`` time;
         # it's now lazy, called the first time MetalGUI is instantiated.
         # Idempotent — second and later calls are no-ops.
         from qiskit_metal import setup_qt_backend
 
+        _trace_init("setup_qt_backend()")
         setup_qt_backend()
 
         from .utility._handle_qt_messages import QtCore, _qt_message_handler
 
+        _trace_init("qInstallMessageHandler")
         QtCore.qInstallMessageHandler(_qt_message_handler)
 
+        _trace_init("kick_start_qApp()")
         self.qApp = kick_start_qApp()
         if not self.qApp:
             logging.error("Could not start Qt event loop using QApplication.")
@@ -388,6 +406,7 @@ class MetalGUI(QMainWindowBaseHandler):
         atexit.unregister(_teardown_qt_widgets)
         atexit.register(_teardown_qt_widgets)
 
+        _trace_init("super().__init__() -> QMainWindowBaseHandler")
         super().__init__()
 
         # use set_design
@@ -397,22 +416,39 @@ class MetalGUI(QMainWindowBaseHandler):
         self.plot_win = None  # type: QMainWindowPlot
         self.elements_win = None  # type: ElementsWindow
         self.net_list_win = None  # type: NetListWindow
+        _trace_init("ComponentWidget()")
         self.component_window = ComponentWidget(self, self.ui.dockComponent)
+        _trace_init("PropertyTableWidget()")
         self.variables_window = PropertyTableWidget(self, gui=self)
 
         self.build_log_window = None
 
+        # All widget construction happens before show(). Calling show()
+        # mid-setup (as earlier code did) left the QMainWindow visible as
+        # bare scaffolding while filesystem-scanning widgets (library,
+        # netlist) dispatched events through partially-constructed docks;
+        # on Windows 11 / Qt 6.11 that path could abort silently, leaving
+        # only Qt's default object-inspector window briefly visible before
+        # the kernel returned (issue #1048).
+        _trace_init("_setup_component_widget")
         self._setup_component_widget()
+        _trace_init("_setup_plot_widget")
         self._setup_plot_widget()
+        _trace_init("_setup_design_components_widget")
         self._setup_design_components_widget()
+        _trace_init("_setup_elements_widget")
         self._setup_elements_widget()
-        self.main_window.show()
+        _trace_init("_setup_variables_widget")
         self._setup_variables_widget()
+        _trace_init("_ui_adjustments_final")
         self._ui_adjustments_final()
+        _trace_init("_setup_library_widget")
         self._setup_library_widget()
+        _trace_init("_setup_net_list_widget")
         self._setup_net_list_widget()
 
-        # Show and raise
+        # Show and raise — single call after all docks are wired.
+        _trace_init("main_window.show()")
         self.main_window.show()
 
         # self.qApp.processEvents(QEventLoop.AllEvents, 1)
@@ -421,9 +457,12 @@ class MetalGUI(QMainWindowBaseHandler):
         QTimer.singleShot(150, self._raise)
 
         if design:
+            _trace_init("set_design(design)")
             self.set_design(design)
         else:
             self._set_enabled_design_widgets(False)
+
+        _trace_init("MetalGUI.__init__ complete")
 
     def _raise(self):
         """Raises the window to the top."""
