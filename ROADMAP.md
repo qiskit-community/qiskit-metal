@@ -54,6 +54,70 @@ Two things shape the next year:
 
 ---
 
+## Recently shipped — post-v0.7.4 cycle (June 2026) `[shipped]`
+
+A maintenance + community-PR cycle on top of v0.7.4. Linked PRs are
+the source of truth.
+
+- ✅ **Reference design notebooks** (#1108) — three executed,
+  headless-rendered full-chip examples (single transmon + readout
+  resonator, two coupled transmons, 4-qubit multiplexed readout)
+  under **Tutorials → Full-Chip Design Examples** on the docs site.
+  Adapted with attribution from the
+  [SQDMetal](https://github.com/sqdlab/SQDMetal) benchmark devices
+  (arXiv:2511.01220). First entries of the long-planned
+  "design examples" gallery.
+- ✅ **Component-gallery card fix** (#1108) — cards deep-link to each
+  component's own API page with real descriptions; registry-aware so
+  new components self-link.
+- ✅ **#1036 routing-collision fix** (#1113) —
+  `RouteAnchors.unobstructed()` no longer reports a clear path when a
+  segment lies fully inside a non-rectangular component's bounding
+  box; regression test added. Reimplements community fix #1038 by
+  @Jinyuan426.
+- ✅ **#1042 export fix** (#1043, by @saschabuehrle) — exported
+  `.metal.py` scripts now include `from numpy import array`.
+- ✅ **TransmonCross non-uniform claws** (#1115) — optional
+  `claw_width_back` / `ground_spacing_back`; defaults unchanged so
+  existing designs render byte-identically. Reimplements #957 by
+  @clarkmiyamoto.
+- ✅ **Windows MetalGUI init safety** (#1110) — defensive
+  `QSystemTrayIcon` / `show()`-ordering guards, a
+  `QISKIT_METAL_DEBUG_INIT` trace, and a `tests-gui-display-windows`
+  CI job targeting the still-open on-screen init crash (#1048).
+  Defensive, not yet a confirmed fix — awaiting reporter validation.
+- ✅ **Security + CI hardening** — 10 Dependabot advisories cleared in
+  the dev/docs toolchain (#1111); CI `apt` setup hardened against
+  flaky third-party runner sources that were failing jobs before any
+  test ran (#1112).
+
+---
+
+## Near-term priorities `[planned]`
+
+A rough priority order for the next cycle — shifts with user demand
+and contributor availability. Most items expand on dedicated sections
+below.
+
+1. **Re-verify the bug-triage queue against v0.7.x** (see "Known
+   bug-triage queue"). Several 0.5.x-era reports — especially the
+   Ansys 2025R1 cluster (#1041, #1046) on the old COM path — may
+   already be fixed by the `renderer_ansys_pyaedt` migration and just
+   need closing. Cheapest way to shrink the open-issue count.
+2. **Downstream ecosystem rollout** — file the migration issues for
+   SQuADDS / SQDMetal / pypalace against `quantum-metal>=0.7.1`.
+3. **KLayout handoff** — ship the `.lyp` layer file + Metal→KLayout
+   how-to (high-impact, low-effort: ~half a day total).
+4. **AI-orchestration docs** — `docs/orchestration.rst` + the
+   "Built for AI agents" page; the lite flip already removed the
+   dependency blockers, so this is mostly writing.
+5. **`renderer_palace/` eigenmode PoC** — the strategic unlock for
+   HFSS-free CI validation. Larger effort; external help wanted.
+6. **Extend the design-examples gallery** — more patterns
+   (e.g. surface-code patch) now that the notebook pattern exists.
+
+---
+
 ## Lite-by-default flip (v0.7.0) `[shipped]`
 
 The v0.6.x line shipped every heavy dependency in `[project.dependencies]`,
@@ -188,18 +252,17 @@ The open FEM stack is the long-term answer. Three pieces:
 - **gmsh mesher** — `renderer_gmsh/` already exists. The
   next step is tighter mesh control and port / boundary
   tagging that both Elmer and Palace can consume.
-- **gmsh version audit** `[research]` — we currently pin
-  `gmsh>=4.11.1` (no upper bound) with 4.15.0 shipped in
-  the dev env. The 30 distinct `gmsh.*` API entry points
-  we use are all stable core OCC + meshing + lifecycle
-  calls, but with gmsh 5 on the horizon we should
-  (a) tighten the pin to `>=4.15.0,<5`, (b) walk the API
-  call sites against the latest 4.x release notes to spot
-  anything deprecated, and (c) survey newer 4.x APIs
-  (e.g. richer mesh refinement, boundary-tag protocol
-  improvements) that would unblock cleaner Palace and
-  Elmer integration. Likely lands as one small PR for
-  the pin tighten + a research note for the API survey.
+- **gmsh version audit** `[research]` — the pin is now
+  `gmsh>=4.15.0,<5` in both `pyproject.toml` and
+  `environment.yml` (sub-item (a) ✅ done). The 30 distinct
+  `gmsh.*` API entry points we use are all stable core OCC +
+  meshing + lifecycle calls, but with gmsh 5 on the horizon we
+  still should (b) walk the API call sites against the latest
+  4.x release notes to spot anything deprecated, and (c) survey
+  newer 4.x APIs (e.g. richer mesh refinement, boundary-tag
+  protocol improvements) that would unblock cleaner Palace and
+  Elmer integration. Remaining work is a research note for the
+  API survey.
 - **Elmer eigenmode solver** — `renderer_elmer/` already
   exists. The integration needs a parity-check pass to
   confirm it still works against current Elmer releases,
@@ -465,9 +528,11 @@ trial viable).
   has the thumbnail + a short description + a click-through to the
   autodoc page. Regenerated at every docs build by
   ``_dev/generate_qcomponent_gallery.py``; the same thumbnails feed
-  the MetalGUI Library pane at runtime. A future broader "design
-  examples" gallery (single transmon, two-qubit, surface-code patch,
-  etc.) is still `[planned]`.
+  the MetalGUI Library pane at runtime. The broader "design examples"
+  gallery is now `[in-progress]`: its first three entries — single
+  transmon + readout, two coupled transmons, and 4-qubit multiplexed
+  readout — shipped in #1108 under **Tutorials → Full-Chip Design
+  Examples**. More patterns (e.g. surface-code patch) still `[planned]`.
 - **`SUPPORT.md` + `GOVERNANCE.md`** `[planned]` — currently support info is
   scattered across README / FAQ / contributor-guide. A single `SUPPORT.md`
   consolidates "where to ask, response expectations." `GOVERNANCE.md`
@@ -555,11 +620,12 @@ need closing.
 
 **Real bugs with reproducer + community-proposed fix:**
 
-- [#1036](https://github.com/qiskit-community/qiskit-metal/issues/1036)
-  `RoutePathFinder` path-penetrates-component — `unobstructed()` returns
+- ✅ `[shipped]` [#1036](https://github.com/qiskit-community/qiskit-metal/issues/1036)
+  `RoutePathFinder` path-penetrates-component — `unobstructed()` returned
   True when both segment endpoints lie inside a component bounding box even
-  though the segment intersects the actual contour. Reporter included
-  reproducer + proposed fix. **High value: real correctness bug, easy win.**
+  though the segment intersects the actual contour. **Fixed in #1113**
+  (reimplements the community fix #1038 by @Jinyuan426, with a regression
+  test).
 - [#1086](https://github.com/qiskit-community/qiskit-metal/issues/1086)
   `RouteMeander` produces asymmetric geometry for rotated routes (filed
   2026-05-22 with HFSS-validation rubric, workaround already in
@@ -567,9 +633,9 @@ need closing.
 
 **Easy / small fixes:**
 
-- [#1042](https://github.com/qiskit-community/qiskit-metal/issues/1042)
-  `design.to_python_script()` omits `from numpy import array` from the
-  generated header. One-line fix in the export template. Good first-PR.
+- ✅ `[shipped]` [#1042](https://github.com/qiskit-community/qiskit-metal/issues/1042)
+  `design.to_python_script()` omitted `from numpy import array` from the
+  generated header. **Fixed in #1043** (by @saschabuehrle).
 
 **Ansys 2025R1 compatibility cluster** (likely related):
 
@@ -586,10 +652,16 @@ need closing.
 **Qt6 / native crashes — `qm.view()` headless alternative now exists:**
 
 - [#1048](https://github.com/qiskit-community/qiskit-metal/issues/1048)
-  MetalGUI segfaults at `main_window.show()` on Ubuntu 24.04 + PySide6
-  6.11.0. Plain `QMainWindow().show()` works, so it's a Metal-specific
-  Qt6 interaction. v0.7.0's `qm.view()` is the documented headless path
-  for these users; longer-term plan is the Jupyter `qm.gui()` widget.
+  `[in-progress]` MetalGUI segfaults at `main_window.show()` on Ubuntu
+  24.04 + PySide6 6.11.0. Plain `QMainWindow().show()` works, so it's a
+  Metal-specific Qt6 interaction. v0.7.0's `qm.view()` is the documented
+  headless path for these users; longer-term plan is the Jupyter
+  `qm.gui()` widget. **Progress:** the at-exit teardown segfault was
+  fixed in #1104 (v0.7.4); #1110 added defensive init guards
+  (`QSystemTrayIcon` availability check, single late `show()`), a
+  `QISKIT_METAL_DEBUG_INIT` trace, and a `tests-gui-display-windows` CI
+  job for the still-open on-screen init crash — not yet confirmed fixed,
+  awaiting reporter validation.
 
 **Needs reproducer:**
 
