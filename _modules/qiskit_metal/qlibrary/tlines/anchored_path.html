@@ -678,11 +678,28 @@
                 <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xmax</span><span class="p">,</span> <span class="n">ymin</span><span class="p">]),</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span><span class="p">]),</span>
             <span class="p">]</span>
-            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-                <span class="n">intersecting</span><span class="p">(</span><span class="n">segment</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">segment</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">),</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">),</span> <span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">s</span><span class="p">)]</span>
+            <span class="c1"># A segment whose endpoints both lie inside the bounding box does</span>
+            <span class="c1"># not cross any box edge, so the edge-intersection test below would</span>
+            <span class="c1"># miss it. Detect that case explicitly and still run the contour</span>
+            <span class="c1"># check; otherwise a path passing through a (non-rectangular)</span>
+            <span class="c1"># component is wrongly reported as unobstructed. See issue #1036.</span>
+            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">segment</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">segment</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">segment</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">segment</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">segment_in_box</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">xmin</span> <span class="o">&lt;=</span> <span class="n">x0</span> <span class="o">&lt;=</span> <span class="n">xmax</span>
+                <span class="ow">and</span> <span class="n">ymin</span> <span class="o">&lt;=</span> <span class="n">y0</span> <span class="o">&lt;=</span> <span class="n">ymax</span>
+                <span class="ow">and</span> <span class="n">xmin</span> <span class="o">&lt;=</span> <span class="n">x1</span> <span class="o">&lt;=</span> <span class="n">xmax</span>
+                <span class="ow">and</span> <span class="n">ymin</span> <span class="o">&lt;=</span> <span class="n">y1</span> <span class="o">&lt;=</span> <span class="n">ymax</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">any</span><span class="p">(</span>
+                    <span class="n">intersecting</span><span class="p">(</span><span class="n">segment</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">segment</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">),</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">),</span> <span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">s</span><span class="p">)]</span>
+                <span class="p">)</span>
+                <span class="ow">or</span> <span class="n">segment_in_box</span>
             <span class="p">):</span>
-                <span class="c1"># At least 1 intersection with the component bounding box. Check the actual contour.</span>
+                <span class="c1"># At least 1 intersection with the component bounding box (or the</span>
+                <span class="c1"># segment lies entirely within it). Check the actual contour.</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">unobstructed_close_up</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">component</span><span class="p">):</span>
                     <span class="c1"># At least 1 intersection with the actual component contour; do not proceed!</span>
                     <span class="k">return</span> <span class="kc">False</span>
