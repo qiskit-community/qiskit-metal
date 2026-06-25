@@ -183,6 +183,11 @@ extensions = [
     # in nbsphinx-rendered notebooks. Used for the architecture and
     # design-flow diagrams in contributor-guide.rst and tutorial 1.1.
     "sphinxcontrib.mermaid",
+    # Parses Markdown so RST pages can ``.. include::`` ``.md`` files
+    # via ``:parser: myst_parser.sphinx_``. Currently used by
+    # ``docs/roadmap.rst`` to render the repo-root ``ROADMAP.md`` inline
+    # without duplicating it.
+    "myst_parser",
 ]
 
 # --- Mermaid --------------------------------------------------------------

@@ -1,54 +1,5 @@
 .. _workflow:
 
-*********************
-Roadmap
-*********************
-
-
-.. note::
-
-   **From IBM to a Community-Maintained Project**
-
-   Originally developed at IBM by **Dr. Zlatko K. Minev**, Quantum Metal has transitioned into a
-   **community-driven project** supported by universities, research groups, laboratories, and
-   individual contributors worldwide. Ongoing work is carried out by the
-   **Quantum Device Consortium (QDC)** and active maintainers.
-
-   Current release: **v0.7.0** (lite-by-default install — see :doc:`migration-to-v0.7.0`).
-   The project follows `EffVer <https://jacobtomlinson.dev/effver/>`_ and will switch to
-   `SemVer <https://semver.org>`_ after v1.0 (date TBD).
-
-   - QDC website & governance: https://qdc-qcsa.org — Discord: `discord.gg/kaZ3UFuq <https://discord.gg/kaZ3UFuq>`_
-   - QDW (annual workshop): https://qdw-ucla.squarespace.com/ — sign for 2026: https://qdw-ucla.squarespace.com/qdw2026
-   - Slack (`#metal <https://qiskit.slack.com/archives/C01R8KP5WP7>`_) remains available but is being phased out in favour of Discord.
-
-The full, up-to-date roadmap lives in
-`ROADMAP.md <https://github.com/qiskit-community/qiskit-metal/blob/main/ROADMAP.md>`_
-in the repository root. It is the canonical source of truth — items there are
-linked to open PRs and issues so you can track progress or jump in.
-
-**Current priorities (v0.7.x — v0.8.0):**
-
-- **Lite-by-default** ``[shipped in v0.7.0]`` — ``pip install quantum-metal``
-  is now small and fast; heavy backends (GUI, Ansys, gmsh) are opt-in extras.
-- **pyaedt renderer** ``[active]`` — the ``renderer_ansys_pyaedt/`` path is the
-  modern replacement for the legacy COM-based HFSS/Q3D bridge. Ongoing validation
-  and feature parity work.
-- **Jupyter widget viewer** ``[research]`` — exploring a Jupyter-widgets-based
-  interactive viewer (pan, zoom, click-to-select) as a lighter alternative to the
-  PySide6 desktop GUI. Goal: full interactivity in JupyterLab and VS Code notebooks
-  without requiring Qt.
-- **Open FEM stack** ``[research]`` — gmsh mesher (``renderer_gmsh/``) +
-  Elmer solver (``renderer_elmer/``) + AWS Palace renderer (planned). Unblocks
-  HFSS-free full-field analysis for users without an Ansys license.
-- **AI-orchestration profile** ``[planned, v0.7.x]`` — stable programmatic API
-  contract, determinism guarantees, and renderer dispatch by name so that
-  agent-driven design loops can use Quantum Metal predictably.
-
-Have a feature request or want to help? Open an issue or join the conversation
-on `Discord <https://discord.gg/kaZ3UFuq>`_.
-
-
 **********************
 Quantum Metal Workflow
 **********************

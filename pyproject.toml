@@ -139,6 +139,12 @@
         # GitHub so they don't need any extension; the Sphinx side
         # picks up the same syntax through this package.
         "sphinxcontrib-mermaid>=1.0.0",
+        # Parses Markdown into Sphinx's docutils tree so we can
+        # ``.. include::`` files like ``ROADMAP.md`` directly into RST
+        # pages (see ``docs/roadmap.rst``). Single source of truth: the
+        # repo-root ``ROADMAP.md`` renders on GitHub AND on the docs
+        # site with no hand-curated teaser to drift.
+        "myst-parser>=4.0",
 ]
     lint = [ "ruff>=0.14.2" ]
     test = [
