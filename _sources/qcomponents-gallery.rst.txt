@@ -17,7 +17,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
    :gutter: 3
 
    .. grid-item-card:: Josephson Junction Dolan
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.jj_dolan
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -27,13 +27,13 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
          :width: 180px
          :align: center
 
-      The base "JJ_Dolan" inherits the "QComponent" class.
+      Dolan-bridge Josephson junction.
 
       .. rubric:: ``jj_dolan``
 
 
    .. grid-item-card:: Josephson Junction Manhattan
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.jj_manhattan
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -43,13 +43,13 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
          :width: 180px
          :align: center
 
-      The base "JJ_Manhattan" inherits the "QComponent" class.
+      Manhattan-style Josephson junction.
 
       .. rubric:: ``jj_manhattan``
 
 
    .. grid-item-card:: SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement)
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.SNAIL
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -65,7 +65,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Squid Loop
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.SQUID_LOOP
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -75,13 +75,13 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
          :width: 180px
          :align: center
 
-      The base "SQUID_LOOP" inherits the "QComponent" class.
+      This creates a simple SQUID loop consisting of two Josephson
 
       .. rubric:: ``SQUID_LOOP``
 
 
    .. grid-item-card:: Star Qubit
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.StarQubit
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -97,7 +97,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Transmon Concentric
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.TransmonConcentric
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -107,13 +107,13 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
          :width: 180px
          :align: center
 
-      The base `TrasmonConcentric` class .
+      Metal transmon object consisting of a circle surrounding by a concentric
 
       .. rubric:: ``TransmonConcentric``
 
 
    .. grid-item-card:: Transmon Concentric Type 2
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.TransmonConcentricType2
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -123,13 +123,13 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
          :width: 180px
          :align: center
 
-      The base `TrasmonConcentric` class
+      Metal transmon object consisting of a circle surrounding by a concentric
 
       .. rubric:: ``TransmonConcentricType2``
 
 
    .. grid-item-card:: Transmon Cross
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.TransmonCross
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -139,13 +139,13 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
          :width: 180px
          :align: center
 
-      The base `TransmonCross` class.
+      Simple Metal Transmon Cross object. Creates the X cross-shaped island,
 
       .. rubric:: ``TransmonCross``
 
 
    .. grid-item-card:: Transmon Cross Flux Line
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.TransmonCrossFL
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -155,13 +155,13 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
          :width: 180px
          :align: center
 
-      The base `TransmonCrossFL` class.
+      Description
 
       .. rubric:: ``TransmonCrossFL``
 
 
    .. grid-item-card:: Transmon Interdigitated
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.TransmonInterdigitated
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -171,13 +171,13 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
          :width: 180px
          :align: center
 
-      The base "TransmonInterdigitated" inherits the "QComponent" class.
+      This creates a transmon pocket with two large pads connected by a Josephson
 
       .. rubric:: ``TransmonInterdigitated``
 
 
    .. grid-item-card:: Transmon Pocket
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.TransmonPocket
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -187,13 +187,13 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
          :width: 180px
          :align: center
 
-      The base `TransmonPocket` class.
+      Create a standard pocket transmon qubit for a ground plane,
 
       .. rubric:: ``TransmonPocket``
 
 
    .. grid-item-card:: Transmon Pocket 6
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.TransmonPocket6
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -209,7 +209,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Transmon Pocket Charge Line
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.TransmonPocketCL
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -219,13 +219,13 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
          :width: 180px
          :align: center
 
-      The base `TransmonPocketCL` class.
+      Create a standard pocket transmon qubit for a ground plane,
 
       .. rubric:: ``TransmonPocketCL``
 
 
    .. grid-item-card:: Transmon Pocket Teeth
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.TransmonPocketTeeth
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -247,7 +247,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
    :gutter: 3
 
    .. grid-item-card:: Cap N Interdigital Tee
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.CapNInterdigitalTee
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -263,7 +263,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Coupled Line Tee
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.CoupledLineTee
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -279,7 +279,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Line Tee
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.LineTee
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -295,7 +295,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Tunable Coupler 01
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.TunableCoupler01
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -311,7 +311,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Tunable Coupler 2
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.TunableCoupler02
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -333,7 +333,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
    :gutter: 3
 
    .. grid-item-card:: RouteAnchors
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.RouteAnchors
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -349,7 +349,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Routed Frame
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.RouteFramed
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -365,7 +365,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Route Meander
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.RouteMeander
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -381,7 +381,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Route Mixed
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.RouteMixed
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -397,7 +397,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Route Pathfinder
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.RoutePathfinder
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -413,7 +413,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Route Straight
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.RouteStraight
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -435,7 +435,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
    :gutter: 3
 
    .. grid-item-card:: ReadoutResFC
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.ReadoutResFC
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -451,7 +451,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Lumped Resonator
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.ResonatorLumped
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -461,7 +461,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
          :width: 180px
          :align: center
 
-      The base ResonatorLumped class
+      Default Options
 
       .. rubric:: ``ResonatorLumped``
 
@@ -473,7 +473,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
    :gutter: 3
 
    .. grid-item-card:: Launchpad Wirebond
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.LaunchpadWirebond
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -489,7 +489,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Launchpad Wirebond Coupled
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -505,7 +505,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Launchpad Wirebond Driven
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.LaunchpadWirebondDriven
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -521,7 +521,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Open to Ground
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.OpenToGround
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -537,7 +537,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Short to Ground
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.ShortToGround
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -559,7 +559,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
    :gutter: 3
 
    .. grid-item-card:: Cap 3 Interdigital
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.Cap3Interdigital
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -575,7 +575,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Cap N Interdigital
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.CapNInterdigital
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -591,7 +591,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Resonator Coil Rectangle
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.ResonatorCoilRect
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -613,7 +613,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
    :gutter: 3
 
    .. grid-item-card:: Circle Caterpillar
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.CircleCaterpillar
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -629,7 +629,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Circle Raster
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.CircleRaster
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -645,7 +645,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: N-Gon Polygon
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.NGon
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -661,7 +661,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: N Square Spiral
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.NSquareSpiral
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -677,7 +677,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Rectangle
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.Rectangle
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -693,7 +693,7 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
 
    .. grid-item-card:: Rectangle Hollow
-      :link: apidocs/qlibrary
+      :link: apidocs/qiskit_metal.qlibrary.RectangleHollow
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
