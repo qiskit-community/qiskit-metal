@@ -180,7 +180,6 @@ in a simple, open, community-driven framework.
 
     Installing Quantum Metal<installation>
     Quick Start<tut/1-Overview/1.1-Quick-start>
-    Migrating to v0.7.0<migration-to-v0.7.0>
     Built on / with Quantum Metal<ecosystem>
 
 .. toctree::
@@ -222,6 +221,7 @@ in a simple, open, community-driven framework.
 
     Roadmap<roadmap>
     Frequently Asked Questions<faq>
+    Migrating to v0.7.0<migration-to-v0.7.0>
 
 .. toctree::
     :maxdepth: 2
