@@ -526,7 +526,9 @@
 <span class="sd">            * connector_type: &#39;0&#39; -- 0 = Claw type, 1 = gap type</span>
 <span class="sd">            * claw_length: &#39;30um&#39; -- Length of the claw &#39;arms&#39;, measured from the connector center trace</span>
 <span class="sd">            * ground_spacing: &#39;5um&#39; -- Amount of ground plane between the connector and Crossmon arm (minimum should be based on fabrication capabilities)</span>
+<span class="sd">            * ground_spacing_back: None -- Ground plane between the cpw-side (back) of the connector and the Crossmon arm. Defaults to ground_spacing when None</span>
 <span class="sd">            * claw_width: &#39;10um&#39; -- The width of the CPW center trace making up the claw/gap connector</span>
+<span class="sd">            * claw_width_back: None -- The width of the back (towards the incoming CPW) of the claw connector. Defaults to claw_width when None</span>
 <span class="sd">            * claw_gap: &#39;6um&#39; -- The gap of the CPW center trace making up the claw/gap connector</span>
 <span class="sd">            * connector_location: &#39;0&#39; -- 0 =&gt; &#39;west&#39; arm, 90 =&gt; &#39;north&#39; arm, 180 =&gt; &#39;east&#39; arm</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -540,7 +542,9 @@
             <span class="n">connector_type</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>  <span class="c1"># 0 = Claw type, 1 = gap type</span>
             <span class="n">claw_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span>
             <span class="n">ground_spacing</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
+            <span class="n">ground_spacing_back</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Defaults to `ground_spacing` when None</span>
             <span class="n">claw_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+            <span class="n">claw_width_back</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Defaults to `claw_width` when None</span>
             <span class="n">claw_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
             <span class="n">claw_cpw_length</span><span class="o">=</span><span class="s2">&quot;40um&quot;</span><span class="p">,</span>
             <span class="n">claw_cpw_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
@@ -656,14 +660,23 @@
         <span class="n">g_s</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">ground_spacing</span>
         <span class="n">con_loc</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">connector_location</span>
 
-        <span class="n">claw_cpw</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="n">c_w</span><span class="p">,</span> <span class="o">-</span><span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">c_c_l</span> <span class="o">-</span> <span class="n">c_w</span><span class="p">,</span> <span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># claw_width_back / ground_spacing_back default to claw_width /</span>
+        <span class="c1"># ground_spacing when unset, so the default geometry is unchanged.</span>
+        <span class="n">c_w_b</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">claw_width_back</span>
+        <span class="k">if</span> <span class="n">c_w_b</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">c_w_b</span> <span class="o">=</span> <span class="n">c_w</span>
+        <span class="n">g_s_b</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">ground_spacing_back</span>
+        <span class="k">if</span> <span class="n">g_s_b</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">g_s_b</span> <span class="o">=</span> <span class="n">g_s</span>
+
+        <span class="n">claw_cpw</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="n">c_w_b</span><span class="p">,</span> <span class="o">-</span><span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">c_c_l</span> <span class="o">-</span> <span class="n">c_w_b</span><span class="p">,</span> <span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">pc</span><span class="o">.</span><span class="n">connector_type</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># Claw connector</span>
             <span class="n">t_claw_height</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="mi">2</span> <span class="o">*</span> <span class="n">c_g</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">c_w</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">g_s</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">cross_gap</span> <span class="o">+</span> <span class="n">cross_width</span>
             <span class="p">)</span>  <span class="c1"># temp value</span>
 
-            <span class="n">claw_base</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="n">c_w</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">t_claw_height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">c_l</span><span class="p">,</span> <span class="n">t_claw_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">claw_base</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">-</span><span class="n">c_w_b</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">t_claw_height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">c_l</span><span class="p">,</span> <span class="n">t_claw_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
             <span class="n">claw_subtract</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">box</span><span class="p">(</span>
                 <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">t_claw_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c_w</span><span class="p">,</span> <span class="n">c_l</span><span class="p">,</span> <span class="n">t_claw_height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">c_w</span>
             <span class="p">)</span>
@@ -680,7 +693,7 @@
         <span class="c1"># extract from the connector later, but since allowing different connector types,</span>
         <span class="c1"># this seems more straightforward.</span>
         <span class="n">port_line</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
-            <span class="p">[(</span><span class="o">-</span><span class="n">c_c_l</span> <span class="o">-</span> <span class="n">c_w</span><span class="p">,</span> <span class="o">-</span><span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">c_c_l</span> <span class="o">-</span> <span class="n">c_w</span><span class="p">,</span> <span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span>
+            <span class="p">[(</span><span class="o">-</span><span class="n">c_c_l</span> <span class="o">-</span> <span class="n">c_w_b</span><span class="p">,</span> <span class="o">-</span><span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">c_c_l</span> <span class="o">-</span> <span class="n">c_w_b</span><span class="p">,</span> <span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span>
         <span class="p">)</span>
 
         <span class="n">claw_rotate</span> <span class="o">=</span> <span class="mi">0</span>
@@ -691,7 +704,7 @@
 
         <span class="c1"># Rotates and translates the connector polygons (and temporary port_line)</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="p">[</span><span class="n">connector_arm</span><span class="p">,</span> <span class="n">connector_etcher</span><span class="p">,</span> <span class="n">port_line</span><span class="p">]</span>
-        <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">cross_length</span> <span class="o">+</span> <span class="n">cross_gap</span> <span class="o">+</span> <span class="n">g_s</span> <span class="o">+</span> <span class="n">c_g</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">cross_length</span> <span class="o">+</span> <span class="n">cross_gap</span> <span class="o">+</span> <span class="n">g_s_b</span> <span class="o">+</span> <span class="n">c_g</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="n">claw_rotate</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
