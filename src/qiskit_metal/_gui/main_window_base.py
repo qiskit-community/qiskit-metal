@@ -33,6 +33,7 @@ from PySide6.QtWidgets import (
 from qiskit_metal import config
 from qiskit_metal.toolbox_python._logging import setup_logger
 from qiskit_metal import __version__
+from qiskit_metal._gui._init_trace import trace_init as _trace_init
 from qiskit_metal._gui.utility._handle_qt_messages import slot_catch_error
 from qiskit_metal._gui.widgets.log_widget.log_metal import LogHandler_for_QTextLog
 
@@ -317,26 +318,35 @@ class QMainWindowBaseHandler:
             self.logger.error(text)
 
         # Main Window and App level
+        _trace_init("base: _QMainWindowClass()")
         self.main_window = self._QMainWindowClass()
         self.main_window.handler = self
+        _trace_init("base: _setup_qApp")
         self.qApp = self._setup_qApp()
+        _trace_init("base: _setup_main_window_tray")
         self._setup_main_window_tray()
 
         # Style and window
         self._style_sheet_path = None
+        _trace_init("base: style_window")
         self.style_window()
 
         # UI
+        _trace_init("base: __UI__().setupUi")
         self.ui = self.__UI__()
         self.ui.setupUi(self.main_window)
         self.main_window.ui = self.ui
 
         self.ui.log_text.dock_window = self.ui.dockLog
+        _trace_init("base: _setup_logger")
         self._setup_logger()
+        _trace_init("base: _setup_window_size")
         self._setup_window_size()
 
+        _trace_init("base: _ui_adjustments (subclass)")
         self._ui_adjustments()  # overwrite
 
+        _trace_init("base: restore_window_settings")
         self.main_window.restore_window_settings()
 
     @property
@@ -416,16 +426,31 @@ class QMainWindowBaseHandler:
         return self.qApp
 
     def _setup_main_window_tray(self):
-        """Sets up the main window tray."""
+        """Sets up the main window tray icon.
 
-        if self.path_imgs.is_dir():
-            icon = QIcon(str(self.path_imgs / self._img_logo_name))
-            self.main_window.setWindowIcon(icon)
+        Only attaches a ``QSystemTrayIcon`` when one is actually available
+        per ``QSystemTrayIcon.isSystemTrayAvailable()`` — Qt's docs state
+        that constructing/showing a tray icon without a tray present is
+        undefined behavior, and on Windows 11 with a hidden notification
+        area / VDI / "compact" taskbar that path can abort silently.
+        Task/window icons are always set; only the tray is gated.
+        """
+        if not self.path_imgs.is_dir():
+            return
 
-            # not sure if this works, but let's try
-            self._icon_tray = QtWidgets.QSystemTrayIcon(icon, self.main_window)
-            self._icon_tray.show()
+        icon = QIcon(str(self.path_imgs / self._img_logo_name))
+        self.main_window.setWindowIcon(icon)
+        if self.qApp is not None:
             self.qApp.setWindowIcon(icon)
+
+        if not QtWidgets.QSystemTrayIcon.isSystemTrayAvailable():
+            self.logger.debug(
+                "No system tray available; skipping QSystemTrayIcon setup."
+            )
+            return
+
+        self._icon_tray = QtWidgets.QSystemTrayIcon(icon, self.main_window)
+        self._icon_tray.show()
 
     def create_log_handler(self, name_toshow: str, logger: logging.Logger):
         """Creates a log handler.
