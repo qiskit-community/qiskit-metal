@@ -120,6 +120,17 @@ class QMainWindowExtensionBase(QMainWindow):
                 window_state = window_state.encode("ascii")
             self.restoreState(window_state)
 
+            # Issue #1048 bisection toggle: if the stylesheet (which affects
+            # every paint operation) is the trigger for the Qt 6.11 + Intel
+            # Iris Xe crash, ``QISKIT_METAL_GUI_NO_STYLESHEET=1`` skips it.
+            # Falls back to the default Qt-system style (lighter UX cost
+            # than disabling the plot widget).
+            if os.environ.get("QISKIT_METAL_GUI_NO_STYLESHEET"):
+                self.logger.warning(
+                    "QISKIT_METAL_GUI_NO_STYLESHEET set; skipping stylesheet load."
+                )
+                return
+
             self.handler.load_stylesheet(
                 self.settings.value("stylesheet", self.handler._stylesheet_default)
             )
