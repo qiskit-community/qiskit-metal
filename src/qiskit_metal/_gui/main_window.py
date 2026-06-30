@@ -433,7 +433,18 @@ class MetalGUI(QMainWindowBaseHandler):
         _trace_init("_setup_component_widget")
         self._setup_component_widget()
         _trace_init("_setup_plot_widget")
-        self._setup_plot_widget()
+        # Issue #1048 bisection toggle: the embedded matplotlib
+        # ``FigureCanvasQTAgg`` is the heaviest QWidget in MetalGUI's tree
+        # and a prime suspect for the Qt 6.11 + Intel Iris Xe + WDDM 3.2
+        # crash at ``show()``. ``QISKIT_METAL_GUI_NO_PLOT=1`` skips the
+        # canvas embed so reporters can isolate whether it's the trigger.
+        # The GUI loses its main view -- this is a diagnostic-only flag.
+        if os.environ.get("QISKIT_METAL_GUI_NO_PLOT"):
+            self.logger.warning(
+                "QISKIT_METAL_GUI_NO_PLOT set; skipping plot canvas embed."
+            )
+        else:
+            self._setup_plot_widget()
         _trace_init("_setup_design_components_widget")
         self._setup_design_components_widget()
         _trace_init("_setup_elements_widget")
@@ -518,7 +529,11 @@ class MetalGUI(QMainWindowBaseHandler):
 
         self._set_enabled_design_widgets(True)
 
-        self.plot_win.set_design(design)
+        # ``plot_win`` is None when the QISKIT_METAL_GUI_NO_PLOT bisection
+        # toggle is set (issue #1048). Tolerate that gracefully so the GUI
+        # still builds; the user just won't see the chip canvas.
+        if self.plot_win is not None:
+            self.plot_win.set_design(design)
         self.elements_win.force_refresh()
         self.net_list_win.force_refresh()
 
@@ -995,7 +1010,8 @@ class MetalGUI(QMainWindowBaseHandler):
 
     def refresh_plot(self):
         """Redraw only the plot window contents."""
-        self.plot_win.replot()
+        if self.plot_win is not None:
+            self.plot_win.replot()
 
     def autoscale(self):
         """Shortcut to autoscale all views."""
