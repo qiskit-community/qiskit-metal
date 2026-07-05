@@ -89,6 +89,12 @@ class QMainWindowExtensionBase(QMainWindow):
         self.logger.info("Saving window state")
         # get the current size and position of the window as a byte array.
         self.settings.setValue("metal_version", __version__)
+        # Persist the Qt version too. If the user upgrades PySide6 the
+        # binary QMainWindow-state blob may no longer be compatible;
+        # restore_window_settings uses this to invalidate stale state
+        # instead of feeding an incompatible blob to restoreState() and
+        # ending up with an inconsistent QMainWindow (issue #1048).
+        self.settings.setValue("qt_version", QtCore.qVersion())
         self.settings.setValue("geometry", self.saveGeometry())
         self.settings.setValue("windowState", self.saveState())
         self.settings.setValue("stylesheet", self.handler._stylesheet)
@@ -99,12 +105,55 @@ class QMainWindowExtensionBase(QMainWindow):
 
         Raises:
             Exception: Error in restoration
+
+        Issue #1048 hypothesis: on some Windows 11 hardware (Intel Iris Xe
+        + WDDM 3.2 + touchscreen 2-in-1 laptops in particular), display
+        config changes between sessions (tablet mode toggle, DPI change on
+        undock, monitor hot-swap) can leave the persisted geometry /
+        window-state referencing coordinates or widget layouts that no
+        longer make sense. ``restoreState()`` doesn't reject those blobs
+        outright -- it happily builds a QMainWindow in an inconsistent
+        state which then hits a native CRT ``__fastfail(7)`` at the first
+        paint from ``show()``. This method now:
+
+        1. Honours ``QISKIT_METAL_RESET_UI_SETTINGS=1`` -- users can force
+           a clean slate without touching the registry.
+        2. Auto-invalidates if the persisted state was written by a
+           different Qt version than the one loaded now.
+        3. Treats *any* exception during restoration as terminal for the
+           persisted state: clear it and continue with defaults, so the
+           next launch doesn't hit the same trap.
         """
+
+        # Escape hatch: users hitting the persisted-state crash can
+        # ``$env:QISKIT_METAL_RESET_UI_SETTINGS = "1"`` to clean the slate
+        # without going through the registry themselves.
+        if os.environ.get("QISKIT_METAL_RESET_UI_SETTINGS"):
+            self.logger.warning(
+                "QISKIT_METAL_RESET_UI_SETTINGS set; clearing persisted "
+                "MetalGUI window state before restore."
+            )
+            self.settings.clear()
+            return
 
         version_settings = self.settings.value("metal_version", defaultValue="0")
         if __version__ > version_settings:
             self.logger.debug(f"Clearing window settings [{version_settings}]...")
             self.settings.clear()
+            return
+
+        # Cross-version Qt invalidation: state saved under one Qt version
+        # may not restore cleanly under another. Qt has no version tag on
+        # the state blob itself so we compare our own.
+        saved_qt = self.settings.value("qt_version", defaultValue="")
+        current_qt = QtCore.qVersion()
+        if saved_qt and saved_qt != current_qt:
+            self.logger.info(
+                f"Clearing window settings: saved under Qt {saved_qt}, "
+                f"now running Qt {current_qt}."
+            )
+            self.settings.clear()
+            return
 
         try:
             self.logger.debug("Restoring window settings...")
@@ -137,7 +186,15 @@ class QMainWindowExtensionBase(QMainWindow):
 
             # TODO: Recent files
         except Exception as e:
-            self.logger.error(f"ERROR [restore_window_settings]: {e}")
+            # Persisted state that raised on restore is the failure mode
+            # #1048 is chasing. Blow it away so subsequent launches don't
+            # relive the poisoning -- one bad exit shouldn't brick the GUI
+            # for every future session.
+            self.logger.error(
+                f"ERROR [restore_window_settings]: {e}. "
+                "Clearing persisted state to prevent recurrence."
+            )
+            self.settings.clear()
 
     def bring_to_top(self):
         """Bring window to top.
