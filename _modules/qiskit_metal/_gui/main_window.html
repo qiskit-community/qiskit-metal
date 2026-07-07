@@ -897,7 +897,18 @@
         <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;_setup_component_widget&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_component_widget</span><span class="p">()</span>
         <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;_setup_plot_widget&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_plot_widget</span><span class="p">()</span>
+        <span class="c1"># Issue #1048 bisection toggle: the embedded matplotlib</span>
+        <span class="c1"># ``FigureCanvasQTAgg`` is the heaviest QWidget in MetalGUI&#39;s tree</span>
+        <span class="c1"># and a prime suspect for the Qt 6.11 + Intel Iris Xe + WDDM 3.2</span>
+        <span class="c1"># crash at ``show()``. ``QISKIT_METAL_GUI_NO_PLOT=1`` skips the</span>
+        <span class="c1"># canvas embed so reporters can isolate whether it&#39;s the trigger.</span>
+        <span class="c1"># The GUI loses its main view -- this is a diagnostic-only flag.</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;QISKIT_METAL_GUI_NO_PLOT&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;QISKIT_METAL_GUI_NO_PLOT set; skipping plot canvas embed.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_setup_plot_widget</span><span class="p">()</span>
         <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;_setup_design_components_widget&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_design_components_widget</span><span class="p">()</span>
         <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;_setup_elements_widget&quot;</span><span class="p">)</span>
@@ -984,7 +995,11 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_enabled_design_widgets</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">plot_win</span><span class="o">.</span><span class="n">set_design</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
+        <span class="c1"># ``plot_win`` is None when the QISKIT_METAL_GUI_NO_PLOT bisection</span>
+        <span class="c1"># toggle is set (issue #1048). Tolerate that gracefully so the GUI</span>
+        <span class="c1"># still builds; the user just won&#39;t see the chip canvas.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_win</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plot_win</span><span class="o">.</span><span class="n">set_design</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">elements_win</span><span class="o">.</span><span class="n">force_refresh</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">net_list_win</span><span class="o">.</span><span class="n">force_refresh</span><span class="p">()</span>
 
@@ -1494,7 +1509,8 @@
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.refresh_plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">refresh_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Redraw only the plot window contents.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plot_win</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_win</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plot_win</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="MetalGUI.autoscale">
@@ -1595,7 +1611,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/06/25</div>
+              Last updated on 2026/07/07</div>
           </div>
           <div class="right-details">
             

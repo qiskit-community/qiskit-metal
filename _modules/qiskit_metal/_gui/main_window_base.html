@@ -551,6 +551,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Saving window state&quot;</span><span class="p">)</span>
         <span class="c1"># get the current size and position of the window as a byte array.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;metal_version&quot;</span><span class="p">,</span> <span class="n">__version__</span><span class="p">)</span>
+        <span class="c1"># Persist the Qt version too. If the user upgrades PySide6 the</span>
+        <span class="c1"># binary QMainWindow-state blob may no longer be compatible;</span>
+        <span class="c1"># restore_window_settings uses this to invalidate stale state</span>
+        <span class="c1"># instead of feeding an incompatible blob to restoreState() and</span>
+        <span class="c1"># ending up with an inconsistent QMainWindow (issue #1048).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;qt_version&quot;</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">qVersion</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;geometry&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveGeometry</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;windowState&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveState</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;stylesheet&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">_stylesheet</span><span class="p">)</span>
@@ -561,12 +567,55 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            Exception: Error in restoration</span>
+
+<span class="sd">        Issue #1048 hypothesis: on some Windows 11 hardware (Intel Iris Xe</span>
+<span class="sd">        + WDDM 3.2 + touchscreen 2-in-1 laptops in particular), display</span>
+<span class="sd">        config changes between sessions (tablet mode toggle, DPI change on</span>
+<span class="sd">        undock, monitor hot-swap) can leave the persisted geometry /</span>
+<span class="sd">        window-state referencing coordinates or widget layouts that no</span>
+<span class="sd">        longer make sense. ``restoreState()`` doesn&#39;t reject those blobs</span>
+<span class="sd">        outright -- it happily builds a QMainWindow in an inconsistent</span>
+<span class="sd">        state which then hits a native CRT ``__fastfail(7)`` at the first</span>
+<span class="sd">        paint from ``show()``. This method now:</span>
+
+<span class="sd">        1. Honours ``QISKIT_METAL_RESET_UI_SETTINGS=1`` -- users can force</span>
+<span class="sd">           a clean slate without touching the registry.</span>
+<span class="sd">        2. Auto-invalidates if the persisted state was written by a</span>
+<span class="sd">           different Qt version than the one loaded now.</span>
+<span class="sd">        3. Treats *any* exception during restoration as terminal for the</span>
+<span class="sd">           persisted state: clear it and continue with defaults, so the</span>
+<span class="sd">           next launch doesn&#39;t hit the same trap.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Escape hatch: users hitting the persisted-state crash can</span>
+        <span class="c1"># ``$env:QISKIT_METAL_RESET_UI_SETTINGS = &quot;1&quot;`` to clean the slate</span>
+        <span class="c1"># without going through the registry themselves.</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;QISKIT_METAL_RESET_UI_SETTINGS&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;QISKIT_METAL_RESET_UI_SETTINGS set; clearing persisted &quot;</span>
+                <span class="s2">&quot;MetalGUI window state before restore.&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">return</span>
 
         <span class="n">version_settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;metal_version&quot;</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">__version__</span> <span class="o">&gt;</span> <span class="n">version_settings</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Clearing window settings [</span><span class="si">{</span><span class="n">version_settings</span><span class="si">}</span><span class="s2">]...&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Cross-version Qt invalidation: state saved under one Qt version</span>
+        <span class="c1"># may not restore cleanly under another. Qt has no version tag on</span>
+        <span class="c1"># the state blob itself so we compare our own.</span>
+        <span class="n">saved_qt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;qt_version&quot;</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">current_qt</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">qVersion</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">saved_qt</span> <span class="ow">and</span> <span class="n">saved_qt</span> <span class="o">!=</span> <span class="n">current_qt</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Clearing window settings: saved under Qt </span><span class="si">{</span><span class="n">saved_qt</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;now running Qt </span><span class="si">{</span><span class="n">current_qt</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">return</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Restoring window settings...&quot;</span><span class="p">)</span>
@@ -582,13 +631,32 @@
                 <span class="n">window_state</span> <span class="o">=</span> <span class="n">window_state</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">restoreState</span><span class="p">(</span><span class="n">window_state</span><span class="p">)</span>
 
+            <span class="c1"># Issue #1048 bisection toggle: if the stylesheet (which affects</span>
+            <span class="c1"># every paint operation) is the trigger for the Qt 6.11 + Intel</span>
+            <span class="c1"># Iris Xe crash, ``QISKIT_METAL_GUI_NO_STYLESHEET=1`` skips it.</span>
+            <span class="c1"># Falls back to the default Qt-system style (lighter UX cost</span>
+            <span class="c1"># than disabling the plot widget).</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;QISKIT_METAL_GUI_NO_STYLESHEET&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;QISKIT_METAL_GUI_NO_STYLESHEET set; skipping stylesheet load.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">return</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;stylesheet&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">_stylesheet_default</span><span class="p">)</span>
             <span class="p">)</span>
 
             <span class="c1"># TODO: Recent files</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR [restore_window_settings]: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># Persisted state that raised on restore is the failure mode</span>
+            <span class="c1"># #1048 is chasing. Blow it away so subsequent launches don&#39;t</span>
+            <span class="c1"># relive the poisoning -- one bad exit shouldn&#39;t brick the GUI</span>
+            <span class="c1"># for every future session.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ERROR [restore_window_settings]: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="s2">&quot;Clearing persisted state to prevent recurrence.&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">bring_to_top</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Bring window to top.</span>
@@ -1142,7 +1210,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/06/25</div>
+              Last updated on 2026/07/07</div>
           </div>
           <div class="right-details">
             
