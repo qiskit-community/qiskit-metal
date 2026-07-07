@@ -32,6 +32,19 @@ __status__ = "Development"
 import os
 
 if os.name == "nt":
+    # Issue #1048: Qt 6.11 + integrated Intel GPU + WDDM 3.2 + touchscreen-
+    # capable Windows 11 hardware (e.g. Dell Latitude 9440 2-in-1) hits a
+    # native CRT __fastfail(7) inside Qt's accelerated D3D/RHI render path
+    # at QMainWindow.show(). Forcing Qt's bundled Mesa software OpenGL
+    # (opengl32sw.dll) bypasses the failure. The env var must be set
+    # BEFORE any PySide6 module is imported -- the runtime Qt attribute
+    # (Qt.AA_UseSoftwareOpenGL) is only a hint and is silently ignored on
+    # the affected drivers. Power users on healthy GPUs can opt back into
+    # accelerated GL by exporting QISKIT_METAL_QT_HARDWARE_GL=1 before
+    # ``import qiskit_metal``.
+    if not os.environ.get("QISKIT_METAL_QT_HARDWARE_GL"):
+        os.environ.setdefault("QT_OPENGL", "software")
+
     try:
         import geopandas
     except ImportError:
