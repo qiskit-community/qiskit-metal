@@ -6,6 +6,37 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Quantum Metal v0.7.5 (Windows GUI crash fix + routing/qubit fixes; no breaking changes)
+
+Patch release. Additive — no breaking changes.
+
+### Fixed (v0.7.5-only)
+
+- **`MetalGUI` no longer crashes at `show()` on Windows** (the on-screen crash, distinct from the exit-teardown segfault fixed in v0.7.4). Root cause was **persisted-state corruption**: Metal saves window geometry / dock layout to the registry (`HKCU\Software\QiskitMetal\MainWindow`) on close, and after a display-configuration change (tablet-mode toggle, undock, DPI change on 2-in-1 laptops with WDDM 3.2) Qt's `restoreState()` handed `show()` an inconsistent widget tree that fast-failed (`__fastfail(7)`) at first paint — the "works on the first run, crashes after" pattern several Windows 11 users reported. Fix: persisted UI state is invalidated when the saved Qt version differs from the running one, and is **cleared** (not just logged) if restoration raises, so one bad shutdown can't brick every future session. Reporter-validated (6/6 clean runs). One-shot escape hatch: `QISKIT_METAL_RESET_UI_SETTINGS=1`. (#1122, closes #1048; builds on #1104 / #1110)
+- **Auto-routing no longer passes straight through a component.** `RouteAnchors.unobstructed()` returned `True` when both segment endpoints lay inside a component's bounding box even though the segment crossed the actual (non-rectangular) contour, so routed paths could penetrate e.g. a circular pad. The contour is now checked in that case too. (#1113, closes #1036; reimplements the community fix #1038 by @Jinyuan426, with a regression test)
+- **`design.to_python_script()` output is runnable again.** Exported `.metal.py` scripts that use numpy arrays now include `from numpy import array` in the header. (#1043 by @saschabuehrle, closes #1042)
+
+### Added (v0.7.5-only)
+
+- **`TransmonCross` non-uniform claw options.** New per-connection-pad `claw_width_back` / `ground_spacing_back` let the back of a claw connector (facing the incoming CPW) use a different width / ground spacing than the sides — e.g. MIT-LL "candle" qubits. Both default to `None` (fall back to `claw_width` / `ground_spacing`), so existing designs render byte-for-byte identically. (#1115; reimplements #957 by @clarkmiyamoto)
+- **Windows Qt software-OpenGL default.** On Windows, `import qiskit_metal` sets `QT_OPENGL=software` before PySide6 imports (opt out with `QISKIT_METAL_QT_HARDWARE_GL=1`) — harm-reduction for fragile integrated-GPU / WDDM 3.2 driver stacks. (#1122)
+- **Reference full-chip design tutorials.** Three executed, headless-rendered end-to-end examples — single transmon + readout resonator, two coupled transmons, and 4-qubit multiplexed readout — under *Tutorials → Full-Chip Design Examples* on the docs site. (#1108)
+
+### Docs (v0.7.5-only)
+
+- Component-gallery cards now deep-link to each component's own API page with real descriptions (registry-aware, so new components self-link). (#1108)
+- `ROADMAP.md` now renders inline on the docs site as a single source of truth; site TOC restructured for clarity. (#1118–#1121)
+
+### Security / CI (v0.7.5-only)
+
+- Cleared 10 Dependabot advisories in the dev/docs toolchain (`starlette`, `bleach`, `jupyter-server`, `jupyterlab`, `tornado`) — lockfile-only, no runtime impact for installed users. (#1111)
+- Hardened the CI `apt` setup against flaky third-party runner sources (azure-cli / Microsoft repos) that were failing jobs before any test ran. (#1112)
+- Windows on-screen GUI init hardening + `QISKIT_METAL_DEBUG_INIT` diagnostic + a `tests-gui-display-windows` CI job. (#1110)
+
+### Upgrade notes
+
+No API changes; drop-in upgrade from 0.7.4. Windows users hitting the GUI crash: just upgrade — the fix is automatic. If a machine is already in a poisoned state, `QISKIT_METAL_RESET_UI_SETTINGS=1` (or deleting `HKCU\Software\QiskitMetal\MainWindow`) clears it once.
+
 ## Quantum Metal v0.7.4 (new SNAIL component + crash fixes; no breaking changes)
 
 Patch release. Additive — no breaking changes.
