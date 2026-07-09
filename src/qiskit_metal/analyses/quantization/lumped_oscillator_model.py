@@ -189,8 +189,17 @@ class LOManalysis(QAnalysis):
             all_res[idx_cmat] = res
         self.lumped_oscillator = all_res[len(self.sim.capacitance_all_passes)]
         all_res = pd.DataFrame(all_res).transpose()
-        all_res["χr MHz"] = abs(all_res["chi_in_MHz"].apply(lambda x: x.iloc[0]))
-        all_res["gr MHz"] = abs(all_res["gbus"].apply(lambda x: x.iloc[0]))
+
+        # ``chi_in_MHz`` / ``gbus`` are per-pass sequences of coupling-pad
+        # values; take the first (readout) entry. Their concrete type shifted
+        # from pandas Series to numpy.ndarray with newer numpy/pandas, so
+        # ``.iloc[0]`` raised ``AttributeError`` on ndarrays. Read the first
+        # element in a way that works for a Series, ndarray, or list. (#1125)
+        def _first(seq):
+            return seq.iloc[0] if hasattr(seq, "iloc") else seq[0]
+
+        all_res["χr MHz"] = abs(all_res["chi_in_MHz"].apply(_first))
+        all_res["gr MHz"] = abs(all_res["gbus"].apply(_first))
         self.lumped_oscillator_all = all_res
         return self.lumped_oscillator_all
 
