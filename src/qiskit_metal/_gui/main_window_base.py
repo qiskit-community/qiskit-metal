@@ -178,6 +178,26 @@ class QMainWindowExtensionBase(QMainWindow):
         4. Treats *any* exception during restoration as terminal for the
            persisted state: clear it and continue with defaults, so the
            next launch doesn't hit the same trap.
+
+        Crash-cookie scope (issue #1048, PR #1129 hardening): CI caught a
+        real gap in the first cut of this defense. The ``restore_in_progress``
+        cookie was cleared immediately after ``restoreState()`` returned --
+        but the actual reported crash site (RhinoHand's original
+        faulthandler trace) is ``main_window.show()``, called by
+        ``MetalGUI.__init__`` well AFTER this method returns.
+        ``restoreState()`` can complete without raising while still leaving
+        the widget tree in a state that only faults once Qt tries to paint
+        it. Clearing the cookie here therefore erased the ONE signal that
+        would let a crash at ``show()`` be detected on the next launch.
+
+        Fix: this method no longer clears the cookie on success. It stays
+        set (True) after a successful restore, and the caller (``MetalGUI.
+        __init__``) is responsible for calling ``mark_startup_complete()``
+        once ``main_window.show()`` has returned without crashing. If
+        ``show()`` crashes natively, that call never happens, the cookie
+        stays True on disk, and the next launch's cookie check discards
+        the state before attempting either ``restoreState()`` or ``show()``
+        again.
         """
 
         # Escape hatch: users hitting the persisted-state crash can
@@ -262,10 +282,12 @@ class QMainWindowExtensionBase(QMainWindow):
                 window_state = window_state.encode("ascii")
             self.restoreState(window_state)
 
-            # Made it through the native calls -- clear the cookie so the
-            # next launch doesn't misinterpret this as a crash.
-            self.settings.setValue("restore_in_progress", False)
-            self.settings.sync()
+            # Deliberately NOT clearing the cookie here -- see the
+            # "Crash-cookie scope" docstring section above. The real
+            # crash site is ``main_window.show()``, called by our caller
+            # well after this method returns. The cookie stays set until
+            # ``mark_startup_complete()`` confirms ``show()`` also
+            # succeeded.
 
             # Issue #1048 bisection toggle: if the stylesheet (which affects
             # every paint operation) is the trigger for the Qt 6.11 + Intel
@@ -293,6 +315,24 @@ class QMainWindowExtensionBase(QMainWindow):
                 "Clearing persisted state to prevent recurrence."
             )
             self.settings.clear()
+
+    def mark_startup_complete(self):
+        """Clear the ``restore_in_progress`` crash-cookie.
+
+        Call this once the entire risky startup sequence has finished
+        without crashing -- specifically, after ``main_window.show()``
+        has returned (issue #1048 / PR #1129). Do NOT call this
+        immediately after ``restore_window_settings()`` returns; the
+        cookie must stay set across the ``show()`` call too, since
+        that's the actual crash site the cookie is meant to guard.
+
+        Safe to call even when no restore was attempted this launch
+        (fresh install, or state was cleared by one of the earlier
+        invalidation checks) -- clearing an already-False cookie is a
+        no-op.
+        """
+        self.settings.setValue("restore_in_progress", False)
+        self.settings.sync()
 
     def bring_to_top(self):
         """Bring window to top.
