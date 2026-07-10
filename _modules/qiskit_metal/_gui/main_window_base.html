@@ -500,6 +500,48 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.log_widget.log_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogHandler_for_QTextLog</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_display_fingerprint</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a stable string describing the current display configuration.</span>
+
+<span class="sd">    Format: ``&quot;name:x,y,w,h@dpr | name2:x,y,w,h@dpr | ...&quot;`` in the order</span>
+<span class="sd">    ``QGuiApplication.screens()`` returns them. Used by</span>
+<span class="sd">    ``restore_window_settings`` to detect when the saved MetalGUI layout</span>
+<span class="sd">    was captured under a different monitor setup (undock, tablet-mode</span>
+<span class="sd">    toggle, DPI change, or a Jupyter kernel sitting alongside another</span>
+<span class="sd">    kernel whose GUI was closed in a different geometry). Returns</span>
+<span class="sd">    ``&quot;&quot;`` on any error, or when ``QGuiApplication`` isn&#39;t ready --</span>
+<span class="sd">    callers treat empty as &quot;unknown, fall through&quot; rather than as a</span>
+<span class="sd">    match.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Deferred import: we only care about this from inside GUI init</span>
+        <span class="c1"># where QGuiApplication already exists.</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QGuiApplication</span>
+
+        <span class="n">app</span> <span class="o">=</span> <span class="n">QGuiApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">app</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">screens</span> <span class="o">=</span> <span class="n">QGuiApplication</span><span class="o">.</span><span class="n">screens</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">screens</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">screens</span><span class="p">:</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">geometry</span><span class="p">()</span>
+            <span class="c1"># ``name`` distinguishes physical monitors; ``geometry``</span>
+            <span class="c1"># covers position + size; ``devicePixelRatio`` covers DPI</span>
+            <span class="c1"># scaling changes (undock is often just a DPR flip).</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">()</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">x</span><span class="p">()</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">y</span><span class="p">()</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">width</span><span class="p">()</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">height</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;@</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">devicePixelRatio</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="c1"># Never let fingerprint computation crash GUI startup. Empty</span>
+        <span class="c1"># string just means &quot;fall through&quot; -- v0.7.5&#39;s exception-clear</span>
+        <span class="c1"># still guards the failure path.</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+
 <span class="k">class</span><span class="w"> </span><span class="nc">QMainWindowExtensionBase</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This contains all the functions that the gui needs to call directly from</span>
 <span class="sd">    the UI.</span>
@@ -557,6 +599,15 @@
         <span class="c1"># instead of feeding an incompatible blob to restoreState() and</span>
         <span class="c1"># ending up with an inconsistent QMainWindow (issue #1048).</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;qt_version&quot;</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">qVersion</span><span class="p">())</span>
+        <span class="c1"># Persist a fingerprint of the display configuration at save time.</span>
+        <span class="c1"># restore_window_settings uses it to detect when the layout was</span>
+        <span class="c1"># saved under a different screen setup (undock, tablet-mode</span>
+        <span class="c1"># toggle, DPI change, monitor hot-swap, cross-Jupyter-kernel</span>
+        <span class="c1"># under a resized session) and invalidate rather than paint into</span>
+        <span class="c1"># coordinates that no longer exist (issue #1048).</span>
+        <span class="n">fingerprint</span> <span class="o">=</span> <span class="n">_display_fingerprint</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">fingerprint</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;display_fingerprint&quot;</span><span class="p">,</span> <span class="n">fingerprint</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;geometry&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveGeometry</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;windowState&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveState</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;stylesheet&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">_stylesheet</span><span class="p">)</span>
@@ -582,7 +633,11 @@
 <span class="sd">           a clean slate without touching the registry.</span>
 <span class="sd">        2. Auto-invalidates if the persisted state was written by a</span>
 <span class="sd">           different Qt version than the one loaded now.</span>
-<span class="sd">        3. Treats *any* exception during restoration as terminal for the</span>
+<span class="sd">        3. Auto-invalidates if the current display configuration doesn&#39;t</span>
+<span class="sd">           match the one that was in place when the state was saved.</span>
+<span class="sd">           Catches the multi-Jupyter-kernel case and undock/tablet-mode</span>
+<span class="sd">           transitions where geometry becomes inconsistent.</span>
+<span class="sd">        4. Treats *any* exception during restoration as terminal for the</span>
 <span class="sd">           persisted state: clear it and continue with defaults, so the</span>
 <span class="sd">           next launch doesn&#39;t hit the same trap.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -617,8 +672,46 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
             <span class="k">return</span>
 
+        <span class="c1"># Display-configuration guard (issue #1048 second-order fix, on</span>
+        <span class="c1"># top of v0.7.5). If the layout was saved under a different</span>
+        <span class="c1"># screen setup than what&#39;s currently attached, ``restoreState``</span>
+        <span class="c1"># can paint into geometry that no longer exists and trip Qt&#39;s</span>
+        <span class="c1"># native abort. If the current fingerprint is empty (QGuiApp not</span>
+        <span class="c1"># ready yet or something odd), fall through to a plain restore</span>
+        <span class="c1"># -- v0.7.5&#39;s exception-clear will still catch the crash path.</span>
+        <span class="n">saved_fp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;display_fingerprint&quot;</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">current_fp</span> <span class="o">=</span> <span class="n">_display_fingerprint</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">saved_fp</span> <span class="ow">and</span> <span class="n">current_fp</span> <span class="ow">and</span> <span class="n">saved_fp</span> <span class="o">!=</span> <span class="n">current_fp</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Clearing window settings: display configuration changed &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;since layout was saved.</span><span class="se">\n</span><span class="s2">  saved:   </span><span class="si">{</span><span class="n">saved_fp</span><span class="si">}</span><span class="se">\n</span><span class="s2">  current: </span><span class="si">{</span><span class="n">current_fp</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Crash-cookie recovery (issue #1048 third-order fix).</span>
+        <span class="c1"># ``restoreGeometry``/``restoreState`` are Qt native code -- if</span>
+        <span class="c1"># they blow up we get an OS-level abort, not a Python exception,</span>
+        <span class="c1"># so the try/except below cannot catch them. To self-heal after</span>
+        <span class="c1"># a crash of that shape we set an on-disk cookie *before* the</span>
+        <span class="c1"># potentially-crashing call and clear it *after*. On the next</span>
+        <span class="c1"># launch, a cookie left set means the previous launch died</span>
+        <span class="c1"># inside restore -- discard the state and start fresh.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;restore_in_progress&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Previous MetalGUI launch appears to have crashed during &quot;</span>
+                <span class="s2">&quot;window-state restore; clearing persisted state to recover.&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">return</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Restoring window settings...&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Mark restore-in-progress and flush to disk *before* touching</span>
+            <span class="c1"># the native Qt calls that might crash.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;restore_in_progress&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
 
             <span class="c1"># should probably call .encode(&quot;ascii&quot;) here</span>
             <span class="n">geom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;geometry&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -630,6 +723,11 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">window_state</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">window_state</span> <span class="o">=</span> <span class="n">window_state</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">restoreState</span><span class="p">(</span><span class="n">window_state</span><span class="p">)</span>
+
+            <span class="c1"># Made it through the native calls -- clear the cookie so the</span>
+            <span class="c1"># next launch doesn&#39;t misinterpret this as a crash.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;restore_in_progress&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
 
             <span class="c1"># Issue #1048 bisection toggle: if the stylesheet (which affects</span>
             <span class="c1"># every paint operation) is the trigger for the Qt 6.11 + Intel</span>
@@ -1210,7 +1308,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/09</div>
+              Last updated on 2026/07/10</div>
           </div>
           <div class="right-details">
             
