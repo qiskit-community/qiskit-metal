@@ -38,6 +38,48 @@ from qiskit_metal._gui.utility._handle_qt_messages import slot_catch_error
 from qiskit_metal._gui.widgets.log_widget.log_metal import LogHandler_for_QTextLog
 
 
+def _display_fingerprint() -> str:
+    """Return a stable string describing the current display configuration.
+
+    Format: ``"name:x,y,w,h@dpr | name2:x,y,w,h@dpr | ..."`` in the order
+    ``QGuiApplication.screens()`` returns them. Used by
+    ``restore_window_settings`` to detect when the saved MetalGUI layout
+    was captured under a different monitor setup (undock, tablet-mode
+    toggle, DPI change, or a Jupyter kernel sitting alongside another
+    kernel whose GUI was closed in a different geometry). Returns
+    ``""`` on any error, or when ``QGuiApplication`` isn't ready --
+    callers treat empty as "unknown, fall through" rather than as a
+    match.
+    """
+    try:
+        # Deferred import: we only care about this from inside GUI init
+        # where QGuiApplication already exists.
+        from PySide6.QtGui import QGuiApplication
+
+        app = QGuiApplication.instance()
+        if app is None:
+            return ""
+        screens = QGuiApplication.screens()
+        if not screens:
+            return ""
+        parts = []
+        for s in screens:
+            g = s.geometry()
+            # ``name`` distinguishes physical monitors; ``geometry``
+            # covers position + size; ``devicePixelRatio`` covers DPI
+            # scaling changes (undock is often just a DPR flip).
+            parts.append(
+                f"{s.name()}:{g.x()},{g.y()},{g.width()},{g.height()}"
+                f"@{s.devicePixelRatio():.2f}"
+            )
+        return " | ".join(parts)
+    except Exception:
+        # Never let fingerprint computation crash GUI startup. Empty
+        # string just means "fall through" -- v0.7.5's exception-clear
+        # still guards the failure path.
+        return ""
+
+
 class QMainWindowExtensionBase(QMainWindow):
     """This contains all the functions that the gui needs to call directly from
     the UI.
@@ -95,6 +137,15 @@ class QMainWindowExtensionBase(QMainWindow):
         # instead of feeding an incompatible blob to restoreState() and
         # ending up with an inconsistent QMainWindow (issue #1048).
         self.settings.setValue("qt_version", QtCore.qVersion())
+        # Persist a fingerprint of the display configuration at save time.
+        # restore_window_settings uses it to detect when the layout was
+        # saved under a different screen setup (undock, tablet-mode
+        # toggle, DPI change, monitor hot-swap, cross-Jupyter-kernel
+        # under a resized session) and invalidate rather than paint into
+        # coordinates that no longer exist (issue #1048).
+        fingerprint = _display_fingerprint()
+        if fingerprint:
+            self.settings.setValue("display_fingerprint", fingerprint)
         self.settings.setValue("geometry", self.saveGeometry())
         self.settings.setValue("windowState", self.saveState())
         self.settings.setValue("stylesheet", self.handler._stylesheet)
@@ -120,7 +171,11 @@ class QMainWindowExtensionBase(QMainWindow):
            a clean slate without touching the registry.
         2. Auto-invalidates if the persisted state was written by a
            different Qt version than the one loaded now.
-        3. Treats *any* exception during restoration as terminal for the
+        3. Auto-invalidates if the current display configuration doesn't
+           match the one that was in place when the state was saved.
+           Catches the multi-Jupyter-kernel case and undock/tablet-mode
+           transitions where geometry becomes inconsistent.
+        4. Treats *any* exception during restoration as terminal for the
            persisted state: clear it and continue with defaults, so the
            next launch doesn't hit the same trap.
         """
@@ -155,8 +210,46 @@ class QMainWindowExtensionBase(QMainWindow):
             self.settings.clear()
             return
 
+        # Display-configuration guard (issue #1048 second-order fix, on
+        # top of v0.7.5). If the layout was saved under a different
+        # screen setup than what's currently attached, ``restoreState``
+        # can paint into geometry that no longer exists and trip Qt's
+        # native abort. If the current fingerprint is empty (QGuiApp not
+        # ready yet or something odd), fall through to a plain restore
+        # -- v0.7.5's exception-clear will still catch the crash path.
+        saved_fp = self.settings.value("display_fingerprint", defaultValue="")
+        current_fp = _display_fingerprint()
+        if saved_fp and current_fp and saved_fp != current_fp:
+            self.logger.info(
+                "Clearing window settings: display configuration changed "
+                f"since layout was saved.\n  saved:   {saved_fp}\n  current: {current_fp}"
+            )
+            self.settings.clear()
+            return
+
+        # Crash-cookie recovery (issue #1048 third-order fix).
+        # ``restoreGeometry``/``restoreState`` are Qt native code -- if
+        # they blow up we get an OS-level abort, not a Python exception,
+        # so the try/except below cannot catch them. To self-heal after
+        # a crash of that shape we set an on-disk cookie *before* the
+        # potentially-crashing call and clear it *after*. On the next
+        # launch, a cookie left set means the previous launch died
+        # inside restore -- discard the state and start fresh.
+        if self.settings.value("restore_in_progress", False, type=bool):
+            self.logger.warning(
+                "Previous MetalGUI launch appears to have crashed during "
+                "window-state restore; clearing persisted state to recover."
+            )
+            self.settings.clear()
+            return
+
         try:
             self.logger.debug("Restoring window settings...")
+
+            # Mark restore-in-progress and flush to disk *before* touching
+            # the native Qt calls that might crash.
+            self.settings.setValue("restore_in_progress", True)
+            self.settings.sync()
 
             # should probably call .encode("ascii") here
             geom = self.settings.value("geometry", "")
@@ -168,6 +261,11 @@ class QMainWindowExtensionBase(QMainWindow):
             if isinstance(window_state, str):
                 window_state = window_state.encode("ascii")
             self.restoreState(window_state)
+
+            # Made it through the native calls -- clear the cookie so the
+            # next launch doesn't misinterpret this as a crash.
+            self.settings.setValue("restore_in_progress", False)
+            self.settings.sync()
 
             # Issue #1048 bisection toggle: if the stylesheet (which affects
             # every paint operation) is the trigger for the Qt 6.11 + Intel
