@@ -462,6 +462,16 @@ class MetalGUI(QMainWindowBaseHandler):
         _trace_init("main_window.show()")
         self.main_window.show()
 
+        # Issue #1048 / PR #1129: the crash-cookie set in
+        # restore_window_settings() deliberately stays set across the
+        # show() call above -- that's the actual crash site the cookie
+        # protects against (a restored-but-inconsistent widget tree can
+        # pass restoreState() cleanly and only fault when Qt paints it).
+        # Only mark startup complete once show() has returned without
+        # crashing.
+        _trace_init("mark_startup_complete()")
+        self.main_window.mark_startup_complete()
+
         # self.qApp.processEvents(QEventLoop.AllEvents, 1)
         # - don't think I need this here, it doesn't help to show and raise
         # - need to call from different thread.

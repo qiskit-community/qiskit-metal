@@ -209,40 +209,40 @@ class TestGUIInitOnScreen(unittest.TestCase):
         kernel A closes its GUI (saves state) -> kernel B opens its own
         GUI reading that state -> kernel C opens a GUI later.
 
-        This test's first version asserted kernel C must always
-        succeed unconditionally. That failed CI on macOS
-        (https://github.com/qiskit-community/qiskit-metal/pull/1129) --
-        investigation showed the ``test_metalgui_init_recovers_from_crashed_restore``
-        test (which injects the cookie directly) passed cleanly in the
-        same run, proving the cookie *mechanism* works. The difference:
-        when kernel B completes without crashing, the cookie is cleared
-        and kernel C attempts its OWN independent, genuinely native
-        ``restoreGeometry``/``restoreState`` call -- and on that specific
-        macOS CI runner, two consecutive real cross-process restores can
-        each independently hit Qt's own native instability, unrelated to
-        any corruption our code can detect. That is an upstream Qt
-        reliability question outside what ``restore_window_settings``
-        can control from pure Python (a native abort cannot be caught by
-        try/except in the crashing process).
+        This test caught a REAL production bug, twice, across two CI
+        runs on macOS (https://github.com/qiskit-community/qiskit-metal/pull/1129):
 
-        What our code CAN and does guarantee -- and what this test
-        actually verifies -- is the cookie invariant: if a launch
-        crashes during restore, it must have left the cookie set (proof
-        the NEXT launch will self-heal instead of repeating the crash
-        forever). We branch on whether B actually crashed to know which
-        promise is testable:
+        Run 1: asserting kernel C must always succeed unconditionally
+        failed with a native crash. Investigation showed
+        ``test_metalgui_init_recovers_from_crashed_restore`` (which
+        injects the cookie directly, bypassing any real crash) passed
+        cleanly in the same run -- proving the cookie *mechanism*
+        itself was sound. So the test was loosened to only require the
+        cookie be left set if kernel C crashed, rather than requiring C
+        to always succeed.
 
-        - If B crashed (cookie left True): kernel C's cookie-check runs
-          *before* any native restore call, so C never touches the risky
-          code path at all. This branch is 100% deterministic and MUST
-          succeed -- verified.
-        - If B succeeded (cookie cleared, fingerprint still matches):
-          kernel C attempts a real restore like B did. If C also
-          crashes, we only assert it left the cookie set for a
-          hypothetical kernel D -- we do not require C itself to
-          succeed, since that would reassert the exact claim ("every
-          single native restoreState call succeeds") that this test's
-          previous version already disproved on this CI runner.
+        Run 2, with that loosened test: kernel C crashed AND failed to
+        leave the cookie set. That pointed at an actual gap in the
+        production code, not a flaky assertion: ``restore_window_settings()``
+        was clearing the cookie immediately after ``restoreState()``
+        returned -- but the real reported crash site
+        (RhinoHand's original faulthandler trace) is
+        ``main_window.show()``, called well AFTER ``restore_window_settings()``
+        returns. ``restoreState()`` can complete without raising while
+        still leaving Qt's widget tree in a state that only faults once
+        painted. The cookie was being cleared before the actual risky
+        call ever happened.
+
+        Fixed in ``main_window_base.py``/``main_window.py``: the cookie
+        now stays set across ``show()`` too, cleared only by the new
+        ``mark_startup_complete()`` call after ``show()`` returns
+        without crashing. This test still branches on whether B left
+        the cookie set, because two genuinely independent real
+        cross-process ``restoreState()``/``show()`` sequences in a row
+        MAY still both hit an upstream Qt native issue outside what
+        pure Python can force to always succeed -- but with the fix,
+        any such crash is now guaranteed to be caught by the widened
+        cookie window, which is the actual guarantee this test verifies.
         """
         if not _display_available():
             self.skipTest("no display available (needs desktop session or Xvfb)")
