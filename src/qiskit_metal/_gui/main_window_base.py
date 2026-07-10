@@ -227,8 +227,29 @@ class QMainWindowExtensionBase(QMainWindow):
             self.settings.clear()
             return
 
+        # Crash-cookie recovery (issue #1048 third-order fix).
+        # ``restoreGeometry``/``restoreState`` are Qt native code -- if
+        # they blow up we get an OS-level abort, not a Python exception,
+        # so the try/except below cannot catch them. To self-heal after
+        # a crash of that shape we set an on-disk cookie *before* the
+        # potentially-crashing call and clear it *after*. On the next
+        # launch, a cookie left set means the previous launch died
+        # inside restore -- discard the state and start fresh.
+        if self.settings.value("restore_in_progress", False, type=bool):
+            self.logger.warning(
+                "Previous MetalGUI launch appears to have crashed during "
+                "window-state restore; clearing persisted state to recover."
+            )
+            self.settings.clear()
+            return
+
         try:
             self.logger.debug("Restoring window settings...")
+
+            # Mark restore-in-progress and flush to disk *before* touching
+            # the native Qt calls that might crash.
+            self.settings.setValue("restore_in_progress", True)
+            self.settings.sync()
 
             # should probably call .encode("ascii") here
             geom = self.settings.value("geometry", "")
@@ -240,6 +261,11 @@ class QMainWindowExtensionBase(QMainWindow):
             if isinstance(window_state, str):
                 window_state = window_state.encode("ascii")
             self.restoreState(window_state)
+
+            # Made it through the native calls -- clear the cookie so the
+            # next launch doesn't misinterpret this as a crash.
+            self.settings.setValue("restore_in_progress", False)
+            self.settings.sync()
 
             # Issue #1048 bisection toggle: if the stylesheet (which affects
             # every paint operation) is the trigger for the Qt 6.11 + Intel
