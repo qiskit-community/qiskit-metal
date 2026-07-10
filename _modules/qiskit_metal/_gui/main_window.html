@@ -926,6 +926,16 @@
         <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;main_window.show()&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
+        <span class="c1"># Issue #1048 / PR #1129: the crash-cookie set in</span>
+        <span class="c1"># restore_window_settings() deliberately stays set across the</span>
+        <span class="c1"># show() call above -- that&#39;s the actual crash site the cookie</span>
+        <span class="c1"># protects against (a restored-but-inconsistent widget tree can</span>
+        <span class="c1"># pass restoreState() cleanly and only fault when Qt paints it).</span>
+        <span class="c1"># Only mark startup complete once show() has returned without</span>
+        <span class="c1"># crashing.</span>
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;mark_startup_complete()&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">mark_startup_complete</span><span class="p">()</span>
+
         <span class="c1"># self.qApp.processEvents(QEventLoop.AllEvents, 1)</span>
         <span class="c1"># - don&#39;t think I need this here, it doesn&#39;t help to show and raise</span>
         <span class="c1"># - need to call from different thread.</span>

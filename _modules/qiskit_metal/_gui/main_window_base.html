@@ -640,6 +640,26 @@
 <span class="sd">        4. Treats *any* exception during restoration as terminal for the</span>
 <span class="sd">           persisted state: clear it and continue with defaults, so the</span>
 <span class="sd">           next launch doesn&#39;t hit the same trap.</span>
+
+<span class="sd">        Crash-cookie scope (issue #1048, PR #1129 hardening): CI caught a</span>
+<span class="sd">        real gap in the first cut of this defense. The ``restore_in_progress``</span>
+<span class="sd">        cookie was cleared immediately after ``restoreState()`` returned --</span>
+<span class="sd">        but the actual reported crash site (RhinoHand&#39;s original</span>
+<span class="sd">        faulthandler trace) is ``main_window.show()``, called by</span>
+<span class="sd">        ``MetalGUI.__init__`` well AFTER this method returns.</span>
+<span class="sd">        ``restoreState()`` can complete without raising while still leaving</span>
+<span class="sd">        the widget tree in a state that only faults once Qt tries to paint</span>
+<span class="sd">        it. Clearing the cookie here therefore erased the ONE signal that</span>
+<span class="sd">        would let a crash at ``show()`` be detected on the next launch.</span>
+
+<span class="sd">        Fix: this method no longer clears the cookie on success. It stays</span>
+<span class="sd">        set (True) after a successful restore, and the caller (``MetalGUI.</span>
+<span class="sd">        __init__``) is responsible for calling ``mark_startup_complete()``</span>
+<span class="sd">        once ``main_window.show()`` has returned without crashing. If</span>
+<span class="sd">        ``show()`` crashes natively, that call never happens, the cookie</span>
+<span class="sd">        stays True on disk, and the next launch&#39;s cookie check discards</span>
+<span class="sd">        the state before attempting either ``restoreState()`` or ``show()``</span>
+<span class="sd">        again.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Escape hatch: users hitting the persisted-state crash can</span>
@@ -724,10 +744,12 @@
                 <span class="n">window_state</span> <span class="o">=</span> <span class="n">window_state</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">restoreState</span><span class="p">(</span><span class="n">window_state</span><span class="p">)</span>
 
-            <span class="c1"># Made it through the native calls -- clear the cookie so the</span>
-            <span class="c1"># next launch doesn&#39;t misinterpret this as a crash.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;restore_in_progress&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+            <span class="c1"># Deliberately NOT clearing the cookie here -- see the</span>
+            <span class="c1"># &quot;Crash-cookie scope&quot; docstring section above. The real</span>
+            <span class="c1"># crash site is ``main_window.show()``, called by our caller</span>
+            <span class="c1"># well after this method returns. The cookie stays set until</span>
+            <span class="c1"># ``mark_startup_complete()`` confirms ``show()`` also</span>
+            <span class="c1"># succeeded.</span>
 
             <span class="c1"># Issue #1048 bisection toggle: if the stylesheet (which affects</span>
             <span class="c1"># every paint operation) is the trigger for the Qt 6.11 + Intel</span>
@@ -755,6 +777,24 @@
                 <span class="s2">&quot;Clearing persisted state to prevent recurrence.&quot;</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">mark_startup_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the ``restore_in_progress`` crash-cookie.</span>
+
+<span class="sd">        Call this once the entire risky startup sequence has finished</span>
+<span class="sd">        without crashing -- specifically, after ``main_window.show()``</span>
+<span class="sd">        has returned (issue #1048 / PR #1129). Do NOT call this</span>
+<span class="sd">        immediately after ``restore_window_settings()`` returns; the</span>
+<span class="sd">        cookie must stay set across the ``show()`` call too, since</span>
+<span class="sd">        that&#39;s the actual crash site the cookie is meant to guard.</span>
+
+<span class="sd">        Safe to call even when no restore was attempted this launch</span>
+<span class="sd">        (fresh install, or state was cleared by one of the earlier</span>
+<span class="sd">        invalidation checks) -- clearing an already-False cookie is a</span>
+<span class="sd">        no-op.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s2">&quot;restore_in_progress&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">bring_to_top</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Bring window to top.</span>
