@@ -1266,7 +1266,8 @@
 <span class="sd">            show (bool, optional): Whether or not to display the screenshot.  Defaults to True.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            pathlib.WindowsPath: path to png formatted screenshot.</span>
+<span class="sd">            pathlib.WindowsPath: path to png formatted screenshot. ``None`` if the</span>
+<span class="sd">                Ansys COM call failed (see issues #1046, #1130).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">_modeler</span><span class="o">.</span><span class="n">ShowWindow</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1274,7 +1275,25 @@
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                 <span class="s2">&quot;Please install a more recent version of pyEPR (&gt;=0.8.4.3)&quot;</span>
-            <span class="p">)</span></div>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># Ansys&#39;s COM automation for ExportModelImageToFile can</span>
+            <span class="c1"># intermittently fail with a native RPC error (issues #1046,</span>
+            <span class="c1"># #1130) -- e.g. ``com_error: (-2147023170, &#39;The remote</span>
+            <span class="c1"># procedure call failed.&#39;, None, None)``. This is an</span>
+            <span class="c1"># Ansys/COM reliability issue, not something Python can</span>
+            <span class="c1"># prevent, but an uncaught COM error here previously crashed</span>
+            <span class="c1"># the caller&#39;s whole script/kernel with a cryptic native</span>
+            <span class="c1"># traceback. Surface it as an actionable message instead.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;save_screenshot() failed talking to the Ansys COM &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;interface: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">. This is a known Ansys/pyEPR COM &quot;</span>
+                <span class="s2">&quot;reliability issue, not a Qiskit Metal bug (see &quot;</span>
+                <span class="s2">&quot;qiskit-metal#1046, #1130). It is often transient -- try &quot;</span>
+                <span class="s2">&quot;again, or make sure the AEDT window has focus and no &quot;</span>
+                <span class="s2">&quot;other automation is attached to the same session.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="QAnsysRenderer.execute_design">
@@ -2495,7 +2514,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/10</div>
+              Last updated on 2026/07/11</div>
           </div>
           <div class="right-details">
             

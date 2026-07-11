@@ -1138,9 +1138,33 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            RES (pd.DataFrame): Dictionary of capacitance matrices versus pass number, organized as pandas table.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The convergence plot, or ``None`` if constructing pyEPR&#39;s</span>
+<span class="sd">            ``DistributedAnalysis`` failed (see issue #1127).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pinfo</span><span class="p">:</span>
-            <span class="n">eprd</span> <span class="o">=</span> <span class="n">epr</span><span class="o">.</span><span class="n">DistributedAnalysis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pinfo</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">eprd</span> <span class="o">=</span> <span class="n">epr</span><span class="o">.</span><span class="n">DistributedAnalysis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pinfo</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="c1"># pyEPR&#39;s DistributedAnalysis construction can raise</span>
+                <span class="c1"># ``TypeError: tuple indices must be integers or slices,</span>
+                <span class="c1"># not Quantity`` from an internal bug in its own</span>
+                <span class="c1"># variation-key handling -- ``core_distributed_analysis.py``</span>
+                <span class="c1"># calls ``self._list_variations[ureg(variation)]``, which</span>
+                <span class="c1"># units-parses the variation label via pint instead of</span>
+                <span class="c1"># treating it as a plain index (issue #1127). This is a</span>
+                <span class="c1"># pyEPR-internal bug that Metal&#39;s call site cannot work</span>
+                <span class="c1"># around, but an uncaught exception here previously</span>
+                <span class="c1"># crashed with a confusing traceback deep in pyEPR</span>
+                <span class="c1"># internals rather than a clear, attributable message.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;plot_convergence_main() failed constructing pyEPR&#39;s &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;DistributedAnalysis: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">. This is a known pyEPR &quot;</span>
+                    <span class="s2">&quot;internal bug in its variation-key handling, not a &quot;</span>
+                    <span class="s2">&quot;Qiskit Metal bug (see qiskit-metal#1127).&quot;</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
             <span class="n">epr</span><span class="o">.</span><span class="n">toolbox</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">mpl_dpi</span><span class="p">(</span><span class="mi">110</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">_plot_q3d_convergence_main</span><span class="p">(</span><span class="n">eprd</span><span class="p">,</span> <span class="n">RES</span><span class="p">)</span></div>
 
@@ -1200,7 +1224,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/10</div>
+              Last updated on 2026/07/11</div>
           </div>
           <div class="right-details">
             
