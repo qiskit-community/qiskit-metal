@@ -639,9 +639,33 @@ class QQ3DRenderer(QAnsysRenderer):
 
         Args:
             RES (pd.DataFrame): Dictionary of capacitance matrices versus pass number, organized as pandas table.
+
+        Returns:
+            The convergence plot, or ``None`` if constructing pyEPR's
+            ``DistributedAnalysis`` failed (see issue #1127).
         """
         if self._pinfo:
-            eprd = epr.DistributedAnalysis(self._pinfo)
+            try:
+                eprd = epr.DistributedAnalysis(self._pinfo)
+            except Exception as e:
+                # pyEPR's DistributedAnalysis construction can raise
+                # ``TypeError: tuple indices must be integers or slices,
+                # not Quantity`` from an internal bug in its own
+                # variation-key handling -- ``core_distributed_analysis.py``
+                # calls ``self._list_variations[ureg(variation)]``, which
+                # units-parses the variation label via pint instead of
+                # treating it as a plain index (issue #1127). This is a
+                # pyEPR-internal bug that Metal's call site cannot work
+                # around, but an uncaught exception here previously
+                # crashed with a confusing traceback deep in pyEPR
+                # internals rather than a clear, attributable message.
+                self.logger.error(
+                    "plot_convergence_main() failed constructing pyEPR's "
+                    f"DistributedAnalysis: {e}. This is a known pyEPR "
+                    "internal bug in its variation-key handling, not a "
+                    "Qiskit Metal bug (see qiskit-metal#1127)."
+                )
+                return None
             epr.toolbox.plotting.mpl_dpi(110)
             return _plot_q3d_convergence_main(eprd, RES)
 
