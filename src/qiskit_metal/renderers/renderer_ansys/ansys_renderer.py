@@ -764,7 +764,8 @@ class QAnsysRenderer(QRendererAnalysis):
             show (bool, optional): Whether or not to display the screenshot.  Defaults to True.
 
         Returns:
-            pathlib.WindowsPath: path to png formatted screenshot.
+            pathlib.WindowsPath: path to png formatted screenshot. ``None`` if the
+                Ansys COM call failed (see issues #1046, #1130).
         """
         self.modeler._modeler.ShowWindow()
         try:
@@ -773,6 +774,24 @@ class QAnsysRenderer(QRendererAnalysis):
             self.logger.error(
                 "Please install a more recent version of pyEPR (>=0.8.4.3)"
             )
+        except Exception as e:
+            # Ansys's COM automation for ExportModelImageToFile can
+            # intermittently fail with a native RPC error (issues #1046,
+            # #1130) -- e.g. ``com_error: (-2147023170, 'The remote
+            # procedure call failed.', None, None)``. This is an
+            # Ansys/COM reliability issue, not something Python can
+            # prevent, but an uncaught COM error here previously crashed
+            # the caller's whole script/kernel with a cryptic native
+            # traceback. Surface it as an actionable message instead.
+            self.logger.error(
+                "save_screenshot() failed talking to the Ansys COM "
+                f"interface: {e}. This is a known Ansys/pyEPR COM "
+                "reliability issue, not a Qiskit Metal bug (see "
+                "qiskit-metal#1046, #1130). It is often transient -- try "
+                "again, or make sure the AEDT window has focus and no "
+                "other automation is attached to the same session."
+            )
+            return None
 
     def execute_design(
         self,

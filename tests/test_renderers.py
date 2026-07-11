@@ -16,7 +16,7 @@
 """Qiskit Metal unit tests analyses functionality."""
 
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 import matplotlib.pyplot as _plt
 
 from qiskit_metal import designs
@@ -670,6 +670,81 @@ class TestRenderers(unittest.TestCase):
         renderer._pinfo.setup.get_convergence = MagicMock()
         renderer._pinfo.setup.get_convergence.return_value = (None, convergence_txt)
         self.assertFalse(renderer.get_convergence())
+
+    def test_save_screenshot_survives_ansys_com_error(self):
+        """Issues #1046 / #1130 -- QAnsysRenderer.save_screenshot() must not
+        propagate an Ansys COM RPC failure. Before this fix, only
+        AttributeError was caught; any other exception from pyEPR's
+        ``ExportModelImageToFile`` (e.g. a native ``com_error``) crashed
+        the caller's script/kernel with a cryptic traceback instead of a
+        clear, attributable message."""
+        design = designs.DesignPlanar()
+        renderer = QAnsysRenderer(design, initiate=False)
+        renderer._pinfo = MagicMock()
+        renderer._pinfo.design.save_screenshot = MagicMock(
+            side_effect=RuntimeError(
+                "(-2147023170, 'The remote procedure call failed.', None, None)"
+            )
+        )
+        # ``modeler`` is a read-only property derived from ``pinfo.design.modeler``;
+        # since ``_pinfo`` is already a MagicMock, ``self.modeler._modeler.ShowWindow()``
+        # resolves automatically without needing an explicit assignment.
+
+        try:
+            result = renderer.save_screenshot()
+        except Exception as e:  # noqa: BLE001 -- this is exactly what must NOT happen
+            self.fail(
+                "save_screenshot() propagated the Ansys COM error instead "
+                f"of catching it: {e!r}"
+            )
+        self.assertIsNone(
+            result, "save_screenshot() should return None after a caught COM failure"
+        )
+
+    def test_save_screenshot_still_handles_old_pyepr_attributeerror(self):
+        """Regression guard: the pre-existing AttributeError branch (old
+        pyEPR versions missing save_screenshot) must still work after
+        adding the broader Exception handler alongside it."""
+        design = designs.DesignPlanar()
+        renderer = QAnsysRenderer(design, initiate=False)
+        renderer._pinfo = MagicMock()
+        renderer._pinfo.design.save_screenshot = MagicMock(
+            side_effect=AttributeError("no save_screenshot on this pyEPR version")
+        )
+
+        try:
+            result = renderer.save_screenshot()
+        except Exception as e:  # noqa: BLE001
+            self.fail(f"save_screenshot() should catch AttributeError too: {e!r}")
+        self.assertIsNone(result)
+
+    def test_plot_convergence_main_survives_pyepr_distributedanalysis_bug(self):
+        """Issue #1127 -- QQ3DRenderer.plot_convergence_main() must not
+        propagate the TypeError that pyEPR's ``DistributedAnalysis``
+        construction can raise from its own internal variation-key
+        handling (``core_distributed_analysis.py`` indexing
+        ``self._list_variations`` with a ``ureg()``-parsed Quantity
+        instead of a plain index). This is a pyEPR-internal bug Metal's
+        call site cannot work around, but it must degrade gracefully
+        instead of crashing with a confusing traceback."""
+        design = designs.DesignPlanar()
+        renderer = QQ3DRenderer(design, initiate=False)
+        renderer._pinfo = MagicMock()
+
+        with patch(
+            "qiskit_metal.renderers.renderer_ansys.q3d_renderer.epr.DistributedAnalysis",
+            side_effect=TypeError(
+                "tuple indices must be integers or slices, not Quantity"
+            ),
+        ):
+            try:
+                result = renderer.plot_convergence_main(RES=MagicMock())
+            except Exception as e:  # noqa: BLE001
+                self.fail(
+                    "plot_convergence_main() propagated pyEPR's "
+                    f"DistributedAnalysis TypeError instead of catching it: {e!r}"
+                )
+        self.assertIsNone(result)
 
 
 if __name__ == "__main__":
