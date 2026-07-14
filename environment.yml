@@ -11,7 +11,7 @@ dependencies:
   - numpy>=1.24.2,<2
   - pandas>=2.1.1 # Synced with pyproject.toml floor.
   - pint>=0.21.0 # Synced with pyproject.toml floor.
-  - pyEPR-quantum~=0.9.5
+  - pyEPR-quantum>=1.0.1 # Synced with pyproject.toml floor.
   - pygments~=2.14
   - qdarkstyle~=3.1
   - qutip>=5.0.0 # Synced with pyproject.toml floor.
