@@ -2290,7 +2290,7 @@ wheels = [
 
 [[package]]
 name = "pyepr-quantum"
-version = "0.9.5"
+version = "1.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "addict" },
@@ -2309,9 +2309,9 @@ dependencies = [
     { name = "xarray", version = "2025.6.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "xarray", version = "2025.12.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0a/d9/9c0c048e29f7c34c3a628e31d8a4c4054906bda0bd76c57031961af48e38/pyepr_quantum-0.9.5.tar.gz", hash = "sha256:6648bf86760846750b969db86db928748115467fa52b4277eb4e147b36493724", size = 127842, upload-time = "2026-05-17T04:15:43.456Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/47/1c/9e62c109736000768a3a768181b959193b6f4f013a158bfb38bdc847f4d4/pyepr_quantum-1.0.1.tar.gz", hash = "sha256:b16cf1dff322369677c961fd8a916b718dc0b7cc97246d0b93e6df279951c846", size = 138918, upload-time = "2026-07-17T18:25:20.067Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c4/15/cb22a4efe6f1f5dcb22ad7b98465e47a2e129d77e4e0a3e715b1e09a4676/pyepr_quantum-0.9.5-py3-none-any.whl", hash = "sha256:12644117cf0b208b164645638cf9d6c46b387d4bbc2fb45e5c96485c6f5b151b", size = 114090, upload-time = "2026-05-17T04:15:41.311Z" },
+    { url = "https://files.pythonhosted.org/packages/14/1c/62625646dd0436dc5e851e5a5bc4a364f10a1b25043fccff274156707653/pyepr_quantum-1.0.1-py3-none-any.whl", hash = "sha256:548e8db772c9a05dfb5915c2290bb47419711d04551d28020d6764620976e047", size = 120521, upload-time = "2026-07-17T18:25:18.506Z" },
 ]
 
 [[package]]
@@ -2700,7 +2700,7 @@ wheels = [
 
 [[package]]
 name = "quantum-metal"
-version = "0.7.5"
+version = "0.7.6"
 source = { editable = "." }
 dependencies = [
     { name = "addict" },
@@ -2793,8 +2793,8 @@ requires-dist = [
     { name = "pint", specifier = ">=0.21.0" },
     { name = "pyaedt", marker = "extra == 'ansys'", specifier = ">=0.21,<0.24" },
     { name = "pyaedt", marker = "extra == 'full'", specifier = ">=0.21,<0.24" },
-    { name = "pyepr-quantum", marker = "extra == 'ansys'", specifier = ">=0.9.5" },
-    { name = "pyepr-quantum", marker = "extra == 'full'", specifier = ">=0.9.5" },
+    { name = "pyepr-quantum", marker = "extra == 'ansys'", specifier = ">=1.0.1" },
+    { name = "pyepr-quantum", marker = "extra == 'full'", specifier = ">=1.0.1" },
     { name = "pygments", specifier = ">=2.14.0" },
     { name = "pyside6", marker = "extra == 'full'", specifier = ">=6.8" },
     { name = "pyside6", marker = "extra == 'gui'", specifier = ">=6.8" },
