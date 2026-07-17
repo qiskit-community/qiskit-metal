@@ -800,9 +800,68 @@ class QuantumSystemRegistry:
 
 class Subsystem:
     """Class representing a subsystem that can typically be mapped to a quantum system with known
-    solution, such as a transmon, a fluxonium or a quantum harmonic osccilator
+    solution, such as a transmon, a fluxonium or a quantum harmonic oscillator.
 
-    frequencies if entered in q_opts need to be in GHz
+    A subsystem is defined by three things: a ``name``, a ``sys_type`` (which
+    built-in or custom quantum model it maps to), and the list of circuit
+    ``nodes`` it occupies. Type-specific numbers — offset charge, external
+    flux, resonator frequency, scQubits truncation, etc. — are passed through
+    the ``q_opts`` dict.
+
+    **Any frequency-like value in** ``q_opts`` **must be given in GHz.**
+
+    Built-in ``sys_type`` values and their ``q_opts``
+    -------------------------------------------------
+
+    The list below is the accepted-parameter reference for the four models
+    shipped with quantum-metal. Call
+    :meth:`QuantumSystemRegistry.registry` at runtime to list every
+    registered type, including any you have added yourself. Parameters marked
+    *(computed)* are extracted from the reduced L and C matrices during the
+    LOM solve and must **not** be supplied; the rest are optional and fall
+    back to the defaults shown.
+
+    ``"TRANSMON"`` — maps to ``scqubits.Transmon``.
+        - ``EJ``, ``EC`` — *(computed)* from the extracted L and C matrices.
+        - ``ng`` — offset charge (default ``0.001``).
+        - ``ncut`` — charge-basis cutoff (default ``22``).
+        - ``truncated_dim`` — retained levels (default ``10``).
+        - ``nodes`` — a single junction node.
+
+    ``"FLUXONIUM"`` — maps to ``scqubits.Fluxonium``.
+        - ``EC`` — *(computed)* from the extracted C matrix.
+        - ``EJ`` — Josephson energy in GHz **(required)**.
+        - ``EL`` — inductive energy in GHz **(required)**.
+        - ``flux`` — external flux in units of the flux quantum
+          :math:`\\Phi_0` **(required)**.
+        - ``cutoff`` — basis cutoff (default ``110``).
+        - ``truncated_dim`` — retained levels (default ``10``).
+        - ``nodes`` — a single junction node.
+
+    ``"TL_RESONATOR"`` — distributed transmission-line resonator, maps to
+    ``scqubits.Oscillator``.
+        - ``f_res`` — resonator frequency in GHz **(required)**.
+        - ``Z0`` — characteristic impedance in ohms (default ``50``).
+        - ``vp`` — phase velocity in m/s, or the string ``"use_design"``
+          (default) to derive it from the ``design`` stack below.
+        - ``design`` — dict of the physical stack used when
+          ``vp="use_design"``: ``line_width``, ``line_gap``,
+          ``substrate_thickness``, ``film_thickness``, all in **meters**
+          (defaults ``10e-6``, ``6e-6``, ``750e-6``, ``200e-9``).
+        - ``truncated_dim`` — retained levels (default ``3``).
+        - ``other_end_shorted`` — ``True`` if the far end is shorted to
+          ground (default ``False``). A shorted resonator must be given a
+          single node.
+        - ``nodes`` — one node (open- or shorted-end) or two nodes.
+
+    ``"LUMPED_RESONATOR"`` — lumped LC resonator, maps to
+    ``scqubits.Oscillator``.
+        - ``f_res`` — *(computed)* from the extracted L and C matrices.
+        - ``truncated_dim`` — retained levels (default ``3``).
+        - ``nodes`` — a single node.
+
+    See tutorials ``4.04`` and ``4.05`` for worked transmon / fluxonium /
+    coupled-transmon examples.
     """
 
     def __init__(self, name: str, sys_type: str, nodes: List[str], q_opts: dict = None):
@@ -1242,7 +1301,41 @@ class Cell:
 
 
 class CompositeSystem:
-    """Class representing the composite system which may consist of multiple subsystems and cells"""
+    """Class representing the composite system which may consist of multiple subsystems and cells.
+
+    A composite system stitches one or more :class:`Cell` objects (each
+    carrying an extracted capacitance matrix, and optionally inductors and
+    junctions) together with the :class:`Subsystem` objects that describe
+    which quantum model each set of nodes maps to. Calling
+    :meth:`circuitGraph` reduces the combined L and C matrices;
+    :meth:`create_hilbertspace` and :meth:`hamiltonian_results` then build and
+    diagonalize the coupled Hamiltonian.
+
+    Example
+    -------
+
+    .. code-block:: python
+
+        from qiskit_metal.analyses.quantization.lom_core_analysis import (
+            Cell, Subsystem, CompositeSystem)
+
+        # A cell holds the extracted capacitance matrix plus the junction
+        cell = Cell(dict(node_rename={},
+                         cap_mat=cap_df,               # pandas DataFrame
+                         ind_dict={('pad_top', 'pad_bot'): 12.0},   # nH
+                         jj_dict={('pad_top', 'pad_bot'): 'j1'}))
+
+        transmon = Subsystem(name='Q1', sys_type='TRANSMON', nodes=['j1'])
+
+        composite = CompositeSystem(
+            subsystems=[transmon],
+            cells=[cell],
+            grd_node='ground',
+            nodes_force_keep=None,
+        )
+        hilbertspace = composite.create_hilbertspace()
+        results = composite.hamiltonian_results(hilbertspace, evals_count=10)
+    """
 
     def __init__(
         self,
