@@ -65,7 +65,7 @@ References:
 
    A reliable red flag is the **EPR junction participation ratio**
    :math:`p_{mj}`. By definition it is the fraction of the mode's inductive
-   energy in junction *j*, so :math:`0 \\le p_{mj} \\le 1`. If EPR reports
+   energy in junction *j*, so :math:`0 \le p_{mj} \le 1`. If EPR reports
    :math:`p_{mj} > 1` (often together with energy-normalization warnings),
    the lumped-junction picture is invalid for that geometry and the extracted
    Hamiltonian parameters for the mode should not be trusted. Fixes: keep the
