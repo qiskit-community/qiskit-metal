@@ -50,6 +50,30 @@ References:
 * Zlatko K. Minev, Thomas G. McConkey, Maika Takita, Antonio Corcoles, Jay M. Gambetta,
   Circuit quantum electrodynamics (cQED) with modular quasi-lumped models. (2021)
 
+.. admonition:: Validity: the junction must be *lumped*
+   :class: warning
+
+   Both the lumped-oscillator reduction and the single-mode EPR extraction
+   assume each nonlinear element (Josephson junction) is a compact, lumped
+   inductor sitting directly across the capacitive gap it shunts — i.e. that
+   essentially all of the mode's inductive energy is stored in ``Lj``. That
+   assumption breaks when the junction is displaced away from the pads and
+   reached through long, narrow leads/arms: those leads add series geometric
+   inductance in the current path, so the eigenmode is no longer a clean
+   ``Lj``–``C`` oscillator and a capacitance extracted by fitting
+   ``1/ω² = C·Lj + b`` is contaminated (it can be off by a factor of ~2).
+
+   A reliable red flag is the **EPR junction participation ratio**
+   :math:`p_{mj}`. By definition it is the fraction of the mode's inductive
+   energy in junction *j*, so :math:`0 \\le p_{mj} \\le 1`. If EPR reports
+   :math:`p_{mj} > 1` (often together with energy-normalization warnings),
+   the lumped-junction picture is invalid for that geometry and the extracted
+   Hamiltonian parameters for the mode should not be trusted. Fixes: keep the
+   junction compact and centered between its pads, or model the leads
+   explicitly as their own inductor in the LOM :class:`Cell` ``ind_dict``
+   (between the pad node and the junction node) rather than folding them into
+   ``Lj``.
+
 .. image:: images/lump.png
    :alt: Missing Image
    :width: 388
