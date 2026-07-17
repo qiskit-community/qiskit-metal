@@ -60,6 +60,42 @@ References:
 
 |
 
+.. _lom-composite-api:
+
+Composite-system API: ``Cell`` / ``Subsystem`` / ``CompositeSystem``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The lumped-oscillator model is assembled from three classes in
+:mod:`qiskit_metal.analyses.quantization.lom_core_analysis`. A **Cell** holds
+an extracted capacitance matrix plus any inductors and junctions; a
+**Subsystem** maps a set of circuit nodes to a quantum model (transmon,
+fluxonium, transmission-line or lumped resonator, ...); and a
+**CompositeSystem** reduces and quantizes the combined network. These are the
+classes used in tutorials ``4.04`` and ``4.05``.
+
+The accepted ``q_opts`` for every built-in subsystem ``sys_type``
+(``TRANSMON``, ``FLUXONIUM``, ``TL_RESONATOR``, ``LUMPED_RESONATOR``) — which
+values you supply and which are computed from the extracted L and C matrices —
+are listed on :class:`Subsystem` below. Call
+:meth:`QuantumSystemRegistry.registry` to enumerate every registered type,
+including any custom builder you add.
+
+.. currentmodule:: qiskit_metal.analyses.quantization.lom_core_analysis
+
+.. autoclass:: Cell
+   :members:
+
+.. autoclass:: Subsystem
+   :members:
+
+.. autoclass:: CompositeSystem
+   :members:
+
+.. autoclass:: QuantumSystemRegistry
+   :members:
+
+|
+
 ---------------------------------------------------
 Energy: The energy-participation-ratio (EPR) method
 ---------------------------------------------------
