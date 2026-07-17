@@ -259,6 +259,17 @@ def route_airbridges(
     centerline = _fillet_centerline(route.get_points(), fillet)
     placements = _placements_along(centerline, pitch, min_spacing)
 
+    # Idempotent re-runs: clear airbridges this helper previously placed under
+    # ``name`` before re-placing (so re-executing a cell / re-routing doesn't
+    # raise on name collisions or leave stale bridges behind).
+    stale = [
+        n
+        for n in list(design.components)
+        if n.startswith(f"{name}_") and n[len(name) + 1 :].isdigit()
+    ]
+    for n in stale:
+        design.delete_component(n)
+
     made = []
     for k, (x, y, ori) in enumerate(placements):
         opts = dict(

@@ -79,6 +79,27 @@ class TestAirbridge(unittest.TestCase):
         self.assertAlmostEqual((minx + maxx) / 2.0, 0.2, places=3)
         self.assertAlmostEqual((miny + maxy) / 2.0, 0.1, places=3)
 
+    def test_renders_above_base_layers_in_view(self):
+        """qm.view draws higher layers on top, so the airbridge (layers 30/31)
+        sits above the base metal even if created first (phase 3 z-order)."""
+        import matplotlib
+
+        matplotlib.use("Agg")
+        import qiskit_metal as qm
+        from matplotlib.collections import PatchCollection
+
+        Airbridge(self.design, "ab", options=dict(bridge_layer="30", pad_layer="31"))
+        self.design.rebuild()
+        fig = qm.view(self.design)
+        zorders = [
+            c.get_zorder()
+            for c in fig.axes[0].collections
+            if isinstance(c, PatchCollection)
+        ]
+        self.assertTrue(zorders)
+        # airbridge layers (>1) render above the base layer's z-order of ~1.0
+        self.assertGreater(max(zorders), 1.0)
+
 
 class TestRouteAirbridges(unittest.TestCase):
     """Auto-placement of airbridges along a route (route_airbridges)."""
