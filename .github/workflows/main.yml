@@ -103,6 +103,26 @@ jobs:
       - name: Check environment.yml against pyproject.toml
         run: uv run --quiet scripts/check_env_consistency.py
 
+  lockfile-check:
+    name: uv.lock ↔ pyproject.toml consistency
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      # Fails if pyproject.toml deps/version changed without regenerating
+      # uv.lock. A stale lock ships the wrong version to PyPI at release
+      # time — see the v0.6.0 post-mortem in
+      # .claude/context/lessons-learned.md and PR #1136.
+      - name: Assert uv.lock is in sync with pyproject.toml
+        run: uv lock --check
+
   tutorials-sync:
     name: docs/tut/ ↔ tutorials/ sync
     runs-on: ubuntu-24.04
