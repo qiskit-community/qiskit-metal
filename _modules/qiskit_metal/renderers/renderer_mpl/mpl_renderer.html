@@ -206,6 +206,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.12-Simple-Meander.html">2.12 Simple Meander</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.13-Hybrid-Auto-and-AStar.html">2.13 Hybrid Auto and AStar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute.html">2.14 Get them all with MixedRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.15-Airbridges.html">Airbridges</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.html">2.21 Design a 4 qubit full chip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">2.22 Design 100 qubits programmatically</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.23-Modify-chip-options.html">2.23 Modify chip options</a></li>
@@ -840,7 +841,15 @@
             <span class="k">return</span>
 
         <span class="n">kw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_style</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">subtracted</span><span class="o">=</span><span class="n">subtracted</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">extra_kw</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_render_poly_array</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">kw</span><span class="p">)</span></div>
+        <span class="c1"># Draw non-subtract polys ordered by layer so higher layers sit on top</span>
+        <span class="c1"># (e.g. airbridge crossovers on layers 30/31 render above the base</span>
+        <span class="c1"># metal and CPW). Subtract polys (&quot;holes&quot;) keep the default order.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">subtracted</span> <span class="ow">and</span> <span class="s2">&quot;layer&quot;</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="n">table</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">layer</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;layer&quot;</span><span class="p">):</span>
+                <span class="n">layer_kw</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">kw</span><span class="p">,</span> <span class="s2">&quot;zorder&quot;</span><span class="p">:</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_render_poly_array</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">group</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">layer_kw</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_render_poly_array</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">kw</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QMplRenderer.render_fillet">

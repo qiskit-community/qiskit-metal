@@ -332,6 +332,22 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 .. grid:: 1 2 3 4
    :gutter: 3
 
+   .. grid-item-card:: Airbridge
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/Airbridge.png
+         :alt: Airbridge
+         :width: 180px
+         :align: center
+
+      A single airbridge: two base-metal landing pads joined by an elevated
+
+      .. rubric:: ``Airbridge``
+
+
    .. grid-item-card:: RouteAnchors
       :link: apidocs/qiskit_metal.qlibrary.RouteAnchors
       :link-type: doc
