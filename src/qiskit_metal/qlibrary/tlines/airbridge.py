@@ -13,6 +13,8 @@
 # that they have been altered from the originals.
 """Airbridge — a ground-plane crossover that hops over a CPW trace."""
 
+import numpy as np
+
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core import QComponent
 
@@ -92,3 +94,128 @@ class Airbridge(QComponent):
             "poly", {"bridge": span}, layer=p.bridge_layer, subtract=False
         )
         self.add_qgeometry("poly", {"pads": pads}, layer=p.pad_layer, subtract=False)
+
+
+def _segment_placements(p0, p1, pitch, margin):
+    """Evenly-spaced airbridge centers along one straight CPW segment.
+
+    Args:
+        p0, p1 (np.ndarray): segment endpoints (x, y), in design units.
+        pitch (float): target center-to-center spacing between bridges.
+        margin (float): keep-out distance from each segment end (so bridges
+            do not land on pins or fillet corners).
+
+    Returns:
+        list[tuple[float, float, float]]: ``(x, y, orientation_deg)`` per
+        bridge, oriented perpendicular to the segment so the span crosses it.
+        Empty if the segment is too short to hold a bridge clear of both ends.
+    """
+    v = np.asarray(p1, dtype=float) - np.asarray(p0, dtype=float)
+    length = float(np.hypot(v[0], v[1]))
+    usable = length - 2.0 * margin
+    if usable < 0:
+        return []
+
+    theta = np.arctan2(v[1], v[0])
+    orientation = np.degrees(theta) + 90.0  # span crosses the trace
+    # n bridges, evenly spaced and centered on the segment midpoint.
+    n = int(np.floor(usable / pitch)) + 1
+    midpoint = (np.asarray(p0, dtype=float) + np.asarray(p1, dtype=float)) / 2.0
+    # Symmetric offsets about 0: e.g. n=3 -> [-pitch, 0, +pitch].
+    offsets = (np.arange(n) - (n - 1) / 2.0) * pitch
+    direction = np.array([np.cos(theta), np.sin(theta)])
+
+    placements = []
+    for off in offsets:
+        c = midpoint + off * direction
+        placements.append((float(c[0]), float(c[1]), float(orientation)))
+    return placements
+
+
+def route_airbridges(
+    design,
+    route,
+    pitch="100um",
+    min_spacing="5um",
+    crossover_length=None,
+    name=None,
+    ab_options=None,
+):
+    """Auto-place :class:`Airbridge` components along a route's CPW centerline.
+
+    The bridges are added as **real design components** (not GDS-only
+    artifacts), so they render in ``qm.view`` and export through every
+    renderer. Each bridge is oriented perpendicular to the local CPW direction
+    and, by default, sized to span the route's ``trace_width + 2*trace_gap``.
+
+    Placement covers every straight segment of ``route.get_points()``, evenly
+    spaced by ``pitch`` and kept ``max(fillet, min_spacing)`` clear of each
+    corner/pin, plus one bridge at each interior corner oriented along the
+    turn's bisector.
+
+    Args:
+        design (QDesign): the design to add the airbridges to.
+        route (QRoute): a routed CPW (``RouteStraight``/``RouteMeander``/...).
+        pitch (str): target center-to-center spacing along straights.
+        min_spacing (str): minimum clearance from corners/pins.
+        crossover_length (str, optional): bridge span. Defaults to the route's
+            ``trace_width + 2*trace_gap`` so the span crosses trace and gaps.
+        name (str, optional): prefix for the created components. Defaults to
+            ``f"{route.name}_ab"``.
+        ab_options (dict, optional): extra options forwarded to each
+            :class:`Airbridge`.
+
+    Returns:
+        list[Airbridge]: the components created (also added to ``design``).
+    """
+    pitch = design.parse_value(pitch)
+    min_spacing = design.parse_value(min_spacing)
+    ab_options = dict(ab_options or {})
+    name = name or f"{route.name}_ab"
+
+    fillet = 0.0
+    if "fillet" in route.options:
+        fillet = design.parse_value(route.options.fillet)
+    margin = max(fillet, min_spacing)
+
+    if crossover_length is None:
+        trace_width = design.parse_value(route.options.get("trace_width", "10um"))
+        trace_gap = design.parse_value(route.options.get("trace_gap", "6um"))
+        crossover_length = trace_width + 2.0 * trace_gap
+
+    pts = np.asarray(route.get_points(), dtype=float)
+
+    placements = []
+    # Straight segments.
+    for i in range(len(pts) - 1):
+        placements.extend(_segment_placements(pts[i], pts[i + 1], pitch, margin))
+
+    # Interior corners: one bridge on the turn bisector.
+    for j in range(1, len(pts) - 1):
+        v_in = pts[j] - pts[j - 1]
+        v_out = pts[j + 1] - pts[j]
+        theta_in = np.arctan2(v_in[1], v_in[0])
+        theta_out = np.arctan2(v_out[1], v_out[0])
+        # Skip a straight-through vertex (no real turn).
+        if abs(
+            np.arctan2(np.sin(theta_out - theta_in), np.cos(theta_out - theta_in))
+        ) < np.radians(1.0):
+            continue
+        avg = np.arctan2(
+            np.sin(theta_in) + np.sin(theta_out), np.cos(theta_in) + np.cos(theta_out)
+        )
+        placements.append(
+            (float(pts[j][0]), float(pts[j][1]), float(np.degrees(avg) + 90.0))
+        )
+
+    made = []
+    for k, (x, y, ori) in enumerate(placements):
+        opts = dict(
+            pos_x=f"{x}mm",
+            pos_y=f"{y}mm",
+            orientation=ori,
+            crossover_length=f"{crossover_length}mm",
+            **ab_options,
+        )
+        made.append(Airbridge(design, f"{name}_{k}", options=opts))
+    return made
