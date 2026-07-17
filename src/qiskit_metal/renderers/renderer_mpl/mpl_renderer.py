@@ -338,7 +338,15 @@ class QMplRenderer:
             return
 
         kw = self.get_style("poly", subtracted=subtracted, extra=extra_kw)
-        self._render_poly_array(ax, table.geometry, kw)
+        # Draw non-subtract polys ordered by layer so higher layers sit on top
+        # (e.g. airbridge crossovers on layers 30/31 render above the base
+        # metal and CPW). Subtract polys ("holes") keep the default order.
+        if not subtracted and "layer" in table.columns and table["layer"].nunique() > 1:
+            for layer, group in table.groupby("layer"):
+                layer_kw = {**kw, "zorder": 1.0 + float(layer) * 1e-3}
+                self._render_poly_array(ax, group.geometry, layer_kw)
+        else:
+            self._render_poly_array(ax, table.geometry, kw)
 
     def render_fillet(self, table):
         """Renders fillet path.

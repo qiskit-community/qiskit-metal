@@ -75,6 +75,10 @@ PAIRS = [
         "tutorials/2 From components to chip/B. Routing between QComponents/2.14 Get them all with MixedRoute.ipynb",
     ),
     (
+        "docs/tut/2-From-components-to-chip/2.15-Airbridges.ipynb",
+        "tutorials/2 From components to chip/B. Routing between QComponents/2.15 Airbridges.ipynb",
+    ),
+    (
         "docs/tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.ipynb",
         "tutorials/2 From components to chip/C. My first full quantum chip design/2.21 Design a 4 qubit full chip.ipynb",
     ),
