@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Qiskit Metal Overview" href="overview.html"><link rel="prev" title="Quantum Metal Workflow" href="workflow.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Quantization Methods Overview - Quantum Metal 0.7.5</title>
+        <title>Quantization Methods Overview - Quantum Metal 0.7.6</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -157,7 +157,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Quantum Metal 0.7.5</div></a>
+      <a href="index.html"><div class="brand">Quantum Metal 0.7.6</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -179,7 +179,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.7.5</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.7.6</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -510,6 +510,358 @@ Circuit quantum electrodynamics (cQED) with modular quasi-lumped models. (2021)<
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<section id="composite-system-api-cell-subsystem-compositesystem">
+<span id="lom-composite-api"></span><h3>Composite-system API: <code class="docutils literal notranslate"><span class="pre">Cell</span></code> / <code class="docutils literal notranslate"><span class="pre">Subsystem</span></code> / <code class="docutils literal notranslate"><span class="pre">CompositeSystem</span></code><a class="headerlink" href="#composite-system-api-cell-subsystem-compositesystem" title="Link to this heading">¶</a></h3>
+<p>The lumped-oscillator model is assembled from three classes in
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.analyses.quantization.lom_core_analysis</span></code>. A <strong>Cell</strong> holds
+an extracted capacitance matrix plus any inductors and junctions; a
+<strong>Subsystem</strong> maps a set of circuit nodes to a quantum model (transmon,
+fluxonium, transmission-line or lumped resonator, …); and a
+<strong>CompositeSystem</strong> reduces and quantizes the combined network. These are the
+classes used in tutorials <code class="docutils literal notranslate"><span class="pre">4.04</span></code> and <code class="docutils literal notranslate"><span class="pre">4.05</span></code>.</p>
+<p>The accepted <code class="docutils literal notranslate"><span class="pre">q_opts</span></code> for every built-in subsystem <code class="docutils literal notranslate"><span class="pre">sys_type</span></code>
+(<code class="docutils literal notranslate"><span class="pre">TRANSMON</span></code>, <code class="docutils literal notranslate"><span class="pre">FLUXONIUM</span></code>, <code class="docutils literal notranslate"><span class="pre">TL_RESONATOR</span></code>, <code class="docutils literal notranslate"><span class="pre">LUMPED_RESONATOR</span></code>) — which
+values you supply and which are computed from the extracted L and C matrices —
+are listed on <code class="xref py py-class docutils literal notranslate"><span class="pre">Subsystem</span></code> below. Call
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">QuantumSystemRegistry.registry()</span></code> to enumerate every registered type,
+including any custom builder you add.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.Cell">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_metal/analyses/quantization/lom_core_analysis.html#Cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Cell" title="Link to this definition">¶</a></dt>
+<dd><p>A physical subdivision of the device (i.e., the composite system), a sub-graph
+of capaciators, inductoros and other linear or non-linear circuit elements. The
+cell can be independently simulated to extract its electromagnetic parameters, which
+the the user provides as inputs to this object</p>
+<p>Initialize the cell object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>options</strong> (<em>Dict</em>) – <p>options can contain the following keys
+node_rename (dict): a dict mapping from original node names to</p>
+<blockquote>
+<div><p>new node names, {old_name: new_name}</p>
+</div></blockquote>
+<dl class="simple">
+<dt>cap_mat (pd.DataFrame): Maxwell capacitance of the cell in</dt><dd><p>pandas dataframe</p>
+</dd>
+<dt>ind_dict (dict): the keys are tuples of specifying the two nodes</dt><dd><p>between which the inductors lie. For example,
+{(‘n1’, ‘n2’): 10} specifies that there is an inductor of 10
+nH between node ‘n1’ and ‘n2’ for one cell and an inductor of
+13 nH between node ‘n5’ and ‘n7’ for another cell</p>
+</dd>
+<dt>jj_dict (dict): dict mapping original circuit nodes to custom-named</dt><dd><p>junction nodes. This is the parameter informing the LOM analysis between
+which nodes the Josephson junctions are located. For example,
+{(‘n1’, ‘n2’): ‘j1’} specifies that there is a junction between
+nodes ‘n1’ and ‘n2’ and named as ‘j1’ cf_dict (dict):</p>
+</dd>
+<dt>cj_dict (dict): if provided, specifies the junction capacitances in each</dt><dd><p>cell. Structure is the same as ind_dict. For the dict, the keys are
+tuples of specifying the two nodes between which the junctions lie.
+For example, {(‘n1’, ‘n2’): 2} specifies that there is an
+junction capacitance of 2 fF between node ‘n1’ and ‘n2’ for the first
+provided cell and None for the second provided cell.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Subsystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sys_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_opts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_metal/analyses/quantization/lom_core_analysis.html#Subsystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem" title="Link to this definition">¶</a></dt>
+<dd><p>Class representing a subsystem that can typically be mapped to a quantum system with known
+solution, such as a transmon, a fluxonium or a quantum harmonic oscillator.</p>
+<p>A subsystem is defined by three things: a <code class="docutils literal notranslate"><span class="pre">name</span></code>, a <code class="docutils literal notranslate"><span class="pre">sys_type</span></code> (which
+built-in or custom quantum model it maps to), and the list of circuit
+<code class="docutils literal notranslate"><span class="pre">nodes</span></code> it occupies. Type-specific numbers — offset charge, external
+flux, resonator frequency, scQubits truncation, etc. — are passed through
+the <code class="docutils literal notranslate"><span class="pre">q_opts</span></code> dict.</p>
+<p><strong>Any frequency-like value in</strong> <code class="docutils literal notranslate"><span class="pre">q_opts</span></code> <strong>must be given in GHz.</strong></p>
+<section id="built-in-sys-type-values-and-their-q-opts">
+<h4>Built-in <code class="docutils literal notranslate"><span class="pre">sys_type</span></code> values and their <code class="docutils literal notranslate"><span class="pre">q_opts</span></code><a class="headerlink" href="#built-in-sys-type-values-and-their-q-opts" title="Link to this heading">¶</a></h4>
+<p>The list below is the accepted-parameter reference for the four models
+shipped with quantum-metal. Call
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">QuantumSystemRegistry.registry()</span></code> at runtime to list every
+registered type, including any you have added yourself. Parameters marked
+<em>(computed)</em> are extracted from the reduced L and C matrices during the
+LOM solve and must <strong>not</strong> be supplied; the rest are optional and fall
+back to the defaults shown.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;TRANSMON&quot;</span></code> — maps to <code class="docutils literal notranslate"><span class="pre">scqubits.Transmon</span></code>.</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EJ</span></code>, <code class="docutils literal notranslate"><span class="pre">EC</span></code> — <em>(computed)</em> from the extracted L and C matrices.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ng</span></code> — offset charge (default <code class="docutils literal notranslate"><span class="pre">0.001</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ncut</span></code> — charge-basis cutoff (default <code class="docutils literal notranslate"><span class="pre">22</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">truncated_dim</span></code> — retained levels (default <code class="docutils literal notranslate"><span class="pre">10</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nodes</span></code> — a single junction node.</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;FLUXONIUM&quot;</span></code> — maps to <code class="docutils literal notranslate"><span class="pre">scqubits.Fluxonium</span></code>.</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EC</span></code> — <em>(computed)</em> from the extracted C matrix.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EJ</span></code> — Josephson energy in GHz <strong>(required)</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EL</span></code> — inductive energy in GHz <strong>(required)</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flux</span></code> — external flux in units of the flux quantum
+<span class="math notranslate nohighlight">\(\Phi_0\)</span> <strong>(required)</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cutoff</span></code> — basis cutoff (default <code class="docutils literal notranslate"><span class="pre">110</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">truncated_dim</span></code> — retained levels (default <code class="docutils literal notranslate"><span class="pre">10</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nodes</span></code> — a single junction node.</p></li>
+</ul>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;TL_RESONATOR&quot;</span></code> — distributed transmission-line resonator, maps to
+<code class="docutils literal notranslate"><span class="pre">scqubits.Oscillator</span></code>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">f_res</span></code> — resonator frequency in GHz <strong>(required)</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Z0</span></code> — characteristic impedance in ohms (default <code class="docutils literal notranslate"><span class="pre">50</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vp</span></code> — phase velocity in m/s, or the string <code class="docutils literal notranslate"><span class="pre">&quot;use_design&quot;</span></code>
+(default) to derive it from the <code class="docutils literal notranslate"><span class="pre">design</span></code> stack below.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">design</span></code> — dict of the physical stack used when
+<code class="docutils literal notranslate"><span class="pre">vp=&quot;use_design&quot;</span></code>: <code class="docutils literal notranslate"><span class="pre">line_width</span></code>, <code class="docutils literal notranslate"><span class="pre">line_gap</span></code>,
+<code class="docutils literal notranslate"><span class="pre">substrate_thickness</span></code>, <code class="docutils literal notranslate"><span class="pre">film_thickness</span></code>, all in <strong>meters</strong>
+(defaults <code class="docutils literal notranslate"><span class="pre">10e-6</span></code>, <code class="docutils literal notranslate"><span class="pre">6e-6</span></code>, <code class="docutils literal notranslate"><span class="pre">750e-6</span></code>, <code class="docutils literal notranslate"><span class="pre">200e-9</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">truncated_dim</span></code> — retained levels (default <code class="docutils literal notranslate"><span class="pre">3</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">other_end_shorted</span></code> — <code class="docutils literal notranslate"><span class="pre">True</span></code> if the far end is shorted to
+ground (default <code class="docutils literal notranslate"><span class="pre">False</span></code>). A shorted resonator must be given a
+single node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nodes</span></code> — one node (open- or shorted-end) or two nodes.</p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;LUMPED_RESONATOR&quot;</span></code> — lumped LC resonator, maps to
+<code class="docutils literal notranslate"><span class="pre">scqubits.Oscillator</span></code>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">f_res</span></code> — <em>(computed)</em> from the extracted L and C matrices.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">truncated_dim</span></code> — retained levels (default <code class="docutils literal notranslate"><span class="pre">3</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nodes</span></code> — a single node.</p></li>
+</ul>
+</div></blockquote>
+<p>See tutorials <code class="docutils literal notranslate"><span class="pre">4.04</span></code> and <code class="docutils literal notranslate"><span class="pre">4.05</span></code> for worked transmon / fluxonium /
+coupled-transmon examples.</p>
+<p>Initialize the Subsystem object</p>
+<dl class="field-list simple">
+<dt class="field-odd">param name<span class="colon">:</span></dt>
+<dd class="field-odd"><p>name of the subsystem</p>
+</dd>
+<dt class="field-even">type name<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param sys_type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>type of the subsystem. Type can be one of the types implemented
+by one of the concrete QuantumBuilders (call QuantumSystemRegistry.registry()
+to see all the choices), which can also be custom-made by user</p>
+</dd>
+<dt class="field-even">type sys_type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param nodes<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of nodes the subsystem corresponds to. For example, for
+a transmon subsystem, this would just be a list of a single node which is the
+user-defined junction node in the Cell object</p>
+</dd>
+<dt class="field-even">type nodes<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+<dt class="field-odd">param q_opts<span class="colon">:</span></dt>
+<dd class="field-odd"><p>options relevant to the type of quantum subsystem. The
+Subsystem object builds the quantum subsystem using quantumfy() which calls
+make_quantum() of the corresponding QuantumBuilder. q_opts provides
+parameters needed by make_quantum(). In the case of qubit subsystems, make_quantum()
+takes advantage of the scQbuits package (<a class="reference external" href="https://scqubits.readthedocs.io">https://scqubits.readthedocs.io</a>).
+Consequently, the default options correspond to the default options of the qubit
+classes in scQubits. Defaults to None.</p>
+</dd>
+<dt class="field-even">type q_opts<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict, optional</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem.h_params">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">h_params</span></span><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem.h_params" title="Link to this definition">¶</a></dt>
+<dd><p>Hamiltonian parameters of the subsystem</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem.quantum_system">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">quantum_system</span></span><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem.quantum_system" title="Link to this definition">¶</a></dt>
+<dd><p>The quantum subsystem that the subsystem corresponds to. It
+is built by calling an associated builder passed in quantumfy()
+using the Visitor pattern</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem.quantumfy">
+<span class="sig-name descname"><span class="pre">quantumfy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quantum_builder</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="_modules/qiskit_metal/analyses/quantization/lom_core_analysis.html#Subsystem.quantumfy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem.quantumfy" title="Link to this definition">¶</a></dt>
+<dd><p>Building the corresponding quantum system with an
+associated builder</p>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">CompositeSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subsystems</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem" title="qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem"><span class="pre">Subsystem</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Cell" title="qiskit_metal.analyses.quantization.lom_core_analysis.Cell"><span class="pre">Cell</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grd_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes_force_keep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.14)"><span class="pre">Sequence</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_remove_provided</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_keep_provided</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_metal/analyses/quantization/lom_core_analysis.html#CompositeSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem" title="Link to this definition">¶</a></dt>
+<dd><p>Class representing the composite system which may consist of multiple subsystems and cells.</p>
+<p>A composite system stitches one or more <a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Cell" title="qiskit_metal.analyses.quantization.lom_core_analysis.Cell"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cell</span></code></a> objects (each
+carrying an extracted capacitance matrix, and optionally inductors and
+junctions) together with the <a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem" title="qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subsystem</span></code></a> objects that describe
+which quantum model each set of nodes maps to. Calling
+<a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.circuitGraph" title="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.circuitGraph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">circuitGraph()</span></code></a> reduces the combined L and C matrices;
+<a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.create_hilbertspace" title="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.create_hilbertspace"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_hilbertspace()</span></code></a> and <a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.hamiltonian_results" title="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.hamiltonian_results"><code class="xref py py-meth docutils literal notranslate"><span class="pre">hamiltonian_results()</span></code></a> then build and
+diagonalize the coupled Hamiltonian.</p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization.lom_core_analysis</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Cell</span><span class="p">,</span> <span class="n">Subsystem</span><span class="p">,</span> <span class="n">CompositeSystem</span><span class="p">)</span>
+
+<span class="c1"># A cell holds the extracted capacitance matrix plus the junction</span>
+<span class="n">cell</span> <span class="o">=</span> <span class="n">Cell</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">node_rename</span><span class="o">=</span><span class="p">{},</span>
+                 <span class="n">cap_mat</span><span class="o">=</span><span class="n">cap_df</span><span class="p">,</span>               <span class="c1"># pandas DataFrame</span>
+                 <span class="n">ind_dict</span><span class="o">=</span><span class="p">{(</span><span class="s1">&#39;pad_top&#39;</span><span class="p">,</span> <span class="s1">&#39;pad_bot&#39;</span><span class="p">):</span> <span class="mf">12.0</span><span class="p">},</span>   <span class="c1"># nH</span>
+                 <span class="n">jj_dict</span><span class="o">=</span><span class="p">{(</span><span class="s1">&#39;pad_top&#39;</span><span class="p">,</span> <span class="s1">&#39;pad_bot&#39;</span><span class="p">):</span> <span class="s1">&#39;j1&#39;</span><span class="p">}))</span>
+
+<span class="n">transmon</span> <span class="o">=</span> <span class="n">Subsystem</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s1">&#39;TRANSMON&#39;</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;j1&#39;</span><span class="p">])</span>
+
+<span class="n">composite</span> <span class="o">=</span> <span class="n">CompositeSystem</span><span class="p">(</span>
+    <span class="n">subsystems</span><span class="o">=</span><span class="p">[</span><span class="n">transmon</span><span class="p">],</span>
+    <span class="n">cells</span><span class="o">=</span><span class="p">[</span><span class="n">cell</span><span class="p">],</span>
+    <span class="n">grd_node</span><span class="o">=</span><span class="s1">&#39;ground&#39;</span><span class="p">,</span>
+    <span class="n">nodes_force_keep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">hilbertspace</span> <span class="o">=</span> <span class="n">composite</span><span class="o">.</span><span class="n">create_hilbertspace</span><span class="p">()</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">composite</span><span class="o">.</span><span class="n">hamiltonian_results</span><span class="p">(</span><span class="n">hilbertspace</span><span class="p">,</span> <span class="n">evals_count</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Initialize the CompositeSystem object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>subsystems</strong> (<em>List</em><em>[</em><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem" title="qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem"><em>Subsystem</em></a><em>]</em>) – list of Subsystem objects</p></li>
+<li><p><strong>cells</strong> (<em>List</em><em>[</em><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Cell" title="qiskit_metal.analyses.quantization.lom_core_analysis.Cell"><em>Cell</em></a><em>]</em>) – list of Cell objects</p></li>
+<li><p><strong>grd_node</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – name of the ground node</p></li>
+<li><p><strong>nodes_force_keep</strong> (<em>Sequence</em><em>, </em><em>optional</em>) – a list of nodes that will not be eliminated
+during L and C matrices reduction. Use this parameter to specify non-dynamic
+nodes (nodes that are connected capacitors only or inductors only) that should
+be preserved. If not specified (i.e., None), all non-dynamic nodes are eliminated</p></li>
+<li><p><strong>s_remove_provided</strong> (<em>np.ndarray</em>) – precalculated s_remove; see documentation on CircuitGraph.S_Remove</p></li>
+<li><p><strong>s_keep_provided</strong> (<em>np.ndarray</em>) – precalculated s_keep; see documentation on CircuitGraph.S_Keep</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.add_interaction">
+<span class="sig-name descname"><span class="pre">add_interaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><span class="pre">ndarray</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gscale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">HilbertSpace</span></span></span><a class="reference internal" href="_modules/qiskit_metal/analyses/quantization/lom_core_analysis.html#CompositeSystem.add_interaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.add_interaction" title="Link to this definition">¶</a></dt>
+<dd><p>add interaction terms to the composite hilbertspace</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gs</strong> (<em>np.ndarray</em>) – coupling strength matrix. If not provided,
+it will be calculated by compute_gs()</p></li>
+<li><p><strong>gscale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – coupling strength scale</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Hilbertspace object for the Hamiltonian</dt><dd><p>of the composite system with interations added</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>scq.HilbertSpace</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.circuitGraph">
+<span class="sig-name descname"><span class="pre">circuitGraph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">CircuitGraph</span></span></span><a class="reference internal" href="_modules/qiskit_metal/analyses/quantization/lom_core_analysis.html#CompositeSystem.circuitGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.circuitGraph" title="Link to this definition">¶</a></dt>
+<dd><p>create a CircuitGraph object with circuit parameters of the composite system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CircuitGraph object for LOM analysis</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>CircuitGraph</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.compute_gs">
+<span class="sig-name descname"><span class="pre">compute_gs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coupling_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'CAPACITIVE'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_metal/analyses/quantization/lom_core_analysis.html#CompositeSystem.compute_gs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.compute_gs" title="Link to this definition">¶</a></dt>
+<dd><p>compute g matrices from reduced C inverse matrix C^{-1}_{k} and reduced L inverse matrix L^{-1}_{k}
+and zero point flucuations (Q_zpf, Phi_zpf)</p>
+<p>Note that the computed g’s are in MHz</p>
+<p>Note: the resulting matrix is in the basis of nodes_keep, which may not be in the same order of
+subsystems</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.create_hilbertspace">
+<span class="sig-name descname"><span class="pre">create_hilbertspace</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">HilbertSpace</span></span></span><a class="reference internal" href="_modules/qiskit_metal/analyses/quantization/lom_core_analysis.html#CompositeSystem.create_hilbertspace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.create_hilbertspace" title="Link to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>create the composite hilbertspace including all the subsystems. Interaction</dt><dd><p>NOT included</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Hilbertspace object for the Hamiltonian</dt><dd><p>of the composite system without interations added</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>scq.HilbertSpace</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.hamiltonian_results">
+<span class="sig-name descname"><span class="pre">hamiltonian_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hilbertspace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HilbertSpace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evals_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.4)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="_modules/qiskit_metal/analyses/quantization/lom_core_analysis.html#CompositeSystem.hamiltonian_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.hamiltonian_results" title="Link to this definition">¶</a></dt>
+<dd><p>Print and return results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hilbertspace</strong> (<em>scq.HilbertSpace</em>) – Hilbertspace object for the Hamiltonian
+of the composite system</p></li>
+<li><p><strong>evals_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Number of eigenenergy levels to keep
+after diagonalizing the Hamiltonian. Defaults to 10.</p></li>
+<li><p><strong>print_info</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – If true, print results as well. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dataframe containing the results</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.node_index">
+<span class="sig-name descname"><span class="pre">node_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qiskit_metal/analyses/quantization/lom_core_analysis.html#CompositeSystem.node_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.node_index" title="Link to this definition">¶</a></dt>
+<dd><p>Obtain the index of a given node in the composite system’s reduced
+capacitance matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>node</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – name of the node</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.QuantumSystemRegistry">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">QuantumSystemRegistry</span></span><a class="reference internal" href="_modules/qiskit_metal/analyses/quantization/lom_core_analysis.html#QuantumSystemRegistry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.QuantumSystemRegistry" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
 </section>
 <section id="energy-the-energy-participation-ratio-epr-method">
 <h2>Energy: The energy-participation-ratio (EPR) method<a class="headerlink" href="#energy-the-energy-participation-ratio-epr-method" title="Link to this heading">¶</a></h2>
@@ -625,7 +977,29 @@ set coupling windows, or debug unexpected mode crowding.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Quantization Methods Overview</a><ul>
-<li><a class="reference internal" href="#lumped-oscillator-model">Lumped-oscillator model</a></li>
+<li><a class="reference internal" href="#lumped-oscillator-model">Lumped-oscillator model</a><ul>
+<li><a class="reference internal" href="#composite-system-api-cell-subsystem-compositesystem">Composite-system API: <code class="docutils literal notranslate"><span class="pre">Cell</span></code> / <code class="docutils literal notranslate"><span class="pre">Subsystem</span></code> / <code class="docutils literal notranslate"><span class="pre">CompositeSystem</span></code></a><ul>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Cell"><code class="docutils literal notranslate"><span class="pre">Cell</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem"><code class="docutils literal notranslate"><span class="pre">Subsystem</span></code></a><ul>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem.h_params"><code class="docutils literal notranslate"><span class="pre">Subsystem.h_params</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem.quantum_system"><code class="docutils literal notranslate"><span class="pre">Subsystem.quantum_system</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem.quantumfy"><code class="docutils literal notranslate"><span class="pre">Subsystem.quantumfy()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem"><code class="docutils literal notranslate"><span class="pre">CompositeSystem</span></code></a><ul>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.add_interaction"><code class="docutils literal notranslate"><span class="pre">CompositeSystem.add_interaction()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.circuitGraph"><code class="docutils literal notranslate"><span class="pre">CompositeSystem.circuitGraph()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.compute_gs"><code class="docutils literal notranslate"><span class="pre">CompositeSystem.compute_gs()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.create_hilbertspace"><code class="docutils literal notranslate"><span class="pre">CompositeSystem.create_hilbertspace()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.hamiltonian_results"><code class="docutils literal notranslate"><span class="pre">CompositeSystem.hamiltonian_results()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.node_index"><code class="docutils literal notranslate"><span class="pre">CompositeSystem.node_index()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.QuantumSystemRegistry"><code class="docutils literal notranslate"><span class="pre">QuantumSystemRegistry</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#energy-the-energy-participation-ratio-epr-method">Energy: The energy-participation-ratio (EPR) method</a></li>
 <li><a class="reference internal" href="#impedance-impedance-based-black-box-quantization-bbq">Impedance: impedance-based black-box quantization (BBQ)</a></li>
 </ul>
@@ -639,12 +1013,14 @@ set coupling windows, or debug unexpected mode crowding.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=a674670e"></script>
+</div><script src="_static/documentation_options.js?v=918ced64"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="_static/jupyterlite_sphinx.js?v=96e329c5"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     </body>
 </html>
