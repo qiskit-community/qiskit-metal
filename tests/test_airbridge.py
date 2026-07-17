@@ -15,7 +15,7 @@
 
 import unittest
 
-from qiskit_metal import designs, Dict
+from qiskit_metal import designs, Dict, view
 from qiskit_metal.qlibrary.tlines.airbridge import Airbridge
 
 
@@ -85,12 +85,11 @@ class TestAirbridge(unittest.TestCase):
         import matplotlib
 
         matplotlib.use("Agg")
-        import qiskit_metal as qm
         from matplotlib.collections import PatchCollection
 
         Airbridge(self.design, "ab", options=dict(bridge_layer="30", pad_layer="31"))
         self.design.rebuild()
-        fig = qm.view(self.design)
+        fig = view(self.design)
         zorders = [
             c.get_zorder()
             for c in fig.axes[0].collections
