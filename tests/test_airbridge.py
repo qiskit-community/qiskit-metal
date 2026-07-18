@@ -463,6 +463,57 @@ class TestAirbridge3DMesh(unittest.TestCase):
         self.assertTrue(any(zmax >= 0.0029 for _, zmax in zbands), zbands)
         self.assertTrue(any(abs(zmin) < 1e-6 for zmin, _ in zbands), zbands)
 
+    def test_no_sample_holder_path_renders(self):
+        """Regression: rendering without the vacuum box (draw_sample_holder=
+        False) used to crash in fragment_interfaces ('(3, N) is not in list' /
+        'Unknown OpenCASCADE volume') for multi-volume designs. The output-map
+        remapping fixes it; a full route + airbridges now renders either way."""
+        import gmsh
+        from qiskit_metal import Dict
+        from qiskit_metal.designs.design_multiplanar import MultiPlanar
+        from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
+        from qiskit_metal.qlibrary.tlines.straight_path import RouteStraight
+        from qiskit_metal.qlibrary.tlines.airbridge import (
+            route_airbridges,
+            apply_airbridge_layer_stack,
+        )
+        from qiskit_metal.renderers.renderer_gmsh.gmsh_renderer import QGmshRenderer
+
+        design = MultiPlanar()
+        design.overwrite_enabled = True
+        OpenToGround(design, "A", options=dict(pos_x="-0.4mm", orientation="0"))
+        OpenToGround(design, "B", options=dict(pos_x="0.4mm", orientation="180"))
+        cpw = RouteStraight(
+            design,
+            "cpw",
+            options=Dict(
+                pin_inputs=Dict(
+                    start_pin=Dict(component="A", pin="open"),
+                    end_pin=Dict(component="B", pin="open"),
+                ),
+                trace_width="10um",
+                trace_gap="6um",
+            ),
+        )
+        design.rebuild()
+        route_airbridges(
+            design, cpw, pitch="0.25mm", min_spacing="30um", enable_posts=True
+        )
+        design.rebuild()
+        apply_airbridge_layer_stack(design, bridge_z_coord="3um", include_posts=True)
+
+        r = QGmshRenderer(
+            design, layer_types=dict(metal=[1, 30, 31, 32], dielectric=[3])
+        )
+        try:
+            r.render_design(
+                draw_sample_holder=False, mesh_geoms=False, box_plus_buffer=False
+            )
+            n_volumes = len(gmsh.model.getEntities(3))
+        finally:
+            r.close()
+        self.assertGreater(n_volumes, 0)
+
 
 if __name__ == "__main__":
     unittest.main()

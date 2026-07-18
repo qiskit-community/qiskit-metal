@@ -879,9 +879,8 @@ class QGmshRenderer(QRenderer):
             )
             # Extract the new vacuum_box volume
             self.vacuum_box = fragmented_geoms[1][0][0][1]
-            object_dimtag = (3, self.vacuum_box)
         else:
-            # Get one of the dim=3 objects
+            # Fragment against one of the dim=3 objects (no vacuum box here).
             dim3_dimtag = [(dim, tag) for dim, tag in all_geom_dimtags if dim == 3]
             object_dimtag = (
                 dim3_dimtag[0] if len(dim3_dimtag) > 0 else all_geom_dimtags[0]
@@ -891,29 +890,41 @@ class QGmshRenderer(QRenderer):
                 [object_dimtag], all_geom_dimtags
             )
 
-        updated_geoms = fragmented_geoms[0]
-        insert_idx = updated_geoms.index(object_dimtag)
-        all_geom_dimtags.insert(insert_idx, object_dimtag)
+        # ``fragment`` renumbers entities. Remap each input entity to its
+        # resulting tag using the output map (``fragmented_geoms[1]``, parallel
+        # to the input order: the reference object first, then
+        # ``all_geom_dimtags``), so the tracking dicts point at live tags. The
+        # previous approach zipped the inputs against the flat result list,
+        # which misaligned whenever ``fragment`` split or reordered volumes —
+        # raising "(3, N) is not in list" (reference volume renumbered) or
+        # "Unknown OpenCASCADE volume with tag N" (stale tag left in a dict),
+        # notably for the no-sample-holder path with many metal volumes.
+        input_dimtags = [object_dimtag] + all_geom_dimtags
+        out_map = fragmented_geoms[1]
         all_dicts = {
             0: self.paths_dict,
             1: self.polys_dict,
             2: self.juncs_dict,
             3: self.layers_dict,
         }
-        for old, new in zip(all_geom_dimtags, updated_geoms):
-            if old != new:
-                for i, d in all_dicts.items():
-                    for l, geoms in d.items():
-                        if isinstance(geoms, dict):
-                            for name, geom_id in geoms.items():
-                                if len(geom_id) > 0 and geom_id[0] == old[1]:
-                                    all_dicts[i][l][name].append(new[1])
-                                    all_dicts[i][l][name].remove(old[1])
-                        elif isinstance(geoms, list):
-                            for geom_id in geoms:
-                                if geom_id == old[1]:
-                                    all_dicts[i][l].append(new[1])
-                                    all_dicts[i][l].remove(old[1])
+        for old, children in zip(input_dimtags, out_map):
+            if not children:
+                continue
+            new = children[0]
+            if old == new:
+                continue
+            for i, d in all_dicts.items():
+                for l, geoms in d.items():
+                    if isinstance(geoms, dict):
+                        for name, geom_id in geoms.items():
+                            if len(geom_id) > 0 and geom_id[0] == old[1]:
+                                all_dicts[i][l][name].append(new[1])
+                                all_dicts[i][l][name].remove(old[1])
+                    elif isinstance(geoms, list):
+                        for geom_id in geoms:
+                            if geom_id == old[1]:
+                                all_dicts[i][l].append(new[1])
+                                all_dicts[i][l].remove(old[1])
 
         # TODO: Do we require 3D junctions? Active issue: #842
         # all_juncs = []
