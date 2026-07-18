@@ -13,10 +13,14 @@
 # that they have been altered from the originals.
 """Airbridge — a ground-plane crossover that hops over a CPW trace."""
 
+import logging
+
 import numpy as np
 
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core import QComponent
+
+logger = logging.getLogger(__name__)
 
 
 class Airbridge(QComponent):
@@ -331,3 +335,141 @@ def route_airbridges(
         )
         made.append(Airbridge(design, f"{name}_{k}", options=opts))
     return made
+
+
+# ---------------------------------------------------------------------------
+# EXPERIMENTAL — 3D airbridges via layer-stack elevation
+#
+# See issue #1144. The 2D crossover above renders flat (z=0). Metal's 3D FEM
+# renderers (``renderer_gmsh`` today; AWS Palace / Ansys as follow-ons) extrude
+# every filled ``(layer, datatype)`` in the design's layer stack by its
+# ``thickness`` at its ``z_coord`` (see ``toolbox_metal/layer_stack_handler.py``
+# and ``renderer_gmsh/gmsh_renderer.py``). Elevating the ``bridge_layer`` in the
+# layer stack is therefore all it takes to lift the flat span into a real 3D
+# bridge — no renderer code, and the same rows feed whichever 3D backend runs.
+# ---------------------------------------------------------------------------
+
+
+def airbridge_layer_stack_rows(
+    bridge_layer=30,
+    pad_layer=31,
+    bridge_z_coord="3um",
+    bridge_thickness="0.3um",
+    pad_thickness="0.2um",
+    material="pec",
+    chip_name="main",
+    datatype=0,
+):
+    """[EXPERIMENTAL] Layer-stack rows giving an :class:`Airbridge` a 3D form.
+
+    Returns the two :class:`~qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler`
+    rows that make the airbridge stand up for FEM meshing: the landing pads sit
+    on the base plane (``z_coord="0um"``) and the span sits ``bridge_z_coord``
+    above it, each extruded by its ``thickness``.
+
+    .. warning::
+
+        **Experimental and only partially validated.** The rows are constructed
+        and unit-tested in pure Python. The resulting 3D *mesh* renders through
+        ``renderer_gmsh`` but has **not** been validated against a live FEM
+        solve, and the pad↔span connection in 3D is not guaranteed. Treat the
+        geometry as a starting point, not a fabrication- or simulation-ready
+        result. Tracking: https://github.com/qiskit-community/qiskit-metal/issues/1144
+
+    Args:
+        bridge_layer (int): layer the elevated span lives on (matches the
+            ``Airbridge`` ``bridge_layer`` option). Defaults to 30.
+        pad_layer (int): layer the base landing pads live on. Defaults to 31.
+        bridge_z_coord (str): elevation of the span above the base plane.
+        bridge_thickness (str): thickness of the elevated span metal.
+        pad_thickness (str): thickness of the base landing-pad metal.
+        material (str): layer-stack material name. Defaults to ``"pec"``.
+        chip_name (str): chip the layers belong to. Defaults to ``"main"``.
+        datatype (int): datatype for both rows. Defaults to 0.
+
+    Returns:
+        list[dict]: two rows keyed by ``LayerStackHandler.Col_Names`` — the
+        pads at the base plane and the span elevated.
+    """
+    return [
+        dict(
+            chip_name=chip_name,
+            layer=int(pad_layer),
+            datatype=int(datatype),
+            material=material,
+            thickness=pad_thickness,
+            z_coord="0um",
+            fill="true",
+        ),
+        dict(
+            chip_name=chip_name,
+            layer=int(bridge_layer),
+            datatype=int(datatype),
+            material=material,
+            thickness=bridge_thickness,
+            z_coord=bridge_z_coord,
+            fill="true",
+        ),
+    ]
+
+
+def apply_airbridge_layer_stack(design, replace=True, **kwargs):
+    """[EXPERIMENTAL] Register the 3D airbridge layer rows on a design's stack.
+
+    Appends the rows from :func:`airbridge_layer_stack_rows` to a
+    ``DesignMultiPlanar`` layer stack (``design.ls.ls_df``) so the gmsh (and
+    future Palace / Ansys) mesh renders the span elevated. This is the
+    renderer-agnostic seam: no renderer code changes, the same rows feed any 3D
+    backend.
+
+    .. note::
+
+        The gmsh renderer also classifies layers as metal vs dielectric via its
+        ``layer_types`` argument. Register the airbridge layers as metal, e.g.
+        ``QGmshRenderer(design, layer_types=dict(metal=[1, 30, 31],
+        dielectric=[3]))``, or ``assign_physical_groups`` raises. (Rendering a
+        full CPW route in 3D separately hits a known gmsh path-fillet fragility
+        with short lead segments — see #1144.)
+
+    .. warning::
+
+        Experimental — see :func:`airbridge_layer_stack_rows`. The elevated
+        geometry renders in gmsh, but no live FEM solve has validated it.
+        Tracking: https://github.com/qiskit-community/qiskit-metal/issues/1144
+
+    Args:
+        design (DesignMultiPlanar): a design exposing a layer stack at
+            ``design.ls`` (i.e. ``DesignMultiPlanar``).
+        replace (bool): if True (default), drop any existing rows for the
+            ``bridge_layer`` / ``pad_layer`` before appending, so re-running is
+            idempotent.
+        **kwargs: forwarded to :func:`airbridge_layer_stack_rows`.
+
+    Returns:
+        pandas.DataFrame: the updated ``design.ls.ls_df``.
+
+    Raises:
+        AttributeError: if ``design`` has no layer stack (``design.ls``), e.g.
+            a plain ``DesignPlanar``.
+    """
+    import pandas as pd
+
+    logger.warning(
+        "apply_airbridge_layer_stack is EXPERIMENTAL: the 3D airbridge mesh has "
+        "not been validated against a live FEM solve (see issue #1144)."
+    )
+
+    ls = getattr(design, "ls", None)
+    if ls is None or getattr(ls, "ls_df", None) is None:
+        raise AttributeError(
+            "3D airbridges need a design with a layer stack (DesignMultiPlanar); "
+            f"{type(design).__name__} exposes none."
+        )
+
+    rows = airbridge_layer_stack_rows(**kwargs)
+    df = ls.ls_df
+    if replace:
+        drop_layers = {r["layer"] for r in rows}
+        df = df[~df["layer"].isin(drop_layers)]
+    ls.ls_df = pd.concat([df, pd.DataFrame(rows)], ignore_index=True)
+    return ls.ls_df
