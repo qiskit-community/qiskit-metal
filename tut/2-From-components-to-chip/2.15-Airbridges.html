@@ -810,6 +810,21 @@ placed 18 airbridges (one on every bend)
 wrote /tmp/tmp8dikchbu/airbridge_demo.gds
 </pre></div></div>
 </div>
+</section>
+<section id="Experimental:-3D-airbridges">
+<h2>Experimental: 3D airbridges<a class="headerlink" href="#Experimental:-3D-airbridges" title="Link to this heading">¶</a></h2>
+<p>In a planar view and in GDS the crossover is flat (z = 0). For 3D FEM the span should be <em>elevated</em> above the base metal. Metal’s 3D renderers extrude each layer by the <code class="docutils literal notranslate"><span class="pre">thickness</span></code> / <code class="docutils literal notranslate"><span class="pre">z_coord</span></code> in the design’s <strong>layer stack</strong>, so lifting the <code class="docutils literal notranslate"><span class="pre">bridge_layer</span></code> is all it takes — the same rows feed gmsh, and (as the ecosystem matures) AWS Palace or Ansys.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.airbridge</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_airbridge_layer_stack</span>
+
+<span class="c1"># design must be a DesignMultiPlanar (it carries a layer stack)</span>
+<span class="n">apply_airbridge_layer_stack</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">bridge_z_coord</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span> <span class="n">bridge_thickness</span><span class="o">=</span><span class="s2">&quot;0.3um&quot;</span><span class="p">)</span>
+<span class="c1"># then render 3D with the airbridge layers marked metal, e.g.</span>
+<span class="c1">#   QGmshRenderer(design, layer_types=dict(metal=[1, 30, 31], dielectric=[3]))</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>⚠️ <strong>Experimental.</strong> The elevated geometry renders in gmsh, but the 3D mesh has <strong>not</strong> been validated against a live FEM solve, and rendering a full CPW <em>route</em> in 3D currently hits a separate gmsh path-fillet limitation. Follow / help validate in <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1144">issue #1144</a>.</p>
+</div></blockquote>
 <p>That’s the airbridge workflow: place them (individually or automatically), see them in <code class="docutils literal notranslate"><span class="pre">qm.view</span></code>, and export. Design-of-record and roadmap (including the experimental 3D/Ansys span) are tracked in issue #1138.</p>
 </section>
 </section>
@@ -907,6 +922,7 @@ wrote /tmp/tmp8dikchbu/airbridge_demo.gds
 </ul>
 </li>
 <li><a class="reference internal" href="#Export-to-GDS">Export to GDS</a></li>
+<li><a class="reference internal" href="#Experimental:-3D-airbridges">Experimental: 3D airbridges</a></li>
 </ul>
 </li>
 </ul>
