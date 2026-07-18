@@ -934,16 +934,22 @@ wrote /tmp/tmp963uolnm/airbridge_demo.gds
 <section id="Experimental:-3D-airbridges">
 <h2>Experimental: 3D airbridges<a class="headerlink" href="#Experimental:-3D-airbridges" title="Link to this heading">¶</a></h2>
 <p>In a planar view and in GDS the crossover is flat (z = 0). For 3D FEM the span should be <em>elevated</em> above the base metal. Metal’s 3D renderers extrude each layer by the <code class="docutils literal notranslate"><span class="pre">thickness</span></code> / <code class="docutils literal notranslate"><span class="pre">z_coord</span></code> in the design’s <strong>layer stack</strong>, so lifting the <code class="docutils literal notranslate"><span class="pre">bridge_layer</span></code> is all it takes — the same rows feed gmsh, and (as the ecosystem matures) AWS Palace or Ansys.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.airbridge</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_airbridge_layer_stack</span>
+<p>To keep the elevated span connected to the base metal (so the design meshes as one conductor rather than a floating bar), the airbridges also grow <strong>support posts</strong> that rise from the pads to the span — enabled with <code class="docutils literal notranslate"><span class="pre">enable_posts</span></code>, and given a height by the matching layer-stack row:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.airbridge</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">route_airbridges</span><span class="p">,</span>
+    <span class="n">apply_airbridge_layer_stack</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="c1"># design must be a DesignMultiPlanar (it carries a layer stack)</span>
-<span class="n">apply_airbridge_layer_stack</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">bridge_z_coord</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span> <span class="n">bridge_thickness</span><span class="o">=</span><span class="s2">&quot;0.3um&quot;</span><span class="p">)</span>
+<span class="n">route_airbridges</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">cpw</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="s2">&quot;0.3mm&quot;</span><span class="p">,</span> <span class="n">enable_posts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">apply_airbridge_layer_stack</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">bridge_z_coord</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span> <span class="n">include_posts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="c1"># then render 3D with the airbridge layers marked metal, e.g.</span>
-<span class="c1">#   QGmshRenderer(design, layer_types=dict(metal=[1, 30, 31], dielectric=[3]))</span>
+<span class="c1">#   QGmshRenderer(design, layer_types=dict(metal=[1, 30, 31, 32], dielectric=[3]))</span>
 </pre></div>
 </div>
+<p>The schematic below (drawn to scale) shows the resulting shape: the elevated span on two posts, hopping over the CPW.</p>
 <blockquote>
-<div><p>⚠️ <strong>Experimental.</strong> The elevated geometry renders in gmsh, but the 3D mesh has <strong>not</strong> been validated against a live FEM solve, and rendering a full CPW <em>route</em> in 3D currently hits a separate gmsh path-fillet limitation. Follow / help validate in <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1144">issue #1144</a>.</p>
+<div><p>⚠️ <strong>Experimental.</strong> A full CPW + airbridges (with posts) renders and meshes in gmsh as a connected 3D solid, but the mesh has <strong>not</strong> been validated against a live FEM solve. Follow / help validate in <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1144">issue #1144</a>.</p>
 </div></blockquote>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
