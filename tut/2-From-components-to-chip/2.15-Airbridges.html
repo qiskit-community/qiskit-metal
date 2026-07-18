@@ -567,6 +567,23 @@
 </pre></div>
 </div>
 </div>
+<section id="Guaranteeing-a-bridge-on-every-bend">
+<h3>Guaranteeing a bridge on every bend<a class="headerlink" href="#Guaranteeing-a-bridge-on-every-bend" title="Link to this heading">¶</a></h3>
+<p>Uniform spacing already covers bends wherever a <code class="docutils literal notranslate"><span class="pre">pitch</span></code> sample happens to land on a fillet arc, but with a coarse <code class="docutils literal notranslate"><span class="pre">pitch</span></code> a corner can fall between samples. Set <code class="docutils literal notranslate"><span class="pre">bridge_at_corners=True</span></code> to force one bridge centered on every rounded bend, in addition to the uniform-pitch bridges. A uniform bridge that would land within half a pitch of a corner bridge is dropped so the two do not bunch up.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bridges</span> <span class="o">=</span> <span class="n">route_airbridges</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span> <span class="n">cpw</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="s2">&quot;0.6mm&quot;</span><span class="p">,</span> <span class="n">min_spacing</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span> <span class="n">bridge_at_corners</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;placed </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">bridges</span><span class="p">)</span><span class="si">}</span><span class="s2"> airbridges (one on every bend)&quot;</span><span class="p">)</span>
+<span class="n">qm</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
 </section>
 <section id="Export-to-GDS">
 <h2>Export to GDS<a class="headerlink" href="#Export-to-GDS" title="Link to this heading">¶</a></h2>
@@ -671,7 +688,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/17</div>
+              Last updated on 2026/07/18</div>
           </div>
           <div class="right-details">
             
@@ -695,7 +712,10 @@
 <li><a class="reference internal" href="#">Airbridges</a><ul>
 <li><a class="reference internal" href="#Setup">Setup</a></li>
 <li><a class="reference internal" href="#A-single-airbridge">A single airbridge</a></li>
-<li><a class="reference internal" href="#Auto-placing-airbridges-along-a-CPW">Auto-placing airbridges along a CPW</a></li>
+<li><a class="reference internal" href="#Auto-placing-airbridges-along-a-CPW">Auto-placing airbridges along a CPW</a><ul>
+<li><a class="reference internal" href="#Guaranteeing-a-bridge-on-every-bend">Guaranteeing a bridge on every bend</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#Export-to-GDS">Export to GDS</a></li>
 </ul>
 </li>

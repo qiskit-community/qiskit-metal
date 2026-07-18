@@ -1241,7 +1241,11 @@
                     <span class="n">orig_row</span><span class="p">[</span><span class="s2">&quot;fillet&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_shape</span><span class="p">[</span><span class="s2">&quot;fillet&quot;</span><span class="p">]</span>
                     <span class="c1"># Keep ignore_index=False, otherwise,</span>
                     <span class="c1"># the other del_key will not be found.</span>
-                    <span class="n">df_copy</span> <span class="o">=</span> <span class="n">df_copy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">orig_row</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="c1"># (pandas 2.0 removed DataFrame.append; concat a one-row</span>
+                    <span class="c1"># frame that preserves the del_key index label.)</span>
+                    <span class="n">df_copy</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span>
+                        <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_copy</span><span class="p">,</span> <span class="n">orig_row</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="n">chip_layer</span><span class="p">][</span><span class="n">all_sub_true_or_false</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
                 <span class="n">deep</span><span class="o">=</span><span class="kc">True</span>
@@ -2127,8 +2131,8 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="n">chip_layer</span><span class="p">][</span><span class="s2">&quot;q_subtract_true&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1"># Difference for True-False.</span>
             <span class="n">diff_geometry</span> <span class="o">=</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="n">chip_layer</span><span class="p">][</span><span class="s2">&quot;q_subtract_true&quot;</span><span class="p">],</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="n">chip_layer</span><span class="p">][</span><span class="s2">&quot;q_subtract_false&quot;</span><span class="p">],</span>
+                <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="n">chip_layer</span><span class="p">][</span><span class="s2">&quot;q_subtract_true&quot;</span><span class="p">]),</span>
+                <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="n">chip_layer</span><span class="p">][</span><span class="s2">&quot;q_subtract_false&quot;</span><span class="p">]),</span>
                 <span class="s2">&quot;not&quot;</span><span class="p">,</span>
                 <span class="n">layer</span><span class="o">=</span><span class="n">chip_layer</span><span class="p">,</span>
                 <span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">,</span>
@@ -2165,7 +2169,7 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="n">chip_layer</span><span class="p">][</span><span class="s2">&quot;q_subtract_true&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">diff_geometry</span> <span class="o">=</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span>
                 <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="s2">&quot;subtract_poly&quot;</span><span class="p">]],</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="n">chip_layer</span><span class="p">][</span><span class="s2">&quot;q_subtract_true&quot;</span><span class="p">],</span>
+                <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="n">chip_layer</span><span class="p">][</span><span class="s2">&quot;q_subtract_true&quot;</span><span class="p">]),</span>
                 <span class="s2">&quot;not&quot;</span><span class="p">,</span>
                 <span class="n">layer</span><span class="o">=</span><span class="n">chip_layer</span><span class="p">,</span>
                 <span class="n">datatype</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -3380,7 +3384,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/17</div>
+              Last updated on 2026/07/18</div>
           </div>
           <div class="right-details">
             
