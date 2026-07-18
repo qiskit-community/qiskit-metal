@@ -23,6 +23,7 @@ from qiskit_metal.renderers.renderer_gmsh.gmsh_utils import (
     Vec3D,
     Vec3DArray,
     line_width_offset_pts,
+    remove_degenerate_segments,
     render_path_curves,
 )
 from qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables import (
@@ -529,15 +530,18 @@ class QGmshRenderer(QRenderer):
             layer_num=path.layer
         )
 
-        vecs = Vec3DArray.make_vec3DArray(
-            self.parse_units_gmsh(list(qc_shapely.coords)), qc_z
-        )
+        # Drop sub-width lead stubs (e.g. a route's short pin segments): they
+        # collapse the width-offset geometry and make Gmsh reject a zero-length
+        # line. Endpoints are preserved. See remove_degenerate_segments.
+        coords = remove_degenerate_segments(list(qc_shapely.coords), qc_width)
+
+        vecs = Vec3DArray.make_vec3DArray(self.parse_units_gmsh(coords), qc_z)
         qc_name = (
             self.design._components[path["component"]].name
             + "_"
             + clean_name(path["name"])
         )
-        bad_fillets = bad_fillet_idxs(qc_shapely.coords, qc_fillet)
+        bad_fillets = bad_fillet_idxs(coords, qc_fillet)
         curves = render_path_curves(vecs, qc_z, qc_fillet, qc_width, bad_fillets)
         surface = self.make_general_surface(curves)
 
