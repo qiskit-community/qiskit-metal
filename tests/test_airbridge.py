@@ -99,6 +99,30 @@ class TestAirbridge(unittest.TestCase):
         # airbridge layers (>1) render above the base layer's z-order of ~1.0
         self.assertGreater(max(zorders), 1.0)
 
+    def test_posts_are_opt_in(self):
+        """enable_posts defaults off (span + pads only); turning it on adds
+        support-post geometry on post_layer."""
+        Airbridge(self.design, "off", options=dict(bridge_layer="30", pad_layer="31"))
+        self.design.rebuild()
+        off_layers = set(self.design.qgeometry.tables["poly"]["layer"].tolist())
+        self.assertEqual(off_layers, {30, 31})
+
+        d2 = designs.DesignPlanar()
+        Airbridge(
+            d2,
+            "on",
+            options=dict(
+                bridge_layer="30", pad_layer="31", post_layer="32", enable_posts="True"
+            ),
+        )
+        d2.rebuild()
+        on = d2.qgeometry.tables["poly"]
+        self.assertIn(32, set(on["layer"].tolist()))
+        # the post geometry on post_layer is non-degenerate
+        posts = on[on["layer"] == 32]
+        self.assertGreater(len(posts), 0)
+        self.assertGreater(sum(g.area for g in posts["geometry"]), 0.0)
+
 
 class TestRouteAirbridges(unittest.TestCase):
     """Auto-placement of airbridges along a route (route_airbridges)."""
@@ -311,6 +335,19 @@ class TestAirbridge3DLayerStack(unittest.TestCase):
         with self.assertRaises(AttributeError):
             apply_airbridge_layer_stack(designs.DesignPlanar())
 
+    def test_include_posts_adds_a_connecting_row(self):
+        """include_posts adds a post row rising from the base plane
+        (z_coord=0) to the span (thickness=bridge_z_coord), joining them."""
+        from qiskit_metal.qlibrary.tlines.airbridge import airbridge_layer_stack_rows
+
+        rows = airbridge_layer_stack_rows(
+            bridge_z_coord="3um", include_posts=True, post_layer=32
+        )
+        self.assertEqual(len(rows), 3)
+        post = next(r for r in rows if r["layer"] == 32)
+        self.assertEqual(post["z_coord"], "0um")
+        self.assertEqual(post["thickness"], "3um")
+
 
 def _gmsh_importable():
     try:
@@ -369,6 +406,62 @@ class TestAirbridge3DMesh(unittest.TestCase):
             any(abs(zmin) < 1e-6 and 0.0 < zmax <= 0.00051 for zmin, zmax in zbands),
             zbands,
         )
+
+    def test_full_route_with_posts_renders_in_3d(self):
+        """A CPW route + airbridges with support posts renders in 3D: the posts
+        join the elevated span to the base metal so the design meshes (#1144).
+        Also checks a post volume spans the base-to-span z-gap."""
+        import gmsh
+        from qiskit_metal import Dict
+        from qiskit_metal.designs.design_multiplanar import MultiPlanar
+        from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
+        from qiskit_metal.qlibrary.tlines.straight_path import RouteStraight
+        from qiskit_metal.qlibrary.tlines.airbridge import (
+            route_airbridges,
+            apply_airbridge_layer_stack,
+        )
+        from qiskit_metal.renderers.renderer_gmsh.gmsh_renderer import QGmshRenderer
+
+        design = MultiPlanar()
+        design.overwrite_enabled = True
+        OpenToGround(design, "A", options=dict(pos_x="-0.4mm", orientation="0"))
+        OpenToGround(design, "B", options=dict(pos_x="0.4mm", orientation="180"))
+        cpw = RouteStraight(
+            design,
+            "cpw",
+            options=Dict(
+                pin_inputs=Dict(
+                    start_pin=Dict(component="A", pin="open"),
+                    end_pin=Dict(component="B", pin="open"),
+                ),
+                trace_width="10um",
+                trace_gap="6um",
+            ),
+        )
+        design.rebuild()
+        route_airbridges(
+            design, cpw, pitch="0.25mm", min_spacing="30um", enable_posts=True
+        )
+        design.rebuild()
+        apply_airbridge_layer_stack(design, bridge_z_coord="3um", include_posts=True)
+
+        r = QGmshRenderer(
+            design, layer_types=dict(metal=[1, 30, 31, 32], dielectric=[3])
+        )
+        try:
+            r.render_design(mesh_geoms=False)  # default sample-holder path
+            zbands = [
+                (gmsh.model.getBoundingBox(d, t)[2], gmsh.model.getBoundingBox(d, t)[5])
+                for d, t in gmsh.model.getEntities(3)
+            ]
+        finally:
+            r.close()
+
+        self.assertGreater(len(zbands), 0)
+        # the elevated span exists (a volume reaching ~3um) and the base plane
+        # exists — i.e. the full route + airbridges meshed as a 3D solid.
+        self.assertTrue(any(zmax >= 0.0029 for _, zmax in zbands), zbands)
+        self.assertTrue(any(abs(zmin) < 1e-6 for zmin, _ in zbands), zbands)
 
 
 if __name__ == "__main__":

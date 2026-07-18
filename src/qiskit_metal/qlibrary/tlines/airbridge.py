@@ -19,6 +19,7 @@ import numpy as np
 
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core import QComponent
+from qiskit_metal.toolbox_metal.parsing import is_true
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +51,13 @@ class Airbridge(QComponent):
         * pad_length: '11um' -- Length of each base landing pad (along the CPW).
         * bridge_layer: '30' -- Layer of the elevated bridge span.
         * pad_layer: '31' -- Layer of the two base landing pads.
+        * enable_posts: 'False' -- Emit two support-post feet on ``post_layer``
+          where the span meets each pad. In a planar view these coincide with
+          the pad/span overlap; their purpose is the 3D mesh, where the posts
+          (on a layer stacked between pad and span heights) join the elevated
+          span to the base metal into one connected conductor.
+        * post_layer: '32' -- Layer of the support posts (used only when
+          ``enable_posts``).
     """
 
     default_options = Dict(
@@ -59,6 +67,8 @@ class Airbridge(QComponent):
         pad_length="11um",
         bridge_layer="30",
         pad_layer="31",
+        enable_posts="False",
+        post_layer="32",
     )
     """Default drawing options"""
 
@@ -88,16 +98,32 @@ class Airbridge(QComponent):
         # feet and forms a single connected conductor once fabricated.
         span = draw.rectangle(crossover_length + pad_length, bridge_width, 0, 0)
 
+        # Optional support posts: the span-over-pad overlap, emitted on their
+        # own layer so a 3D layer stack can bridge the z-gap between the base
+        # pads and the elevated span (see route_airbridges / the 3D helpers).
+        posts = None
+        if is_true(p.enable_posts):
+            left_post = draw.rectangle(pad_length, bridge_width, -pad_offset, 0)
+            right_post = draw.rectangle(pad_length, bridge_width, +pad_offset, 0)
+            posts = draw.union(left_post, right_post)
+
         # Reposition the whole crossover.
-        geom = [span, pads]
+        geom = [span, pads] + ([posts] if posts is not None else [])
         geom = draw.rotate(geom, p.orientation, origin=(0, 0))
         geom = draw.translate(geom, p.pos_x, p.pos_y)
-        span, pads = geom
+        if posts is not None:
+            span, pads, posts = geom
+        else:
+            span, pads = geom
 
         self.add_qgeometry(
             "poly", {"bridge": span}, layer=p.bridge_layer, subtract=False
         )
         self.add_qgeometry("poly", {"pads": pads}, layer=p.pad_layer, subtract=False)
+        if posts is not None:
+            self.add_qgeometry(
+                "poly", {"posts": posts}, layer=p.post_layer, subtract=False
+            )
 
 
 def _fillet_corner(vertex_start, vertex_corner, vertex_end, radius, points):
@@ -242,6 +268,7 @@ def route_airbridges(
     min_spacing="5um",
     crossover_length=None,
     bridge_at_corners=False,
+    enable_posts=False,
     name=None,
     ab_options=None,
 ):
@@ -272,6 +299,10 @@ def route_airbridges(
             ``min_spacing`` of an end are skipped. Defaults to false (uniform
             pitch only — bends are still covered wherever a pitch sample lands
             on the fillet arc).
+        enable_posts (bool): emit support posts on each airbridge (the
+            ``Airbridge`` ``enable_posts`` option) so a 3D layer stack can join
+            the elevated span to the base metal. Defaults to false. Pair with
+            :func:`apply_airbridge_layer_stack` ``include_posts=True``.
         name (str, optional): prefix for the created components. Defaults to
             ``f"{route.name}_ab"``.
         ab_options (dict, optional): extra options forwarded to each
@@ -283,6 +314,8 @@ def route_airbridges(
     pitch = design.parse_value(pitch)
     min_spacing = design.parse_value(min_spacing)
     ab_options = dict(ab_options or {})
+    if enable_posts:
+        ab_options.setdefault("enable_posts", "True")
     name = name or f"{route.name}_ab"
 
     fillet = 0.0
@@ -359,22 +392,30 @@ def airbridge_layer_stack_rows(
     material="pec",
     chip_name="main",
     datatype=0,
+    include_posts=False,
+    post_layer=32,
 ):
     """[EXPERIMENTAL] Layer-stack rows giving an :class:`Airbridge` a 3D form.
 
-    Returns the two :class:`~qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler`
+    Returns the :class:`~qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler`
     rows that make the airbridge stand up for FEM meshing: the landing pads sit
     on the base plane (``z_coord="0um"``) and the span sits ``bridge_z_coord``
     above it, each extruded by its ``thickness``.
 
+    With ``include_posts`` a third row is added for the support posts, extruded
+    from the base plane up to the span (``thickness=bridge_z_coord``) so the
+    elevated span is joined to the base metal into one connected conductor —
+    required for the 3D mesh of a full CPW + airbridges to render (the span
+    otherwise floats and the boolean fragmentation fails). Pair it with
+    ``Airbridge(..., enable_posts=True)`` (or ``route_airbridges(...,
+    enable_posts=True)``) so post *geometry* exists on ``post_layer``.
+
     .. warning::
 
-        **Experimental and only partially validated.** The rows are constructed
-        and unit-tested in pure Python. The resulting 3D *mesh* renders through
-        ``renderer_gmsh`` but has **not** been validated against a live FEM
-        solve, and the pad↔span connection in 3D is not guaranteed. Treat the
-        geometry as a starting point, not a fabrication- or simulation-ready
-        result. Tracking: https://github.com/qiskit-community/qiskit-metal/issues/1144
+        **Experimental.** The elevated + connected geometry renders and meshes
+        through ``renderer_gmsh``, but has **not** been validated against a live
+        FEM solve. Treat it as a starting point, not a simulation-ready result.
+        Tracking: https://github.com/qiskit-community/qiskit-metal/issues/1144
 
     Args:
         bridge_layer (int): layer the elevated span lives on (matches the
@@ -386,12 +427,15 @@ def airbridge_layer_stack_rows(
         material (str): layer-stack material name. Defaults to ``"pec"``.
         chip_name (str): chip the layers belong to. Defaults to ``"main"``.
         datatype (int): datatype for both rows. Defaults to 0.
+        include_posts (bool): also add a support-post row (see above).
+        post_layer (int): layer the posts live on (matches ``Airbridge``
+            ``post_layer``). Defaults to 32.
 
     Returns:
-        list[dict]: two rows keyed by ``LayerStackHandler.Col_Names`` — the
-        pads at the base plane and the span elevated.
+        list[dict]: rows keyed by ``LayerStackHandler.Col_Names`` — pads at the
+        base plane, the elevated span, and (if ``include_posts``) the posts.
     """
-    return [
+    rows = [
         dict(
             chip_name=chip_name,
             layer=int(pad_layer),
@@ -411,6 +455,20 @@ def airbridge_layer_stack_rows(
             fill="true",
         ),
     ]
+    if include_posts:
+        # Posts rise from the base plane to the span bottom, connecting them.
+        rows.append(
+            dict(
+                chip_name=chip_name,
+                layer=int(post_layer),
+                datatype=int(datatype),
+                material=material,
+                thickness=bridge_z_coord,
+                z_coord="0um",
+                fill="true",
+            )
+        )
+    return rows
 
 
 def apply_airbridge_layer_stack(design, replace=True, **kwargs):
