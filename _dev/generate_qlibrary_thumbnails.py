@@ -161,6 +161,42 @@ def _anchored_route_recipe(RouteCls):
     return recipe
 
 
+def _airbridge_recipe(_design_unused=None):
+    """Airbridges hopping over a filleted meander — a lone bridge is a tiny
+    rectangle, so the thumbnail shows the auto-placement in context."""
+    from qiskit_metal import Dict
+    from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
+    from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
+    from qiskit_metal.qlibrary.tlines.airbridge import route_airbridges
+
+    from qiskit_metal.designs import DesignPlanar
+
+    design = DesignPlanar()
+    design.overwrite_enabled = True
+    OpenToGround(design, "A", options=dict(pos_x="-0.9mm", orientation="0"))
+    OpenToGround(design, "B", options=dict(pos_x="0.9mm", orientation="180"))
+    cpw = RouteMeander(
+        design,
+        "cpw",
+        options=Dict(
+            pin_inputs=Dict(
+                start_pin=Dict(component="A", pin="open"),
+                end_pin=Dict(component="B", pin="open"),
+            ),
+            total_length="7mm",
+            fillet="90um",
+            trace_width="10um",
+            trace_gap="6um",
+            meander=Dict(spacing="0.3mm"),
+        ),
+    )
+    design.rebuild()
+    route_airbridges(design, cpw, pitch="0.35mm", min_spacing="30um",
+                     bridge_at_corners=True)
+    design.rebuild()
+    return design, cpw
+
+
 def _populate_special_recipes():
     """Populate ``SPECIAL_RECIPES`` lazily so we can ``import`` the
     qlibrary modules safely (some have heavy imports)."""
@@ -177,6 +213,7 @@ def _populate_special_recipes():
         # RouteAnchors / RouteMixed need an explicit anchors dict.
         SPECIAL_RECIPES["RouteAnchors"] = _anchored_route_recipe(RouteAnchors)
         SPECIAL_RECIPES["RouteMixed"] = _anchored_route_recipe(RouteMixed)
+        SPECIAL_RECIPES["Airbridge"] = _airbridge_recipe
     except ImportError as exc:
         print(f"  ! could not register route recipes: {exc}")
 

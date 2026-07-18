@@ -427,22 +427,20 @@ or their employer.*
   strength of the class-based qlibrary and is currently
   under-used. Pairs with the "When to use Metal" page
   above as the visual half of the answer.
-- **GDS airbridge support** `[planned, PR #962]`
-  Add airbridges to `QGDSRenderer.export_to_gds` so fab-grade
-  GDS files include the bridges that CPW crossings need without
-  a manual post-processing step in KLayout. Most SC qubit
-  chips with multi-crossing CPW routing need this; today
-  users hand-place bridges downstream.
-  The structural work landed in @clarkmiyamoto's PR #962
-  (`_populate_airbridge` + `make_airbridge.py`, mirroring the
-  cheesing flow), but the PR has bit-rotted relative to
-  current main — needs rebase + the v0.7-era housekeeping
-  (lazy `gdstk`, ruff/format pass, headless test). The
-  limitations the original PR called out (uniform-only
-  bridges, single bridge per turn, no overlap warning) can
-  ship as follow-ups; landing the basic path is the unblock.
-  Pairs with the `.lyp` + Metal → KLayout work above for a
-  clean GDS-handoff story.
+- **Airbridge support** `[shipped, #1140/#1142]`
+  CPW crossings need airbridges to tie the ground plane together;
+  users used to hand-place them downstream. Shipped as a
+  first-class `Airbridge` `QComponent` (on `bridge_layer` /
+  `pad_layer`) plus `route_airbridges(design, route, ...)`
+  auto-placement along the route's filleted centerline
+  (`bridge_at_corners=True` guarantees one per bend). Because the
+  bridges are real components they render in `qm.view` and export
+  through every renderer, not just GDS. Tutorial 2.15.
+  The original approach — @clarkmiyamoto's PR #962
+  (`_populate_airbridge` + `make_airbridge.py`, GDS-export-only,
+  uniform bridges) — informed this and is now closed.
+  Remaining follow-ups: overlap / off-chip warnings, adjacent-CPW
+  handling, and the experimental 3D/Ansys span (Phase 4, #1138).
 
 ### High impact, high effort
 
