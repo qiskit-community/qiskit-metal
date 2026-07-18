@@ -149,26 +149,73 @@ def _fillet_corner(vertex_start, vertex_corner, vertex_end, radius, points):
     )
 
 
-def _fillet_centerline(pts, radius, resolution=16):
+def _fillet_centerline(pts, radius, resolution=16, return_corners=False):
     """Return the rounded (filleted) centerline of a route as an ``Nx2`` array.
 
     Rounds every interior corner that the fillet radius fits; corners that are
     too tight stay sharp. Mirrors ``QMplRenderer.fillet_path`` so placement
     matches the rendered trace.
+
+    If ``return_corners`` is true, also return a list of the arc-length
+    positions (measured along the returned centerline) of the midpoint of each
+    rounded bend — used to guarantee an airbridge sits on every corner.
     """
     pts = np.asarray(pts, dtype=float)
     if len(pts) <= 2 or radius <= 0:
-        return pts
+        return (pts, []) if return_corners else pts
 
     out = [pts[0]]
+    corner_idx = []  # index into `out` of each rounded bend's arc midpoint
     for start, corner, end in zip(pts, pts[1:], pts[2:]):
         arc = _fillet_corner(start, corner, end, radius, resolution)
         if arc is None:
             out.append(corner)
         else:
+            corner_idx.append(len(out) + len(arc) // 2)
             out.extend(arc)
     out.append(pts[-1])
-    return np.asarray(out, dtype=float)
+    out = np.asarray(out, dtype=float)
+
+    if not return_corners:
+        return out
+    _, _, _, cum = _arclength_frame(out)
+    corners = [float(cum[i]) for i in corner_idx]
+    return out, corners
+
+
+def _arclength_frame(coords):
+    """Cumulative arc-length bookkeeping ``(coords, seg, seg_len, cum)`` for a
+    polyline, shared by every arc-length sampler below."""
+    coords = np.asarray(coords, dtype=float)
+    seg = np.diff(coords, axis=0)
+    seg_len = np.hypot(seg[:, 0], seg[:, 1])
+    cum = np.concatenate([[0.0], np.cumsum(seg_len)])
+    return coords, seg, seg_len, cum
+
+
+def _sample_at(frame, s):
+    """``(x, y, orientation_deg)`` at arc-length ``s`` along a polyline.
+
+    Orientation is perpendicular to the local tangent so a bridge span placed
+    here crosses the trace.
+    """
+    coords, seg, seg_len, cum = frame
+    k = int(np.searchsorted(cum, s) - 1)
+    k = min(max(k, 0), len(seg_len) - 1)
+    seg_frac = (s - cum[k]) / seg_len[k] if seg_len[k] else 0.0
+    point = coords[k] + seg_frac * seg[k]
+    theta = np.arctan2(seg[k][1], seg[k][0])
+    return (float(point[0]), float(point[1]), float(np.degrees(theta) + 90.0))
+
+
+def _uniform_arclengths(total, pitch, margin):
+    """Evenly-spaced, path-centered arc-length positions kept ``margin`` clear
+    of both ends. Empty if the usable span is shorter than needed."""
+    usable = total - 2.0 * margin
+    if total <= 0 or usable < 0:
+        return []
+    n = int(np.floor(usable / pitch)) + 1
+    return list(total / 2.0 + (np.arange(n) - (n - 1) / 2.0) * pitch)
 
 
 def _placements_along(coords, pitch, margin):
@@ -179,30 +226,9 @@ def _placements_along(coords, pitch, margin):
     ``margin`` clear of both ends, and each is oriented perpendicular to the
     local tangent so its span crosses the trace.
     """
-    coords = np.asarray(coords, dtype=float)
-    seg = np.diff(coords, axis=0)
-    seg_len = np.hypot(seg[:, 0], seg[:, 1])
-    cum = np.concatenate([[0.0], np.cumsum(seg_len)])
-    total = float(cum[-1])
-
-    usable = total - 2.0 * margin
-    if total <= 0 or usable < 0:
-        return []
-
-    n = int(np.floor(usable / pitch)) + 1
-    centers = total / 2.0 + (np.arange(n) - (n - 1) / 2.0) * pitch
-
-    placements = []
-    for s in centers:
-        k = int(np.searchsorted(cum, s) - 1)
-        k = min(max(k, 0), len(seg_len) - 1)
-        seg_frac = (s - cum[k]) / seg_len[k] if seg_len[k] else 0.0
-        point = coords[k] + seg_frac * seg[k]
-        theta = np.arctan2(seg[k][1], seg[k][0])
-        placements.append(
-            (float(point[0]), float(point[1]), float(np.degrees(theta) + 90.0))
-        )
-    return placements
+    frame = _arclength_frame(coords)
+    total = float(frame[3][-1])
+    return [_sample_at(frame, s) for s in _uniform_arclengths(total, pitch, margin)]
 
 
 def route_airbridges(
@@ -211,6 +237,7 @@ def route_airbridges(
     pitch="100um",
     min_spacing="5um",
     crossover_length=None,
+    bridge_at_corners=False,
     name=None,
     ab_options=None,
 ):
@@ -234,6 +261,13 @@ def route_airbridges(
         min_spacing (str): minimum clearance from the end pins.
         crossover_length (str, optional): bridge span. Defaults to the route's
             ``trace_width + 2*trace_gap`` so the span crosses trace and gaps.
+        bridge_at_corners (bool): if true, guarantee one bridge centered on
+            every rounded bend (in addition to the uniform-pitch bridges). A
+            uniform bridge that would land within half a pitch of a corner
+            bridge is dropped so the two do not bunch up. Corners within
+            ``min_spacing`` of an end are skipped. Defaults to false (uniform
+            pitch only — bends are still covered wherever a pitch sample lands
+            on the fillet arc).
         name (str, optional): prefix for the created components. Defaults to
             ``f"{route.name}_ab"``.
         ab_options (dict, optional): extra options forwarded to each
@@ -256,8 +290,24 @@ def route_airbridges(
         trace_gap = design.parse_value(route.options.get("trace_gap", "6um"))
         crossover_length = trace_width + 2.0 * trace_gap
 
-    centerline = _fillet_centerline(route.get_points(), fillet)
-    placements = _placements_along(centerline, pitch, min_spacing)
+    centerline, corners = _fillet_centerline(
+        route.get_points(), fillet, return_corners=True
+    )
+    frame = _arclength_frame(centerline)
+    total = float(frame[3][-1])
+    s_values = _uniform_arclengths(total, pitch, min_spacing)
+
+    if bridge_at_corners:
+        # Corner bridges are mandatory; add them first, then keep only the
+        # uniform samples that are at least half a pitch (in arc length) from
+        # every corner bridge so bridges do not overlap at bends.
+        kept = [s for s in corners if min_spacing <= s <= total - min_spacing]
+        for s in s_values:
+            if all(abs(s - cs) >= 0.5 * pitch for cs in kept):
+                kept.append(s)
+        s_values = sorted(kept)
+
+    placements = [_sample_at(frame, s) for s in s_values]
 
     # Idempotent re-runs: clear airbridges this helper previously placed under
     # ``name`` before re-placing (so re-executing a cell / re-routing doesn't

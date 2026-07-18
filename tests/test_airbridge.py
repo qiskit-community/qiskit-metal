@@ -135,6 +135,85 @@ class TestRouteAirbridges(unittest.TestCase):
         # the filleted trace does NOT pass through the sharp corner vertex
         self.assertGreater(line.distance(Point(1.0, 0.0)), 0.05)
 
+    def test_fillet_centerline_reports_corner_arclengths(self):
+        """return_corners yields one arc-length per rounded bend, located near
+        the bend's projection onto the filleted centerline."""
+        import numpy as np
+        from qiskit_metal.qlibrary.tlines.airbridge import _fillet_centerline
+
+        pts = [(0.0, 0.0), (1.0, 0.0), (1.0, 1.0)]  # single 90-degree bend
+        coords, corners = _fillet_centerline(pts, radius=0.2, return_corners=True)
+        self.assertEqual(len(corners), 1)
+        # the reported arc length indexes a point that is actually on the arc
+        # (near the (1,0) corner, at roughly radius distance from it)
+        seg = np.diff(coords, axis=0)
+        cum = np.concatenate([[0.0], np.cumsum(np.hypot(seg[:, 0], seg[:, 1]))])
+        k = int(np.searchsorted(cum, corners[0]))
+        d = np.hypot(*(coords[k] - np.array([1.0, 0.0])))
+        self.assertLess(d, 0.3)
+
+    def test_bridge_at_corners_places_one_bridge_per_bend(self):
+        """bridge_at_corners guarantees a bridge centered on each rounded bend
+        even when the uniform pitch would otherwise skip it."""
+        from shapely.geometry import LineString, Point
+        from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
+        from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
+        from qiskit_metal.qlibrary.tlines.airbridge import (
+            route_airbridges,
+            _fillet_centerline,
+        )
+
+        OpenToGround(self.design, "A", options=dict(pos_x="-1mm", orientation="0"))
+        OpenToGround(self.design, "B", options=dict(pos_x="1mm", orientation="180"))
+        cpw = RouteMeander(
+            self.design,
+            "cpw",
+            options=Dict(
+                pin_inputs=Dict(
+                    start_pin=Dict(component="A", pin="open"),
+                    end_pin=Dict(component="B", pin="open"),
+                ),
+                total_length="8mm",
+                fillet="90um",
+                trace_width="10um",
+                trace_gap="6um",
+                meander=Dict(spacing="300um"),
+            ),
+        )
+        self.design.rebuild()
+
+        fillet = self.design.parse_value(cpw.options.fillet)
+        coords, corners = _fillet_centerline(
+            cpw.get_points(), fillet, return_corners=True
+        )
+        centerline = LineString(coords)
+        trace = centerline.buffer(self.design.parse_value(cpw.options.trace_width) / 2)
+
+        # A coarse pitch (larger than the corner spacing) would skip bends
+        # without the option.
+        bridges = route_airbridges(
+            self.design, cpw, pitch="600um", min_spacing="30um", bridge_at_corners=True
+        )
+        self.design.rebuild()
+
+        centers = [
+            Point(float(b.options["pos_x"][:-2]), float(b.options["pos_y"][:-2]))
+            for b in bridges
+        ]
+        total = centerline.length
+        interior = [s for s in corners if 0.03 < s < total - 0.03]
+        # every interior bend has a bridge center within a bridge-pitch of it
+        for s in interior:
+            cp = centerline.interpolate(s)
+            self.assertTrue(
+                any(cp.distance(c) < 1e-6 or c.distance(cp) < 0.05 for c in centers),
+                f"no bridge near corner at arc length {s}",
+            )
+        # and every span still crosses the trace
+        poly = self.design.qgeometry.tables["poly"]
+        for g in poly[poly["name"] == "bridge"]["geometry"]:
+            self.assertTrue(g.intersects(trace))
+
     def test_route_airbridges_cross_the_filleted_trace(self):
         """Regression: every bridge lands on the *filleted* trace and its span
         actually crosses the CPW — including at corners and near the ends."""

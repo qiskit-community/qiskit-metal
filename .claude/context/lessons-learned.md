@@ -103,6 +103,31 @@ label-based.
 (`render_junction`). Surfaced when the lite venv pulled a newer
 pandas than the dev env.
 
+### pandas 2.0: `DataFrame.append` removed + gdstk positional-indexing a Series
+
+**Symptom** (#1141): exporting a `RouteMeander` to GDS raised — first
+`AttributeError: 'GeoDataFrame' object has no attribute 'append'`, then,
+once that was fixed, `gdstk.boolean(...)` failed with
+`Unable to retrieve item N from sequence operand2`. Only triggered when a
+route had a lead segment shorter than the fillet radius, so it reached
+`_fix_short_segments_within_table`.
+
+**Cause**: two independent pandas-2 traps in the GDS renderer.
+1. `df.append(row, ignore_index=False)` — `DataFrame.append` was removed in
+   pandas 2.0. Replace with `pd.concat([df, row.to_frame().T])` (re-wrap in
+   `geopandas.GeoDataFrame` to keep the geometry accessor).
+2. `gdstk.boolean` iterates its operands by **position** (`operand[i]`), but
+   `q_subtract_true` / `q_subtract_false` are pandas `Series` whose labels are
+   not `0..n-1` (the short-segment path leaves duplicate/gapped index labels).
+   `series[i]` is label-based, so gdstk's positional access raised `KeyError`.
+   Fix: pass `list(series)` so gdstk sees a plain positional sequence.
+
+**Fix**: `src/qiskit_metal/renderers/renderer_gds/gds_renderer.py` —
+`_fix_short_segments_within_table` (concat instead of append) and
+`_negative_mask` / `_positive_mask` (`list(...)` around the boolean operands).
+Regression test: `tests/test_gds_short_segments.py` (exports a short-lead
+meander and checks the area matches a low-fillet control).
+
 ### qutip 5: `np.array([Qobj, ...])` no longer stacks
 
 **Symptom**: Code that worked under qutip 4 returns an object-dtype

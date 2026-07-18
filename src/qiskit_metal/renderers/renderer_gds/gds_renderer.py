@@ -773,7 +773,11 @@ class QGDSRenderer(QRenderer):
                     orig_row["fillet"] = short_shape["fillet"]
                     # Keep ignore_index=False, otherwise,
                     # the other del_key will not be found.
-                    df_copy = df_copy.append(orig_row, ignore_index=False)
+                    # (pandas 2.0 removed DataFrame.append; concat a one-row
+                    # frame that preserves the del_key index label.)
+                    df_copy = geopandas.GeoDataFrame(
+                        pd.concat([df_copy, orig_row.to_frame().T], ignore_index=False)
+                    )
 
             self.chip_info[chip_name][chip_layer][all_sub_true_or_false] = df_copy.copy(
                 deep=True
@@ -1656,8 +1660,8 @@ class QGDSRenderer(QRenderer):
         if len(self.chip_info[chip_name][chip_layer]["q_subtract_true"]) != 0:
             # Difference for True-False.
             diff_geometry = gdstk.boolean(
-                self.chip_info[chip_name][chip_layer]["q_subtract_true"],
-                self.chip_info[chip_name][chip_layer]["q_subtract_false"],
+                list(self.chip_info[chip_name][chip_layer]["q_subtract_true"]),
+                list(self.chip_info[chip_name][chip_layer]["q_subtract_false"]),
                 "not",
                 layer=chip_layer,
                 precision=precision,
@@ -1694,7 +1698,7 @@ class QGDSRenderer(QRenderer):
         if len(self.chip_info[chip_name][chip_layer]["q_subtract_true"]) != 0:
             diff_geometry = gdstk.boolean(
                 [self.chip_info[chip_name]["subtract_poly"]],
-                self.chip_info[chip_name][chip_layer]["q_subtract_true"],
+                list(self.chip_info[chip_name][chip_layer]["q_subtract_true"]),
                 "not",
                 layer=chip_layer,
                 datatype=0,
