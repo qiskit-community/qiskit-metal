@@ -272,6 +272,47 @@ def transform_arc_points(pts: list, translate: np.ndarray, path_vecs: list) -> l
     return new_pts
 
 
+def remove_degenerate_segments(coords: list, min_len: float) -> list:
+    """Drop interior vertices that would create a segment shorter than
+    ``min_len``, always preserving the two endpoints.
+
+    A CPW path segment shorter than the conductor's own width collapses the
+    width-offset geometry in :func:`render_path_curves`: the two offset points
+    of adjacent vertices coincide, and Gmsh rejects the resulting zero-length
+    line (``Could not create line``). Routes routinely add such sub-width lead
+    stubs at their pins (e.g. a 5 um stub on a 10 um trace), so a plain
+    ``RouteMeander`` fails to render in 3D. Dropping those vertices keeps both
+    endpoints and changes the trace length only negligibly — the same
+    short-segment cleanup the GDS and matplotlib paths already do.
+
+    Args:
+        coords (list): ordered ``(x, y[, z])`` path vertices (design units).
+        min_len (float): minimum allowed segment length (same units). Typically
+            the conductor width; segments shorter than this are degenerate for
+            meshing.
+
+    Returns:
+        list: the cleaned vertex list (endpoints preserved).
+    """
+    pts = [tuple(c) for c in coords]
+    if len(pts) <= 2 or min_len <= 0:
+        return pts
+
+    out = [pts[0]]
+    for p in pts[1:-1]:
+        if np.hypot(p[0] - out[-1][0], p[1] - out[-1][1]) >= min_len:
+            out.append(p)
+    # Never drop the final endpoint: if the last kept interior vertex sits
+    # within min_len of it, drop that interior vertex instead.
+    end = pts[-1]
+    while (
+        len(out) >= 2 and np.hypot(end[0] - out[-1][0], end[1] - out[-1][1]) < min_len
+    ):
+        out.pop()
+    out.append(end)
+    return out
+
+
 def draw_curves(
     recent_pts: list, curves1: list, curves2: list
 ) -> Tuple[list, list, list]:
