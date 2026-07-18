@@ -265,5 +265,111 @@ class TestRouteAirbridges(unittest.TestCase):
             self.assertLess(centerline.distance(Point(x, y)), 1e-6)
 
 
+class TestAirbridge3DLayerStack(unittest.TestCase):
+    """[EXPERIMENTAL] The layer-stack elevation seam for 3D airbridges (#1144).
+
+    Pure-Python coverage of the row construction and the layer-stack mutation;
+    the actual 3D mesh is validated in a gmsh-gated test below."""
+
+    def test_rows_elevate_the_bridge_layer(self):
+        from qiskit_metal.qlibrary.tlines.airbridge import airbridge_layer_stack_rows
+
+        rows = airbridge_layer_stack_rows(
+            bridge_layer=30, pad_layer=31, bridge_z_coord="3um"
+        )
+        self.assertEqual(len(rows), 2)
+        by_layer = {r["layer"]: r for r in rows}
+        # pads on the base plane, span elevated
+        self.assertEqual(by_layer[31]["z_coord"], "0um")
+        self.assertEqual(by_layer[30]["z_coord"], "3um")
+        # every row carries the columns the LayerStackHandler expects
+        from qiskit_metal.toolbox_metal.layer_stack_handler import LayerStackHandler
+
+        for r in rows:
+            self.assertEqual(set(r), set(LayerStackHandler.Col_Names))
+
+    def test_apply_mutates_multiplanar_stack_idempotently(self):
+        from qiskit_metal.designs.design_multiplanar import MultiPlanar
+        from qiskit_metal.qlibrary.tlines.airbridge import apply_airbridge_layer_stack
+
+        design = MultiPlanar()
+        df = apply_airbridge_layer_stack(design, bridge_layer=30, pad_layer=31)
+        self.assertIn(30, set(df["layer"]))
+        self.assertIn(31, set(df["layer"]))
+        n_after_first = len(df)
+        # re-running replaces, not duplicates
+        df2 = apply_airbridge_layer_stack(design, bridge_layer=30, pad_layer=31)
+        self.assertEqual(len(df2), n_after_first)
+        elevated = df2[df2["layer"] == 30]["z_coord"].iloc[0]
+        self.assertEqual(elevated, "3um")
+
+    def test_apply_requires_a_layer_stack(self):
+        from qiskit_metal import designs
+        from qiskit_metal.qlibrary.tlines.airbridge import apply_airbridge_layer_stack
+
+        # DesignPlanar has no layer stack -> clear, early error.
+        with self.assertRaises(AttributeError):
+            apply_airbridge_layer_stack(designs.DesignPlanar())
+
+
+def _gmsh_importable():
+    try:
+        import gmsh  # noqa: F401
+
+        return True
+    except Exception:
+        return False
+
+
+@unittest.skipUnless(
+    _gmsh_importable(), "gmsh not installed (optional [mesh] extra); 3D mesh check"
+)
+class TestAirbridge3DMesh(unittest.TestCase):
+    """[EXPERIMENTAL] Validate the actual 3D extrusion via the gmsh renderer.
+
+    Skipped in the lite CI (no gmsh). Standalone Airbridge polys are used so
+    the check exercises the elevation seam without the gmsh CPW-path fragility
+    (short fillet segments, #1144)."""
+
+    def test_bridge_span_extrudes_elevated(self):
+        import gmsh
+        from qiskit_metal.designs.design_multiplanar import MultiPlanar
+        from qiskit_metal.qlibrary.tlines.airbridge import (
+            Airbridge,
+            apply_airbridge_layer_stack,
+        )
+        from qiskit_metal.renderers.renderer_gmsh.gmsh_renderer import QGmshRenderer
+
+        design = MultiPlanar()
+        design.overwrite_enabled = True
+        Airbridge(design, "ab", options=dict(crossover_length="24um"))
+        design.rebuild()
+        apply_airbridge_layer_stack(
+            design,
+            bridge_z_coord="3um",
+            bridge_thickness="0.3um",
+            pad_thickness="0.2um",
+        )
+
+        r = QGmshRenderer(design, layer_types=dict(metal=[1, 30, 31], dielectric=[3]))
+        try:
+            r.render_design(
+                draw_sample_holder=False, mesh_geoms=False, box_plus_buffer=False
+            )
+            zbands = [
+                (gmsh.model.getBoundingBox(d, t)[2], gmsh.model.getBoundingBox(d, t)[5])
+                for d, t in gmsh.model.getEntities(3)
+            ]
+        finally:
+            r.close()
+
+        # bridge span elevated near z=3um (0.003mm); pads on the base plane
+        self.assertTrue(any(zmin >= 0.0029 for zmin, _ in zbands), zbands)
+        self.assertTrue(
+            any(abs(zmin) < 1e-6 and 0.0 < zmax <= 0.00051 for zmin, zmax in zbands),
+            zbands,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
