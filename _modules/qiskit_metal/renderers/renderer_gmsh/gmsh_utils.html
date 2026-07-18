@@ -747,6 +747,47 @@
     <span class="k">return</span> <span class="n">new_pts</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_degenerate_segments</span><span class="p">(</span><span class="n">coords</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">min_len</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Drop interior vertices that would create a segment shorter than</span>
+<span class="sd">    ``min_len``, always preserving the two endpoints.</span>
+
+<span class="sd">    A CPW path segment shorter than the conductor&#39;s own width collapses the</span>
+<span class="sd">    width-offset geometry in :func:`render_path_curves`: the two offset points</span>
+<span class="sd">    of adjacent vertices coincide, and Gmsh rejects the resulting zero-length</span>
+<span class="sd">    line (``Could not create line``). Routes routinely add such sub-width lead</span>
+<span class="sd">    stubs at their pins (e.g. a 5 um stub on a 10 um trace), so a plain</span>
+<span class="sd">    ``RouteMeander`` fails to render in 3D. Dropping those vertices keeps both</span>
+<span class="sd">    endpoints and changes the trace length only negligibly — the same</span>
+<span class="sd">    short-segment cleanup the GDS and matplotlib paths already do.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        coords (list): ordered ``(x, y[, z])`` path vertices (design units).</span>
+<span class="sd">        min_len (float): minimum allowed segment length (same units). Typically</span>
+<span class="sd">            the conductor width; segments shorter than this are degenerate for</span>
+<span class="sd">            meshing.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: the cleaned vertex list (endpoints preserved).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">min_len</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pts</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">out</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">out</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">min_len</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="c1"># Never drop the final endpoint: if the last kept interior vertex sits</span>
+    <span class="c1"># within min_len of it, drop that interior vertex instead.</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">while</span> <span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">out</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">out</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">min_len</span>
+    <span class="p">):</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">draw_curves</span><span class="p">(</span>
     <span class="n">recent_pts</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">curves1</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">curves2</span><span class="p">:</span> <span class="nb">list</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
