@@ -479,10 +479,10 @@
 <section id="Setup">
 <h2>Setup<a class="headerlink" href="#Setup" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qm</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qm</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span><span class="p">,</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.terminations.open_to_ground</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenToGround</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.straight_path</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteStraight</span>
@@ -492,20 +492,102 @@
 </div>
 </div>
 </section>
+<section id="Preview">
+<h2>Preview<a class="headerlink" href="#Preview" title="Link to this heading">¶</a></h2>
+<p>Here is where we are headed: a meander CPW with airbridges auto-placed along every straight <strong>and</strong> every bend. The rest of the tutorial builds up to this one piece at a time.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
+<span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-1mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">))</span>
+<span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">))</span>
+<span class="n">cpw</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span>
+    <span class="n">design</span><span class="p">,</span>
+    <span class="s2">&quot;cpw&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+        <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;9mm&quot;</span><span class="p">,</span>
+        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">,</span>
+        <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+        <span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
+        <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="s2">&quot;0.3mm&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+
+<span class="n">route_airbridges</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">cpw</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="s2">&quot;0.3mm&quot;</span><span class="p">,</span> <span class="n">min_spacing</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span> <span class="n">bridge_at_corners</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+<span class="n">qm</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+03:24AM 45s INFO [_start_renderers]: Renderer=hfss skipped: runtime dependency not installed (QAnsysRenderer requires pyEPR. Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 45s INFO [_start_renderers]: Renderer=q3d skipped: runtime dependency not installed (QAnsysRenderer requires pyEPR. Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 45s INFO [_start_renderers]: Renderer=gmsh skipped: runtime dependency not installed (renderer_gmsh requires gmsh. Install with: pip install &#39;quantum-metal[mesh]&#39; (or the legacy alias &#39;quantum-metal[fem]&#39;)).
+03:24AM 45s INFO [_start_renderers]: Renderer=aedt_q3d skipped: runtime dependency not installed (QPyaedt requires pyaedt (ansys.aedt.core). Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 45s INFO [_start_renderers]: Renderer=aedt_hfss skipped: runtime dependency not installed (QPyaedt requires pyaedt (ansys.aedt.core). Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 45s WARNING [check_lengths]: For path table, component=cpw, key=trace has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+03:24AM 45s WARNING [check_lengths]: For path table, component=cpw, key=cut has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+03:24AM 45s WARNING [check_lengths]: For path table, component=cpw, key=trace has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+03:24AM 45s WARNING [check_lengths]: For path table, component=cpw, key=cut has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+03:24AM 45s WARNING [check_lengths]: For path table, component=cpw, key=trace has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+03:24AM 45s WARNING [check_lengths]: For path table, component=cpw, key=cut has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_4_1.png" src="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_4_1.png" />
+</div>
+</div>
+</section>
 <section id="A-single-airbridge">
 <h2>A single airbridge<a class="headerlink" href="#A-single-airbridge" title="Link to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">Airbridge</span></code> component draws two base-metal landing pads joined by an elevated bridge span. The bridge and the pads are emitted on separate layers (<code class="docutils literal notranslate"><span class="pre">bridge_layer</span></code> / <code class="docutils literal notranslate"><span class="pre">pad_layer</span></code>) so the two-step fabrication is representable.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
 
 <span class="n">Airbridge</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">crossover_length</span><span class="o">=</span><span class="s2">&quot;24um&quot;</span><span class="p">))</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">qm</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+03:24AM 46s INFO [_start_renderers]: Renderer=hfss skipped: runtime dependency not installed (QAnsysRenderer requires pyEPR. Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 46s INFO [_start_renderers]: Renderer=q3d skipped: runtime dependency not installed (QAnsysRenderer requires pyEPR. Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 46s INFO [_start_renderers]: Renderer=gmsh skipped: runtime dependency not installed (renderer_gmsh requires gmsh. Install with: pip install &#39;quantum-metal[mesh]&#39; (or the legacy alias &#39;quantum-metal[fem]&#39;)).
+03:24AM 46s INFO [_start_renderers]: Renderer=aedt_q3d skipped: runtime dependency not installed (QPyaedt requires pyaedt (ansys.aedt.core). Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 46s INFO [_start_renderers]: Renderer=aedt_hfss skipped: runtime dependency not installed (QPyaedt requires pyaedt (ansys.aedt.core). Install with: pip install &#39;quantum-metal[ansys]&#39;).
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_7_1.png" src="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_7_1.png" />
 </div>
 </div>
 <p>Key options (all parseable strings, e.g. <code class="docutils literal notranslate"><span class="pre">'22um'</span></code>):</p>
@@ -519,11 +601,11 @@
 <section id="Auto-placing-airbridges-along-a-CPW">
 <h2>Auto-placing airbridges along a CPW<a class="headerlink" href="#Auto-placing-airbridges-along-a-CPW" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">route_airbridges(design,</span> <span class="pre">route,</span> <span class="pre">...)</span></code> adds <code class="docutils literal notranslate"><span class="pre">Airbridge</span></code> components along a routed CPW. Placement follows the route’s <em>filleted</em> centerline (the geometry that is actually rendered), so every bridge sits on the trace and crosses it perpendicular to the local direction — through bends as well as straights. Bridges are spaced by <code class="docutils literal notranslate"><span class="pre">pitch</span></code> and kept <code class="docutils literal notranslate"><span class="pre">min_spacing</span></code> clear of the end pins. By default each span is sized to the route’s <code class="docutils literal notranslate"><span class="pre">trace_width</span> <span class="pre">+</span> <span class="pre">2*trace_gap</span></code>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
 
 <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-1mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">))</span>
@@ -553,12 +635,46 @@
 </pre></div>
 </div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">route_airbridges</span></code> is idempotent: re-running it (e.g. re-executing this cell, or after re-routing) clears the airbridges it previously placed under the same <code class="docutils literal notranslate"><span class="pre">name</span></code> and re-places them. Tune the spacing, or forward extra options to every bridge via <code class="docutils literal notranslate"><span class="pre">ab_options</span></code>:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+03:24AM 46s INFO [_start_renderers]: Renderer=hfss skipped: runtime dependency not installed (QAnsysRenderer requires pyEPR. Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 46s INFO [_start_renderers]: Renderer=q3d skipped: runtime dependency not installed (QAnsysRenderer requires pyEPR. Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 46s INFO [_start_renderers]: Renderer=gmsh skipped: runtime dependency not installed (renderer_gmsh requires gmsh. Install with: pip install &#39;quantum-metal[mesh]&#39; (or the legacy alias &#39;quantum-metal[fem]&#39;)).
+03:24AM 46s INFO [_start_renderers]: Renderer=aedt_q3d skipped: runtime dependency not installed (QPyaedt requires pyaedt (ansys.aedt.core). Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 46s INFO [_start_renderers]: Renderer=aedt_hfss skipped: runtime dependency not installed (QPyaedt requires pyaedt (ansys.aedt.core). Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 46s WARNING [check_lengths]: For path table, component=cpw, key=trace has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+03:24AM 46s WARNING [check_lengths]: For path table, component=cpw, key=cut has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+03:24AM 46s WARNING [check_lengths]: For path table, component=cpw, key=trace has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+03:24AM 46s WARNING [check_lengths]: For path table, component=cpw, key=cut has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+03:24AM 46s WARNING [check_lengths]: For path table, component=cpw, key=trace has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+03:24AM 46s WARNING [check_lengths]: For path table, component=cpw, key=cut has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+placed 27 airbridges
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bridges</span> <span class="o">=</span> <span class="n">route_airbridges</span><span class="p">(</span>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_11_2.png" src="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_11_2.png" />
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">route_airbridges</span></code> is idempotent: re-running it (e.g. re-executing this cell, or after re-routing) clears the airbridges it previously placed under the same <code class="docutils literal notranslate"><span class="pre">name</span></code> and re-places them. Tune the spacing, or forward extra options to every bridge via <code class="docutils literal notranslate"><span class="pre">ab_options</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bridges</span> <span class="o">=</span> <span class="n">route_airbridges</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span> <span class="n">cpw</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span> <span class="n">min_spacing</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span> <span class="n">ab_options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">bridge_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -567,14 +683,39 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+03:24AM 47s WARNING [check_lengths]: For path table, component=cpw, key=trace has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+03:24AM 47s WARNING [check_lengths]: For path table, component=cpw, key=cut has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+placed 17 airbridges
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_13_2.png" src="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_13_2.png" />
+</div>
+</div>
 <section id="Guaranteeing-a-bridge-on-every-bend">
 <h3>Guaranteeing a bridge on every bend<a class="headerlink" href="#Guaranteeing-a-bridge-on-every-bend" title="Link to this heading">¶</a></h3>
 <p>Uniform spacing already covers bends wherever a <code class="docutils literal notranslate"><span class="pre">pitch</span></code> sample happens to land on a fillet arc, but with a coarse <code class="docutils literal notranslate"><span class="pre">pitch</span></code> a corner can fall between samples. Set <code class="docutils literal notranslate"><span class="pre">bridge_at_corners=True</span></code> to force one bridge centered on every rounded bend, in addition to the uniform-pitch bridges. A uniform bridge that would land within half a pitch of a corner bridge is dropped so the two do not bunch up.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bridges</span> <span class="o">=</span> <span class="n">route_airbridges</span><span class="p">(</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bridges</span> <span class="o">=</span> <span class="n">route_airbridges</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span> <span class="n">cpw</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="s2">&quot;0.6mm&quot;</span><span class="p">,</span> <span class="n">min_spacing</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span> <span class="n">bridge_at_corners</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -583,16 +724,41 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+03:24AM 47s WARNING [check_lengths]: For path table, component=cpw, key=trace has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+03:24AM 47s WARNING [check_lengths]: For path table, component=cpw, key=cut has short segments that could cause issues with fillet. Values in (1-1) (14-14)  are index(es) in shapely geometry.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+placed 18 airbridges (one on every bend)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_15_2.png" src="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_15_2.png" />
+</div>
+</div>
 </section>
 </section>
 <section id="Export-to-GDS">
 <h2>Export to GDS<a class="headerlink" href="#Export-to-GDS" title="Link to this heading">¶</a></h2>
 <p>Because airbridges are real components, they export like anything else — the bridge and pad polygons land on their configured GDS layers. Here we export a straight CPW with airbridges:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="n">gdesign</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
@@ -620,6 +786,29 @@
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;wrote&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+03:24AM 48s INFO [_start_renderers]: Renderer=hfss skipped: runtime dependency not installed (QAnsysRenderer requires pyEPR. Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 48s INFO [_start_renderers]: Renderer=q3d skipped: runtime dependency not installed (QAnsysRenderer requires pyEPR. Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 48s INFO [_start_renderers]: Renderer=gmsh skipped: runtime dependency not installed (renderer_gmsh requires gmsh. Install with: pip install &#39;quantum-metal[mesh]&#39; (or the legacy alias &#39;quantum-metal[fem]&#39;)).
+03:24AM 48s INFO [_start_renderers]: Renderer=aedt_q3d skipped: runtime dependency not installed (QPyaedt requires pyaedt (ansys.aedt.core). Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 48s INFO [_start_renderers]: Renderer=aedt_hfss skipped: runtime dependency not installed (QPyaedt requires pyaedt (ansys.aedt.core). Install with: pip install &#39;quantum-metal[ansys]&#39;).
+03:24AM 48s WARNING [import_junction_gds_file]: Not able to find file:&#34;../resources/Fake_Junctions.GDS&#34;.  Not used to replace junction. Checked directory:&#34;/home/user/qiskit-metal/tutorials/2 From components to chip/resources&#34;.
+03:24AM 48s WARNING [_check_either_cheese]: layer=30 is not in chip=main either in no_cheese_view_in_file or cheese_view_in_file from self.options.
+03:24AM 48s WARNING [_check_either_cheese]: layer=31 is not in chip=main either in no_cheese_view_in_file or cheese_view_in_file from self.options.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+wrote /tmp/tmp8dikchbu/airbridge_demo.gds
+</pre></div></div>
 </div>
 <p>That’s the airbridge workflow: place them (individually or automatically), see them in <code class="docutils literal notranslate"><span class="pre">qm.view</span></code>, and export. Design-of-record and roadmap (including the experimental 3D/Ansys span) are tracked in issue #1138.</p>
 </section>
@@ -711,6 +900,7 @@
             <ul>
 <li><a class="reference internal" href="#">Airbridges</a><ul>
 <li><a class="reference internal" href="#Setup">Setup</a></li>
+<li><a class="reference internal" href="#Preview">Preview</a></li>
 <li><a class="reference internal" href="#A-single-airbridge">A single airbridge</a></li>
 <li><a class="reference internal" href="#Auto-placing-airbridges-along-a-CPW">Auto-placing airbridges along a CPW</a><ul>
 <li><a class="reference internal" href="#Guaranteeing-a-bridge-on-every-bend">Guaranteeing a bridge on every bend</a></li>

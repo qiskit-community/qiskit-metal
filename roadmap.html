@@ -902,22 +902,20 @@ to planned: visual component catalogue is a natural
 strength of the class-based qlibrary and is currently
 under-used. Pairs with the “When to use Metal” page
 above as the visual half of the answer.</p></li>
-<li><p><strong>GDS airbridge support</strong> <code class="docutils literal notranslate"><span class="pre">[planned,</span> <span class="pre">PR</span> <span class="pre">#962]</span></code>
-Add airbridges to <code class="docutils literal notranslate"><span class="pre">QGDSRenderer.export_to_gds</span></code> so fab-grade
-GDS files include the bridges that CPW crossings need without
-a manual post-processing step in KLayout. Most SC qubit
-chips with multi-crossing CPW routing need this; today
-users hand-place bridges downstream.
-The structural work landed in &#64;clarkmiyamoto’s PR #962
-(<code class="docutils literal notranslate"><span class="pre">_populate_airbridge</span></code> + <code class="docutils literal notranslate"><span class="pre">make_airbridge.py</span></code>, mirroring the
-cheesing flow), but the PR has bit-rotted relative to
-current main — needs rebase + the v0.7-era housekeeping
-(lazy <code class="docutils literal notranslate"><span class="pre">gdstk</span></code>, ruff/format pass, headless test). The
-limitations the original PR called out (uniform-only
-bridges, single bridge per turn, no overlap warning) can
-ship as follow-ups; landing the basic path is the unblock.
-Pairs with the <code class="docutils literal notranslate"><span class="pre">.lyp</span></code> + Metal → KLayout work above for a
-clean GDS-handoff story.</p></li>
+<li><p><strong>Airbridge support</strong> <code class="docutils literal notranslate"><span class="pre">[shipped,</span> <span class="pre">#1140/#1142]</span></code>
+CPW crossings need airbridges to tie the ground plane together;
+users used to hand-place them downstream. Shipped as a
+first-class <code class="docutils literal notranslate"><span class="pre">Airbridge</span></code> <code class="docutils literal notranslate"><span class="pre">QComponent</span></code> (on <code class="docutils literal notranslate"><span class="pre">bridge_layer</span></code> /
+<code class="docutils literal notranslate"><span class="pre">pad_layer</span></code>) plus <code class="docutils literal notranslate"><span class="pre">route_airbridges(design,</span> <span class="pre">route,</span> <span class="pre">...)</span></code>
+auto-placement along the route’s filleted centerline
+(<code class="docutils literal notranslate"><span class="pre">bridge_at_corners=True</span></code> guarantees one per bend). Because the
+bridges are real components they render in <code class="docutils literal notranslate"><span class="pre">qm.view</span></code> and export
+through every renderer, not just GDS. Tutorial 2.15.
+The original approach — &#64;clarkmiyamoto’s PR #962
+(<code class="docutils literal notranslate"><span class="pre">_populate_airbridge</span></code> + <code class="docutils literal notranslate"><span class="pre">make_airbridge.py</span></code>, GDS-export-only,
+uniform bridges) — informed this and is now closed.
+Remaining follow-ups: overlap / off-chip warnings, adjacent-CPW
+handling, and the experimental 3D/Ansys span (Phase 4, #1138).</p></li>
 </ul>
 </section>
 <section id="high-impact-high-effort">
