@@ -77,7 +77,7 @@ PAIRS = {
         "docs/tut/2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute.ipynb",
         "tutorials/2 From components to chip/B. Routing between QComponents/2.14 Get them all with MixedRoute.ipynb",
     ),
-    (
+    "2.15": (
         "docs/tut/2-From-components-to-chip/2.15-Airbridges.ipynb",
         "tutorials/2 From components to chip/B. Routing between QComponents/2.15 Airbridges.ipynb",
     ),
