@@ -948,8 +948,23 @@ wrote /tmp/tmp963uolnm/airbridge_demo.gds
 </pre></div>
 </div>
 <p>The schematic below (drawn to scale) shows the resulting shape: the elevated span on two posts, hopping over the CPW.</p>
+<section id="Validating-on-the-open-FEM-path-(Elmer)">
+<h3>Validating on the open FEM path (Elmer)<a class="headerlink" href="#Validating-on-the-open-FEM-path-(Elmer)" title="Link to this heading">¶</a></h3>
+<p>Because the airbridge is now a connected 3D solid, it goes straight into the open-source FEM path — no Ansys required. <code class="docutils literal notranslate"><span class="pre">QElmerRenderer</span></code> meshes it (via gmsh) and runs a capacitance solve:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_elmer.elmer_renderer</span><span class="w"> </span><span class="kn">import</span> <span class="n">QElmerRenderer</span>
+
+<span class="n">er</span> <span class="o">=</span> <span class="n">QElmerRenderer</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">layer_types</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">metal</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span> <span class="n">dielectric</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+<span class="n">er</span><span class="o">.</span><span class="n">gmsh</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="s2">&quot;5um&quot;</span>
+<span class="n">er</span><span class="o">.</span><span class="n">gmsh</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s2">&quot;60um&quot;</span>
+<span class="n">er</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span><span class="n">open_pins</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;open&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;open&quot;</span><span class="p">)],</span> <span class="n">skip_junctions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">er</span><span class="o">.</span><span class="n">add_solution_setup</span><span class="p">(</span><span class="s2">&quot;capacitance&quot;</span><span class="p">)</span>
+<span class="n">er</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;capacitance&quot;</span><span class="p">)</span>        <span class="c1"># needs the ElmerSolver binary</span>
+<span class="n">er</span><span class="o">.</span><span class="n">capacitance_matrix</span>
+</pre></div>
+</div>
+<p>The mesh and the Elmer <code class="docutils literal notranslate"><span class="pre">.sif</span></code> solver input are produced with only the pip-installable <code class="docutils literal notranslate"><span class="pre">gmsh</span></code>; the final <code class="docutils literal notranslate"><span class="pre">run(...)</span></code> needs the <strong>ElmerSolver</strong> binary, which you install from your OS package manager / the Elmer PPA (it is not a Python package, so <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal[fem]</span></code> does not bring it in). <code class="docutils literal notranslate"><span class="pre">tests/test_airbridge_elmer.py</span></code> runs this end-to-end where a solver is present and skips otherwise.</p>
 <blockquote>
-<div><p>⚠️ <strong>Experimental.</strong> A full CPW + airbridges (with posts) renders and meshes in gmsh as a connected 3D solid, but the mesh has <strong>not</strong> been validated against a live FEM solve. Follow / help validate in <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1144">issue #1144</a>.</p>
+<div><p>⚠️ <strong>Experimental.</strong> The design meshes as a connected 3D solid and produces a valid Elmer solver input, but the numerical solve isn’t run in CI (no solver binary there), so the extracted values are not yet validated. Follow / help validate in <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1144">issue #1144</a>.</p>
 </div></blockquote>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -1039,6 +1054,7 @@ wrote /tmp/tmp963uolnm/airbridge_demo.gds
 <p>That’s the airbridge workflow: place them (individually or automatically), see them in <code class="docutils literal notranslate"><span class="pre">qm.view</span></code>, and export. Design-of-record and roadmap (including the experimental 3D/Ansys span) are tracked in issue #1138.</p>
 </section>
 </section>
+</section>
 <br><br>
 <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
 <div style="border:solid 1 px #990000;">
@@ -1103,7 +1119,7 @@ wrote /tmp/tmp963uolnm/airbridge_demo.gds
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/18</div>
+              Last updated on 2026/07/19</div>
           </div>
           <div class="right-details">
             
@@ -1136,7 +1152,10 @@ wrote /tmp/tmp963uolnm/airbridge_demo.gds
 <li><a class="reference internal" href="#Viewing-the-exported-GDS">Viewing the exported GDS</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Experimental:-3D-airbridges">Experimental: 3D airbridges</a></li>
+<li><a class="reference internal" href="#Experimental:-3D-airbridges">Experimental: 3D airbridges</a><ul>
+<li><a class="reference internal" href="#Validating-on-the-open-FEM-path-(Elmer)">Validating on the open FEM path (Elmer)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
