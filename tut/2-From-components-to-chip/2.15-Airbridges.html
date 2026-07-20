@@ -966,6 +966,18 @@ wrote /tmp/tmp963uolnm/airbridge_demo.gds
 <blockquote>
 <div><p>⚠️ <strong>Experimental.</strong> The design meshes as a connected 3D solid and produces a valid Elmer solver input, but the numerical solve isn’t run in CI (no solver binary there), so the extracted values are not yet validated. Follow / help validate in <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1144">issue #1144</a>.</p>
 </div></blockquote>
+<p>The 3D pictures below are rendered with <strong>PyVista</strong> (a VTK-based renderer), which — unlike matplotlib’s <code class="docutils literal notranslate"><span class="pre">mplot3d</span></code> — does true depth-sorting, so elevated and overlapping parts look right. It is an optional extra; install it into the running kernel with the cell below. PyVista also needs an OpenGL backend: a desktop session already has one; on a headless machine use <code class="docutils literal notranslate"><span class="pre">osmesa</span></code>/<code class="docutils literal notranslate"><span class="pre">egl</span></code> VTK wheels or a virtual framebuffer (<code class="docutils literal notranslate"><span class="pre">xvfb</span></code>). The tutorial ships the rendered images, so you can also just
+read on without installing anything.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Optional: install the 3D renderer used by the cells below (skip if you</span>
+<span class="c1"># already have it). &#39;%pip&#39; installs into this notebook&#39;s kernel.</span>
+<span class="o">%</span><span class="k">pip</span> install pyvista
+</pre></div>
+</div>
+</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -1087,7 +1099,7 @@ wrote /tmp/tmp963uolnm/airbridge_demo.gds
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_22_0.png" src="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_22_0.png" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_24_0.png" src="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_24_0.png" />
 </div>
 </div>
 </section>
@@ -1200,7 +1212,7 @@ wrote /tmp/tmp963uolnm/airbridge_demo.gds
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_24_0.png" src="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_24_0.png" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_26_0.png" src="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_26_0.png" />
 </div>
 </div>
 <p>That’s the airbridge workflow: place them (individually or automatically), see them in <code class="docutils literal notranslate"><span class="pre">qm.view</span></code>, and export. Design-of-record and roadmap (including the experimental 3D/Ansys span) are tracked in issue #1138.</p>
