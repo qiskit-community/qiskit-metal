@@ -947,7 +947,7 @@ wrote /tmp/tmp963uolnm/airbridge_demo.gds
 <span class="c1">#   QGmshRenderer(design, layer_types=dict(metal=[1, 30, 31, 32], dielectric=[3]))</span>
 </pre></div>
 </div>
-<p>The schematic below (drawn to scale) shows the resulting shape: the elevated span on two posts, hopping over the CPW.</p>
+<p>The four views below are a <strong>true 3D render</strong> (PyVista / VTK — a real depth-sorted renderer, unlike matplotlib’s <code class="docutils literal notranslate"><span class="pre">mplot3d</span></code>) of the resulting shape: the elevated span on two posts, hopping over the CPW. Every in-plane dimension is the real component geometry; only <em>z</em> is exaggerated (x3) so the ~3 µm bridge is visible next to a ~40 µm span.</p>
 <section id="Validating-on-the-open-FEM-path-(Elmer)">
 <h3>Validating on the open FEM path (Elmer)<a class="headerlink" href="#Validating-on-the-open-FEM-path-(Elmer)" title="Link to this heading">¶</a></h3>
 <p>Because the airbridge is now a connected 3D solid, it goes straight into the open-source FEM path — no Ansys required. <code class="docutils literal notranslate"><span class="pre">QElmerRenderer</span></code> meshes it (via gmsh) and runs a capacitance solve:</p>
@@ -967,88 +967,240 @@ wrote /tmp/tmp963uolnm/airbridge_demo.gds
 <div><p>⚠️ <strong>Experimental.</strong> The design meshes as a connected 3D solid and produces a valid Elmer solver input, but the numerical solve isn’t run in CI (no solver binary there), so the extracted values are not yet validated. Follow / help validate in <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1144">issue #1144</a>.</p>
 </div></blockquote>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A schematic of the elevated crossover (drawn to scale in µm): the bridge span</span>
-<span class="c1"># sits above the base metal on two support posts, hopping over the CPW so the</span>
-<span class="c1"># ground plane is tied together without shorting the center trace.</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.mplot3d.art3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">Poly3DCollection</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Real 3D render of the airbridge with PyVista (VTK) — a true depth-sorted</span>
+<span class="c1"># renderer, unlike matplotlib&#39;s mplot3d (which has no real occlusion and makes</span>
+<span class="c1"># overlapping/elevated parts look wrong). Every x/y extent is read from the real</span>
+<span class="c1"># Airbridge QGeometry + CPW parameters; only z is exaggerated (x3) so the ~3 µm</span>
+<span class="c1"># bridge is visible next to a ~40 µm span. Four views make the shape unambiguous.</span>
+<span class="c1">#</span>
+<span class="c1"># Needs ``pip install pyvista`` and an OpenGL backend (a display, EGL, OSMesa, or</span>
+<span class="c1"># a headless Xvfb). The tutorial ships the rendered image; run the cell yourself</span>
+<span class="c1"># (with the deps above) to spin it around live.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs.design_multiplanar</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultiPlanar</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.airbridge</span><span class="w"> </span><span class="kn">import</span> <span class="n">Airbridge</span>
 
+    <span class="c1"># One airbridge with support posts, at the origin. Native frame: the span</span>
+    <span class="c1"># crosses along x, so the CPW it hops runs along y.</span>
+    <span class="n">_d</span> <span class="o">=</span> <span class="n">MultiPlanar</span><span class="p">()</span>
+    <span class="n">_d</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">_ab</span> <span class="o">=</span> <span class="n">Airbridge</span><span class="p">(</span><span class="n">_d</span><span class="p">,</span> <span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">enable_posts</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">))</span>
+    <span class="n">_d</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+    <span class="n">_p</span> <span class="o">=</span> <span class="n">_ab</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_box</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">z1</span><span class="p">):</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="p">[</span>
-            <span class="p">[</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">z0</span><span class="p">],</span>
-            <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">z0</span><span class="p">],</span>
-            <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z0</span><span class="p">],</span>
-            <span class="p">[</span><span class="n">x0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z0</span><span class="p">],</span>
-            <span class="p">[</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">z1</span><span class="p">],</span>
-            <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">z1</span><span class="p">],</span>
-            <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">],</span>
-            <span class="p">[</span><span class="n">x0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">],</span>
-        <span class="p">]</span>
-    <span class="p">)</span>
-    <span class="n">faces</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-        <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
-        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-        <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
-        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
-        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="n">PAD_T</span><span class="p">,</span> <span class="n">POST_TOP</span><span class="p">,</span> <span class="n">SPAN_T</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">0.3</span>
+    <span class="n">ZEX</span> <span class="o">=</span> <span class="mf">3.0</span>  <span class="c1"># z exaggeration (true bridge ~3 µm over a ~40 µm span)</span>
+    <span class="n">_w</span> <span class="o">=</span> <span class="n">_d</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s2">&quot;10um&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e3</span>
+    <span class="n">_g</span> <span class="o">=</span> <span class="n">_d</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s2">&quot;6um&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e3</span>
+    <span class="n">_Y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">_p</span><span class="o">.</span><span class="n">pad_length</span> <span class="o">+</span> <span class="n">_p</span><span class="o">.</span><span class="n">crossover_length</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e3</span>
+    <span class="n">_GND</span> <span class="o">=</span> <span class="n">_w</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">_g</span> <span class="o">+</span> <span class="mi">16</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_box</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">z1</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pv</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z0</span> <span class="o">*</span> <span class="n">ZEX</span><span class="p">,</span> <span class="n">z1</span> <span class="o">*</span> <span class="n">ZEX</span><span class="p">))</span>
+
+    <span class="n">_meshes</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">_box</span><span class="p">(</span><span class="o">-</span><span class="n">_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">_Y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_Y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">PAD_T</span><span class="p">),</span> <span class="s2">&quot;#6E8494&quot;</span><span class="p">),</span>  <span class="c1"># CPW trace</span>
+        <span class="p">(</span><span class="n">_box</span><span class="p">(</span><span class="n">_w</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">_g</span><span class="p">,</span> <span class="n">_GND</span><span class="p">,</span> <span class="o">-</span><span class="n">_Y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_Y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">PAD_T</span><span class="p">),</span> <span class="s2">&quot;#CBD5DD&quot;</span><span class="p">),</span>  <span class="c1"># ground far</span>
+        <span class="p">(</span>
+            <span class="n">_box</span><span class="p">(</span><span class="o">-</span><span class="n">_GND</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">_w</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">_g</span><span class="p">),</span> <span class="o">-</span><span class="n">_Y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_Y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">PAD_T</span><span class="p">),</span>
+            <span class="s2">&quot;#CBD5DD&quot;</span><span class="p">,</span>
+        <span class="p">),</span>  <span class="c1"># ground near</span>
     <span class="p">]</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+    <span class="n">_cols</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="mi">31</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">PAD_T</span><span class="p">,</span> <span class="s2">&quot;#E8912B&quot;</span><span class="p">),</span>  <span class="c1"># landing pads</span>
+        <span class="mi">32</span><span class="p">:</span> <span class="p">(</span><span class="n">PAD_T</span><span class="p">,</span> <span class="n">POST_TOP</span><span class="p">,</span> <span class="s2">&quot;#8FB8EC&quot;</span><span class="p">),</span>  <span class="c1"># support posts</span>
+        <span class="mi">30</span><span class="p">:</span> <span class="p">(</span><span class="n">POST_TOP</span><span class="p">,</span> <span class="n">POST_TOP</span> <span class="o">+</span> <span class="n">SPAN_T</span><span class="p">,</span> <span class="s2">&quot;#2F6FB2&quot;</span><span class="p">),</span>
+    <span class="p">}</span>  <span class="c1"># elevated span</span>
+    <span class="n">_ordr</span> <span class="o">=</span> <span class="p">{</span><span class="mi">31</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_row</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
+        <span class="n">_ab</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iterrows</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">_ordr</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;layer&quot;</span><span class="p">])]</span>
+    <span class="p">):</span>
+        <span class="n">_z0</span><span class="p">,</span> <span class="n">_z1</span><span class="p">,</span> <span class="n">_c</span> <span class="o">=</span> <span class="n">_cols</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">_row</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">])]</span>
+        <span class="n">_x0</span><span class="p">,</span> <span class="n">_y0</span><span class="p">,</span> <span class="n">_x1</span><span class="p">,</span> <span class="n">_y1</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mf">1e3</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_row</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
+        <span class="n">_meshes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">_box</span><span class="p">(</span><span class="n">_x0</span><span class="p">,</span> <span class="n">_x1</span><span class="p">,</span> <span class="n">_y0</span><span class="p">,</span> <span class="n">_y1</span><span class="p">,</span> <span class="n">_z0</span><span class="p">,</span> <span class="n">_z1</span><span class="p">),</span> <span class="n">_c</span><span class="p">))</span>
 
-
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_add</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">add_collection3d</span><span class="p">(</span>
-        <span class="n">Poly3DCollection</span><span class="p">(</span>
-            <span class="n">polys</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;#333&quot;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span>
-        <span class="p">)</span>
+    <span class="n">pl</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span>
+        <span class="n">off_screen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">window_size</span><span class="o">=</span><span class="p">(</span><span class="mi">1400</span><span class="p">,</span> <span class="mi">1050</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_populate</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">_m</span><span class="p">,</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">_meshes</span><span class="p">:</span>
+            <span class="n">pl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+                <span class="n">_m</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">_c</span><span class="p">,</span>
+                <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">edge_color</span><span class="o">=</span><span class="s2">&quot;#333333&quot;</span><span class="p">,</span>
+                <span class="n">line_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">ambient</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span>
+                <span class="n">diffuse</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+                <span class="n">specular</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">set_background</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
 
-<span class="n">Z</span> <span class="o">=</span> <span class="mf">4.0</span>  <span class="c1"># bridge elevation (µm)</span>
-<span class="n">_add</span><span class="p">(</span><span class="n">_box</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="s2">&quot;#C7D0D9&quot;</span><span class="p">)</span>  <span class="c1"># ground (far side)</span>
-<span class="n">_add</span><span class="p">(</span><span class="n">_box</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">11</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="s2">&quot;#C7D0D9&quot;</span><span class="p">)</span>  <span class="c1"># ground (near side)</span>
-<span class="n">_add</span><span class="p">(</span><span class="n">_box</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="s2">&quot;#8FA3B0&quot;</span><span class="p">)</span>  <span class="c1"># CPW center trace</span>
-<span class="n">_add</span><span class="p">(</span><span class="n">_box</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="s2">&quot;#F5A623&quot;</span><span class="p">)</span>  <span class="c1"># landing pad</span>
-<span class="n">_add</span><span class="p">(</span><span class="n">_box</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">24</span><span class="p">,</span> <span class="o">-</span><span class="mi">13</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="s2">&quot;#F5A623&quot;</span><span class="p">)</span>  <span class="c1"># landing pad</span>
-<span class="n">_add</span><span class="p">(</span><span class="n">_box</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">Z</span><span class="p">),</span> <span class="s2">&quot;#9EC4EF&quot;</span><span class="p">)</span>  <span class="c1"># support post (leg)</span>
-<span class="n">_add</span><span class="p">(</span><span class="n">_box</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">24</span><span class="p">,</span> <span class="o">-</span><span class="mi">13</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">Z</span><span class="p">),</span> <span class="s2">&quot;#9EC4EF&quot;</span><span class="p">)</span>  <span class="c1"># support post (leg)</span>
-<span class="n">_add</span><span class="p">(</span><span class="n">_box</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">24</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">Z</span> <span class="o">+</span> <span class="mf">0.3</span><span class="p">),</span> <span class="s2">&quot;#4C9BE8&quot;</span><span class="p">)</span>  <span class="c1"># elevated span</span>
+    <span class="n">_titles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="s2">&quot;front — along the CPW&quot;</span><span class="p">,</span> <span class="s2">&quot;side — across the CPW&quot;</span><span class="p">,</span> <span class="s2">&quot;isometric&quot;</span><span class="p">]</span>
+    <span class="n">_setters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;view_xy&quot;</span><span class="p">,</span> <span class="s2">&quot;view_xz&quot;</span><span class="p">,</span> <span class="s2">&quot;view_yz&quot;</span><span class="p">,</span> <span class="s2">&quot;view_isometric&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">_i</span><span class="p">,</span> <span class="p">(</span><span class="n">_r</span><span class="p">,</span> <span class="n">_cc</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]):</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">_r</span><span class="p">,</span> <span class="n">_cc</span><span class="p">)</span>
+        <span class="n">_populate</span><span class="p">()</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">pl</span><span class="p">,</span> <span class="n">_setters</span><span class="p">[</span><span class="n">_i</span><span class="p">])()</span>
+        <span class="k">if</span> <span class="n">_setters</span><span class="p">[</span><span class="n">_i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;view_isometric&quot;</span><span class="p">:</span>
+            <span class="n">pl</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">azimuth</span> <span class="o">=</span> <span class="mi">20</span>
+            <span class="n">pl</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">elevation</span> <span class="o">=</span> <span class="mi">12</span>
+            <span class="n">pl</span><span class="o">.</span><span class="n">add_legend</span><span class="p">(</span>
+                <span class="n">labels</span><span class="o">=</span><span class="p">[</span>
+                    <span class="p">[</span><span class="s2">&quot;landing pads (L31)&quot;</span><span class="p">,</span> <span class="s2">&quot;#E8912B&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;support posts (L32)&quot;</span><span class="p">,</span> <span class="s2">&quot;#8FB8EC&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;elevated span (L30)&quot;</span><span class="p">,</span> <span class="s2">&quot;#2F6FB2&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;CPW centre trace&quot;</span><span class="p">,</span> <span class="s2">&quot;#6E8494&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;ground plane&quot;</span><span class="p">,</span> <span class="s2">&quot;#CBD5DD&quot;</span><span class="p">],</span>
+                <span class="p">],</span>
+                <span class="n">bcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+                <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mf">0.32</span><span class="p">,</span> <span class="mf">0.26</span><span class="p">),</span>
+                <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">,</span>
+                <span class="n">face</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="n">_titles</span><span class="p">[</span><span class="n">_i</span><span class="p">],</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;upper_left&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#222222&quot;</span><span class="p">)</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">zoom</span><span class="p">(</span><span class="mf">1.6</span> <span class="k">if</span> <span class="n">_setters</span><span class="p">[</span><span class="n">_i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;view_yz&quot;</span> <span class="k">else</span> <span class="mf">1.3</span><span class="p">)</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="s2">&quot;z exaggerated x3&quot;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;lower_left&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#888888&quot;</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_zlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Z</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">((</span><span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">34</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">azim</span><span class="o">=-</span><span class="mi">45</span><span class="p">)</span>  <span class="c1"># both legs visible</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x (µm)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y (µm)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;z (µm)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Airbridge in 3D: bridge span elevated over the CPW&quot;</span><span class="p">)</span>
-<span class="n">fig</span>
+    <span class="n">_img</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">return_img</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">_axp</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mf">9.7</span><span class="p">))</span>
+    <span class="n">_axp</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">_img</span><span class="p">)</span>
+    <span class="n">_axp</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+    <span class="n">fig</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">_exc</span><span class="p">:</span>  <span class="c1"># pragma: no cover - depends on optional pyvista + GL</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PyVista 3D render unavailable:&quot;</span><span class="p">,</span> <span class="n">_exc</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;Install it with `pip install pyvista` and ensure an OpenGL/OSMesa/Xvfb backend,&quot;</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;then re-run this cell to render the airbridge in true 3D.&quot;</span><span class="p">)</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_22_0.png" src="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_22_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_22_1.png" src="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_22_1.png" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_22_0.png" src="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_22_0.png" />
+</div>
+</div>
+</section>
+<section id="A-whole-row,-in-3D">
+<h3>A whole row, in 3D<a class="headerlink" href="#A-whole-row,-in-3D" title="Link to this heading">¶</a></h3>
+<p>And the payoff: <code class="docutils literal notranslate"><span class="pre">route_airbridges</span></code> drops a bridge every <code class="docutils literal notranslate"><span class="pre">pitch</span></code> along the trace, so a real device is crossed by a <em>row</em> of these elevated spans tying the ground plane together. Here is that CPW rendered in true 3D:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The whole story in 3D: a CPW crossed by a row of airbridges, each an elevated</span>
+<span class="c1"># span on two support posts tying the ground planes together. Rendered with</span>
+<span class="c1"># PyVista (VTK) from the real auto-placed geometry (route_airbridges +</span>
+<span class="c1"># apply_airbridge_layer_stack); z is exaggerated x3 for visibility. Needs</span>
+<span class="c1"># `pip install pyvista` and an OpenGL backend — the tutorial ships the image.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs.design_multiplanar</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultiPlanar</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.terminations.open_to_ground</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenToGround</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.straight_path</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteStraight</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.airbridge</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+        <span class="n">Airbridge</span><span class="p">,</span>
+        <span class="n">route_airbridges</span><span class="p">,</span>
+        <span class="n">apply_airbridge_layer_stack</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">_hd</span> <span class="o">=</span> <span class="n">MultiPlanar</span><span class="p">()</span>
+    <span class="n">_hd</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">OpenToGround</span><span class="p">(</span><span class="n">_hd</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-0.32mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">))</span>
+    <span class="n">OpenToGround</span><span class="p">(</span><span class="n">_hd</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.32mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">))</span>
+    <span class="n">_hcpw</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span>
+        <span class="n">_hd</span><span class="p">,</span>
+        <span class="s2">&quot;cpw&quot;</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+            <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+                <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+                <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+            <span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">_hd</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+    <span class="n">route_airbridges</span><span class="p">(</span><span class="n">_hd</span><span class="p">,</span> <span class="n">_hcpw</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="s2">&quot;0.22mm&quot;</span><span class="p">,</span> <span class="n">min_spacing</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span> <span class="n">enable_posts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">_hd</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+    <span class="n">apply_airbridge_layer_stack</span><span class="p">(</span><span class="n">_hd</span><span class="p">,</span> <span class="n">bridge_z_coord</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span> <span class="n">include_posts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">PAD_T</span><span class="p">,</span> <span class="n">POST_TOP</span><span class="p">,</span> <span class="n">SPAN_T</span><span class="p">,</span> <span class="n">ZEX</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">3.0</span>
+    <span class="n">_hcol</span> <span class="o">=</span> <span class="p">{</span><span class="mi">31</span><span class="p">:</span> <span class="s2">&quot;#E8912B&quot;</span><span class="p">,</span> <span class="mi">32</span><span class="p">:</span> <span class="s2">&quot;#8FB8EC&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">:</span> <span class="s2">&quot;#2F6FB2&quot;</span><span class="p">}</span>
+    <span class="n">_hzb</span> <span class="o">=</span> <span class="p">{</span><span class="mi">31</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">PAD_T</span><span class="p">),</span> <span class="mi">32</span><span class="p">:</span> <span class="p">(</span><span class="n">PAD_T</span><span class="p">,</span> <span class="n">POST_TOP</span><span class="p">),</span> <span class="mi">30</span><span class="p">:</span> <span class="p">(</span><span class="n">POST_TOP</span><span class="p">,</span> <span class="n">POST_TOP</span> <span class="o">+</span> <span class="n">SPAN_T</span><span class="p">)}</span>
+    <span class="n">_hord</span> <span class="o">=</span> <span class="p">{</span><span class="mi">31</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hbox</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">z1</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pv</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z0</span> <span class="o">*</span> <span class="n">ZEX</span><span class="p">,</span> <span class="n">z1</span> <span class="o">*</span> <span class="n">ZEX</span><span class="p">))</span>
+
+    <span class="n">hpl</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">off_screen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="p">(</span><span class="mi">1400</span><span class="p">,</span> <span class="mi">620</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">hpl</span><span class="o">.</span><span class="n">set_background</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+    <span class="n">_L</span><span class="p">,</span> <span class="n">_w</span><span class="p">,</span> <span class="n">_g</span> <span class="o">=</span> <span class="mi">640</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">6.0</span>
+    <span class="n">hpl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">_hbox</span><span class="p">(</span><span class="o">-</span><span class="n">_L</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_L</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">PAD_T</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#6E8494&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_lo</span><span class="p">,</span> <span class="n">_hi</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">_w</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">_g</span><span class="p">,</span> <span class="n">_w</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">_g</span> <span class="o">+</span> <span class="mi">18</span><span class="p">),</span>
+        <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">_w</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">_g</span> <span class="o">+</span> <span class="mi">18</span><span class="p">),</span> <span class="o">-</span><span class="p">(</span><span class="n">_w</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">_g</span><span class="p">)),</span>
+    <span class="p">]:</span>
+        <span class="n">hpl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">_hbox</span><span class="p">(</span><span class="o">-</span><span class="n">_L</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_L</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_lo</span><span class="p">,</span> <span class="n">_hi</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">PAD_T</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#CBD5DD&quot;</span><span class="p">)</span>
+    <span class="n">_hrows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_cn</span><span class="p">,</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">_hd</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_c</span><span class="p">,</span> <span class="n">Airbridge</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_r</span> <span class="ow">in</span> <span class="n">_c</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                <span class="n">_hrows</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">_r</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]),</span> <span class="n">_r</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">bounds</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">_layer</span><span class="p">,</span> <span class="n">_b</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_hrows</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">_hord</span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]]):</span>
+        <span class="n">_z0</span><span class="p">,</span> <span class="n">_z1</span> <span class="o">=</span> <span class="n">_hzb</span><span class="p">[</span><span class="n">_layer</span><span class="p">]</span>
+        <span class="n">_x0</span><span class="p">,</span> <span class="n">_y0</span><span class="p">,</span> <span class="n">_x1</span><span class="p">,</span> <span class="n">_y1</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mf">1e3</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_b</span><span class="p">)</span>
+        <span class="n">hpl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+            <span class="n">_hbox</span><span class="p">(</span><span class="n">_x0</span><span class="p">,</span> <span class="n">_x1</span><span class="p">,</span> <span class="n">_y0</span><span class="p">,</span> <span class="n">_y1</span><span class="p">,</span> <span class="n">_z0</span><span class="p">,</span> <span class="n">_z1</span><span class="p">),</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">_hcol</span><span class="p">[</span><span class="n">_layer</span><span class="p">],</span>
+            <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">edge_color</span><span class="o">=</span><span class="s2">&quot;#333333&quot;</span><span class="p">,</span>
+            <span class="n">line_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">ambient</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span>
+            <span class="n">diffuse</span><span class="o">=</span><span class="mf">0.72</span><span class="p">,</span>
+            <span class="n">specular</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">hpl</span><span class="o">.</span><span class="n">enable_depth_peeling</span><span class="p">()</span>
+    <span class="n">hpl</span><span class="o">.</span><span class="n">view_isometric</span><span class="p">()</span>
+    <span class="n">hpl</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">azimuth</span> <span class="o">=</span> <span class="mi">22</span>
+    <span class="n">hpl</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">elevation</span> <span class="o">=</span> <span class="mi">18</span>
+    <span class="n">hpl</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">zoom</span><span class="p">(</span><span class="mf">1.7</span><span class="p">)</span>
+    <span class="n">_himg</span> <span class="o">=</span> <span class="n">hpl</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">return_img</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">hpl</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="c1"># crop the surrounding white so the strip fills the frame</span>
+    <span class="n">_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">_himg</span> <span class="o">&lt;</span> <span class="mi">250</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">_ys</span><span class="p">,</span> <span class="n">_xs</span> <span class="o">=</span> <span class="n">_mask</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">_mask</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">_y0</span><span class="p">,</span> <span class="n">_y1</span> <span class="o">=</span> <span class="n">_ys</span><span class="o">.</span><span class="n">argmax</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="n">_ys</span><span class="p">)</span> <span class="o">-</span> <span class="n">_ys</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+    <span class="n">_x0</span><span class="p">,</span> <span class="n">_x1</span> <span class="o">=</span> <span class="n">_xs</span><span class="o">.</span><span class="n">argmax</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="n">_xs</span><span class="p">)</span> <span class="o">-</span> <span class="n">_xs</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+    <span class="n">_himg</span> <span class="o">=</span> <span class="n">_himg</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">_y0</span> <span class="o">-</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">:</span> <span class="n">_y1</span> <span class="o">+</span> <span class="mi">8</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">_x0</span> <span class="o">-</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">:</span> <span class="n">_x1</span> <span class="o">+</span> <span class="mi">8</span><span class="p">]</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">_hax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span> <span class="o">*</span> <span class="n">_himg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">_himg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">_hax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">_himg</span><span class="p">)</span>
+    <span class="n">_hax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+    <span class="n">fig</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">_exc</span><span class="p">:</span>  <span class="c1"># pragma: no cover - optional pyvista + GL</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PyVista 3D render unavailable:&quot;</span><span class="p">,</span> <span class="n">_exc</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;Install `pip install pyvista` with an OpenGL/OSMesa/Xvfb backend to render it.&quot;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_24_0.png" src="../../_images/tut_2-From-components-to-chip_2.15-Airbridges_24_0.png" />
 </div>
 </div>
 <p>That’s the airbridge workflow: place them (individually or automatically), see them in <code class="docutils literal notranslate"><span class="pre">qm.view</span></code>, and export. Design-of-record and roadmap (including the experimental 3D/Ansys span) are tracked in issue #1138.</p>
@@ -1119,7 +1271,7 @@ wrote /tmp/tmp963uolnm/airbridge_demo.gds
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/19</div>
+              Last updated on 2026/07/20</div>
           </div>
           <div class="right-details">
             
@@ -1154,6 +1306,7 @@ wrote /tmp/tmp963uolnm/airbridge_demo.gds
 </li>
 <li><a class="reference internal" href="#Experimental:-3D-airbridges">Experimental: 3D airbridges</a><ul>
 <li><a class="reference internal" href="#Validating-on-the-open-FEM-path-(Elmer)">Validating on the open FEM path (Elmer)</a></li>
+<li><a class="reference internal" href="#A-whole-row,-in-3D">A whole row, in 3D</a></li>
 </ul>
 </li>
 </ul>
