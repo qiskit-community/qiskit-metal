@@ -855,7 +855,7 @@ class QDesign:
                     Converts to int or float.
                     Some basic arithmetic is possible, see below.
                 Strings of variables 'variable1'.
-                    Variable interpertation will use string method
+                    Variable interpretation will use string method
                     isidentifier 'variable1'.isidentifier()
 
             Dictionaries:
