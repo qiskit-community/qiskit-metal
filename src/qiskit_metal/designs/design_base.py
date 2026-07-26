@@ -1168,6 +1168,7 @@ gui = MetalGUI(design)
         footer = """
 gui.rebuild()
 gui.autoscale()
+gui.qApp.exec_()
         """
         # all imports at front
         # option -- only the options of the component that are different from the default options are specified.
