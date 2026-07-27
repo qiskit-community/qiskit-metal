@@ -50,11 +50,9 @@ class TestRenderers(unittest.TestCase):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
-        pass
 
     def test_renderer_instanitate_qansys_renderer(self):
         """Test instantiation of QAnsysRenderer in ansys_renderer.py"""

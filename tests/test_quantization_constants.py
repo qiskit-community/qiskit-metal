@@ -180,7 +180,6 @@ class TestVendoredJosephsonHelpers(unittest.TestCase):
                 def find_spec(self, name, path, target=None):
                     if name == "pyEPR" or name.startswith("pyEPR."):
                         raise ImportError(f"BLOCKED: {name}")
-                    return None
 
             blocker = _BlockpyEPR()
             sys.meta_path.insert(0, blocker)

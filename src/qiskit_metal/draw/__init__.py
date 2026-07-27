@@ -13,7 +13,7 @@
 # that they have been altered from the originals.
 
 import shapely
-import shapely.wkt as wkt
+from shapely import wkt
 
 # Base Geometry Definitions - extend here
 from shapely.geometry.base import BaseGeometry

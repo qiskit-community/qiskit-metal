@@ -60,11 +60,9 @@ class TestComponentFunctionality(unittest.TestCase, AssertionsMixin):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
-        pass
 
     def test_qlibrary_get_nested_dict_item(self):
         """Test the functionality of get_nested_dict_item in

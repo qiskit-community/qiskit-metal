@@ -51,7 +51,7 @@ except ImportError:  # pragma: no cover — exercised on lite installs without J
 
     _HAVE_IPYTHON = False
 
-__all__ = ["get_screenshot", "format_dict_ala_z"]
+__all__ = ["format_dict_ala_z", "get_screenshot"]
 
 
 @magics_class
@@ -250,7 +250,7 @@ def format_dict_ala_z(
             if do_repr:
                 k = repr(k)
                 v = repr(v) + ","
-            text += f"{'':{indent_all_full}s}{k:<{key_width}s}: {str(v):<30s}\n"
+            text += f"{'':{indent_all_full}s}{k:<{key_width}s}: {v!s:<30s}\n"
 
     if indent == 0:
         if len(text) > 1:

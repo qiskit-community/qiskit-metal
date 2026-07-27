@@ -34,11 +34,9 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
-        pass
 
     def test_draw_instantiate_vector(self):
         """Test instantiation of Vector class."""

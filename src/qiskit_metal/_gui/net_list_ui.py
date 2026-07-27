@@ -11,7 +11,7 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_NetListWindow(object):
+class Ui_NetListWindow:
     def setupUi(self, NetListWindow):
         NetListWindow.setObjectName("NetListWindow")
         NetListWindow.resize(841, 623)

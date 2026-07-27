@@ -124,7 +124,6 @@ class RoutePathfinder(RouteAnchors):
             except QiskitMetalDesignError:
                 simple_path = None
                 # try the pathfinder algorithm
-                pass
 
             if simple_path is not None:
                 current_path.extend(simple_path)

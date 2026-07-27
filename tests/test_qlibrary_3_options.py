@@ -63,11 +63,9 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
-        pass
 
     def test_qlibrary_circle_caterpiller_options(self):
         """Test that default options of circle_caterpiller in

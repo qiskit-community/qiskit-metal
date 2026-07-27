@@ -11,7 +11,7 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_ElementsWindow(object):
+class Ui_ElementsWindow:
     def setupUi(self, ElementsWindow):
         ElementsWindow.setObjectName("ElementsWindow")
         ElementsWindow.resize(841, 623)

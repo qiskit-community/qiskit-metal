@@ -26,7 +26,7 @@ from scipy.special import mathieu_a
 import numpy as np
 import matplotlib.pyplot as plt
 
-__all__ = ["kidx_raw", "kidx", "transmon_eigenvalue", "plot_eigenvalues"]
+__all__ = ["kidx", "kidx_raw", "plot_eigenvalues", "transmon_eigenvalue"]
 
 
 def kidx_raw(m, my_ng):

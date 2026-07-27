@@ -19,7 +19,7 @@ import warnings
 import logging
 import matplotlib
 import matplotlib as mpl
-import matplotlib.patches as patches
+from matplotlib import patches
 import matplotlib.pyplot as plt
 
 from cycler import cycler
@@ -591,7 +591,7 @@ class PlotCanvas(FigureCanvas):
 
     def style_figure(self):
         """Style a figure."""
-        pass  # self.figure.tight_layout()
+        # self.figure.tight_layout()
 
     def auto_scale(self):
         """Automaticlaly scale."""

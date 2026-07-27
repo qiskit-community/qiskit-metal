@@ -51,7 +51,6 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
@@ -444,7 +443,7 @@ class TestToolboxMetal(unittest.TestCase, AssertionsMixin):
                 layer=1,
             ),
         )
-        chip = getattr(multiplanar_design, "_chips")
+        chip = multiplanar_design._chips
         for main in chip.items():
             coords = main[1]
         for item in coords.values():

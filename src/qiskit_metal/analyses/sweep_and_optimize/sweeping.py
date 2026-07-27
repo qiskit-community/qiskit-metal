@@ -571,9 +571,7 @@ class Sweeping:
             # Decide if need to clean the design.
             obj_names = a_hfss.pinfo.get_all_object_names()
             if obj_names:
-                if index == len_sweep and not leave_last_design:
-                    a_hfss.clean_active_design()
-                elif index != len_sweep:
+                if index == len_sweep and not leave_last_design or index != len_sweep:
                     a_hfss.clean_active_design()
 
         a_hfss.disconnect_ansys()
@@ -817,9 +815,7 @@ class Sweeping:
             # Decide if need to clean the design.
             obj_names = a_hfss.pinfo.get_all_object_names()
             if obj_names:
-                if index == len_sweep and not leave_last_design:
-                    a_hfss.clean_active_design()
-                elif index != len_sweep:
+                if index == len_sweep and not leave_last_design or index != len_sweep:
                     a_hfss.clean_active_design()
 
         a_hfss.disconnect_ansys()
@@ -1127,9 +1123,7 @@ class Sweeping:
             # Decide if need to clean the design.
             obj_names = a_q3d.pinfo.get_all_object_names()
             if obj_names:
-                if index == len_sweep and not leave_last_design:
-                    a_q3d.clean_active_design()
-                elif index != len_sweep:
+                if index == len_sweep and not leave_last_design or index != len_sweep:
                     a_q3d.clean_active_design()
 
         a_q3d.disconnect_ansys()

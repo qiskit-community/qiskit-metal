@@ -32,21 +32,21 @@ if TYPE_CHECKING:
     from qiskit_metal import logger
 
 __all__ = [
-    "copy_update",
-    "dict_start_with",
-    "data_frame_empty_typed",
-    "clean_name",
-    "enable_warning_traceback",
-    "get_traceback",
-    "print_traceback_easy",
-    "log_error_easy",
-    "monkey_patch",
+    "bad_fillet_idxs",
     "can_write_to_path",
     "can_write_to_path_with_warning",
-    "toggle_numbers",
-    "bad_fillet_idxs",
+    "clean_name",
     "compress_vertex_list",
+    "copy_update",
+    "data_frame_empty_typed",
+    "dict_start_with",
+    "enable_warning_traceback",
     "get_range_of_vertex_to_not_fillet",
+    "get_traceback",
+    "log_error_easy",
+    "monkey_patch",
+    "print_traceback_easy",
+    "toggle_numbers",
 ]
 
 ####################################################################################
@@ -163,7 +163,7 @@ def clean_name(text: str):
 
     See https://stackoverflow.com/questions/3303312/how-do-i-convert-a-string-to-a-valid-variable-name-in-python
     """
-    return re.sub("\W|^(?=\d)", "_", text)
+    return re.sub(r"\W|^(?=\d)", "_", text)
 
 
 ####################################################################################

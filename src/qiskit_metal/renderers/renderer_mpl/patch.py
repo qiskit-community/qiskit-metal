@@ -42,7 +42,7 @@ from matplotlib.path import Path
 from numpy import asarray, concatenate, ones
 
 
-class Polygon(object):
+class Polygon:
     """Adapt Shapely or GeoJSON/geo_interface polygons to a common interface"""
 
     def __init__(self, context):

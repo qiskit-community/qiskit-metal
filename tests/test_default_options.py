@@ -25,11 +25,9 @@ class TestDefautOptions(unittest.TestCase):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
-        pass
 
     def test_default_options_instantiation_default_metal_options(self):
         """Test instantiation of DefaultMetalOptions."""

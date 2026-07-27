@@ -233,7 +233,6 @@ class QPyaedt(QRendererAnalysis):
         Args:
             component (QComponent): Component to render.
         """
-        pass
 
     def render_chips(
         self, draw_sample_holder: bool = True, box_plus_buffer: bool = True
@@ -247,8 +246,6 @@ class QPyaedt(QRendererAnalysis):
         # Abstract method. Must be implemented by the subclass.
         # Render all chips of the design.
         # Calls render_chip for each chip.
-
-        pass
 
         chip_list = self.get_chip_names()
         for chip_name in chip_list:
@@ -278,7 +275,6 @@ class QPyaedt(QRendererAnalysis):
 
         # This is for HFSS, will do later.  Also, we may want to do just once, BUT
         # not for every chip.
-        pass
 
     def render_components(
         self,
@@ -600,7 +596,6 @@ class QPyaedt(QRendererAnalysis):
         Returns:
             pathlib.WindowsPath: path to png formatted screenshot.
         """
-        pass
 
     def render_design(
         self, selection: Union[List, None] = None, box_plus_buffer: bool = True
@@ -947,7 +942,6 @@ class QPyaedt(QRendererAnalysis):
         #                     material="pec",
         #                     solve_inside=False,
         #                 )
-        pass
 
     def get_chip_names(self) -> List[str]:
         """

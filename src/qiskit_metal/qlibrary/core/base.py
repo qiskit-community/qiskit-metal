@@ -40,7 +40,7 @@ from typing import (
 import numpy as np
 import pandas as pd
 
-import qiskit_metal.qlibrary as qlibrary
+from qiskit_metal import qlibrary
 from qiskit_metal import config, draw, is_design, logger
 from qiskit_metal.draw import BaseGeometry
 from qiskit_metal.qlibrary.core._parsed_dynamic_attrs import (
@@ -729,7 +729,7 @@ name='{strname}'{other_args}
             self.status = "good"
 
             self.design.build_logs.add_success(
-                f"{str(datetime.now())} -- Component: {self.name} successfully built"
+                f"{datetime.now()!s} -- Component: {self.name} successfully built"
             )
 
         except Exception as error:
@@ -737,7 +737,7 @@ name='{strname}'{other_args}
                 f"ERROR in building component name={self.name}, error={error}"
             )
             self.design.build_logs.add_error(
-                f"{str(datetime.now())} -- Component: {self.name} failed with error\n: {error}"
+                f"{datetime.now()!s} -- Component: {self.name} failed with error\n: {error}"
             )
             raise error
 

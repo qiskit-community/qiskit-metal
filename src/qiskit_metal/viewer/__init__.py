@@ -42,4 +42,4 @@ from .view import view
 from .headless_gui import MetalGUIHeadless, gui
 from .show_inline import show_inline
 
-__all__ = ["view", "gui", "MetalGUIHeadless", "show_inline"]
+__all__ = ["MetalGUIHeadless", "gui", "show_inline", "view"]

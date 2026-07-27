@@ -38,11 +38,9 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
-        pass
 
     def test_analyses_sweeping_importable(self):
         """Regression guard: sweeping.py used an unquoted ``Union`` return

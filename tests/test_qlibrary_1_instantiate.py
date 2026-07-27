@@ -70,11 +70,9 @@ class TestComponentInstantiation(unittest.TestCase, AssertionsMixin):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
-        pass
 
     def test_qlibrary_instantiate_qcomponent(self):
         """Test the instantiaion of QComponent."""

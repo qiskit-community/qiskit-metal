@@ -296,11 +296,11 @@ def main():
             f"docs/tut/ and tutorials/.",
             file=sys.stderr,
         )
-        print("", file=sys.stderr)
+        print(file=sys.stderr)
         for docs_p, tut_p in drift:
             print(f"  docs/tut: {docs_p}", file=sys.stderr)
             print(f"  tutorial: {tut_p}", file=sys.stderr)
-            print("", file=sys.stderr)
+            print(file=sys.stderr)
         print(
             "Both folders must contain byte-identical notebook cell content.\n"
             "Re-sync by running:\n\n"

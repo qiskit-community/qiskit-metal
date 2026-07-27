@@ -11,7 +11,7 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_BuildHistory(object):
+class Ui_BuildHistory:
     def setupUi(self, BuildHistory):
         BuildHistory.setObjectName("BuildHistory")
         BuildHistory.resize(1536, 865)

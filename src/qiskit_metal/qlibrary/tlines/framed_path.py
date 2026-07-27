@@ -169,10 +169,12 @@ class RouteFramed(QRoute):
                             self.__pts = pts_right
         elif normdot == 0:
             # Normal vectors perpendicular to each other
-            if (m1[0] in [minx, maxx]) and (m2[1] in [miny, maxy]):
-                # Both pins on perimeter of overall bounding box, but not at corner
-                self.__pts = self.connect_frame(2)
-            elif (m1[1] in [miny, maxy]) and (m2[0] in [minx, maxx]):
+            if (
+                (m1[0] in [minx, maxx])
+                and (m2[1] in [miny, maxy])
+                or (m1[1] in [miny, maxy])
+                and (m2[0] in [minx, maxx])
+            ):
                 # Both pins on perimeter of overall bounding box, but not at corner
                 self.__pts = self.connect_frame(2)
             elif (

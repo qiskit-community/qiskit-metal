@@ -47,7 +47,6 @@ class QRendererAnalysis(QRenderer):
         Render all chips of the design.
         Calls render_chip for each chip.
         """
-        pass
 
     @abstractmethod
     def render_chip(self, name):
@@ -57,7 +56,6 @@ class QRendererAnalysis(QRenderer):
         Args:
             name (str): chip to render
         """
-        pass
 
     @abstractmethod
     def render_components(self, selection=None):
@@ -68,7 +66,6 @@ class QRendererAnalysis(QRenderer):
         Args:
             selection (QComponent): Component to render.
         """
-        pass
 
     @abstractmethod
     def render_component(self, component):
@@ -78,7 +75,6 @@ class QRendererAnalysis(QRenderer):
         Args:
             component (QComponent): Component to render.
         """
-        pass
 
     @abstractmethod
     def render_element(self, element):
@@ -88,7 +84,6 @@ class QRendererAnalysis(QRenderer):
         Args:
             element (Element): Element to render.
         """
-        pass
         # if isinstance(element, path):
         #    self.render_element_path(element)
 
@@ -106,7 +101,6 @@ class QRendererAnalysis(QRenderer):
         Args:
             path (str): Path to render.
         """
-        pass
 
     @abstractmethod
     def render_element_poly(self, poly):
@@ -116,7 +110,6 @@ class QRendererAnalysis(QRenderer):
         Args:
             poly (Poly): Poly to render.
         """
-        pass
 
     @abstractmethod
     def save_screenshot(self, path: str = None, show: bool = True):
@@ -129,7 +122,6 @@ class QRendererAnalysis(QRenderer):
         Returns:
             pathlib.WindowsPath: path to png formatted screenshot.
         """
-        pass
 
 
 # class Cap():

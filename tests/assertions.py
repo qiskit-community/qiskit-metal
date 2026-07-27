@@ -104,6 +104,6 @@ class AssertionsMixin:
                     item1, item2, rel_tol=rel_tol, abs_tol=abs_tol
                 )
             except AssertionError as err:
-                standardMsg = f"Iterable elements {index} not almost equal: {str(err)}"
+                standardMsg = f"Iterable elements {index} not almost equal: {err!s}"
                 msg = self._formatMessage(msg, standardMsg)
                 raise self.failureException(msg) from None

@@ -192,7 +192,7 @@ class ParameterEntryWindow(QMainWindow):
         """
 
         if imagepath.is_file():
-            text += f'''<img src="{str(imagepath)}"/>'''
+            text += f'''<img src="{imagepath!s}"/>'''
 
         text += f"""
             <div class="h1">Class docstring:</div>

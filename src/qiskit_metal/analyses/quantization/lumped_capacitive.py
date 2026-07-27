@@ -39,23 +39,23 @@ from qiskit_metal.analyses.quantization.constants import (
 )
 
 __all__ = [
-    "Ic_from_Lj",
-    "Ic_from_Ej",
     "Cs_from_Ec",
-    "transmon_props",
-    "chi",
-    "extract_transmon_coupled_Noscillator",
-    "levels_vs_ng_real_units",
-    "get_C_and_Ic",
-    "cos_to_mega_and_delta",
+    "Ic_from_Ej",
+    "Ic_from_Lj",
     "chargeline_T1",
+    "chi",
+    "cos_to_mega_and_delta",
+    "df_cmat_style_print",
+    "df_reorder_matrix_basis",
+    "extract_transmon_coupled_Noscillator",
+    "get_C_and_Ic",
+    "levels_vs_ng_real_units",
+    "load_q3d_capacitance_matrix",
+    "lumped_oscillator_from_path",
+    "move_index_to",
     "readin_q3d_matrix",
     "readin_q3d_matrix_m",
-    "load_q3d_capacitance_matrix",
-    "df_cmat_style_print",
-    "move_index_to",
-    "df_reorder_matrix_basis",
-    "lumped_oscillator_from_path",
+    "transmon_props",
 ]
 
 
@@ -404,7 +404,7 @@ def extract_transmon_coupled_Noscillator(
     if print_info:
         print(qubit_index, bus_index)
         print("Predicted Values")
-        print("")
+        print()
         print("Transmon Properties")
         print("f_Q %f [GHz]" % ham_dict["fQ"])
         print("EC %f [MHz]" % ham_dict["EC"])
@@ -414,7 +414,7 @@ def extract_transmon_coupled_Noscillator(
         print("Lq %f [nH]" % (phi0**2 / (hbar * EJ) / 1e-9))
         print("Cq %f [fF]" % (Cq / 1e-15))
         print("T1 %f [us]" % (T1 / (1e-6)))
-        print("")
+        print()
 
         print("**Coupling Properties**")
         for ii in range(N):

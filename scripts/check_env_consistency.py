@@ -123,9 +123,7 @@ def ceiling_of(spec: SpecifierSet) -> Version | None:
     bound), or ``None`` if the spec has no upper bound."""
     candidates: list[Version] = []
     for s in spec:
-        if s.operator == "<":
-            candidates.append(Version(s.version))
-        elif s.operator == "<=":
+        if s.operator == "<" or s.operator == "<=":
             candidates.append(Version(s.version))
         elif s.operator == "~=":
             # ~=X.Y means >=X.Y, <X+1.0. ~=X.Y.Z means >=X.Y.Z, <X.Y+1.0.

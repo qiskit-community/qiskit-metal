@@ -100,7 +100,7 @@ class TransmonConcentricType2(BaseQubit):
         p = self.parse_options()  # Parse the string options into numbers
         # draw the concentric pad regions
         outer_pad = draw.Point(0, 0).buffer(p.rad_outer)
-        space = draw.Point(0, 0).buffer((p.gap + p.rad_inner))
+        space = draw.Point(0, 0).buffer(p.gap + p.rad_inner)
         cutout = draw.rectangle(
             8.0 * p.finger_N_width,
             p.finger_N_length,
