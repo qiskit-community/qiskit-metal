@@ -169,9 +169,20 @@
         "_dev",
         "docs/_archive",
         "docs/_build",
+        # ruff 0.16 began formatting Python code blocks embedded in Markdown.
+        # Our .md snippets (README quick-start, agent docs) are hand-wrapped for
+        # readability, not machine-formatted -- keep the formatter off them.
+        "*.md",
     ]
 
 [tool.ruff.lint]
+    # Pin the rule set explicitly. Without ``select`` ruff applies its
+    # *default* rules, which change between ruff releases -- and since CI
+    # installs the latest ruff, a new release silently breaks lint on every
+    # open PR (ruff 0.16.0 expanded the defaults and lit up ~3.8k pre-existing
+    # findings). These four are ruff's historical defaults, i.e. what this
+    # repo has actually been enforcing.
+    select = [ "E4", "E7", "E9", "F" ]
     ignore = [ "E402", "F401", "E731", "E722", "E741", "F821" ]
     # Ruff ignore codes:
     # To be sorted out in the future.
