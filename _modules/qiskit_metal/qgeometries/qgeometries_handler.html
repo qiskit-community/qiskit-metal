@@ -503,7 +503,7 @@
     <span class="kn">from</span><span class="w"> </span><span class="nn">..designs</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..qlibrary.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;is_qgeometry_table&quot;</span><span class="p">,</span> <span class="s2">&quot;QGeometryTables&quot;</span><span class="p">]</span>  <span class="c1"># , &#39;ElementTypes&#39;]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;QGeometryTables&quot;</span><span class="p">,</span> <span class="s2">&quot;is_qgeometry_table&quot;</span><span class="p">]</span>  <span class="c1"># , &#39;ElementTypes&#39;]</span>
 
 <span class="c1"># from collections import OrderedDict</span>
 <span class="c1"># dict are ordered in Python 3.6+ by default, this is for backward compatibility</span>
@@ -619,7 +619,7 @@
 
 <div class="viewcode-block" id="QGeometryTables">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">QGeometryTables</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">QGeometryTables</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to create, store, and handle element tables.</span>
 
 <span class="sd">    A regular user would not need to create tables themselves.</span>
@@ -1191,7 +1191,7 @@
         <span class="n">component_int_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">component_id</span><span class="p">)</span>
         <span class="n">a_comp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">component_int_id</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">a_comp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">return</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># TODO: is this the best way to do this, or is there a faster way?</span>
             <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>

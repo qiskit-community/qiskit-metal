@@ -880,26 +880,26 @@
         <span class="n">end_pt_adjusted_down</span> <span class="o">=</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">fillet_shift</span>
 
         <span class="c1"># if start_pt.position is below axes + shift - 2xfillet &amp;  first_meander_sideways</span>
-        <span class="k">if</span> <span class="n">first_meander_sideways</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span>
-            <span class="n">start_pt_adjusted_up</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="p">):</span>
-            <span class="k">pass</span>
-        <span class="c1"># if start_pt.position is above axes - shift + 2xfillet &amp;  not first_meander_sideways</span>
-        <span class="k">elif</span> <span class="ow">not</span> <span class="n">first_meander_sideways</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span>
-            <span class="n">start_pt_adjusted_down</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">first_meander_sideways</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span><span class="n">start_pt_adjusted_up</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="n">first_meander_sideways</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span><span class="n">start_pt_adjusted_down</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># else block first mender</span>
             <span class="n">adjustment_vector</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
         <span class="c1"># if end_pt.position is below axes + shift - 2xfillet &amp;  last_meander_sideways</span>
-        <span class="k">if</span> <span class="n">last_meander_sideways</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span>
-            <span class="n">end_pt_adjusted_up</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">]</span>
-        <span class="p">):</span>
-            <span class="k">pass</span>
-        <span class="c1"># if end_pt.position is above axes - shift + 2xfillet &amp;  not last_meander_sideways</span>
-        <span class="k">elif</span> <span class="ow">not</span> <span class="n">last_meander_sideways</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span>
-            <span class="n">end_pt_adjusted_down</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">last_meander_sideways</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span>
+                <span class="n">end_pt_adjusted_up</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="n">last_meander_sideways</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">issideways</span><span class="p">(</span>
+                <span class="n">end_pt_adjusted_down</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">],</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">term_point</span><span class="p">]</span>
+            <span class="p">)</span>
         <span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>

@@ -702,8 +702,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            component (QComponent): Component to render.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="QPyaedt.render_chips">
@@ -720,8 +719,6 @@
         <span class="c1"># Abstract method. Must be implemented by the subclass.</span>
         <span class="c1"># Render all chips of the design.</span>
         <span class="c1"># Calls render_chip for each chip.</span>
-
-        <span class="k">pass</span>
 
         <span class="n">chip_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_chip_names</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">chip_name</span> <span class="ow">in</span> <span class="n">chip_list</span><span class="p">:</span>
@@ -750,12 +747,11 @@
 <span class="sd">        Args:</span>
 <span class="sd">            chip_name (str): Name of chip.</span>
 <span class="sd">            draw_sample_holder (bool): Option to draw vacuum box around chip.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
 
         <span class="c1"># This is for HFSS, will do later.  Also, we may want to do just once, BUT</span>
         <span class="c1"># not for every chip.</span>
-        <span class="k">pass</span></div>
-
 
 <div class="viewcode-block" id="QPyaedt.render_components">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.render_components">[docs]</a>
@@ -1099,8 +1095,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pathlib.WindowsPath: path to png formatted screenshot.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="QPyaedt.render_design">
@@ -1428,7 +1423,8 @@
 <span class="sd">        * wb_offset -- offset distance for wirebond placement (along the direction</span>
 <span class="sd">        of the cpw)</span>
 <span class="sd">        * wb_size -- controls the width of the wirebond (wb_size * path[&#39;width&#39;])</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
         <span class="c1"># norm_z = np.array([0, 0, 1])</span>
 
         <span class="c1"># wb_threshold = parse_units(self._options[&quot;wb_threshold&quot;])</span>
@@ -1474,8 +1470,6 @@
         <span class="c1">#                     material=&quot;pec&quot;,</span>
         <span class="c1">#                     solve_inside=False,</span>
         <span class="c1">#                 )</span>
-        <span class="k">pass</span></div>
-
 
 <div class="viewcode-block" id="QPyaedt.get_chip_names">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.get_chip_names">[docs]</a>

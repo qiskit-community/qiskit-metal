@@ -502,23 +502,23 @@
 <span class="p">)</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;Ic_from_Lj&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Ic_from_Ej&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Cs_from_Ec&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;transmon_props&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;chi&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;extract_transmon_coupled_Noscillator&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;levels_vs_ng_real_units&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_C_and_Ic&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cos_to_mega_and_delta&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Ic_from_Ej&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Ic_from_Lj&quot;</span><span class="p">,</span>
     <span class="s2">&quot;chargeline_T1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;chi&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cos_to_mega_and_delta&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;df_cmat_style_print&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;df_reorder_matrix_basis&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;extract_transmon_coupled_Noscillator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_C_and_Ic&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;levels_vs_ng_real_units&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;load_q3d_capacitance_matrix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lumped_oscillator_from_path&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;move_index_to&quot;</span><span class="p">,</span>
     <span class="s2">&quot;readin_q3d_matrix&quot;</span><span class="p">,</span>
     <span class="s2">&quot;readin_q3d_matrix_m&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;load_q3d_capacitance_matrix&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;df_cmat_style_print&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;move_index_to&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;df_reorder_matrix_basis&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;lumped_oscillator_from_path&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;transmon_props&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -884,7 +884,7 @@
     <span class="k">if</span> <span class="n">print_info</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">qubit_index</span><span class="p">,</span> <span class="n">bus_index</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Predicted Values&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Transmon Properties&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f_Q </span><span class="si">%f</span><span class="s2"> [GHz]&quot;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;fQ&quot;</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EC </span><span class="si">%f</span><span class="s2"> [MHz]&quot;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;EC&quot;</span><span class="p">])</span>
@@ -894,7 +894,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Lq </span><span class="si">%f</span><span class="s2"> [nH]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">phi0</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">hbar</span> <span class="o">*</span> <span class="n">EJ</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e-9</span><span class="p">))</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cq </span><span class="si">%f</span><span class="s2"> [fF]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Cq</span> <span class="o">/</span> <span class="mf">1e-15</span><span class="p">))</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;T1 </span><span class="si">%f</span><span class="s2"> [us]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">T1</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">)))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">()</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;**Coupling Properties**&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>

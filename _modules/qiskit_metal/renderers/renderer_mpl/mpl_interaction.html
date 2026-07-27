@@ -583,12 +583,12 @@
     <span class="n">message</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;.*Ignoring fixed .* limits to fulfill fixed data aspect.*&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;figure_pz&quot;</span><span class="p">,</span> <span class="s2">&quot;MplInteraction&quot;</span><span class="p">,</span> <span class="s2">&quot;PanAndZoom&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MplInteraction&quot;</span><span class="p">,</span> <span class="s2">&quot;PanAndZoom&quot;</span><span class="p">,</span> <span class="s2">&quot;figure_pz&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="MplInteraction">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.MplInteraction.html#qiskit_metal.renderers.MplInteraction">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">MplInteraction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MplInteraction</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for class providing interaction to a matplotlib Figure.&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figure</span><span class="p">):</span>
@@ -686,7 +686,7 @@
 <span class="sd">            figure (matplotlib.figure.Figure): The matplotlib figure to attach the behavior to.</span>
 <span class="sd">            scale_factor (float): The scale factor to apply on wheel event.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ZoomOnWheel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">figure</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">figure</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_connection</span><span class="p">(</span><span class="s2">&quot;scroll_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_wheel</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">=</span> <span class="n">scale_factor</span>
@@ -835,7 +835,7 @@
 <span class="sd">            figure (matplotlib.figure.Figure): The matplotlib figure to attach the behavior to.</span>
 <span class="sd">            scale_factor (float): The scale factor to apply on wheel event.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PanAndZoom</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">figure</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">figure</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_connection</span><span class="p">(</span><span class="s2">&quot;button_press_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_press</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_connection</span><span class="p">(</span><span class="s2">&quot;button_release_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_release</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_connection</span><span class="p">(</span><span class="s2">&quot;motion_notify_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_motion</span><span class="p">)</span>
@@ -984,7 +984,6 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_style_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Style figure.&quot;&quot;&quot;</span>
         <span class="c1"># self.figure.dpi = 150</span>
-        <span class="k">pass</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_pan_update_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">axis_id</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">last_event</span><span class="p">):</span>

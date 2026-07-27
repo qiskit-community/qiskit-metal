@@ -1031,7 +1031,7 @@
     <span class="nd">@property</span>
     <span class="nd">@_maybe_remove_grd_node_then_cache</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">S_n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Linear transformation from original node basis to</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Linear transformation from original node basis to</span>
 <span class="sd">        node-junction basis where all non-linear dipole fluxes are</span>
 <span class="sd">        explicitly in the basis. The flux of the j-th dipole</span>
 <span class="sd">        $\Phi_{j} = \Phi_{n2} - \Phi_{n1}$, where $\Phi_{n2}$ and</span>
@@ -1073,7 +1073,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">node_jj_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Node-junction basis which is linear transformation</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Node-junction basis which is linear transformation</span>
 <span class="sd">        from original node basis to where all non-linear dipole fluxes are</span>
 <span class="sd">        explicitly in the basis. The flux of the j-th dipole</span>
 <span class="sd">        $\Phi_{j} = \Phi_{n2} - \Phi_{n1}$, where $\Phi_{n2}$ and</span>
@@ -1446,7 +1446,7 @@
         <span class="n">dflt_opts</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;default_opts&quot;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="n">build_options</span> <span class="o">=</span> <span class="n">QuantumBuilderOptions</span><span class="p">(</span><span class="o">**</span><span class="n">dflt_opts</span><span class="p">)</span>
         <span class="n">build_options</span><span class="o">.</span><span class="n">set_from_input</span><span class="p">(</span><span class="n">subsystem</span><span class="o">.</span><span class="n">q_opts</span><span class="p">)</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;builder_options&quot;</span><span class="p">,</span> <span class="n">build_options</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">builder_options</span> <span class="o">=</span> <span class="n">build_options</span>
         <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsystem</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">wrapper</span>
@@ -2106,7 +2106,7 @@
         <span class="n">ham_res</span><span class="p">[</span><span class="s2">&quot;chi_in_MHz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">LabeledNdarray</span><span class="p">(</span><span class="n">chi_mat</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">print_info</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">()</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;system frequencies in GHz:&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------------------------&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">ham_res</span><span class="p">[</span><span class="s2">&quot;fQ_in_Ghz&quot;</span><span class="p">])</span>
