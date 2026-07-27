@@ -182,7 +182,21 @@
     # open PR (ruff 0.16.0 expanded the defaults and lit up ~3.8k pre-existing
     # findings). These four are ruff's historical defaults, i.e. what this
     # repo has actually been enforcing.
-    select = [ "E4", "E7", "E9", "F" ]
+    select = [
+        "E4", "E7", "E9", "F",
+        # Adopted from ruff 0.16's expanded defaults: mechanical, safely
+        # auto-fixable rules that either fix a latent bug or change no runtime
+        # behaviour. See .claude/context/decision-log.md for the groups
+        # deliberately NOT adopted (I001, RUF012, BLE001, C408, B006, ...).
+        "W605",                            # non-raw strings used as regexes
+        "UP004", "UP008", "UP033", "UP034",
+        "PIE790", "PIE800", "PIE808",
+        "RUF010", "RUF022", "RUF046",
+        "PLR0402", "PLR1711", "PLR2044",
+        "B009", "B010",
+        "RET501", "SIM114", "FURB105",
+        "PYI016",
+    ]
     ignore = [ "E402", "F401", "E731", "E722", "E741", "F821" ]
     # Ruff ignore codes:
     # To be sorted out in the future.

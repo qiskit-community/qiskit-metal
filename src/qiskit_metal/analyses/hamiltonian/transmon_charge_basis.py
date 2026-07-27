@@ -21,7 +21,7 @@ get the Ej, Ec or use input Ej, Ec to find the spectrum of the Cooper Pair Box.
 
 import numpy as np
 import qutip as qt
-import scipy.linalg as linalg
+from scipy import linalg
 import scipy.optimize as opt
 
 

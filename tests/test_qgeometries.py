@@ -31,11 +31,9 @@ class TestElements(unittest.TestCase):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
-        pass
 
     def test_qgeometry_instantiate_q_geometry_tables(self):
         """Test instantiation of QGeometryTables."""

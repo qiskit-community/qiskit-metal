@@ -37,7 +37,6 @@ class PropertyTableWidget(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        #
         self._design = design
 
         # Table View:

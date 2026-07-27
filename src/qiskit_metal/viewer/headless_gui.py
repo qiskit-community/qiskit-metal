@@ -57,15 +57,15 @@ class _NoOpMainWindow:
 
     def close(self) -> None:  # noqa: D401
         """No-op in headless mode."""
-        return None
+        return
 
     def show(self) -> None:
         """No-op in headless mode."""
-        return None
+        return
 
     def raise_(self) -> None:
         """No-op in headless mode."""
-        return None
+        return
 
 
 class MetalGUIHeadless:
@@ -171,7 +171,7 @@ class MetalGUIHeadless:
         ``design.components['Q1'].options.<field> = ...`` followed by
         ``gui.rebuild()`` (edit).
         """
-        return None
+        return
 
     def highlight_components(self, component_names: List[str]) -> Optional["Figure"]:
         """Mark components for highlighting on the next render.
@@ -287,7 +287,7 @@ class MetalGUIHeadless:
         panels. There are no docks in the headless inline view, so this
         silently does nothing.
         """
-        return None
+        return
 
     def change_design(self, design: "QDesign") -> None:
         """Alias of :meth:`set_design` to match older ``MetalGUI`` API."""

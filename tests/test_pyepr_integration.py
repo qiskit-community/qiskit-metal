@@ -248,7 +248,7 @@ class TestEigenmodeConvergencePlotHelpers(unittest.TestCase, AssertionsMixin):
 
     def test_pyepr_reports_exposes_helpers(self):
         """The four convergence-plot helpers must remain in pyEPR.reports."""
-        import pyEPR.reports as reports
+        from pyEPR import reports
 
         for name in self.HELPERS:
             self.assertTrue(

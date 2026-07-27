@@ -19,7 +19,7 @@ import pickle
 # from ..designs.base
 from qiskit_metal.toolbox_python.utility_functions import log_error_easy
 
-__all__ = ["save_metal", "load_metal_design"]
+__all__ = ["load_metal_design", "save_metal"]
 
 
 def save_metal(filename: str, design):

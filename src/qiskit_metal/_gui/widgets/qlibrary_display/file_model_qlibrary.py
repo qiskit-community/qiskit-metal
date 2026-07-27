@@ -64,7 +64,7 @@ class QFileSystemLibraryModel(QFileSystemModel):
                 absoluteFilename = str(qfileinfo.absoluteFilePath())
                 if role == Qt.DecorationRole:
                     matches = findProperty(
-                        absoluteFilename, "\.\. image::[\r\n]+([^\r\n]+)"
+                        absoluteFilename, "\\.\\. image::[\r\n]+([^\r\n]+)"
                     )
                     if matches is not None and len(matches) != 0:
                         iconfile = matches[0].lstrip()

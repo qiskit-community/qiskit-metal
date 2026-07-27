@@ -33,11 +33,9 @@ class TestDesign(unittest.TestCase, AssertionsMixin):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
-        pass
 
     def test_design_instantiate_qdesign(self):
         """Test the instantiation of QDesign."""

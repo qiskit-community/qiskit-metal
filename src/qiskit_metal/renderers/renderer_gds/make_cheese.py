@@ -262,7 +262,7 @@ class Cheesing:
         self.one_hole_cell.add(*a_poly)
 
         if self.one_hole_cell.bounding_box() is not None:
-            next((c for c in self.lib.cells if c.name == chip_layer_only_top_name)).add(
+            next(c for c in self.lib.cells if c.name == chip_layer_only_top_name).add(
                 gdstk.Reference(self.one_hole_cell)
             )
         else:
@@ -431,9 +431,7 @@ class Cheesing:
         top_chip_layer_name = f"TOP_{self.chip_name}_{self.layer}"
         ground_cell_name = f"ground_{self.chip_name}_{self.layer}"
         if next((c for c in self.lib.cells if c.name == top_chip_layer_name), None):
-            ground_cell = next(
-                (c for c in self.lib.cells if c.name == ground_cell_name)
-            )
+            ground_cell = next(c for c in self.lib.cells if c.name == ground_cell_name)
             # Need to keep the depth at 0, otherwise all the
             # cell references (junctions) will be added for boolean.
             ground_cheese = gdstk.boolean(

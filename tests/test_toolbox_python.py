@@ -28,11 +28,9 @@ class TestToolboxPython(unittest.TestCase):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
-        pass
 
     def test_instantiate_log_store(self):
         """Test instantiation of LogStore class."""

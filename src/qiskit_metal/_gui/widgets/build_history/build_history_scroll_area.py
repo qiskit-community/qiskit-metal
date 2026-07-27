@@ -26,7 +26,7 @@ class BuildHistoryScrollArea(QScrollArea, Ui_BuildHistory):
                 Parent widget if necessary
 
         """
-        super(BuildHistoryScrollArea, self).__init__(parent, *args, **kwargs)
+        super().__init__(parent, *args, **kwargs)
         self.setupUi(self)
         self._previous_builds = previous_builds
         self._display_logs()

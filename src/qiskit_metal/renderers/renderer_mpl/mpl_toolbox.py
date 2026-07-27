@@ -14,8 +14,8 @@
 """Plotting functions for shapely components using mpl."""
 
 import matplotlib as mpl
-import matplotlib.cbook as cbook
-import matplotlib.image as image
+from matplotlib import cbook
+from matplotlib import image
 import matplotlib.pyplot as plt
 import numpy as np
 import shapely
@@ -29,15 +29,15 @@ from qiskit_metal.renderers.renderer_mpl.mpl_interaction import figure_pz
 from qiskit_metal.renderers.renderer_mpl.patch import PolygonPatch
 
 __all__ = [
-    "_render_poly_zkm",
-    "render_poly",
-    "render",
-    "style_axis_simple",
-    "get_prop_cycle",
-    "style_axis_standard",
-    "figure_spawn",
     "_axis_set_watermark_img",
+    "_render_poly_zkm",
     "clear_axis",
+    "figure_spawn",
+    "get_prop_cycle",
+    "render",
+    "render_poly",
+    "style_axis_simple",
+    "style_axis_standard",
 ]
 
 ##########################################################################################
@@ -77,9 +77,7 @@ def _render_poly_zkm(poly: Polygon, ax, kw=None, kw_hole=None):
         mpl_poly = mpl.patches.Polygon(coords)
         color = ax._get_lines.get_next_color()
         ax.add_collection(
-            mpl.collections.PatchCollection(
-                [mpl_poly], **{**{"facecolor": color}, **kw}
-            )
+            mpl.collections.PatchCollection([mpl_poly], **{"facecolor": color, **kw})
         )
 
         # Interior (i.e., holes)

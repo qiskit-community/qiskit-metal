@@ -35,7 +35,7 @@ from qiskit_metal._gui.utility._handle_qt_messages import slot_catch_error
 if not config.is_building_docs():
     from ....toolbox_python.utility_functions import clean_name, monkey_patch
 
-__all__ = ["QTextEditLogger", "LogHandler_for_QTextLog"]
+__all__ = ["LogHandler_for_QTextLog", "QTextEditLogger"]
 
 
 class QTextEditLogger(QTextEdit):

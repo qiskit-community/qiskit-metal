@@ -40,7 +40,7 @@ if TYPE_CHECKING:
     from ..designs import QDesign
     from ..qlibrary.core import QComponent
 
-__all__ = ["is_qgeometry_table", "QGeometryTables"]  # , 'ElementTypes']
+__all__ = ["QGeometryTables", "is_qgeometry_table"]  # , 'ElementTypes']
 
 # from collections import OrderedDict
 # dict are ordered in Python 3.6+ by default, this is for backward compatibility
@@ -154,7 +154,7 @@ ELEMENT_COLUMNS = dict(
 TRUE_BOOLS = [True, "True", "true", "Yes", "yes", "1", 1]
 
 
-class QGeometryTables(object):
+class QGeometryTables:
     """Class to create, store, and handle element tables.
 
     A regular user would not need to create tables themselves.
@@ -688,7 +688,7 @@ class QGeometryTables(object):
         component_int_id = int(component_id)
         a_comp = self.design._components[component_int_id]
         if a_comp is None:
-            return None
+            return
         else:
             # TODO: is this the best way to do this, or is there a faster way?
             for table_name in self.tables:

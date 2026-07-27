@@ -78,7 +78,7 @@ class BranchNode:
             parent ([type]): The parent.  Defaults to None.
             data (dict): Node data.  Defaults to None.
         """
-        super(BranchNode, self).__init__()
+        super().__init__()
         self.name = name
         self.parent = parent
         self.children = []
@@ -177,7 +177,7 @@ class LeafNode:
             parent (Node): The parent.  Defaults to None.
             path (list): Node path.  Defaults to None.
         """
-        super(LeafNode, self).__init__()
+        super().__init__()
         self.path = path or []
         self.parent = parent
         self.label = label

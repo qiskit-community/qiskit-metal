@@ -407,26 +407,26 @@ class RouteMeander(QRoute):
         end_pt_adjusted_down = end_pt.position - fillet_shift
 
         # if start_pt.position is below axes + shift - 2xfillet &  first_meander_sideways
-        if first_meander_sideways and not self.issideways(
-            start_pt_adjusted_up, pts[0], pts[1]
-        ):
-            pass
-        # if start_pt.position is above axes - shift + 2xfillet &  not first_meander_sideways
-        elif not first_meander_sideways and self.issideways(
-            start_pt_adjusted_down, pts[0], pts[1]
+        if (
+            first_meander_sideways
+            and not self.issideways(start_pt_adjusted_up, pts[0], pts[1])
+            or not first_meander_sideways
+            and self.issideways(start_pt_adjusted_down, pts[0], pts[1])
         ):
             pass
         else:
             # else block first mender
             adjustment_vector[:2] = [0, 0]
         # if end_pt.position is below axes + shift - 2xfillet &  last_meander_sideways
-        if last_meander_sideways and not self.issideways(
-            end_pt_adjusted_up, pts[-2 - term_point], pts[-1 - term_point]
-        ):
-            pass
-        # if end_pt.position is above axes - shift + 2xfillet &  not last_meander_sideways
-        elif not last_meander_sideways and self.issideways(
-            end_pt_adjusted_down, pts[-2 - term_point], pts[-1 - term_point]
+        if (
+            last_meander_sideways
+            and not self.issideways(
+                end_pt_adjusted_up, pts[-2 - term_point], pts[-1 - term_point]
+            )
+            or not last_meander_sideways
+            and self.issideways(
+                end_pt_adjusted_down, pts[-2 - term_point], pts[-1 - term_point]
+            )
         ):
             pass
         else:

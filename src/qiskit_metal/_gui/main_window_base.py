@@ -568,7 +568,6 @@ class QMainWindowBaseHandler:
 
     def _ui_adjustments(self):
         """Any touchups to the loaded ui that need be done soon."""
-        pass
 
     def _get_file_path(self):
         """Get the dir name of the current path in which this file is

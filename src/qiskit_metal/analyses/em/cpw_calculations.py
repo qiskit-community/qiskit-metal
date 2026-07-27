@@ -36,10 +36,10 @@ e0 = 8.85419 * 10**-12
 u0 = 4 * np.pi * 10**-7
 
 __all__ = [
-    "guided_wavelength",
-    "lumped_cpw",
     "effective_dielectric_constant",
     "elliptic_int_constants",
+    "guided_wavelength",
+    "lumped_cpw",
 ]
 
 

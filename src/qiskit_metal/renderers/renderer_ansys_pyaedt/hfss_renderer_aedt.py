@@ -1,4 +1,3 @@
-#
 """
 Variables
 
@@ -524,7 +523,6 @@ class QHFSSPyaedt(QPyaedt):
         Returns:
             bool: _description_
         """
-        pass
 
     def render_element_junction(self,
                                 qgeom: pd.Series,
@@ -905,7 +903,6 @@ class QHFSSPyaedt(QPyaedt):
             port_list (list): _description_
         """
         # This should be overwritten by drivenmodal class.
-        pass
 
     def jj_to_port_list_dict_populate(self, jj_to_port: list):
         """Convert jj_to_port to a searchable dict.
@@ -914,7 +911,6 @@ class QHFSSPyaedt(QPyaedt):
             jj_to_port (list): _description_
         """
         # This should be overwritten by drivenmodal class.
-        pass
 
     def set_variable(self, name: str, value: str):
         """

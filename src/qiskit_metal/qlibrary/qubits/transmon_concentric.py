@@ -92,7 +92,7 @@ class TransmonConcentric(BaseQubit):
 
         # draw the concentric pad regions
         outer_pad = draw.Point(0, 0).buffer(p.rad_o)
-        space = draw.Point(0, 0).buffer((p.gap + p.rad_i))
+        space = draw.Point(0, 0).buffer(p.gap + p.rad_i)
         outer_pad = draw.subtract(outer_pad, space)
         inner_pad = draw.Point(0, 0).buffer(p.rad_i)
         # gap = draw.subtract(space, inner_pad)

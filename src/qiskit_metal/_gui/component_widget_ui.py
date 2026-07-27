@@ -11,7 +11,7 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_ComponentWidget(object):
+class Ui_ComponentWidget:
     def setupUi(self, ComponentWidget):
         ComponentWidget.setObjectName("ComponentWidget")
         ComponentWidget.resize(539, 475)

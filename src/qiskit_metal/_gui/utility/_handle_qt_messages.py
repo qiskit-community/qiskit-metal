@@ -25,7 +25,7 @@ from PySide6.QtCore import Slot
 
 from qiskit_metal import logger
 
-__all__ = ["slot_catch_error", "do_debug"]
+__all__ = ["do_debug", "slot_catch_error"]
 
 #######################################################################################
 # Core handler

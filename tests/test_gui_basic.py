@@ -27,11 +27,9 @@ class TestGUIBasic(unittest.TestCase):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
-        pass
 
     def test_instantiate_branch_node(self):
         """Test instantiation of BranchNode in dict_tree_base.py."""

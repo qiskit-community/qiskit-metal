@@ -120,10 +120,10 @@ warnings.filterwarnings(
     message=r".*Ignoring fixed .* limits to fulfill fixed data aspect.*",
 )
 
-__all__ = ["figure_pz", "MplInteraction", "PanAndZoom"]
+__all__ = ["MplInteraction", "PanAndZoom", "figure_pz"]
 
 
-class MplInteraction(object):
+class MplInteraction:
     """Base class for class providing interaction to a matplotlib Figure."""
 
     def __init__(self, figure):
@@ -215,7 +215,7 @@ class ZoomOnWheel(MplInteraction):
             figure (matplotlib.figure.Figure): The matplotlib figure to attach the behavior to.
             scale_factor (float): The scale factor to apply on wheel event.
         """
-        super(ZoomOnWheel, self).__init__(figure)
+        super().__init__(figure)
         self._add_connection("scroll_event", self._on_mouse_wheel)
 
         self.scale_factor = scale_factor
@@ -361,7 +361,7 @@ class PanAndZoom(ZoomOnWheel):
             figure (matplotlib.figure.Figure): The matplotlib figure to attach the behavior to.
             scale_factor (float): The scale factor to apply on wheel event.
         """
-        super(PanAndZoom, self).__init__(figure, scale_factor)
+        super().__init__(figure, scale_factor)
         self._add_connection("button_press_event", self._on_mouse_press)
         self._add_connection("button_release_event", self._on_mouse_release)
         self._add_connection("motion_notify_event", self._on_mouse_motion)
@@ -507,7 +507,6 @@ class PanAndZoom(ZoomOnWheel):
     def _style_figure(self):
         """Style figure."""
         # self.figure.dpi = 150
-        pass
 
     @staticmethod
     def _pan_update_limits(ax, axis_id, event, last_event):

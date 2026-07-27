@@ -69,7 +69,7 @@ class BaseQubit(QComponent):
             # This qubit was not added to design.
             # self.logger.warning(
             # 'In BaseQubit.__init(), the qubit has not been added to design. The component is exiting with None.')
-            return None
+            return
         if options_connection_pads:
             self.options.connection_pads.update(options_connection_pads)
 

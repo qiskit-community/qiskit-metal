@@ -20,7 +20,7 @@ import logging
 import collections
 from typing import List
 
-__all__ = ["setup_logger", "LogStore"]
+__all__ = ["LogStore", "setup_logger"]
 
 
 def setup_logger(

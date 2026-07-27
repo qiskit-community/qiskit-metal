@@ -210,7 +210,7 @@ class BoundsForPathAndPolyTables:
 
     def get_box_for_xy_bounds(
         self,
-    ) -> Union[None, Union[Tuple[float, float, float, float], None]]:
+    ) -> Union[None, Tuple[float, float, float, float]]:
         """Assuming the chip size is used from Multiplanar design, and list of chip_names
         comes from layer_stack that will be used to determine the box size for simulation.
 

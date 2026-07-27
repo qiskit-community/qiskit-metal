@@ -23,7 +23,7 @@ from qiskit_metal.qlibrary.core import BaseQubit
 
 
 class TransmonPocketTeeth(BaseQubit):
-    """Transmon pocket with 'Teeth' connection pads.
+    r"""Transmon pocket with 'Teeth' connection pads.
 
     Inherits `BaseQubit` class
 

@@ -178,12 +178,12 @@ from pint import UnitRegistry
 from qiskit_metal import Dict, config, logger
 
 __all__ = [
-    "parse_value",  # Main function
-    "is_variable_name",  # extra helpers
-    "is_numeric_possible",
     "is_for_ast_eval",
+    "is_numeric_possible",
     "is_true",
+    "is_variable_name",  # extra helpers
     "parse_options",
+    "parse_value",  # Main function
 ]
 
 #########################################################################

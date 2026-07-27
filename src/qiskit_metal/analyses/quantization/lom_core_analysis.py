@@ -568,7 +568,7 @@ class CircuitGraph:
     @property
     @_maybe_remove_grd_node_then_cache
     def S_n(self):
-        """Linear transformation from original node basis to
+        r"""Linear transformation from original node basis to
         node-junction basis where all non-linear dipole fluxes are
         explicitly in the basis. The flux of the j-th dipole
         $\Phi_{j} = \Phi_{n2} - \Phi_{n1}$, where $\Phi_{n2}$ and
@@ -610,7 +610,7 @@ class CircuitGraph:
 
     @property
     def node_jj_basis(self):
-        """Node-junction basis which is linear transformation
+        r"""Node-junction basis which is linear transformation
         from original node basis to where all non-linear dipole fluxes are
         explicitly in the basis. The flux of the j-th dipole
         $\Phi_{j} = \Phi_{n2} - \Phi_{n1}$, where $\Phi_{n2}$ and
@@ -974,7 +974,7 @@ def set_builder_options(func):
         dflt_opts = getattr(self, "default_opts", {})
         build_options = QuantumBuilderOptions(**dflt_opts)
         build_options.set_from_input(subsystem.q_opts)
-        setattr(self, "builder_options", build_options)
+        self.builder_options = build_options
         func(self, subsystem)
 
     return wrapper
@@ -1612,7 +1612,7 @@ class CompositeSystem:
         ham_res["chi_in_MHz"] = LabeledNdarray(chi_mat, names)
 
         if print_info:
-            print("")
+            print()
             print("system frequencies in GHz:")
             print("--------------------------")
             print(ham_res["fQ_in_Ghz"])

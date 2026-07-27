@@ -11,7 +11,7 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindowPlot(object):
+class Ui_MainWindowPlot:
     def setupUi(self, MainWindowPlot):
         MainWindowPlot.setObjectName("MainWindowPlot")
         MainWindowPlot.resize(800, 600)

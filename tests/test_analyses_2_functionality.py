@@ -41,11 +41,9 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
-        pass
 
     def test_analyses_cpw_guided_wavelength(self):
         """Test the functionality of guided_wavelength in

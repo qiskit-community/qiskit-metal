@@ -51,7 +51,7 @@ class Vec3DArray:
         CAUTION: Please don't change this unless you really need to!
         """
         self.path_vecs = []
-        for i in range(0, len(self.points) - 1):
+        for i in range(len(self.points) - 1):
             v1 = self.points[i]
             v2 = self.points[i + 1]
             v12 = Vec3D.normed(Vec3D.sub(v2, v1))

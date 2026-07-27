@@ -31,14 +31,14 @@ from qiskit_metal import is_component, logger
 from qiskit_metal.draw import BaseGeometry
 
 __all__ = [
-    "get_poly_pts",
+    "Vector",
+    "array_chop",
+    "flatten_all_filter",
     "get_all_component_bounds",
     "get_all_geoms",
-    "flatten_all_filter",
+    "get_poly_pts",
     "remove_colinear_pts",
-    "array_chop",
     "vec_unit_planar",
-    "Vector",
 ]
 
 # Used for numpy.round()
@@ -236,9 +236,7 @@ def remove_colinear_pts(points):
     for i in range(2, len(points)):
         v1 = array(points[i - 2]) - array(points[i - 1])
         v2 = array(points[i - 1]) - array(points[i - 0])
-        if Vector.are_same(v1, v2):
-            remove_idx += [i - 1]
-        elif Vector.angle_between(v1, v2) == 0:
+        if Vector.are_same(v1, v2) or Vector.angle_between(v1, v2) == 0:
             remove_idx += [i - 1]
     points = np.delete(points, remove_idx, axis=0)
 
@@ -817,7 +815,7 @@ class Vec3D(Vector):
                 ]
             )
             translate_vec = np.array([0, cvec[1], cvec[2]])
-            new_vec = rot_x.dot((vec - translate_vec)) + translate_vec
+            new_vec = rot_x.dot(vec - translate_vec) + translate_vec
 
         if ay:
             rot_y = np.array(
@@ -828,7 +826,7 @@ class Vec3D(Vector):
                 ]
             )
             translate_vec = np.array([cvec[0], 0, cvec[2]])
-            new_vec = rot_y.dot((vec - translate_vec)) + translate_vec
+            new_vec = rot_y.dot(vec - translate_vec) + translate_vec
 
         if az:
             rot_z = np.array(
@@ -839,7 +837,7 @@ class Vec3D(Vector):
                 ]
             )
             translate_vec = np.array([cvec[0], cvec[1], 0])
-            new_vec = rot_z.dot((vec - translate_vec)) + translate_vec
+            new_vec = rot_z.dot(vec - translate_vec) + translate_vec
 
         return new_vec
 

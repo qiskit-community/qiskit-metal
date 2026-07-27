@@ -24,11 +24,9 @@ class TestSpeed(unittest.TestCase):
 
     def setUp(self):
         """Setup unit test."""
-        pass
 
     def tearDown(self):
         """Tie any loose ends."""
-        pass
 
     @timeout(5)
     def test_example_test(self):

@@ -16,7 +16,7 @@
 
 import numpy as np
 
-__all__ = ["set_decimal_precision", "dot", "cross", "round"]
+__all__ = ["cross", "dot", "round", "set_decimal_precision"]
 
 DECIMAL_PRECISION = 10
 

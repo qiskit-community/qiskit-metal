@@ -38,17 +38,17 @@ from qiskit_metal.draw import BaseGeometry
 from qiskit_metal.draw.utility import get_poly_pts
 
 __all__ = [
-    "rectangle",
-    "is_rectangle",
+    "_iter_func_geom_",
+    "buffer",
     "flip_merge",
+    "is_rectangle",
+    "rectangle",
     "rotate",
     "rotate_position",
-    "_iter_func_geom_",
-    "translate",
     "scale",
-    "buffer",
-    "union",
     "subtract",
+    "translate",
+    "union",
 ]
 
 

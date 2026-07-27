@@ -60,13 +60,13 @@ class QDesignCheck:
                     collision_counter_outer = 0.0
 
                     n = int(size(combined_geo_inner))
-                    for i in range(0, n):
+                    for i in range(n):
                         # print("inner element:", i)
                         el_inner = combined_geo.crosses(combined_geo_inner[i])
 
                         m = int(size(el_inner))
                         collision_counter = 0.0
-                        for j in range(0, m):
+                        for j in range(m):
                             if el_inner[j] == 1:
                                 collision_counter = collision_counter + 1.0
                             else:

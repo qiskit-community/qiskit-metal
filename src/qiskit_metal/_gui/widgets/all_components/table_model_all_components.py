@@ -137,7 +137,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
             int: The number of rows
         """
         if self.design:  # should we just enforce this
-            num = int(len(self.design.components))
+            num = len(self.design.components)
             if num == 0:
                 self._tableView.show_placeholder_text()
             else:

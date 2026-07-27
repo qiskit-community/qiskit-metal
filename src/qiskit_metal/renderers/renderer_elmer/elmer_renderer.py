@@ -674,7 +674,6 @@ class QElmerRenderer(QRendererAnalysis):
         Render all chips of the design.
         Calls render_chip for each chip.
         """
-        pass
 
     def render_chip(self, chip_name: str):
         """Abstract method. Must be implemented by the subclass.
@@ -683,7 +682,6 @@ class QElmerRenderer(QRendererAnalysis):
         Args:
             name (str): chip to render
         """
-        pass
 
     def render_layers(
         self,
