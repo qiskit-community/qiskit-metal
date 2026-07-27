@@ -129,7 +129,7 @@ Don't reach for `_dev/` as a halfway house — it's still public.
 | File | Read when |
 |------|-----------|
 | `.claude/context/lessons-learned.md` | **Always.** Every hard-won fix from real debugging — pandas-2.2 indexing, qutip-5 API, lazy Qt, uv-auto-sync, the v0.6.0 release failure, etc. Avoids re-discovering each from scratch. |
-| `.claude/context/decision-log.md` | Before undoing something that looks odd, or picking up deferred work. Records *why* we chose an approach and what we deliberately did **not** do (e.g. the deferred ruff-0.16 rule adoption). Append an entry when you make a non-obvious call. |
+| `.claude/context/decision-log.md` | Before undoing something that looks odd, or picking up deferred work. Records *why* we chose an approach and what we deliberately did **not** do (e.g. the deferred ruff-0.16 rule adoption). Append an entry when you make a non-obvious call — **read the callout at the top of that file first; it is a public document.** |
 | `.claude/context/architecture.md` | When you need to make structural changes — class hierarchy, option flow, renderer dispatch, lazy-Qt design. |
 | `.claude/context/ecosystem.md` | When making roadmap / API / version decisions — who the users are, the pyEPR/pyaedt/AWS-Palace relationships, the v0.7.0 lite-by-default plan. |
 | `docs/architecture/renderer_protocol.md` | When adding or modifying a renderer. The full inheritance map and override matrix. |

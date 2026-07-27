@@ -1,12 +1,33 @@
 # Decision log
 
+> **Before adding an entry — this file is public.** It is committed,
+> searchable, and permanent, like every other file in the repo. Write only
+> what you would be comfortable seeing quoted, out of context, by someone
+> outside the project.
+>
+> Record **technical facts and the reasoning behind them**. Leave out:
+>
+> - strategy, positioning, roadmap intent, or anything about adoption,
+>   competitors, or other projects beyond neutral technical fact;
+> - commentary about people — contributors, maintainers, reviewers — beyond
+>   standard attribution (name + link). No characterisations, no assessments
+>   of anyone's work or motives, no notes on how a contribution was handled;
+> - anything from a private conversation with the maintainer, including how
+>   or why a piece of work was prioritised;
+> - self-narration ("we decided to…", "we accepted…") where a plain statement
+>   of the technical choice would do.
+>
+> If it belongs in chat with the maintainer, it stays in chat. When in doubt,
+> write the shorter, drier version — or leave it out. See also the
+> "Public commits, PRs, and files" section of `CLAUDE.md`.
+
 Append-only record of **decisions and deferrals** — the things
 `git log` doesn't capture.
 
 Git already records *what* changed and PRs record *how*. What gets lost is
-**why we chose this over the alternative**, and **what we deliberately did
-not do**. Those are the expensive things to reconstruct six months later,
-usually at the moment someone is about to undo them.
+**why one approach was chosen over the alternative**, and **what was
+deliberately not done**. Those are the expensive things to reconstruct six
+months later, usually at the moment someone is about to undo them.
 
 Scope rules, so this stays useful instead of becoming a diary:
 
@@ -14,8 +35,7 @@ Scope rules, so this stays useful instead of becoming a diary:
   **deliberate deferral**. Routine fixes need no entry — the PR is enough.
 - Record the **road not taken** and why. That's the load-bearing part.
 - Link PR/issue numbers rather than restating them.
-- Keep it factual and terse (see the "public commits" section of
-  `CLAUDE.md`). No strategy, no commentary about people.
+- Keep it factual and terse — see the callout above.
 - Newest entry at the top.
 
 Related: `lessons-learned.md` is for things that *bit us in production*;
