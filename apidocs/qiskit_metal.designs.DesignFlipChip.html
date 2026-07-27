@@ -1117,15 +1117,23 @@ tried to use self.save_path if it is set.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.designs.DesignFlipChip.to_python_script">
 <span class="sig-name descname"><span class="pre">to_python_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">printout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.designs.DesignFlipChip.to_python_script" title="Link to this definition">¶</a></dt>
-<dd><p>Generates a python script from current chip
-:param printout: Whether to print the script
-:type printout: bool</p>
+<dd><p>Generates a python script from current chip</p>
+<p>The script is self-contained: it imports <code class="docutils literal notranslate"><span class="pre">qiskit_metal</span></code> and every
+component class it uses, rebuilds the design in a <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>, and –
+when run standalone (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">my_chip_design.py</span></code>) – starts the Qt
+event loop so the window stays open. The event loop is guarded on
+<code class="docutils literal notranslate"><span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">&quot;__main__&quot;</span></code> and on a live <code class="docutils literal notranslate"><span class="pre">QApplication</span></code>, so importing
+the script, or running it where a Qt loop already exists (Jupyter with
+<code class="docutils literal notranslate"><span class="pre">%gui</span> <span class="pre">qt</span></code>) or where no display is available, does not block or raise.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Python script for current chip</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>printout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Whether to print the script</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Python script for current chip</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
 </dd>
 </dl>
 </dd></dl>

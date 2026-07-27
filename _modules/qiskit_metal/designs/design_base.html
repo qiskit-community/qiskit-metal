@@ -1697,6 +1697,15 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">to_python_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thin</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">printout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates a python script from current chip</span>
+
+<span class="sd">        The script is self-contained: it imports ``qiskit_metal`` and every</span>
+<span class="sd">        component class it uses, rebuilds the design in a ``MetalGUI``, and --</span>
+<span class="sd">        when run standalone (``python my_chip_design.py``) -- starts the Qt</span>
+<span class="sd">        event loop so the window stays open. The event loop is guarded on</span>
+<span class="sd">        ``__name__ == &quot;__main__&quot;`` and on a live ``QApplication``, so importing</span>
+<span class="sd">        the script, or running it where a Qt loop already exists (Jupyter with</span>
+<span class="sd">        ``%gui qt``) or where no display is available, does not block or raise.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            printout (bool): Whether to print the script</span>
 
@@ -1704,6 +1713,7 @@
 <span class="sd">            str: Python script for current chip</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">import qiskit_metal</span>
 <span class="s2">from qiskit_metal import designs, MetalGUI</span>
 
 <span class="s2">design = designs.DesignPlanar()</span>
@@ -1713,8 +1723,18 @@
         <span class="n">footer</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">gui.rebuild()</span>
 <span class="s2">gui.autoscale()</span>
-<span class="s2">gui.qApp.exec_()</span>
-<span class="s2">        &quot;&quot;&quot;</span>
+
+<span class="s2"># Keep the MetalGUI window open when this file is run as a standalone script</span>
+<span class="s2"># (``python my_chip_design.py``). Without an event loop the process exits</span>
+<span class="s2"># immediately and the window disappears.</span>
+<span class="s2">#</span>
+<span class="s2"># Guarded on __main__ so that importing this file -- or executing it inside a</span>
+<span class="s2"># session that already runs a Qt loop (Jupyter/IPython with ``</span><span class="si">%g</span><span class="s2">ui qt``) --</span>
+<span class="s2"># does not block the caller. ``gui.qApp`` may be None if no QApplication could</span>
+<span class="s2"># be created (e.g. a headless machine), so check before calling into it.</span>
+<span class="s2">if __name__ == &quot;__main__&quot; and gui.qApp is not None:</span>
+<span class="s2">    gui.qApp.exec()</span>
+<span class="s2">&quot;&quot;&quot;</span>
         <span class="c1"># all imports at front</span>
         <span class="c1"># option -- only the options of the component that are different from the default options are specified.</span>
         <span class="c1"># vertically aligned dictionary (pretty print)</span>
