@@ -19,7 +19,7 @@
       },
       {
         "extension": "./extension",
-        "load": "static/remoteEntry.11e4391d65eba47afd2e.js",
+        "load": "static/remoteEntry.e928860fd982eedb.js",
         "name": "jupyterlab-jupytext"
       },
       {
