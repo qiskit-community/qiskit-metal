@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -171,9 +169,9 @@ def extract_transmon_coupled_Noscillator(
     Ic: float,
     CJ: float,
     N: int,
-    fb: List[float],
+    fb: list[float],
     fr: float,
-    res_L4_corr: Optional[List[float]] = None,
+    res_L4_corr: list[float] | None = None,
     g_scale: float = 1.0,
     print_info: bool = False,
 ):
@@ -841,7 +839,7 @@ def df_cmat_style_print(df_cmat: pd.DataFrame):
 # Utility functions - Zlatko
 
 
-def move_index_to(i_from: List[int], i_to: List[int], len_):
+def move_index_to(i_from: list[int], i_to: list[int], len_):
     """Utility function to swap index.
 
     Args:

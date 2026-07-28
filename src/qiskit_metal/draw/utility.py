@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -340,7 +338,7 @@ def vec_unit_planar(vector: np.array):
         raise Exception("You did not give a 2 or 3 vec")
 
 
-def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
+def to_vec3D(list_of_2d_pts: list[tuple], z=0) -> np.ndarray:
     """Adds 3rd point to list of 2D points. For the given design, get the z
     values in HFSS UNITS! Manually specify z dimension.
 
@@ -359,7 +357,7 @@ def to_vec3D(list_of_2d_pts: List[Tuple], z=0) -> np.ndarray:
     return vec3d
 
 
-def to_vec3D_list(list_of_2d_pts: List[Tuple], z=0) -> list:
+def to_vec3D_list(list_of_2d_pts: list[tuple], z=0) -> list:
     """Adds 3rd point to list of 2D points. For the given design, get the z
     values in HFSS UNITS! Manually specify z dimension.
 
@@ -581,7 +579,7 @@ class Vector:
         return round(abs(norm(u - v)), precision)
 
     @staticmethod
-    def two_points_described(points2D: List[Vec2D]) -> Tuple[np.ndarray]:
+    def two_points_described(points2D: list[Vec2D]) -> tuple[np.ndarray]:
         """Get the distance, units and tangents.
 
         Args:
@@ -895,8 +893,8 @@ class Vec3D(Vector):
 
     @staticmethod
     def two_points_described(
-        points3D: List[np.ndarray], user_plane: np.ndarray
-    ) -> Tuple[np.ndarray]:
+        points3D: list[np.ndarray], user_plane: np.ndarray
+    ) -> tuple[np.ndarray]:
         """Get the distance, units and tangents.
 
         Args:

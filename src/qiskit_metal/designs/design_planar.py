@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -60,7 +58,7 @@ class DesignPlanar(QDesign):
 
     def __init__(
         self,
-        metadata: Optional[dict] = None,
+        metadata: dict | None = None,
         overwrite_enabled: bool = False,
         enable_renderers: bool = True,
     ):
@@ -112,7 +110,7 @@ class DesignPlanar(QDesign):
 
     def get_x_y_for_chip(
         self, chip_name: str
-    ) -> Tuple[Tuple[float, float, float, float], int]:
+    ) -> tuple[tuple[float, float, float, float], int]:
         """If the chip_name is in self.chips, along with entry for size
         information then return a tuple=(minx, miny, maxx, maxy). Used for
         subtraction while exporting design.

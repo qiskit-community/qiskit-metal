@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Form implementation generated from reading ui file './widgets/build_history/build_history_scroll_area_ui.ui',
 # licensing of './widgets/build_history/build_history_scroll_area_ui.ui' applies.
 #

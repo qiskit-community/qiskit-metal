@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Form implementation generated from reading ui file './endcap_q3d_ui.ui',
 # licensing of './endcap_q3d_ui.ui' applies.
 #

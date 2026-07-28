@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import logging
 import os
 from re import search
@@ -30,7 +28,7 @@ class LayerStackHandler:
     ]
 
     def __init__(
-        self, multi_planar_design: "MultiPlanar", fname: Optional[str] = None
+        self, multi_planar_design: "MultiPlanar", fname: str | None = None
     ) -> None:
         """Use the information in MultiPlanar design to parse_value
         and get the name of filename for layer stack.
@@ -88,7 +86,7 @@ class LayerStackHandler:
             # enter very basic default data for pandas table.
             self.ls_df = pd.DataFrame(data=self.layer_stack_default)
 
-    def get_layer_datatype_when_fill_is_true(self) -> Optional[dict]:
+    def get_layer_datatype_when_fill_is_true(self) -> dict | None:
         """Return layer/datatype rows where ``fill`` is True.
 
         Returns:
@@ -135,8 +133,8 @@ class LayerStackHandler:
         return None
 
     def get_properties_for_layer_datatype(
-        self, properties: List[str], layer_number: int, datatype: int = 0
-    ) -> Optional[Tuple[Union[float, str, bool]]]:
+        self, properties: list[str], layer_number: int, datatype: int = 0
+    ) -> tuple[Union[float, str, bool]] | None:
         """When user provides a layer and datatype, they can get properties
          from the layer_stack file. The allowed options for properties must
          be in Col_Names.  If any of the properties are not in Col_Names,

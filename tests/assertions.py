@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -26,7 +24,7 @@ class AssertionsMixin:
         expected: float,
         tested: float,
         *,
-        msg: Optional[str] = None,
+        msg: str | None = None,
         rel_tol: float = 1e-7,
         abs_tol: float = 0.0,
     ):
@@ -71,7 +69,7 @@ class AssertionsMixin:
         self,
         expected: Iterable[float],
         tested: Iterable[float],
-        msg: Optional[str] = None,
+        msg: str | None = None,
         rel_tol: float = 1e-7,
         abs_tol: float = 0.0,
     ):

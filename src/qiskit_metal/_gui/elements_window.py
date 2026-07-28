@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -274,12 +272,12 @@ class ElementTableModel(QAbstractTableModel):
         """
 
         if not index.isValid():
-            return
+            return None
         # if not 0 <= index.row() < self.rowCount():
         #    return None
 
         if self.table is None:
-            return
+            return None
 
         if role == QtCore.Qt.DisplayRole:
             row = index.row()

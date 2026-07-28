@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -210,7 +208,7 @@ class QTableModel_AllComponents(QAbstractTableModel):
         """
 
         if not index.isValid() or not self.design:
-            return
+            return None
 
         component_name = list(self.design.components.keys())[index.row()]
 

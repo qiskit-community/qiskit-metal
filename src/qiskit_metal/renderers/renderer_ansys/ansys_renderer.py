@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -629,22 +627,22 @@ class QAnsysRenderer(QRendererAnalysis):
         self.modeler._modeler.ShowWindow()
         if not self.pinfo:
             self.logger.warning("pinfo is None.")
-            return
+            return None
 
         if self.pinfo.design:
             if not self.pinfo.design._fields_calc:
                 self.logger.warning("The _fields_calc in design is None.")
-                return
+                return None
             if not self.pinfo.design._modeler:
                 self.logger.warning("The _modeler in design is None.")
-                return
+                return None
         else:
             self.logger.warning("The design in pinfo is None.")
-            return
+            return None
 
         if not self.pinfo.setup:
             self.logger.warning("The setup in pinfo is None.")
-            return
+            return None
 
         # TODO: This is just a prototype - should add features and flexibility.
         oFieldsReport = (
@@ -1417,7 +1415,7 @@ class QAnsysRenderer(QRendererAnalysis):
                 )
             self.chip_subtract_dict[pin_dict["chip"]].add(endcap_name)
 
-    def get_chip_names(self) -> List[str]:
+    def get_chip_names(self) -> list[str]:
         """
         Obtain a list of chips on which the selection of components, if valid, resides.
 
@@ -1484,7 +1482,7 @@ class QAnsysRenderer(QRendererAnalysis):
             "The chip designation for this component is not 'main'. Please set chip='main' in its default_options dictionary, restart the kernel, and try again."
         )
 
-    def get_min_bounding_box(self) -> Tuple[float]:
+    def get_min_bounding_box(self) -> tuple[float]:
         """
         Determine the max/min x/y coordinates of the smallest rectangular, axis-aligned
         bounding box that will enclose a selection of components to render, given by

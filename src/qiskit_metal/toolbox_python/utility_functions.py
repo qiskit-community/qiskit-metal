@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -567,7 +565,7 @@ def can_write_to_path_with_warning(file: str) -> int:
         return 0
 
 
-def can_write_to_path(file: str) -> Tuple[int, str]:
+def can_write_to_path(file: str) -> tuple[int, str]:
     """Check to see if path exists and file can be written.
 
     Args:
@@ -591,8 +589,8 @@ def can_write_to_path(file: str) -> Tuple[int, str]:
 
 
 def check_all_required_args_provided(
-    func: Callable, args: Dict, raise_exception: bool = True
-) -> List:
+    func: Callable, args: dict, raise_exception: bool = True
+) -> list:
     """Check all required arguments of func are provided by args
 
     Args:
@@ -618,7 +616,7 @@ def check_all_required_args_provided(
     return missing_args
 
 
-def get_all_args(func: Callable) -> List:
+def get_all_args(func: Callable) -> list:
     """get all the parameters of a function
 
     Args:

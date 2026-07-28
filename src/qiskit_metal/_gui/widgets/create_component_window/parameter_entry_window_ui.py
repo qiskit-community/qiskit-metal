@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Form implementation generated from reading ui file './widgets/create_component_window/parameter_entry_window_ui.ui',
 # licensing of './widgets/create_component_window/parameter_entry_window_ui.ui' applies.
 #

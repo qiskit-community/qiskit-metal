@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -102,11 +100,11 @@ class LumpedElementsSim(QSimulation):
 
     def run_sim(
         self,
-        name: Optional[str] = None,
-        components: Optional[list] = None,
-        open_terminations: Optional[list] = None,
+        name: str | None = None,
+        components: list | None = None,
+        open_terminations: list | None = None,
         box_plus_buffer: bool = True,
-    ) -> Tuple[str, str]:
+    ) -> tuple[str, str]:
         """Executes the capacitance matrix extraction.
         First it makes sure the tool is running. Then it does the necessary to render the design.
         Finally it runs the setup defined in this class. So you need to modify the setup ahead.

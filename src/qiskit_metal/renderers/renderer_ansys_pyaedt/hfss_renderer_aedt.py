@@ -354,7 +354,7 @@ class QHFSSPyaedt(QPyaedt):
                     port_list: Union[list, None],
                     jj_to_port: Union[list, None],
                     ignored_jjs: Union[list,None],
-                    layer_num: int) -> Tuple[
+                    layer_num: int) -> tuple[
                                             Union[list, None],
                                             Union[list, None],
                                             Union[list, None],

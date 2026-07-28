@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -116,7 +114,7 @@ class LogStore(collections.deque):
         self,
         title: str,
         log_limit: int,
-        _previous_builds: List[str] = [],
+        _previous_builds: list[str] = [],
         *args,
         **kwargs,
     ):

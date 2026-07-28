@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -43,7 +41,7 @@ class QSimulation(QAnalysis):
     def __init__(
         self,
         design: Optional["QDesign"] = None,
-        renderer_name: Optional[str] = None,
+        renderer_name: str | None = None,
         *args,
         **kwargs,
     ):

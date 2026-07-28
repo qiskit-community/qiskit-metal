@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit / Quantum Metal.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -113,9 +111,9 @@ class MetalGUIHeadless:
         self._design = design
         self._figsize = figsize
         self._autoscale_default = autoscale
-        self._highlighted: List[str] = []
-        self._zoom_bounds: Optional[tuple] = None  # (xmin, ymin, xmax, ymax)
-        self._last_figure: Optional["Figure"] = None
+        self._highlighted: list[str] = []
+        self._zoom_bounds: tuple | None = None  # (xmin, ymin, xmax, ymax)
+        self._last_figure: "Figure" | None = None
         self.main_window = _NoOpMainWindow()
         _show_headless_banner_once()
 
@@ -131,7 +129,7 @@ class MetalGUIHeadless:
         self._design = design
         self.rebuild()
 
-    def rebuild(self, autoscale: bool = False) -> Optional["Figure"]:
+    def rebuild(self, autoscale: bool = False) -> "Figure" | None:
         """Rebuild the design geometry and re-render the inline figure.
 
         Args:
@@ -152,11 +150,11 @@ class MetalGUIHeadless:
 
         return self._render()
 
-    def refresh(self) -> Optional["Figure"]:
+    def refresh(self) -> "Figure" | None:
         """Alias for :meth:`rebuild` (matches MetalGUI's refresh)."""
         return self.rebuild()
 
-    def autoscale(self) -> Optional["Figure"]:
+    def autoscale(self) -> "Figure" | None:
         """Clear any zoom bounds and re-render at full design extent."""
         self._zoom_bounds = None
         return self._render()
@@ -173,7 +171,7 @@ class MetalGUIHeadless:
         """
         return
 
-    def highlight_components(self, component_names: List[str]) -> Optional["Figure"]:
+    def highlight_components(self, component_names: list[str]) -> "Figure" | None:
         """Mark components for highlighting on the next render.
 
         Args:
@@ -185,7 +183,7 @@ class MetalGUIHeadless:
         self._highlighted = list(component_names)
         return self._render()
 
-    def zoom_on_components(self, components: List[str]) -> Optional["Figure"]:
+    def zoom_on_components(self, components: list[str]) -> "Figure" | None:
         """Zoom the next render to fit the given components.
 
         Computes a bounding box from each component's
@@ -224,8 +222,8 @@ class MetalGUIHeadless:
         name: str = "shot",
         type_: str = "png",
         display: bool = True,
-        disp_ops: Optional[dict] = None,
-    ) -> Optional["Figure"]:
+        disp_ops: dict | None = None,
+    ) -> "Figure" | None:
         """Render the current view and save to disk; display inline.
 
         Mirrors :meth:`MetalGUI.screenshot` so tutorial code is
@@ -340,7 +338,7 @@ class MetalGUIHeadless:
 
     # ── Internal helpers ─────────────────────────────────────────────────
 
-    def _render(self, display_inline: bool = True) -> Optional["Figure"]:
+    def _render(self, display_inline: bool = True) -> "Figure" | None:
         """Re-render the design with current zoom + highlight state."""
         try:
             # Import here so headless module stays lite-install-safe.
@@ -586,7 +584,7 @@ def _is_headless_environment() -> bool:
 def gui(
     design: "QDesign",
     *,
-    force_headless: Optional[bool] = None,
+    force_headless: bool | None = None,
     **kwargs,
 ):
     """Return the right GUI object for the current environment.

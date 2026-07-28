@@ -3,8 +3,8 @@ from qiskit_metal.designs.design_base import QDesign
 
 
 def get_min_bounding_box(
-    design: QDesign, qcomp_ids: List[int], case: int, logger
-) -> Tuple[float]:
+    design: QDesign, qcomp_ids: list[int], case: int, logger
+) -> tuple[float]:
     """
     Determine the max/min x/y coordinates of the smallest rectangular, axis-aligned
     bounding box that will enclose a selection of components to render, given by

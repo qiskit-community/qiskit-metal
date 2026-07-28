@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -196,7 +194,7 @@ class ComponentWidget(QTabWidget):
             """)
         self.src_doc = create_QTextDocument(self.ui.textSource)
         self._html_css_lex: pygments.formatters.html.HtmlFormatter = None
-        self.src_widgets: List[QtWidgets.QWidget] = []
+        self.src_widgets: list[QtWidgets.QWidget] = []
 
         # Help stylesheet
         document = self.ui.textHelp.document()

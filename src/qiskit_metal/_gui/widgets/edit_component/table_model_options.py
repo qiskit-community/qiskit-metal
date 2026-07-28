@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -162,12 +160,12 @@ class QTableModel_Options(QAbstractTableModel):
         """
 
         if not index.isValid():
-            return
+            return None
         # if not 0 <= index.row() < self.rowCount():
         #    return None
 
         if self.component is None:
-            return
+            return None
 
         # The key data to be rendered in the form of text. (QString)
         if role == Qt.DisplayRole:

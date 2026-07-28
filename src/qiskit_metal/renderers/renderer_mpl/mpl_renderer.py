@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -65,7 +63,7 @@ class QMplRenderer:
         design: QDesign,
         *,
         canvas: Optional["PlotCanvas"] = None,
-        logger: Optional[logging.Logger] = None,
+        logger: logging.Logger | None = None,
     ):
         """
         Args:
@@ -285,7 +283,7 @@ class QMplRenderer:
         table: pd.DataFrame,
         ax: Axes,
         subtracted: bool = False,
-        extra_kw: Optional[dict] = None,
+        extra_kw: dict | None = None,
     ):
         """Render a table of junction geometry.
         A junction is basically drawn like a path with finite width and no fillet.
@@ -326,7 +324,7 @@ class QMplRenderer:
         table: pd.DataFrame,
         ax: Axes,
         subtracted: bool = False,
-        extra_kw: Optional[dict] = None,
+        extra_kw: dict | None = None,
     ):
         """Render a table of poly geometry.
         Args:
@@ -483,7 +481,7 @@ class QMplRenderer:
         table: pd.DataFrame,
         ax: Axes,
         subtracted: bool = False,
-        extra_kw: Optional[dict] = None,
+        extra_kw: dict | None = None,
     ):
         """Render a table of path geometry.
         Args:

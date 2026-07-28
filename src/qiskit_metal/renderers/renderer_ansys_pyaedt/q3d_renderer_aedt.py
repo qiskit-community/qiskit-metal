@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from __future__ import annotations
 
 from typing import Union, Tuple, Optional
@@ -52,10 +50,10 @@ class QQ3DPyaedt(QPyaedt):
     def __init__(
         self,
         multilayer_design: "MultiPlanar",
-        project_name: Optional[str] = None,
-        design_name: Optional[str] = None,
+        project_name: str | None = None,
+        design_name: str | None = None,
         initiate=False,
-        options: Optional[Dict] = None,
+        options: Dict | None = None,
     ):
         """Create a QRenderer for Q3D simulations using pyaedt and multiplanar design.
         QQ3DPyaedt is subclassed from QPyaedt, subclassed from QRendererAnalysis and
@@ -125,18 +123,18 @@ class QQ3DPyaedt(QPyaedt):
 
     def add_q3d_setup(
         self,
-        name: Optional[str] = None,
-        AdaptiveFreq: Optional[float] = None,
-        SaveFields: Optional[bool] = None,
-        Enabled: Optional[bool] = None,
-        MaxPass: Optional[int] = None,
-        MinPass: Optional[int] = None,
-        MinConvPass: Optional[int] = None,
-        PerError: Optional[float] = None,
-        PerRefine: Optional[int] = None,
-        AutoIncreaseSolutionOrder: Optional[bool] = None,
-        SolutionOrder: Optional[str] = None,
-        Solver_Type: Optional[str] = None,
+        name: str | None = None,
+        AdaptiveFreq: float | None = None,
+        SaveFields: bool | None = None,
+        Enabled: bool | None = None,
+        MaxPass: int | None = None,
+        MinPass: int | None = None,
+        MinConvPass: int | None = None,
+        PerError: float | None = None,
+        PerRefine: int | None = None,
+        AutoIncreaseSolutionOrder: bool | None = None,
+        SolutionOrder: str | None = None,
+        Solver_Type: str | None = None,
     ):
         """Create a solution setup in Ansys Q3D. If user does not provide
         arguments, they will be obtained from QQ3DPyaedt.default_setup dict.
@@ -454,7 +452,7 @@ class QQ3DPyaedt(QPyaedt):
             all_cap_data_magnitude_freqs[freq] = all_cap_data_magnitude
         return all_cap_data_magnitude_freqs
 
-    def convert_to_dataframe(self, cap_series: pd.Series) -> Optional[pd.DataFrame]:
+    def convert_to_dataframe(self, cap_series: pd.Series) -> pd.DataFrame | None:
         """Convert the series to a dataframe based on the column names.
         If the names are missing, then the dataframe will be None.
 
@@ -492,7 +490,7 @@ class QQ3DPyaedt(QPyaedt):
 
         return df
 
-    def get_unique_row_and_col_names(self, cap_series: pd.Series) -> Tuple[list, list]:
+    def get_unique_row_and_col_names(self, cap_series: pd.Series) -> tuple[list, list]:
         """Parse the names in the series and identify the unique names
         for rows and columns
 

@@ -13,7 +13,7 @@ class BuildHistoryScrollArea(QScrollArea, Ui_BuildHistory):
     This class extends the `QScrollArea` class
     """
 
-    def __init__(self, previous_builds: List[str], parent=None, *args, **kwargs):
+    def __init__(self, previous_builds: list[str], parent=None, *args, **kwargs):
         """
         Args:
             previous_builds (List[str]):

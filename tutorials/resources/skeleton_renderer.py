@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -143,7 +141,7 @@ class QSkeletonRenderer(QRenderer):
         )
         return 0
 
-    def check_qcomps(self, highlight_qcomponents: list = []) -> Tuple[list, int]:
+    def check_qcomps(self, highlight_qcomponents: list = []) -> tuple[list, int]:
         """Confirm the list doesn't have names of componentes repeated. Comfirm
         that the name of component exists in QDesign.
 
@@ -183,7 +181,7 @@ class QSkeletonRenderer(QRenderer):
 
     def get_qgeometry_tables_for_skeleton(
         self, highlight_qcomponents: list = []
-    ) -> Tuple[int, list]:
+    ) -> tuple[int, list]:
         """Using self.design, this method does the following:
 
         1. Gather the QGeometries to be used to write to file.

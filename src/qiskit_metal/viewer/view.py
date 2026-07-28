@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -27,12 +25,12 @@ from qiskit_metal.renderers.renderer_mpl.mpl_renderer import QMplRenderer
 
 def view(
     design: QDesign,
-    ax: Optional[Axes] = None,
+    ax: Axes | None = None,
     *,
-    figsize: Tuple[float, float] = (8.0, 8.0),
-    components: Optional[Iterable[str]] = None,
-    hidden_layers: Optional[Iterable[int]] = None,
-    title: Optional[str] = None,
+    figsize: tuple[float, float] = (8.0, 8.0),
+    components: Iterable[str] | None = None,
+    hidden_layers: Iterable[int] | None = None,
+    title: str | None = None,
 ) -> Figure:
     """Render ``design`` to a matplotlib :class:`~matplotlib.figure.Figure`.
 

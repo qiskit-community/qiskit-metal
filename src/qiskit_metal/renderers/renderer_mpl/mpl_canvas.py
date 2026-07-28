@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -671,7 +669,7 @@ class PlotCanvas(FigureCanvas):
             # ax.redraw_in_frame()
             self.refresh()
 
-    def find_component_bounds(self, components: List[str], zoom: float = 1.2):
+    def find_component_bounds(self, components: list[str], zoom: float = 1.2):
         """Find bounds of a set of components.
 
         Args:
@@ -735,7 +733,7 @@ class PlotCanvas(FigureCanvas):
         self._annotations["patch"] = []
         self._annotations["text"] = []
 
-    def highlight_components(self, component_names: List[str]):
+    def highlight_components(self, component_names: list[str]):
         """Highlight a list of components.
 
         Args:

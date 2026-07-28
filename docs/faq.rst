@@ -162,6 +162,39 @@ If you're working on the lite install (no Qt), see the headless workflow at
 a lighter alternative to the desktop GUI (see
 `ROADMAP.md <https://github.com/qiskit-community/qiskit-metal/blob/main/ROADMAP.md>`_).
 
+**Q: The GUI opens and closes immediately when I run my script with**
+``python my_script.py`` **— but the same code works in Jupyter. Why?**
+
+**A:** Nothing is starting the **Qt event loop**. Without it the Python process
+reaches the end of your script and exits, taking the window with it. Jupyter
+already runs an event loop in the background, which is why the same code
+appears to work there.
+
+Add a blocking ``exec()`` call at the end of the script:
+
+.. code-block:: python
+
+   from qiskit_metal import designs, MetalGUI
+
+   design = designs.DesignPlanar()
+   gui = MetalGUI(design)
+   # ... build your design ...
+
+   if __name__ == "__main__":
+       gui.qApp.exec()          # blocks until you close the window
+
+Two details matter:
+
+* Use ``exec()``, not ``exec_()`` — the latter is PySide6's deprecated alias.
+* Keep the ``__name__ == "__main__"`` guard. ``exec()`` **blocks**, so an
+  unguarded call hangs anything that imports your script, and hangs a Jupyter
+  session that already runs a Qt loop. On a headless machine ``gui.qApp`` can
+  also be ``None``, so guard on that too if your script has to run there:
+  ``if __name__ == "__main__" and gui.qApp is not None:``.
+
+Scripts produced by :meth:`~qiskit_metal.designs.design_base.QDesign.to_python_script`
+already include this guard, so an exported design runs standalone as-is.
+
 
 .. _docs:
 

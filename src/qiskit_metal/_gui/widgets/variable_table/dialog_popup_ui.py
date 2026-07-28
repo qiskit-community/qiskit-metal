@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Form implementation generated from reading ui file './widgets/variable_table/dialog_popup_ui.ui',
 # licensing of './widgets/variable_table/dialog_popup_ui.ui' applies.
 #

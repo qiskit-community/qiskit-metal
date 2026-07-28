@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from re import sub
 from typing import List, Tuple, Union
 from copy import deepcopy
@@ -12,7 +11,7 @@ def determine_larger_box(
     maxx: Union[None, float],
     maxy: Union[None, float],
     chip_box: tuple,
-) -> Tuple[float, float, float, float]:
+) -> tuple[float, float, float, float]:
     """Return box which includes the two boxes.
 
     Args:
@@ -56,7 +55,7 @@ class BoundsForPathAndPolyTables:
     def get_bounds_of_path_and_poly_tables(
         self,
         box_plus_buffer: bool,
-        qcomp_ids: List,
+        qcomp_ids: list,
         case: int,
         x_buff: float,
         y_buff: float,
@@ -167,8 +166,8 @@ class BoundsForPathAndPolyTables:
 
     @classmethod
     def ensure_component_box_smaller_than_chip_box_(
-        cls, box_for_xy_bounds: Tuple, chip_bounds_xy: Tuple
-    ) -> Tuple:
+        cls, box_for_xy_bounds: tuple, chip_bounds_xy: tuple
+    ) -> tuple:
         """If the box_plus_buffer is larger than the aggregate chip bounds from DesignPlanar,
         use the chip bounds as the cutoff.
 
@@ -210,7 +209,7 @@ class BoundsForPathAndPolyTables:
 
     def get_box_for_xy_bounds(
         self,
-    ) -> Union[None, Tuple[float, float, float, float]]:
+    ) -> Union[None, tuple[float, float, float, float]]:
         """Assuming the chip size is used from Multiplanar design, and list of chip_names
         comes from layer_stack that will be used to determine the box size for simulation.
 
@@ -242,7 +241,7 @@ class BoundsForPathAndPolyTables:
 
         return minx, miny, maxx, maxy
 
-    def are_all_chipnames_in_design(self) -> Tuple[bool, Union[set, None]]:
+    def are_all_chipnames_in_design(self) -> tuple[bool, Union[set, None]]:
         """Using chip names in layer_stack information,
         then check if the information is in MultiPlanar design.
 
@@ -262,7 +261,7 @@ class BoundsForPathAndPolyTables:
 
         return True, chip_set_from_layer_stack
 
-    def get_x_y_for_chip(self, chip_name: str) -> Tuple[tuple, int]:
+    def get_x_y_for_chip(self, chip_name: str) -> tuple[tuple, int]:
         """If the chip_name is in self.chips, along with entry for size
         information then return a tuple=(minx, miny, maxx, maxy). Used for
         subtraction while exporting design.

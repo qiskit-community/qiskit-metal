@@ -4,7 +4,7 @@ import sequencing as seq
 from qiskit_metal.analyses.quantization.lom_core_analysis import Subsystem
 
 
-def to_external_system(lom_subsystem: Subsystem, mapping: Dict[str, Any]):
+def to_external_system(lom_subsystem: Subsystem, mapping: dict[str, Any]):
     """Convert a Metal LOM subsystem to an external system based on a custom mapping
 
     Args:

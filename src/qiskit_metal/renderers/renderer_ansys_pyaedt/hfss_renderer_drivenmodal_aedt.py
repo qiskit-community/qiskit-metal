@@ -140,7 +140,7 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                 f"project:{self.project_name} design: {self.design_name}. "
                 f"So a new setup with name={name} was NOT added to design."
             )
-            return
+            return None
 
         if not Frequency:
             Frequency = float(self.parse_value(dsu["Frequency"]))

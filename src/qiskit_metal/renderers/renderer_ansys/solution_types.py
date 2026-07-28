@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -82,30 +80,30 @@ Q3D_NAMES = frozenset(
 )
 
 
-def is_eigenmode(solution_type: Optional[str]) -> bool:
+def is_eigenmode(solution_type: str | None) -> bool:
     """True if ``solution_type`` names the HFSS Eigenmode solver."""
     return solution_type in EIGENMODE_NAMES
 
 
-def is_drivenmodal(solution_type: Optional[str]) -> bool:
+def is_drivenmodal(solution_type: str | None) -> bool:
     """True if ``solution_type`` names any alias of the HFSS Driven
     Modal solver, including the post-2024.1 ``HFSS Modal Network`` and
     ``HFSS Hybrid Modal Network`` identifiers."""
     return solution_type in DRIVEN_MODAL_NAMES
 
 
-def is_driventerminal(solution_type: Optional[str]) -> bool:
+def is_driventerminal(solution_type: str | None) -> bool:
     """True if ``solution_type`` names any alias of the HFSS Driven
     Terminal solver."""
     return solution_type in DRIVEN_TERMINAL_NAMES
 
 
-def is_q3d(solution_type: Optional[str]) -> bool:
+def is_q3d(solution_type: str | None) -> bool:
     """True if ``solution_type`` names the Q3D Extractor solver."""
     return solution_type in Q3D_NAMES
 
 
-def canonical_kind(solution_type: Optional[str]) -> Optional[str]:
+def canonical_kind(solution_type: str | None) -> str | None:
     """Map a raw HFSS / Q3D ``solution_type`` string to its canonical
     metal-internal kind.
 
