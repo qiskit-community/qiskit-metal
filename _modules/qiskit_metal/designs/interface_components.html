@@ -461,9 +461,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for qiskit_metal.designs.interface_components</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-
-<span class="c1"># This code is part of Qiskit.</span>
+<span></span><span class="c1"># This code is part of Qiskit.</span>
 <span class="c1">#</span>
 <span class="c1"># (C) Copyright IBM 2017, 2021.</span>
 <span class="c1">#</span>
@@ -531,7 +529,7 @@
 
 <div class="viewcode-block" id="Components.get_list_ints">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.designs.Components.html#qiskit_metal.designs.Components.get_list_ints">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_list_ints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_list_ints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide corresponding ints to be used as keys for dict:</span>
 <span class="sd">        design._components, when list of names is provided.</span>
 
@@ -740,7 +738,7 @@
     <span class="c1">#     #         # Why every class needs one?  https://dbader.org/blog/python-repr-vs-str</span>
     <span class="c1">#     #         return str(self.__actual_place_I_store_components__.give_me_repr())</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide all the names in design._components.</span>
 
 <span class="sd">        Returns:</span>
@@ -832,7 +830,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/27</div>
+              Last updated on 2026/07/28</div>
           </div>
           <div class="right-details">
             

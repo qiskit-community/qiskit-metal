@@ -461,9 +461,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for qiskit_metal.analyses.quantization.lom_core_analysis</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-
-<span class="c1"># This code is part of Qiskit.</span>
+<span></span><span class="c1"># This code is part of Qiskit.</span>
 <span class="c1">#</span>
 <span class="c1"># (C) Copyright IBM 2017, 2021.</span>
 <span class="c1">#</span>
@@ -540,7 +538,7 @@
     <span class="n">INDUCTIVE</span> <span class="o">=</span> <span class="s2">&quot;INDUCTIVE&quot;</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">analyze_loaded_tl</span><span class="p">(</span><span class="n">fr</span><span class="p">,</span> <span class="n">vp</span><span class="p">,</span> <span class="n">Z0</span><span class="p">,</span> <span class="n">cap_loading</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">shorted</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">analyze_loaded_tl</span><span class="p">(</span><span class="n">fr</span><span class="p">,</span> <span class="n">vp</span><span class="p">,</span> <span class="n">Z0</span><span class="p">,</span> <span class="n">cap_loading</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">shorted</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate charge operator zero point fluctuation, Q_zpf at the point of the loading</span>
 <span class="sd">    capacitor.</span>
 <span class="sd">    https://arxiv.org/pdf/2103.10344.pdf</span>
@@ -647,7 +645,7 @@
     <span class="k">return</span> <span class="n">Q_zpf</span><span class="p">,</span> <span class="n">Phi_zpf</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Ltl</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_product_no_duplicate</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_product_no_duplicate</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    product_no_duplicate(&#39;ABCDx&#39;, &#39;xy&#39;) --&gt; Ax Ay Bx By Cx Cy Dx Dy xy</span>
 <span class="sd">    ** Note that xx is not included **</span>
@@ -676,7 +674,7 @@
     <span class="k">return</span> <span class="n">df</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_df_cmat_to_adj_list</span><span class="p">(</span><span class="n">df_cmat</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DefaultDict</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_df_cmat_to_adj_list</span><span class="p">(</span><span class="n">df_cmat</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    generate an adjacency list from a capacitance matrix in a dataframe</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -689,7 +687,7 @@
     <span class="k">return</span> <span class="n">graph</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_cj_dict_to_adj_list</span><span class="p">(</span><span class="n">cj_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">DefaultDict</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_cj_dict_to_adj_list</span><span class="p">(</span><span class="n">cj_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
     <span class="n">graph</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
     <span class="k">for</span> <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cj_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">graph</span><span class="p">[</span><span class="n">n1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n2</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">))</span>
@@ -708,7 +706,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_extract_matrix_from_transform</span><span class="p">(</span>
-    <span class="n">transform</span><span class="p">:</span> <span class="n">BasisTransform</span><span class="p">,</span> <span class="n">junctions</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="n">index</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span>
+    <span class="n">transform</span><span class="p">:</span> <span class="n">BasisTransform</span><span class="p">,</span> <span class="n">junctions</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="n">index</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    calculate the S_n^{-1} matrix that corresponds to a given transform</span>
@@ -733,7 +731,7 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_transform_to_junction_flux_basis</span><span class="p">(</span>
     <span class="n">orig_nodes</span><span class="p">,</span>
-    <span class="n">junctions</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">junctions</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">choose_least_num_neg</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -870,10 +868,10 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">nodes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">,</span>
         <span class="n">grd_node</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">cmats</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
-        <span class="n">ind_lists</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
-        <span class="n">junctions</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
-        <span class="n">cj_dicts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cmats</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
+        <span class="n">ind_lists</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+        <span class="n">junctions</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="n">cj_dicts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">nodes_force_keep</span><span class="p">:</span> <span class="n">Sequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">s_remove_provided</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">s_keep_provided</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -1209,13 +1207,13 @@
 <span class="c1"># ----------------------------------------------------------------------------------------------------</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_rename_nodes_in_df</span><span class="p">(</span><span class="n">node_rename</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_rename_nodes_in_df</span><span class="p">(</span><span class="n">node_rename</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
     <span class="n">orig_nodes</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
     <span class="n">new_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node_rename</span> <span class="k">else</span> <span class="n">node_rename</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">orig_nodes</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">_make_cmat_df</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">new_nodes</span><span class="p">)</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_rename_nodes_in_dict</span><span class="p">(</span><span class="n">node_rename</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">dict_input</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_rename_nodes_in_dict</span><span class="p">(</span><span class="n">node_rename</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">dict_input</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="n">renamed</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">dict_input</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">_renamed_key</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
@@ -1332,7 +1330,7 @@
 <span class="sd">    coupled-transmon examples.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sys_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">q_opts</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sys_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">q_opts</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Subsystem object</span>
 
 <span class="sd">        Args:</span>
@@ -1424,7 +1422,7 @@
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">QuantumBuilderOptions</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_from_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_opts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_from_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_opts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">input_opts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_opts</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">input_opts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
@@ -1726,7 +1724,7 @@
 <span class="sd">    the the user provides as inputs to this object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the cell object</span>
 
 <span class="sd">        Args:</span>
@@ -1816,8 +1814,8 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">subsystems</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Subsystem</span><span class="p">],</span>
-        <span class="n">cells</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Cell</span><span class="p">],</span>
+        <span class="n">subsystems</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Subsystem</span><span class="p">],</span>
+        <span class="n">cells</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Cell</span><span class="p">],</span>
         <span class="n">grd_node</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">nodes_force_keep</span><span class="p">:</span> <span class="n">Sequence</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">s_remove_provided</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -2135,7 +2133,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/27</div>
+              Last updated on 2026/07/28</div>
           </div>
           <div class="right-details">
             

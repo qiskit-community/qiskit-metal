@@ -597,7 +597,7 @@
                 <span class="sa">f</span><span class="s2">&quot;project:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="si">}</span><span class="s2"> design: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="si">}</span><span class="s2">. &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;So a new setup with name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> was NOT added to design.&quot;</span>
             <span class="p">)</span>
-            <span class="k">return</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MinimumFrequency</span><span class="p">:</span>
             <span class="n">MinimumFrequency</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;MinimumFrequency&quot;</span><span class="p">]))</span>
@@ -996,7 +996,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/27</div>
+              Last updated on 2026/07/28</div>
           </div>
           <div class="right-details">
             

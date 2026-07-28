@@ -569,6 +569,34 @@ Python). Resources for learning PySide6 / Qt:</p>
 <a class="reference internal" href="headless-usage.html"><span class="doc">Using Quantum Metal without the Qt GUI</span></a> instead — a Jupyter-widgets-based viewer is planned as
 a lighter alternative to the desktop GUI (see
 <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/blob/main/ROADMAP.md">ROADMAP.md</a>).</p>
+<p><strong>Q: The GUI opens and closes immediately when I run my script with</strong>
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">my_script.py</span></code> <strong>— but the same code works in Jupyter. Why?</strong></p>
+<p><strong>A:</strong> Nothing is starting the <strong>Qt event loop</strong>. Without it the Python process
+reaches the end of your script and exits, taking the window with it. Jupyter
+already runs an event loop in the background, which is why the same code
+appears to work there.</p>
+<p>Add a blocking <code class="docutils literal notranslate"><span class="pre">exec()</span></code> call at the end of the script:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span><span class="p">,</span> <span class="n">MetalGUI</span>
+
+<span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
+<span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
+<span class="c1"># ... build your design ...</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">gui</span><span class="o">.</span><span class="n">qApp</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>          <span class="c1"># blocks until you close the window</span>
+</pre></div>
+</div>
+<p>Two details matter:</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">exec()</span></code>, not <code class="docutils literal notranslate"><span class="pre">exec_()</span></code> — the latter is PySide6’s deprecated alias.</p></li>
+<li><p>Keep the <code class="docutils literal notranslate"><span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">&quot;__main__&quot;</span></code> guard. <code class="docutils literal notranslate"><span class="pre">exec()</span></code> <strong>blocks</strong>, so an
+unguarded call hangs anything that imports your script, and hangs a Jupyter
+session that already runs a Qt loop. On a headless machine <code class="docutils literal notranslate"><span class="pre">gui.qApp</span></code> can
+also be <code class="docutils literal notranslate"><span class="pre">None</span></code>, so guard on that too if your script has to run there:
+<code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">&quot;__main__&quot;</span> <span class="pre">and</span> <span class="pre">gui.qApp</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">None:</span></code>.</p></li>
+</ul>
+<p>Scripts produced by <code class="xref py py-meth docutils literal notranslate"><span class="pre">to_python_script()</span></code>
+already include this guard, so an exported design runs standalone as-is.</p>
 </section>
 <section id="documentation">
 <span id="docs"></span><h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
@@ -641,7 +669,7 @@ To download a single notebook, navigate to it on GitHub and click the <strong>Do
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/27</div>
+              Last updated on 2026/07/28</div>
           </div>
           <div class="right-details">
             

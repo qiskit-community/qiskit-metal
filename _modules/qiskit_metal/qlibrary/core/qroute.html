@@ -461,9 +461,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for qiskit_metal.qlibrary.core.qroute</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-
-<span class="c1"># This code is part of Qiskit.</span>
+<span></span><span class="c1"># This code is part of Qiskit.</span>
 <span class="c1">#</span>
 <span class="c1"># (C) Copyright IBM 2017, 2021.</span>
 <span class="c1">#</span>
@@ -876,7 +874,7 @@
         <span class="k">return</span> <span class="n">lead</span><span class="o">.</span><span class="n">get_tip</span><span class="p">()</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_lead2pts_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_lead2pts_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the last &quot;diff pts&quot; of the array. If the array is one</span>
 <span class="sd">        dimensional or has only identical points, return -1 for tip_pt_minus_1.</span>
 
@@ -938,7 +936,7 @@
                 <span class="s2">&quot;unsupported type for self.intermediate_pts&quot;</span><span class="p">,</span>
                 <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span><span class="p">),</span>
             <span class="p">)</span>
-            <span class="k">return</span>
+            <span class="k">return</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">tip_pt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># no point in the intermediate array</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">get_tip</span><span class="p">()</span>
@@ -961,7 +959,7 @@
 <span class="sd">            list: List of points without colinear points</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inarray</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span>
+            <span class="k">return</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">outarray</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># outarray = np.empty(shape=[0, 2])</span>
             <span class="n">pts</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">inarray</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
@@ -1019,7 +1017,7 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QRoute.html#qiskit_metal.qlibrary.QRoute.get_unit_vectors">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_unit_vectors</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span> <span class="n">snap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the unit and target vector in which the CPW should process as</span>
 <span class="sd">        its coordinate sys.</span>
 
@@ -1315,7 +1313,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/27</div>
+              Last updated on 2026/07/28</div>
           </div>
           <div class="right-details">
             

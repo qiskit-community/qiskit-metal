@@ -461,9 +461,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for qiskit_metal.renderers.renderer_gds.gds_renderer</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-
-<span class="c1"># This code is part of Qiskit.</span>
+<span></span><span class="c1"># This code is part of Qiskit.</span>
 <span class="c1">#</span>
 <span class="c1"># (C) Copyright IBM 2017, 2021.</span>
 <span class="c1">#</span>
@@ -736,8 +734,8 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">,</span>
         <span class="n">initiate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">render_template</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">render_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">render_template</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">render_options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a QRenderer for GDS interface: export and import.</span>
 
@@ -762,10 +760,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">gdstk</span><span class="o">.</span><span class="n">Library</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">new_gds_library</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">dict_bounds</span><span class="p">:</span> <span class="n">DictType</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict_bounds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
 
         <span class="c1"># Updated each time export_to_gds() is called.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">:</span> <span class="n">DictType</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="c1"># check the scale</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_bounding_box_scale</span><span class="p">()</span>
@@ -867,7 +865,7 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_bounds</span><span class="p">(</span>
         <span class="n">gs_table</span><span class="p">:</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the bounds for all of the elements in gs_table.</span>
 
 <span class="sd">        Args:</span>
@@ -913,7 +911,7 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_midpoint_xy</span><span class="p">(</span>
         <span class="n">x_1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y_1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">x_2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y_2</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the center of a line segment with endpoints (x1,y1) and</span>
 <span class="sd">        (x2,y2).</span>
 
@@ -935,7 +933,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_scale_max_bounds</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">chip_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">all_bounds</span><span class="p">:</span> <span class="nb">list</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given the list of tuples to represent all of the bounds for path,</span>
 <span class="sd">        poly, etc. This will return the scaled using self.bounding_box_scale_x</span>
 <span class="sd">        and self.bounding_box_scale_y, and the max bounds of the tuples</span>
@@ -984,8 +982,8 @@
         <span class="k">return</span> <span class="n">scaled_box</span><span class="p">,</span> <span class="p">(</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_check_qcomps</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">highlight_qcomponents</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">highlight_qcomponents</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Confirm the list doesn&#39;t have names of components repeated. Confirm</span>
 <span class="sd">        that the name of component exists in QDesign.</span>
 
@@ -1029,7 +1027,7 @@
         <span class="k">return</span> <span class="n">unique_qcomponents</span><span class="p">,</span> <span class="mi">0</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_create_qgeometry_for_gds</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">highlight_qcomponents</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">highlight_qcomponents</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Using self.design, this method does the following:</span>
 
@@ -1253,7 +1251,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_check_length</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">a_shapely</span><span class="p">:</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">LineString</span><span class="p">,</span> <span class="n">a_fillet</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine if a_shapely has short segments based on scaled fillet</span>
 <span class="sd">        value.</span>
 
@@ -1978,7 +1976,7 @@
             <span class="k">return</span> <span class="n">combo_shapely</span>
         <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># Need explicitly to avoid lint warnings.</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_rectangle_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chip_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_rectangle_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chip_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;There can be more than one chip in QGeometry. All chips export to</span>
 <span class="sd">        one gds file. Each chip uses its own subtract rectangle.</span>
 
@@ -2234,7 +2232,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_linestring_characteristics</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a row in the Junction table, give the characteristics of</span>
 <span class="sd">        LineString in row.geometry.</span>
 
@@ -2267,9 +2265,9 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_give_rotation_center_twopads</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">a_cell_bounding_box</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
         <span class="nb">float</span><span class="p">,</span>
-        <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
         <span class="n">Union</span><span class="p">[</span><span class="n">gdstk</span><span class="o">.</span><span class="n">Polygon</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
         <span class="n">Union</span><span class="p">[</span><span class="n">gdstk</span><span class="o">.</span><span class="n">Polygon</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
     <span class="p">]:</span>
@@ -2351,7 +2349,7 @@
 <div class="viewcode-block" id="QGDSRenderer.import_junction_gds_file">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QGDSRenderer.html#qiskit_metal.renderers.QGDSRenderer.import_junction_gds_file">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">import_junction_gds_file</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">lib</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Library</span><span class="p">,</span> <span class="n">directory_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">lib</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Library</span><span class="p">,</span> <span class="n">directory_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Import the file which contains all junctions for design.</span>
 
@@ -3095,7 +3093,7 @@
 <span class="sd">                gds.debug_summarize_gds_library(lib, show=True, scale=200, width=1000)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Collect per (layer, datatype) stats first so we can colour the SVG.</span>
-        <span class="n">layer_stats</span><span class="p">:</span> <span class="n">DictType</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">DictType</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span>
+        <span class="n">layer_stats</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span>
             <span class="k">lambda</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;polygons&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;paths&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
         <span class="p">)</span>
 
@@ -3217,11 +3215,11 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_gds_zoom</span><span class="p">(</span>
         <span class="n">lib</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Library</span><span class="p">,</span>
-        <span class="n">center_mm</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">center_mm</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
         <span class="n">span_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.10</span><span class="p">,</span>
-        <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">ax</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">:</span> <span class="nb">object</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">figsize</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a zoomed window of a GDS library using matplotlib.</span>
 
@@ -3286,7 +3284,7 @@
         <span class="n">top</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;TOP&quot;</span><span class="p">),</span> <span class="n">lib</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
         <span class="c1"># Collect visible polygons grouped by (layer, datatype)</span>
-        <span class="n">groups</span><span class="p">:</span> <span class="n">DictType</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">groups</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">poly</span> <span class="ow">in</span> <span class="n">top</span><span class="o">.</span><span class="n">get_polygons</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
             <span class="n">pts</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">points</span>
             <span class="k">if</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">x0</span> <span class="ow">or</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">x1</span><span class="p">:</span>
@@ -3384,7 +3382,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/27</div>
+              Last updated on 2026/07/28</div>
           </div>
           <div class="right-details">
             

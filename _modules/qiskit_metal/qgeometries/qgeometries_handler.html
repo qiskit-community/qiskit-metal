@@ -461,9 +461,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for qiskit_metal.qgeometries.qgeometries_handler</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-
-<span class="c1"># This code is part of Qiskit.</span>
+<span></span><span class="c1"># This code is part of Qiskit.</span>
 <span class="c1">#</span>
 <span class="c1"># (C) Copyright IBM 2017, 2021.</span>
 <span class="c1">#</span>
@@ -734,7 +732,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_design</span><span class="o">.</span><span class="n">logger</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">tables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict_</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">GeoDataFrame</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">GeoDataFrame</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The dictionary of tables containing qgeometry.</span>
 
 <span class="sd">        Returns:</span>
@@ -782,7 +780,7 @@
 <div class="viewcode-block" id="QGeometryTables.get_element_types">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.get_element_types">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_element_types</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_element_types</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the names of the available qgeometry to create. This does not</span>
 <span class="sd">        include &#39;base&#39;, but is rather such as poly and path.</span>
 
@@ -1068,7 +1066,7 @@
 
 <div class="viewcode-block" id="QGeometryTables.parse_value">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.parse_value">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Same as design.parse_value. See design for help.</span>
 
 <span class="sd">        Returns:</span>
@@ -1125,7 +1123,7 @@
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.get_component">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_component</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">GeoDataFrame</span><span class="p">,</span> <span class="n">Dict_</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">GeoDataFrame</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">GeoDataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">GeoDataFrame</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the table for just a given component. If all, returns a</span>
 <span class="sd">        dictionary with keys as table names and tables of components as values.</span>
 
@@ -1160,7 +1158,7 @@
 
 <div class="viewcode-block" id="QGeometryTables.get_component_bounds">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.get_component_bounds">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_component_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_component_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a tuple containing minx, miny, maxx, maxy values for the</span>
 <span class="sd">        bounds of the component as a whole.</span>
 
@@ -1204,7 +1202,7 @@
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.get_component_geometry_list">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_component_geometry_list</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseGeometry</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseGeometry</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return just the bare element geometry (shapely geometry objects) as</span>
 <span class="sd">        a list, for the selected component.</span>
 
@@ -1258,7 +1256,7 @@
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.get_component_geometry_dict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_component_geometry_dict</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseGeometry</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseGeometry</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return just the bare element geometry (shapely geometry objects) as</span>
 <span class="sd">        a dict, with key being the names of the qgeometry and the values as the</span>
 <span class="sd">        shapely geometry, for the selected component.</span>
@@ -1386,7 +1384,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/27</div>
+              Last updated on 2026/07/28</div>
           </div>
           <div class="right-details">
             

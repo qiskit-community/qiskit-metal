@@ -461,8 +461,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">re</span><span class="w"> </span><span class="kn">import</span> <span class="n">sub</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">re</span><span class="w"> </span><span class="kn">import</span> <span class="n">sub</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
 
@@ -477,7 +476,7 @@
     <span class="n">maxx</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
     <span class="n">maxy</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
     <span class="n">chip_box</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return box which includes the two boxes.</span>
 
 <span class="sd">    Args:</span>
@@ -526,7 +525,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get_bounds_of_path_and_poly_tables</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-        <span class="n">qcomp_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+        <span class="n">qcomp_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
         <span class="n">case</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">x_buff</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">y_buff</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -640,8 +639,8 @@
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html#qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.BoundsForPathAndPolyTables.ensure_component_box_smaller_than_chip_box_">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">ensure_component_box_smaller_than_chip_box_</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span> <span class="n">box_for_xy_bounds</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">chip_bounds_xy</span><span class="p">:</span> <span class="n">Tuple</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">box_for_xy_bounds</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">chip_bounds_xy</span><span class="p">:</span> <span class="nb">tuple</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;If the box_plus_buffer is larger than the aggregate chip bounds from DesignPlanar,</span>
 <span class="sd">        use the chip bounds as the cutoff.</span>
 
@@ -686,7 +685,7 @@
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html#qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.BoundsForPathAndPolyTables.get_box_for_xy_bounds">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_box_for_xy_bounds</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Assuming the chip size is used from Multiplanar design, and list of chip_names</span>
 <span class="sd">        comes from layer_stack that will be used to determine the box size for simulation.</span>
 
@@ -721,7 +720,7 @@
 
 <div class="viewcode-block" id="BoundsForPathAndPolyTables.are_all_chipnames_in_design">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html#qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.BoundsForPathAndPolyTables.are_all_chipnames_in_design">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">are_all_chipnames_in_design</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">set</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">are_all_chipnames_in_design</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">set</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Using chip names in layer_stack information,</span>
 <span class="sd">        then check if the information is in MultiPlanar design.</span>
 
@@ -744,7 +743,7 @@
 
 <div class="viewcode-block" id="BoundsForPathAndPolyTables.get_x_y_for_chip">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html#qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.BoundsForPathAndPolyTables.get_x_y_for_chip">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_x_y_for_chip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chip_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_x_y_for_chip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chip_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;If the chip_name is in self.chips, along with entry for size</span>
 <span class="sd">        information then return a tuple=(minx, miny, maxx, maxy). Used for</span>
 <span class="sd">        subtraction while exporting design.</span>
@@ -860,7 +859,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/27</div>
+              Last updated on 2026/07/28</div>
           </div>
           <div class="right-details">
             
