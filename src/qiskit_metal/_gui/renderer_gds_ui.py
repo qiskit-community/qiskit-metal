@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Form implementation generated from reading ui file 'c:\Temp\GitHub\qiskit-metal\qiskit_metal\_gui\renderer_gds_ui.ui'
 #
 # Created: Sat Jun 19 22:02:30 2021

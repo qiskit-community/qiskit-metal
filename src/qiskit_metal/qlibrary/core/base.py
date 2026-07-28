@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -154,10 +152,10 @@ class QComponent:
     def __init__(
         self,
         design: "QDesign",
-        name: Optional[str] = None,
-        options: Optional[Dict] = None,
+        name: str | None = None,
+        options: Dict | None = None,
         make: bool = True,
-        component_template: Optional[Dict] = None,
+        component_template: Dict | None = None,
     ) -> None:
         """Create a new Metal component and adds it's default_options to the
         design.
@@ -450,9 +448,9 @@ class QComponent:
     def get_template_options(
         cls,
         design: "QDesign",
-        component_template: Optional[Dict] = None,
-        logger_: Optional[logging.Logger] = None,
-        template_key: Optional[str] = None,
+        component_template: Dict | None = None,
+        logger_: logging.Logger | None = None,
+        template_key: str | None = None,
     ) -> Dict:
         """Creates template options for the Metal Component class required for
         the class to function, based on the design template; i.e., be created,
@@ -502,7 +500,7 @@ class QComponent:
 
         return template_options
 
-    def _delete_evaluation(self, check_name: Optional[str] = None):
+    def _delete_evaluation(self, check_name: str | None = None):
         """When design.overwrite_enabled, the user is allowed to delete an
         existing component within the design if the name is being used.
 
@@ -547,7 +545,7 @@ class QComponent:
         """
         raise NotImplementedError()
 
-    def to_script(self, thin: bool = False, is_part_of_chip: bool = False) -> Tuple:
+    def to_script(self, thin: bool = False, is_part_of_chip: bool = False) -> tuple:
         """
 
         Args:
@@ -752,8 +750,8 @@ name='{strname}'{other_args}
     # Though the data table approach and rendering directly via shapely could lead to problem
     # with variable use
     def parse_value(
-        self, value: Union[Any, List, Dict, Iterable]
-    ) -> Union[Any, List, Dict, Iterable]:
+        self, value: Union[Any, list, Dict, Iterable]
+    ) -> Union[Any, list, Dict, Iterable]:
         """Parse a string, mappable (dict, Dict), iterable (list, tuple) to
         account for units conversion, some basic arithmetic, and design
         variables. This is the main parsing function of Qiskit Metal.
@@ -799,7 +797,7 @@ name='{strname}'{other_args}
         """
         return self.design.parse_value(value)
 
-    def parse_options(self, options: Optional[Dict] = None) -> Dict:
+    def parse_options(self, options: Dict | None = None) -> Dict:
         """Parse the options, converting string into interpreted values. Parses
         units, variables, strings, lists, and dictionaries. Explained by
         example below.
@@ -848,8 +846,8 @@ name='{strname}'{other_args}
         points: np.ndarray,
         width: float,
         input_as_norm: bool = False,
-        chip: Optional[str] = None,
-        gap: Optional[float] = None,
+        chip: str | None = None,
+        gap: float | None = None,
     ) -> None:  # gap defaults to 0.6 * width
         """Adds a pin from two points which are normal/tangent to the intended
         plane of the pin. The normal should 'point' in the direction of
@@ -1104,7 +1102,7 @@ name='{strname}'{other_args}
         subtract: bool = False,
         helper: bool = False,
         layer: Union[int, str, None] = None,  # chip will be here
-        chip: Optional[str] = None,
+        chip: str | None = None,
         **kwargs,
     ) -> None:
         r"""Add QGeometry.
@@ -1248,7 +1246,7 @@ name='{strname}'{other_args}
     # Geometry handling of created qgeometry
 
     @property
-    def qgeometry_types(self) -> List[str]:
+    def qgeometry_types(self) -> list[str]:
         """Get a list of the names of the element tables.
 
         Returns:
@@ -1256,7 +1254,7 @@ name='{strname}'{other_args}
         """
         return self.design.qgeometry.get_element_types()
 
-    def qgeometry_dict(self, element_type: str) -> Dict_[str, BaseGeometry]:
+    def qgeometry_dict(self, element_type: str) -> dict[str, BaseGeometry]:
         """Returns a dict of element qgeometry (shapely geometry) of the
         component as a python dict, where the dict keys are the names of the
         qgeometry and the corresponding values are the shapely geometries.
@@ -1276,7 +1274,7 @@ name='{strname}'{other_args}
                 self.name, element_type
             )
 
-    def qgeometry_list(self, element_type: str = "all") -> List[BaseGeometry]:
+    def qgeometry_list(self, element_type: str = "all") -> list[BaseGeometry]:
         """Returns a list of element qgeometry (shapely geometry) of the
         component as a python list of shapely geometries.
 
@@ -1312,7 +1310,7 @@ name='{strname}'{other_args}
         ):
             return self.design.qgeometry.get_component(self.name, element_type)
 
-    def qgeometry_bounds(self) -> Tuple:
+    def qgeometry_bounds(self) -> tuple:
         """Fetched the component bound dict_value.
 
         Returns:
@@ -1326,8 +1324,8 @@ name='{strname}'{other_args}
         return bounds
 
     def qgeometry_plot(
-        self, ax: "matplotlib.axes.Axes" = None, plot_kw: Optional[dict] = None
-    ) -> List:
+        self, ax: "matplotlib.axes.Axes" = None, plot_kw: dict | None = None
+    ) -> list:
         """Draw all the qgeometry of the component (polys and path etc.)
 
         Args:

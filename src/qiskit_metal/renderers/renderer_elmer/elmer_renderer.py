@@ -188,7 +188,7 @@ class QElmerRenderer(QRendererAnalysis):
         skip_junctions: bool = False,
         mesh_geoms: bool = True,
         ignore_metal_volume: bool = False,
-        omit_ground_for_layers: Optional[list[int]] = None,
+        omit_ground_for_layers: list[int] | None = None,
     ):
         """Render the design in Gmsh and apply changes to modify the geometries
         according to the type of simulation. Simulation parameters provided by the user.
@@ -759,7 +759,7 @@ class QElmerRenderer(QRendererAnalysis):
         """
         self.gmsh.render_element_poly(poly)
 
-    def save_screenshot(self, path: Optional[str] = None, show: bool = True):
+    def save_screenshot(self, path: str | None = None, show: bool = True):
         """Save the screenshot.
 
         Args:

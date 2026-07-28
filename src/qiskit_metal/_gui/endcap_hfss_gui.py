@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -108,7 +106,7 @@ class EndcapHFSSWidget(QMainWindow):
 
     def get_unconnected_pins(
         self, components_to_render: list = None
-    ) -> Tuple[set, set]:
+    ) -> tuple[set, set]:
         """Given a list of components to render, obtain 2 sets: open_set and
         short_set. Each contains pins belonging to components in
         components_to_render, but with the following difference. Open_set

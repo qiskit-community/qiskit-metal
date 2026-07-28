@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit / Quantum Metal.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -29,7 +27,7 @@ if TYPE_CHECKING:
 
 
 def show_inline(
-    fig: "Optional[Figure]" = None,
+    fig: "Figure | None" = None,
     *,
     dpi: int = 110,
     close: bool = True,

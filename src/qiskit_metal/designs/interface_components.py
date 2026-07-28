@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -61,7 +59,7 @@ class Components:
         """
         return len(self.components)
 
-    def get_list_ints(self, component_names: List[str]) -> List[int]:
+    def get_list_ints(self, component_names: list[str]) -> list[int]:
         """Provide corresponding ints to be used as keys for dict:
         design._components, when list of names is provided.
 
@@ -263,7 +261,7 @@ class Components:
     #     #         # Why every class needs one?  https://dbader.org/blog/python-repr-vs-str
     #     #         return str(self.__actual_place_I_store_components__.give_me_repr())
 
-    def __dir__(self) -> List:
+    def __dir__(self) -> list:
         """Provide all the names in design._components.
 
         Returns:

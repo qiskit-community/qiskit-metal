@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -103,7 +102,7 @@ class QDesign:
 
     def __init__(
         self,
-        metadata: Optional[dict] = None,
+        metadata: dict | None = None,
         overwrite_enabled: bool = False,
         enable_renderers: bool = True,
     ) -> None:
@@ -165,7 +164,7 @@ class QDesign:
         if metadata:
             self.update_metadata(metadata)
 
-        self.save_path: Optional[str] = None
+        self.save_path: str | None = None
 
         self.logger = logger  # type: logging.Logger
         self.build_logs = LogStore("Build Logs", 30)
@@ -235,7 +234,7 @@ class QDesign:
     #########PROPERTIES##################################################
 
     @property
-    def variables(self) -> Dict_[str, str]:
+    def variables(self) -> dict[str, str]:
         """Return the Dict object that keeps track of all variables in the
         design."""
         return self._variables
@@ -792,7 +791,7 @@ class QDesign:
         design = load_metal_design(path)
         return design
 
-    def save_design(self, path: Optional[str] = None):
+    def save_design(self, path: str | None = None):
         """Save the metal design to a Metal file. If no path is given, then
         tried to use self.save_path if it is set.
 
@@ -836,7 +835,7 @@ class QDesign:
 
     #########Creating Components##############################################
 
-    def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
+    def parse_value(self, value: Union[Any, list, Dict, Iterable]) -> Any:
         """Main parsing function. Parse a string, mappable (dict, Dict),
         iterable (list, tuple) to account for units conversion, some basic
         arithmetic, and design variables.

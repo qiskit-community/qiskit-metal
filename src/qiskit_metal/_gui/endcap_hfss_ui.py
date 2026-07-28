@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Form implementation generated from reading ui file './endcap_hfss_ui.ui',
 # licensing of './endcap_hfss_ui.ui' applies.
 #

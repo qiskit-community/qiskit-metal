@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -515,7 +513,7 @@ class QQ3DRenderer(QAnsysRenderer):
 
     def _parse_text_from_q3d_convergence(
         self, gui_text: str
-    ) -> Tuple[Union[None, float], Union[None, float]]:
+    ) -> tuple[Union[None, float], Union[None, float]]:
         """Parse gui_text using a priori known formatting. Ansys-Q3D
         solution-data provides gui_text.
 

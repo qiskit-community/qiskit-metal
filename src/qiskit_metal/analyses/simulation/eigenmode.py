@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -83,14 +81,14 @@ class EigenmodeSim(QSimulation):
 
     def run_sim(
         self,
-        name: Optional[str] = None,
-        components: Optional[list] = None,
-        open_terminations: Optional[list] = None,
-        port_list: Optional[list] = None,
-        jj_to_port: Optional[list] = None,
-        ignored_jjs: Optional[list] = None,
+        name: str | None = None,
+        components: list | None = None,
+        open_terminations: list | None = None,
+        port_list: list | None = None,
+        jj_to_port: list | None = None,
+        ignored_jjs: list | None = None,
         box_plus_buffer: bool = True,
-    ) -> Tuple[str, str]:
+    ) -> tuple[str, str]:
         """Executes the entire eigenmode analysis and convergence result export.
         First it makes sure the tool is running. Then it does what's necessary to render the design.
         Finally it runs the setup defined in this class. So you need to modify the setup ahead.
@@ -191,7 +189,7 @@ class EigenmodeSim(QSimulation):
             return
         self.set_data("convergence_t", data)
 
-    def compute_convergences(self, variation: Optional[str] = None):
+    def compute_convergences(self, variation: str | None = None):
         """Convergence plots are computed as part of run(). However, in special cases
         you might need to recalculate them using a different variation.
 
@@ -205,8 +203,8 @@ class EigenmodeSim(QSimulation):
 
     def plot_convergences(
         self,
-        convergence_t: Optional[pd.DataFrame] = None,
-        convergence_f: Optional[pd.DataFrame] = None,
+        convergence_t: pd.DataFrame | None = None,
+        convergence_f: pd.DataFrame | None = None,
         fig: mpl.figure.Figure = None,
         _display: bool = True,
     ):
@@ -277,7 +275,7 @@ class EigenmodeSim(QSimulation):
         self.renderer.set_mode(eigenmode, self.sim_setup_name)
         return self.renderer.plot_fields(*args, **kwargs, object_name=object_name)
 
-    def clear_fields(self, names: Optional[list] = None):
+    def clear_fields(self, names: list | None = None):
         """
         Delete field plots from renderer.
 

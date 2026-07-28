@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -269,7 +267,7 @@ class QGeometryTables:
         return self._design.logger
 
     @property
-    def tables(self) -> Dict_[str, GeoDataFrame]:
+    def tables(self) -> dict[str, GeoDataFrame]:
         """The dictionary of tables containing qgeometry.
 
         Returns:
@@ -312,7 +310,7 @@ class QGeometryTables:
     # could use weakref memorization
     # https://stackoverflow.com/questions/33672412/python-functools-lru-cache-with-class-methods-release-object
     @classmethod
-    def get_element_types(cls) -> List[str]:
+    def get_element_types(cls) -> list[str]:
         """Return the names of the available qgeometry to create. This does not
         include 'base', but is rather such as poly and path.
 
@@ -583,7 +581,7 @@ class QGeometryTables:
                             f"are index(es) in shapely geometry."
                         )
 
-    def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
+    def parse_value(self, value: Union[Any, list, Dict, Iterable]) -> Any:
         """Same as design.parse_value. See design for help.
 
         Returns:
@@ -628,7 +626,7 @@ class QGeometryTables:
 
     def get_component(
         self, name: str, table_name: str = "all"
-    ) -> Union[GeoDataFrame, Dict_[str, GeoDataFrame], None]:
+    ) -> Union[GeoDataFrame, dict[str, GeoDataFrame], None]:
         """Return the table for just a given component. If all, returns a
         dictionary with keys as table names and tables of components as values.
 
@@ -660,7 +658,7 @@ class QGeometryTables:
             # comp_id = self.design.components[name].id
             # return df[df.component == comp_id]
 
-    def get_component_bounds(self, name: str) -> Tuple[float, float, float, float]:
+    def get_component_bounds(self, name: str) -> tuple[float, float, float, float]:
         """Returns a tuple containing minx, miny, maxx, maxy values for the
         bounds of the component as a whole.
 
@@ -698,7 +696,7 @@ class QGeometryTables:
 
     def get_component_geometry_list(
         self, name: str, table_name: str = "all"
-    ) -> List[BaseGeometry]:
+    ) -> list[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as
         a list, for the selected component.
 
@@ -746,7 +744,7 @@ class QGeometryTables:
 
     def get_component_geometry_dict(
         self, name: str, table_name: str = "all"
-    ) -> List[BaseGeometry]:
+    ) -> list[BaseGeometry]:
         """Return just the bare element geometry (shapely geometry objects) as
         a dict, with key being the names of the qgeometry and the values as the
         shapely geometry, for the selected component.

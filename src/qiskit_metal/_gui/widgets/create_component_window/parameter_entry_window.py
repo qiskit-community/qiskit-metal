@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -58,7 +56,7 @@ class ParameterEntryWindow(QMainWindow):
 
     def __init__(
         self,
-        qcomp_class: Type,
+        qcomp_class: type,
         design: designs.DesignPlanar,
         parent: QWidget = None,
         gui: "MetalGUI" = None,

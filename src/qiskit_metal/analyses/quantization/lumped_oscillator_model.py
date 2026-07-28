@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -55,7 +53,7 @@ class LOManalysis(QAnalysis):
     """Default data labels."""
 
     def __init__(
-        self, design: Optional["QDesign"] = None, renderer_name: Optional[str] = None
+        self, design: Optional["QDesign"] = None, renderer_name: str | None = None
     ):
         """Initialize the Lumped Oscillator Model analysis.
 
@@ -156,7 +154,7 @@ class LOManalysis(QAnalysis):
                     "Please initialize the capacitance_matrix before executing this method."
                     "`self.sim.capacitance_matrix = pd.DataFrame(...)`"
                 )
-                return
+                return None
             if self.sim.capacitance_all_passes == {}:
                 self.sim.capacitance_all_passes[1] = self.sim.capacitance_matrix.values
 

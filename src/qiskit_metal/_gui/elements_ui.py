@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Form implementation generated from reading ui file './elements_ui.ui',
 # licensing of './elements_ui.ui' applies.
 #

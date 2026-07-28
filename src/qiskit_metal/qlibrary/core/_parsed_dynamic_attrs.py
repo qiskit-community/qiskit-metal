@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -75,7 +73,7 @@ class ParsedDynamicAttributes_Component:
         __delattr__:        Called when an attribute deletion is attempted.
     """
 
-    def __init__(self, component: "QComponent", key_list: List[str] = None):
+    def __init__(self, component: "QComponent", key_list: list[str] = None):
         """
         Args:
             component (QComponent): Component to get options from.

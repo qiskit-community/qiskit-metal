@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -201,7 +199,7 @@ def style_colon_list(
 
 
 def format_dict_ala_z(
-    dic: Dict_,
+    dic: dict,
     indent=0,
     key_width=20,
     do_repr=True,

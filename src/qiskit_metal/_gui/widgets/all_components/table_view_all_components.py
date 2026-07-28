@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -248,7 +246,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         self.gui.canvas.zoom_on_components([name])
         # self.logger.info(f'Double clicked component {name}')
 
-    def rows_to_names(self, rows: List[int]) -> List[str]:
+    def rows_to_names(self, rows: list[int]) -> list[str]:
         """Based on user highlighting  rows of components in GUI, return the
         name of components.
 
@@ -341,7 +339,7 @@ class QTableView_AllComponents(QTableView, QWidget_PlaceholderText):
         index_list = self.selectedIndexes()
         name_set = set()
         if len(index_list) == 0:
-            return
+            return None
 
         for ind in index_list:
             name_ind = model.index(ind.row(), 0)

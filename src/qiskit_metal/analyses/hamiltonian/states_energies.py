@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -24,7 +22,7 @@ import qutip
 from qutip import Qobj
 
 
-def basis_state_on(mode_size: List[int], excitations: Dict_[int, int]):
+def basis_state_on(mode_size: list[int], excitations: dict[int, int]):
     """Construct a qutip Qobj. Taken from pyEPR
     https://github.com/zlatko-minev/pyEPR/blob/master/pyEPR/calcs/back_box_numeric.py
 
@@ -47,7 +45,7 @@ def basis_state_on(mode_size: List[int], excitations: Dict_[int, int]):
 
 
 def extract_energies(
-    esys_array: np.ndarray, mode_size: List[int], zero_evals: bool = True
+    esys_array: np.ndarray, mode_size: list[int], zero_evals: bool = True
 ):
     """
     Returns the frequencies, anharmonicities, and dispersive shifts of the modes.

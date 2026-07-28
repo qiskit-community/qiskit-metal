@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -103,7 +101,7 @@ class DesignFlipChip(QDesign):
             sample_holder_bottom=self.variables["sample_holder_bottom"],
         )
 
-    def get_x_y_for_chip(self, chip_name: str) -> Tuple[tuple, int]:
+    def get_x_y_for_chip(self, chip_name: str) -> tuple[tuple, int]:
         """
         If the chip_name is in self.chips, along with entry for size
         information then return a tuple=(minx, miny, maxx, maxy). Used for

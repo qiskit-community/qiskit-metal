@@ -241,7 +241,7 @@ class QGmshRenderer(QRenderer):
         skip_junctions: bool = False,
         mesh_geoms: bool = True,
         ignore_metal_volume: bool = False,
-        omit_ground_for_layers: Optional[list[int]] = None,
+        omit_ground_for_layers: list[int] | None = None,
     ):
         """Render the design in Gmsh and apply changes to modify the geometries
         according to the type of simulation. Simulation parameters provided by the user.
@@ -311,7 +311,7 @@ class QGmshRenderer(QRenderer):
         open_pins: Union[list, None] = None,
         box_plus_buffer: bool = True,
         skip_junctions: bool = False,
-        omit_ground_for_layers: Optional[list[int]] = None,
+        omit_ground_for_layers: list[int] | None = None,
     ):
         """This function draws the raw geometries in Gmsh as taken from the
         QGeometry tables and applies thickness depending on the layer-stack.
@@ -424,7 +424,7 @@ class QGmshRenderer(QRenderer):
         else:
             self.logger.error(f"RENDERER ERROR: Unkown element type: {table_type}")
 
-    def make_general_surface(self, curves: List[int]) -> int:
+    def make_general_surface(self, curves: list[int]) -> int:
         """Create a general Gmsh surface.
 
         Args:
@@ -568,7 +568,7 @@ class QGmshRenderer(QRenderer):
             else:
                 self.paths_dict[path.layer][qc_name] = [surface]
 
-    def make_poly_surface(self, points: List[np.ndarray], chip_z: float) -> int:
+    def make_poly_surface(self, points: list[np.ndarray], chip_z: float) -> int:
         """Make a Gmsh surface for creating poly type QGeometries
 
         Args:
@@ -706,7 +706,7 @@ class QGmshRenderer(QRenderer):
     def render_layers(
         self,
         draw_sample_holder: bool,
-        omit_layers: Optional[List[int]] = None,
+        omit_layers: list[int] | None = None,
         box_plus_buffer: bool = True,
     ):
         """Render all chips of the design. calls `render_chip` to render the actual geometries
@@ -805,7 +805,7 @@ class QGmshRenderer(QRenderer):
 
         self.layers_dict[layer_number] = [layer_tag]
 
-    def subtract_from_layers(self, omit_layers: Optional[list[int]] = None):
+    def subtract_from_layers(self, omit_layers: list[int] | None = None):
         """Subtract the QGeometries in tables from the chip ground plane
 
         Args:

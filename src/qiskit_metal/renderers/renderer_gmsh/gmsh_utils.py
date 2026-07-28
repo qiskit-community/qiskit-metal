@@ -40,8 +40,8 @@ class Vec3DArray:
         Vec3DArray: Array of np.ndarray objects
     """
 
-    points: List[np.ndarray]
-    path_vecs: List[np.ndarray] = field(init=False)
+    points: list[np.ndarray]
+    path_vecs: list[np.ndarray] = field(init=False)
 
     def __post_init__(self):
         """This is to initialize the `path_vecs` field separately
@@ -57,7 +57,7 @@ class Vec3DArray:
             v12 = Vec3D.normed(Vec3D.sub(v2, v1))
             self.path_vecs.append(v12)
 
-    def append(self, vecs: List[np.ndarray]):
+    def append(self, vecs: list[np.ndarray]):
         """Append vector to the array
 
         Args:
@@ -87,7 +87,7 @@ class Vec3DArray:
         return np.round(np.pi - np.arccos(Vec3D.dot(v1, v2)), decimals=9)
 
     @staticmethod
-    def make_vec3DArray(points: List[List[Union[int, float]]], layer_z: float = None):
+    def make_vec3DArray(points: list[list[Union[int, float]]], layer_z: float = None):
         """Create a Vec3DArray object from list of points
 
         Args:
@@ -121,7 +121,7 @@ class Vec3DArray:
         return Vec3DArray(vecs)
 
 
-def vecs_to_gmsh_points(vecs: List[np.ndarray], layer_z: float) -> list:
+def vecs_to_gmsh_points(vecs: list[np.ndarray], layer_z: float) -> list:
     """Create Gmsh points from np.ndarray objs
 
     Args:
@@ -212,7 +212,7 @@ def arc_width_offset_pts(
 
 def make_arc_vecs(
     angle: float, fillet: float
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Create vectors for the circle arc
 
     Args:
@@ -315,7 +315,7 @@ def remove_degenerate_segments(coords: list, min_len: float) -> list:
 
 def draw_curves(
     recent_pts: list, curves1: list, curves2: list
-) -> Tuple[list, list, list]:
+) -> tuple[list, list, list]:
     """Draw the curves using control points
 
     Args:
@@ -358,7 +358,7 @@ def render_path_curves(
     layer_z: float,
     fillet: float,
     width: float,
-    bad_fillet_idxs: List[int],
+    bad_fillet_idxs: list[int],
     straight_line_tol: float = 1e-9,
 ) -> list:
     """Helper function for rendering path QGeometry curves

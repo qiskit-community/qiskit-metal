@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Form implementation generated from reading ui file './plot_window_ui.ui',
 # licensing of './plot_window_ui.ui' applies.
 #

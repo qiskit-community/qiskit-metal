@@ -25,7 +25,7 @@ class Sweeper:
         else:
             self.design = None
 
-    def run_sweep(self, *args, **kwarg) -> Tuple[Dict, int]:
+    def run_sweep(self, *args, **kwarg) -> tuple[Dict, int]:
         """Ansys will be opened, if not already open, with an inserted project.
         A design will be inserted by this method.
 
@@ -135,7 +135,7 @@ class Sweeper:
         option_path: list,
         a_value: Dict,
         all_sweep: Dict,
-    ) -> Tuple[Dict, int]:
+    ) -> tuple[Dict, int]:
         """Iterate through the values that user gave in option_sweep.
 
         Args:
@@ -204,7 +204,7 @@ class Sweeper:
 
     def error_check_sweep_input(
         self, qcomp_name: str, option_name: str, option_sweep: list
-    ) -> Tuple[list, Dict, int]:
+    ) -> tuple[list, Dict, int]:
         """Implement error checking of data for sweeping.
 
         Args:

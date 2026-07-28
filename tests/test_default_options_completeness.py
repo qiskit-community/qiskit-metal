@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -133,7 +131,7 @@ class _OptionsAccessCollector(ast.NodeVisitor):
     """
 
     def __init__(self):
-        self.keys: Set[str] = set()
+        self.keys: set[str] = set()
         # Local variable aliases: name -> "options" | "p"
         self._aliases: dict[str, str] = {"self.options": "options", "self.p": "p"}
 
@@ -198,7 +196,7 @@ class _OptionsAccessCollector(ast.NodeVisitor):
         self.generic_visit(node)
 
 
-def _collect_option_accesses(cls) -> Set[str]:
+def _collect_option_accesses(cls) -> set[str]:
     """Return the set of option keys statically referenced anywhere
     in the class body (across all methods)."""
     src = inspect.getsource(cls)
@@ -208,7 +206,7 @@ def _collect_option_accesses(cls) -> Set[str]:
     return collector.keys
 
 
-def _flatten_keys(d, parent_key: str = "") -> Set[str]:
+def _flatten_keys(d, parent_key: str = "") -> set[str]:
     """Flatten a (potentially nested) options dict into a set of
     top-level keys. Only the top-level names are meaningful for the
     audit — nested keys are accessed via ``self.p.parent.child`` and

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -306,7 +304,7 @@ class QRenderer(ABC):
 
         return options
 
-    def parse_value(self, value: Union[Any, List, Dict, Iterable]) -> Any:
+    def parse_value(self, value: Union[Any, list, Dict, Iterable]) -> Any:
         """Same as design.parse_value. See design for help.
 
         Returns:
@@ -412,7 +410,7 @@ class QRenderer(ABC):
 
     def get_unique_component_ids(
         self, highlight_qcomponents: Union[list, None] = None
-    ) -> Tuple[list, int]:
+    ) -> tuple[list, int]:
         """Confirm the list doesn't have names of components repeated. Confirm
         that the name of component exists in QDesign. If QDesign doesn't
         contain any component, or if all components in QDesign are found in

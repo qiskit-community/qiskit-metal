@@ -196,6 +196,11 @@
         "B009", "B010",
         "RET501", "SIM114", "FURB105",
         "PYI016",
+        # Second tier (#1163 follow-up): also safely auto-fixable, no runtime
+        # behaviour change on the supported Python range (3.10-3.12).
+        "UP009",                           # redundant utf-8 coding declaration
+        "UP006", "UP045",                  # PEP 585/604 annotations
+        "RET502",                          # bare return in a value-returning fn
     ]
     ignore = [ "E402", "F401", "E731", "E722", "E741", "F821" ]
     # Ruff ignore codes:

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Resource object code
 #
 # Created: Thu Jun 30 16:30:21 2022

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -75,9 +73,7 @@ class QHFSSRenderer(QAnsysRenderer):
     )
     """HFSS Options"""
 
-    def __init__(
-        self, design: "QDesign", initiate=True, options: Optional[Dict] = None
-    ):
+    def __init__(self, design: "QDesign", initiate=True, options: Dict | None = None):
         """Create a QRenderer for HFSS simulations, subclassed from QAnsysRenderer.
 
         Args:
@@ -93,11 +89,11 @@ class QHFSSRenderer(QAnsysRenderer):
 
     def render_design(
         self,
-        selection: Optional[list] = None,
-        open_pins: Optional[list] = None,
-        port_list: Optional[list] = None,
-        jj_to_port: Optional[list] = None,
-        ignored_jjs: Optional[list] = None,
+        selection: list | None = None,
+        open_pins: list | None = None,
+        port_list: list | None = None,
+        jj_to_port: list | None = None,
+        ignored_jjs: list | None = None,
         box_plus_buffer: bool = True,
     ):
         """Initiate rendering of components in design contained in selection,
@@ -473,7 +469,7 @@ class QHFSSRenderer(QAnsysRenderer):
         )
         self.activate_ansys_design(name, "drivenmodal")
 
-    def activate_drivenmodal_setup(self, setup_name_activate: Optional[str] = None):
+    def activate_drivenmodal_setup(self, setup_name_activate: str | None = None):
         """
         (deprecated) use activate_ansys_setup()
         """
@@ -484,14 +480,14 @@ class QHFSSRenderer(QAnsysRenderer):
 
     def add_drivenmodal_setup(
         self,
-        name: Optional[str] = None,
-        freq_ghz: Optional[int] = None,
-        max_delta_s: Optional[float] = None,
-        max_passes: Optional[int] = None,
-        min_passes: Optional[int] = None,
-        min_converged: Optional[int] = None,
-        pct_refinement: Optional[int] = None,
-        basis_order: Optional[int] = None,
+        name: str | None = None,
+        freq_ghz: int | None = None,
+        max_delta_s: float | None = None,
+        max_passes: int | None = None,
+        min_passes: int | None = None,
+        min_converged: int | None = None,
+        pct_refinement: int | None = None,
+        basis_order: int | None = None,
         *args,
         **kwargs,
     ):
@@ -558,7 +554,7 @@ class QHFSSRenderer(QAnsysRenderer):
         )
         self.activate_ansys_design(name, "eigenmode")
 
-    def activate_eigenmode_setup(self, setup_name_activate: Optional[str] = None):
+    def activate_eigenmode_setup(self, setup_name_activate: str | None = None):
         """
         (deprecated) use activate_ansys_setup()
         """
@@ -569,15 +565,15 @@ class QHFSSRenderer(QAnsysRenderer):
 
     def add_eigenmode_setup(
         self,
-        name: Optional[str] = None,
-        min_freq_ghz: Optional[int] = None,
-        n_modes: Optional[int] = None,
-        max_delta_f: Optional[float] = None,
-        max_passes: Optional[int] = None,
-        min_passes: Optional[int] = None,
-        min_converged: Optional[int] = None,
-        pct_refinement: Optional[int] = None,
-        basis_order: Optional[int] = None,
+        name: str | None = None,
+        min_freq_ghz: int | None = None,
+        n_modes: int | None = None,
+        max_delta_f: float | None = None,
+        max_passes: int | None = None,
+        min_passes: int | None = None,
+        min_converged: int | None = None,
+        pct_refinement: int | None = None,
+        basis_order: int | None = None,
         *args,
         **kwargs,
     ):
@@ -975,7 +971,7 @@ class QHFSSRenderer(QAnsysRenderer):
             sweep.analyze_sweep()
             self.current_sweep = sweep
 
-    def get_params(self, param_name: Optional[list] = None):
+    def get_params(self, param_name: list | None = None):
         """Get one or more parameters (S, Y, or Z) as a function of frequency.
 
         Args:
@@ -989,10 +985,10 @@ class QHFSSRenderer(QAnsysRenderer):
         return freqs, Pcurves, Pparams
 
     # yapf: disable
-    def get_all_Pparms_matrices(self, matrix_size: int) -> Tuple[
-            Optional[pd.DataFrame],
-            Optional[pd.DataFrame],
-            Optional[pd.DataFrame]]:
+    def get_all_Pparms_matrices(self, matrix_size: int) -> tuple[
+            pd.DataFrame | None,
+            pd.DataFrame | None,
+            pd.DataFrame | None]:
         #yapf: enable
         '''
         S = scattering matrix, Y = Admittance, Z= impedance.
@@ -1019,7 +1015,7 @@ class QHFSSRenderer(QAnsysRenderer):
 
         return S_Pparams, Y_Pparams, Z_Pparams
 
-    def plot_params(self, param_name: Optional[list] = None):
+    def plot_params(self, param_name: list | None = None):
         """Plot one or more parameters (S, Y, or Z) as a function of frequency.
         S = scattering matrix, Y = Admittance, Z= impedance.
 
@@ -1053,7 +1049,7 @@ class QHFSSRenderer(QAnsysRenderer):
         if self.pinfo:
             return epr.DistributedAnalysis(self.pinfo)
 
-    def get_convergences(self, variation: Optional[str] = None):
+    def get_convergences(self, variation: str | None = None):
         """Get convergence for convergence_t, convergence_f, and text from GUI for solution data.
 
         Args:
@@ -1072,7 +1068,7 @@ class QHFSSRenderer(QAnsysRenderer):
             return convergence_t, convergence_f, text
 
     def plot_convergences(self,
-                          variation: Optional[str] = None,
+                          variation: str | None = None,
                           fig: mpl.figure.Figure = None):
         """
         (deprecated) use EPRanalysis.plot_convergences()
@@ -1082,7 +1078,7 @@ class QHFSSRenderer(QAnsysRenderer):
             'plot_convergence() that has been moved inside the EPRanalysis class.'
         )
 
-    def get_f_convergence(self, variation: Optional[str] = None, save_csv: bool = True):
+    def get_f_convergence(self, variation: str | None = None, save_csv: bool = True):
         """Create a report inside HFSS to plot the converge of frequency and
         style it. Saves report to csv file.
 

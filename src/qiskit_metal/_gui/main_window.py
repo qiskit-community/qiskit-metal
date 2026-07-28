@@ -963,7 +963,7 @@ class MetalGUI(QMainWindowBaseHandler):
         return axes
 
     @property
-    def axes(self) -> List["matplotlib.plt.Axes"]:
+    def axes(self) -> list["matplotlib.plt.Axes"]:
         """Returns the axes."""
         return self.plot_win.canvas.axes
 
@@ -1041,7 +1041,7 @@ class MetalGUI(QMainWindowBaseHandler):
         if self.component_window:
             self.component_window.set_component(name)
 
-    def highlight_components(self, component_names: List[str]):
+    def highlight_components(self, component_names: list[str]):
         """Visually highlight components in the plot canvas.
 
         Args:
@@ -1049,7 +1049,7 @@ class MetalGUI(QMainWindowBaseHandler):
         """
         self.canvas.highlight_components(component_names)
 
-    def zoom_on_components(self, components: List[str]):
+    def zoom_on_components(self, components: list[str]):
         """Zoom the canvas to fit the given components.
 
         Args:

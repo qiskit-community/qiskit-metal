@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -132,14 +130,14 @@ class ScatteringImpedanceSim(QSimulation):
 
     def run_sim(
         self,
-        name: Optional[str] = None,
-        components: Optional[list] = None,
-        open_terminations: Optional[list] = None,
-        port_list: Optional[list] = None,
-        jj_to_port: Optional[list] = None,
-        ignored_jjs: Optional[list] = None,
+        name: str | None = None,
+        components: list | None = None,
+        open_terminations: list | None = None,
+        port_list: list | None = None,
+        jj_to_port: list | None = None,
+        ignored_jjs: list | None = None,
         box_plus_buffer: bool = True,
-    ) -> Tuple[str, str]:
+    ) -> tuple[str, str]:
         """Executes the entire drivenmodal analysis and convergence result export.
         First it makes sure the tool is running. Then it does what's necessary to render the design.
         Finally it runs the setup and sweep defined in this class. You need to modify the setup

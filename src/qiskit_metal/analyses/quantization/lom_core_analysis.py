@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -77,7 +75,7 @@ class CouplingType:
     INDUCTIVE = "INDUCTIVE"
 
 
-def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float], shorted=False):
+def analyze_loaded_tl(fr, vp, Z0, cap_loading: dict[str, float], shorted=False):
     """Calculate charge operator zero point fluctuation, Q_zpf at the point of the loading
     capacitor.
     https://arxiv.org/pdf/2103.10344.pdf
@@ -184,7 +182,7 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: Dict[str, float], shorted=False):
     return Q_zpf, Phi_zpf, phi, Ltl
 
 
-def _product_no_duplicate(*args) -> List[List]:
+def _product_no_duplicate(*args) -> list[list]:
     """
     product_no_duplicate('ABCDx', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy xy
     ** Note that xx is not included **
@@ -213,7 +211,7 @@ def _make_cmat_df(cmat, nodes):
     return df
 
 
-def _df_cmat_to_adj_list(df_cmat: pd.DataFrame) -> DefaultDict(list):
+def _df_cmat_to_adj_list(df_cmat: pd.DataFrame) -> defaultdict(list):
     """
     generate an adjacency list from a capacitance matrix in a dataframe
     """
@@ -226,7 +224,7 @@ def _df_cmat_to_adj_list(df_cmat: pd.DataFrame) -> DefaultDict(list):
     return graph
 
 
-def _cj_dict_to_adj_list(cj_dict: Dict[Tuple, float]) -> DefaultDict(list):
+def _cj_dict_to_adj_list(cj_dict: dict[tuple, float]) -> defaultdict(list):
     graph = defaultdict(list)
     for (n1, n2), c in cj_dict.items():
         graph[n1].append((n2, -c))
@@ -245,7 +243,7 @@ def _remove_row_col_at_idx(mat, idx):
 
 
 def _extract_matrix_from_transform(
-    transform: BasisTransform, junctions: Mapping[Tuple[str, str], str], index: pd.Index
+    transform: BasisTransform, junctions: Mapping[tuple[str, str], str], index: pd.Index
 ) -> np.ndarray:
     """
     calculate the S_n^{-1} matrix that corresponds to a given transform
@@ -270,7 +268,7 @@ def _extract_matrix_from_transform(
 
 def _transform_to_junction_flux_basis(
     orig_nodes,
-    junctions: Mapping[Tuple[str, str], str],
+    junctions: Mapping[tuple[str, str], str],
     choose_least_num_neg: bool = True,
 ):
     """
@@ -407,10 +405,10 @@ class CircuitGraph:
         self,
         nodes: Sequence,
         grd_node: str,
-        cmats: List[pd.DataFrame],
-        ind_lists: List[Dict[Tuple, float]],
-        junctions: Mapping[Tuple[str, str], str],
-        cj_dicts: List[Dict[Tuple, float]] = None,
+        cmats: list[pd.DataFrame],
+        ind_lists: list[dict[tuple, float]],
+        junctions: Mapping[tuple[str, str], str],
+        cj_dicts: list[dict[tuple, float]] = None,
         nodes_force_keep: Sequence = None,
         s_remove_provided: Union[np.ndarray, bool] = False,
         s_keep_provided: Union[np.ndarray, bool] = False,
@@ -746,13 +744,13 @@ class CircuitGraph:
 # ----------------------------------------------------------------------------------------------------
 
 
-def _rename_nodes_in_df(node_rename: Dict, df: pd.DataFrame) -> pd.DataFrame:
+def _rename_nodes_in_df(node_rename: dict, df: pd.DataFrame) -> pd.DataFrame:
     orig_nodes = df.columns.values.tolist()
     new_nodes = [n if n not in node_rename else node_rename[n] for n in orig_nodes]
     return _make_cmat_df(df.values, new_nodes)
 
 
-def _rename_nodes_in_dict(node_rename: Dict, dict_input: Dict[Tuple[str], Any]) -> Dict:
+def _rename_nodes_in_dict(node_rename: dict, dict_input: dict[tuple[str], Any]) -> dict:
     renamed = {}
     for nodes, val in dict_input.items():
         _renamed_key = tuple(
@@ -864,7 +862,7 @@ class Subsystem:
     coupled-transmon examples.
     """
 
-    def __init__(self, name: str, sys_type: str, nodes: List[str], q_opts: dict = None):
+    def __init__(self, name: str, sys_type: str, nodes: list[str], q_opts: dict = None):
         """Initialize the Subsystem object
 
         Args:
@@ -952,7 +950,7 @@ class QuantumBuilder(metaclass=_QuantumBuilderMeta):
 
 
 class QuantumBuilderOptions(argparse.Namespace):
-    def set_from_input(self, input_opts: Dict):
+    def set_from_input(self, input_opts: dict):
         if input_opts is not None and len(input_opts):
             for k, v in input_opts.items():
                 setattr(self, k, v)
@@ -1252,7 +1250,7 @@ class Cell:
     the the user provides as inputs to this object
     """
 
-    def __init__(self, options: Dict):
+    def __init__(self, options: dict):
         """Initialize the cell object
 
         Args:
@@ -1339,8 +1337,8 @@ class CompositeSystem:
 
     def __init__(
         self,
-        subsystems: List[Subsystem],
-        cells: List[Cell],
+        subsystems: list[Subsystem],
+        cells: list[Cell],
         grd_node: str,
         nodes_force_keep: Sequence = None,
         s_remove_provided: Union[np.ndarray, bool] = False,

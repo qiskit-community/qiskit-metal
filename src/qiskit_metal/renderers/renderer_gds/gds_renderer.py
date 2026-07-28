@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -271,8 +269,8 @@ class QGDSRenderer(QRenderer):
         self,
         design: "QDesign",
         initiate=True,
-        render_template: Optional[Dict] = None,
-        render_options: Optional[Dict] = None,
+        render_template: Dict | None = None,
+        render_options: Dict | None = None,
     ):
         """Create a QRenderer for GDS interface: export and import.
 
@@ -297,10 +295,10 @@ class QGDSRenderer(QRenderer):
         self.lib: Union[gdstk.Library, None] = None
         self.new_gds_library()
 
-        self.dict_bounds: DictType[str, Dict] = Dict()
+        self.dict_bounds: dict[str, Dict] = Dict()
 
         # Updated each time export_to_gds() is called.
-        self.chip_info: DictType[str, dict] = dict()
+        self.chip_info: dict[str, dict] = dict()
 
         # check the scale
         self._check_bounding_box_scale()
@@ -399,7 +397,7 @@ class QGDSRenderer(QRenderer):
     @staticmethod
     def _get_bounds(
         gs_table: geopandas.GeoDataFrame,
-    ) -> Tuple[float, float, float, float]:
+    ) -> tuple[float, float, float, float]:
         """Get the bounds for all of the elements in gs_table.
 
         Args:
@@ -445,7 +443,7 @@ class QGDSRenderer(QRenderer):
     @staticmethod
     def _midpoint_xy(
         x_1: float, y_1: float, x_2: float, y_2: float
-    ) -> Tuple[float, float]:
+    ) -> tuple[float, float]:
         """Calculate the center of a line segment with endpoints (x1,y1) and
         (x2,y2).
 
@@ -467,7 +465,7 @@ class QGDSRenderer(QRenderer):
 
     def _scale_max_bounds(
         self, chip_name: str, all_bounds: list
-    ) -> Tuple[tuple, tuple]:
+    ) -> tuple[tuple, tuple]:
         """Given the list of tuples to represent all of the bounds for path,
         poly, etc. This will return the scaled using self.bounding_box_scale_x
         and self.bounding_box_scale_y, and the max bounds of the tuples
@@ -516,8 +514,8 @@ class QGDSRenderer(QRenderer):
         return scaled_box, (minx, miny, maxx, maxy)
 
     def _check_qcomps(
-        self, highlight_qcomponents: Optional[list] = None
-    ) -> Tuple[list, int]:
+        self, highlight_qcomponents: list | None = None
+    ) -> tuple[list, int]:
         """Confirm the list doesn't have names of components repeated. Confirm
         that the name of component exists in QDesign.
 
@@ -561,7 +559,7 @@ class QGDSRenderer(QRenderer):
         return unique_qcomponents, 0
 
     def _create_qgeometry_for_gds(
-        self, highlight_qcomponents: Optional[list] = None
+        self, highlight_qcomponents: list | None = None
     ) -> int:
         """Using self.design, this method does the following:
 
@@ -785,7 +783,7 @@ class QGDSRenderer(QRenderer):
 
     def _check_length(
         self, a_shapely: shapely.geometry.LineString, a_fillet: float
-    ) -> Tuple[int, Dict]:
+    ) -> tuple[int, Dict]:
         """Determine if a_shapely has short segments based on scaled fillet
         value.
 
@@ -1507,7 +1505,7 @@ class QGDSRenderer(QRenderer):
             return combo_shapely
         return None  # Need explicitly to avoid lint warnings.
 
-    def _get_rectangle_points(self, chip_name: str) -> Tuple[list, list]:
+    def _get_rectangle_points(self, chip_name: str) -> tuple[list, list]:
         """There can be more than one chip in QGeometry. All chips export to
         one gds file. Each chip uses its own subtract rectangle.
 
@@ -1763,7 +1761,7 @@ class QGDSRenderer(QRenderer):
 
     def _get_linestring_characteristics(
         self, row: pd.Series
-    ) -> Tuple[Tuple, float, float]:
+    ) -> tuple[tuple, float, float]:
         """Given a row in the Junction table, give the characteristics of
         LineString in row.geometry.
 
@@ -1796,9 +1794,9 @@ class QGDSRenderer(QRenderer):
 
     def _give_rotation_center_twopads(
         self, row: pd.Series, a_cell_bounding_box: np.ndarray
-    ) -> Tuple[
+    ) -> tuple[
         float,
-        Tuple[float, float],
+        tuple[float, float],
         Union[gdstk.Polygon, None],
         Union[gdstk.Polygon, None],
     ]:
@@ -1878,7 +1876,7 @@ class QGDSRenderer(QRenderer):
     ############
 
     def import_junction_gds_file(
-        self, lib: gdstk.Library, directory_name: Optional[str] = None
+        self, lib: gdstk.Library, directory_name: str | None = None
     ) -> bool:
         """Import the file which contains all junctions for design.
 
@@ -2610,7 +2608,7 @@ class QGDSRenderer(QRenderer):
                 gds.debug_summarize_gds_library(lib, show=True, scale=200, width=1000)
         """
         # Collect per (layer, datatype) stats first so we can colour the SVG.
-        layer_stats: DictType[Tuple[int, int], DictType[str, int]] = defaultdict(
+        layer_stats: dict[tuple[int, int], dict[str, int]] = defaultdict(
             lambda: {"polygons": 0, "paths": 0}
         )
 
@@ -2729,11 +2727,11 @@ class QGDSRenderer(QRenderer):
     @staticmethod
     def plot_gds_zoom(
         lib: gdstk.Library,
-        center_mm: Tuple[float, float],
+        center_mm: tuple[float, float],
         span_mm: float = 0.10,
-        title: Optional[str] = None,
-        ax: Optional[object] = None,
-        figsize: Tuple[float, float] = (5.0, 5.0),
+        title: str | None = None,
+        ax: object | None = None,
+        figsize: tuple[float, float] = (5.0, 5.0),
     ) -> object:
         """Render a zoomed window of a GDS library using matplotlib.
 
@@ -2798,7 +2796,7 @@ class QGDSRenderer(QRenderer):
         top = next((c for c in lib.cells if c.name == "TOP"), lib.cells[0])
 
         # Collect visible polygons grouped by (layer, datatype)
-        groups: DictType[Tuple[int, int], list] = {}
+        groups: dict[tuple[int, int], list] = {}
         for poly in top.get_polygons(depth=None):
             pts = poly.points
             if pts[:, 0].max() < x0 or pts[:, 0].min() > x1:

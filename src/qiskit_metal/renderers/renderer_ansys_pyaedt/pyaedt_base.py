@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from __future__ import annotations
 
 from typing import List, Union
@@ -598,7 +596,7 @@ class QPyaedt(QRendererAnalysis):
         """
 
     def render_design(
-        self, selection: Union[List, None] = None, box_plus_buffer: bool = True
+        self, selection: Union[list, None] = None, box_plus_buffer: bool = True
     ):
         """Must be implemented by the subclass to finish the logic for HFSS  OR Q3D within project.
 
@@ -943,7 +941,7 @@ class QPyaedt(QRendererAnalysis):
         #                     solve_inside=False,
         #                 )
 
-    def get_chip_names(self) -> List[str]:
+    def get_chip_names(self) -> list[str]:
         """
         Obtain a list of chips on which the selection of components, if valid, resides.
 

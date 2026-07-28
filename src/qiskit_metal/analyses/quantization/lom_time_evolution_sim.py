@@ -16,7 +16,7 @@ from qiskit_metal.analyses.quantization.lom_extensions import (
 def lom_composite_sys_to_seq_sys(
     lom_composite: CompositeSystem,
     hilbertspace: scq.HilbertSpace,
-    levels: List[int] = None,
+    levels: list[int] = None,
     system_name="system",
 ) -> seq.System:
     ## TODO: params for setting detuning and levels

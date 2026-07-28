@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # This code is part of Qiskit.
 #
 # (C) Copyright IBM 2017, 2021.
@@ -399,7 +397,7 @@ class QRoute(QComponent):
         # return the last QRoutePoint of the lead
         return lead.get_tip()
 
-    def _get_lead2pts_array(self, arr) -> Tuple:
+    def _get_lead2pts_array(self, arr) -> tuple:
         """Return the last "diff pts" of the array. If the array is one
         dimensional or has only identical points, return -1 for tip_pt_minus_1.
 
@@ -459,7 +457,7 @@ class QRoute(QComponent):
                 "unsupported type for self.intermediate_pts",
                 type(self.intermediate_pts),
             )
-            return
+            return None
         if tip_pt is None:
             # no point in the intermediate array
             return self.head.get_tip()
@@ -479,7 +477,7 @@ class QRoute(QComponent):
             list: List of points without colinear points
         """
         if len(inarray) <= 1:
-            return
+            return None
         else:
             outarray = list()  # outarray = np.empty(shape=[0, 2])
             pts = [None, None, inarray[0]]
@@ -531,7 +529,7 @@ class QRoute(QComponent):
 
     def get_unit_vectors(
         self, start: QRoutePoint, end: QRoutePoint, snap: bool = False
-    ) -> Tuple:
+    ) -> tuple:
         """Return the unit and target vector in which the CPW should process as
         its coordinate sys.
 
