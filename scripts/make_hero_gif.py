@@ -193,23 +193,24 @@ def _add_center_cross_showcase(design):
 def _compute_robust_cpw_opts(design, qa, pa, qb, pb):
     """Compute CPW meander options sized to the ACTUAL pin-to-pin distance.
 
-    Why this is dynamic, not hardcoded: RouteMeander has a known geometry
-    bug — ``meander_number = np.floor(length_direct / spacing)`` (see
-    src/qiskit_metal/qlibrary/tlines/meandered.py:~166) — that produces
-    different wiggle counts for geometrically-equivalent horizontal vs
-    vertical routes, because tiny floating-point asymmetries in
-    ``length_direct`` push the floor() result across integer boundaries.
-    The per-wiggle excursion is then ``length_excess/(meander_number*2)``,
-    so a one-extra-wiggle route ends up with much smaller bumps that
-    render as sharp "kinks" / castellations.
+    Why this is dynamic, not hardcoded: ``RouteMeander`` picks
+    ``meander_number = np.floor(length_direct / spacing)`` wiggles, each
+    with a perpendicular excursion of ``length_excess / (meander_number*2)``.
+    If ``meander_number`` packs more wiggles than the excess length can
+    support, the per-wiggle excursion can end up smaller than the fillet
+    radius, rendering as sharp "kinks" / castellations instead of a smooth
+    wave (see #1086 — fixed in ``meandered.py`` by capping ``meander_number``
+    so the excursion always clears the fillet, but that self-correction
+    doesn't control exactly how many wiggles you get, only that each one is
+    geometrically clean).
 
-    The portable workaround across ANY qubit layout: pick ``spacing``
-    LARGER than the actual pin-to-pin distance, so ``floor()`` is
-    guaranteed to land on 1. One big symmetric hump every time, regardless
-    of route orientation or chip size. We read the distance from the live
-    design's pin positions instead of hardcoding a value, so this keeps
-    working if Q_SPEC changes (different qubit spacing, or someone forks
-    the script for a new layout).
+    This function keeps a stronger, purely aesthetic guarantee for the hero
+    GIF specifically: pick ``spacing`` LARGER than the actual pin-to-pin
+    distance, so ``floor()`` is guaranteed to land on 1. One big symmetric
+    hump every time, regardless of route orientation or chip size. We read
+    the distance from the live design's pin positions instead of hardcoding
+    a value, so this keeps working if Q_SPEC changes (different qubit
+    spacing, or someone forks the script for a new layout).
     """
     import numpy as np
 

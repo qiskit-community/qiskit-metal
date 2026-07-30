@@ -214,6 +214,44 @@ class RouteMeander(QRoute):
         # how much meander offset from center-line is needed to accommodate the length_excess (perpendicular length)
         length_perp = max(0, length_excess / (meander_number * 2.0))
 
+        # If length_perp is smaller than the fillet radius, the corner-rounding
+        # arcs at the top and bottom of each wiggle cannot fit without
+        # overlapping -- the geometry degenerates into sharp, unfileted,
+        # castellation-like kinks instead of a smooth meander (issue #1086).
+        # This happens whenever length_excess must be split across more
+        # wiggles (meander_number) than it can comfortably support, e.g. a
+        # short total_length relative to spacing, or a large fillet. Fewer,
+        # deeper wiggles (lower meander_number) give each one more room, so
+        # reduce meander_number -- by 2 at a time, to preserve the even/odd
+        # parity already chosen above for the start/end pin directions --
+        # until length_perp clears the fillet radius or no further reduction
+        # is possible without hitting zero (which would leave no meander).
+        if self.p.fillet and length_perp < self.p.fillet and meander_number > 1:
+            original_meander_number = meander_number
+            while meander_number > 1 and length_perp < self.p.fillet:
+                meander_number -= 2
+                length_perp = max(0, length_excess / (meander_number * 2.0))
+            if meander_number != original_meander_number:
+                self.logger.warning(
+                    f"{self.name}: reduced meander_number from "
+                    f"{original_meander_number} to {meander_number} so each "
+                    f"wiggle has room for the {self.p.fillet}mm fillet "
+                    f"(length_perp={length_perp:.4g}mm). The requested "
+                    "meander.spacing packs more wiggles into this route than "
+                    "the available length_excess can support without "
+                    "producing sharp, unfileted kinks. Increase total_length, "
+                    "increase meander.spacing, or decrease fillet to avoid "
+                    "this adjustment."
+                )
+            if length_perp < self.p.fillet:
+                self.logger.warning(
+                    f"{self.name}: even at the minimum meander_number={meander_number}, "
+                    f"length_perp={length_perp:.4g}mm is still smaller than "
+                    f"fillet={self.p.fillet}mm -- this route's meander cannot be "
+                    "cleanly filleted with the current total_length / spacing / "
+                    "fillet combination and will still show sharp kinks."
+                )
+
         # USES ROW Vectors
         # const vec. of unit normals
         middle_points = [forward] * int(meander_number + 1)
