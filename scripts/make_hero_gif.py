@@ -24,6 +24,7 @@ Without it, the GIF is generated the same way minus those three frames:
     uv run --extra mesh --with pillow scripts/make_hero_gif.py
 """
 
+import math
 import os
 import sys
 import tempfile
@@ -41,8 +42,8 @@ import qiskit_metal as qm
 from qiskit_metal import Dict, designs
 from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
+from qiskit_metal.qlibrary.couplers.coupled_line_tee import CoupledLineTee
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
-from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
 from qiskit_metal.qlibrary.tlines.airbridge import (
     apply_airbridge_layer_stack,
     route_airbridges,
@@ -124,8 +125,8 @@ def _make_design():
     design = designs.DesignPlanar()
     design.variables["cpw_width"] = "10 um"
     design.variables["cpw_gap"] = "6 um"
-    design._chips["main"]["size"]["size_x"] = "5 mm"
-    design._chips["main"]["size"]["size_y"] = "5 mm"
+    design._chips["main"]["size"]["size_x"] = "7 mm"
+    design._chips["main"]["size"]["size_y"] = "7 mm"
     return design
 
 
@@ -161,23 +162,52 @@ RING_CPWS = [
     ("cpw_41", "Q4", "a", "Q1", "d"),  # right edge
 ]
 
-# Each qubit has exactly one connection pad left unused by the ring +
-# launchpad wiring (see RING_CPWS / LAUNCHPADS below) — that free pin gets
-# a short open-stub readout resonator, purely for visual density (mimics
-# the individual-readout topology in "Reference design 1").
-FREE_PIN = {"Q1": "c", "Q2": "d", "Q3": "a", "Q4": "b"}
+# Readout architecture: each qubit's quarter-wave resonator taps a
+# CoupledLineTee — capacitively coupled to a short local feedline stub with
+# its own input/output ports, NOT wired directly to a port. This is the
+# coupling building block that "Reference design 3 - Four-qubit multiplexed
+# readout" (tutorials/Appendix A) chains multiple qubits onto for real
+# frequency-multiplexed readout; kept as one tee per qubit here (rather
+# than sharing one line across the ring) to avoid the routing/collision
+# complexity of threading a single feedline past the existing ring CPWs
+# and airbridges.
+#
+# Placement mirrors where the direct-wired launchpad used to sit (each
+# qubit's outward diagonal chip corner). ``orient`` is the tee orientation
+# that points its hang branch (``second_end``) back at the qubit — found
+# empirically by sweeping CoupledLineTee's 8 cardinal/diagonal orientations
+# and reading off each one's resulting ``second_end`` pin normal.
+READOUT_TEES = {
+    "Q1": dict(pin="a", pos=("+2.0mm", "+2.0mm"), orient="315"),  # NE
+    "Q2": dict(pin="b", pos=("-2.0mm", "+2.0mm"), orient="45"),  # NW
+    "Q3": dict(pin="c", pos=("-2.0mm", "-2.0mm"), orient="135"),  # SW
+    "Q4": dict(pin="d", pos=("+2.0mm", "-2.0mm"), orient="225"),  # SE
+}
+READOUT_PORT_OFFSET_MM = 1.0  # tee's prime line -> each port, along the line
 
-# Launchpads at corners (±2.0, ±2.0) — close to qubits, connected via short
-# CPW feed lines to each qubit's outward (free) pin. Pin name "N" on Q1
-# (NE-facing pocket pin) → P1 at the NE corner pointing back at it, etc.
-# Direction matters: launchpad orientation must face inward toward its qubit.
-LAUNCHPADS = [
-    # (name, x, y, orient°, connect_to_qubit, connect_to_pin)
-    ("P1", "+2.0mm", "+2.0mm", "225", "Q1", "a"),  # NE
-    ("P2", "-2.0mm", "+2.0mm", "315", "Q2", "b"),  # NW
-    ("P3", "-2.0mm", "-2.0mm", "45", "Q3", "c"),  # SW
-    ("P4", "+2.0mm", "-2.0mm", "135", "Q4", "d"),  # SE
-]
+# Per-qubit readout frequency (GHz) — deliberately detuned like a real
+# frequency-multiplexed readout scheme, not just cosmetic variety.
+READOUT_TARGET_GHZ = {"Q1": 6.0, "Q2": 6.2, "Q3": 6.4, "Q4": 6.6}
+
+# Effective permittivity for a Nb/Al CPW (10um trace / 6um gap) on a
+# silicon substrate — the standard approximation used across the
+# superconducting-qubit literature for this trace/gap/substrate combination.
+CPW_EPS_EFF = 6.2
+
+
+def _quarter_wave_length_mm(freq_ghz):
+    """Physical length of a quarter-wave CPW resonator at ``freq_ghz``.
+
+    lambda/4 = v_phase / (4*f), v_phase = c / sqrt(eps_eff). This is what
+    makes a readout resonator resonant at its target frequency — sizing it
+    arbitrarily (as the previous, now-removed, decorative stub did) isn't
+    just an aesthetic shortcut, it makes the "resonator" a fiction with no
+    relationship to the frequency a real device would show.
+    """
+    c_mm_per_s = 3e11  # speed of light, mm/s
+    v_phase = c_mm_per_s / math.sqrt(CPW_EPS_EFF)
+    freq_hz = freq_ghz * 1e9
+    return v_phase / (4 * freq_hz)
 
 
 def _qubit_factory(name):
@@ -210,65 +240,6 @@ def _add_center_cross_showcase(design):
             cross_width="20um",
         ),
     )
-    design.rebuild()
-
-
-def _add_readout_stubs(design):
-    """Add one open-stub readout resonator per qubit, on its free pin.
-
-    Placement is read from the LIVE pin geometry (``middle`` + ``normal``)
-    rather than a hardcoded angle — ``TransmonPocket``'s ``loc_W``/``loc_H``
-    are scale factors, not simple side-selectors, so a per-qubit hand-picked
-    angle would silently be wrong for some corners. Reading the actual pin
-    normal keeps this correct regardless of chip layout.
-
-    All 4 connection pads on this pocket geometry face strictly east/west
-    (``loc_W`` picks the side; ``loc_H`` only picks which of the two
-    finger-capacitor islands on that side). The ring + launchpad wiring
-    consumes both outward (east-facing, for Q1/Q4-style qubits) pads, so
-    the one pad left over always faces INWARD, toward the neighbouring
-    qubit — not out into open chip area. ``otg_offset_mm`` must stay well
-    under half the qubit-to-qubit gap (~1.39mm here), or two facing stubs
-    reach into the same space and their traces cross.
-    """
-    otg_offset_mm = 0.4  # distance from the qubit pin to the open termination
-    for qubit_name, pin_name in FREE_PIN.items():
-        pin = design.components[qubit_name].pins[pin_name]
-        middle = np.asarray(pin["middle"], dtype=float)
-        normal = np.asarray(pin["normal"], dtype=float)
-        angle_deg = np.degrees(np.arctan2(normal[1], normal[0]))
-        otg_pos = middle + normal * otg_offset_mm
-
-        otg_name = f"ro_open_{qubit_name}"
-        OpenToGround(
-            design,
-            otg_name,
-            options=Dict(
-                pos_x=f"{otg_pos[0]}mm",
-                pos_y=f"{otg_pos[1]}mm",
-                orientation=f"{angle_deg}",
-            ),
-        )
-        RouteMeander(
-            design,
-            f"ro_{qubit_name}",
-            options=Dict(
-                pin_inputs=Dict(
-                    start_pin=Dict(component=qubit_name, pin=pin_name),
-                    end_pin=Dict(component=otg_name, pin="open"),
-                ),
-                # Lead length must clear the fillet radius by a healthy
-                # margin (see the feed_opts comment above and #1086) —
-                # lead==fillet still isn't enough for the Gmsh path-offset
-                # renderer ("Could not create line"); ~2x is comfortable.
-                lead=Dict(start_straight="30um", end_straight="30um"),
-                fillet="15 um",
-                total_length="0.55mm",
-                trace_width="10 um",
-                trace_gap="6 um",
-                meander=Dict(spacing="200um", asymmetry="0um"),
-            ),
-        )
     design.rebuild()
 
 
@@ -342,43 +313,102 @@ def _cpw_factory(cpw_spec):
     return add
 
 
-def _add_launchpads_and_connections(design):
-    """All 4 launchpads + their connecting CPWs in one shot (last build frame)."""
-    # Use RoutePathfinder (straight + fillet) rather than RouteMeander —
-    # the launchpad-to-qubit feeds are short and don't need wiggle. This
-    # also removes the spurious meander-segment kinks at corners.
-    feed_opts = Dict(
-        # Lead length must clear the fillet radius, same constraint as
-        # RouteMeander's length_perp vs fillet fix (#1086) — a lead shorter
-        # than the fillet leaves too little straight run for the corner
-        # arc, which the Gmsh path-offset renderer can't handle ("Could not
-        # create line").
-        lead=Dict(start_straight="100um", end_straight="100um"),
-        fillet="80 um",
-        trace_width="10 um",
-        trace_gap="6 um",
-    )
-    for name, x, y, orient, q, pin in LAUNCHPADS:
-        LaunchpadWirebond(
+def _add_readout_resonators(design):
+    """Each qubit's quarter-wave readout resonator, coupled to its own
+    feedline stub via a CoupledLineTee (see READOUT_TEES).
+
+    Order matters and must stay build-order-correct at each step: the tee
+    needs to exist (with real pin geometry) before the resonator can target
+    its ``second_end`` pin, and the tee's prime-line pins need to exist
+    before the ports can be placed from their actual position/normal.
+    """
+    for qubit_name, spec in READOUT_TEES.items():
+        tee_name = f"clt_{qubit_name}"
+        x, y = spec["pos"]
+        CoupledLineTee(
             design,
-            name,
+            tee_name,
             options=Dict(
                 pos_x=x,
                 pos_y=y,
-                orientation=orient,
-                pad_width="120um",
-                pad_height="120um",
-                pad_gap="80um",
-                lead_length="20um",
+                orientation=spec["orient"],
+                coupling_length="250um",
+                down_length="150um",
+                fillet="70um",
+                open_termination=True,
+            ),
+        )
+        design.rebuild()
+
+        length_mm = _quarter_wave_length_mm(READOUT_TARGET_GHZ[qubit_name])
+        RouteMeander(
+            design,
+            f"ro_{qubit_name}",
+            options=Dict(
+                pin_inputs=Dict(
+                    start_pin=Dict(component=qubit_name, pin=spec["pin"]),
+                    end_pin=Dict(component=tee_name, pin="second_end"),
+                ),
+                # Lead length must clear the fillet radius by a healthy
+                # margin (see #1086) — lead==fillet still isn't enough for
+                # the Gmsh path-offset renderer ("Could not create line").
+                lead=Dict(start_straight="150um", end_straight="150um"),
+                fillet="60 um",
+                total_length=f"{length_mm:.3f}mm",
+                trace_width="10 um",
+                trace_gap="6 um",
+                meander=Dict(spacing="150um", asymmetry="0um"),
+            ),
+        )
+        design.rebuild()
+
+        # Ports placed from the tee's ACTUAL prime-line pin geometry
+        # (middle + normal), not a hand-picked angle — same reasoning as
+        # the removed decorative stub's placement: TransmonPocket/
+        # CoupledLineTee pin directions aren't worth hand-deriving twice.
+        port_names = {}
+        for prime_pin in ("prime_start", "prime_end"):
+            pin = design.components[tee_name].pins[prime_pin]
+            middle = np.asarray(pin["middle"], dtype=float)
+            normal = np.asarray(pin["normal"], dtype=float)
+            port_pos = middle + normal * READOUT_PORT_OFFSET_MM
+            port_orient = np.degrees(np.arctan2(normal[1], normal[0])) + 180
+            port_name = f"P_{qubit_name}_{prime_pin}"
+            LaunchpadWirebond(
+                design,
+                port_name,
+                options=Dict(
+                    pos_x=f"{port_pos[0]}mm",
+                    pos_y=f"{port_pos[1]}mm",
+                    orientation=f"{port_orient}",
+                    pad_width="120um",
+                    pad_height="120um",
+                    pad_gap="80um",
+                    lead_length="20um",
+                ),
+            )
+            port_names[prime_pin] = port_name
+        design.rebuild()
+
+        feed_opts = Dict(fillet="70um", trace_width="10um", trace_gap="6um")
+        RoutePathfinder(
+            design,
+            f"feed_{qubit_name}_in",
+            options=Dict(
+                pin_inputs=Dict(
+                    start_pin=Dict(component=port_names["prime_start"], pin="tie"),
+                    end_pin=Dict(component=tee_name, pin="prime_start"),
+                ),
+                **feed_opts,
             ),
         )
         RoutePathfinder(
             design,
-            f"feed_{name}",
+            f"feed_{qubit_name}_out",
             options=Dict(
                 pin_inputs=Dict(
-                    start_pin=Dict(component=q, pin=pin),
-                    end_pin=Dict(component=name, pin="tie"),
+                    start_pin=Dict(component=tee_name, pin="prime_end"),
+                    end_pin=Dict(component=port_names["prime_end"], pin="tie"),
                 ),
                 **feed_opts,
             ),
@@ -408,8 +438,7 @@ def _populate_full_design(design):
     for spec in RING_CPWS:
         _cpw_factory(spec)(design)
     _add_airbridges(design)
-    _add_readout_stubs(design)
-    _add_launchpads_and_connections(design)
+    _add_readout_resonators(design)
     _add_center_cross_showcase(design)
 
 
@@ -451,21 +480,13 @@ def build_storyboard():
             600,
         )
     )
-    # Individual readout resonators (open stubs) on each qubit's free pin.
+    # Quarter-wave readout resonators, each coupled through a tee to its
+    # own feedline stub (6.0-6.6 GHz, per-qubit — READOUT_TARGET_GHZ).
     stages.append(
         (
-            _add_readout_stubs,
-            "10_readout_stubs.png",
-            "Step 5 — Individual readout resonators",
-            600,
-        )
-    )
-    # Launchpads + their connecting CPWs in one shot
-    stages.append(
-        (
-            _add_launchpads_and_connections,
-            "11_launchpads.png",
-            "Step 6 — Launchpads + feed lines",
+            _add_readout_resonators,
+            "10_readout.png",
+            "Step 5 — Readout resonators, coupled to feedline ports",
             600,
         )
     )
@@ -474,14 +495,14 @@ def build_storyboard():
     stages.append(
         (
             _add_center_cross_showcase,
-            "12_cross.png",
+            "11_cross.png",
             "Or pick from 13+ qubit types  (TransmonCross shown)",
             800,
         )
     )
     # Final long hold so viewers register the result
     stages.append(
-        (None, "13_final.png", "qm.view(design)   →   chip ready for fab/sim", 1600)
+        (None, "12_final.png", "qm.view(design)   →   chip ready for fab/sim", 1600)
     )
     return stages
 
@@ -542,8 +563,8 @@ def _build_mesh_design():
     design = designs.MultiPlanar({}, overwrite_enabled=True)
     design.variables["cpw_width"] = "10 um"
     design.variables["cpw_gap"] = "6 um"
-    design._chips["main"]["size"]["size_x"] = "5 mm"
-    design._chips["main"]["size"]["size_y"] = "5 mm"
+    design._chips["main"]["size"]["size_x"] = "7 mm"
+    design._chips["main"]["size"]["size_y"] = "7 mm"
     _populate_full_design(design)
     # The chip includes real Airbridge components (see _add_airbridges);
     # their elevated-span layers aren't in a fresh MultiPlanar's default
@@ -755,6 +776,25 @@ AIRBRIDGE_GALLERY = [
     (26, "...a full row, tying the ground plane together"),
 ]
 
+# Eigenmode field distributions from a real pyPalace (open-source FEM)
+# eigenmode simulation + EPR analysis of a transmon-resonator device.
+# Source: quantum-device-consortium/qdw26-workshop-materials
+# (workshops/electromagnetic-simulations/notebooks/eigenmode_EPR.ipynb),
+# MIT licensed. Not generated by this script — Quantum Metal doesn't have
+# a Palace/eigenmode-solver integration yet (see ROADMAP.md); these PNGs
+# were pulled from that notebook's committed cell outputs once and are
+# tracked as static assets here (no network call at hero-gif build time).
+EIGENFIELD_GALLERY = [
+    (
+        "docs/_static/gallery/eigenfield_qubit_mode.png",
+        "Eigenmode |E| — qubit mode (pyPalace, QDW26 workshop)",
+    ),
+    (
+        "docs/_static/gallery/eigenfield_resonator_mode.png",
+        "...and the resonator mode",
+    ),
+]
+
 
 def _extract_notebook_cell_image(notebook_path, cell_index, out_path):
     """Pull the embedded PNG output of one notebook cell out to ``out_path``.
@@ -869,6 +909,19 @@ def main():
                 continue
             gallery_path = Path(tmp) / f"17_gallery_{i}.png"
             save_frame(render_gallery_frame(src_path, gallery_title), gallery_path)
+            frame_paths.append(gallery_path)
+            durations.append(1800)
+
+        # Closing gallery, part 2: real eigenmode field distributions from
+        # an actual open-source FEM solve (see EIGENFIELD_GALLERY). Static
+        # tracked assets, not a live fetch — skipped per-image if missing.
+        for i, (image_path, gallery_title) in enumerate(EIGENFIELD_GALLERY):
+            image_path = Path(image_path)
+            if not image_path.exists():
+                print(f"  ⓘ {image_path} missing — skipping that gallery frame")
+                continue
+            gallery_path = Path(tmp) / f"18_eigenfield_{i}.png"
+            save_frame(render_gallery_frame(image_path, gallery_title), gallery_path)
             frame_paths.append(gallery_path)
             durations.append(1800)
 
