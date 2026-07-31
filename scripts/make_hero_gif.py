@@ -49,7 +49,7 @@ from qiskit_metal.qlibrary.tlines.airbridge import (
     route_airbridges,
 )
 from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
-from qiskit_metal.qlibrary.tlines.pathfinder import RoutePathfinder
+from qiskit_metal.qlibrary.tlines.straight_path import RouteStraight
 
 
 # --- Configuration ---
@@ -177,11 +177,20 @@ RING_CPWS = [
 # that points its hang branch (``second_end``) back at the qubit — found
 # empirically by sweeping CoupledLineTee's 8 cardinal/diagonal orientations
 # and reading off each one's resulting ``second_end`` pin normal.
+#
+# ``mirror``: CoupledLineTee is chiral — its hang pin sits at the LOCAL +x
+# end of the coupling section. For Q1/Q3's orientations that end faces the
+# side the resonator approaches from, so the route flows out of the
+# coupling U-bend naturally. For Q2/Q4's (mirror-image) orientations it
+# faces the far side, forcing the resonator to double back underneath the
+# coupling section — rendering as a cramped hook right at the tee.
+# mirror=True flips the hang branch to the -x end, restoring the clean
+# mirror-symmetric junction on those two corners.
 READOUT_TEES = {
-    "Q1": dict(pin="a", pos=("+2.0mm", "+2.0mm"), orient="315"),  # NE
-    "Q2": dict(pin="b", pos=("-2.0mm", "+2.0mm"), orient="45"),  # NW
-    "Q3": dict(pin="c", pos=("-2.0mm", "-2.0mm"), orient="135"),  # SW
-    "Q4": dict(pin="d", pos=("+2.0mm", "-2.0mm"), orient="225"),  # SE
+    "Q1": dict(pin="a", pos=("+2.0mm", "+2.0mm"), orient="315", mirror=False),  # NE
+    "Q2": dict(pin="b", pos=("-2.0mm", "+2.0mm"), orient="45", mirror=True),  # NW
+    "Q3": dict(pin="c", pos=("-2.0mm", "-2.0mm"), orient="135", mirror=False),  # SW
+    "Q4": dict(pin="d", pos=("+2.0mm", "-2.0mm"), orient="225", mirror=True),  # SE
 }
 READOUT_PORT_OFFSET_MM = 1.0  # tee's prime line -> each port, along the line
 
@@ -332,6 +341,7 @@ def _add_readout_resonators(design):
                 pos_x=x,
                 pos_y=y,
                 orientation=spec["orient"],
+                mirror=spec["mirror"],
                 coupling_length="250um",
                 down_length="150um",
                 fillet="70um",
@@ -390,17 +400,13 @@ def _add_readout_resonators(design):
             port_names[prime_pin] = port_name
         design.rebuild()
 
-        # Lead length must clear the fillet radius by a healthy margin (see
-        # #1086) — RoutePathfinder's default lead-in near each pin is only
-        # ~5um, which is far too short for a 70um fillet and renders as a
-        # malformed/kinked corner right at the port.
-        feed_opts = Dict(
-            lead=Dict(start_straight="150um", end_straight="150um"),
-            fillet="70um",
-            trace_width="10um",
-            trace_gap="6um",
-        )
-        RoutePathfinder(
+        # RouteStraight, not a Manhattan router (RoutePathfinder): each port
+        # sits exactly on the tee's prime-line axis facing back at it, so
+        # the feed is a single dead-straight (diagonal) segment. A Manhattan
+        # router would insert axis-aligned jogs (diagonal lead → vertical →
+        # horizontal → diagonal lead) between the same two pins.
+        feed_opts = Dict(trace_width="10um", trace_gap="6um")
+        RouteStraight(
             design,
             f"feed_{qubit_name}_in",
             options=Dict(
@@ -411,7 +417,7 @@ def _add_readout_resonators(design):
                 **feed_opts,
             ),
         )
-        RoutePathfinder(
+        RouteStraight(
             design,
             f"feed_{qubit_name}_out",
             options=Dict(
