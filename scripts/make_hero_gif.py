@@ -390,7 +390,16 @@ def _add_readout_resonators(design):
             port_names[prime_pin] = port_name
         design.rebuild()
 
-        feed_opts = Dict(fillet="70um", trace_width="10um", trace_gap="6um")
+        # Lead length must clear the fillet radius by a healthy margin (see
+        # #1086) — RoutePathfinder's default lead-in near each pin is only
+        # ~5um, which is far too short for a 70um fillet and renders as a
+        # malformed/kinked corner right at the port.
+        feed_opts = Dict(
+            lead=Dict(start_straight="150um", end_straight="150um"),
+            fillet="70um",
+            trace_width="10um",
+            trace_gap="6um",
+        )
         RoutePathfinder(
             design,
             f"feed_{qubit_name}_in",
