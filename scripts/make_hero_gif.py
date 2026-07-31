@@ -4,23 +4,23 @@
 """Generate the hero animated GIF for the README.
 
 Builds a 4-qubit ring chip progressively (canvas → qubits → CPW routes →
-readout stubs → launchpads → final view) and stitches each stage into a
-looping GIF, with a closing frame showing the same chip's Gmsh FEM surface
-mesh. Showcases the design-as-code workflow and the open-source meshing
-path in a glance.
+airbridges → readout stubs → launchpads → final view) and stitches each
+stage into a looping GIF, closing with the same chip's Gmsh FEM mesh
+(coarse 2-D, fine 2-D, pseudo-3-D) and a couple of real 3-D airbridge
+renders borrowed from tutorial 2.15. Showcases the design-as-code
+workflow and the open-source meshing path in a glance.
 
 The design frames use the same ``qm.view(design)`` API end users would run,
 so the GIF stays honest — what viewers see is exactly what they'd get
-by pasting the equivalent ~20 lines into a notebook.
+by pasting the equivalent ~25 lines into a notebook.
 
-Output: docs/_static/hero.gif (~500KB at 800×600)
+Output: docs/_static/hero.gif (~350KB at 640×640)
 
 Run from the repo root:
     uv run --with pillow scripts/make_hero_gif.py
 
-The closing mesh frame requires the optional ``gmsh`` dependency
-([mesh] extra). Without it, the GIF is generated the same way minus that
-one frame:
+The mesh frames require the optional ``gmsh`` dependency ([mesh] extra).
+Without it, the GIF is generated the same way minus those three frames:
     uv run --extra mesh --with pillow scripts/make_hero_gif.py
 """
 
@@ -43,6 +43,10 @@ from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
 from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
+from qiskit_metal.qlibrary.tlines.airbridge import (
+    apply_airbridge_layer_stack,
+    route_airbridges,
+)
 from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
 from qiskit_metal.qlibrary.tlines.pathfinder import RoutePathfinder
 
@@ -190,7 +194,9 @@ def _qubit_factory(name):
 def _add_center_cross_showcase(design):
     """Add a single TransmonCross at the centre — unconnected. Used in a
     dedicated frame after the rest of the chip is built, to showcase a
-    second qubit-type without disturbing the ring's pocket-based routing.
+    second qubit-type (rotated 45°, so it doesn't read as just a smaller
+    copy of the ring's pockets) without disturbing the ring's pocket-based
+    routing.
     """
     TransmonCross(
         design,
@@ -198,6 +204,7 @@ def _add_center_cross_showcase(design):
         options=Dict(
             pos_x="0mm",
             pos_y="0mm",
+            orientation="45",
             cross_length="180um",
             cross_gap="25um",
             cross_width="20um",
@@ -214,8 +221,17 @@ def _add_readout_stubs(design):
     are scale factors, not simple side-selectors, so a per-qubit hand-picked
     angle would silently be wrong for some corners. Reading the actual pin
     normal keeps this correct regardless of chip layout.
+
+    All 4 connection pads on this pocket geometry face strictly east/west
+    (``loc_W`` picks the side; ``loc_H`` only picks which of the two
+    finger-capacitor islands on that side). The ring + launchpad wiring
+    consumes both outward (east-facing, for Q1/Q4-style qubits) pads, so
+    the one pad left over always faces INWARD, toward the neighbouring
+    qubit — not out into open chip area. ``otg_offset_mm`` must stay well
+    under half the qubit-to-qubit gap (~1.39mm here), or two facing stubs
+    reach into the same space and their traces cross.
     """
-    otg_offset_mm = 1.0  # distance from the qubit pin to the open termination
+    otg_offset_mm = 0.4  # distance from the qubit pin to the open termination
     for qubit_name, pin_name in FREE_PIN.items():
         pin = design.components[qubit_name].pins[pin_name]
         middle = np.asarray(pin["middle"], dtype=float)
@@ -241,15 +257,16 @@ def _add_readout_stubs(design):
                     start_pin=Dict(component=qubit_name, pin=pin_name),
                     end_pin=Dict(component=otg_name, pin="open"),
                 ),
-                # Lead length must clear the fillet radius (see the feed_opts
-                # comment above and #1086) — otherwise the Gmsh path-offset
-                # renderer can't build the corner arc ("Could not create line").
-                lead=Dict(start_straight="80um", end_straight="80um"),
-                fillet="40 um",
-                total_length="1.5mm",
+                # Lead length must clear the fillet radius by a healthy
+                # margin (see the feed_opts comment above and #1086) —
+                # lead==fillet still isn't enough for the Gmsh path-offset
+                # renderer ("Could not create line"); ~2x is comfortable.
+                lead=Dict(start_straight="30um", end_straight="30um"),
+                fillet="15 um",
+                total_length="0.55mm",
                 trace_width="10 um",
                 trace_gap="6 um",
-                meander=Dict(spacing="450um", asymmetry="0um"),
+                meander=Dict(spacing="200um", asymmetry="0um"),
             ),
         )
     design.rebuild()
@@ -369,12 +386,28 @@ def _add_launchpads_and_connections(design):
     design.rebuild()
 
 
+# The top/bottom ring edges (cpw_12, cpw_34) are the longest uninterrupted
+# CPW spans on the chip — long enough to need airbridges over the ground
+# gap in a real device, so they're the natural place to show the feature.
+AIRBRIDGE_CPWS = ["cpw_12", "cpw_34"]
+
+
+def _add_airbridges(design):
+    """Auto-place real Airbridge components along the two longest ring CPWs."""
+    for cpw_name in AIRBRIDGE_CPWS:
+        route_airbridges(
+            design, design.components[cpw_name], pitch="350um", bridge_at_corners=True
+        )
+    design.rebuild()
+
+
 def _populate_full_design(design):
     """Apply every stage so the FINAL design exists. Used for centering compute."""
     for name in Q_SPEC:
         _qubit_factory(name)(design)
     for spec in RING_CPWS:
         _cpw_factory(spec)(design)
+    _add_airbridges(design)
     _add_readout_stubs(design)
     _add_launchpads_and_connections(design)
     _add_center_cross_showcase(design)
@@ -408,12 +441,22 @@ def build_storyboard():
         stages.append(
             (_cpw_factory(spec), f"0{i + 5}_{spec[0]}.png", cpw_titles[i], dur)
         )
+    # Airbridges over the two longest CPW spans — real QComponents, auto-placed
+    # along the route's filleted centerline (see route_airbridges).
+    stages.append(
+        (
+            _add_airbridges,
+            "09_airbridges.png",
+            "Step 4 — Airbridges over the long spans",
+            600,
+        )
+    )
     # Individual readout resonators (open stubs) on each qubit's free pin.
     stages.append(
         (
             _add_readout_stubs,
-            "09_readout_stubs.png",
-            "Step 4 — Individual readout resonators",
+            "10_readout_stubs.png",
+            "Step 5 — Individual readout resonators",
             600,
         )
     )
@@ -421,8 +464,8 @@ def build_storyboard():
     stages.append(
         (
             _add_launchpads_and_connections,
-            "10_launchpads.png",
-            "Step 5 — Launchpads + feed lines",
+            "11_launchpads.png",
+            "Step 6 — Launchpads + feed lines",
             600,
         )
     )
@@ -431,14 +474,14 @@ def build_storyboard():
     stages.append(
         (
             _add_center_cross_showcase,
-            "11_cross.png",
+            "12_cross.png",
             "Or pick from 13+ qubit types  (TransmonCross shown)",
             800,
         )
     )
     # Final long hold so viewers register the result
     stages.append(
-        (None, "12_final.png", "qm.view(design)   →   chip ready for fab/sim", 1600)
+        (None, "13_final.png", "qm.view(design)   →   chip ready for fab/sim", 1600)
     )
     return stages
 
@@ -502,34 +545,74 @@ def _build_mesh_design():
     design._chips["main"]["size"]["size_x"] = "5 mm"
     design._chips["main"]["size"]["size_y"] = "5 mm"
     _populate_full_design(design)
+    # The chip includes real Airbridge components (see _add_airbridges);
+    # their elevated-span layers aren't in a fresh MultiPlanar's default
+    # layer stack, and QGmshRenderer needs a z/thickness entry for every
+    # layer it meshes. Register them (also needs the matching layer_types
+    # passed to QGmshRenderer below — see apply_airbridge_layer_stack's
+    # docstring).
+    apply_airbridge_layer_stack(design)
     return design
 
 
-def render_mesh_frame(xlim, ylim, title):
-    """Mesh the final chip with Gmsh and render its 2-D surface mesh.
+# Metal layer IDs QGmshRenderer must treat as metal: 1 = the normal chip
+# metal layer, 30/31 = the airbridge span/pad layers apply_airbridge_layer_stack
+# registers.
+MESH_LAYER_TYPES = dict(metal=[1, 30, 31], dielectric=[3])
 
-    Only the 2-D surface mesh is generated (``add_mesh(dim=2)``) — the full
-    3-D tetrahedral volume mesh ``QGmshRenderer`` is built for (vacuum box
-    included) takes tens of seconds even for a couple of qubits and isn't
-    needed for a flat top-down illustration.
 
-    Raises ImportError if gmsh isn't installed — the caller decides whether
-    that's fatal (it isn't, for this script: the frame is just skipped).
+# High-contrast mesh palette — the QGmshRenderer defaults (steel-blue metal,
+# light-gray dielectric) wash out at hero-GIF thumbnail size. Warm metal vs.
+# deep-navy substrate, plotted on a dark axes background, reads clearly even
+# at 640x640.
+MESH_METAL_RGBA = (240, 155, 35, 255)  # amber/copper
+MESH_JJ_RGBA = (235, 45, 130, 255)  # magenta — junctions, if any render
+MESH_DIELECTRIC_RGBA = (16, 42, 82, 255)  # deep navy substrate
+MESH_AXES_BG = (0.04, 0.06, 0.11)
+
+
+def _mesh_and_extract(design, max_size, min_size):
+    """Mesh ``design`` with Gmsh (2-D surface only) and pull out plottable
+    triangles + per-triangle fill color + a metal/not-metal flag.
+
+    Only ``add_mesh(dim=2)`` is generated — the full 3-D tetrahedral volume
+    mesh (vacuum box included) takes tens of seconds even for a couple of
+    qubits and isn't needed; the pseudo-3-D frame extrudes this same 2-D
+    surface mesh instead of asking Gmsh for a real volume mesh.
     """
     from qiskit_metal.renderers.renderer_gmsh.gmsh_renderer import QGmshRenderer
 
-    design = _build_mesh_design()
-    gr = QGmshRenderer(design)
-    gr.options.mesh.max_size = "150um"
-    gr.options.mesh.min_size = "20um"
+    import gmsh
+
+    gr = QGmshRenderer(design, layer_types=MESH_LAYER_TYPES)
+    gr.options.mesh.max_size = max_size
+    gr.options.mesh.min_size = min_size
+    gr.options.colors.metal = MESH_METAL_RGBA
+    gr.options.colors.jj = MESH_JJ_RGBA
+    gr.options.colors.dielectric = MESH_DIELECTRIC_RGBA
     gr.render_design(mesh_geoms=False)
     gr.add_mesh(dim=2, intelli_mesh=False)
 
-    import gmsh
+    # Pull ALL node coordinates once into a tag->xy lookup. Calling
+    # gmsh.model.mesh.getNode() per-vertex (one Python<->C API round trip
+    # each) instead of batching like this is 10-50x slower on a full-chip
+    # mesh (tens of thousands of triangles => 3x as many vertex lookups).
+    node_tags_all, node_coords_all, _ = gmsh.model.mesh.getNodes()
+    node_xy = dict(
+        zip(node_tags_all, np.asarray(node_coords_all).reshape(-1, 3)[:, :2])
+    )
 
-    triangles, colors = [], []
+    triangles, colors, is_metal = [], [], []
     for dim, tag in gmsh.model.getEntities(dim=2):
         color = gmsh.model.getColor(dim, tag)
+        if color and color[3] != 0:
+            rgba = tuple(c / 255 for c in color[:3]) + (1.0,)
+            metal_flag = tuple(color[:3]) == tuple(MESH_METAL_RGBA[:3]) or tuple(
+                color[:3]
+            ) == tuple(MESH_JJ_RGBA[:3])
+        else:
+            rgba = (0.55, 0.55, 0.6, 1.0)
+            metal_flag = False
         elem_types, _elem_tags, elem_node_tags = gmsh.model.mesh.getElements(
             dim=2, tag=tag
         )
@@ -538,25 +621,174 @@ def render_mesh_frame(xlim, ylim, title):
                 continue
             node_tags = np.asarray(node_tags).reshape(-1, 3)
             for tri in node_tags:
-                coords = [gmsh.model.mesh.getNode(int(n))[0][:2] for n in tri]
-                triangles.append(coords)
-                if color and color[3] != 0:
-                    colors.append(tuple(c / 255 for c in color[:3]) + (1.0,))
-                else:
-                    colors.append((0.6, 0.6, 0.65, 1.0))
+                triangles.append([tuple(node_xy[n]) for n in tri])
+                colors.append(rgba)
+                is_metal.append(metal_flag)
     gr.close()
+    return triangles, colors, is_metal
+
+
+def render_mesh_frame_2d(xlim, ylim, title, max_size, min_size, edge_alpha, linewidth):
+    """Render the chip's Gmsh 2-D surface mesh, top-down.
+
+    Raises ImportError if gmsh isn't installed — the caller decides whether
+    that's fatal (it isn't, for this script: the frame is just skipped).
+    """
+    design = _build_mesh_design()
+    triangles, colors, _is_metal = _mesh_and_extract(design, max_size, min_size)
 
     fig, ax = plt.subplots(figsize=FIGSIZE_INCH, dpi=DPI)
     ax.add_collection(
         PolyCollection(
-            triangles, facecolor=colors, edgecolor=(0, 0, 0, 0.15), linewidth=0.2
+            triangles,
+            facecolor=colors,
+            edgecolor=(1, 1, 1, edge_alpha),
+            linewidth=linewidth,
         )
     )
+    ax.set_facecolor(MESH_AXES_BG)
     ax.set_xlim(*xlim)
     ax.set_ylim(*ylim)
     ax.set_aspect("equal", adjustable="box")
     ax.set_title(title, fontsize=13, fontweight="bold", pad=10)
     fig.subplots_adjust(left=0.10, right=0.97, top=0.92, bottom=0.10)
+    return fig
+
+
+# Illustrative z-scale for the pseudo-3-D frame — NOT to physical scale.
+# Real metal/junction layers are sub-micron and would be invisible next to a
+# 5mm chip; both are exaggerated purely so the extruded view reads as 3-D.
+MESH_3D_METAL_Z_MM = 0.05
+MESH_3D_SUBSTRATE_Z_MM = -0.35
+
+
+def render_mesh_frame_3d(xlim, ylim, title):
+    """Render a pseudo-3-D oblique view: the 2-D surface mesh extruded —
+    metal triangles raised above a substrate slab drawn from the chip
+    footprint. Reuses a coarse 2-D mesh (kept small on purpose: Poly3DCollection
+    z-sorts by painter's algorithm, which gets slow and visually noisy well
+    before Gmsh's own triangle count would).
+    """
+    from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+
+    design = _build_mesh_design()
+    triangles, colors, is_metal = _mesh_and_extract(
+        design, max_size="250um", min_size="40um"
+    )
+
+    fig = plt.figure(figsize=FIGSIZE_INCH, dpi=DPI)
+    ax = fig.add_subplot(111, projection="3d")
+
+    verts3d = [
+        [(x, y, MESH_3D_METAL_Z_MM if metal else 0.0) for x, y in tri]
+        for tri, metal in zip(triangles, is_metal)
+    ]
+    ax.add_collection3d(
+        Poly3DCollection(
+            verts3d, facecolor=colors, edgecolor=(1, 1, 1, 0.2), linewidths=0.15
+        )
+    )
+
+    half_x = design.parse_value(design._chips["main"]["size"]["size_x"]) / 2
+    half_y = design.parse_value(design._chips["main"]["size"]["size_y"]) / 2
+    sub_top = tuple(c / 255 for c in MESH_DIELECTRIC_RGBA[:3]) + (1.0,)
+    sub_side = tuple(c * 0.65 for c in sub_top[:3]) + (1.0,)
+    z0 = MESH_3D_SUBSTRATE_Z_MM
+    corners = [
+        (-half_x, -half_y),
+        (half_x, -half_y),
+        (half_x, half_y),
+        (-half_x, half_y),
+    ]
+    bottom = [[(x, y, z0) for x, y in corners]]
+    sides = [
+        [
+            (corners[i][0], corners[i][1], z0),
+            (corners[(i + 1) % 4][0], corners[(i + 1) % 4][1], z0),
+            (corners[(i + 1) % 4][0], corners[(i + 1) % 4][1], 0.0),
+            (corners[i][0], corners[i][1], 0.0),
+        ]
+        for i in range(4)
+    ]
+    ax.add_collection3d(
+        Poly3DCollection(
+            bottom, facecolor=sub_top, edgecolor=(0, 0, 0, 0.3), linewidths=0.3
+        )
+    )
+    ax.add_collection3d(
+        Poly3DCollection(
+            sides, facecolor=sub_side, edgecolor=(0, 0, 0, 0.3), linewidths=0.3
+        )
+    )
+
+    ax.set_xlim(*xlim)
+    ax.set_ylim(*ylim)
+    ax.set_zlim(z0 - 0.1, MESH_3D_METAL_Z_MM + 0.3)
+    ax.set_box_aspect((1, 1, 0.4))
+    ax.view_init(elev=32, azim=-60)
+    ax.set_axis_off()
+    fig.patch.set_facecolor(MESH_AXES_BG)
+    # A 3-D Axes draws its own opaque background patch independent of the
+    # figure's — set it to match or the (dark) figure background never
+    # shows through.
+    ax.set_facecolor(MESH_AXES_BG)
+    # mplot3d ignores subplots_adjust margins (it keeps its own internal
+    # padding) — oversize the axes position instead to crop out the
+    # leftover whitespace around the chip. Kept clear of the top ~12% so
+    # the figure-level title (added after, drawn on top) isn't covered by
+    # the axes' own opaque background.
+    ax.set_position([-0.08, -0.14, 1.16, 1.00])
+    fig.suptitle(title, fontsize=13, fontweight="bold", y=0.97, color="white")
+    return fig
+
+
+# Closing gallery: real 3-D airbridge renders already produced by tutorial
+# 2.15 (PyVista, true depth-sorted — mplot3d can't do this well, hence
+# borrowing rather than re-rendering). Read straight from the notebook's
+# embedded cell outputs at build time instead of duplicating the PNGs as
+# separate tracked files.
+AIRBRIDGE_TUTORIAL_NOTEBOOK = Path(
+    "tutorials/2 From components to chip/B. Routing between QComponents/2.15 Airbridges.ipynb"
+)
+AIRBRIDGE_GALLERY = [
+    (24, "From tutorial 2.15 — a single airbridge, in 3-D (PyVista)"),
+    (26, "...a full row, tying the ground plane together"),
+]
+
+
+def _extract_notebook_cell_image(notebook_path, cell_index, out_path):
+    """Pull the embedded PNG output of one notebook cell out to ``out_path``.
+
+    Returns True on success, False if the notebook/cell/image isn't there
+    (e.g. the tutorial was re-run and the cell no longer has that output) —
+    the caller treats that as skip-this-frame, not a hard failure.
+    """
+    import base64
+    import json
+
+    if not notebook_path.exists():
+        return False
+    nb = json.loads(notebook_path.read_text())
+    cells = nb.get("cells", [])
+    if cell_index >= len(cells):
+        return False
+    for out in cells[cell_index].get("outputs", []):
+        png_b64 = out.get("data", {}).get("image/png")
+        if png_b64:
+            out_path.write_bytes(base64.b64decode(png_b64))
+            return True
+    return False
+
+
+def render_gallery_frame(image_path, title):
+    """Wrap an existing PNG in the same title-bar framing as the rest of
+    the GIF, so a borrowed image doesn't look visually out of place."""
+    img = plt.imread(image_path)
+    fig, ax = plt.subplots(figsize=FIGSIZE_INCH, dpi=DPI)
+    ax.imshow(img)
+    ax.axis("off")
+    ax.set_title(title, fontsize=13, fontweight="bold", pad=10)
+    fig.subplots_adjust(left=0.02, right=0.98, top=0.90, bottom=0.02)
     return fig
 
 
@@ -566,24 +798,78 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         frame_paths = list(build_4qubit_chip_progressively(Path(tmp)))
 
-        # Closing frame: the same chip's Gmsh FEM surface mesh. Optional —
-        # gmsh is the [mesh] extra, not installed by default.
+        # Closing frames: the same chip's Gmsh FEM mesh — coarse 2-D, fine
+        # 2-D, then a pseudo-3-D extrusion. Optional — gmsh is the [mesh]
+        # extra, not installed by default.
         final = _make_design()
         _populate_full_design(final)
         xlim, ylim = compute_centered_square_limits(final)
+        mesh_stages = [
+            (
+                lambda: render_mesh_frame_2d(
+                    xlim,
+                    ylim,
+                    "Under the hood — FEM mesh (coarse)",
+                    max_size="300um",
+                    min_size="60um",
+                    edge_alpha=0.7,
+                    linewidth=0.5,
+                ),
+                "14_mesh_coarse.png",
+                1400,
+            ),
+            (
+                lambda: render_mesh_frame_2d(
+                    xlim,
+                    ylim,
+                    "FEM mesh (fine)",
+                    max_size="60um",
+                    min_size="10um",
+                    edge_alpha=0.35,
+                    linewidth=0.2,
+                ),
+                "15_mesh_fine.png",
+                1400,
+            ),
+            (
+                lambda: render_mesh_frame_3d(xlim, ylim, "...and in 3-D"),
+                "16_mesh_3d.png",
+                1800,
+            ),
+        ]
         try:
-            mesh_fig = render_mesh_frame(
-                xlim, ylim, "Under the hood — FEM surface mesh (open-source Gmsh)"
-            )
+            # Import check up front — fail on the FIRST mesh attempt only,
+            # so a real bug in frame 2 or 3 doesn't get silently swallowed
+            # as "gmsh not installed."
+            import gmsh  # noqa: F401
         except ImportError:
             print(
-                "  ⓘ gmsh not installed — skipping mesh frame "
+                "  ⓘ gmsh not installed — skipping mesh frames "
                 "(install with the [mesh] extra: uv run --extra mesh ...)"
             )
         else:
-            mesh_path = Path(tmp) / "13_mesh.png"
-            save_frame(mesh_fig, mesh_path)
-            frame_paths.append(mesh_path)
+            for render_fn, filename, duration in mesh_stages:
+                mesh_path = Path(tmp) / filename
+                save_frame(render_fn(), mesh_path)
+                frame_paths.append(mesh_path)
+                durations.append(duration)
+
+        # Closing gallery: real 3-D airbridge renders borrowed from
+        # tutorial 2.15. Skipped per-image if the notebook or that cell's
+        # output isn't there — not fatal to the rest of the GIF.
+        for i, (cell_index, gallery_title) in enumerate(AIRBRIDGE_GALLERY):
+            src_path = Path(tmp) / f"gallery_src_{i}.png"
+            if not _extract_notebook_cell_image(
+                AIRBRIDGE_TUTORIAL_NOTEBOOK, cell_index, src_path
+            ):
+                print(
+                    f"  ⓘ tutorial 2.15 cell {cell_index} has no image — "
+                    "skipping that gallery frame"
+                )
+                continue
+            gallery_path = Path(tmp) / f"17_gallery_{i}.png"
+            save_frame(render_gallery_frame(src_path, gallery_title), gallery_path)
+            frame_paths.append(gallery_path)
             durations.append(1800)
 
         stitch_gif(frame_paths, durations)
