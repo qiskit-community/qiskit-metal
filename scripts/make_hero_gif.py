@@ -186,11 +186,15 @@ RING_CPWS = [
 # coupling section — rendering as a cramped hook right at the tee.
 # mirror=True flips the hang branch to the -x end, restoring the clean
 # mirror-symmetric junction on those two corners.
+# Tee distance from center: at ±2.0mm the resonators' outermost meander
+# folds crossed straight over the diagonal feedline (~283 um^2 of
+# overlapping metal per corner, caught by _validate_no_trace_crossings).
+# ±2.15mm buys ~0.2mm of diagonal clearance.
 READOUT_TEES = {
-    "Q1": dict(pin="a", pos=("+2.0mm", "+2.0mm"), orient="315", mirror=False),  # NE
-    "Q2": dict(pin="b", pos=("-2.0mm", "+2.0mm"), orient="45", mirror=True),  # NW
-    "Q3": dict(pin="c", pos=("-2.0mm", "-2.0mm"), orient="135", mirror=False),  # SW
-    "Q4": dict(pin="d", pos=("+2.0mm", "-2.0mm"), orient="225", mirror=True),  # SE
+    "Q1": dict(pin="a", pos=("+2.15mm", "+2.15mm"), orient="315", mirror=False),  # NE
+    "Q2": dict(pin="b", pos=("-2.15mm", "+2.15mm"), orient="45", mirror=True),  # NW
+    "Q3": dict(pin="c", pos=("-2.15mm", "-2.15mm"), orient="135", mirror=False),  # SW
+    "Q4": dict(pin="d", pos=("+2.15mm", "-2.15mm"), orient="225", mirror=True),  # SE
 }
 READOUT_PORT_OFFSET_MM = 1.0  # tee's prime line -> each port, along the line
 
@@ -446,6 +450,57 @@ def _add_airbridges(design):
     design.rebuild()
 
 
+# Two touching path ends at a pin junction intersect over ~0 area; a real
+# crossing of two 10um-wide traces overlaps by hundreds of um^2. Anything
+# above this threshold (in mm^2; 1 um^2 = 1e-6 mm^2) is a genuine short.
+_CROSSING_AREA_THRESHOLD_MM2 = 1e-6
+
+
+def _validate_no_trace_crossings(design):
+    """Design-rule check: no two components' CPW traces may overlap.
+
+    Buffers every non-subtract path to its real trace width and intersects
+    all inter-component pairs. This is deliberately NOT
+    ``qiskit_metal.qlibrary.core.design_check.QDesignCheck.overlap_tester``,
+    which compares centerlines only (a crossing within trace width but
+    without centerline intersection passes) and reports by printing rather
+    than raising. Raises ValueError listing every violation, so a layout
+    regression can never silently ship into the rendered GIF — this is how
+    the resonator-over-feedline crossing that motivated it was caught.
+    """
+    name_by_id = {c.id: n for n, c in design.components.items()}
+    paths = design.qgeometry.tables["path"]
+    traces = [
+        (
+            name_by_id[row["component"]],
+            row["name"],
+            row["geometry"].buffer(row["width"] / 2, cap_style=2),
+        )
+        for _, row in paths.iterrows()
+        if not row["subtract"]
+    ]
+    violations = []
+    for i in range(len(traces)):
+        for j in range(i + 1, len(traces)):
+            comp_a, name_a, geom_a = traces[i]
+            comp_b, name_b, geom_b = traces[j]
+            if comp_a == comp_b:
+                continue
+            if not geom_a.intersects(geom_b):
+                continue
+            area = geom_a.intersection(geom_b).area
+            if area > _CROSSING_AREA_THRESHOLD_MM2:
+                violations.append(
+                    f"{comp_a}.{name_a} x {comp_b}.{name_b} "
+                    f"(overlap {area * 1e6:.0f} um^2)"
+                )
+    if violations:
+        raise ValueError(
+            "Trace-crossing check failed — overlapping CPW metal between "
+            "different components:\n  " + "\n  ".join(violations)
+        )
+
+
 def _populate_full_design(design):
     """Apply every stage so the FINAL design exists. Used for centering compute."""
     for name in Q_SPEC:
@@ -455,23 +510,58 @@ def _populate_full_design(design):
     _add_airbridges(design)
     _add_readout_resonators(design)
     _add_center_cross_showcase(design)
+    _validate_no_trace_crossings(design)
+
+
+# Close-up view for the opening frame: centered on Q1's pocket with enough
+# margin to show the whole qubit + its connection stubs. (cx, cy, half) in mm.
+_Q1_CLOSEUP_VIEW = (1.1, 1.1, 0.9)
 
 
 def build_storyboard():
-    """Returns the ordered list of (stage_fn, filename, title, duration_ms)."""
+    """Returns the ordered list of
+    (stage_fn, filename, title, duration_ms, view) — ``view`` is None for
+    the standard full-chip limits, or an (cx, cy, half) tuple for a custom
+    zoom (used by the opening close-up frames).
+    """
     stages = []
-    stages.append((None, "00_canvas.png", "Step 1 — Create the chip canvas", 600))
-    # Qubits appear one by one — snappy, ~350ms each
-    qubit_titles = [
-        "Step 2 — Add qubit Q1",
-        "Step 2 — Add qubit Q2",
-        "Step 2 — Add qubit Q3",
-        "Step 2 — All 4 transmons placed",
-    ]
-    for i, name in enumerate(Q_SPEC):
-        dur = 500 if i == len(Q_SPEC) - 1 else 320  # slight hold on the last
+    # Open ZOOMED IN on a single transmon — never an empty canvas, so even a
+    # stalled first frame shows a real device, and viewers meet the star of
+    # the show up close before the camera pulls back.
+    stages.append(
+        (
+            _qubit_factory("Q1"),
+            "00_transmon_closeup.png",
+            "Step 1 — A transmon qubit, up close",
+            1100,
+            _Q1_CLOSEUP_VIEW,
+        )
+    )
+    stages.append(
+        (
+            None,
+            "01_zoom_out.png",
+            "...zoom out — room for a full chip",
+            700,
+            None,
+        )
+    )
+    # Remaining qubits appear one by one — snappy
+    qubit_titles = {
+        "Q2": "Step 2 — Add qubit Q2",
+        "Q3": "Step 2 — Add qubit Q3",
+        "Q4": "Step 2 — All 4 transmons placed",
+    }
+    for i, name in enumerate(qubit_titles):
+        dur = 500 if name == "Q4" else 320  # slight hold on the last
         stages.append(
-            (_qubit_factory(name), f"0{i + 1}_{name}.png", qubit_titles[i], dur)
+            (
+                _qubit_factory(name),
+                f"0{i + 2}_{name}.png",
+                qubit_titles[name],
+                dur,
+                None,
+            )
         )
     # Then CPWs one by one
     cpw_titles = [
@@ -483,7 +573,7 @@ def build_storyboard():
     for i, spec in enumerate(RING_CPWS):
         dur = 550 if i == len(RING_CPWS) - 1 else 320
         stages.append(
-            (_cpw_factory(spec), f"0{i + 5}_{spec[0]}.png", cpw_titles[i], dur)
+            (_cpw_factory(spec), f"0{i + 5}_{spec[0]}.png", cpw_titles[i], dur, None)
         )
     # Airbridges over the two longest CPW spans — real QComponents, auto-placed
     # along the route's filleted centerline (see route_airbridges).
@@ -493,6 +583,7 @@ def build_storyboard():
             "09_airbridges.png",
             "Step 4 — Airbridges over the long spans",
             600,
+            None,
         )
     )
     # Quarter-wave readout resonators, each coupled through a tee to its
@@ -503,6 +594,7 @@ def build_storyboard():
             "10_readout.png",
             "Step 5 — Readout resonators, coupled to feedline ports",
             600,
+            None,
         )
     )
     # Showcase a second qubit type (TransmonCross) appearing at the centre —
@@ -513,11 +605,18 @@ def build_storyboard():
             "11_cross.png",
             "Or pick from 13+ qubit types  (TransmonCross shown)",
             800,
+            None,
         )
     )
     # Final long hold so viewers register the result
     stages.append(
-        (None, "12_final.png", "qm.view(design)   →   chip ready for fab/sim", 1600)
+        (
+            None,
+            "12_final.png",
+            "qm.view(design)   →   chip ready for fab/sim",
+            1600,
+            None,
+        )
     )
     return stages
 
@@ -528,7 +627,8 @@ def build_4qubit_chip_progressively(frame_dir):
     Centering pattern (per the "do it at the very end" rule):
       1. Build the FINAL design first (no rendering) → compute centered limits.
       2. Replay the build step-by-step, capturing each stage with THOSE
-         fixed limits. The chip never autoscales or shifts between frames.
+         fixed limits (or a stage's custom close-up view, for the opening
+         frames). The chip never autoscales or shifts between frames.
     """
     # === Step 1: build the full final design, get centered limits ===
     final = _make_design()
@@ -537,10 +637,15 @@ def build_4qubit_chip_progressively(frame_dir):
 
     # === Step 2: replay the build progressively, snapshot each stage ===
     design = _make_design()
-    for stage_fn, filename, title, _dur in build_storyboard():
+    for stage_fn, filename, title, _dur, view in build_storyboard():
         if stage_fn is not None:
             stage_fn(design)
-        fig = render_frame(design, title, xlim, ylim)
+        if view is None:
+            frame_xlim, frame_ylim = xlim, ylim
+        else:
+            cx, cy, half = view
+            frame_xlim, frame_ylim = (cx - half, cx + half), (cy - half, cy + half)
+        fig = render_frame(design, title, frame_xlim, frame_ylim)
         p = frame_dir / filename
         save_frame(fig, p)
         yield p
@@ -849,7 +954,7 @@ def render_gallery_frame(image_path, title):
 
 def main():
     storyboard = build_storyboard()
-    durations = [d for *_, d in storyboard]
+    durations = [stage[3] for stage in storyboard]
     with tempfile.TemporaryDirectory() as tmp:
         frame_paths = list(build_4qubit_chip_progressively(Path(tmp)))
 

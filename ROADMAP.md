@@ -113,7 +113,10 @@ below.
    dependency blockers, so this is mostly writing.
 5. **`renderer_palace/` eigenmode PoC** — the strategic unlock for
    HFSS-free CI validation. Larger effort; external help wanted.
-6. **Extend the design-examples gallery** — more patterns
+6. **Design-rule-check (DRC) validation stage** (#1169) — structured
+   layout checks (trace crossings, kink/short-segment) with a
+   raise-on-failure mode. See the dedicated section below.
+7. **Extend the design-examples gallery** — more patterns
    (e.g. surface-code patch) now that the notebook pattern exists.
 
 ---
@@ -235,6 +238,18 @@ explicit support for that use case:
   knows which renderer to call. A
   `design.render(backend="palace")`-style dispatch makes
   orchestrators much easier to write.
+- **Packaged task definitions for assistant-driven design**
+  `[requested, research]`
+  Requested feature: ship reusable, machine-readable task
+  definitions ("skills") that let a coding assistant drive
+  Metal directly — place components, route, run a DRC pass,
+  export — from a natural-language description of the chip.
+  Format should be vendor-neutral (plain markdown + a
+  declarative manifest, no assistant-specific runtime), so
+  the same definitions work across tools. Depends on the
+  stable-API contract and determinism items above, and on
+  the DRC stage (#1169) for a machine-checkable success
+  signal. Scope and format still open.
 
 ---
 
@@ -295,6 +310,58 @@ Initial proof-of-concept order:
 If you work on Palace, gmsh, or Elmer and want to help
 shape this — please open an issue or reach out on Discord.
 External contributor leverage is enormous here.
+
+---
+
+## Design-rule-check (DRC) validation stage `[planned]`
+
+Tracking issue: #1169. A structured validation pass over a built
+design, catching layout defects before render/export/simulation.
+Motivated by two defect classes that shipped through renders
+unflagged while building the README hero chip: four readout
+resonators crossing their feedline (~283 µm² of overlapping metal
+each — an electrical short in a real device), and routes whose lead
+or wiggle segments were shorter than their fillet radius (the #1086
+family, rendering as kinked corners).
+
+What exists today, and its limits:
+
+- `QDesignCheck.overlap_tester()` (Appendix B tutorial "Testing
+  QComponents for overlap and collisions") — centerline-only
+  (`shapely.crosses()`, so a crossing within trace width but without
+  centerline intersection passes) and print-based, with no return
+  value or exception.
+- `check_lengths` — warns (log-only) on segments too short for their
+  fillet; nothing fails.
+- A working buffered-geometry crossing check lives in
+  `scripts/make_hero_gif.py` (`_validate_no_trace_crossings`): buffer
+  every non-subtract path to its trace width, intersect
+  inter-component pairs, threshold by area so end-to-end pin
+  junctions (~0 area) pass. This caught the crossings above.
+
+Plan, in order:
+
+1. **`qiskit_metal.validation` module** — promote the script
+   prototype into a public API: `validate(design)` returning
+   structured findings (check name, components, location, area /
+   defect metric), plus a strict mode that raises. First two checks:
+   inter-component trace crossing; segment-shorter-than-fillet
+   (promote `check_lengths` from log-only to a queryable finding).
+2. **Next checks, by expected payoff**: minimum spacing between
+   distinct nets (near-miss, not just overlap); unconnected /
+   dangling route pins; component geometry outside chip bounds;
+   fillet radius vs available segment length at route corners
+   (the #1086 precondition, checked design-wide).
+3. **Tutorial** — a "Design-rule checking" notebook with
+   deliberately-broken examples for each check (the Appendix B
+   overlap tutorial becomes the deprecated predecessor or is
+   rewritten on the new API).
+4. **CI integration** — run `validate()` over the reference designs
+   (Appendix A) and the hero chip in the test suite, so shipped
+   example layouts can't regress.
+
+GDS-level DRC (min width/spacing on exported artifacts) is
+deliberately out of scope — KLayout covers it.
 
 ---
 
