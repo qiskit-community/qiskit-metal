@@ -4,17 +4,24 @@
 """Generate the hero animated GIF for the README.
 
 Builds a 4-qubit ring chip progressively (canvas → qubits → CPW routes →
-launchpads → final view) and stitches each stage into a ~6-second
-looping GIF. Showcases the design-as-code workflow in a glance.
+readout stubs → launchpads → final view) and stitches each stage into a
+looping GIF, with a closing frame showing the same chip's Gmsh FEM surface
+mesh. Showcases the design-as-code workflow and the open-source meshing
+path in a glance.
 
-The script uses the same ``qm.view(design)`` API end users would run,
+The design frames use the same ``qm.view(design)`` API end users would run,
 so the GIF stays honest — what viewers see is exactly what they'd get
-by pasting the equivalent ~15 lines into a notebook.
+by pasting the equivalent ~20 lines into a notebook.
 
 Output: docs/_static/hero.gif (~500KB at 800×600)
 
 Run from the repo root:
     uv run --with pillow scripts/make_hero_gif.py
+
+The closing mesh frame requires the optional ``gmsh`` dependency
+([mesh] extra). Without it, the GIF is generated the same way minus that
+one frame:
+    uv run --extra mesh --with pillow scripts/make_hero_gif.py
 """
 
 import os
@@ -26,6 +33,8 @@ from pathlib import Path
 os.environ.setdefault("QISKIT_METAL_SUPPRESS_RENAME_WARNING", "1")
 
 import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.collections import PolyCollection
 from PIL import Image
 
 import qiskit_metal as qm
@@ -33,6 +42,7 @@ from qiskit_metal import Dict, designs
 from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
+from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
 from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
 from qiskit_metal.qlibrary.tlines.pathfinder import RoutePathfinder
 
@@ -147,6 +157,12 @@ RING_CPWS = [
     ("cpw_41", "Q4", "a", "Q1", "d"),  # right edge
 ]
 
+# Each qubit has exactly one connection pad left unused by the ring +
+# launchpad wiring (see RING_CPWS / LAUNCHPADS below) — that free pin gets
+# a short open-stub readout resonator, purely for visual density (mimics
+# the individual-readout topology in "Reference design 1").
+FREE_PIN = {"Q1": "c", "Q2": "d", "Q3": "a", "Q4": "b"}
+
 # Launchpads at corners (±2.0, ±2.0) — close to qubits, connected via short
 # CPW feed lines to each qubit's outward (free) pin. Pin name "N" on Q1
 # (NE-facing pocket pin) → P1 at the NE corner pointing back at it, etc.
@@ -190,6 +206,55 @@ def _add_center_cross_showcase(design):
     design.rebuild()
 
 
+def _add_readout_stubs(design):
+    """Add one open-stub readout resonator per qubit, on its free pin.
+
+    Placement is read from the LIVE pin geometry (``middle`` + ``normal``)
+    rather than a hardcoded angle — ``TransmonPocket``'s ``loc_W``/``loc_H``
+    are scale factors, not simple side-selectors, so a per-qubit hand-picked
+    angle would silently be wrong for some corners. Reading the actual pin
+    normal keeps this correct regardless of chip layout.
+    """
+    otg_offset_mm = 1.0  # distance from the qubit pin to the open termination
+    for qubit_name, pin_name in FREE_PIN.items():
+        pin = design.components[qubit_name].pins[pin_name]
+        middle = np.asarray(pin["middle"], dtype=float)
+        normal = np.asarray(pin["normal"], dtype=float)
+        angle_deg = np.degrees(np.arctan2(normal[1], normal[0]))
+        otg_pos = middle + normal * otg_offset_mm
+
+        otg_name = f"ro_open_{qubit_name}"
+        OpenToGround(
+            design,
+            otg_name,
+            options=Dict(
+                pos_x=f"{otg_pos[0]}mm",
+                pos_y=f"{otg_pos[1]}mm",
+                orientation=f"{angle_deg}",
+            ),
+        )
+        RouteMeander(
+            design,
+            f"ro_{qubit_name}",
+            options=Dict(
+                pin_inputs=Dict(
+                    start_pin=Dict(component=qubit_name, pin=pin_name),
+                    end_pin=Dict(component=otg_name, pin="open"),
+                ),
+                # Lead length must clear the fillet radius (see the feed_opts
+                # comment above and #1086) — otherwise the Gmsh path-offset
+                # renderer can't build the corner arc ("Could not create line").
+                lead=Dict(start_straight="80um", end_straight="80um"),
+                fillet="40 um",
+                total_length="1.5mm",
+                trace_width="10 um",
+                trace_gap="6 um",
+                meander=Dict(spacing="450um", asymmetry="0um"),
+            ),
+        )
+    design.rebuild()
+
+
 def _compute_robust_cpw_opts(design, qa, pa, qb, pb):
     """Compute CPW meander options sized to the ACTUAL pin-to-pin distance.
 
@@ -212,8 +277,6 @@ def _compute_robust_cpw_opts(design, qa, pa, qb, pb):
     a value, so this keeps working if Q_SPEC changes (different qubit
     spacing, or someone forks the script for a new layout).
     """
-    import numpy as np
-
     p1 = np.asarray(design.components[qa].pins[pa]["middle"], dtype=float)
     p2 = np.asarray(design.components[qb].pins[pb]["middle"], dtype=float)
     distance_mm = float(np.linalg.norm(p2 - p1))  # design units are mm
@@ -268,7 +331,12 @@ def _add_launchpads_and_connections(design):
     # the launchpad-to-qubit feeds are short and don't need wiggle. This
     # also removes the spurious meander-segment kinks at corners.
     feed_opts = Dict(
-        lead=Dict(start_straight="60um", end_straight="60um"),
+        # Lead length must clear the fillet radius, same constraint as
+        # RouteMeander's length_perp vs fillet fix (#1086) — a lead shorter
+        # than the fillet leaves too little straight run for the corner
+        # arc, which the Gmsh path-offset renderer can't handle ("Could not
+        # create line").
+        lead=Dict(start_straight="100um", end_straight="100um"),
         fillet="80 um",
         trace_width="10 um",
         trace_gap="6 um",
@@ -307,6 +375,7 @@ def _populate_full_design(design):
         _qubit_factory(name)(design)
     for spec in RING_CPWS:
         _cpw_factory(spec)(design)
+    _add_readout_stubs(design)
     _add_launchpads_and_connections(design)
     _add_center_cross_showcase(design)
 
@@ -339,12 +408,21 @@ def build_storyboard():
         stages.append(
             (_cpw_factory(spec), f"0{i + 5}_{spec[0]}.png", cpw_titles[i], dur)
         )
+    # Individual readout resonators (open stubs) on each qubit's free pin.
+    stages.append(
+        (
+            _add_readout_stubs,
+            "09_readout_stubs.png",
+            "Step 4 — Individual readout resonators",
+            600,
+        )
+    )
     # Launchpads + their connecting CPWs in one shot
     stages.append(
         (
             _add_launchpads_and_connections,
-            "09_launchpads.png",
-            "Step 4 — Launchpads + feed lines",
+            "10_launchpads.png",
+            "Step 5 — Launchpads + feed lines",
             600,
         )
     )
@@ -353,14 +431,14 @@ def build_storyboard():
     stages.append(
         (
             _add_center_cross_showcase,
-            "10_cross.png",
+            "11_cross.png",
             "Or pick from 13+ qubit types  (TransmonCross shown)",
             800,
         )
     )
     # Final long hold so viewers register the result
     stages.append(
-        (None, "11_final.png", "qm.view(design)   →   chip ready for fab/sim", 1600)
+        (None, "12_final.png", "qm.view(design)   →   chip ready for fab/sim", 1600)
     )
     return stages
 
@@ -408,11 +486,106 @@ def stitch_gif(frame_paths, durations_ms):
     )
 
 
+def _build_mesh_design():
+    """Build a MultiPlanar replica of the hero chip for Gmsh meshing.
+
+    ``QGmshRenderer`` requires ``MultiPlanar`` (it needs the layer-stack
+    metadata to compute mesh thickness/z-coordinates) — ``DesignPlanar``,
+    used for the rest of the GIF, does not carry that. The component
+    factories above only take ``design`` as a parameter, so replaying them
+    on a second, separately-built ``MultiPlanar`` design reproduces the
+    identical final geometry.
+    """
+    design = designs.MultiPlanar({}, overwrite_enabled=True)
+    design.variables["cpw_width"] = "10 um"
+    design.variables["cpw_gap"] = "6 um"
+    design._chips["main"]["size"]["size_x"] = "5 mm"
+    design._chips["main"]["size"]["size_y"] = "5 mm"
+    _populate_full_design(design)
+    return design
+
+
+def render_mesh_frame(xlim, ylim, title):
+    """Mesh the final chip with Gmsh and render its 2-D surface mesh.
+
+    Only the 2-D surface mesh is generated (``add_mesh(dim=2)``) — the full
+    3-D tetrahedral volume mesh ``QGmshRenderer`` is built for (vacuum box
+    included) takes tens of seconds even for a couple of qubits and isn't
+    needed for a flat top-down illustration.
+
+    Raises ImportError if gmsh isn't installed — the caller decides whether
+    that's fatal (it isn't, for this script: the frame is just skipped).
+    """
+    from qiskit_metal.renderers.renderer_gmsh.gmsh_renderer import QGmshRenderer
+
+    design = _build_mesh_design()
+    gr = QGmshRenderer(design)
+    gr.options.mesh.max_size = "150um"
+    gr.options.mesh.min_size = "20um"
+    gr.render_design(mesh_geoms=False)
+    gr.add_mesh(dim=2, intelli_mesh=False)
+
+    import gmsh
+
+    triangles, colors = [], []
+    for dim, tag in gmsh.model.getEntities(dim=2):
+        color = gmsh.model.getColor(dim, tag)
+        elem_types, _elem_tags, elem_node_tags = gmsh.model.mesh.getElements(
+            dim=2, tag=tag
+        )
+        for etype, node_tags in zip(elem_types, elem_node_tags):
+            if etype != 2:  # only 3-node triangles
+                continue
+            node_tags = np.asarray(node_tags).reshape(-1, 3)
+            for tri in node_tags:
+                coords = [gmsh.model.mesh.getNode(int(n))[0][:2] for n in tri]
+                triangles.append(coords)
+                if color and color[3] != 0:
+                    colors.append(tuple(c / 255 for c in color[:3]) + (1.0,))
+                else:
+                    colors.append((0.6, 0.6, 0.65, 1.0))
+    gr.close()
+
+    fig, ax = plt.subplots(figsize=FIGSIZE_INCH, dpi=DPI)
+    ax.add_collection(
+        PolyCollection(
+            triangles, facecolor=colors, edgecolor=(0, 0, 0, 0.15), linewidth=0.2
+        )
+    )
+    ax.set_xlim(*xlim)
+    ax.set_ylim(*ylim)
+    ax.set_aspect("equal", adjustable="box")
+    ax.set_title(title, fontsize=13, fontweight="bold", pad=10)
+    fig.subplots_adjust(left=0.10, right=0.97, top=0.92, bottom=0.10)
+    return fig
+
+
 def main():
     storyboard = build_storyboard()
     durations = [d for *_, d in storyboard]
     with tempfile.TemporaryDirectory() as tmp:
         frame_paths = list(build_4qubit_chip_progressively(Path(tmp)))
+
+        # Closing frame: the same chip's Gmsh FEM surface mesh. Optional —
+        # gmsh is the [mesh] extra, not installed by default.
+        final = _make_design()
+        _populate_full_design(final)
+        xlim, ylim = compute_centered_square_limits(final)
+        try:
+            mesh_fig = render_mesh_frame(
+                xlim, ylim, "Under the hood — FEM surface mesh (open-source Gmsh)"
+            )
+        except ImportError:
+            print(
+                "  ⓘ gmsh not installed — skipping mesh frame "
+                "(install with the [mesh] extra: uv run --extra mesh ...)"
+            )
+        else:
+            mesh_path = Path(tmp) / "13_mesh.png"
+            save_frame(mesh_fig, mesh_path)
+            frame_paths.append(mesh_path)
+            durations.append(1800)
+
         stitch_gif(frame_paths, durations)
     size_kb = OUT_PATH.stat().st_size // 1024
     print(
