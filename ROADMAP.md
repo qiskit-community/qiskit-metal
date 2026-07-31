@@ -317,10 +317,12 @@ External contributor leverage is enormous here.
 
 Tracking issue: #1169. A structured validation pass over a built
 design, catching layout defects before render/export/simulation.
-Motivated by two defect classes that shipped through renders
+Motivated by three defect classes that shipped through renders
 unflagged while building the README hero chip: four readout
 resonators crossing their feedline (~283 µm² of overlapping metal
-each — an electrical short in a real device), and routes whose lead
+each — an electrical short in a real device); those same resonators
+running 9 µm from a transmon pocket (0.4× a CPW width — no crossing,
+but far too close to be electrically innocent); and routes whose lead
 or wiggle segments were shorter than their fillet radius (the #1086
 family, rendering as kinked corners).
 
@@ -333,25 +335,33 @@ What exists today, and its limits:
   value or exception.
 - `check_lengths` — warns (log-only) on segments too short for their
   fillet; nothing fails.
-- A working buffered-geometry crossing check lives in
-  `scripts/make_hero_gif.py` (`_validate_no_trace_crossings`): buffer
-  every non-subtract path to its trace width, intersect
-  inter-component pairs, threshold by area so end-to-end pin
-  junctions (~0 area) pass. This caught the crossings above.
+- Two working buffered-geometry checks live in
+  `scripts/make_hero_gif.py` and gate every build of that layout:
+  `_validate_no_trace_crossings` (buffer each non-subtract path to
+  its trace width, intersect inter-component pairs, threshold by
+  area so end-to-end pin junctions at ~0 area pass) and
+  `_validate_min_clearance_to_pockets` (measure the CPW's full
+  outer edge — trace + both gaps — to each transmon pocket, require
+  a few line widths of ground plane in between). Between them they
+  caught all three defects above.
 
 Plan, in order:
 
 1. **`qiskit_metal.validation` module** — promote the script
-   prototype into a public API: `validate(design)` returning
+   prototypes into a public API: `validate(design)` returning
    structured findings (check name, components, location, area /
-   defect metric), plus a strict mode that raises. First two checks:
-   inter-component trace crossing; segment-shorter-than-fillet
-   (promote `check_lengths` from log-only to a queryable finding).
-2. **Next checks, by expected payoff**: minimum spacing between
-   distinct nets (near-miss, not just overlap); unconnected /
-   dangling route pins; component geometry outside chip bounds;
-   fillet radius vs available segment length at route corners
-   (the #1086 precondition, checked design-wide).
+   defect metric), plus a strict mode that raises. First three
+   checks: inter-component trace crossing; minimum clearance to
+   qubit pockets (threshold expressed in CPW widths, overridable —
+   a fixed µm default is wrong across trace geometries);
+   segment-shorter-than-fillet (promote `check_lengths` from
+   log-only to a queryable finding).
+2. **Next checks, by expected payoff**: minimum spacing between any
+   two distinct nets (generalising the pocket check — near-miss,
+   not just overlap); unconnected / dangling route pins; component
+   geometry outside chip bounds; fillet radius vs available segment
+   length at route corners (the #1086 precondition, checked
+   design-wide).
 3. **Tutorial** — a "Design-rule checking" notebook with
    deliberately-broken examples for each check (the Appendix B
    overlap tutorial becomes the deprecated predecessor or is

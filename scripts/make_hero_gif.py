@@ -186,15 +186,16 @@ RING_CPWS = [
 # coupling section — rendering as a cramped hook right at the tee.
 # mirror=True flips the hang branch to the -x end, restoring the clean
 # mirror-symmetric junction on those two corners.
-# Tee distance from center: at ±2.0mm the resonators' outermost meander
-# folds crossed straight over the diagonal feedline (~283 um^2 of
-# overlapping metal per corner, caught by _validate_no_trace_crossings).
-# ±2.15mm buys ~0.2mm of diagonal clearance.
+# Tee distance from center. Two constraints, both enforced by the
+# validators below: at ±2.0mm the resonators' outermost meander folds
+# crossed the diagonal feedline outright; and the wider meander spacing
+# needed for pocket clearance (see _add_readout_resonators) pushes the
+# folds further out still. ±2.4mm satisfies both.
 READOUT_TEES = {
-    "Q1": dict(pin="a", pos=("+2.15mm", "+2.15mm"), orient="315", mirror=False),  # NE
-    "Q2": dict(pin="b", pos=("-2.15mm", "+2.15mm"), orient="45", mirror=True),  # NW
-    "Q3": dict(pin="c", pos=("-2.15mm", "-2.15mm"), orient="135", mirror=False),  # SW
-    "Q4": dict(pin="d", pos=("+2.15mm", "-2.15mm"), orient="225", mirror=True),  # SE
+    "Q1": dict(pin="a", pos=("+2.4mm", "+2.4mm"), orient="315", mirror=False),  # NE
+    "Q2": dict(pin="b", pos=("-2.4mm", "+2.4mm"), orient="45", mirror=True),  # NW
+    "Q3": dict(pin="c", pos=("-2.4mm", "-2.4mm"), orient="135", mirror=False),  # SW
+    "Q4": dict(pin="d", pos=("+2.4mm", "-2.4mm"), orient="225", mirror=True),  # SE
 }
 READOUT_PORT_OFFSET_MM = 1.0  # tee's prime line -> each port, along the line
 
@@ -371,7 +372,12 @@ def _add_readout_resonators(design):
                 total_length=f"{length_mm:.3f}mm",
                 trace_width="10 um",
                 trace_gap="6 um",
-                meander=Dict(spacing="150um", asymmetry="0um"),
+                # The meander's perpendicular excursion tracks
+                # meander.spacing, and the first rung folds back over the
+                # qubit -- at 150um it ran 9um from the pocket edge (0.4x a
+                # full CPW width). 250um clears it; see
+                # _validate_min_clearance_to_pockets.
+                meander=Dict(spacing="250um", asymmetry="0um"),
             ),
         )
         design.rebuild()
@@ -455,6 +461,14 @@ def _add_airbridges(design):
 # above this threshold (in mm^2; 1 um^2 = 1e-6 mm^2) is a genuine short.
 _CROSSING_AREA_THRESHOLD_MM2 = 1e-6
 
+# Minimum gap between a routed CPW's outer edge (trace + both gaps) and a
+# transmon's pocket, expressed in multiples of that full CPW width. A trace
+# running right along the pocket edge couples to the qubit in ways the
+# lumped model doesn't capture; a few line widths of ground plane in
+# between keeps the two isolated. 3x is the loosest value that still holds
+# for every route in this layout.
+_MIN_POCKET_CLEARANCE_CPW_WIDTHS = 3.0
+
 
 def _validate_no_trace_crossings(design):
     """Design-rule check: no two components' CPW traces may overlap.
@@ -501,6 +515,48 @@ def _validate_no_trace_crossings(design):
         )
 
 
+def _validate_min_clearance_to_pockets(design):
+    """Design-rule check: routed CPWs must keep clear of transmon pockets.
+
+    Complements the crossing check — a route can clear every other trace
+    and still hug a qubit pocket, which is what the readout resonators did
+    (9um, 0.4x a CPW width, from the first meander rung folding back over
+    the qubit). Measures from the CPW's full outer edge (trace + both gaps,
+    the ``cut`` geometry) to the pocket polygon, and skips each qubit's own
+    connection-pad stubs, which are attached to the pocket by construction.
+    """
+    name_by_id = {c.id: n for n, c in design.components.items()}
+    polys = design.qgeometry.tables["poly"]
+    pockets = {
+        name_by_id[r["component"]]: r["geometry"]
+        for _, r in polys.iterrows()
+        if name_by_id[r["component"]] in Q_SPEC and r["name"] == "rect_pk"
+    }
+    full_cpw_width = design.parse_value("10um") + 2 * design.parse_value("6um")
+    min_clearance = _MIN_POCKET_CLEARANCE_CPW_WIDTHS * full_cpw_width
+
+    violations = []
+    for _, row in design.qgeometry.tables["path"].iterrows():
+        comp = name_by_id[row["component"]]
+        if comp in Q_SPEC or row["name"] != "cut":
+            continue
+        edge = row["geometry"].buffer(row["width"] / 2, cap_style=2)
+        for qubit_name, pocket in pockets.items():
+            gap = pocket.distance(edge)
+            if gap < min_clearance:
+                violations.append(
+                    f"{comp} passes {gap * 1000:.1f}um from {qubit_name}'s pocket "
+                    f"({gap / full_cpw_width:.2f}x CPW width; "
+                    f"need {_MIN_POCKET_CLEARANCE_CPW_WIDTHS:.1f}x = "
+                    f"{min_clearance * 1000:.0f}um)"
+                )
+    if violations:
+        raise ValueError(
+            "Pocket-clearance check failed — CPW routed too close to a "
+            "transmon pocket:\n  " + "\n  ".join(violations)
+        )
+
+
 def _populate_full_design(design):
     """Apply every stage so the FINAL design exists. Used for centering compute."""
     for name in Q_SPEC:
@@ -511,6 +567,7 @@ def _populate_full_design(design):
     _add_readout_resonators(design)
     _add_center_cross_showcase(design)
     _validate_no_trace_crossings(design)
+    _validate_min_clearance_to_pockets(design)
 
 
 # Close-up view for the opening frame: centered on Q1's pocket with enough
