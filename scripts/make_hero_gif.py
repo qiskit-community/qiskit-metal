@@ -30,7 +30,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-# Silence the v0.8 rename warning chatter (doesn't affect rendering)
+# Silence the import-path rename warning chatter (doesn't affect rendering)
 os.environ.setdefault("QISKIT_METAL_SUPPRESS_RENAME_WARNING", "1")
 
 import matplotlib.pyplot as plt

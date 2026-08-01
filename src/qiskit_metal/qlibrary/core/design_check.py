@@ -23,7 +23,7 @@ class QDesignCheck:
         testing designs in qiskit metal for unintended overlap
         between components and/or connections between components.
 
-    .. deprecated:: 0.7.7
+    .. deprecated:: 0.8.0
         This class prints its results and detects only crossing outlines
         (``shapely.crosses``), so metal that overlaps without either outline
         crossing the other is missed; it is also blind to layers and to

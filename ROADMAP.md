@@ -179,9 +179,9 @@ Per-issue contents:
 2. Any lazy-import / `ImportError` UX changes that affect
    their code paths.
 3. Link to `docs/migration-to-v0.7.0.rst`.
-4. Reminder about the `qiskit_metal` → `quantum_metal`
-   import-path rename targeted for v0.8 / v1.0, so they can
-   plan import updates ahead of that release.
+4. Reminder about the planned `qiskit_metal` →
+   `quantum_metal` import-path rename, so they can plan
+   import updates. No release has been set for it.
 
 Known downstream packages:
 
@@ -209,7 +209,7 @@ add it (and help with the upgrade).
 
 ---
 
-## Next — AI-orchestration profile (v0.7.x – v0.8.0)
+## Next — AI-orchestration profile
 
 Once the lite flip lands, `pip install quantum-metal`
 becomes the recommended entry point for agents, optimizers,
@@ -400,7 +400,7 @@ but are worth tracking:
   full hints unlock static analysis for orchestrators
   and make the LLM-driven code-generation path more
   reliable.
-- **Plugin discovery via entry points** `[planned, v0.8.x]`
+- **Plugin discovery via entry points** `[planned]`
   External renderers and component libraries currently
   require monkey-patching or vendoring. A
   `qiskit_metal.renderers` and `qiskit_metal.qlibrary`
