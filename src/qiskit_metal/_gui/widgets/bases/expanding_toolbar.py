@@ -12,8 +12,7 @@
 
 from PySide6 import QtCore, QtGui
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QToolBar
-import time
+from PySide6.QtWidgets import QToolBar, QWidget, QSizePolicy, QToolButton
 
 
 class QToolBarExpanding(QToolBar):
@@ -25,6 +24,55 @@ class QToolBarExpanding(QToolBar):
     Args:
         QToolbar (QToolbar): QToolbar
     """
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._toggle_btn_added = False
+
+    def showEvent(self, event: QtCore.QEvent) -> None:
+        """Add the toggle button to the far right the first time it is shown."""
+        super().showEvent(event)
+        if not self._toggle_btn_added:
+            self._toggle_btn_added = True
+
+            # Spacer to push button to the right
+            self._spacer = QWidget()
+            self._spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+            self.addWidget(self._spacer)
+
+            self._toggle_btn = QToolButton(self)
+            self._toggle_btn.setCheckable(True)
+            self._toggle_btn.clicked.connect(self.on_toggle_clicked)
+            self.addWidget(self._toggle_btn)
+
+            # Initialize in the contracted state
+            self._toggle_btn.setChecked(False)
+            self.contract_me()
+
+    def update_arrow_icon(self):
+        """Update the toggle button arrow to reflect the current expansion state."""
+        if not hasattr(self, "_toggle_btn"):
+            return
+
+        if self.toolButtonStyle() == Qt.ToolButtonIconOnly:
+            # Contracted state
+            if self.orientation() == Qt.Vertical:
+                self._toggle_btn.setArrowType(Qt.RightArrow)
+            else:
+                self._toggle_btn.setArrowType(Qt.DownArrow)
+        else:
+            # Expanded state
+            if self.orientation() == Qt.Vertical:
+                self._toggle_btn.setArrowType(Qt.LeftArrow)
+            else:
+                self._toggle_btn.setArrowType(Qt.UpArrow)
+
+    def on_toggle_clicked(self, checked: bool):
+        """Handle toggle button click to expand or contract the toolbar."""
+        if checked:
+            self.expand_me()
+        else:
+            self.contract_me()
 
     def expand_me(self):
         """Expand the toolbar."""
@@ -38,18 +86,38 @@ class QToolBarExpanding(QToolBar):
         # show icons and text
         self.setToolButtonStyle(tool_style)
 
+        # update toggle button visual state
+        self.update_arrow_icon()
+
         # align icons and text
         layout = self.layout()
-        layout.setAlignment(align)
         layout.setSpacing(layout.spacing())
         for i in range(layout.count()):
             tool = layout.itemAt(i)
-            tool.setAlignment(align)
+            if tool:
+                widget = tool.widget()
+                if widget is getattr(self, "_spacer", None):
+                    continue
+                if widget is getattr(self, "_toggle_btn", None):
+                    widget.setToolButtonStyle(Qt.ToolButtonIconOnly)
+                    if self.orientation() == Qt.Vertical:
+                        widget.setSizePolicy(
+                            QSizePolicy.Expanding, QSizePolicy.Preferred
+                        )
+                        tool.setAlignment(Qt.AlignBottom)
+                    else:
+                        widget.setSizePolicy(
+                            QSizePolicy.Preferred, QSizePolicy.Expanding
+                        )
+                        tool.setAlignment(Qt.AlignRight)
+                    continue
+                tool.setAlignment(align)
             # https://doc.qt.io/qt-5/qlayoutitem.html#setAlignment
 
     def contract_me(self):
         """Contract the toolbar."""
         self.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.update_arrow_icon()
 
     def enterEvent(self, evt: QtCore.QEvent) -> None:
         """enterEvent() is called when the mouse enters the widget's screen
@@ -59,10 +127,6 @@ class QToolBarExpanding(QToolBar):
         Args:
             evt (QtCore.QEvent): QtCore event
         """
-        # should ideally have a timeout thread
-        # print('-> Enter')
-        self.expand_me()
-
         super().enterEvent(evt)
 
     def leaveEvent(self, evt: QtCore.QEvent) -> None:
@@ -73,8 +137,4 @@ class QToolBarExpanding(QToolBar):
         Args:
             evt (QtCore.QEvent): QtCore event
         """
-        # print('<- EXIT')
-        # this adds a 0.25sec delay before contracting the widget if mouse accidentally leaves
-        time.sleep(0.25)
-        self.contract_me()
         super().leaveEvent(evt)
