@@ -6,7 +6,7 @@
 Builds a 4-qubit ring chip progressively (canvas → qubits → CPW routes →
 airbridges → readout stubs → launchpads → final view) and stitches each
 stage into a looping GIF, closing with the same chip's Gmsh FEM mesh
-(coarse 2-D, fine 2-D, pseudo-3-D) and a couple of real 3-D airbridge
+(2-D surface, pseudo-3-D) and a couple of real 3-D airbridge
 renders borrowed from tutorial 2.15. Showcases the design-as-code
 workflow and the open-source meshing path in a glance.
 
@@ -20,7 +20,7 @@ Run from the repo root:
     uv run --with pillow scripts/make_hero_gif.py
 
 The mesh frames require the optional ``gmsh`` dependency ([mesh] extra).
-Without it, the GIF is generated the same way minus those three frames:
+Without it, the GIF is generated the same way minus those two frames:
     uv run --extra mesh --with pillow scripts/make_hero_gif.py
 """
 
@@ -1048,42 +1048,35 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         frame_paths = list(build_4qubit_chip_progressively(Path(tmp)))
 
-        # Closing frames: the same chip's Gmsh FEM mesh — coarse 2-D, fine
-        # 2-D, then a pseudo-3-D extrusion. Optional — gmsh is the [mesh]
+        # Closing frames: the same chip's Gmsh FEM mesh — a 2-D surface
+        # mesh, then a pseudo-3-D extrusion. Optional — gmsh is the [mesh]
         # extra, not installed by default.
         final = _make_design()
         _populate_full_design(final)
         xlim, ylim = compute_centered_square_limits(final)
+        # Coarse mesh only. A fine pass (max_size=60um, min_size=10um) was
+        # shown here too, but at 640x640 its elements are smaller than a
+        # pixel — it reads as flat colour next to the coarse frame while
+        # being by far the slowest stage to generate. render_mesh_frame_2d
+        # still takes the sizes as parameters if a finer frame is ever
+        # wanted.
         mesh_stages = [
             (
                 lambda: render_mesh_frame_2d(
                     xlim,
                     ylim,
-                    "Under the hood — FEM mesh (coarse)",
+                    "Under the hood — FEM mesh",
                     max_size="300um",
                     min_size="60um",
                     edge_alpha=0.7,
                     linewidth=0.5,
                 ),
                 "14_mesh_coarse.png",
-                1400,
-            ),
-            (
-                lambda: render_mesh_frame_2d(
-                    xlim,
-                    ylim,
-                    "FEM mesh (fine)",
-                    max_size="60um",
-                    min_size="10um",
-                    edge_alpha=0.35,
-                    linewidth=0.2,
-                ),
-                "15_mesh_fine.png",
-                1400,
+                1600,
             ),
             (
                 lambda: render_mesh_frame_3d(xlim, ylim, "...and in 3-D"),
-                "16_mesh_3d.png",
+                "15_mesh_3d.png",
                 1800,
             ),
         ]
