@@ -356,6 +356,12 @@ pocket (0.41× a CPW width), launchpads hanging 110 µm off the chip edge
 segments shorter than their fillet radius. `scripts/make_hero_gif.py`
 now gates every build on `validate(..., strict=True)`.
 
+`QMplRenderer` now draws the die outline, so `qm.view` and the Qt
+`MetalGUI` both show where the chip ends. Nothing on screen used to say
+that, which is why launchpads hanging off the edge kept shipping. Off
+via `qm.view(design, chip_outline=False)` or
+`renderer.options.chip_outline`.
+
 Tutorial 2.24 walks a design carrying one defect per rule through
 detection, diagnosis and fix, then covers threshold tuning, `strict=True`
 as a build gate, and writing a custom rule.
