@@ -11,6 +11,7 @@ that always fires (or never does) fails here.
 """
 
 import unittest
+import warnings
 
 from qiskit_metal import Dict, designs
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
@@ -21,6 +22,7 @@ from qiskit_metal.validation import (
     ChipBoundsRule,
     CPWGapRule,
     DesignRuleViolation,
+    GroundContinuityRule,
     MetalOverlapRule,
     MetalSpacingRule,
     Severity,
@@ -349,6 +351,73 @@ class TestAirbridgeLayerSeparation(unittest.TestCase):
             msg="airbridge spans sit on their own layer and must not "
             f"report as shorts against the CPW they cross: {crossings}",
         )
+
+
+class TestGroundContinuityRule(unittest.TestCase):
+    """A CPW that reaches both chip edges cuts the ground plane in two."""
+
+    def test_chip_spanning_route_splits_the_ground(self):
+        design = _design()
+        # Over-runs both edges so the etched footprint reaches the chip
+        # boundary; a route that stops short leaves a ground bridge.
+        _route(design, "cut", ("-4mm", "0mm"), ("4mm", "0mm"), "180", "0")
+        design.rebuild()
+
+        findings = list(GroundContinuityRule().check(design))
+        self.assertEqual(len(findings), 1, msg=f"expected one split: {findings}")
+        self.assertIn("2 disconnected regions", findings[0].message)
+        self.assertEqual(findings[0].severity, Severity.WARNING)
+
+    def test_route_that_stops_short_keeps_ground_connected(self):
+        design = _design()
+        _route(design, "stub", ("-1mm", "0mm"), ("1mm", "0mm"), "180", "0")
+        design.rebuild()
+
+        self.assertEqual(list(GroundContinuityRule().check(design)), [])
+
+    def test_void_check_is_off_by_default(self):
+        """A transmon pocket is a deliberate void far wider than 50 um."""
+        design = _design()
+        TransmonPocket(design, "Q", options=dict(pos_x="0mm", pos_y="0mm"))
+        design.rebuild()
+
+        self.assertEqual(list(GroundContinuityRule().check(design)), [])
+
+    def test_void_check_flags_wide_voids_when_enabled(self):
+        design = _design()
+        TransmonPocket(design, "Q", options=dict(pos_x="0mm", pos_y="0mm"))
+        design.rebuild()
+
+        findings = list(GroundContinuityRule(max_void_size="50um").check(design))
+        self.assertTrue(findings, "pocket is far wider than 50 um")
+        self.assertTrue(all("parasitic mode" in f.message for f in findings))
+
+
+class TestQDesignCheckDeprecation(unittest.TestCase):
+    """The predecessor still works, but points at its replacement."""
+
+    def test_construction_warns(self):
+        from qiskit_metal.qlibrary.core.design_check import QDesignCheck
+
+        design = _design()
+        with self.assertWarns(DeprecationWarning) as caught:
+            QDesignCheck(design)
+        self.assertIn("qiskit_metal.validation", str(caught.warning))
+
+    def test_still_runs(self):
+        """Deprecated does not mean broken -- the API stays until removal."""
+        from qiskit_metal.qlibrary.core.design_check import QDesignCheck
+
+        design = _design()
+        _route(design, "horiz", ("-1.5mm", "0mm"), ("1.5mm", "0mm"), "180", "0")
+        _route(design, "vert", ("0mm", "-1.5mm"), ("0mm", "1.5mm"), "270", "90")
+        design.rebuild()
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            checker = QDesignCheck(design)
+            checker.update_design(design)
+            checker.overlap_tester()  # prints; asserted only not to raise
 
 
 if __name__ == "__main__":

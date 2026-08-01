@@ -31,6 +31,7 @@ import itertools
 from typing import TYPE_CHECKING, Iterable
 
 import numpy as np
+import pandas as pd
 from shapely.ops import nearest_points
 from shapely.strtree import STRtree
 
@@ -48,6 +49,12 @@ from .core import (
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
     from qiskit_metal.designs import QDesign
+
+
+#: Stand-in for an absent qgeometry table, so rules can iterate uniformly.
+_EMPTY_FRAME = pd.DataFrame(
+    columns=["geometry", "width", "layer", "subtract", "component", "name"]
+)
 
 
 def _parse(design: "QDesign", value) -> float:
@@ -406,6 +413,122 @@ class QubitClearanceRule(DesignRule):
                 )
 
 
+class GroundContinuityRule(DesignRule):
+    """The ground plane should not be split into isolated regions.
+
+    Etched features can partition the ground into pieces with no galvanic
+    path between them -- a ring of CPWs around a qubit block isolates the
+    ground inside the ring from the ground outside it. An isolated region
+    has no defined potential, which is the mechanism behind the slotline
+    modes airbridges exist to suppress.
+
+    This is a WARNING, not an error, and it deliberately reports the split
+    rather than naming one region "floating": **it sees only same-layer
+    metal**. An airbridge crosses a CPW on its own elevated layer, so the
+    connection it provides is invisible here. A split with airbridges over
+    every boundary is a correct design; a split without them is not. The
+    finding tells you which question to ask.
+
+    ``max_void_size`` additionally flags etched voids large enough to host
+    a parasitic cavity mode; [GDSII2Wafer]_ (R9) puts that at 50 um. It is
+    **off by default** because a transmon pocket is a deliberate void far
+    larger than that and would dominate the report.
+    """
+
+    name = "ground-continuity"
+    description = "Ground plane is split into disconnected regions."
+
+    def __init__(
+        self,
+        chip: str = "main",
+        layer: int = 1,
+        max_void_size=None,
+        severity: Severity = Severity.WARNING,
+        min_region_area: float = 1e-4,
+    ):
+        self.chip = chip
+        self.layer = layer
+        self.max_void_size = max_void_size
+        self.severity = severity
+        # 1e-4 mm^2 == 100 um^2. Below this a "region" is boolean-op noise
+        # on a shared edge, not a piece of ground plane.
+        self.min_region_area = min_region_area
+
+    def _ground_sheet(self, design: "QDesign"):
+        from shapely.geometry import box
+        from shapely.ops import unary_union
+
+        minx, miny, maxx, maxy = chip_bounds(design, self.chip)
+        sheet = box(minx, miny, maxx, maxy)
+        etched = [
+            row["geometry"].buffer(row["width"] / 2.0, cap_style=2)
+            if table == "path"
+            else row["geometry"]
+            for table in ("path", "poly")
+            for _, row in design.qgeometry.tables.get(table, _EMPTY_FRAME).iterrows()
+            if bool(row["subtract"]) and int(row["layer"]) == self.layer
+        ]
+        if not etched:
+            return sheet
+        return sheet.difference(unary_union(etched))
+
+    def check(self, design: "QDesign") -> Iterable[Finding]:
+        sheet = self._ground_sheet(design)
+        regions = [
+            p for p in getattr(sheet, "geoms", [sheet]) if p.area > self.min_region_area
+        ]
+
+        if len(regions) > 1:
+            areas = sorted((p.area for p in regions), reverse=True)
+            summary = ", ".join(f"{a:.3f}" for a in areas[:4])
+            if len(areas) > 4:
+                summary += ", ..."
+            smallest = min(regions, key=lambda p: p.area)
+            yield Finding(
+                rule=self.name,
+                severity=self.severity,
+                message=(
+                    f"ground plane on layer {self.layer} is split into "
+                    f"{len(regions)} disconnected regions (mm^2: {summary}); "
+                    "confirm airbridges or vias tie them together -- this "
+                    "check sees only same-layer metal"
+                ),
+                location=representative_point(smallest),
+                value=float(len(regions)),
+                limit=1.0,
+            )
+
+        if self.max_void_size is not None:
+            limit = _parse(design, self.max_void_size)
+            yield from self._check_voids(design, sheet, limit)
+
+    def _check_voids(self, design, sheet, limit) -> Iterable[Finding]:
+        """Flag etched voids that can inscribe a circle of diameter ``limit``.
+
+        Eroding a void by half the limit and asking whether anything
+        survives is a robust stand-in for "how wide is this hole" on an
+        arbitrary polygon.
+        """
+        from shapely.geometry import box
+
+        minx, miny, maxx, maxy = chip_bounds(design, self.chip)
+        voids = box(minx, miny, maxx, maxy).difference(sheet)
+        for void in getattr(voids, "geoms", [voids]):
+            if void.is_empty or void.buffer(-limit / 2.0).is_empty:
+                continue
+            yield Finding(
+                rule=self.name,
+                severity=Severity.WARNING,
+                message=(
+                    f"etched void on layer {self.layer} is wider than "
+                    f"{limit * 1000:.0f} um and can host a parasitic mode"
+                ),
+                location=representative_point(void),
+                value=void.area,
+                limit=limit,
+            )
+
+
 #: Rules run by :func:`~qiskit_metal.validation.validate` when none are given.
 DEFAULT_RULES: tuple[DesignRule, ...] = (
     MetalOverlapRule(),
@@ -414,4 +537,5 @@ DEFAULT_RULES: tuple[DesignRule, ...] = (
     ChipBoundsRule(),
     ShortSegmentRule(),
     QubitClearanceRule(),
+    GroundContinuityRule(),
 )

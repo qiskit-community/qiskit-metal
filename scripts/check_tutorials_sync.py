@@ -91,6 +91,10 @@ PAIRS = [
         "tutorials/2 From components to chip/C. My first full quantum chip design/2.23 Modify chip options.ipynb",
     ),
     (
+        "docs/tut/2-From-components-to-chip/2.24-Design-rule-checking.ipynb",
+        "tutorials/2 From components to chip/C. My first full quantum chip design/2.24 Design rule checking.ipynb",
+    ),
+    (
         "docs/tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.ipynb",
         "tutorials/2 From components to chip/D. How do I make my custom QComponent/2.31 Create a QComponent - Basic.ipynb",
     ),

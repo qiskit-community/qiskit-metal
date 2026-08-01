@@ -36,11 +36,15 @@ from .core import (
     Finding,
     Severity,
     ValidationResult,
+    chip_bounds,
+    component_geometry,
+    representative_point,
 )
 from .rules import (
     DEFAULT_RULES,
     ChipBoundsRule,
     CPWGapRule,
+    GroundContinuityRule,
     MetalOverlapRule,
     MetalSpacingRule,
     QubitClearanceRule,
@@ -54,12 +58,16 @@ __all__ = [
     "DesignRule",
     "DesignRuleViolation",
     "Finding",
+    "GroundContinuityRule",
     "MetalOverlapRule",
     "MetalSpacingRule",
     "QubitClearanceRule",
     "Severity",
     "ShortSegmentRule",
     "ValidationResult",
+    "chip_bounds",
+    "component_geometry",
+    "representative_point",
     "validate",
 ]
 

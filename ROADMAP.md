@@ -324,7 +324,7 @@ print(result)
 result.raise_if_errors()        # for a build script or CI gate
 ```
 
-Six rules, each with a configurable threshold, since process design kits
+Seven rules, each with a configurable threshold, since process design kits
 differ:
 
 | Rule | Default | Severity | Basis |
@@ -335,6 +335,13 @@ differ:
 | `chip-bounds` | on-chip | error | clipped geometry |
 | `short-segment` | ≥ fillet radius | warning | the #1086 kink family |
 | `qubit-clearance` | 3× CPW width | warning | project heuristic, not literature |
+| `ground-continuity` | one connected sheet | warning | slotline modes, arXiv:2604.11379 (R9) |
+
+`ground-continuity` reports that the ground plane is split, not that a
+piece is floating: it sees one layer, so an airbridge tying two regions
+together is invisible to it. Its optional `max_void_size` check (R9's
+50 µm parasitic-cavity threshold) is off by default because a transmon
+pocket is a deliberate void far larger than that.
 
 Rules are layer-aware (an airbridge crossing a CPW is the point of an
 airbridge, not a short) and net-aware (a route abutting the pin it
@@ -349,22 +356,28 @@ pocket (0.41× a CPW width), launchpads hanging 110 µm off the chip edge
 segments shorter than their fillet radius. `scripts/make_hero_gif.py`
 now gates every build on `validate(..., strict=True)`.
 
+Tutorial 2.24 walks a design carrying one defect per rule through
+detection, diagnosis and fix, then covers threshold tuning, `strict=True`
+as a build gate, and writing a custom rule.
+`tests/test_reference_designs.py` gates the Appendix A reference designs:
+zero errors, and no warnings beyond a recorded `KNOWN_WARNINGS`
+baseline. Fixing those designs to pass it turned up a real defect —
+both multi-qubit references placed launchpads outside the default 9×6 mm
+die, so a corner of ground plane was being clipped on every render.
+`QDesignCheck` is deprecated in favour of this module (it is
+crossing-only and print-based, so it misses an overlap that stays within
+trace width — which is most of them).
+
 Remaining, roughly in payoff order:
 
-1. **More rules**: ground-plane continuity (no gap >50 µm, which forms a
-   parasitic cavity — arXiv:2604.11379 R9; needs the post-subtraction
-   ground polygon, so more than a pairwise geometry query);
-   airbridge spacing below λ/4 on long CPW runs (arXiv:2411.16967);
-   unconnected/dangling route pins; minimum feature width.
-2. **Tutorial** — a "Design-rule checking" notebook with a deliberately
-   broken design per rule. The Appendix B overlap tutorial becomes the
-   deprecated predecessor; `QDesignCheck` should be folded in and
-   deprecated (it is centreline-only and print-based, so it misses a
-   crossing that stays within trace width — which is most of them).
-3. **CI integration** — run `validate()` over the Appendix A reference
-   designs so shipped example layouts cannot regress.
-4. **Per-PDK rule sets** — a `RuleSet` that can be loaded from a foundry
+1. **More rules**: airbridge spacing below λ/4 on long CPW runs
+   (arXiv:2411.16967); unconnected/dangling route pins; minimum feature
+   width.
+2. **Per-PDK rule sets** — a `RuleSet` that can be loaded from a foundry
    file rather than assembled by hand.
+3. **Cross-layer awareness for `ground-continuity`** — treat an airbridge
+   spanning two ground regions as connecting them, so the rule can
+   distinguish a bridged split from a genuine floating island.
 
 GDS-level DRC (min width/spacing on exported artifacts) stays out of
 scope — KLayout covers it.

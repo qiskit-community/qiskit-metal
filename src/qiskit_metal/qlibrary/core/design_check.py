@@ -1,19 +1,46 @@
 ### BASIC PROGRAM THAT LOOKS FOR OVERLAP BETWEEN QCOMPONENTS
+import warnings
+
 from numpy import size
 import geopandas as gpd
 import pandas as pd
+
+_DEPRECATION_MESSAGE = (
+    "QDesignCheck is deprecated and will be removed in a future release. "
+    "Use qiskit_metal.validation.validate(design) instead, which returns a "
+    "ValidationResult of structured findings -- including the metal-overlap "
+    "rule this class implements -- rather than printing to stdout."
+)
 
 
 class QDesignCheck:
     """.. image::
         base_design_check.png
 
+    Deprecated. Use :func:`qiskit_metal.validation.validate` instead.
+
     QDesign_Check contains various design checks, such as
         testing designs in qiskit metal for unintended overlap
         between components and/or connections between components.
+
+    .. deprecated:: 0.7.7
+        This class prints its results and detects only crossing outlines
+        (``shapely.crosses``), so metal that overlaps without either outline
+        crossing the other is missed; it is also blind to layers and to
+        intentional pin connections, so an airbridge over a CPW reports as a
+        collision. :mod:`qiskit_metal.validation` covers the same ground with
+        :class:`~qiskit_metal.validation.MetalOverlapRule` and returns
+        machine-readable findings::
+
+            from qiskit_metal.validation import validate
+
+            result = validate(design)
+            if not result:
+                print(result.report())
     """
 
     def __init__(self, design: "QDesign"):
+        warnings.warn(_DEPRECATION_MESSAGE, DeprecationWarning, stacklevel=2)
         self.design = design
 
     def update_design(self, design: "QDesign"):
