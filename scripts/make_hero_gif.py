@@ -50,6 +50,16 @@ from qiskit_metal.qlibrary.tlines.airbridge import (
 )
 from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
 from qiskit_metal.qlibrary.tlines.straight_path import RouteStraight
+from qiskit_metal.validation import (
+    ChipBoundsRule,
+    CPWGapRule,
+    MetalOverlapRule,
+    MetalSpacingRule,
+    QubitClearanceRule,
+    Severity,
+    ShortSegmentRule,
+    validate,
+)
 
 
 # --- Configuration ---
@@ -456,137 +466,23 @@ def _add_airbridges(design):
     design.rebuild()
 
 
-# Two touching path ends at a pin junction intersect over ~0 area; a real
-# crossing of two 10um-wide traces overlaps by hundreds of um^2. Anything
-# above this threshold (in mm^2; 1 um^2 = 1e-6 mm^2) is a genuine short.
-_CROSSING_AREA_THRESHOLD_MM2 = 1e-6
-
-# Minimum gap between a routed CPW's outer edge (trace + both gaps) and a
-# transmon's pocket, expressed in multiples of that full CPW width. A trace
-# running right along the pocket edge couples to the qubit in ways the
-# lumped model doesn't capture; a few line widths of ground plane in
-# between keeps the two isolated. 3x is the loosest value that still holds
-# for every route in this layout.
-_MIN_POCKET_CLEARANCE_CPW_WIDTHS = 3.0
-
-
-def _validate_no_trace_crossings(design):
-    """Design-rule check: no two components' CPW traces may overlap.
-
-    Buffers every non-subtract path to its real trace width and intersects
-    all inter-component pairs. This is deliberately NOT
-    ``qiskit_metal.qlibrary.core.design_check.QDesignCheck.overlap_tester``,
-    which compares centerlines only (a crossing within trace width but
-    without centerline intersection passes) and reports by printing rather
-    than raising. Raises ValueError listing every violation, so a layout
-    regression can never silently ship into the rendered GIF — this is how
-    the resonator-over-feedline crossing that motivated it was caught.
-    """
-    name_by_id = {c.id: n for n, c in design.components.items()}
-    paths = design.qgeometry.tables["path"]
-    traces = [
-        (
-            name_by_id[row["component"]],
-            row["name"],
-            row["geometry"].buffer(row["width"] / 2, cap_style=2),
-        )
-        for _, row in paths.iterrows()
-        if not row["subtract"]
-    ]
-    violations = []
-    for i in range(len(traces)):
-        for j in range(i + 1, len(traces)):
-            comp_a, name_a, geom_a = traces[i]
-            comp_b, name_b, geom_b = traces[j]
-            if comp_a == comp_b:
-                continue
-            if not geom_a.intersects(geom_b):
-                continue
-            area = geom_a.intersection(geom_b).area
-            if area > _CROSSING_AREA_THRESHOLD_MM2:
-                violations.append(
-                    f"{comp_a}.{name_a} x {comp_b}.{name_b} "
-                    f"(overlap {area * 1e6:.0f} um^2)"
-                )
-    if violations:
-        raise ValueError(
-            "Trace-crossing check failed — overlapping CPW metal between "
-            "different components:\n  " + "\n  ".join(violations)
-        )
-
-
-def _validate_min_clearance_to_pockets(design):
-    """Design-rule check: routed CPWs must keep clear of transmon pockets.
-
-    Complements the crossing check — a route can clear every other trace
-    and still hug a qubit pocket, which is what the readout resonators did
-    (9um, 0.4x a CPW width, from the first meander rung folding back over
-    the qubit). Measures from the CPW's full outer edge (trace + both gaps,
-    the ``cut`` geometry) to the pocket polygon, and skips each qubit's own
-    connection-pad stubs, which are attached to the pocket by construction.
-    """
-    name_by_id = {c.id: n for n, c in design.components.items()}
-    polys = design.qgeometry.tables["poly"]
-    pockets = {
-        name_by_id[r["component"]]: r["geometry"]
-        for _, r in polys.iterrows()
-        if name_by_id[r["component"]] in Q_SPEC and r["name"] == "rect_pk"
-    }
-    full_cpw_width = design.parse_value("10um") + 2 * design.parse_value("6um")
-    min_clearance = _MIN_POCKET_CLEARANCE_CPW_WIDTHS * full_cpw_width
-
-    violations = []
-    for _, row in design.qgeometry.tables["path"].iterrows():
-        comp = name_by_id[row["component"]]
-        if comp in Q_SPEC or row["name"] != "cut":
-            continue
-        edge = row["geometry"].buffer(row["width"] / 2, cap_style=2)
-        for qubit_name, pocket in pockets.items():
-            gap = pocket.distance(edge)
-            if gap < min_clearance:
-                violations.append(
-                    f"{comp} passes {gap * 1000:.1f}um from {qubit_name}'s pocket "
-                    f"({gap / full_cpw_width:.2f}x CPW width; "
-                    f"need {_MIN_POCKET_CLEARANCE_CPW_WIDTHS:.1f}x = "
-                    f"{min_clearance * 1000:.0f}um)"
-                )
-    if violations:
-        raise ValueError(
-            "Pocket-clearance check failed — CPW routed too close to a "
-            "transmon pocket:\n  " + "\n  ".join(violations)
-        )
-
-
-def _validate_within_chip_bounds(design):
-    """Design-rule check: no component geometry may hang off the chip.
-
-    Caught the launchpads spilling 110um past the edge after the readout
-    tees moved outward — the chip boundary then clips the ground plane,
-    which shows up in the FEM mesh as a whole corner region silently
-    disappearing.
-    """
-    half_x = design.parse_value(design._chips["main"]["size"]["size_x"]) / 2
-    half_y = design.parse_value(design._chips["main"]["size"]["size_y"]) / 2
-    name_by_id = {c.id: n for n, c in design.components.items()}
-
-    violations = []
-    for table in ("poly", "path"):
-        for _, row in design.qgeometry.tables[table].iterrows():
-            geom = row["geometry"]
-            if table == "path":
-                geom = geom.buffer(row["width"] / 2, cap_style=2)
-            minx, miny, maxx, maxy = geom.bounds
-            over = max(maxx - half_x, maxy - half_y, -half_x - minx, -half_y - miny)
-            if over > 0:
-                violations.append(
-                    f"{name_by_id[row['component']]}.{row['name']} extends "
-                    f"{over * 1000:.1f}um past the chip edge"
-                )
-    if violations:
-        raise ValueError(
-            "Chip-bounds check failed — geometry outside the chip:\n  "
-            + "\n  ".join(sorted(set(violations)))
-        )
+# The hero chip is gated on qiskit_metal.validation -- the same design-rule
+# module a user gets -- rather than checks written here. Four separate
+# geometry defects shipped into this GIF before it existed: resonators
+# crossing their feedline, resonators hugging a qubit pocket, launchpads
+# off the chip edge, and route segments too short for their fillet.
+#
+# QubitClearanceRule is a WARNING by default because a deliberately-coupled
+# structure trips it; on this layout nothing is meant to run near a pocket,
+# so it is escalated to ERROR and the whole set becomes a hard gate.
+HERO_DESIGN_RULES = (
+    MetalOverlapRule(),
+    MetalSpacingRule(),
+    CPWGapRule(),
+    ChipBoundsRule(),
+    ShortSegmentRule(),
+    QubitClearanceRule(severity=Severity.ERROR),
+)
 
 
 def _populate_full_design(design):
@@ -598,9 +494,7 @@ def _populate_full_design(design):
     _add_airbridges(design)
     _add_readout_resonators(design)
     _add_center_cross_showcase(design)
-    _validate_no_trace_crossings(design)
-    _validate_min_clearance_to_pockets(design)
-    _validate_within_chip_bounds(design)
+    validate(design, rules=HERO_DESIGN_RULES, strict=True)
 
 
 # Close-up view for the opening frame: centered on Q1's pocket with enough

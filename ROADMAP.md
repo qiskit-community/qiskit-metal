@@ -113,9 +113,9 @@ below.
    dependency blockers, so this is mostly writing.
 5. **`renderer_palace/` eigenmode PoC** — the strategic unlock for
    HFSS-free CI validation. Larger effort; external help wanted.
-6. **Design-rule-check (DRC) validation stage** (#1169) — structured
-   layout checks (trace crossings, kink/short-segment) with a
-   raise-on-failure mode. See the dedicated section below.
+6. **Design-rule-check (DRC) validation stage** (#1169) — first pass
+   shipped as `qiskit_metal.validation`; more rules, a tutorial, and
+   CI integration remain. See the dedicated section below.
 7. **Extend the design-examples gallery** — more patterns
    (e.g. surface-code patch) now that the notebook pattern exists.
 
@@ -313,68 +313,61 @@ External contributor leverage is enormous here.
 
 ---
 
-## Design-rule-check (DRC) validation stage `[planned]`
+## Design-rule-check (DRC) validation stage `[in-progress]`
 
-Tracking issue: #1169. A structured validation pass over a built
-design, catching layout defects before render/export/simulation.
-Motivated by three defect classes that shipped through renders
-unflagged while building the README hero chip: four readout
-resonators crossing their feedline (~283 µm² of overlapping metal
-each — an electrical short in a real device); those same resonators
-running 9 µm from a transmon pocket (0.4× a CPW width — no crossing,
-but far too close to be electrically innocent); and routes whose lead
-or wiggle segments were shorter than their fillet radius (the #1086
-family, rendering as kinked corners).
+Tracking issue: #1169. `qiskit_metal.validation` ships the first pass:
 
-What exists today, and its limits:
+```python
+from qiskit_metal.validation import validate
+result = validate(design)
+print(result)
+result.raise_if_errors()        # for a build script or CI gate
+```
 
-- `QDesignCheck.overlap_tester()` (Appendix B tutorial "Testing
-  QComponents for overlap and collisions") — centerline-only
-  (`shapely.crosses()`, so a crossing within trace width but without
-  centerline intersection passes) and print-based, with no return
-  value or exception.
-- `check_lengths` — warns (log-only) on segments too short for their
-  fillet; nothing fails.
-- Three working buffered-geometry checks live in
-  `scripts/make_hero_gif.py` and gate every build of that layout:
-  `_validate_no_trace_crossings` (buffer each non-subtract path to
-  its trace width, intersect inter-component pairs, threshold by
-  area so end-to-end pin junctions at ~0 area pass),
-  `_validate_min_clearance_to_pockets` (measure the CPW's full
-  outer edge — trace + both gaps — to each transmon pocket, require
-  a few line widths of ground plane in between), and
-  `_validate_within_chip_bounds`. Between them they caught all
-  three defects above plus a fourth: launchpads spilling 110 µm off
-  the chip, where the boundary silently clipped the ground plane
-  and a whole corner vanished from the FEM mesh.
+Six rules, each with a configurable threshold, since process design kits
+differ:
 
-Plan, in order:
+| Rule | Default | Severity | Basis |
+|------|---------|----------|-------|
+| `metal-overlap` | >1 µm² shared | error | shorted nets |
+| `metal-spacing` | 2 µm | error | min same-layer spacing, arXiv:2604.11379 (R8) |
+| `cpw-gap` | 3 µm | warning | TLS-loss floor, arXiv:2604.11379 (R1) |
+| `chip-bounds` | on-chip | error | clipped geometry |
+| `short-segment` | ≥ fillet radius | warning | the #1086 kink family |
+| `qubit-clearance` | 3× CPW width | warning | project heuristic, not literature |
 
-1. **`qiskit_metal.validation` module** — promote the script
-   prototypes into a public API: `validate(design)` returning
-   structured findings (check name, components, location, area /
-   defect metric), plus a strict mode that raises. First three
-   checks: inter-component trace crossing; minimum clearance to
-   qubit pockets (threshold expressed in CPW widths, overridable —
-   a fixed µm default is wrong across trace geometries);
-   segment-shorter-than-fillet (promote `check_lengths` from
-   log-only to a queryable finding).
-2. **Next checks, by expected payoff**: component geometry outside
-   chip bounds (prototype already written, see above); minimum
-   spacing between any two distinct nets (generalising the pocket
-   check — near-miss, not just overlap); unconnected / dangling
-   route pins; fillet radius vs available segment length at route
-   corners (the #1086 precondition, checked design-wide).
-3. **Tutorial** — a "Design-rule checking" notebook with
-   deliberately-broken examples for each check (the Appendix B
-   overlap tutorial becomes the deprecated predecessor or is
-   rewritten on the new API).
-4. **CI integration** — run `validate()` over the reference designs
-   (Appendix A) and the hero chip in the test suite, so shipped
-   example layouts can't regress.
+Rules are layer-aware (an airbridge crossing a CPW is the point of an
+airbridge, not a short) and net-aware (a route abutting the pin it
+connects to is not a short). Both were false positives in the first
+draft, and both are regression-tested.
 
-GDS-level DRC (min width/spacing on exported artifacts) is
-deliberately out of scope — KLayout covers it.
+Motivated by four defects that shipped through renders unflagged while
+building the README hero chip: resonators crossing their feedline (~283
+µm² of overlapping metal each), resonators running 9 µm from a transmon
+pocket (0.41× a CPW width), launchpads hanging 110 µm off the chip edge
+(which silently clipped a whole corner of ground plane), and route
+segments shorter than their fillet radius. `scripts/make_hero_gif.py`
+now gates every build on `validate(..., strict=True)`.
+
+Remaining, roughly in payoff order:
+
+1. **More rules**: ground-plane continuity (no gap >50 µm, which forms a
+   parasitic cavity — arXiv:2604.11379 R9; needs the post-subtraction
+   ground polygon, so more than a pairwise geometry query);
+   airbridge spacing below λ/4 on long CPW runs (arXiv:2411.16967);
+   unconnected/dangling route pins; minimum feature width.
+2. **Tutorial** — a "Design-rule checking" notebook with a deliberately
+   broken design per rule. The Appendix B overlap tutorial becomes the
+   deprecated predecessor; `QDesignCheck` should be folded in and
+   deprecated (it is centreline-only and print-based, so it misses a
+   crossing that stays within trace width — which is most of them).
+3. **CI integration** — run `validate()` over the Appendix A reference
+   designs so shipped example layouts cannot regress.
+4. **Per-PDK rule sets** — a `RuleSet` that can be loaded from a foundry
+   file rather than assembled by hand.
+
+GDS-level DRC (min width/spacing on exported artifacts) stays out of
+scope — KLayout covers it.
 
 ---
 
