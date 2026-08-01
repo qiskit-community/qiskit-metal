@@ -61,7 +61,11 @@
     "from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond\n",
     "\n",
     "design = designs.DesignPlanar()\n",
-    "design.overwrite_enabled = True"
+    "design.overwrite_enabled = True\n",
+    "\n",
+    "# The default die is 9mm x 6mm; the launchpads below sit outside it.\n",
+    "design.chips.main.size.size_x = \"16mm\"\n",
+    "design.chips.main.size.size_y = \"9mm\""
    ]
   },
   {

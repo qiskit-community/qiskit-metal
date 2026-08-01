@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="FAQ’s" href="faq.html"><link rel="prev" title="MetalGUI" href="apidocs/qiskit_metal._gui.MetalGUI.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Quantum Metal — Roadmap - Quantum Metal 0.7.6</title>
+        <title>Quantum Metal — Roadmap - Quantum Metal 0.8.0</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -157,7 +157,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Quantum Metal 0.7.6</div></a>
+      <a href="index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -179,7 +179,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.7.6</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -211,6 +211,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.html">2.21 Design a 4 qubit full chip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">2.22 Design 100 qubits programmatically</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.23-Modify-chip-options.html">2.23 Modify chip options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.24-Design-rule-checking.html">Design rule checking</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.html">2.31 Create a QComponent - Basic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.html">2.32 Create a QComponent - Advanced</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.html">2.33 Add my QComponent to a reusable python file</a></li>
@@ -593,6 +594,9 @@ how-to (high-impact, low-effort: ~half a day total).</p></li>
 dependency blockers, so this is mostly writing.</p></li>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">renderer_palace/</span></code> eigenmode PoC</strong> — the strategic unlock for
 HFSS-free CI validation. Larger effort; external help wanted.</p></li>
+<li><p><strong>Design-rule-check (DRC) validation stage</strong> (#1169) — first pass
+shipped as <code class="docutils literal notranslate"><span class="pre">qiskit_metal.validation</span></code>; more rules, a tutorial, and
+CI integration remain. See the dedicated section below.</p></li>
 <li><p><strong>Extend the design-examples gallery</strong> — more patterns
 (e.g. surface-code patch) now that the notebook pattern exists.</p></li>
 </ol>
@@ -652,9 +656,9 @@ downstream actually uses).</p></li>
 <li><p>Any lazy-import / <code class="docutils literal notranslate"><span class="pre">ImportError</span></code> UX changes that affect
 their code paths.</p></li>
 <li><p>Link to <code class="docutils literal notranslate"><span class="pre">docs/migration-to-v0.7.0.rst</span></code>.</p></li>
-<li><p>Reminder about the <code class="docutils literal notranslate"><span class="pre">qiskit_metal</span></code> → <code class="docutils literal notranslate"><span class="pre">quantum_metal</span></code>
-import-path rename targeted for v0.8 / v1.0, so they can
-plan import updates ahead of that release.</p></li>
+<li><p>Reminder about the planned <code class="docutils literal notranslate"><span class="pre">qiskit_metal</span></code> →
+<code class="docutils literal notranslate"><span class="pre">quantum_metal</span></code> import-path rename, so they can plan
+import updates. No release has been set for it.</p></li>
 </ol>
 <p>Known downstream packages:</p>
 <ul class="simple">
@@ -681,8 +685,8 @@ haven’t listed it, please open an issue here so we can
 add it (and help with the upgrade).</p>
 </section>
 <hr class="docutils" />
-<section id="next-ai-orchestration-profile-v0-7-x-v0-8-0">
-<h2>Next — AI-orchestration profile (v0.7.x – v0.8.0)<a class="headerlink" href="#next-ai-orchestration-profile-v0-7-x-v0-8-0" title="Link to this heading">¶</a></h2>
+<section id="next-ai-orchestration-profile">
+<h2>Next — AI-orchestration profile<a class="headerlink" href="#next-ai-orchestration-profile" title="Link to this heading">¶</a></h2>
 <p>Once the lite flip lands, <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code>
 becomes the recommended entry point for agents, optimizers,
 and any non-interactive workflow. This section ships
@@ -710,6 +714,18 @@ Currently most code paths assume the GUI or the user
 knows which renderer to call. A
 <code class="docutils literal notranslate"><span class="pre">design.render(backend=&quot;palace&quot;)</span></code>-style dispatch makes
 orchestrators much easier to write.</p></li>
+<li><p><strong>Packaged task definitions for assistant-driven design</strong>
+<code class="docutils literal notranslate"><span class="pre">[requested,</span> <span class="pre">research]</span></code>
+Requested feature: ship reusable, machine-readable task
+definitions (“skills”) that let a coding assistant drive
+Metal directly — place components, route, run a DRC pass,
+export — from a natural-language description of the chip.
+Format should be vendor-neutral (plain markdown + a
+declarative manifest, no assistant-specific runtime), so
+the same definitions work across tools. Depends on the
+stable-API contract and determinism items above, and on
+the DRC stage (#1169) for a machine-checkable success
+signal. Scope and format still open.</p></li>
 </ul>
 </section>
 <hr class="docutils" />
@@ -772,6 +788,112 @@ shape this — please open an issue or reach out on Discord.
 External contributor leverage is enormous here.</p>
 </section>
 <hr class="docutils" />
+<section id="design-rule-check-drc-validation-stage-in-progress">
+<h2>Design-rule-check (DRC) validation stage <code class="docutils literal notranslate"><span class="pre">[in-progress]</span></code><a class="headerlink" href="#design-rule-check-drc-validation-stage-in-progress" title="Link to this heading">¶</a></h2>
+<p>Tracking issue: #1169. <code class="docutils literal notranslate"><span class="pre">qiskit_metal.validation</span></code> ships the first pass:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">validate</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">result</span><span class="o">.</span><span class="n">raise_if_errors</span><span class="p">()</span>        <span class="c1"># for a build script or CI gate</span>
+</pre></div>
+</div>
+<p>Seven rules, each with a configurable threshold, since process design kits
+differ:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Rule</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Severity</p></th>
+<th class="head"><p>Basis</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">metal-overlap</span></code></p></td>
+<td><p>&gt;1 µm² shared</p></td>
+<td><p>error</p></td>
+<td><p>shorted nets</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">metal-spacing</span></code></p></td>
+<td><p>2 µm</p></td>
+<td><p>error</p></td>
+<td><p>min same-layer spacing, arXiv:2604.11379 (R8)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cpw-gap</span></code></p></td>
+<td><p>3 µm</p></td>
+<td><p>warning</p></td>
+<td><p>TLS-loss floor, arXiv:2604.11379 (R1)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">chip-bounds</span></code></p></td>
+<td><p>on-chip</p></td>
+<td><p>error</p></td>
+<td><p>clipped geometry</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">short-segment</span></code></p></td>
+<td><p>≥ fillet radius</p></td>
+<td><p>warning</p></td>
+<td><p>the #1086 kink family</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">qubit-clearance</span></code></p></td>
+<td><p>3× CPW width</p></td>
+<td><p>warning</p></td>
+<td><p>project heuristic, not literature</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ground-continuity</span></code></p></td>
+<td><p>one connected sheet</p></td>
+<td><p>warning</p></td>
+<td><p>slotline modes, arXiv:2604.11379 (R9)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ground-continuity</span></code> reports that the ground plane is split, not that a
+piece is floating: it sees one layer, so an airbridge tying two regions
+together is invisible to it. Its optional <code class="docutils literal notranslate"><span class="pre">max_void_size</span></code> check (R9’s
+50 µm parasitic-cavity threshold) is off by default because a transmon
+pocket is a deliberate void far larger than that.</p>
+<p>Rules are layer-aware (an airbridge crossing a CPW is the point of an
+airbridge, not a short) and net-aware (a route abutting the pin it
+connects to is not a short). Both were false positives in the first
+draft, and both are regression-tested.</p>
+<p>Motivated by four defects that shipped through renders unflagged while
+building the README hero chip: resonators crossing their feedline (~283
+µm² of overlapping metal each), resonators running 9 µm from a transmon
+pocket (0.41× a CPW width), launchpads hanging 110 µm off the chip edge
+(which silently clipped a whole corner of ground plane), and route
+segments shorter than their fillet radius. <code class="docutils literal notranslate"><span class="pre">scripts/make_hero_gif.py</span></code>
+now gates every build on <code class="docutils literal notranslate"><span class="pre">validate(...,</span> <span class="pre">strict=True)</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">QMplRenderer</span></code> now draws the die outline, so <code class="docutils literal notranslate"><span class="pre">qm.view</span></code> and the Qt
+<code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> both show where the chip ends. Nothing on screen used to say
+that, which is why launchpads hanging off the edge kept shipping. Off
+via <code class="docutils literal notranslate"><span class="pre">qm.view(design,</span> <span class="pre">chip_outline=False)</span></code> or
+<code class="docutils literal notranslate"><span class="pre">renderer.options.chip_outline</span></code>.</p>
+<p>Tutorial 2.24 walks a design carrying one defect per rule through
+detection, diagnosis and fix, then covers threshold tuning, <code class="docutils literal notranslate"><span class="pre">strict=True</span></code>
+as a build gate, and writing a custom rule.
+<code class="docutils literal notranslate"><span class="pre">tests/test_reference_designs.py</span></code> gates the Appendix A reference designs:
+zero errors, and no warnings beyond a recorded <code class="docutils literal notranslate"><span class="pre">KNOWN_WARNINGS</span></code>
+baseline. Fixing those designs to pass it turned up a real defect —
+both multi-qubit references placed launchpads outside the default 9×6 mm
+die, so a corner of ground plane was being clipped on every render.
+<code class="docutils literal notranslate"><span class="pre">QDesignCheck</span></code> is deprecated in favour of this module (it is
+crossing-only and print-based, so it misses an overlap that stays within
+trace width — which is most of them).</p>
+<p>Remaining, roughly in payoff order:</p>
+<ol class="arabic simple">
+<li><p><strong>More rules</strong>: airbridge spacing below λ/4 on long CPW runs
+(arXiv:2411.16967); unconnected/dangling route pins; minimum feature
+width.</p></li>
+<li><p><strong>Per-PDK rule sets</strong> — a <code class="docutils literal notranslate"><span class="pre">RuleSet</span></code> that can be loaded from a foundry
+file rather than assembled by hand.</p></li>
+<li><p><strong>Cross-layer awareness for <code class="docutils literal notranslate"><span class="pre">ground-continuity</span></code></strong> — treat an airbridge
+spanning two ground regions as connecting them, so the rule can
+distinguish a bridged split from a genuine floating island.</p></li>
+</ol>
+<p>GDS-level DRC (min width/spacing on exported artifacts) stays out of
+scope — KLayout covers it.</p>
+</section>
+<hr class="docutils" />
 <section id="architectural-items-research">
 <h2>Architectural items <code class="docutils literal notranslate"><span class="pre">[research]</span></code><a class="headerlink" href="#architectural-items-research" title="Link to this heading">¶</a></h2>
 <p>Longer-horizon things that aren’t blocking anything today
@@ -782,7 +904,7 @@ but are worth tracking:</p>
 full hints unlock static analysis for orchestrators
 and make the LLM-driven code-generation path more
 reliable.</p></li>
-<li><p><strong>Plugin discovery via entry points</strong> <code class="docutils literal notranslate"><span class="pre">[planned,</span> <span class="pre">v0.8.x]</span></code>
+<li><p><strong>Plugin discovery via entry points</strong> <code class="docutils literal notranslate"><span class="pre">[planned]</span></code>
 External renderers and component libraries currently
 require monkey-patching or vendoring. A
 <code class="docutils literal notranslate"><span class="pre">qiskit_metal.renderers</span></code> and <code class="docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>
@@ -1231,7 +1353,7 @@ https://qdc-qcsa.vercel.app.</p></li>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/30</div>
+              Last updated on 2026/08/01</div>
           </div>
           <div class="right-details">
             
@@ -1258,8 +1380,9 @@ https://qdc-qcsa.vercel.app.</p></li>
 <li><a class="reference internal" href="#near-term-priorities-planned">Near-term priorities <code class="docutils literal notranslate"><span class="pre">[planned]</span></code></a></li>
 <li><a class="reference internal" href="#lite-by-default-flip-v0-7-0-shipped">Lite-by-default flip (v0.7.0) <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code></a></li>
 <li><a class="reference internal" href="#downstream-ecosystem-rollout-in-progress">Downstream ecosystem rollout <code class="docutils literal notranslate"><span class="pre">[in-progress]</span></code></a></li>
-<li><a class="reference internal" href="#next-ai-orchestration-profile-v0-7-x-v0-8-0">Next — AI-orchestration profile (v0.7.x – v0.8.0)</a></li>
+<li><a class="reference internal" href="#next-ai-orchestration-profile">Next — AI-orchestration profile</a></li>
 <li><a class="reference internal" href="#open-fem-stack-gmsh-elmer-aws-palace-research">Open FEM stack — gmsh + Elmer + AWS Palace <code class="docutils literal notranslate"><span class="pre">[research]</span></code></a></li>
+<li><a class="reference internal" href="#design-rule-check-drc-validation-stage-in-progress">Design-rule-check (DRC) validation stage <code class="docutils literal notranslate"><span class="pre">[in-progress]</span></code></a></li>
 <li><a class="reference internal" href="#architectural-items-research">Architectural items <code class="docutils literal notranslate"><span class="pre">[research]</span></code></a></li>
 <li><a class="reference internal" href="#group-and-lab-adoption-pathway">Group and lab adoption pathway</a><ul>
 <li><a class="reference internal" href="#high-impact-low-effort">High impact, low effort</a></li>
@@ -1291,7 +1414,7 @@ https://qdc-qcsa.vercel.app.</p></li>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=918ced64"></script>
+</div><script src="_static/documentation_options.js?v=486e5634"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

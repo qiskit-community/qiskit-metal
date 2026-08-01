@@ -14,6 +14,7 @@ QMplRenderer
    
    .. rubric:: Attributes
       
+   .. autoattribute:: QMplRenderer.chip_outline_style
    .. autoattribute:: QMplRenderer.qgeometry
    .. autoattribute:: QMplRenderer.styles
    
@@ -23,6 +24,7 @@ QMplRenderer
    
    .. rubric:: Methods
    
+   .. automethod:: QMplRenderer.chip_bounds
    .. automethod:: QMplRenderer.clear_options
    .. automethod:: QMplRenderer.fillet_path
    .. automethod:: QMplRenderer.get_color_num
@@ -31,6 +33,7 @@ QMplRenderer
    .. automethod:: QMplRenderer.hide_component
    .. automethod:: QMplRenderer.hide_layer
    .. automethod:: QMplRenderer.render
+   .. automethod:: QMplRenderer.render_chip_outlines
    .. automethod:: QMplRenderer.render_fillet
    .. automethod:: QMplRenderer.render_junction
    .. automethod:: QMplRenderer.render_path

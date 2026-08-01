@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>qiskit_metal.qlibrary.tlines.meandered - Quantum Metal 0.7.6</title>
+        <title>qiskit_metal.qlibrary.tlines.meandered - Quantum Metal 0.8.0</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -156,7 +156,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.7.6</div></a>
+      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -178,7 +178,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.7.6</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
@@ -210,6 +210,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.html">2.21 Design a 4 qubit full chip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">2.22 Design 100 qubits programmatically</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.23-Modify-chip-options.html">2.23 Modify chip options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.24-Design-rule-checking.html">Design rule checking</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.html">2.31 Create a QComponent - Basic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.html">2.32 Create a QComponent - Advanced</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.html">2.33 Add my QComponent to a reusable python file</a></li>
@@ -663,6 +664,15 @@
             <span class="c1"># odd meander_number is no good if roots have opposite orientation (w.r.t sideway)</span>
             <span class="n">meander_number</span> <span class="o">-=</span> <span class="mi">1</span>
 
+        <span class="c1"># The parity adjustment above can take meander_number from 1 to 0 —</span>
+        <span class="c1"># re-check, or the meander point array below is allocated with a</span>
+        <span class="c1"># single row and the snap alignment (pts[-2]) crashes with an</span>
+        <span class="c1"># IndexError. Same graceful no-meander degradation as the first</span>
+        <span class="c1"># check after floor().</span>
+        <span class="k">if</span> <span class="n">meander_number</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Zero meanders for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
+
         <span class="c1"># should the first meander go sideways or counter sideways?</span>
         <span class="n">start_meander_direction</span> <span class="o">=</span> <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">sideways</span><span class="p">)</span>
         <span class="n">end_meander_direction</span> <span class="o">=</span> <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">sideways</span><span class="p">)</span>
@@ -1015,7 +1025,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/30</div>
+              Last updated on 2026/08/01</div>
           </div>
           <div class="right-details">
             
@@ -1030,7 +1040,7 @@
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=918ced64"></script>
+</div><script src="../../../../_static/documentation_options.js?v=486e5634"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>

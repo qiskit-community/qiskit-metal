@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="AnimatedText" href="qiskit_metal.renderers.AnimatedText.html"><link rel="prev" title="PanAndZoom" href="qiskit_metal.renderers.PanAndZoom.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>QMplRenderer - Quantum Metal 0.7.6</title>
+        <title>QMplRenderer - Quantum Metal 0.8.0</title>
       <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -157,7 +157,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Quantum Metal 0.7.6</div></a>
+      <a href="../index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -179,7 +179,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.7.6</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../search.html" role="search">
@@ -211,6 +211,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.html">2.21 Design a 4 qubit full chip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">2.22 Design 100 qubits programmatically</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.23-Modify-chip-options.html">2.23 Modify chip options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.24-Design-rule-checking.html">Design rule checking</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.html">2.31 Create a QComponent - Basic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.html">2.32 Create a QComponent - Advanced</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.html">2.33 Add my QComponent to a reusable python file</a></li>
@@ -502,6 +503,12 @@ logger if <code class="docutils literal notranslate"><span class="pre">None</spa
 </dl>
 <p class="rubric">Attributes</p>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.QMplRenderer.chip_outline_style">
+<span class="sig-name descname"><span class="pre">chip_outline_style</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'edgecolor':</span> <span class="pre">'#8c8c8c',</span> <span class="pre">'fill':</span> <span class="pre">False,</span> <span class="pre">'linestyle':</span> <span class="pre">(0,</span> <span class="pre">(6,</span> <span class="pre">4)),</span> <span class="pre">'linewidth':</span> <span class="pre">1.0,</span> <span class="pre">'zorder':</span> <span class="pre">-10}</span></span><a class="headerlink" href="#qiskit_metal.renderers.QMplRenderer.chip_outline_style" title="Link to this definition">¶</a></dt>
+<dd><p>Style of the die outline drawn by <a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.render_chip_outlines" title="qiskit_metal.renderers.QMplRenderer.render_chip_outlines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">render_chip_outlines()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.QMplRenderer.qgeometry">
 <span class="sig-name descname"><span class="pre">qgeometry</span></span><a class="headerlink" href="#qiskit_metal.renderers.QMplRenderer.qgeometry" title="Link to this definition">¶</a></dt>
 <dd><p>Return the qgeometry of the design.</p>
@@ -514,6 +521,26 @@ logger if <code class="docutils literal notranslate"><span class="pre">None</spa
 </dd></dl>
 
 <p class="rubric">Methods</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.QMplRenderer.chip_bounds">
+<span class="sig-name descname"><span class="pre">chip_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chip_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_renderer.html#QMplRenderer.chip_bounds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.QMplRenderer.chip_bounds" title="Link to this definition">¶</a></dt>
+<dd><p>Outline of one chip as <code class="docutils literal notranslate"><span class="pre">(minx,</span> <span class="pre">miny,</span> <span class="pre">maxx,</span> <span class="pre">maxy)</span></code> in millimetres.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>chip_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – key into <code class="docutils literal notranslate"><span class="pre">design.chips</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the extent, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if this chip carries no
+usable <code class="docutils literal notranslate"><span class="pre">size</span></code> block. Renderers are best-effort about chip
+metadata – a design that has not defined a die is still a
+design worth plotting.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.QMplRenderer.clear_options">
 <span class="sig-name descname"><span class="pre">clear_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_renderer.html#QMplRenderer.clear_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.QMplRenderer.clear_options" title="Link to this definition">¶</a></dt>
@@ -610,6 +637,21 @@ logger if <code class="docutils literal notranslate"><span class="pre">None</spa
 <dd><p>Assumes that the axis has been cleared already and so on.
 :param ax: mpl axis to draw on
 :type ax: matplotlib.axes.Axes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.QMplRenderer.render_chip_outlines">
+<span class="sig-name descname"><span class="pre">render_chip_outlines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.11.1)"><span class="pre">Axes</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_renderer.html#QMplRenderer.render_chip_outlines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.QMplRenderer.render_chip_outlines" title="Link to this definition">¶</a></dt>
+<dd><p>Draw the die outline for every chip in the design.</p>
+<p>Drawn as a patch rather than a plain line so it participates in
+autoscaling: a design whose components all sit inside the die still
+shows the full die, and one with geometry hanging off the edge shows
+that at a glance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ax</strong> (<em>Axes</em>) – The axes</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -733,7 +775,7 @@ A junction is basically drawn like a path with finite width and no fillet.
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/07/30</div>
+              Last updated on 2026/08/01</div>
           </div>
           <div class="right-details">
             
@@ -756,8 +798,10 @@ A junction is basically drawn like a path with finite width and no fillet.
             <ul>
 <li><a class="reference internal" href="#">QMplRenderer</a><ul>
 <li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer"><code class="docutils literal notranslate"><span class="pre">QMplRenderer</span></code></a><ul>
+<li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.chip_outline_style"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.chip_outline_style</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.qgeometry"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.qgeometry</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.styles"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.styles</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.chip_bounds"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.chip_bounds()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.clear_options"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.clear_options()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.fillet_path"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.fillet_path()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.get_color_num"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.get_color_num()</span></code></a></li>
@@ -766,6 +810,7 @@ A junction is basically drawn like a path with finite width and no fillet.
 <li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.hide_component"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.hide_component()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.hide_layer"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.hide_layer()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.render"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.render()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.render_chip_outlines"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.render_chip_outlines()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.render_fillet"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.render_fillet()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.render_junction"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.render_junction()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.QMplRenderer.render_path"><code class="docutils literal notranslate"><span class="pre">QMplRenderer.render_path()</span></code></a></li>
@@ -787,7 +832,7 @@ A junction is basically drawn like a path with finite width and no fillet.
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=918ced64"></script>
+</div><script src="../_static/documentation_options.js?v=486e5634"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
