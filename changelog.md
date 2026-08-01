@@ -6,6 +6,52 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Quantum Metal v0.7.7 (airbridges + design-rule checking; no breaking changes)
+
+Additive. One default-behaviour change to the matplotlib viewer, noted under *Upgrade notes*.
+
+> **Release-state note.** The `v0.7.7` tag and GitHub Release were created on
+> `a7efeeb1`, a commit whose `pyproject.toml` still read `0.7.6`. The publish
+> workflow built `quantum_metal-0.7.6-py3-none-any.whl` and PyPI rejected it
+> (`400 File already exists`), so **0.7.7 was never published to PyPI** — the
+> latest release there is 0.7.6. This is the same tag-before-bump ordering that
+> broke v0.6.0; see `.claude/commands/release.md`. The version bump in #1168 is
+> the prerequisite for a working publish; the tag itself still needs to be moved
+> onto a commit that carries the bumped version.
+
+### Added (v0.7.7-only)
+
+- **`Airbridge` QComponent + `route_airbridges` auto-placement.** Bridges are placed on the filleted centreline, idempotently, with `bridge_at_corners` to control corner behaviour. Tutorial 2.15 covers the flow end to end, including GDS export with coloured layers. (#1138, #1142)
+- **Experimental 3D airbridges** via layer-stack elevation, with support posts so the route and its bridges connect in a 3D mesh, plus a ready-to-run Elmer capacitance path. (#1144, #1150)
+- **`qiskit_metal.validation` — design-rule checking.** `validate(design)` returns a `ValidationResult` of structured `Finding`s; `strict=True` raises `DesignRuleViolation` for build scripts and CI. Seven rules with configurable thresholds: `metal-overlap`, `metal-spacing`, `cpw-gap`, `chip-bounds`, `short-segment`, `qubit-clearance`, `ground-continuity`. Rules are layer-aware (an airbridge crossing a CPW is not a short) and net-aware (a route abutting its own pin is not a short). Defaults follow published superconducting-chip rule sets where one exists; the one project heuristic is labelled as such. Tutorial 2.24 walks a deliberately broken design through detection, fix, threshold tuning, and writing a custom rule. (#1168, #1169)
+- **Die outline in the viewer.** `QMplRenderer` draws each chip's extent, so `qm.view` and the Qt `MetalGUI` both show where the chip ends. (#1168)
+
+### Fixed (v0.7.7-only)
+
+- **`RouteMeander` sharp kinks** when `meander_number` is too tight for the requested geometry. (#1167, closes #1086)
+- **`RouteMeander` `IndexError`** when the start/end-direction parity adjustment takes `meander_number` from 1 to 0, skipping the zero-meander early return. (#1168)
+- **GDS export of routes with short lead segments.** (#1141)
+- **Gmsh 3D render of routes with sub-width lead segments.** (#1144)
+- **`design.to_python_script()` output** now starts a Qt event loop correctly across install variants. (#1159 by @saschabuehrle, hardened in #1160)
+- **Reference designs 2 and 3** placed launchpads 1.76 mm and 3.26 mm outside the default 9×6 mm die, so a corner of ground plane was clipped on every render. Both now set an explicit chip size, and `tests/test_reference_designs.py` gates all three against the design rules. (#1168)
+
+### Deprecated (v0.7.7-only)
+
+- **`QDesignCheck`** — construction emits a `DeprecationWarning`. It detects only crossing outlines, so it misses an overlap where one trace sits entirely inside another, and it is blind to layers and to pin connections. Use `qiskit_metal.validation.validate` instead. The class keeps working; no removal date set. (#1168)
+
+### CI / infrastructure (v0.7.7-only)
+
+- `uv.lock` ↔ `pyproject.toml` consistency guard. (#1137)
+- Ruff rule set pinned so a ruff release cannot break CI; the safely-fixable subset of ruff 0.16's expanded defaults adopted, plus a second tier. (#1161, #1163, #1165)
+- Decision log for non-obvious choices and deferrals. (#1162, #1164)
+- Flaky gmsh meshing test isolated. (#1165)
+
+### Upgrade notes
+
+No API changes. One visible default change: the matplotlib viewer now draws the die outline, and because the outline participates in autoscaling, a design whose components sit well inside the die is framed to the whole die rather than to the components. Pass `qm.view(design, chip_outline=False)`, or set `renderer.options.chip_outline = False`, for the previous framing.
+
+`QDesignCheck` users will see a `DeprecationWarning`; behaviour is unchanged.
+
 ## Quantum Metal v0.7.5 (Windows GUI crash fix + routing/qubit fixes; no breaking changes)
 
 Patch release. Additive — no breaking changes.
