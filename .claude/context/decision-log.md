@@ -43,6 +43,74 @@ this file is for choices we made on purpose.
 
 ---
 
+## 2026-08-01 — design-rule checking: what the rules assume, and what they refuse to claim
+
+PR #1168. Issue #1169.
+
+### `ground-continuity` reports a split, not a floating island
+
+The obvious formulation of the rule — "the ground plane must be one
+connected sheet, anything else is floating" — is wrong here, and asserting
+it would have made the rule actively misleading.
+
+The check works on one layer at a time, because that is the only way the
+overlap and spacing rules can avoid flagging every airbridge as a short.
+But an airbridge is also the standard way to *reconnect* ground regions
+that a ring of CPW gaps has isolated. On the README hero chip the rule
+finds a 2-way split: the ground inside the qubit ring, tied back to the
+outer ground by airbridges on layer 30, which a layer-1 check cannot see.
+
+So the rule is a WARNING that reports the split and says explicitly that
+it sees only same-layer metal. A split with bridges over every boundary is
+a correct design; a split without them is not. The finding tells you which
+question to ask rather than answering it wrongly.
+
+Not done: cross-layer connectivity, which would let the rule distinguish
+the two cases. It needs a model of which layers are galvanically joined —
+`layer_start` / `layer_end` on the chip is not enough, since an airbridge
+spans without shorting what it passes over. Left on the roadmap.
+
+`max_void_size` (arXiv:2604.11379 R9's 50 µm parasitic-cavity threshold)
+is implemented but **off by default**: enabled, it flags 10 voids on the
+hero chip, almost all of them transmon pockets — deliberate voids far
+wider than 50 µm. A rule whose default output is dominated by
+false positives trains people to ignore it.
+
+### Thresholds are cited or labelled as guesses
+
+`metal-spacing` (2 µm) and `cpw-gap` (3 µm) come from arXiv:2604.11379
+(R8, R1). `qubit-clearance` (3× CPW width) does not come from anywhere —
+it is a project heuristic, and both the docstring and the tutorial say so
+in those words. The alternative, quietly shipping it alongside the cited
+values, would have implied a provenance it does not have.
+
+### `QDesignCheck` deprecated rather than fixed or deleted
+
+It uses `shapely.crosses`, which is false when one geometry is wholly
+inside the other — so it misses the common case of a trace overlapping
+within another trace's width. Fixing that means changing what it detects,
+which is a behaviour change on a public class for no gain over
+`validation`. Removing it breaks anyone importing it. So: a
+`DeprecationWarning` on construction, behaviour untouched, no removal
+date.
+
+### Die outline: drawn in the shared renderer, and it changes framing
+
+`QMplRenderer.render` draws it, not the Qt layer, so `qm.view` and
+`MetalGUI` get it from one place and `_gui/` (a hard-touch zone) stays
+untouched.
+
+It is a patch rather than a line, so it participates in autoscaling — a
+design whose components sit well inside the die is now framed to the die.
+That is the point of the feature, and it is a visible default change for
+small designs. The alternative, `ax.add_artist` (drawn but not
+autoscaled), was rejected: for a correctly-laid-out chip the outline would
+then fall just outside the view and never be seen, which is precisely the
+case the feature exists for. Escape hatch is
+`qm.view(design, chip_outline=False)`.
+
+---
+
 ## 2026-07-27 — `to_python_script` robustness, and the ruff CI break
 
 PRs #1159, #1160, #1161. Issues closed: #1157, #1134, #1127, #1130, #1135.

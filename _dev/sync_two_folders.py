@@ -93,6 +93,10 @@ PAIRS = {
         "docs/tut/2-From-components-to-chip/2.23-Modify-chip-options.ipynb",
         "tutorials/2 From components to chip/C. My first full quantum chip design/2.23 Modify chip options.ipynb",
     ),
+    "2.24": (
+        "docs/tut/2-From-components-to-chip/2.24-Design-rule-checking.ipynb",
+        "tutorials/2 From components to chip/C. My first full quantum chip design/2.24 Design rule checking.ipynb",
+    ),
     "2.31": (
         "docs/tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.ipynb",
         "tutorials/2 From components to chip/D. How do I make my custom QComponent/2.31 Create a QComponent - Basic.ipynb",
@@ -251,6 +255,21 @@ PAIRS = {
     "qt_over": (
         "docs/tut/quick-topics/Testing-QComponents-for-overlap-and-collisions.ipynb",
         "tutorials/Appendix B Quick topics/Testing QComponents for overlap and collisions.ipynb",
+    ),
+    # full-design-examples / Appendix A. These are also in
+    # scripts/check_tutorials_sync.py; both tables must list the same pairs
+    # or the CI gate fails on notebooks this script never syncs.
+    "ref_1": (
+        "docs/tut/full-design-examples/Reference-design-1-Transmon-with-readout-resonator.ipynb",
+        "tutorials/Appendix A Full design flow examples/Reference design 1 - Transmon with readout resonator.ipynb",
+    ),
+    "ref_2": (
+        "docs/tut/full-design-examples/Reference-design-2-Two-coupled-transmons.ipynb",
+        "tutorials/Appendix A Full design flow examples/Reference design 2 - Two coupled transmons.ipynb",
+    ),
+    "ref_3": (
+        "docs/tut/full-design-examples/Reference-design-3-Four-qubit-multiplexed-readout.ipynb",
+        "tutorials/Appendix A Full design flow examples/Reference design 3 - Four-qubit multiplexed readout.ipynb",
     ),
 }
 

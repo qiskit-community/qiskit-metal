@@ -113,9 +113,13 @@ class TestViewerStandalone(unittest.TestCase):
         ``PatchCollection`` may hold geometry from many components.
         """
         design = _make_design_with_two_components()
-        png_all = _render_to_png_bytes(view(design, figsize=(4, 4)))
+        # ``chip_outline=False`` so the view frames the geometry rather than
+        # the whole die. With the die in frame these two components are a few
+        # pixels apart at this figure size and the PNGs come out identical --
+        # the test would pass or fail on rasterisation, not on filtering.
+        png_all = _render_to_png_bytes(view(design, figsize=(4, 4), chip_outline=False))
         png_filtered = _render_to_png_bytes(
-            view(design, components=["Q1"], figsize=(4, 4))
+            view(design, components=["Q1"], figsize=(4, 4), chip_outline=False)
         )
         self.assertNotEqual(
             png_all,
@@ -263,6 +267,109 @@ class TestAboutNoQt(unittest.TestCase):
         self.assertIn("PySide6 version", text)
         self.assertIn("Qt version", text)
         self.assertIn("SIP version", text)
+
+
+class TestChipOutline(unittest.TestCase):
+    """The die extent is drawn, so geometry off the chip is visible.
+
+    Every renderer downstream silently clips geometry outside the die.
+    Without an outline on screen there is nothing that says a launchpad
+    is hanging off the edge -- which is exactly how it shipped in two
+    Appendix A reference designs.
+    """
+
+    def _outlines(self, ax):
+        from matplotlib.patches import Rectangle as MplRectangle
+
+        return [p for p in ax.patches if isinstance(p, MplRectangle)]
+
+    def test_outline_drawn_by_default(self):
+        design = designs.DesignPlanar()
+        design.overwrite_enabled = True
+        design.chips.main.size.size_x = "6mm"
+        design.chips.main.size.size_y = "4mm"
+        TransmonPocket(design, "Q1")
+        design.rebuild()
+
+        fig, ax = plt.subplots()
+        view(design, ax=ax)
+
+        outlines = self._outlines(ax)
+        self.assertEqual(len(outlines), 1, msg=f"got {outlines}")
+        x, y = outlines[0].get_xy()
+        self.assertAlmostEqual(x, -3.0, places=6)
+        self.assertAlmostEqual(y, -2.0, places=6)
+        self.assertAlmostEqual(outlines[0].get_width(), 6.0, places=6)
+        self.assertAlmostEqual(outlines[0].get_height(), 4.0, places=6)
+        plt.close(fig)
+
+    def test_outline_can_be_turned_off(self):
+        design = designs.DesignPlanar()
+        TransmonPocket(design, "Q1")
+        design.rebuild()
+
+        fig, ax = plt.subplots()
+        view(design, ax=ax, chip_outline=False)
+        self.assertEqual(self._outlines(ax), [])
+        plt.close(fig)
+
+    def test_outline_expands_the_view_to_the_whole_die(self):
+        """A single small component must not hide how big the die is."""
+        design = designs.DesignPlanar()
+        design.overwrite_enabled = True
+        design.chips.main.size.size_x = "10mm"
+        design.chips.main.size.size_y = "10mm"
+        TransmonPocket(design, "Q1")
+        design.rebuild()
+
+        fig, ax = plt.subplots()
+        view(design, ax=ax)
+        xmin, xmax = ax.get_xlim()
+        self.assertLessEqual(xmin, -5.0)
+        self.assertGreaterEqual(xmax, 5.0)
+        plt.close(fig)
+
+    def test_off_chip_geometry_still_in_view(self):
+        design = designs.DesignPlanar()
+        design.overwrite_enabled = True
+        design.chips.main.size.size_x = "2mm"
+        design.chips.main.size.size_y = "2mm"
+        TransmonPocket(design, "Q_far", options=Dict(pos_x="4mm"))
+        design.rebuild()
+
+        fig, ax = plt.subplots()
+        view(design, ax=ax)
+        _, xmax = ax.get_xlim()
+        # The outline ends at 1mm; the component is out at 4mm. Both are
+        # on screen or the mismatch is invisible, which is the whole point.
+        self.assertGreater(xmax, 3.5)
+        self.assertEqual(len(self._outlines(ax)), 1)
+        plt.close(fig)
+
+    def test_every_chip_gets_an_outline(self):
+        design = designs.DesignFlipChip()
+        design.rebuild()
+
+        fig, ax = plt.subplots()
+        view(design, ax=ax)
+        self.assertEqual(len(self._outlines(ax)), len(design.chips))
+        labels = {t.get_text() for t in ax.texts}
+        self.assertEqual(labels, set(design.chips.keys()))
+        plt.close(fig)
+
+    def test_chip_without_a_size_is_skipped_not_fatal(self):
+        design = designs.DesignPlanar()
+        design.overwrite_enabled = True
+        design.chips.main.pop("size")
+        TransmonPocket(design, "Q1")
+        design.rebuild()
+
+        renderer = QMplRenderer(design=design)
+        fig, ax = plt.subplots()
+        renderer.render(ax)  # must not raise
+        self.assertIsNone(renderer.chip_bounds("main"))
+        self.assertEqual(self._outlines(ax), [])
+        plt.close(fig)
 
 
 if __name__ == "__main__":

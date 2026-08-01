@@ -31,6 +31,7 @@ def view(
     components: Iterable[str] | None = None,
     hidden_layers: Iterable[int] | None = None,
     title: str | None = None,
+    chip_outline: bool = True,
 ) -> Figure:
     """Render ``design`` to a matplotlib :class:`~matplotlib.figure.Figure`.
 
@@ -57,6 +58,9 @@ def view(
         Layer numbers to hide from the rendering.
     title : str, optional
         If given, set as the axes title.
+    chip_outline : bool, default True
+        Draw a dashed outline of each chip's die extent. Set ``False``
+        for a plot of the geometry alone.
 
     Returns
     -------
@@ -110,6 +114,8 @@ def view(
             c.id for name, c in design.components.items() if name not in requested
         }
         renderer._hidden_components = hidden_ids
+
+    renderer.options.chip_outline = chip_outline
 
     ax.set_aspect("equal")
     renderer.render(ax)

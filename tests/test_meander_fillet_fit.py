@@ -311,6 +311,70 @@ class TestMeanderFilletFit(unittest.TestCase):
                     msg_prefix=f"direct={direct} spacing={spacing} fillet={fillet}: ",
                 )
 
+    def test_parity_decrement_to_zero_meanders_does_not_crash(self):
+        """Regression: the start/end-direction parity adjustment can take
+        meander_number from 1 to 0 (floor() gives 1, the parity rule
+        subtracts 1), which used to skip the zero-meander early return and
+        crash with IndexError at the snap alignment (``pts[-2]`` on a
+        single-row array). The route must instead degrade gracefully to
+        the no-meander path, same as when floor() itself yields 0.
+
+        The trigger needs pin directions whose sideways dot product is
+        negative (opposite orientation) with an odd meander_number of
+        exactly 1 -- diagonally offset, opposite-facing pins with spacing
+        chosen so floor(length_direct/spacing) == 1.
+        """
+        design = designs.DesignPlanar()
+        design.overwrite_enabled = True
+        from qiskit_metal.qlibrary.terminations.launchpad_wb import (
+            LaunchpadWirebond,
+        )
+
+        TransmonPocket(
+            design,
+            "Q1",
+            options=Dict(
+                pos_x="1.1mm",
+                pos_y="1.1mm",
+                connection_pads=Dict(
+                    a=Dict(loc_W=+1, loc_H=+1, pad_width="120um", cpw_extend="80um")
+                ),
+            ),
+        )
+        LaunchpadWirebond(
+            design,
+            "P1",
+            options=Dict(
+                pos_x="2.0mm",
+                pos_y="2.0mm",
+                orientation="225",
+                pad_width="120um",
+                pad_height="120um",
+                pad_gap="80um",
+                lead_length="20um",
+            ),
+        )
+        design.rebuild()
+        route = RouteMeander(
+            design,
+            "ro1",
+            options=Dict(
+                pin_inputs=Dict(
+                    start_pin=Dict(component="Q1", pin="a"),
+                    end_pin=Dict(component="P1", pin="tie"),
+                ),
+                lead=Dict(start_straight="250um", end_straight="250um"),
+                fillet="40 um",
+                total_length="5.02mm",
+                trace_width="10 um",
+                trace_gap="6 um",
+                meander=Dict(spacing="300um", asymmetry="0um"),
+            ),
+        )
+        design.rebuild()
+        # Builds without IndexError; degrades to a short no-meander route.
+        self.assertGreaterEqual(len(route.get_points()), 2)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

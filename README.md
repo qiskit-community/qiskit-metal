@@ -149,8 +149,8 @@ covering the full API) or the
 - ✅ **Lite-by-default install** (v0.7.0)
 - 🔜 **Repository rename to `quantum-metal`** — will keep redirects so existing
   clones and links continue to work
-- 🔜 **Python import path rename** (`qiskit_metal` → `quantum_metal`) — target
-  v0.8 or v1.0. Plan to update your imports ahead of that release.
+- 🔜 **Python import path rename** (`qiskit_metal` → `quantum_metal`) — planned,
+  no release set. `import qiskit_metal` emits a `FutureWarning` today.
 
 </details>
 

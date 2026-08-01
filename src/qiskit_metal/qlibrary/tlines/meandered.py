@@ -193,6 +193,15 @@ class RouteMeander(QRoute):
             # odd meander_number is no good if roots have opposite orientation (w.r.t sideway)
             meander_number -= 1
 
+        # The parity adjustment above can take meander_number from 1 to 0 —
+        # re-check, or the meander point array below is allocated with a
+        # single row and the snap alignment (pts[-2]) crashes with an
+        # IndexError. Same graceful no-meander degradation as the first
+        # check after floor().
+        if meander_number < 1:
+            self.logger.info(f"Zero meanders for {self.name}")
+            return np.empty((0, 2), float)
+
         # should the first meander go sideways or counter sideways?
         start_meander_direction = mao.dot(start_pt.direction, sideways)
         end_meander_direction = mao.dot(end_pt.direction, sideways)

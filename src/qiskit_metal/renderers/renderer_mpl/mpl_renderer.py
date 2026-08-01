@@ -18,6 +18,7 @@ import numpy as np
 import pandas as pd
 from matplotlib.axes import Axes
 from matplotlib.collections import LineCollection, PatchCollection
+from matplotlib.patches import Rectangle
 from shapely.geometry import CAP_STYLE, JOIN_STYLE, LineString
 
 from qiskit_metal import Dict, config
@@ -85,6 +86,11 @@ class QMplRenderer:
         self.design = design
         self.options = Dict(
             resolution="16",
+            # Draw the die outline behind the geometry. Without it there is
+            # nothing on screen that says where the chip ends, so geometry
+            # placed past the edge -- which every renderer downstream
+            # silently clips -- looks fine.
+            chip_outline=True,
         )
 
         # Filter view options
@@ -168,7 +174,100 @@ class QMplRenderer:
         """
 
         self.logger.debug("Rendering element tables to plot window.")
+        if self.options.get("chip_outline", True):
+            self.render_chip_outlines(ax)
         self.render_tables(ax)
+
+    #: Style of the die outline drawn by :meth:`render_chip_outlines`.
+    chip_outline_style = dict(
+        fill=False,
+        edgecolor="#8c8c8c",
+        linewidth=1.0,
+        linestyle=(0, (6, 4)),
+        zorder=-10,
+    )
+
+    def chip_bounds(self, chip_name: str) -> tuple[float, float, float, float] | None:
+        """Outline of one chip as ``(minx, miny, maxx, maxy)`` in millimetres.
+
+        Args:
+            chip_name (str): key into ``design.chips``.
+
+        Returns:
+            tuple or None: the extent, or ``None`` if this chip carries no
+            usable ``size`` block. Renderers are best-effort about chip
+            metadata -- a design that has not defined a die is still a
+            design worth plotting.
+        """
+        size = self.design.chips.get(chip_name, {}).get("size", None)
+        if not size:
+            return None
+        try:
+            center_x = self.design.parse_value(size["center_x"])
+            center_y = self.design.parse_value(size["center_y"])
+            size_x = self.design.parse_value(size["size_x"])
+            size_y = self.design.parse_value(size["size_y"])
+        except (KeyError, TypeError, ValueError):
+            self.logger.debug(
+                "Chip %r has no parseable size; skipping outline.", chip_name
+            )
+            return None
+        if not (size_x and size_y):
+            return None
+        return (
+            center_x - abs(size_x) / 2.0,
+            center_y - abs(size_y) / 2.0,
+            center_x + abs(size_x) / 2.0,
+            center_y + abs(size_y) / 2.0,
+        )
+
+    def render_chip_outlines(self, ax: Axes):
+        """Draw the die outline for every chip in the design.
+
+        Drawn as a patch rather than a plain line so it participates in
+        autoscaling: a design whose components all sit inside the die still
+        shows the full die, and one with geometry hanging off the edge shows
+        that at a glance.
+
+        Args:
+            ax (Axes): The axes
+        """
+        chips = list(self.design.chips.keys())
+        # A flip-chip stack has two dies at the same x/y and different z, so
+        # their outlines land on top of each other. Count how many labels
+        # already sit at a corner and step the next one down, or they render
+        # as one smudge.
+        labels_at_corner: dict[tuple[float, float], int] = {}
+
+        for chip_name in chips:
+            bounds = self.chip_bounds(chip_name)
+            if bounds is None:
+                continue
+            minx, miny, maxx, maxy = bounds
+            ax.add_patch(
+                Rectangle(
+                    (minx, miny),
+                    maxx - minx,
+                    maxy - miny,
+                    **self.chip_outline_style,
+                )
+            )
+            # One unlabelled rectangle reads as "the chip". Several
+            # unlabelled ones do not, so name them only when it is ambiguous.
+            if len(chips) > 1:
+                stacked = labels_at_corner.get((minx, maxy), 0)
+                labels_at_corner[(minx, maxy)] = stacked + 1
+                ax.annotate(
+                    chip_name,
+                    (minx, maxy),
+                    xytext=(3, -3 - 9 * stacked),
+                    textcoords="offset points",
+                    va="top",
+                    ha="left",
+                    fontsize=7,
+                    color=self.chip_outline_style["edgecolor"],
+                    zorder=self.chip_outline_style["zorder"],
+                )
 
     def get_mask(self, table: pd.DataFrame) -> pd.Series:
         """Gets the mask.

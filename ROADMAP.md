@@ -113,7 +113,10 @@ below.
    dependency blockers, so this is mostly writing.
 5. **`renderer_palace/` eigenmode PoC** — the strategic unlock for
    HFSS-free CI validation. Larger effort; external help wanted.
-6. **Extend the design-examples gallery** — more patterns
+6. **Design-rule-check (DRC) validation stage** (#1169) — first pass
+   shipped as `qiskit_metal.validation`; more rules, a tutorial, and
+   CI integration remain. See the dedicated section below.
+7. **Extend the design-examples gallery** — more patterns
    (e.g. surface-code patch) now that the notebook pattern exists.
 
 ---
@@ -176,9 +179,9 @@ Per-issue contents:
 2. Any lazy-import / `ImportError` UX changes that affect
    their code paths.
 3. Link to `docs/migration-to-v0.7.0.rst`.
-4. Reminder about the `qiskit_metal` → `quantum_metal`
-   import-path rename targeted for v0.8 / v1.0, so they can
-   plan import updates ahead of that release.
+4. Reminder about the planned `qiskit_metal` →
+   `quantum_metal` import-path rename, so they can plan
+   import updates. No release has been set for it.
 
 Known downstream packages:
 
@@ -206,7 +209,7 @@ add it (and help with the upgrade).
 
 ---
 
-## Next — AI-orchestration profile (v0.7.x – v0.8.0)
+## Next — AI-orchestration profile
 
 Once the lite flip lands, `pip install quantum-metal`
 becomes the recommended entry point for agents, optimizers,
@@ -235,6 +238,18 @@ explicit support for that use case:
   knows which renderer to call. A
   `design.render(backend="palace")`-style dispatch makes
   orchestrators much easier to write.
+- **Packaged task definitions for assistant-driven design**
+  `[requested, research]`
+  Requested feature: ship reusable, machine-readable task
+  definitions ("skills") that let a coding assistant drive
+  Metal directly — place components, route, run a DRC pass,
+  export — from a natural-language description of the chip.
+  Format should be vendor-neutral (plain markdown + a
+  declarative manifest, no assistant-specific runtime), so
+  the same definitions work across tools. Depends on the
+  stable-API contract and determinism items above, and on
+  the DRC stage (#1169) for a machine-checkable success
+  signal. Scope and format still open.
 
 ---
 
@@ -298,6 +313,83 @@ External contributor leverage is enormous here.
 
 ---
 
+## Design-rule-check (DRC) validation stage `[in-progress]`
+
+Tracking issue: #1169. `qiskit_metal.validation` ships the first pass:
+
+```python
+from qiskit_metal.validation import validate
+result = validate(design)
+print(result)
+result.raise_if_errors()        # for a build script or CI gate
+```
+
+Seven rules, each with a configurable threshold, since process design kits
+differ:
+
+| Rule | Default | Severity | Basis |
+|------|---------|----------|-------|
+| `metal-overlap` | >1 µm² shared | error | shorted nets |
+| `metal-spacing` | 2 µm | error | min same-layer spacing, arXiv:2604.11379 (R8) |
+| `cpw-gap` | 3 µm | warning | TLS-loss floor, arXiv:2604.11379 (R1) |
+| `chip-bounds` | on-chip | error | clipped geometry |
+| `short-segment` | ≥ fillet radius | warning | the #1086 kink family |
+| `qubit-clearance` | 3× CPW width | warning | project heuristic, not literature |
+| `ground-continuity` | one connected sheet | warning | slotline modes, arXiv:2604.11379 (R9) |
+
+`ground-continuity` reports that the ground plane is split, not that a
+piece is floating: it sees one layer, so an airbridge tying two regions
+together is invisible to it. Its optional `max_void_size` check (R9's
+50 µm parasitic-cavity threshold) is off by default because a transmon
+pocket is a deliberate void far larger than that.
+
+Rules are layer-aware (an airbridge crossing a CPW is the point of an
+airbridge, not a short) and net-aware (a route abutting the pin it
+connects to is not a short). Both were false positives in the first
+draft, and both are regression-tested.
+
+Motivated by four defects that shipped through renders unflagged while
+building the README hero chip: resonators crossing their feedline (~283
+µm² of overlapping metal each), resonators running 9 µm from a transmon
+pocket (0.41× a CPW width), launchpads hanging 110 µm off the chip edge
+(which silently clipped a whole corner of ground plane), and route
+segments shorter than their fillet radius. `scripts/make_hero_gif.py`
+now gates every build on `validate(..., strict=True)`.
+
+`QMplRenderer` now draws the die outline, so `qm.view` and the Qt
+`MetalGUI` both show where the chip ends. Nothing on screen used to say
+that, which is why launchpads hanging off the edge kept shipping. Off
+via `qm.view(design, chip_outline=False)` or
+`renderer.options.chip_outline`.
+
+Tutorial 2.24 walks a design carrying one defect per rule through
+detection, diagnosis and fix, then covers threshold tuning, `strict=True`
+as a build gate, and writing a custom rule.
+`tests/test_reference_designs.py` gates the Appendix A reference designs:
+zero errors, and no warnings beyond a recorded `KNOWN_WARNINGS`
+baseline. Fixing those designs to pass it turned up a real defect —
+both multi-qubit references placed launchpads outside the default 9×6 mm
+die, so a corner of ground plane was being clipped on every render.
+`QDesignCheck` is deprecated in favour of this module (it is
+crossing-only and print-based, so it misses an overlap that stays within
+trace width — which is most of them).
+
+Remaining, roughly in payoff order:
+
+1. **More rules**: airbridge spacing below λ/4 on long CPW runs
+   (arXiv:2411.16967); unconnected/dangling route pins; minimum feature
+   width.
+2. **Per-PDK rule sets** — a `RuleSet` that can be loaded from a foundry
+   file rather than assembled by hand.
+3. **Cross-layer awareness for `ground-continuity`** — treat an airbridge
+   spanning two ground regions as connecting them, so the rule can
+   distinguish a bridged split from a genuine floating island.
+
+GDS-level DRC (min width/spacing on exported artifacts) stays out of
+scope — KLayout covers it.
+
+---
+
 ## Architectural items `[research]`
 
 Longer-horizon things that aren't blocking anything today
@@ -308,7 +400,7 @@ but are worth tracking:
   full hints unlock static analysis for orchestrators
   and make the LLM-driven code-generation path more
   reliable.
-- **Plugin discovery via entry points** `[planned, v0.8.x]`
+- **Plugin discovery via entry points** `[planned]`
   External renderers and component libraries currently
   require monkey-patching or vendoring. A
   `qiskit_metal.renderers` and `qiskit_metal.qlibrary`
