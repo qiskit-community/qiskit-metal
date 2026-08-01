@@ -335,15 +335,18 @@ What exists today, and its limits:
   value or exception.
 - `check_lengths` — warns (log-only) on segments too short for their
   fillet; nothing fails.
-- Two working buffered-geometry checks live in
+- Three working buffered-geometry checks live in
   `scripts/make_hero_gif.py` and gate every build of that layout:
   `_validate_no_trace_crossings` (buffer each non-subtract path to
   its trace width, intersect inter-component pairs, threshold by
-  area so end-to-end pin junctions at ~0 area pass) and
+  area so end-to-end pin junctions at ~0 area pass),
   `_validate_min_clearance_to_pockets` (measure the CPW's full
   outer edge — trace + both gaps — to each transmon pocket, require
-  a few line widths of ground plane in between). Between them they
-  caught all three defects above.
+  a few line widths of ground plane in between), and
+  `_validate_within_chip_bounds`. Between them they caught all
+  three defects above plus a fourth: launchpads spilling 110 µm off
+  the chip, where the boundary silently clipped the ground plane
+  and a whole corner vanished from the FEM mesh.
 
 Plan, in order:
 
@@ -356,12 +359,12 @@ Plan, in order:
    a fixed µm default is wrong across trace geometries);
    segment-shorter-than-fillet (promote `check_lengths` from
    log-only to a queryable finding).
-2. **Next checks, by expected payoff**: minimum spacing between any
-   two distinct nets (generalising the pocket check — near-miss,
-   not just overlap); unconnected / dangling route pins; component
-   geometry outside chip bounds; fillet radius vs available segment
-   length at route corners (the #1086 precondition, checked
-   design-wide).
+2. **Next checks, by expected payoff**: component geometry outside
+   chip bounds (prototype already written, see above); minimum
+   spacing between any two distinct nets (generalising the pocket
+   check — near-miss, not just overlap); unconnected / dangling
+   route pins; fillet radius vs available segment length at route
+   corners (the #1086 precondition, checked design-wide).
 3. **Tutorial** — a "Design-rule checking" notebook with
    deliberately-broken examples for each check (the Appendix B
    overlap tutorial becomes the deprecated predecessor or is
