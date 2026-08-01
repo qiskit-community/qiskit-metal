@@ -125,8 +125,8 @@ def _make_design():
     design = designs.DesignPlanar()
     design.variables["cpw_width"] = "10 um"
     design.variables["cpw_gap"] = "6 um"
-    design._chips["main"]["size"]["size_x"] = "7 mm"
-    design._chips["main"]["size"]["size_y"] = "7 mm"
+    design._chips["main"]["size"]["size_x"] = "8 mm"
+    design._chips["main"]["size"]["size_y"] = "8 mm"
     return design
 
 
@@ -557,6 +557,38 @@ def _validate_min_clearance_to_pockets(design):
         )
 
 
+def _validate_within_chip_bounds(design):
+    """Design-rule check: no component geometry may hang off the chip.
+
+    Caught the launchpads spilling 110um past the edge after the readout
+    tees moved outward — the chip boundary then clips the ground plane,
+    which shows up in the FEM mesh as a whole corner region silently
+    disappearing.
+    """
+    half_x = design.parse_value(design._chips["main"]["size"]["size_x"]) / 2
+    half_y = design.parse_value(design._chips["main"]["size"]["size_y"]) / 2
+    name_by_id = {c.id: n for n, c in design.components.items()}
+
+    violations = []
+    for table in ("poly", "path"):
+        for _, row in design.qgeometry.tables[table].iterrows():
+            geom = row["geometry"]
+            if table == "path":
+                geom = geom.buffer(row["width"] / 2, cap_style=2)
+            minx, miny, maxx, maxy = geom.bounds
+            over = max(maxx - half_x, maxy - half_y, -half_x - minx, -half_y - miny)
+            if over > 0:
+                violations.append(
+                    f"{name_by_id[row['component']]}.{row['name']} extends "
+                    f"{over * 1000:.1f}um past the chip edge"
+                )
+    if violations:
+        raise ValueError(
+            "Chip-bounds check failed — geometry outside the chip:\n  "
+            + "\n  ".join(sorted(set(violations)))
+        )
+
+
 def _populate_full_design(design):
     """Apply every stage so the FINAL design exists. Used for centering compute."""
     for name in Q_SPEC:
@@ -568,6 +600,7 @@ def _populate_full_design(design):
     _add_center_cross_showcase(design)
     _validate_no_trace_crossings(design)
     _validate_min_clearance_to_pockets(design)
+    _validate_within_chip_bounds(design)
 
 
 # Close-up view for the opening frame: centered on Q1's pocket with enough
@@ -740,8 +773,8 @@ def _build_mesh_design():
     design = designs.MultiPlanar({}, overwrite_enabled=True)
     design.variables["cpw_width"] = "10 um"
     design.variables["cpw_gap"] = "6 um"
-    design._chips["main"]["size"]["size_x"] = "7 mm"
-    design._chips["main"]["size"]["size_y"] = "7 mm"
+    design._chips["main"]["size"]["size_x"] = "8 mm"
+    design._chips["main"]["size"]["size_y"] = "8 mm"
     _populate_full_design(design)
     # The chip includes real Airbridge components (see _add_airbridges);
     # their elevated-span layers aren't in a fresh MultiPlanar's default
