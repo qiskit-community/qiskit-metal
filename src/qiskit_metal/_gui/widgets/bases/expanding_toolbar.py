@@ -10,7 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-from PySide6 import QtCore, QtGui
+from PySide6 import QtCore
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QToolBar, QWidget, QSizePolicy, QToolButton
 
@@ -28,6 +28,10 @@ class QToolBarExpanding(QToolBar):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._toggle_btn_added = False
+        # The spacer that pins the toggle to the end has to expand along
+        # whichever axis the toolbar currently runs, so re-docking to a side
+        # area has to re-point it.
+        self.orientationChanged.connect(self._on_orientation_changed)
 
     def showEvent(self, event: QtCore.QEvent) -> None:
         """Add the toggle button to the far right the first time it is shown."""
@@ -35,19 +39,49 @@ class QToolBarExpanding(QToolBar):
         if not self._toggle_btn_added:
             self._toggle_btn_added = True
 
-            # Spacer to push button to the right
+            # Spacer to push button to the far end
             self._spacer = QWidget()
-            self._spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
             self.addWidget(self._spacer)
+            self._sync_spacer_policy()
 
             self._toggle_btn = QToolButton(self)
             self._toggle_btn.setCheckable(True)
+            self._toggle_btn.setToolTip("Expand/collapse the toolbar")
             self._toggle_btn.clicked.connect(self.on_toggle_clicked)
             self.addWidget(self._toggle_btn)
 
             # Initialize in the contracted state
-            self._toggle_btn.setChecked(False)
             self.contract_me()
+
+    def _sync_spacer_policy(self):
+        """Point the spacer's expanding axis along the toolbar's orientation."""
+        spacer = getattr(self, "_spacer", None)
+        if spacer is None:
+            return
+        if self.orientation() == Qt.Vertical:
+            spacer.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        else:
+            spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+
+    def _on_orientation_changed(self, _orientation):
+        """Re-point the spacer and redraw the arrow after a re-dock."""
+        self._sync_spacer_policy()
+        self.update_arrow_icon()
+
+    def _sync_toggle_state(self, expanded: bool):
+        """Keep the toggle button's checked state in step with the toolbar.
+
+        ``expand_me`` / ``contract_me`` are public and can be called directly,
+        not just from the button. Without this the button and the toolbar drift
+        apart and the next user click re-applies the state it is already in --
+        so the toolbar looks stuck until it is clicked a second time.
+        """
+        btn = getattr(self, "_toggle_btn", None)
+        if btn is None or btn.isChecked() == expanded:
+            return
+        was_blocked = btn.blockSignals(True)
+        btn.setChecked(expanded)
+        btn.blockSignals(was_blocked)
 
     def update_arrow_icon(self):
         """Update the toggle button arrow to reflect the current expansion state."""
@@ -87,6 +121,7 @@ class QToolBarExpanding(QToolBar):
         self.setToolButtonStyle(tool_style)
 
         # update toggle button visual state
+        self._sync_toggle_state(True)
         self.update_arrow_icon()
 
         # align icons and text
@@ -117,24 +152,5 @@ class QToolBarExpanding(QToolBar):
     def contract_me(self):
         """Contract the toolbar."""
         self.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self._sync_toggle_state(False)
         self.update_arrow_icon()
-
-    def enterEvent(self, evt: QtCore.QEvent) -> None:
-        """enterEvent() is called when the mouse enters the widget's screen
-        space. (This excludes screen space owned by any of the widget's
-        children.)
-
-        Args:
-            evt (QtCore.QEvent): QtCore event
-        """
-        super().enterEvent(evt)
-
-    def leaveEvent(self, evt: QtCore.QEvent) -> None:
-        """leaveEvent() is called when the mouse leaves the widget's screen
-        space. If the mouse enters a child widget it will not cause a
-        leaveEvent().
-
-        Args:
-            evt (QtCore.QEvent): QtCore event
-        """
-        super().leaveEvent(evt)
