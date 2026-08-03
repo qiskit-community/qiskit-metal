@@ -500,7 +500,7 @@
 <td><p>–</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">metal-spacing</span></code></p></td>
-<td><p>metal too close to resolve in liftoff/etch</p></td>
+<td><p>metal close enough that etch residue can bridge it</p></td>
 <td><p>2 um</p></td>
 <td><p>GDSII-to-wafer R8</p></td>
 </tr>
@@ -607,7 +607,7 @@
 <span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cross_v&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;-1.9mm&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;-1.9mm&quot;</span><span class="p">,</span> <span class="s2">&quot;2.6mm&quot;</span><span class="p">),</span> <span class="s2">&quot;270&quot;</span><span class="p">,</span> <span class="s2">&quot;90&quot;</span><span class="p">)</span>
 
 <span class="c1"># 2. metal-spacing: parallel CPWs 1 um apart. Not a short in the CAD, but</span>
-<span class="c1">#    liftoff residue bridges gaps this narrow.</span>
+<span class="c1">#    incomplete etching leaves residue that bridges gaps this narrow.</span>
 <span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;near_a&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;0.6mm&quot;</span><span class="p">,</span> <span class="s2">&quot;2.0055mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;2.4mm&quot;</span><span class="p">,</span> <span class="s2">&quot;2.0055mm&quot;</span><span class="p">),</span> <span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
 <span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;near_b&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;0.6mm&quot;</span><span class="p">,</span> <span class="s2">&quot;1.9945mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;2.4mm&quot;</span><span class="p">,</span> <span class="s2">&quot;1.9945mm&quot;</span><span class="p">),</span> <span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
 
@@ -1147,7 +1147,7 @@ build stopped:
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/02</div>
+              Last updated on 2026/08/03</div>
           </div>
           <div class="right-details">
             
