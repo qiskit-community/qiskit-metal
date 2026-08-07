@@ -1,4 +1,8 @@
-"""Sync notebooks between docs/tut/ and tutorials/ — direction picked automatically.
+"""Sync notebooks between docs/ and tutorials/ — direction picked automatically.
+
+Covers both docs mirrors: ``docs/tut/`` (numbered notebooks, Appendix B, and
+the Appendix A reference designs) and ``docs/circuit-examples/`` (Appendix C
+plus the remaining Appendix A full-design-flow examples).
 
 Usage:
   python3 _dev/sync_two_folders.py                # dry-run
@@ -33,7 +37,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-# (docs/tut path, tutorials path) — every pair in sections 1, 2, 3, 4, quick-topics
+# (docs path, tutorials path) — every published pair across both docs mirrors
 PAIRS = {
     # --- Section 1 ---
     "1.1": (
@@ -270,6 +274,99 @@ PAIRS = {
     "ref_3": (
         "docs/tut/full-design-examples/Reference-design-3-Four-qubit-multiplexed-readout.ipynb",
         "tutorials/Appendix A Full design flow examples/Reference design 3 - Four-qubit multiplexed readout.ipynb",
+    ),
+    # --- circuit-examples / Appendix C + Appendix A ---
+    "01-Transmon_cross": (
+        "docs/circuit-examples/A.Qubits/01-Transmon_cross.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/01-Transmon_cross.ipynb",
+    ),
+    "02-Transmon_floating": (
+        "docs/circuit-examples/A.Qubits/02-Transmon_floating.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/02-Transmon_floating.ipynb",
+    ),
+    "03-concentric_transmon": (
+        "docs/circuit-examples/A.Qubits/03-concentric_transmon.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/03-concentric_transmon.ipynb",
+    ),
+    "04-Interdigitated_Transmon": (
+        "docs/circuit-examples/A.Qubits/04-Interdigitated_Transmon.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/04-Interdigitated_Transmon.ipynb",
+    ),
+    "05-Transmon_cross_fl": (
+        "docs/circuit-examples/A.Qubits/05-Transmon_cross_fl.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/05-Transmon_cross_fl.ipynb",
+    ),
+    "06-Transmon_floating_6": (
+        "docs/circuit-examples/A.Qubits/06-Transmon_floating_6.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/06-Transmon_floating_6.ipynb",
+    ),
+    "07-Transmon_floating_cl": (
+        "docs/circuit-examples/A.Qubits/07-Transmon_floating_cl.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/07-Transmon_floating_cl.ipynb",
+    ),
+    "08-JJ-Dolan": (
+        "docs/circuit-examples/A.Qubits/08-JJ-Dolan.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/08-JJ-Dolan.ipynb",
+    ),
+    "09-JJ-Manhattan": (
+        "docs/circuit-examples/A.Qubits/09-JJ-Manhattan.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/09-JJ-Manhattan.ipynb",
+    ),
+    "10-Transmon_floating_teeth": (
+        "docs/circuit-examples/A.Qubits/10-Transmon_floating_teeth.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/10-Transmon_floating_teeth.ipynb",
+    ),
+    "11-Star_shaped_qubit": (
+        "docs/circuit-examples/A.Qubits/11-Star_shaped_qubit.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/11-Star_shaped_qubit.ipynb",
+    ),
+    "11-Resonator_Meander": (
+        "docs/circuit-examples/B.Resonators/11-Resonator_Meander.ipynb",
+        "tutorials/Appendix C Circuit examples/B. Resonators/11-Resonator_Meander.ipynb",
+    ),
+    "21-OneTransmonsWithMeanderAndOTG": (
+        "docs/circuit-examples/C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.ipynb",
+        "tutorials/Appendix C Circuit examples/C. Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.ipynb",
+    ),
+    "31-TwoCrossmonsTunableCoupler": (
+        "docs/circuit-examples/D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.ipynb",
+        "tutorials/Appendix C Circuit examples/D. Qubit-couplers/31-TwoCrossmonsTunableCoupler.ipynb",
+    ),
+    "32-TwoTransmonsDirectCoupling": (
+        "docs/circuit-examples/D.Qubit-couplers/32-TwoTransmonsDirectCoupling.ipynb",
+        "tutorials/Appendix C Circuit examples/D. Qubit-couplers/32-TwoTransmonsDirectCoupling.ipynb",
+    ),
+    "33-TwoTransmonsWithMeander": (
+        "docs/circuit-examples/D.Qubit-couplers/33-TwoTransmonsWithMeander.ipynb",
+        "tutorials/Appendix C Circuit examples/D. Qubit-couplers/33-TwoTransmonsWithMeander.ipynb",
+    ),
+    "41-LaunchPad": (
+        "docs/circuit-examples/E.Input-output-coupling/41-LaunchPad.ipynb",
+        "tutorials/Appendix C Circuit examples/E. Input-output-coupling/41-LaunchPad.ipynb",
+    ),
+    "42-ResonatorAndLaunchPad": (
+        "docs/circuit-examples/E.Input-output-coupling/42-ResonatorAndLaunchPad.ipynb",
+        "tutorials/Appendix C Circuit examples/E. Input-output-coupling/42-ResonatorAndLaunchPad.ipynb",
+    ),
+    "43-TransmonPocketCL": (
+        "docs/circuit-examples/E.Input-output-coupling/43-TransmonPocketCL.ipynb",
+        "tutorials/Appendix C Circuit examples/E. Input-output-coupling/43-TransmonPocketCL.ipynb",
+    ),
+    "51-Four_qubit_chip": (
+        "docs/circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.ipynb",
+        "tutorials/Appendix C Circuit examples/F. Small-quantum-chips/51-Four_qubit_chip.ipynb",
+    ),
+    "Example-full-chip-design": (
+        "docs/circuit-examples/full-design-flow-examples/Example-full-chip-design.ipynb",
+        "tutorials/Appendix A Full design flow examples/Example full chip design.ipynb",
+    ),
+    "Example-used-in-the-launch-video": (
+        "docs/circuit-examples/full-design-flow-examples/Example-used-in-the-launch-video.ipynb",
+        "tutorials/Appendix A Full design flow examples/Example used in the launch video.ipynb",
+    ),
+    "Exercise-for-the-South-Korea-Hackathon'20": (
+        "docs/circuit-examples/full-design-flow-examples/Exercise-for-the-South-Korea-Hackathon'20.ipynb",
+        "tutorials/Appendix A Full design flow examples/Exercise for the South Korea Hackathon'20.ipynb",
     ),
 }
 
