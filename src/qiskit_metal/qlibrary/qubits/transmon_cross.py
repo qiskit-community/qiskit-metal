@@ -13,6 +13,38 @@
 from qiskit_metal import draw, Dict
 from qiskit_metal.qlibrary.core import BaseQubit
 
+#: Rotation applied to a connector claw for each arm of the cross. The claw is
+#: drawn on the west arm, so the rotation is the negative of the requested
+#: ``connector_location`` angle taken mod 360 — e.g. 270 => +90.
+ARM_ROTATION = {"west": 0, "north": -90, "east": 180, "south": 90}
+
+
+def connector_arm_name(connector_location: float) -> str:
+    """Snap a ``connector_location`` angle to the cross arm it selects.
+
+    The angle is taken mod 360 and snapped to the nearest arm, so out-of-range
+    values behave sensibly (``360`` => 'west', ``-90`` => 'south'). Angles
+    exactly half-way between two arms (45, 135, 225, 315) snap to the lower
+    one, matching the historical behaviour of this mapping.
+
+    Args:
+        connector_location (float): Angle in degrees. 0 => 'west',
+            90 => 'north', 180 => 'east', 270 => 'south'.
+
+    Returns:
+        str: One of 'west', 'north', 'east', 'south'.
+    """
+    angle = float(connector_location) % 360
+    if angle > 315:
+        return "west"
+    if angle > 225:
+        return "south"
+    if angle > 135:
+        return "east"
+    if angle > 45:
+        return "north"
+    return "west"
+
 
 class TransmonCross(BaseQubit):
     """The base `TransmonCross` class.
@@ -29,6 +61,13 @@ class TransmonCross(BaseQubit):
 
     Add connectors to it using the `connection_pads` dictionary. See BaseQubit for more
     information.
+
+    A connector may also be placed on the south arm with
+    ``connector_location='270'``, but that is the arm carrying the junction:
+    at the default options the claw clears the junction by ~11um and its etch
+    region comes within ~5um of it. Check the clearance against your process
+    design rules before using it, and note that `TransmonCrossFL` puts its
+    flux line on that same arm.
 
     Sketch:
         Below is a sketch of the qubit
@@ -219,13 +258,7 @@ class TransmonCross(BaseQubit):
             [(-c_c_l - c_w_b, -c_c_w / 2), (-c_c_l - c_w_b, c_c_w / 2)]
         )
 
-        claw_rotate = 0
-        if con_loc > 225:
-            claw_rotate = 90
-        elif con_loc > 135:
-            claw_rotate = 180
-        elif con_loc > 45:
-            claw_rotate = -90
+        claw_rotate = ARM_ROTATION[connector_arm_name(con_loc)]
 
         # Rotates and translates the connector polygons (and temporary port_line)
         polys = [connector_arm, connector_etcher, port_line]

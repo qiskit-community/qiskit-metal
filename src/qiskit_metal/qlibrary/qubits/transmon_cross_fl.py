@@ -15,7 +15,10 @@ DC SQUID."""
 
 import numpy as np
 from qiskit_metal import draw, Dict
-from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
+from qiskit_metal.qlibrary.qubits.transmon_cross import (
+    TransmonCross,
+    connector_arm_name,
+)
 
 
 class TransmonCrossFL(TransmonCross):
@@ -80,9 +83,28 @@ class TransmonCrossFL(TransmonCross):
         super().make()
 
         if self.options.make_fl:
+            self._warn_on_south_arm_connectors()
             self.make_flux_line()
 
     #####################################################################
+
+    def _warn_on_south_arm_connectors(self):
+        """Warn about connectors that share the south arm with the flux line.
+
+        The flux line is drawn on the south arm, so a connector placed there
+        (``connector_location='270'``) overlaps it — the claw and the flux
+        line end up galvanically shorted rather than merely close.
+        """
+        for name in self.options.connection_pads:
+            con_loc = self.p.connection_pads[name].connector_location
+            if connector_arm_name(con_loc) == "south":
+                self.logger.warning(
+                    f"{self.name}: connection pad '{name}' has "
+                    f"connector_location='{con_loc}', placing it on the south "
+                    "arm — the same arm as the flux line. The claw and the "
+                    "flux line will overlap. Use 0 (west), 90 (north) or "
+                    "180 (east), or set make_fl=False."
+                )
 
     def make_flux_line(self):
         """Creates the charge line if the user has charge line option to
