@@ -288,6 +288,67 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """
         self.force_close = ison
 
+    def _refresh_timers(self):
+        """Every periodic model-refresh timer belonging to this window.
+
+        Three are reachable through the widget tree. The components-table
+        model is parented to the ``MetalGUI`` handler rather than into the
+        tree, so ``findChildren`` misses it and it is collected explicitly.
+        """
+        timers = list(self.findChildren(QTimer))
+
+        proxy = getattr(self.ui, "proxyModel", None)
+        if proxy is not None:
+            try:
+                source = proxy.sourceModel()
+            except RuntimeError:
+                source = None
+            timer = getattr(source, "_timer", None)
+            if timer is not None:
+                timers.append(timer)
+        return timers
+
+    def showEvent(self, event):
+        """Restart the polling timers when the window becomes visible.
+
+        Pairs with the stop in ``closeEvent`` so that pausing is not a
+        one-way trip: closing and reopening the same MetalGUI must leave the
+        tables auto-refreshing as before (issue #1048).
+        """
+        for timer in self._refresh_timers():
+            try:
+                if not timer.isActive():
+                    timer.start()
+            except RuntimeError:
+                # C++ object already gone -- nothing to restart.
+                continue
+        super().showEvent(event)
+
+    def _stop_refresh_timers(self):
+        """Pause the periodic model-refresh timers.
+
+        Several table/tree models drive themselves from a repeating 500 ms
+        ``QTimer``. Nothing stopped them on close, so they kept firing at
+        models belonging to a window that was being destroyed -- visible as
+        ``AttributeError: Slot 'QTableModel_AllComponents::' not found``, and
+        a use-after-free waiting to happen if a tick lands mid-teardown
+        (issue #1048). Stopping them makes close deterministic instead of a
+        race against the next tick; ``showEvent`` restarts them, so a
+        closed-and-reopened window polls again as before.
+
+        Best-effort by design: this runs while the window is going away, so
+        a model whose C++ object has already gone is not an error.
+        """
+        for timer in self._refresh_timers():
+            try:
+                timer.stop()
+            except RuntimeError:
+                # Shiboken raises RuntimeError when the timer's C++ object is
+                # already gone. That is the desired end state -- a destroyed
+                # timer cannot fire -- so there is nothing to do and nothing
+                # worth logging on a window that is closing.
+                continue
+
     @slot_catch_error()
     def closeEvent(self, event):
         """whenever a window is closed.
@@ -296,12 +357,22 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """
 
         if self.force_close:
+            self._stop_refresh_timers()
             super().closeEvent(event)
             return
 
         will_close = self.ok_to_close()
         if will_close:
             self.save_window_settings()
+            # Pause the polling timers while the window is hidden; showEvent()
+            # restarts them, so closing and reopening the same MetalGUI -- the
+            # exact workflow reported in issue #1048 -- keeps working.
+            #
+            # The log handlers are deliberately NOT detached here. close()
+            # only hides the window, so a reopened window must still receive
+            # records. They detach from the widget's destroyed signal instead,
+            # which is the event that actually makes them dangerous.
+            self._stop_refresh_timers()
             super().closeEvent(event)
         else:
             event.ignore()

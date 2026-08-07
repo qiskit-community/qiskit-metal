@@ -108,9 +108,24 @@ class QMainWindowExtensionBase(QMainWindow):
         self.handler
 
     def _remove_log_handlers(self):
-        """Remove the log handlers."""
-        if hasattr(self, "log_text"):
-            self.log_text.remove_handlers(self.logger)
+        """Detach the GUI log handlers from their (process-global) loggers.
+
+        The log widget lives at ``self.ui.log_text``; the old
+        ``hasattr(self, "log_text")`` guard was never true, so this was a
+        silent no-op and every closed window left a handler pointing at a
+        freed C++ widget (issue #1048). Both spellings are accepted now so
+        subclasses that do expose ``log_text`` directly still work.
+        """
+        log_text = getattr(self, "log_text", None) or getattr(
+            getattr(self, "ui", None), "log_text", None
+        )
+        if log_text is None:
+            return
+        try:
+            log_text.remove_handlers(self.logger)
+        except RuntimeError:
+            # Widget's C++ object already gone -- nothing left to detach.
+            pass
 
     def destroy(self, destroyWindow: bool = True, destroySubWindows: bool = True):
         """When the window is cleaned up from memory.
