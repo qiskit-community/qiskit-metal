@@ -42,6 +42,15 @@ def module_path_from_abs_file_path(abs_file_path: str) -> str:
     delegate and the parameter-entry window can share one implementation
     without an import cycle.
 
+    Known limitation: PEP 420 namespace packages (directories with no
+    ``__init__.py``) are importable by Python but are rejected here,
+    because the walk has nothing to anchor on. Regular packages -- the
+    overwhelming majority, and what every component in this repository
+    uses -- are unaffected. Resolving those would mean deriving the
+    module path from the longest matching ``sys.path`` entry instead;
+    see issue #1178, where the external-component discovery mechanism is
+    still being decided.
+
     Args:
         abs_file_path (str): absolute path to a ``.py`` file.
 
