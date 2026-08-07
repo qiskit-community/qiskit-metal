@@ -17,9 +17,7 @@ QLibrary tab
 """
 
 import copy
-import importlib
 import inspect
-import os
 import random
 from collections import OrderedDict
 from collections.abc import Callable
@@ -44,6 +42,7 @@ from qiskit_metal._gui.widgets.create_component_window.model_view.tree_model_par
 from qiskit_metal._gui.widgets.create_component_window.parameter_entry_window_ui import (
     Ui_MainWindow,
 )
+from qiskit_metal._gui.utility.utils import class_from_abs_file_path
 from qiskit_metal.qlibrary.core import QComponent
 from qiskit_metal.toolbox_python.attr_dict import Dict
 
@@ -490,24 +489,10 @@ def get_class_from_abs_file_path(abs_file_path: str):
     Args:
         abs_file_path (str): absolute file path to the file containing the QComponent class definition
 
-    getting class from absolute file path -
-    https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname
-
+    Thin wrapper over ``_gui.utility.utils.class_from_abs_file_path``,
+    which the Library-pane delegate shares (issue #1178).
     """
-    qis_abs_path = abs_file_path[abs_file_path.index(__name__.split(".")[0]) :]
-
-    # Windows users' qis_abs_path may use os.sep or '/' due to PySide's
-    # handling of file names
-    qis_mod_path = qis_abs_path.replace(os.sep, ".")[: -len(".py")]
-    qis_mod_path = qis_mod_path.replace("/", ".")  # users cannot use '/' in filename
-
-    cur_module = importlib.import_module(qis_mod_path)
-    members = inspect.getmembers(cur_module, inspect.isclass)
-    class_owner = qis_mod_path.split(".")[-1]
-    for memtup in members:
-        if len(memtup) > 1:
-            if str(memtup[1].__module__).endswith(class_owner):
-                return memtup[1]
+    return class_from_abs_file_path(abs_file_path)
 
 
 def create_default_from_type(my_t: type, param_name: str = None):

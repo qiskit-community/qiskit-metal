@@ -119,6 +119,46 @@ protocol. Each is its own project; we wrap, we don't fork.
    * - `gmsh <https://gmsh.info/>`_
      - Workhorse mesh generator (used by Elmer today, Palace tomorrow).
      - ``[mesh]`` extra
+   * - `QTCAD <https://docs.nanoacademic.com/qtcad/>`_
+       (Nanoacademic)
+     - Semiconductor / quantum-device TCAD. Adaptive-mesh capacitance
+       extraction from Metal geometry. Commercial licence.
+     - Community integration — see below
+
+
+Community-maintained integrations
+---------------------------------
+
+Some integrations live outside this repository and are maintained by the
+projects they connect to. We list them so they are findable; we do not
+maintain or test them.
+
+* `nanoacademic/quantum-metal <https://github.com/nanoacademic/quantum-metal>`_
+  — adds ``QQTCADRenderer`` (a ``QRendererAnalysis`` subclass, structured
+  after ``QElmerRenderer``) driving `QTCAD <https://docs.nanoacademic.com/qtcad/>`_
+  for adaptive-mesh capacitance extraction. Apache 2.0, currently
+  distributed as a fork.
+
+If you maintain an integration like this, note that a renderer does not
+require forking Quantum Metal: ``config.renderers_to_load`` accepts a
+dotted path into any installed distribution, which
+``QDesign._start_renderers()`` resolves with ``importlib`` when a design
+is constructed. A renderer whose optional dependencies are absent is
+logged and skipped rather than failing the import::
+
+    from qiskit_metal import config
+
+    config.renderers_to_load.my_solver = dict(
+        path_name="my_package.my_renderer",
+        class_name="QMySolverRenderer",
+    )
+
+Shipping as a companion package that depends on ``quantum-metal`` means
+upstream fixes arrive automatically instead of needing a rebase. See
+`docs/architecture/renderer_protocol.md
+<https://github.com/qiskit-community/qiskit-metal/blob/main/docs/architecture/renderer_protocol.md>`_
+for the renderer contract, and open an issue if something in shared code
+blocks you — that is the kind of change we want as a pull request.
 
 
 Quantization & analysis libraries

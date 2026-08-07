@@ -80,8 +80,14 @@ class TreeViewQLibrary(QTreeView):
 
         if index.column() == source_model.FILENAME:
             if not source_model.isDir(model.mapToSource(index)):
-                qis_abs_path = full_path[full_path.index(__name__.split(".")[0]) :]
-                self.qlibrary_filepath_signal.emit(qis_abs_path)
+                # Emit the absolute path. This used to slice the path at the
+                # first literal "qiskit_metal" and emit the remainder, which
+                # was the third copy of the bug fixed in issue #1178 -- and
+                # it made the signal's payload a *relative* path even though
+                # every consumer (and the receiving parameter) calls it an
+                # absolute one. A component outside qiskit_metal raised
+                # ValueError here before the click could even be delivered.
+                self.qlibrary_filepath_signal.emit(full_path)
 
         return super().mousePressEvent(event)
 
