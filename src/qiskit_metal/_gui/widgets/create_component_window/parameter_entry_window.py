@@ -17,9 +17,7 @@ QLibrary tab
 """
 
 import copy
-import importlib
 import inspect
-import os
 import random
 from collections import OrderedDict
 from collections.abc import Callable
@@ -43,6 +41,10 @@ from qiskit_metal._gui.widgets.create_component_window.model_view.tree_model_par
 )
 from qiskit_metal._gui.widgets.create_component_window.parameter_entry_window_ui import (
     Ui_MainWindow,
+)
+from qiskit_metal._gui.utility.utils import (
+    class_from_abs_file_path,
+    module_path_from_abs_file_path,
 )
 from qiskit_metal.qlibrary.core import QComponent
 from qiskit_metal.toolbox_python.attr_dict import Dict
@@ -482,56 +484,6 @@ def dockify(main_window, docked_title, gui):
     return dock
 
 
-def module_path_from_abs_file_path(abs_file_path: str) -> str:
-    """Return the importable dotted module path for a source file.
-
-    Walks up from the file to the highest directory still containing an
-    ``__init__.py``, which is the package root, and joins the traversed
-    names. This works for any importable package, not just
-    ``qiskit_metal`` -- so a QComponent shipped by a separate
-    distribution resolves correctly (issue #1178).
-
-    Replaces a substring slice of the form
-    ``abs_file_path[abs_file_path.index("qiskit_metal"):]``. That matched
-    on a *path substring*, which broke in two ways:
-
-    * a file outside ``qiskit_metal`` raised
-      ``ValueError: substring not found``;
-    * any path merely containing the name -- a checkout under
-      ``~/qiskit_metal_dev/``, a folder called
-      ``qiskit_metal_experiments`` -- was sliced at the wrong place and
-      resolved to a module that does not exist.
-
-    Args:
-        abs_file_path (str): absolute path to a ``.py`` file.
-
-    Returns:
-        str: dotted module path, e.g.
-        ``qiskit_metal.qlibrary.qubits.transmon_pocket``.
-
-    Raises:
-        ValueError: if the file is not inside an importable package.
-    """
-    path = Path(abs_file_path).resolve()
-    parts = [path.stem]
-
-    directory = path.parent
-    while (directory / "__init__.py").is_file():
-        parts.append(directory.name)
-        parent = directory.parent
-        if parent == directory:  # filesystem root
-            break
-        directory = parent
-
-    if len(parts) == 1:
-        raise ValueError(
-            f"{abs_file_path} is not inside an importable package "
-            "(no __init__.py alongside it), so it has no module path."
-        )
-
-    return ".".join(reversed(parts))
-
-
 def get_class_from_abs_file_path(abs_file_path: str):
     """
     Gets the corresponding class object for the absolute file path to the file containing that
@@ -540,19 +492,10 @@ def get_class_from_abs_file_path(abs_file_path: str):
     Args:
         abs_file_path (str): absolute file path to the file containing the QComponent class definition
 
-    getting class from absolute file path -
-    https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname
-
+    Thin wrapper over ``_gui.utility.utils.class_from_abs_file_path``,
+    which the Library-pane delegate shares (issue #1178).
     """
-    qis_mod_path = module_path_from_abs_file_path(abs_file_path)
-
-    cur_module = importlib.import_module(qis_mod_path)
-    members = inspect.getmembers(cur_module, inspect.isclass)
-    class_owner = qis_mod_path.split(".")[-1]
-    for memtup in members:
-        if len(memtup) > 1:
-            if str(memtup[1].__module__).endswith(class_owner):
-                return memtup[1]
+    return class_from_abs_file_path(abs_file_path)
 
 
 def create_default_from_type(my_t: type, param_name: str = None):

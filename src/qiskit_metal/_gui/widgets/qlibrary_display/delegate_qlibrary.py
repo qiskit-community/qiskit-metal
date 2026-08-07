@@ -13,14 +13,11 @@
 Delegate for display of QComponents in Library tab
 """
 
-import importlib
-import inspect
-import os
-
 from PySide6.QtCore import QAbstractItemModel, QAbstractProxyModel, QModelIndex, Signal
 from PySide6.QtGui import QPainter
 from PySide6.QtWidgets import QItemDelegate, QStyle, QStyleOptionViewItem, QWidget
 
+from qiskit_metal._gui.utility.utils import class_from_abs_file_path
 from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import (
     QFileSystemLibraryModel,
 )
@@ -114,11 +111,15 @@ class LibraryDelegate(QItemDelegate):
             model = index.model()
             full_path = source_model.filePath(model.mapToSource(index))
 
-            # try:
             try:
                 current_class = self.get_class_from_abs_file_path(full_path)
                 information = current_class.TOOLTIP
-            except:
+            except Exception:
+                # A tooltip must never take the GUI down, so a failed
+                # lookup degrades to no tooltip. Narrowed from a bare
+                # ``except``, which also swallowed KeyboardInterrupt and
+                # SystemExit. Note this is why the resolution bug in
+                # issue #1178 stayed invisible for so long.
                 information = ""
 
             self.tool_tip_signal.emit(information)
@@ -131,23 +132,10 @@ class LibraryDelegate(QItemDelegate):
         Args:
             abs_file_path (str): absolute file path to the file containing the QComponent class definition
 
-        getting class from absolute file path -
-        https://stackoverflow.com/questions/452969/does-python-have-an-equivalent-to-java-class-forname
-
+        This used to hold its own copy of the resolution logic, identical
+        to the one in ``parameter_entry_window`` -- including the
+        substring-slicing bug fixed in issue #1178, which the bare
+        ``except`` in ``emit_tool_tip`` silently hid (a failed lookup just
+        showed an empty tooltip). Both now share one implementation.
         """
-        qis_abs_path = abs_file_path[abs_file_path.index(__name__.split(".")[0]) :]
-
-        # Windows users' qis_abs_path may use os.sep or '/' due to PySide's
-        # handling of file names
-        qis_mod_path = qis_abs_path.replace(os.sep, ".")[: -len(".py")]
-        qis_mod_path = qis_mod_path.replace(
-            "/", "."
-        )  # users cannot use '/' in filename
-
-        mymodule = importlib.import_module(qis_mod_path)
-        members = inspect.getmembers(mymodule, inspect.isclass)
-        class_owner = qis_mod_path.split(".")[-1]
-        for memtup in members:
-            if len(memtup) > 1:
-                if str(memtup[1].__module__).endswith(class_owner):
-                    return memtup[1]
+        return class_from_abs_file_path(abs_file_path)

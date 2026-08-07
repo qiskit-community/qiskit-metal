@@ -55,12 +55,41 @@ class TestComponentPathResolution(unittest.TestCase):
     """Issue #1178 — path→module resolution must not depend on path spelling."""
 
     def setUp(self):
-        from qiskit_metal._gui.widgets.create_component_window import (
-            parameter_entry_window as pew,
+        from qiskit_metal._gui.utility.utils import (
+            class_from_abs_file_path,
+            module_path_from_abs_file_path,
         )
 
-        self.module_path = pew.module_path_from_abs_file_path
-        self.get_class = pew.get_class_from_abs_file_path
+        self.module_path = module_path_from_abs_file_path
+        self.get_class = class_from_abs_file_path
+
+    @staticmethod
+    def _write_external_component(tmp):
+        """Create an importable package with a QComponent in it.
+
+        Returns the package directory's parent (to put on ``sys.path``)
+        and the absolute path of the component file.
+        """
+        pkg = os.path.join(tmp, "my_solver_pkg")
+        os.makedirs(pkg)
+        open(os.path.join(pkg, "__init__.py"), "w", encoding="utf-8").close()
+        component = os.path.join(pkg, "my_component.py")
+        with open(component, "w", encoding="utf-8") as handle:
+            handle.write(
+                textwrap.dedent(
+                    """
+                    from qiskit_metal.qlibrary.core import QComponent
+
+                    class MyExternalComponent(QComponent):
+                        TOOLTIP = "external tooltip"
+                        default_options = dict()
+
+                        def make(self):
+                            pass
+                    """
+                )
+            )
+        return component
 
     def test_in_tree_component_still_resolves(self):
         """The path that already worked must keep working."""
@@ -152,6 +181,49 @@ class TestComponentPathResolution(unittest.TestCase):
             open(leaf, "w", encoding="utf-8").close()
 
             self.assertEqual(self.module_path(leaf), "outer.middle.inner.thing")
+
+    def test_both_call_sites_share_one_implementation(self):
+        """The delegate and the entry window must resolve identically.
+
+        ``delegate_qlibrary.LibraryDelegate.get_class_from_abs_file_path``
+        held a byte-identical copy of the old substring logic, so fixing
+        only the entry window left the Library-pane tooltip path broken.
+        Its bare ``except`` turned that into a silently empty tooltip
+        rather than a visible error, which is why it went unnoticed.
+        """
+        import tempfile
+
+        from qiskit_metal._gui.widgets.create_component_window import (
+            parameter_entry_window as pew,
+        )
+        from qiskit_metal._gui.widgets.qlibrary_display.delegate_qlibrary import (
+            LibraryDelegate,
+        )
+
+        with tempfile.TemporaryDirectory() as tmp:
+            component = self._write_external_component(tmp)
+
+            sys.path.insert(0, tmp)
+            try:
+                via_delegate = LibraryDelegate.get_class_from_abs_file_path(
+                    None, component
+                )
+                via_entry_window = pew.get_class_from_abs_file_path(component)
+            finally:
+                sys.path.remove(tmp)
+                sys.modules.pop("my_solver_pkg.my_component", None)
+                sys.modules.pop("my_solver_pkg", None)
+
+            self.assertIsNotNone(
+                via_delegate,
+                msg=(
+                    "the Library-pane delegate could not resolve an external "
+                    "component; it likely still has its own copy of the "
+                    "substring logic (issue #1178)"
+                ),
+            )
+            self.assertIs(via_delegate, via_entry_window)
+            self.assertEqual(via_delegate.TOOLTIP, "external tooltip")
 
 
 if __name__ == "__main__":
