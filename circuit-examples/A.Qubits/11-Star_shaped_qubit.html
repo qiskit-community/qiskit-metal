@@ -169,7 +169,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
@@ -270,8 +270,6 @@
 <li class="toctree-l2"><a class="reference internal" href="09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Star shaped qubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#A-Star-Qubit">A Star Qubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Closing-the-Qiskit-Metal-GUI">Closing the Qiskit Metal GUI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
@@ -464,7 +462,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
@@ -477,7 +475,7 @@
 <h1>Star shaped qubit<a class="headerlink" href="#Star-shaped-qubit" title="Link to this heading">¶</a></h1>
 <p>We’ll be creating a 2D design and adding a star shaped qubit QComponent.</p>
 <p>There’s a central star shaped component. This component is essentially a circle with trpezoids subtracted from it. A T-junction qubit is attached to this central shape. Then there are four coupling resonators and one readout resonator present in the default setting. The shape of the central component and the number coupling resonators are customizable. Let’s try out a few diferent ways to create and render this component.</p>
-<p><a class="reference external" href="https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs/circuit-examples/A.Qubits/11-Star_shaped_qubit.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> <a class="reference external" href="https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=docs%2Fcircuit-examples%2FA.Qubits%2F11-Star_shaped_qubit.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
+<p><a class="reference external" href="https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/Appendix%20C%20Circuit%20examples/A.%20Qubits/11-Star_shaped_qubit.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> <a class="reference external" href="https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=tutorials%2FAppendix%20C%20Circuit%20examples%2FA.%20Qubits%2F11-Star_shaped_qubit.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
 <blockquote>
 <div><p>💡 <strong>Running in Colab or Binder?</strong> Skip the desktop GUI install — the cell below grabs the lite (no-Qt) wheel, and <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> auto-picks an inline matplotlib viewer with the same API (<code class="docutils literal notranslate"><span class="pre">gui.rebuild()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.screenshot()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.edit_component(...)</span></code>) as the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>.</p>
 </div></blockquote>
@@ -492,20 +490,14 @@
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># So, let us dive right in. For convenience, let&#39;s begin by enabling</span>
-<span class="c1"># automatic reloading of modules when they change.</span>
-<span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-</pre></div>
-</div>
-</div>
+<blockquote>
+<div><p>💡 <strong>Using this tutorial without the Qt GUI</strong></p>
+<p>This tutorial uses the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>. To follow along on Colab, Binder, JupyterHub, or any environment where Qt isn’t available, <strong>replace any ``gui.rebuild()`` / ``gui.screenshot()`` call with ``qm.view(design)``</strong> — it renders the design to a matplotlib <code class="docutils literal notranslate"><span class="pre">Figure</span></code> you can display inline or save with <code class="docutils literal notranslate"><span class="pre">fig.savefig(...)</span></code>.</p>
+<p>See <a class="reference external" href="../../1-Overview/1.1-Quick-start.ipynb">1.1 Quick start</a> for a complete runnable walkthrough and <code class="docutils literal notranslate"><span class="pre">`docs/headless-usage.rst</span></code> &lt;../../../docs/headless-usage.rst&gt;`__ for the full reference.</p>
+</div></blockquote>
 <p>Next, we import the relevant modules. You can add new modules as and when needed.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">metal</span>
@@ -518,7 +510,7 @@
 </div>
 <p>Next we import the GUI</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetalGUI</span>
@@ -527,7 +519,7 @@
 </div>
 <p>A QDesign class must be instantiated each time a new quantum circuit design is created. The design class <code class="docutils literal notranslate"><span class="pre">DesignPlanar</span></code> is best for 2D circuit designs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
@@ -536,12 +528,11 @@
 </pre></div>
 </div>
 </div>
-</section>
 <section id="A-Star-Qubit">
-<h1>A Star Qubit<a class="headerlink" href="#A-Star-Qubit" title="Link to this heading">¶</a></h1>
+<h2>A Star Qubit<a class="headerlink" href="#A-Star-Qubit" title="Link to this heading">¶</a></h2>
 <p>You can create a ready-made star qubit from the QComponent Library, qiskit_metal.qlibrary.qubits. star_qubit.py is the file containing our qubit so StarQubit is the module we import.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.star_qubit</span><span class="w"> </span><span class="kn">import</span> <span class="n">StarQubit</span>
@@ -587,7 +578,7 @@
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># To force overwrite a QComponent with an existing name.</span>
@@ -598,12 +589,12 @@
 </div>
 <p>Let us place the qubit at (x,y) =(5,5), and change the default rotation values. As this design is meant to have up to 5 contacts including one readout and up to 4 coupling resonators, these angles should be 72 degrees apart. However, the number of connectors may be changed to any value between 0 and 4.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qubit_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
-    <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
+    <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;7um&quot;</span><span class="p">,</span>
+    <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;7um&quot;</span><span class="p">,</span>
     <span class="n">number_of_connectors</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>  <span class="c1"># Change the number of connectors</span>
 <span class="p">)</span>
 
@@ -699,24 +690,24 @@
 </div>
 </section>
 <section id="Closing-the-Qiskit-Metal-GUI">
-<h1>Closing the Qiskit Metal GUI<a class="headerlink" href="#Closing-the-Qiskit-Metal-GUI" title="Link to this heading">¶</a></h1>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<h2>Closing the Qiskit Metal GUI<a class="headerlink" href="#Closing-the-Qiskit-Metal-GUI" title="Link to this heading">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gui.main_window.close()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-True
-</pre></div></div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
 </div>
+</div>
+</section>
 </section>
 <br><br>
 <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
@@ -791,8 +782,28 @@ True
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Star shaped qubit</a><ul>
+<li><a class="reference internal" href="#A-Star-Qubit">A Star Qubit</a></li>
+<li><a class="reference internal" href="#Closing-the-Qiskit-Metal-GUI">Closing the Qiskit Metal GUI</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

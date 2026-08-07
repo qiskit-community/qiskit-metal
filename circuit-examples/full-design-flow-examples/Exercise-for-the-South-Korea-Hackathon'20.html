@@ -270,8 +270,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../A.Qubits/11-Star_shaped_qubit.html#A-Star-Qubit">A Star Qubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../A.Qubits/11-Star_shaped_qubit.html#Closing-the-Qiskit-Metal-GUI">Closing the Qiskit Metal GUI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
@@ -477,30 +475,11 @@
 <h1>South Korea Qiskit Hackathon’20 - Qiskit Metal exercise<a class="headerlink" href="#South-Korea-Qiskit-Hackathon'20---Qiskit-Metal-exercise" title="Link to this heading">¶</a></h1>
 <section id="Preparation">
 <h2>Preparation<a class="headerlink" href="#Preparation" title="Link to this heading">¶</a></h2>
-<p><a class="reference external" href="https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs/circuit-examples/full-design-flow-examples/Exercise-for-the-South-Korea-Hackathon%2720.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> <a class="reference external" href="https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=docs%2Fcircuit-examples%2Ffull-design-flow-examples%2FExercise-for-the-South-Korea-Hackathon%2720.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
 <blockquote>
-<div><p>💡 <strong>Running in Colab or Binder?</strong> Skip the desktop GUI install — the cell below grabs the lite (no-Qt) wheel, and <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> auto-picks an inline matplotlib viewer with the same API (<code class="docutils literal notranslate"><span class="pre">gui.rebuild()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.screenshot()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.edit_component(...)</span></code>) as the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>.</p>
+<div><p>💡 <strong>Using this tutorial without the Qt GUI</strong></p>
+<p>This tutorial uses the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>. To follow along on Colab, Binder, JupyterHub, or any environment where Qt isn’t available, <strong>replace any ``gui.rebuild()`` / ``gui.screenshot()`` call with ``qm.view(design)``</strong> — it renders the design to a matplotlib <code class="docutils literal notranslate"><span class="pre">Figure</span></code> you can display inline or save with <code class="docutils literal notranslate"><span class="pre">fig.savefig(...)</span></code>.</p>
+<p>See <a class="reference external" href="../1-Overview/1.1-Quick-start.ipynb">1.1 Quick start</a> for a complete runnable walkthrough and <code class="docutils literal notranslate"><span class="pre">`docs/headless-usage.rst</span></code> &lt;../../docs/headless-usage.rst&gt;`__ for the full reference.</p>
 </div></blockquote>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Colab / Binder, uncomment to install Quantum Metal (lite, no Qt).</span>
-<span class="c1"># Locally you should already have it via `pip install quantum-metal` or</span>
-<span class="c1"># `pip install &#39;quantum-metal[gui]&#39;` for the desktop GUI.</span>
-<span class="c1"># !pip install -q quantum-metal</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-</pre></div>
-</div>
-</div>
 <p><em>Make sure to have the right kernel selected!</em></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -537,7 +516,7 @@
 <section id="Design-the-layout">
 <h2>Design the layout<a class="headerlink" href="#Design-the-layout" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket_cl</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocketCL</span>
@@ -551,7 +530,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">metal</span><span class="o">.</span><span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
@@ -648,7 +627,7 @@
 </div>
 <p>We will then add those two qubits with the options we are wanting to define, these can all be modified easily later too. The rebuild command is included so the changes can be seen immediately in the GUI.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -697,7 +676,7 @@
 <p>We will next connect the two transmons together to form a bus using RoutePathfinder, an auto drawing CPW transmission line. We simply have to give the start and end location using the component pins of what we are trying to connect to. We can use the GUI to confirm the pin names we want to give as inputs.</p>
 <p>Pins also play an important role with rendering and simulations, as any unconnected pin can be defined as a short, open, or driven terminal.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bus_Q1_Q2</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span>
@@ -720,7 +699,7 @@
 </div>
 <p>Then the readout structures can be added, being the capacitor couplers and meandered transmission lines to form the readout resonators.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cap_Q1</span> <span class="o">=</span> <span class="n">Cap3Interdigital</span><span class="p">(</span>
@@ -742,7 +721,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">readout_Q1</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span>
@@ -769,7 +748,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">readout_Q2</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span>
@@ -797,7 +776,7 @@
 </div>
 <p>With the launchers and short transmission lines to connect them to the capacitors and the charge lines.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">launch_Q1_read</span> <span class="o">=</span> <span class="n">LaunchpadWirebond</span><span class="p">(</span>
@@ -824,7 +803,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tl_Q1</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span>
@@ -859,7 +838,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tl_Q1_cl</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span>
@@ -890,14 +869,19 @@
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rebuild the design in the GUI and save a screenshot as a .png file.</span>
+
+<span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -905,7 +889,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/circuit-examples_full-design-flow-examples_Exercise-for-the-South-Korea-Hackathon%2720_26_0.png" class="no-scaled-link" src="../../_images/circuit-examples_full-design-flow-examples_Exercise-for-the-South-Korea-Hackathon%2720_26_0.png" width="500" />
+<img alt="../../_images/circuit-examples_full-design-flow-examples_Exercise-for-the-South-Korea-Hackathon%2720_24_0.png" class="no-scaled-link" src="../../_images/circuit-examples_full-design-flow-examples_Exercise-for-the-South-Korea-Hackathon%2720_24_0.png" width="500" />
 </div>
 </div>
 </section>
@@ -922,7 +906,7 @@
 <p>All of the qubit paramters can initially be tuned via a capacitance matrix and the lumped oscillator method. This analysis is not as accurate as others, but allows for fairly fast and small simulations.</p>
 <p>We will start by selecting the Analysis class of interest.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOManalysis</span>
@@ -933,7 +917,7 @@
 </div>
 <p>We can see what options are available for the analysis and make any changes we may wish, such as increasing the buffer size for the bounding box when simulation subsections of the chip.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim_p</span> <span class="o">=</span> <span class="n">c1</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span>
@@ -1435,7 +1419,7 @@ Design &#34;Qubit1_q3d&#34; info:
 <p>One must also keep in mind that any such changes will impact the other parameters, so careful tweaks and iterations of simulation/analysis often end up being necessary.</p>
 <p>If wanting to make changes and re-render your design, you first should clear your current design.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c1</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">clean_active_design</span><span class="p">()</span>
@@ -1444,7 +1428,7 @@ Design &#34;Qubit1_q3d&#34; info:
 </div>
 <p>When done with all the simulations, you can disconnect from Ansys EDT.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c1</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -1457,7 +1441,7 @@ Design &#34;Qubit1_q3d&#34; info:
 <p>Now, although the previous simulation and analysis captured all of the parameters of the qubits and coupling to the bus, a more accurate (all be it slower) approach is to render the qubits and their coupling into an eigenmode simulation and perform EPR analysis on the result.</p>
 <p>We again start by selecting the Analysis class of interest.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">EPRanalysis</span>
@@ -1468,7 +1452,7 @@ Design &#34;Qubit1_q3d&#34; info:
 </div>
 <p>Review and update the simulation setup by executing following two cells.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em_p</span> <span class="o">=</span> <span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span>
@@ -1550,7 +1534,7 @@ INFO 10:10AM [analyze]: Analyzing setup QubitTune
 </div>
 <p>Once completed, we can check the convergence to see if more passes might be necessary.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_convergences</span><span class="p">()</span>
@@ -1864,7 +1848,7 @@ Index: [0, 1]
 <p>Other analysis is still being added, such as the impedance analysis, though some already be done manually by renderering to a driven modal simulation and performing frequency sweeps to extract the S-Parameters or Impedance matrix. This would be an easy way to, say, determine the external quality factor of a readout resonator. <em>See tutorial notebooks 4.3</em></p>
 <p>Once the analysis and tuning is complete, we can disconnect from the renderer.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -1876,7 +1860,7 @@ Index: [0, 1]
 <h3>Rendering to a GDS File<a class="headerlink" href="#Rendering-to-a-GDS-File" title="Link to this heading">¶</a></h3>
 <p>Once all of the tuning is complete, we will want to prepare a GDS file so we can create a mask and fabricate our chip. We first create a gds render instance.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qhk21_gds</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span>
@@ -1929,7 +1913,7 @@ Index: [0, 1]
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qhk21_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;path_filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;../resources/Fake_Junctions.GDS&quot;</span>
@@ -1956,7 +1940,7 @@ Index: [0, 1]
 </div>
 <p>(optional) Now that the design is finished, we can close the GUI.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gui.main_window.close()</span>

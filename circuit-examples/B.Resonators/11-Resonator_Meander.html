@@ -270,8 +270,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../A.Qubits/11-Star_shaped_qubit.html#A-Star-Qubit">A Star Qubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../A.Qubits/11-Star_shaped_qubit.html#Closing-the-Qiskit-Metal-GUI">Closing the Qiskit Metal GUI</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Simple CPW Meander</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
@@ -484,7 +482,7 @@
 <div class="line">RouteMeander: Implements a simple CPW, with a single meander.</div>
 <div class="line">OpenToGround: A basic open to ground termination. Functions as a pin for auto drawing.</div>
 </div>
-<p><a class="reference external" href="https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs/circuit-examples/B.Resonators/11-Resonator_Meander.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> <a class="reference external" href="https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=docs%2Fcircuit-examples%2FB.Resonators%2F11-Resonator_Meander.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
+<p><a class="reference external" href="https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/Appendix%20C%20Circuit%20examples/B.%20Resonators/11-Resonator_Meander.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> <a class="reference external" href="https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=tutorials%2FAppendix%20C%20Circuit%20examples%2FB.%20Resonators%2F11-Resonator_Meander.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
 <blockquote>
 <div><p>💡 <strong>Running in Colab or Binder?</strong> Skip the desktop GUI install — the cell below grabs the lite (no-Qt) wheel, and <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> auto-picks an inline matplotlib viewer with the same API (<code class="docutils literal notranslate"><span class="pre">gui.rebuild()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.screenshot()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.edit_component(...)</span></code>) as the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>.</p>
 </div></blockquote>
@@ -499,19 +497,13 @@
 </pre></div>
 </div>
 </div>
+<blockquote>
+<div><p>💡 <strong>Using this tutorial without the Qt GUI</strong></p>
+<p>This tutorial uses the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>. To follow along on Colab, Binder, JupyterHub, or any environment where Qt isn’t available, <strong>replace any ``gui.rebuild()`` / ``gui.screenshot()`` call with ``qm.view(design)``</strong> — it renders the design to a matplotlib <code class="docutils literal notranslate"><span class="pre">Figure</span></code> you can display inline or save with <code class="docutils literal notranslate"><span class="pre">fig.savefig(...)</span></code>.</p>
+<p>See <a class="reference external" href="../../1-Overview/1.1-Quick-start.ipynb">1.1 Quick start</a> for a complete runnable walkthrough and <code class="docutils literal notranslate"><span class="pre">`docs/headless-usage.rst</span></code> &lt;../../../docs/headless-usage.rst&gt;`__ for the full reference.</p>
+</div></blockquote>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For convenience, let&#39;s begin by enabling</span>
-<span class="c1"># automatic reloading of modules when they change.</span>
-<span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">metal</span>
@@ -521,7 +513,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Each time you create a new quantum circuit design,</span>
@@ -534,7 +526,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.terminations.open_to_ground</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenToGround</span>
@@ -599,7 +591,7 @@
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># To force overwrite a QComponent with an existing name.</span>
@@ -611,7 +603,7 @@
 <p>A RouteMeander connector are shown. The terminations are open-to-ground.</p>
 <p>The pin_inputs is the default dictionary for passing pins into a component, <strong>BUT</strong> how the dictionary is structured is component dependent. Using the below structure (eg. start_pin, end_pin) is suggested for any 2 port type connection, but you should always check the documentation for the specific component you are wanting to use.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">open_start_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1000um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;-90&quot;</span><span class="p">)</span>
@@ -630,7 +622,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">meander_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>

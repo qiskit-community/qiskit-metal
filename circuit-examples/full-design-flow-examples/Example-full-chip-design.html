@@ -270,8 +270,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../A.Qubits/11-Star_shaped_qubit.html#A-Star-Qubit">A Star Qubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../A.Qubits/11-Star_shaped_qubit.html#Closing-the-Qiskit-Metal-GUI">Closing the Qiskit Metal GUI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
@@ -475,30 +473,11 @@
 </div>
 <section id="Example-full-chip-design">
 <h1>Example full chip design<a class="headerlink" href="#Example-full-chip-design" title="Link to this heading">¶</a></h1>
-<p><a class="reference external" href="https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs/circuit-examples/full-design-flow-examples/Example-full-chip-design.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> <a class="reference external" href="https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=docs%2Fcircuit-examples%2Ffull-design-flow-examples%2FExample-full-chip-design.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
 <blockquote>
-<div><p>💡 <strong>Running in Colab or Binder?</strong> Skip the desktop GUI install — the cell below grabs the lite (no-Qt) wheel, and <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> auto-picks an inline matplotlib viewer with the same API (<code class="docutils literal notranslate"><span class="pre">gui.rebuild()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.screenshot()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.edit_component(...)</span></code>) as the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>.</p>
+<div><p>💡 <strong>Using this tutorial without the Qt GUI</strong></p>
+<p>This tutorial uses the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>. To follow along on Colab, Binder, JupyterHub, or any environment where Qt isn’t available, <strong>replace any ``gui.rebuild()`` / ``gui.screenshot()`` call with ``qm.view(design)``</strong> — it renders the design to a matplotlib <code class="docutils literal notranslate"><span class="pre">Figure</span></code> you can display inline or save with <code class="docutils literal notranslate"><span class="pre">fig.savefig(...)</span></code>.</p>
+<p>See <a class="reference external" href="../1-Overview/1.1-Quick-start.ipynb">1.1 Quick start</a> for a complete runnable walkthrough and <code class="docutils literal notranslate"><span class="pre">`docs/headless-usage.rst</span></code> &lt;../../docs/headless-usage.rst&gt;`__ for the full reference.</p>
 </div></blockquote>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Colab / Binder, uncomment to install Quantum Metal (lite, no Qt).</span>
-<span class="c1"># Locally you should already have it via `pip install quantum-metal` or</span>
-<span class="c1"># `pip install &#39;quantum-metal[gui]&#39;` for the desktop GUI.</span>
-<span class="c1"># !pip install -q quantum-metal</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-</pre></div>
-</div>
-</div>
 <p><em>Make sure to have the right kernel selected!</em></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -534,7 +513,7 @@
 <section id="Layout">
 <h2>Layout<a class="headerlink" href="#Layout" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket_6</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocket6</span>
@@ -558,7 +537,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">metal</span><span class="o">.</span><span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
@@ -597,7 +576,7 @@
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span> <span class="o">=</span> <span class="s2">&quot;11mm&quot;</span>
@@ -1257,7 +1236,7 @@
 </div>
 <p>Finishing off this section of the chip by connecting the flux lines to appropraite wirebond launch pads.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crossmon flux lines</span>
@@ -1449,7 +1428,7 @@
 </div>
 <p>We complete the layout by connecting the multiplexed readout line to the launchpads on either side of the chip.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mp_tl_01</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span>
@@ -1504,14 +1483,14 @@
 </pre></div>
 </div>
 </div>
-<p>With this, we have completed the construction of our layout.</p>
-<p>Now, anyone familiar with chip design might find some of the location choices to be sub-optimal, with large sections of your chip left unused, or perhaps some CPW transmission lines running a bit closer to each other than would be ideal for avoiding cross talk concerns. These could be address by shifting the origin of your chip, or modifying component options to better compact your layout and alleviate crosstalk concerns.</p>
-<p>For this tutorial, we aren’t too concerned how much space we may use up on our fictional chip, so we will instead continue on to analysis and tuning.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rebuild the design in the GUI and save a screenshot as a .png file.</span>
+
+<span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1520,17 +1499,23 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/circuit-examples_full-design-flow-examples_Example-full-chip-design_46_0.png" class="no-scaled-link" src="../../_images/circuit-examples_full-design-flow-examples_Example-full-chip-design_46_0.png" width="500" />
+<img alt="../../_images/circuit-examples_full-design-flow-examples_Example-full-chip-design_43_0.png" class="no-scaled-link" src="../../_images/circuit-examples_full-design-flow-examples_Example-full-chip-design_43_0.png" width="500" />
 </div>
 </div>
+<p>With this, we have completed the construction of our layout.</p>
+<p>Now, anyone familiar with chip design might find some of the location choices to be sub-optimal, with large sections of your chip left unused, or perhaps some CPW transmission lines running a bit closer to each other than would be ideal for avoiding cross talk concerns. These could be address by shifting the origin of your chip, or modifying component options to better compact your layout and alleviate crosstalk concerns.</p>
+<p>For this tutorial, we aren’t too concerned how much space we may use up on our fictional chip, so we will instead continue on to analysis and tuning.</p>
 </section>
 </section>
-<section id="Analyze-1:-Capacitance-Extraction-and-LOM">
-<h2>Analyze 1: Capacitance Extraction and LOM<a class="headerlink" href="#Analyze-1:-Capacitance-Extraction-and-LOM" title="Link to this heading">¶</a></h2>
+<section id="Analyze">
+<h2>Analyze<a class="headerlink" href="#Analyze" title="Link to this heading">¶</a></h2>
+</section>
+<section id="Capacitance-Extraction-and-LOM">
+<h2>Capacitance Extraction and LOM<a class="headerlink" href="#Capacitance-Extraction-and-LOM" title="Link to this heading">¶</a></h2>
 <p>First we want to quickly look at the qubit parameters. Initial simulation and analysis is to use a lumped element approximation, by extracting the capacitance matrix of the qubit. We first analyze the qubit <code class="docutils literal notranslate"><span class="pre">Q_Main</span></code>, by first extracting the matrix and then using LOM analysis on it.</p>
 <p>For starters, let’s select the appropriate QAnalysis class.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOManalysis</span>
@@ -2168,7 +2153,7 @@ Design &#34;Q_Main_q3d&#34; info:
 </div>
 <p>Once the analysis and tuning is complete, we can stop the analysis and the renderer.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c1</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -2176,14 +2161,14 @@ Design &#34;Q_Main_q3d&#34; info:
 </div>
 </div>
 </section>
-<section id="Analyze-2:-Eigenmode-and-EPR">
-<h2>Analyze 2: Eigenmode and EPR<a class="headerlink" href="#Analyze-2:-Eigenmode-and-EPR" title="Link to this heading">¶</a></h2>
+<section id="Eigenmode-and-EPR">
+<h2>Eigenmode and EPR<a class="headerlink" href="#Eigenmode-and-EPR" title="Link to this heading">¶</a></h2>
 <p>Once each of our qubits have been run through LOM, we can begin to look at the resonant busses and readouts, and larger coupled sections of the chip. One such case could be looking at Q_Main, Q5, and Bus_05. This allows us not only to look at some of the parameters of the individual qubits, but also the bus frequency and if the qubits are coupled (via the bus) to the degree we wish.</p>
 <section id="Preparations">
 <h3>Preparations<a class="headerlink" href="#Preparations" title="Link to this heading">¶</a></h3>
 <p>We will setup the design and simulation in the same manner as we did previously, but with the methods needed for an eigenmode simulation.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">EPRanalysis</span>
@@ -2194,7 +2179,7 @@ Design &#34;Q_Main_q3d&#34; info:
 </div>
 <p>(optional) you can tune the wirebond size by directly modifying the renderer options.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;wb_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
@@ -2203,7 +2188,7 @@ Design &#34;Q_Main_q3d&#34; info:
 </div>
 <p>Review and update the simulation setup by executing following two cells.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em_p</span> <span class="o">=</span> <span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span>
@@ -2282,7 +2267,7 @@ Design &#34;Q_Main_q3d&#34; info:
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q_main</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">hfss_inductance</span> <span class="o">=</span> <span class="s2">&quot;13nH&quot;</span>
@@ -2332,7 +2317,7 @@ INFO 09:55AM [analyze]: Analyzing setup 3Modes
 </div>
 <p>Once the simulation is complete, we can check to see if the convergence was good.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">plot_convergences</span><span class="p">()</span>
@@ -2683,20 +2668,18 @@ Index: [0, 1, 2]
 </div>
 <p>From the analysis results we can determine the qubits anharmonicities and coupling strength. Once the analysis and tuning is complete, we can close the connection to Ansys.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-</section>
-</section>
 <section id="Rendering-to-a-GDS-File">
-<h2>Rendering to a GDS File<a class="headerlink" href="#Rendering-to-a-GDS-File" title="Link to this heading">¶</a></h2>
+<h4>Rendering to a GDS File<a class="headerlink" href="#Rendering-to-a-GDS-File" title="Link to this heading">¶</a></h4>
 <p>Once all of the tuning is complete, we will want to prepare a GDS file so we can create a mask and fabricate our chip. We first create a gds render instance.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">full_chip_gds</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span>
@@ -2749,7 +2732,7 @@ Index: [0, 1, 2]
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">full_chip_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;path_filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;../resources/Fake_Junctions.GDS&quot;</span>
@@ -2776,13 +2759,15 @@ Index: [0, 1, 2]
 </div>
 <p>(optional) With the design complete, we can close the GUI.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gui.main_window.close()</span>
 </pre></div>
 </div>
 </div>
+</section>
+</section>
 </section>
 </section>
 <br><br>
@@ -2877,12 +2862,15 @@ Index: [0, 1, 2]
 <li><a class="reference internal" href="#The-Readouts-and-Control-Lines">The Readouts and Control Lines</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Analyze-1:-Capacitance-Extraction-and-LOM">Analyze 1: Capacitance Extraction and LOM</a></li>
-<li><a class="reference internal" href="#Analyze-2:-Eigenmode-and-EPR">Analyze 2: Eigenmode and EPR</a><ul>
-<li><a class="reference internal" href="#Preparations">Preparations</a></li>
+<li><a class="reference internal" href="#Analyze">Analyze</a></li>
+<li><a class="reference internal" href="#Capacitance-Extraction-and-LOM">Capacitance Extraction and LOM</a></li>
+<li><a class="reference internal" href="#Eigenmode-and-EPR">Eigenmode and EPR</a><ul>
+<li><a class="reference internal" href="#Preparations">Preparations</a><ul>
+<li><a class="reference internal" href="#Rendering-to-a-GDS-File">Rendering to a GDS File</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Rendering-to-a-GDS-File">Rendering to a GDS File</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

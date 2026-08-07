@@ -270,8 +270,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../A.Qubits/11-Star_shaped_qubit.html#A-Star-Qubit">A Star Qubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../A.Qubits/11-Star_shaped_qubit.html#Closing-the-Qiskit-Metal-GUI">Closing the Qiskit Metal GUI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
@@ -475,7 +473,7 @@
 </div>
 <section id="Four-Qubit-Chip-Design">
 <h1>Four Qubit Chip Design<a class="headerlink" href="#Four-Qubit-Chip-Design" title="Link to this heading">¶</a></h1>
-<p><a class="reference external" href="https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs/circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> <a class="reference external" href="https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=docs%2Fcircuit-examples%2FF.Small-quantum-chips%2F51-Four_qubit_chip.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
+<p><a class="reference external" href="https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/Appendix%20C%20Circuit%20examples/F.%20Small-quantum-chips/51-Four_qubit_chip.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> <a class="reference external" href="https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=tutorials%2FAppendix%20C%20Circuit%20examples%2FF.%20Small-quantum-chips%2F51-Four_qubit_chip.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
 <blockquote>
 <div><p>💡 <strong>Running in Colab or Binder?</strong> Skip the desktop GUI install — the cell below grabs the lite (no-Qt) wheel, and <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> auto-picks an inline matplotlib viewer with the same API (<code class="docutils literal notranslate"><span class="pre">gui.rebuild()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.screenshot()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.edit_component(...)</span></code>) as the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>.</p>
 </div></blockquote>
@@ -490,22 +488,17 @@
 </pre></div>
 </div>
 </div>
+<blockquote>
+<div><p>💡 <strong>Using this tutorial without the Qt GUI</strong></p>
+<p>This tutorial uses the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>. To follow along on Colab, Binder, JupyterHub, or any environment where Qt isn’t available, <strong>replace any ``gui.rebuild()`` / ``gui.screenshot()`` call with ``qm.view(design)``</strong> — it renders the design to a matplotlib <code class="docutils literal notranslate"><span class="pre">Figure</span></code> you can display inline or save with <code class="docutils literal notranslate"><span class="pre">fig.savefig(...)</span></code>.</p>
+<p>See <a class="reference external" href="../../1-Overview/1.1-Quick-start.ipynb">1.1 Quick start</a> for a complete runnable walkthrough and <code class="docutils literal notranslate"><span class="pre">`docs/headless-usage.rst</span></code> &lt;../../../docs/headless-usage.rst&gt;`__ for the full reference.</p>
+</div></blockquote>
 <p>Creates a complete quantum chip and exports it</p>
 <section id="Preparations">
 <h2>Preparations<a class="headerlink" href="#Preparations" title="Link to this heading">¶</a></h2>
-<p>The next cell enables <a class="reference external" href="https://ipython.readthedocs.io/en/stable/config/extensions/autoreload.html?highlight=autoreload">module automatic reload</a>. Your notebook will be able to pick up code updates made to the qiskit-metal (or other) module code.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">reload_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-</pre></div>
-</div>
-</div>
 <p>Import key libraries and open the Metal GUI. Also we configure the notebook to enable overwriting of existing components</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -524,7 +517,7 @@
 </div>
 <p>Import components that will be necessary for the design</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket_cl</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocketCL</span>
@@ -543,7 +536,7 @@
 <h3>Let’s design the core of the chip<a class="headerlink" href="#Let's-design-the-core-of-the-chip" title="Link to this heading">¶</a></h3>
 <p>Setup the design-wide default settings for trace width and trace gap. These can be customized later for individual transmission lines.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;cpw_width&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;10 um&quot;</span>
@@ -614,7 +607,7 @@
 <p>We want to change the <code class="docutils literal notranslate"><span class="pre">pad_width</span></code> for these transmons, as well as define the 3 connection pads and chargeline.</p>
 <p>To apply the same modifications to all 4 transmons, we define a single option-dictionary to pass to all transmons at the monent of creation</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transmon_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -632,7 +625,7 @@
 </div>
 <p>We can now create the 4 transmons by specifying the desired coordinates and orientations.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">offset_tm</span> <span class="o">=</span> <span class="mi">69</span>  <span class="c1"># we the transmon slightly out of center-line</span>
@@ -700,7 +693,7 @@
 </div>
 <p>We want to globally override the default lead (straight initial segment leaving the transmon) and the default fillet (corner rounding radius). Let’s collect this information in one dictionary</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fillet</span> <span class="o">=</span> <span class="s2">&quot;99.99um&quot;</span>
@@ -712,7 +705,7 @@
 </div>
 <p>We then want each transmission line to be connected to different pins and to have different lengths and asymmetry w.r.t their centerline. Let’s collect this information in other dictionaries. Before doing that, to manage the dictionaries in a simpler way, we redefine the <code class="docutils literal notranslate"><span class="pre">RouteMeander</span></code> signature by wrapping it into a convenience method named <code class="docutils literal notranslate"><span class="pre">connect</span></code></p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span>
@@ -740,7 +733,7 @@
 </div>
 <p>We can now proceed and define the meanders following the signature: <code class="docutils literal notranslate"><span class="pre">connect(cpw_name,</span> <span class="pre">pin1_comp_name,</span> <span class="pre">pin1_comp_pin,</span> <span class="pre">pin2_comp_name,</span> <span class="pre">pin2_comp_pin,</span> <span class="pre">length,</span> <span class="pre">asymmetry)</span></code></p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">asym</span> <span class="o">=</span> <span class="mi">500</span>
@@ -759,7 +752,7 @@
 <h3>Let’s now connect the core elements to the launchpads<a class="headerlink" href="#Let's-now-connect-the-core-elements-to-the-launchpads" title="Link to this heading">¶</a></h3>
 <p>First we setup the launchpad location and orientation</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># V1 - Corners</span>
@@ -813,7 +806,7 @@
 </div>
 <p>Then we route. First the V2 launchpads - Exchange Coupler Lines to Edges</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">asym</span> <span class="o">=</span> <span class="mi">150</span>
@@ -834,7 +827,7 @@
 <p>Finally we route the V1 launchpads - Charge Lines to Corners</p>
 <p>We create the transmission lines between the corner launchpads and the open to grounds</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
@@ -876,7 +869,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jogsB_in</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
@@ -926,7 +919,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># rebuild the design and plot</span>
@@ -935,7 +928,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a list of all the qcomponents in QDesign and then zoom on them.</span>
@@ -958,7 +951,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/circuit-examples_F.Small-quantum-chips_51-Four_qubit_chip_39_0.png" class="no-scaled-link" src="../../_images/circuit-examples_F.Small-quantum-chips_51-Four_qubit_chip_39_0.png" width="500" />
+<img alt="../../_images/circuit-examples_F.Small-quantum-chips_51-Four_qubit_chip_38_0.png" class="no-scaled-link" src="../../_images/circuit-examples_F.Small-quantum-chips_51-Four_qubit_chip_38_0.png" width="500" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -979,7 +972,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/circuit-examples_F.Small-quantum-chips_51-Four_qubit_chip_40_0.png" class="no-scaled-link" src="../../_images/circuit-examples_F.Small-quantum-chips_51-Four_qubit_chip_40_0.png" width="500" />
+<img alt="../../_images/circuit-examples_F.Small-quantum-chips_51-Four_qubit_chip_39_0.png" class="no-scaled-link" src="../../_images/circuit-examples_F.Small-quantum-chips_51-Four_qubit_chip_39_0.png" width="500" />
 </div>
 </div>
 <div class="nbinput docutils container">
