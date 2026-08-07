@@ -6,6 +6,17 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Unreleased
+
+### Fixed
+
+- **`TransmonCross` `connector_location='270'`** placed the connector on the east arm instead of the south arm. The rotation chain had no branch above 225 degrees, so 270 matched the `> 135` test. (#1173, closes #1052)
+- **`connector_location` now wraps mod 360.** The chain saturated at its top branch, so out-of-range angles landed arbitrarily — `'360'` resolved to south rather than west, `'-90'` to west rather than south. In-range angles, including the half-way values 45/135/225, keep their existing arm.
+
+### Changed
+
+- **`TransmonCrossFL` warns when a connection pad resolves to the south arm** while `make_fl` is True. That arm carries the flux line, and the claw polygon overlaps it. The south arm also carries the junction on the base `TransmonCross`; at default options the claw clears it by ~11um, with the etch region within ~5um. Both constraints are now documented on the class docstrings.
+
 ## Quantum Metal v0.8.0 (airbridges + design-rule checking; no breaking changes)
 
 Minor release: two new feature areas, one deprecation, and one default-behaviour
