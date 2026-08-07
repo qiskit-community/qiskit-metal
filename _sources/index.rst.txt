@@ -53,7 +53,7 @@ No Qt required — works headlessly in any Jupyter notebook or plain Python scri
    .. grid-item-card:: 💬 Community
       :class-header: sd-bg-secondary sd-text-light
 
-      .. button-link:: https://discord.gg/kaZ3UFuq
+      .. button-link:: https://discord.gg/FPNybyfpxd
          :color: secondary
          :outline:
          :expand:
@@ -109,7 +109,7 @@ in a simple, open, community-driven framework.
 
       Fastest way to reach maintainers and the broader community.
 
-      .. button-link:: https://discord.gg/kaZ3UFuq
+      .. button-link:: https://discord.gg/FPNybyfpxd
          :color: primary
          :outline:
          :expand:
@@ -159,7 +159,7 @@ in a simple, open, community-driven framework.
 
          QDC website
 
-      .. button-link:: https://discord.gg/kaZ3UFuq
+      .. button-link:: https://discord.gg/FPNybyfpxd
          :color: secondary
          :outline:
          :expand:
