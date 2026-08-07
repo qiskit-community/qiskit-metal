@@ -477,6 +477,38 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">draw</span><span class="p">,</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseQubit</span>
 
+<span class="c1">#: Rotation applied to a connector claw for each arm of the cross. The claw is</span>
+<span class="c1">#: drawn on the west arm, so the rotation is the negative of the requested</span>
+<span class="c1">#: ``connector_location`` angle taken mod 360 — e.g. 270 =&gt; +90.</span>
+<span class="n">ARM_ROTATION</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;west&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;north&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="s2">&quot;east&quot;</span><span class="p">:</span> <span class="mi">180</span><span class="p">,</span> <span class="s2">&quot;south&quot;</span><span class="p">:</span> <span class="mi">90</span><span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">connector_arm_name</span><span class="p">(</span><span class="n">connector_location</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Snap a ``connector_location`` angle to the cross arm it selects.</span>
+
+<span class="sd">    The angle is taken mod 360 and snapped to the nearest arm, so out-of-range</span>
+<span class="sd">    values behave sensibly (``360`` =&gt; &#39;west&#39;, ``-90`` =&gt; &#39;south&#39;). Angles</span>
+<span class="sd">    exactly half-way between two arms (45, 135, 225, 315) snap to the lower</span>
+<span class="sd">    one, matching the historical behaviour of this mapping.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        connector_location (float): Angle in degrees. 0 =&gt; &#39;west&#39;,</span>
+<span class="sd">            90 =&gt; &#39;north&#39;, 180 =&gt; &#39;east&#39;, 270 =&gt; &#39;south&#39;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: One of &#39;west&#39;, &#39;north&#39;, &#39;east&#39;, &#39;south&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">connector_location</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+    <span class="k">if</span> <span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">315</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;west&quot;</span>
+    <span class="k">if</span> <span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">225</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;south&quot;</span>
+    <span class="k">if</span> <span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">135</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;east&quot;</span>
+    <span class="k">if</span> <span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">45</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;north&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;west&quot;</span>
+
 
 <div class="viewcode-block" id="TransmonCross">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCross.html#qiskit_metal.qlibrary.TransmonCross">[docs]</a>
@@ -495,6 +527,13 @@
 
 <span class="sd">    Add connectors to it using the `connection_pads` dictionary. See BaseQubit for more</span>
 <span class="sd">    information.</span>
+
+<span class="sd">    A connector may also be placed on the south arm with</span>
+<span class="sd">    ``connector_location=&#39;270&#39;``, but that is the arm carrying the junction:</span>
+<span class="sd">    at the default options the claw clears the junction by ~11um and its etch</span>
+<span class="sd">    region comes within ~5um of it. Check the clearance against your process</span>
+<span class="sd">    design rules before using it, and note that `TransmonCrossFL` puts its</span>
+<span class="sd">    flux line on that same arm.</span>
 
 <span class="sd">    Sketch:</span>
 <span class="sd">        Below is a sketch of the qubit</span>
@@ -696,13 +735,7 @@
             <span class="p">[(</span><span class="o">-</span><span class="n">c_c_l</span> <span class="o">-</span> <span class="n">c_w_b</span><span class="p">,</span> <span class="o">-</span><span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">c_c_l</span> <span class="o">-</span> <span class="n">c_w_b</span><span class="p">,</span> <span class="n">c_c_w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span>
         <span class="p">)</span>
 
-        <span class="n">claw_rotate</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">if</span> <span class="n">con_loc</span> <span class="o">&gt;</span> <span class="mi">225</span><span class="p">:</span>
-            <span class="n">claw_rotate</span> <span class="o">=</span> <span class="mi">90</span>
-        <span class="k">elif</span> <span class="n">con_loc</span> <span class="o">&gt;</span> <span class="mi">135</span><span class="p">:</span>
-            <span class="n">claw_rotate</span> <span class="o">=</span> <span class="mi">180</span>
-        <span class="k">elif</span> <span class="n">con_loc</span> <span class="o">&gt;</span> <span class="mi">45</span><span class="p">:</span>
-            <span class="n">claw_rotate</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span>
+        <span class="n">claw_rotate</span> <span class="o">=</span> <span class="n">ARM_ROTATION</span><span class="p">[</span><span class="n">connector_arm_name</span><span class="p">(</span><span class="n">con_loc</span><span class="p">)]</span>
 
         <span class="c1"># Rotates and translates the connector polygons (and temporary port_line)</span>
         <span class="n">polys</span> <span class="o">=</span> <span class="p">[</span><span class="n">connector_arm</span><span class="p">,</span> <span class="n">connector_etcher</span><span class="p">,</span> <span class="n">port_line</span><span class="p">]</span>

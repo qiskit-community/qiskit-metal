@@ -597,8 +597,10 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The connectord_type can be string of &#39;0&#39; for &#39;Claw&#39; or &#39;1&#39; for &#39;Gap&#39;</span>
 <span class="c1"># to define which type of connector is used.</span>
 
-<span class="c1"># The connector_location can be string of &#39;0&#39;, &#39;90&#39;, &#39;180&#39;  degrees which of the three arms where a given connector should be.</span>
-<span class="c1"># South is for the junction.</span>
+<span class="c1"># The connector_location can be a string of &#39;0&#39;, &#39;90&#39;, &#39;180&#39; or &#39;270&#39; degrees,</span>
+<span class="c1"># selecting the west, north, east or south arm for a given connector.</span>
+<span class="c1"># South (&#39;270&#39;) carries both the junction and the flux line, so a connector</span>
+<span class="c1"># placed there overlaps the flux line - TransmonCrossFL warns when you do.</span>
 
 <span class="n">xmon_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>

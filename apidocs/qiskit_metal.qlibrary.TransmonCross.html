@@ -484,6 +484,12 @@ makes up the connector. Note, DC SQUID currently represented by single
 inductance sheet</p>
 <p>Add connectors to it using the <cite>connection_pads</cite> dictionary. See BaseQubit for more
 information.</p>
+<p>A connector may also be placed on the south arm with
+<code class="docutils literal notranslate"><span class="pre">connector_location='270'</span></code>, but that is the arm carrying the junction:
+at the default options the claw clears the junction by ~11um and its etch
+region comes within ~5um of it. Check the clearance against your process
+design rules before using it, and note that <cite>TransmonCrossFL</cite> puts its
+flux line on that same arm.</p>
 <dl>
 <dt>Sketch:</dt><dd><p>Below is a sketch of the qubit</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                            <span class="n">claw_length</span>

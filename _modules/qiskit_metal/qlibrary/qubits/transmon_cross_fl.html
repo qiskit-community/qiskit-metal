@@ -479,7 +479,10 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">draw</span><span class="p">,</span> <span class="n">Dict</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_cross</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonCross</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_cross</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TransmonCross</span><span class="p">,</span>
+    <span class="n">connector_arm_name</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="TransmonCrossFL">
@@ -548,10 +551,29 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">make</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">make_fl</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_warn_on_south_arm_connectors</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">make_flux_line</span><span class="p">()</span></div>
 
 
     <span class="c1">#####################################################################</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_warn_on_south_arm_connectors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Warn about connectors that share the south arm with the flux line.</span>
+
+<span class="sd">        The flux line is drawn on the south arm, so a connector placed there</span>
+<span class="sd">        (``connector_location=&#39;270&#39;``) overlaps it — the claw and the flux</span>
+<span class="sd">        line end up galvanically shorted rather than merely close.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">:</span>
+            <span class="n">con_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">connector_location</span>
+            <span class="k">if</span> <span class="n">connector_arm_name</span><span class="p">(</span><span class="n">con_loc</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;south&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: connection pad &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; has &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;connector_location=&#39;</span><span class="si">{</span><span class="n">con_loc</span><span class="si">}</span><span class="s2">&#39;, placing it on the south &quot;</span>
+                    <span class="s2">&quot;arm — the same arm as the flux line. The claw and the &quot;</span>
+                    <span class="s2">&quot;flux line will overlap. Use 0 (west), 90 (north) or &quot;</span>
+                    <span class="s2">&quot;180 (east), or set make_fl=False.&quot;</span>
+                <span class="p">)</span>
 
 <div class="viewcode-block" id="TransmonCrossFL.make_flux_line">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html#qiskit_metal.qlibrary.TransmonCrossFL.make_flux_line">[docs]</a>
