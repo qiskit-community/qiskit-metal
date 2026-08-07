@@ -64,7 +64,7 @@ class TransmonCross(BaseQubit):
             * claw_width: '10um' -- The width of the CPW center trace making up the claw/gap connector
             * claw_width_back: None -- The width of the back (towards the incoming CPW) of the claw connector. Defaults to claw_width when None
             * claw_gap: '6um' -- The gap of the CPW center trace making up the claw/gap connector
-            * connector_location: '0' -- 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
+            * connector_location: '0' -- 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm, 270 => 'south' arm
     """
 
     default_options = Dict(
@@ -82,7 +82,7 @@ class TransmonCross(BaseQubit):
             claw_gap="6um",
             claw_cpw_length="40um",
             claw_cpw_width="10um",
-            connector_location="0",  # 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm
+            connector_location="0",  # 0 => 'west' arm, 90 => 'north' arm, 180 => 'east' arm, 270 => 'south' arm
         ),
     )
     """Default options."""
@@ -220,7 +220,9 @@ class TransmonCross(BaseQubit):
         )
 
         claw_rotate = 0
-        if con_loc > 135:
+        if con_loc > 225:
+            claw_rotate = 90
+        elif con_loc > 135:
             claw_rotate = 180
         elif con_loc > 45:
             claw_rotate = -90
