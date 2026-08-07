@@ -55,7 +55,8 @@ def find_invites():
     found = {}
     for path in tracked_files():
         try:
-            text = open(path, encoding="utf-8", errors="ignore").read()
+            with open(path, encoding="utf-8", errors="ignore") as fh:
+                text = fh.read()
         except (OSError, IsADirectoryError):
             continue
         if "discord.gg/" not in text:
