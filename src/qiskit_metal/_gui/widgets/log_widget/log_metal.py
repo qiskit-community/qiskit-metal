@@ -429,6 +429,18 @@ class LogHandler_for_QTextLog(logging.Handler):
 
         self._logger.addHandler(self)  # ADD HANDLER!
 
+        # Detach when the widget's C++ object is *destroyed* -- not when the
+        # window is merely closed (issue #1048). This handler lives on a
+        # process-global logger, so it must not outlive the widget; but
+        # QWidget.close() only hides, and closing and reopening the same
+        # MetalGUI is normal usage. Hooking destruction rather than close
+        # keeps the log dock working across reopen while still guaranteeing
+        # the handler is gone before the widget's memory is freed.
+        #
+        # The slot only touches Python-side state (removeHandler), never the
+        # dying widget, so it is safe to run during destruction.
+        self.log_qtextedit.destroyed.connect(self._on_widget_destroyed)
+
     def emit(self, record):
         """Do whatever it takes to actually log the specified logging record.
         Converts the characters '&', '<' and '>' in string s to HTML-safe
@@ -486,6 +498,13 @@ class LogHandler_for_QTextLog(logging.Handler):
                 return True
             except RuntimeError:
                 return False
+
+    def _on_widget_destroyed(self, _obj=None):
+        """Slot for ``QTextEditLogger.destroyed``.
+
+        Qt passes the (already-invalid) QObject; it is deliberately ignored.
+        """
+        self._detach()
 
     def _detach(self):
         """Remove this handler from its logger, permanently and safely.

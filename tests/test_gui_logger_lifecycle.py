@@ -185,6 +185,68 @@ class TestGUILoggerLifecycle(unittest.TestCase):
             ),
         )
 
+    # ------------------------------------------------------------------
+    # Close is not destruction. Everything above must not come at the cost
+    # of the close-then-reopen workflow, which is exactly what the #1048
+    # reporters do ("open MetalGUI, close it, and reopen it multiple
+    # consecutive times in the same kernel"). An earlier cut of this fix
+    # detached on close and left a reopened window with a dead log dock and
+    # no auto-refresh; these two tests pin that behaviour down.
+    # ------------------------------------------------------------------
+
+    def test_log_dock_still_works_after_close_and_reopen(self):
+        """Reopening a closed MetalGUI must not leave a dead log pane."""
+        from qiskit_metal import designs, MetalGUI
+
+        gui = MetalGUI(designs.DesignPlanar())
+        main_window = gui.main_window
+
+        main_window.force_close = True
+        main_window.close()
+        self.app.processEvents()
+
+        main_window.show()
+        self.app.processEvents()
+
+        marker = "reopen-marker-1048"
+        logging.getLogger("metal").info(marker)
+        self.app.processEvents()
+
+        self.assertIn(
+            marker,
+            main_window.ui.log_text.toPlainText(),
+            msg=(
+                "A reopened MetalGUI no longer receives log records. Handlers "
+                "must detach on widget destruction, not on close -- close() "
+                "only hides the window (issue #1048)."
+            ),
+        )
+
+    def test_refresh_timers_restart_on_reopen(self):
+        """Pausing the timers on close must not be a one-way trip."""
+        from PySide6.QtCore import QTimer
+        from qiskit_metal import designs, MetalGUI
+
+        gui = MetalGUI(designs.DesignPlanar())
+        main_window = gui.main_window
+        expected = len([t for t in main_window.findChildren(QTimer) if t.isActive()])
+
+        main_window.force_close = True
+        main_window.close()
+        self.app.processEvents()
+        main_window.show()
+        self.app.processEvents()
+
+        running = len([t for t in main_window.findChildren(QTimer) if t.isActive()])
+        self.assertEqual(
+            running,
+            expected,
+            msg=(
+                f"only {running} of {expected} refresh timer(s) restarted on "
+                "reopen; the tables would silently stop updating."
+            ),
+        )
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
