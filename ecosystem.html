@@ -590,9 +590,47 @@ protocol. Each is its own project; we wrap, we don’t fork.</p>
 <td><p>Workhorse mesh generator (used by Elmer today, Palace tomorrow).</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[mesh]</span></code> extra</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://docs.nanoacademic.com/qtcad/">QTCAD</a>
+(Nanoacademic)</p></td>
+<td><p>Semiconductor / quantum-device TCAD. Adaptive-mesh capacitance
+extraction from Metal geometry. Commercial licence.</p></td>
+<td><p>Community integration — see below</p></td>
+</tr>
 </tbody>
 </table>
 </div>
+<section id="community-maintained-integrations">
+<h3>Community-maintained integrations<a class="headerlink" href="#community-maintained-integrations" title="Link to this heading">¶</a></h3>
+<p>Some integrations live outside this repository and are maintained by the
+projects they connect to. We list them so they are findable; we do not
+maintain or test them.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/nanoacademic/quantum-metal">nanoacademic/quantum-metal</a>
+— adds <code class="docutils literal notranslate"><span class="pre">QQTCADRenderer</span></code> (a <code class="docutils literal notranslate"><span class="pre">QRendererAnalysis</span></code> subclass, structured
+after <code class="docutils literal notranslate"><span class="pre">QElmerRenderer</span></code>) driving <a class="reference external" href="https://docs.nanoacademic.com/qtcad/">QTCAD</a>
+for adaptive-mesh capacitance extraction. Apache 2.0, currently
+distributed as a fork.</p></li>
+</ul>
+<p>If you maintain an integration like this, note that a renderer does not
+require forking Quantum Metal: <code class="docutils literal notranslate"><span class="pre">config.renderers_to_load</span></code> accepts a
+dotted path into any installed distribution, which
+<code class="docutils literal notranslate"><span class="pre">QDesign._start_renderers()</span></code> resolves with <code class="docutils literal notranslate"><span class="pre">importlib</span></code> when a design
+is constructed. A renderer whose optional dependencies are absent is
+logged and skipped rather than failing the import:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">renderers_to_load</span><span class="o">.</span><span class="n">my_solver</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">path_name</span><span class="o">=</span><span class="s2">&quot;my_package.my_renderer&quot;</span><span class="p">,</span>
+    <span class="n">class_name</span><span class="o">=</span><span class="s2">&quot;QMySolverRenderer&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Shipping as a companion package that depends on <code class="docutils literal notranslate"><span class="pre">quantum-metal</span></code> means
+upstream fixes arrive automatically instead of needing a rebase. See
+<a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/blob/main/docs/architecture/renderer_protocol.md">docs/architecture/renderer_protocol.md</a>
+for the renderer contract, and open an issue if something in shared code
+blocks you — that is the kind of change we want as a pull request.</p>
+</section>
 </section>
 <section id="quantization-analysis-libraries">
 <h2>Quantization &amp; analysis libraries<a class="headerlink" href="#quantization-analysis-libraries" title="Link to this heading">¶</a></h2>
@@ -742,7 +780,10 @@ or reach out on <a class="reference external" href="https://discord.gg/FPNybyfpx
             <ul>
 <li><a class="reference internal" href="#">The Quantum Metal Ecosystem</a><ul>
 <li><a class="reference internal" href="#built-on-quantum-metal">Built on Quantum Metal</a></li>
-<li><a class="reference internal" href="#solvers-quantum-metal-integrates-with">Solvers Quantum Metal integrates with</a></li>
+<li><a class="reference internal" href="#solvers-quantum-metal-integrates-with">Solvers Quantum Metal integrates with</a><ul>
+<li><a class="reference internal" href="#community-maintained-integrations">Community-maintained integrations</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#quantization-analysis-libraries">Quantization &amp; analysis libraries</a></li>
 <li><a class="reference internal" href="#visualization">Visualization</a></li>
 <li><a class="reference internal" href="#how-the-layers-fit-together">How the layers fit together</a></li>
