@@ -355,11 +355,31 @@ class QTextEditLogger(QTextEdit):
             self.moveCursor(QtGui.QTextCursor.StartOfLine)
         self.ensureCursorVisible()
 
-    def remove_handlers(self, logger):
-        """Call on clsoe window to remove handlers from the logger."""
-        for name, handler in self.handlers.items():
-            if handler in logger.handlers:
-                logger.handlers.remove(handler)
+    def remove_handlers(self, logger=None):
+        """Detach every handler this widget installed from its logger.
+
+        Call this when the window closes. Handlers are registered on
+        *process-global* loggers (``logging.getLogger("metal")`` and the
+        GUI logger), which outlive the widget -- so a handler left
+        attached after the widget's C++ object is gone turns every
+        subsequent log record in the process into a use-after-free
+        (issue #1048). Each handler is removed from the logger it was
+        actually registered on, which is not necessarily ``logger``.
+
+        Args:
+            logger (logging.Logger): Legacy positional argument, kept so
+                existing callers keep working. Used only as a fallback
+                for handlers that don't record their own logger.
+        """
+        for handler in list(self.handlers.values()):
+            target = getattr(handler, "_logger", None) or logger
+            if target is not None:
+                # removeHandler() takes the logging module lock and is a
+                # no-op if already detached -- unlike handlers.remove(),
+                # which raises ValueError and can corrupt an in-progress
+                # iteration in Logger.callHandlers().
+                target.removeHandler(handler)
+        self.handlers.clear()
 
 
 class LogHandler_for_QTextLog(logging.Handler):
@@ -422,6 +442,17 @@ class LogHandler_for_QTextLog(logging.Handler):
         # self.log_qtextedit.record = record
         # self.log_qtextedit.zz = self
 
+        # The widget's C++ object may already be gone while this handler is
+        # still attached to a process-global logger (issue #1048). Touching a
+        # dangling Shiboken wrapper is undefined behaviour: PySide6 raises
+        # RuntimeError on some builds but dereferences freed memory on others,
+        # which is a hard SIGSEGV -- "the kernel appears to have died", with no
+        # Python traceback. Check validity *before* the call rather than
+        # relying on catching the failure afterwards.
+        if not self._widget_alive():
+            self._detach()
+            return
+
         html_record = html.escape(self.format(record))
         html_log_message = '<span class="%s"><pre>%s</pre></span>' % (
             record.levelname,
@@ -430,7 +461,47 @@ class LogHandler_for_QTextLog(logging.Handler):
         try:
             self.log_qtextedit.log_message_to(self.name, html_log_message)
         except RuntimeError as e:
-            # trying to catch
-            #  RuntimeError('wrapped C/C++ object of type QTextEditLogger has been deleted',)
+            # Lost the race: the widget was torn down between the check above
+            # and the call. Detach so this can't recur on the next record.
             print(f"Logger issue: {e}")
-            self._logger.handlers.remove(self)
+            self._detach()
+
+    def _widget_alive(self) -> bool:
+        """Whether the backing ``QTextEditLogger``'s C++ object still exists.
+
+        Uses ``shiboken6.isValid``, the only reliable way to ask this
+        question; falls back to a duck-typed probe if shiboken is not
+        importable for some reason.
+        """
+        widget = self.log_qtextedit
+        if widget is None:
+            return False
+        try:
+            import shiboken6
+
+            return shiboken6.isValid(widget)
+        except ImportError:  # pragma: no cover - shiboken ships with PySide6
+            try:
+                widget.objectName()
+                return True
+            except RuntimeError:
+                return False
+
+    def _detach(self):
+        """Remove this handler from its logger, permanently and safely.
+
+        Uses ``Logger.removeHandler`` rather than mutating
+        ``logger.handlers`` in place: the latter raises ``ValueError`` if
+        the handler is already gone, and mutating the list while
+        ``Logger.callHandlers`` iterates it silently skips the handlers
+        that follow.
+        """
+        self.log_qtextedit = None
+        logger = getattr(self, "_logger", None)
+        if logger is not None:
+            logger.removeHandler(self)
+
+    def close(self):
+        """Detach on close so ``logging.shutdown()`` can't revive a dead widget."""
+        self._detach()
+        super().close()

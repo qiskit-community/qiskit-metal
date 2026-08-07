@@ -288,6 +288,40 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """
         self.force_close = ison
 
+    def _stop_refresh_timers(self):
+        """Stop the periodic model-refresh timers before teardown.
+
+        Several table/tree models drive themselves from a repeating 500 ms
+        ``QTimer``. Nothing stopped them on close, so they kept firing at
+        models belonging to a window that was being destroyed -- visible as
+        ``AttributeError: Slot 'QTableModel_AllComponents::' not found``, and
+        a use-after-free waiting to happen if a tick lands mid-teardown
+        (issue #1048). Stopping them here makes close deterministic instead
+        of a race against the next tick.
+
+        Best-effort by design: this runs while the window is going away, so
+        a model whose C++ object has already gone is not an error.
+        """
+        timers = list(self.findChildren(QTimer))
+
+        # The components-table model is parented to the MetalGUI handler
+        # rather than into the widget tree, so findChildren() misses it.
+        proxy = getattr(self.ui, "proxyModel", None)
+        if proxy is not None:
+            try:
+                source = proxy.sourceModel()
+            except RuntimeError:
+                source = None
+            timer = getattr(source, "_timer", None)
+            if timer is not None:
+                timers.append(timer)
+
+        for timer in timers:
+            try:
+                timer.stop()
+            except RuntimeError:
+                pass
+
     @slot_catch_error()
     def closeEvent(self, event):
         """whenever a window is closed.
@@ -296,12 +330,22 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """
 
         if self.force_close:
+            self._stop_refresh_timers()
+            self._remove_log_handlers()
             super().closeEvent(event)
             return
 
         will_close = self.ok_to_close()
         if will_close:
             self.save_window_settings()
+            # Detach the Qt-backed log handlers *before* the widget tree is
+            # torn down. They are registered on process-global loggers, so
+            # leaving them attached means the next log record from anywhere
+            # in the library writes into a freed C++ widget (issue #1048).
+            # Previously this only ran from QWidget.destroy(), which Qt does
+            # not call on a normal close or on Python GC.
+            self._stop_refresh_timers()
+            self._remove_log_handlers()
             super().closeEvent(event)
         else:
             event.ignore()
