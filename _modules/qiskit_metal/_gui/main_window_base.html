@@ -570,9 +570,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">handler</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_remove_log_handlers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the log handlers.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;log_text&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log_text</span><span class="o">.</span><span class="n">remove_handlers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Detach the GUI log handlers from their (process-global) loggers.</span>
+
+<span class="sd">        The log widget lives at ``self.ui.log_text``; the old</span>
+<span class="sd">        ``hasattr(self, &quot;log_text&quot;)`` guard was never true, so this was a</span>
+<span class="sd">        silent no-op and every closed window left a handler pointing at a</span>
+<span class="sd">        freed C++ widget (issue #1048). Both spellings are accepted now so</span>
+<span class="sd">        subclasses that do expose ``log_text`` directly still work.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log_text</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;log_text&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;ui&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;log_text&quot;</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">log_text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">log_text</span><span class="o">.</span><span class="n">remove_handlers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="c1"># Widget&#39;s C++ object already gone -- nothing left to detach.</span>
+            <span class="k">pass</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">destroy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destroyWindow</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">destroySubWindows</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;When the window is cleaned up from memory.</span>

@@ -750,6 +750,67 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">force_close</span> <span class="o">=</span> <span class="n">ison</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_refresh_timers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Every periodic model-refresh timer belonging to this window.</span>
+
+<span class="sd">        Three are reachable through the widget tree. The components-table</span>
+<span class="sd">        model is parented to the ``MetalGUI`` handler rather than into the</span>
+<span class="sd">        tree, so ``findChildren`` misses it and it is collected explicitly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">timers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QTimer</span><span class="p">))</span>
+
+        <span class="n">proxy</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="p">,</span> <span class="s2">&quot;proxyModel&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">proxy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="n">sourceModel</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">timer</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="s2">&quot;_timer&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">timer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">timers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">timer</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">timers</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">showEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Restart the polling timers when the window becomes visible.</span>
+
+<span class="sd">        Pairs with the stop in ``closeEvent`` so that pausing is not a</span>
+<span class="sd">        one-way trip: closing and reopening the same MetalGUI must leave the</span>
+<span class="sd">        tables auto-refreshing as before (issue #1048).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">timer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_timers</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">timer</span><span class="o">.</span><span class="n">isActive</span><span class="p">():</span>
+                    <span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                <span class="c1"># C++ object already gone -- nothing to restart.</span>
+                <span class="k">continue</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">showEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_stop_refresh_timers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Pause the periodic model-refresh timers.</span>
+
+<span class="sd">        Several table/tree models drive themselves from a repeating 500 ms</span>
+<span class="sd">        ``QTimer``. Nothing stopped them on close, so they kept firing at</span>
+<span class="sd">        models belonging to a window that was being destroyed -- visible as</span>
+<span class="sd">        ``AttributeError: Slot &#39;QTableModel_AllComponents::&#39; not found``, and</span>
+<span class="sd">        a use-after-free waiting to happen if a tick lands mid-teardown</span>
+<span class="sd">        (issue #1048). Stopping them makes close deterministic instead of a</span>
+<span class="sd">        race against the next tick; ``showEvent`` restarts them, so a</span>
+<span class="sd">        closed-and-reopened window polls again as before.</span>
+
+<span class="sd">        Best-effort by design: this runs while the window is going away, so</span>
+<span class="sd">        a model whose C++ object has already gone is not an error.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">timer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_timers</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                <span class="c1"># Shiboken raises RuntimeError when the timer&#39;s C++ object is</span>
+                <span class="c1"># already gone. That is the desired end state -- a destroyed</span>
+                <span class="c1"># timer cannot fire -- so there is nothing to do and nothing</span>
+                <span class="c1"># worth logging on a window that is closing.</span>
+                <span class="k">continue</span>
+
     <span class="nd">@slot_catch_error</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;whenever a window is closed.</span>
@@ -758,12 +819,22 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_close</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stop_refresh_timers</span><span class="p">()</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">closeEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
             <span class="k">return</span>
 
         <span class="n">will_close</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ok_to_close</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">will_close</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save_window_settings</span><span class="p">()</span>
+            <span class="c1"># Pause the polling timers while the window is hidden; showEvent()</span>
+            <span class="c1"># restarts them, so closing and reopening the same MetalGUI -- the</span>
+            <span class="c1"># exact workflow reported in issue #1048 -- keeps working.</span>
+            <span class="c1">#</span>
+            <span class="c1"># The log handlers are deliberately NOT detached here. close()</span>
+            <span class="c1"># only hides the window, so a reopened window must still receive</span>
+            <span class="c1"># records. They detach from the widget&#39;s destroyed signal instead,</span>
+            <span class="c1"># which is the event that actually makes them dangerous.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stop_refresh_timers</span><span class="p">()</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">closeEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
