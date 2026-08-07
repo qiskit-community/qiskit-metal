@@ -799,5 +799,5 @@ roadmap items above, but tracked so they don't get lost.
   protocol is documented in
   [`docs/architecture/renderer_protocol.md`](https://github.com/qiskit-community/qiskit-metal/blob/main/docs/architecture/renderer_protocol.md).
 - **Join the conversation.** Discord:
-  https://discord.gg/kaZ3UFuq. QDC governance page:
+  https://discord.gg/FPNybyfpxd. QDC governance page:
   https://qdc-qcsa.vercel.app.

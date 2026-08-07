@@ -44,7 +44,7 @@ $ brew install gmsh
 ```
 - Restart your terminal, activate the environment, and check if you're able to do `import gmsh` in a python REPL or a scratch jupyter notebook. If the import is successful, then congratulations, you've installed Gmsh successfully!
 
-- **Note:** If the above steps still gives error in importing gmsh using `import gmsh` in your python environment, refer [this issue](https://gitlab.onelab.info/gmsh/gmsh/-/issues/1705), on the Gmsh GitLab repository, for more information. Also please feel free to reach out on the [Quantum Metal Discord](https://discord.gg/kaZ3UFuq).
+- **Note:** If the above steps still gives error in importing gmsh using `import gmsh` in your python environment, refer [this issue](https://gitlab.onelab.info/gmsh/gmsh/-/issues/1705), on the Gmsh GitLab repository, for more information. Also please feel free to reach out on the [Quantum Metal Discord](https://discord.gg/FPNybyfpxd).
 
 ## ElmerFEM
 - Congratulations on making it this far! Now we'll see how to install ElmerFEM.
@@ -102,4 +102,4 @@ STOP 1
 
 The `ERROR:: ElmerSolver: Unable to find ELMERSOLVER_STARTINFO` line is **expected** when you run `ElmerSolver` with no arguments — it just means the solver started up correctly but had no simulation file to load. If you see this banner, **ElmerFEM is installed and on PATH**. 🎉
 
-**NOTE:** If you hit issues at any of the steps above, please reach out on the [Quantum Metal Discord](https://discord.gg/kaZ3UFuq).
+**NOTE:** If you hit issues at any of the steps above, please reach out on the [Quantum Metal Discord](https://discord.gg/FPNybyfpxd).

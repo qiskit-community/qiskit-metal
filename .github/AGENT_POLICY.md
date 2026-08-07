@@ -73,7 +73,7 @@ If you open an issue:
 If you want to reach a human directly:
 
 - Tag a maintainer in your comment, or open a GitHub Discussion
-- Or use the project's Discord: https://discord.gg/kaZ3UFuq
+- Or use the project's Discord: https://discord.gg/FPNybyfpxd
   (community channel; please use SECURITY.md for security
   reports, not Discord)
 

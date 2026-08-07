@@ -14,7 +14,7 @@ choose Quantum Metal as their substrate.
 
 If you maintain a project we should list here, please
 `open an issue <https://github.com/qiskit-community/qiskit-metal/issues/new/choose>`_
-or ping us on `Discord <https://discord.gg/kaZ3UFuq>`_.
+or ping us on `Discord <https://discord.gg/FPNybyfpxd>`_.
 
 
 Built on Quantum Metal
@@ -205,4 +205,4 @@ rather than competing for the same maintainer-hours.
 If you want to help shape that coordination, see the
 **Adoption / DevRel section** in `ROADMAP.md
 <https://github.com/qiskit-community/qiskit-metal/blob/main/ROADMAP.md>`_
-or reach out on `Discord <https://discord.gg/kaZ3UFuq>`_.
+or reach out on `Discord <https://discord.gg/FPNybyfpxd>`_.
