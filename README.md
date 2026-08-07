@@ -9,7 +9,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618153.svg)](https://doi.org/10.5281/zenodo.4618153)
 [![GitHub stars](https://img.shields.io/github/stars/qiskit-community/qiskit-metal.svg?style=flat-square&logo=github)](https://github.com/qiskit-community/qiskit-metal/stargazers)
 [![Contributors](https://img.shields.io/github/contributors/qiskit-community/qiskit-metal.svg?style=flat-square&logo=github)](https://github.com/qiskit-community/qiskit-metal/graphs/contributors)
-[![Discord](https://img.shields.io/badge/Discord-Join_Community-5865F2?logo=discord&logoColor=white&style=flat-square)](https://discord.gg/kaZ3UFuq)
+[![Discord](https://img.shields.io/badge/Discord-Join_Community-5865F2?logo=discord&logoColor=white&style=flat-square)](https://discord.gg/FPNybyfpxd)
 
 > ![Welcome to Quantum Metal!](https://raw.githubusercontent.com/qiskit-community/qiskit-metal/main/docs/images/zkm_banner.png 'Welcome to Quantum Metal')
 >
@@ -202,7 +202,7 @@ discovery. **Full map: [docs.../ecosystem](https://qiskit-community.github.io/qi
   [Sign for 2026](https://qdw-ucla.squarespace.com/qdw2026).
 - **[Quantum Device Consortium (QDC)](https://qdc-qcsa.vercel.app)** — the
   community organization stewarding Quantum Metal alongside the tools above.
-  [Join the QDC Discord](https://discord.gg/kaZ3UFuq).
+  [Join the QDC Discord](https://discord.gg/FPNybyfpxd).
 
 **Building something on Quantum Metal?** [Open an issue](https://github.com/qiskit-community/qiskit-metal/issues/new/choose)
 or ping us on Discord — we'd love to add you to the list.
@@ -227,7 +227,7 @@ contributors are tracked in the [changelog](./changelog.md) and the
 
 ## Community and Support
 
-- 💬 **[Discord](https://discord.gg/kaZ3UFuq)** — fastest way to reach maintainers
+- 💬 **[Discord](https://discord.gg/FPNybyfpxd)** — fastest way to reach maintainers
   and the broader community. *Primary community channel.*
 - 📺 **[YouTube video tutorials](https://youtube.com/playlist?list=PLOFEBzvs-VvqHl5ZqVmhB_FcSqmLufsjb)**
 - 💻 **[GitHub Issues](https://github.com/qiskit-community/qiskit-metal/issues)** — bugs and feature requests

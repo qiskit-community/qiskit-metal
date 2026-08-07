@@ -1,0 +1,31 @@
+name: link-health
+
+# The community Discord invite is hardcoded in a dozen user-facing places.
+# Discord invites expire after 7 days unless created as permanent, so one
+# temporary invite breaks every link at once — silently, until a newcomer
+# reports it. Check weekly instead of per-PR: a lapsed invite is not caused
+# by whichever pull request runs next, and gating PRs on a third-party API
+# would trade a flaky link for a flaky pipeline.
+
+on:
+  schedule:
+    # Mondays at 07:00 UTC
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discord-invite:
+    name: Discord invite alive + permanent
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+      - name: Check advertised Discord invites
+        run: uv run scripts/check_discord_invite.py
