@@ -71,12 +71,13 @@ class TestQLibraryPane(unittest.TestCase):
 
         from PySide6.QtWidgets import QApplication
 
-        import qiskit_metal
         from qiskit_metal import qlibrary
 
         cls.app = QApplication.instance() or QApplication([])
-        cls.qlibrary_root = os.path.dirname(qlibrary.__file__)
-        cls.path_imgs = Path(os.path.dirname(qiskit_metal.__file__)) / "_gui" / "_imgs"
+        # qlibrary/ and _gui/ are siblings inside the qiskit_metal package.
+        package_root = Path(qlibrary.__file__).parent.parent
+        cls.qlibrary_root = str(package_root / "qlibrary")
+        cls.path_imgs = package_root / "_gui" / "_imgs"
 
     def _model(self):
         from qiskit_metal._gui.widgets.qlibrary_display.file_model_qlibrary import (
