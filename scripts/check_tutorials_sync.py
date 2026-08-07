@@ -1,18 +1,30 @@
 # /// script
 # requires-python = ">=3.10"
 # ///
-"""Check that docs/tut/ and tutorials/ have byte-identical notebook cell content.
+"""Check that the docs/ and tutorials/ notebook copies have byte-identical cells.
 
-The repo carries every numbered notebook twice — once at the canonical
+The repo carries every published notebook twice — once at the canonical
 ``tutorials/`` location (where users open it in JupyterLab via the file tree)
-and once at ``docs/tut/`` with hyphenated filenames (where Sphinx + nbsphinx
-build the rendered docs). The two trees MUST stay content-identical or the
-docs site silently diverges from what users see when they edit notebooks.
+and once under ``docs/`` with hyphenated filenames (where Sphinx + nbsphinx
+build the rendered docs). Two docs trees mirror ``tutorials/``:
+
+- ``docs/tut/`` — the numbered notebooks plus Appendix B, and the three
+  Appendix A reference designs
+- ``docs/circuit-examples/`` — Appendix C, plus the remaining Appendix A
+  full-design-flow examples
+
+The trees MUST stay content-identical or the docs site silently diverges from
+what users see when they edit notebooks. ``docs/circuit-examples/`` was
+unpaired until v0.8.x and had drifted across all 23 of its notebooks.
 
 This script compares the ``cells`` array of each pair. It ignores:
 
 - Filename / folder casing (hyphens vs spaces)
 - Notebook-level ``metadata`` (kernelspec, language_info — env-dependent)
+
+Cell ``outputs`` are compared, not ignored: both sides must carry the same
+stored outputs, since nbsphinx renders them as-is (``nbsphinx_execute`` is
+"never" unless QISKIT_DOCS_BUILD_TUTORIALS says otherwise).
 
 If you edited only one folder, run::
 
@@ -21,7 +33,7 @@ If you edited only one folder, run::
 to bring the other into sync (per-notebook canonical choices are baked into
 the script). Then re-run this check.
 
-Exits 0 if all 55 pairs are identical, 1 otherwise. Runs in CI on every PR.
+Exits 0 if all pairs are identical, 1 otherwise. Runs in CI on every PR.
 """
 
 import json
@@ -30,7 +42,7 @@ import sys
 from pathlib import Path
 
 
-# All numbered + quick-topic pairs. (docs path, tutorials path)
+# Every published pair. (docs path, tutorials path)
 PAIRS = [
     # Section 1
     (
@@ -265,6 +277,99 @@ PAIRS = [
     (
         "docs/tut/full-design-examples/Reference-design-3-Four-qubit-multiplexed-readout.ipynb",
         "tutorials/Appendix A Full design flow examples/Reference design 3 - Four-qubit multiplexed readout.ipynb",
+    ),
+    # circuit-examples / Appendix C + Appendix A
+    (
+        "docs/circuit-examples/A.Qubits/01-Transmon_cross.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/01-Transmon_cross.ipynb",
+    ),
+    (
+        "docs/circuit-examples/A.Qubits/02-Transmon_floating.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/02-Transmon_floating.ipynb",
+    ),
+    (
+        "docs/circuit-examples/A.Qubits/03-concentric_transmon.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/03-concentric_transmon.ipynb",
+    ),
+    (
+        "docs/circuit-examples/A.Qubits/04-Interdigitated_Transmon.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/04-Interdigitated_Transmon.ipynb",
+    ),
+    (
+        "docs/circuit-examples/A.Qubits/05-Transmon_cross_fl.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/05-Transmon_cross_fl.ipynb",
+    ),
+    (
+        "docs/circuit-examples/A.Qubits/06-Transmon_floating_6.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/06-Transmon_floating_6.ipynb",
+    ),
+    (
+        "docs/circuit-examples/A.Qubits/07-Transmon_floating_cl.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/07-Transmon_floating_cl.ipynb",
+    ),
+    (
+        "docs/circuit-examples/A.Qubits/08-JJ-Dolan.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/08-JJ-Dolan.ipynb",
+    ),
+    (
+        "docs/circuit-examples/A.Qubits/09-JJ-Manhattan.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/09-JJ-Manhattan.ipynb",
+    ),
+    (
+        "docs/circuit-examples/A.Qubits/10-Transmon_floating_teeth.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/10-Transmon_floating_teeth.ipynb",
+    ),
+    (
+        "docs/circuit-examples/A.Qubits/11-Star_shaped_qubit.ipynb",
+        "tutorials/Appendix C Circuit examples/A. Qubits/11-Star_shaped_qubit.ipynb",
+    ),
+    (
+        "docs/circuit-examples/B.Resonators/11-Resonator_Meander.ipynb",
+        "tutorials/Appendix C Circuit examples/B. Resonators/11-Resonator_Meander.ipynb",
+    ),
+    (
+        "docs/circuit-examples/C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.ipynb",
+        "tutorials/Appendix C Circuit examples/C. Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.ipynb",
+    ),
+    (
+        "docs/circuit-examples/D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.ipynb",
+        "tutorials/Appendix C Circuit examples/D. Qubit-couplers/31-TwoCrossmonsTunableCoupler.ipynb",
+    ),
+    (
+        "docs/circuit-examples/D.Qubit-couplers/32-TwoTransmonsDirectCoupling.ipynb",
+        "tutorials/Appendix C Circuit examples/D. Qubit-couplers/32-TwoTransmonsDirectCoupling.ipynb",
+    ),
+    (
+        "docs/circuit-examples/D.Qubit-couplers/33-TwoTransmonsWithMeander.ipynb",
+        "tutorials/Appendix C Circuit examples/D. Qubit-couplers/33-TwoTransmonsWithMeander.ipynb",
+    ),
+    (
+        "docs/circuit-examples/E.Input-output-coupling/41-LaunchPad.ipynb",
+        "tutorials/Appendix C Circuit examples/E. Input-output-coupling/41-LaunchPad.ipynb",
+    ),
+    (
+        "docs/circuit-examples/E.Input-output-coupling/42-ResonatorAndLaunchPad.ipynb",
+        "tutorials/Appendix C Circuit examples/E. Input-output-coupling/42-ResonatorAndLaunchPad.ipynb",
+    ),
+    (
+        "docs/circuit-examples/E.Input-output-coupling/43-TransmonPocketCL.ipynb",
+        "tutorials/Appendix C Circuit examples/E. Input-output-coupling/43-TransmonPocketCL.ipynb",
+    ),
+    (
+        "docs/circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.ipynb",
+        "tutorials/Appendix C Circuit examples/F. Small-quantum-chips/51-Four_qubit_chip.ipynb",
+    ),
+    (
+        "docs/circuit-examples/full-design-flow-examples/Example-full-chip-design.ipynb",
+        "tutorials/Appendix A Full design flow examples/Example full chip design.ipynb",
+    ),
+    (
+        "docs/circuit-examples/full-design-flow-examples/Example-used-in-the-launch-video.ipynb",
+        "tutorials/Appendix A Full design flow examples/Example used in the launch video.ipynb",
+    ),
+    (
+        "docs/circuit-examples/full-design-flow-examples/Exercise-for-the-South-Korea-Hackathon'20.ipynb",
+        "tutorials/Appendix A Full design flow examples/Exercise for the South Korea Hackathon'20.ipynb",
     ),
 ]
 

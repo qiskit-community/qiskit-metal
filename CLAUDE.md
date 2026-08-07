@@ -42,17 +42,23 @@ the optional desktop GUI · `pyEPR-quantum` / `pyaedt` / `gmsh` /
 
 ## Dual-folder tutorials — read before editing notebooks
 
-Every numbered notebook (1.x, 2.xx, 3.x, 4.xx) lives in **two places** that
-must stay content-identical:
+Every published notebook lives in **two places** that must stay
+content-identical:
 
-| Path                          | Why                                                         |
-|-------------------------------|-------------------------------------------------------------|
-| `tutorials/`                  | User-facing: GitHub browse, JupyterLab file tree open       |
-| `docs/tut/` (hyphenated names)| Sphinx + nbsphinx source for the rendered docs site         |
+| Path                                     | Why                                                    |
+|------------------------------------------|--------------------------------------------------------|
+| `tutorials/`                             | User-facing: GitHub browse, JupyterLab file tree open  |
+| `docs/tut/` (hyphenated names)           | Sphinx + nbsphinx source — numbered notebooks (1.x, 2.xx, 3.x, 4.xx), Appendix B, and the Appendix A reference designs |
+| `docs/circuit-examples/` (hyphenated)    | Sphinx + nbsphinx source — Appendix C, plus the remaining Appendix A full-design-flow examples |
 
 **Editing one without the other silently breaks the docs site or the
 notebook the user opens.** CI fails the PR if drift is detected
-(`scripts/check_tutorials_sync.py` runs on every push/PR).
+(`scripts/check_tutorials_sync.py` runs on every push/PR; 80 pairs).
+
+Note that stored cell **outputs** are part of the comparison — the docs
+build does not execute notebooks (`nbsphinx_execute = "never"` unless
+`QISKIT_DOCS_BUILD_TUTORIALS` is set), so the committed outputs are what
+the docs site renders. Do not strip outputs from one side only.
 
 If you intentionally edit one folder, re-sync the other with:
 
@@ -62,7 +68,7 @@ python3 _dev/sync_two_folders.py --write
 
 The sync script auto-detects which side has the uncommitted edit (vs
 HEAD) and copies *that* side to the other. Editing `tutorials/` → propagates
-to `docs/tut/`; editing `docs/tut/` → propagates to `tutorials/`. No
+to the docs mirror; editing the docs mirror → propagates to `tutorials/`. No
 config required for the common case. The `CANONICAL` dict in that script
 is **only** a tiebreaker for the rare case where both sides were edited
 locally before sync — the default tiebreaker is `tut` (the user-facing
