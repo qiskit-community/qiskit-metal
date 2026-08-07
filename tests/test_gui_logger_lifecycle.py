@@ -60,16 +60,41 @@ def _qt_available():
 class TestGUILoggerLifecycle(unittest.TestCase):
     """Issue #1048 — closing MetalGUI must detach its Qt-backed log handlers."""
 
+    #: MetalGUI instances are deliberately never dropped. Letting one be
+    #: collected in-process triggers the unfixed teardown segfault documented
+    #: in TestGUIGarbageCollectionCrash below, which would take the whole test
+    #: runner down (exit 139) instead of failing a single test. Holding a
+    #: reference keeps these assertions measuring what they claim to measure.
+    _kept = []
+
     def setUp(self):
         from PySide6.QtWidgets import QApplication
 
         self.app = QApplication.instance() or QApplication([])
 
-    def _build_and_close_gui(self):
-        """Build a MetalGUI and close it the way a user closes the window."""
+    def _new_gui(self):
+        """Build a MetalGUI and keep it alive for the process lifetime."""
         from qiskit_metal import designs, MetalGUI
 
         gui = MetalGUI(designs.DesignPlanar())
+        self._kept.append(gui)
+        return gui
+
+    def _destroy_log_widget(self, gui):
+        """Destroy just the log widget's C++ object.
+
+        This is the event the handlers must react to -- ``destroyed`` --
+        without tearing down the whole window, so it isolates the behaviour
+        under test from the unrelated teardown crash.
+        """
+        import shiboken6
+
+        shiboken6.delete(gui.main_window.ui.log_text)
+        self.app.processEvents()
+
+    def _build_and_close_gui(self):
+        """Build a MetalGUI and close it the way a user closes the window."""
+        gui = self._new_gui()
         # force_close skips the "save unsaved changes?" modal, which would
         # block forever without a user; the close path under test is the same.
         gui.main_window.force_close = True
@@ -94,10 +119,7 @@ class TestGUILoggerLifecycle(unittest.TestCase):
         metal_logger = logging.getLogger("metal")
 
         gui = self._build_and_close_gui()
-        del gui
-        gc.collect()
-        self.app.processEvents()
-        gc.collect()
+        self._destroy_log_widget(gui)
 
         dead = self._dead_qt_handlers(metal_logger)
         self.assertEqual(
@@ -116,9 +138,7 @@ class TestGUILoggerLifecycle(unittest.TestCase):
         metal_logger = logging.getLogger("metal")
 
         gui = self._build_and_close_gui()
-        del gui
-        gc.collect()
-        self.app.processEvents()
+        self._destroy_log_widget(gui)
 
         # Before the fix this printed "Logger issue: Internal C++ object
         # (QTextEditLogger) already deleted" — the benign manifestation of
@@ -135,15 +155,12 @@ class TestGUILoggerLifecycle(unittest.TestCase):
         metal_logger = logging.getLogger("metal")
 
         gui = self._build_and_close_gui()
-        del gui
-        gc.collect()
+        self._destroy_log_widget(gui)
         baseline = len(metal_logger.handlers)
 
         for _ in range(2):
             gui = self._build_and_close_gui()
-            del gui
-            gc.collect()
-            self.app.processEvents()
+            self._destroy_log_widget(gui)
 
         self.assertEqual(
             len(metal_logger.handlers),
@@ -160,7 +177,7 @@ class TestGUILoggerLifecycle(unittest.TestCase):
         from PySide6.QtCore import QTimer
         from qiskit_metal import designs, MetalGUI
 
-        gui = MetalGUI(designs.DesignPlanar())
+        gui = self._new_gui()
         main_window = gui.main_window
 
         running = [t for t in main_window.findChildren(QTimer) if t.isActive()]
@@ -198,7 +215,7 @@ class TestGUILoggerLifecycle(unittest.TestCase):
         """Reopening a closed MetalGUI must not leave a dead log pane."""
         from qiskit_metal import designs, MetalGUI
 
-        gui = MetalGUI(designs.DesignPlanar())
+        gui = self._new_gui()
         main_window = gui.main_window
 
         main_window.force_close = True
@@ -227,7 +244,7 @@ class TestGUILoggerLifecycle(unittest.TestCase):
         from PySide6.QtCore import QTimer
         from qiskit_metal import designs, MetalGUI
 
-        gui = MetalGUI(designs.DesignPlanar())
+        gui = self._new_gui()
         main_window = gui.main_window
         expected = len([t for t in main_window.findChildren(QTimer) if t.isActive()])
 
@@ -244,6 +261,102 @@ class TestGUILoggerLifecycle(unittest.TestCase):
             msg=(
                 f"only {running} of {expected} refresh timer(s) restarted on "
                 "reopen; the tables would silently stop updating."
+            ),
+        )
+
+
+@unittest.skipUnless(_qt_available(), "needs PySide6 and a display (Xvfb or desktop)")
+class TestGUIGarbageCollectionCrash(unittest.TestCase):
+    """KNOWN UNFIXED (issue #1048): dropping a MetalGUI segfaults the process.
+
+    Reported by @lgv3005 on macOS; reproduced here on Linux / PySide6
+    6.10.1, where it is **deterministic** with two instances. Reproduces
+    identically on unpatched ``main``, so it is not caused by the log-handler
+    work in this file's sibling suite.
+
+    Sequence: build MetalGUI, close it, drop the reference, let the object
+    be collected. The C-level backtrace (gdb) is::
+
+        shiboken6           <- destroying the Python-owned wrapper
+        ~QWidget
+        ~QObject
+        QObjectPrivate::setParent_helper       <- reparents children
+        QCoreApplication::notifyInternal2      <- posts ChildRemoved
+        sendThroughObjectEventFilters
+        QMenuBar::eventFilter
+        0x0000000000000000                     <- null vtable slot
+
+    A child destruction dispatches an event through a ``QMenuBar`` event
+    filter belonging to an object that is itself already half-destroyed.
+    This is the same mechanism ``_teardown_qt_widgets`` describes, but that
+    hook only runs via ``atexit``; ordinary collection mid-session is
+    unprotected.
+
+    **Marked expectedFailure rather than fixed.** ``_gui/`` is a hard-touch
+    zone, and every candidate fix tried so far was falsified once tested
+    against a *running event loop* (the condition that matters — a Jupyter
+    kernel always has one):
+
+    ============================================  ==========================
+    candidate                                     result with a live loop
+    ============================================  ==========================
+    ``main_window.deleteLater()``                 crash merely deferred to
+                                                  the next loop spin
+    ``menuBar().deleteLater()`` first             crash
+    ``main_window.removeEventFilter(menuBar())``  crash
+    ``menuBar().clear()`` + removeEventFilter     crash
+    ``setMenuBar(QMenuBar(main_window))``         crash
+    parent the menubars at construction in the
+    generated ``*_ui.py`` files                   crash
+    ``shiboken6.delete(main_window)``             crash
+    ============================================  ==========================
+
+    ``deleteLater`` is the trap worth calling out: it makes the crash vanish
+    from any test that never runs an event loop afterwards, because the
+    deletion simply never happens. Verify candidates with ``app.exec()``,
+    not ``processEvents()``.
+
+    When someone does fix this, unittest reports an unexpected success and
+    this marker should be removed.
+    """
+
+    _SNIPPET = (
+        "import gc\n"
+        "from PySide6.QtWidgets import QApplication\n"
+        "from PySide6.QtCore import QTimer\n"
+        "from qiskit_metal import designs, MetalGUI\n"
+        "app = QApplication.instance() or QApplication([])\n"
+        "guis = [MetalGUI(designs.DesignPlanar()) for _ in range(2)]\n"
+        "for g in guis:\n"
+        "    g.main_window.force_close = True\n"
+        "    g.main_window.close()\n"
+        "app.processEvents()\n"
+        "guis = None\n"
+        "gc.collect()\n"
+        "QTimer.singleShot(1200, app.quit)\n"
+        "app.exec()\n"
+        "print('SURVIVED_GC', flush=True)\n"
+    )
+
+    @unittest.expectedFailure
+    def test_dropping_metalgui_does_not_segfault(self):
+        """Drop two MetalGUIs, then run an event loop. Currently SIGSEGVs."""
+        import subprocess
+        import sys
+
+        proc = subprocess.run(
+            [sys.executable, "-X", "faulthandler", "-c", self._SNIPPET],
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+        self.assertEqual(
+            proc.returncode,
+            0,
+            msg=(
+                f"process died during teardown (rc={proc.returncode}; "
+                f"-11/139 == SIGSEGV) — issue #1048, known unfixed.\n"
+                f"stderr tail:\n{proc.stderr[-800:]}"
             ),
         )
 
