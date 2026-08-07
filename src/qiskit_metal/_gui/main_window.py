@@ -320,7 +320,11 @@ class QMainWindowExtension(QMainWindowExtensionBase):
             try:
                 timer.stop()
             except RuntimeError:
-                pass
+                # Shiboken raises RuntimeError when the timer's C++ object is
+                # already gone. That is the desired end state -- a destroyed
+                # timer cannot fire -- so there is nothing to do and nothing
+                # worth logging on a window that is closing.
+                continue
 
     @slot_catch_error()
     def closeEvent(self, event):
