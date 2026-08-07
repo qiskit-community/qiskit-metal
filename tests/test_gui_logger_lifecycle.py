@@ -37,7 +37,6 @@ These tests run in-process (a live QApplication is enough); they do not
 need the subprocess treatment the segfault tests use.
 """
 
-import gc
 import logging
 import os
 import unittest
@@ -115,7 +114,7 @@ class TestGUILoggerLifecycle(unittest.TestCase):
         return dead
 
     def test_no_dead_handler_left_on_global_logger(self):
-        """After close + gc, no handler may point at a freed C++ widget."""
+        """Once the log widget is destroyed, no handler may still point at it."""
         metal_logger = logging.getLogger("metal")
 
         gui = self._build_and_close_gui()
@@ -270,9 +269,24 @@ class TestGUIGarbageCollectionCrash(unittest.TestCase):
     """KNOWN UNFIXED (issue #1048): dropping a MetalGUI segfaults the process.
 
     Reported by @lgv3005 on macOS; reproduced here on Linux / PySide6
-    6.10.1, where it is **deterministic** with two instances. Reproduces
-    identically on unpatched ``main``, so it is not caused by the log-handler
-    work in this file's sibling suite.
+    6.10.1. Reproduces identically on unpatched ``main``, so it is not
+    caused by the log-handler work in this file's sibling suite.
+
+    **The crash is nondeterministic**, which is why this is skipped rather
+    than marked ``expectedFailure``. In one session a 32-variant sweep
+    crashed 16/32, with every two-instance variant failing and every
+    one-instance variant passing; later, in the same container with the same
+    commit, the identical scripts exited 0 ten times running. Nothing in the
+    tree changed between those observations. That signature -- sensitive to
+    memory layout and timing rather than to inputs -- is consistent with the
+    heap being corrupted by the null-vtable dispatch below, and it matches
+    the reporter's account of a session working for hours and then failing
+    with no code change.
+
+    An ``expectedFailure`` here would therefore turn into an intermittent
+    "unexpected success", i.e. a flaky red CI. Run the snippet below by hand
+    when working on this, several times, and do not read a single clean run
+    as evidence of a fix.
 
     Sequence: build MetalGUI, close it, drop the reference, let the object
     be collected. The C-level backtrace (gdb) is::
@@ -316,8 +330,9 @@ class TestGUIGarbageCollectionCrash(unittest.TestCase):
     deletion simply never happens. Verify candidates with ``app.exec()``,
     not ``processEvents()``.
 
-    When someone does fix this, unittest reports an unexpected success and
-    this marker should be removed.
+    When this is genuinely fixed, drop the skip and promote the snippet to a
+    real assertion -- but only once it has been shown to survive many
+    repetitions, on more than one machine.
     """
 
     _SNIPPET = (
@@ -338,9 +353,14 @@ class TestGUIGarbageCollectionCrash(unittest.TestCase):
         "print('SURVIVED_GC', flush=True)\n"
     )
 
-    @unittest.expectedFailure
+    @unittest.skip(
+        "issue #1048: known-unfixed teardown segfault. Crash is "
+        "nondeterministic, so asserting either way makes CI flaky. "
+        "See the class docstring for the backtrace and the "
+        "falsified-candidate table."
+    )
     def test_dropping_metalgui_does_not_segfault(self):
-        """Drop two MetalGUIs, then run an event loop. Currently SIGSEGVs."""
+        """Drop two MetalGUIs, then run an event loop. SIGSEGVs intermittently."""
         import subprocess
         import sys
 
