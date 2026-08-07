@@ -52,7 +52,20 @@ def module_path_from_abs_file_path(abs_file_path: str) -> str:
     Raises:
         ValueError: if the file is not inside an importable package.
     """
-    path = Path(abs_file_path).resolve()
+    path = Path(abs_file_path)
+    if not path.is_absolute():
+        # A relative path would be resolved against the current working
+        # directory, which is arbitrary and almost never where the package
+        # lives. Callers pass absolute paths; say so rather than silently
+        # resolving to the wrong file (or to nothing).
+        raise ValueError(
+            f"{abs_file_path} is not an absolute path; module resolution "
+            "would depend on the current working directory."
+        )
+    if not path.is_file():
+        raise ValueError(f"{abs_file_path} does not exist, so it has no module path.")
+
+    path = path.resolve()
     parts = [path.stem]
 
     directory = path.parent
