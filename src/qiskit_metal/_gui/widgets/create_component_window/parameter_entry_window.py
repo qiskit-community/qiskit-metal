@@ -42,10 +42,7 @@ from qiskit_metal._gui.widgets.create_component_window.model_view.tree_model_par
 from qiskit_metal._gui.widgets.create_component_window.parameter_entry_window_ui import (
     Ui_MainWindow,
 )
-from qiskit_metal._gui.utility.utils import (
-    class_from_abs_file_path,
-    module_path_from_abs_file_path,
-)
+from qiskit_metal._gui.utility.utils import class_from_abs_file_path
 from qiskit_metal.qlibrary.core import QComponent
 from qiskit_metal.toolbox_python.attr_dict import Dict
 
