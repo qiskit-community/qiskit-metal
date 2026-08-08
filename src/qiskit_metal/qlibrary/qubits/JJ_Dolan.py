@@ -34,7 +34,7 @@ class jj_dolan(QComponent):
     which overlaps part of one of the rectangular fingers.
 
     .. image::
-        JJ_Dolan.png
+        jj_dolan.png
 
     .. meta::
         :description: Josephson Junction Dolan
