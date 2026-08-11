@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="2.11 Routing 101" href="2.11-Routing-101.html"><link rel="prev" title="1.5 Parametric Design: Iterate and Compare" href="../1-Overview/1.5-Parametric-design---iterate-and-compare.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>2.01 QComponent lifecycle — use, copy, delete, rename - Quantum Metal 0.8.0</title>
+        <title>2.01 QComponent lifecycle — use, copy, delete, rename - Quantum Metal 0.8.1</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -158,7 +158,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
+      <a href="../../index.html"><div class="brand">Quantum Metal 0.8.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -180,7 +180,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../search.html" role="search">
@@ -290,6 +290,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -530,17 +531,92 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
 <span class="n">gui</span> <span class="o">=</span> <span class="n">qm</span><span class="o">.</span><span class="n">gui</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
+
+<span class="c1"># Dark theme for the desktop GUI screenshots below. Guarded because the</span>
+<span class="c1"># inline headless viewer used on Colab/Binder has no stylesheet concept.</span>
+<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">gui</span><span class="p">,</span> <span class="s2">&quot;load_stylesheet&quot;</span><span class="p">):</span>
+    <span class="n">gui</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span><span class="s2">&quot;metal_dark&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area rendered_html docutils container">
-<div style='border-left:4px solid #6929C4;padding:8px 12px;background:#f4f1fb;color:#222;font-family:sans-serif;font-size:13px;line-height:1.4;margin:4px 0;'><b>Quantum Metal — headless viewer active.</b> Rendering inline via <code>qm.view(design)</code>; <code>gui.rebuild()</code>, <code>gui.screenshot()</code>, <code>gui.edit_component(...)</code> work as in the desktop GUI.<br>For the full desktop experience (Qt window, dockable panels): <code>pip install 'quantum-metal[gui]'</code> and re-import.</div></div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+11:25PM 40s WARNING [_qt_message_handler]: WARNING: Populating font family aliases took 157 ms. Replace uses of missing font family &#34;Sans Serif&#34; with one that exists to avoid this cost.  (No context available from Qt)
+Python Traceback (most recent call last):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/async_helpers.py&#34;, line 128, in _pseudo_sync_runner
+    coro.send(None)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3400, in run_cell_async
+    has_raised = await self.run_ast_nodes(code_ast.body, cell_name,
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3641, in run_ast_nodes
+    if await self.run_code(code, result, async_=asy):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3701, in run_code
+    exec(code_obj, self.user_global_ns, self.user_ns)
+  File &#34;/var/folders/ll/v2l8gv4n6v59qrqlsc0jf3dc0000gn/T/ipykernel_39898/3466374119.py&#34;, line 2, in &lt;module&gt;
+    gui = qm.gui(design)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/viewer/headless_gui.py&#34;, line 624, in gui
+    return MetalGUI(design, **kwargs)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/main_window.py&#34;, line 570, in __init__
+    super().__init__()
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/main_window_base.py&#34;, line 597, in __init__
+    self.ui.setupUi(self.main_window)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/main_window_ui.py&#34;, line 51, in setupUi
+    self.tabWidget.addTab(self.mainViewTab, icon1, &#34;&#34;)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/utility/_handle_qt_messages.py&#34;, line 81, in _qt_message_handler
+    python_traceback = &#34;&#34;.join(traceback.format_stack(limit=10))
+
+11:25PM 40s WARNING [_qt_message_handler]: WARNING: This plugin does not support propagateSizeHints() (No context available from Qt)
+Python Traceback (most recent call last):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3178, in _run_cell
+    result = runner(coro)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/async_helpers.py&#34;, line 128, in _pseudo_sync_runner
+    coro.send(None)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3400, in run_cell_async
+    has_raised = await self.run_ast_nodes(code_ast.body, cell_name,
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3641, in run_ast_nodes
+    if await self.run_code(code, result, async_=asy):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3701, in run_code
+    exec(code_obj, self.user_global_ns, self.user_ns)
+  File &#34;/var/folders/ll/v2l8gv4n6v59qrqlsc0jf3dc0000gn/T/ipykernel_39898/3466374119.py&#34;, line 2, in &lt;module&gt;
+    gui = qm.gui(design)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/viewer/headless_gui.py&#34;, line 624, in gui
+    return MetalGUI(design, **kwargs)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/main_window.py&#34;, line 582, in __init__
+    self.variables_window = PropertyTableWidget(self, gui=self)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/widgets/variable_table/prop_val_table_gui.py&#34;, line 51, in __init__
+    self.show()
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/utility/_handle_qt_messages.py&#34;, line 81, in _qt_message_handler
+    python_traceback = &#34;&#34;.join(traceback.format_stack(limit=10))
+
+11:25PM 40s WARNING [_qt_message_handler]: WARNING: This plugin does not support propagateSizeHints() (No context available from Qt)
+Python Traceback (most recent call last):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3123, in run_cell
+    result = self._run_cell(
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3178, in _run_cell
+    result = runner(coro)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/async_helpers.py&#34;, line 128, in _pseudo_sync_runner
+    coro.send(None)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3400, in run_cell_async
+    has_raised = await self.run_ast_nodes(code_ast.body, cell_name,
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3641, in run_ast_nodes
+    if await self.run_code(code, result, async_=asy):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3701, in run_code
+    exec(code_obj, self.user_global_ns, self.user_ns)
+  File &#34;/var/folders/ll/v2l8gv4n6v59qrqlsc0jf3dc0000gn/T/ipykernel_39898/3466374119.py&#34;, line 2, in &lt;module&gt;
+    gui = qm.gui(design)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/viewer/headless_gui.py&#34;, line 624, in gui
+    return MetalGUI(design, **kwargs)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/main_window.py&#34;, line 627, in __init__
+    self.main_window.show()
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/utility/_handle_qt_messages.py&#34;, line 81, in _qt_message_handler
+    python_traceback = &#34;&#34;.join(traceback.format_stack(limit=10))
+
+</pre></div></div>
 </div>
 <p>Let’s load a QComponent with all default options, corresponding to a transmon qubit. This particular QComponent is stored in the library qiskit_metal.qlibrary.qubits and we’ll create a new object of the class TransmonPocket.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
@@ -551,14 +627,6 @@
 <span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># rebuild the design and plot</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_9_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_9_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -573,13 +641,13 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_10_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_10_0.png" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_10_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_10_0.png" width="500" />
 </div>
 </div>
 <p>We see that this QComponent consists of two large metallic pads with a thin strip of metal connecting them, corresponding to a Josephson Junction. The transmon qubit is centered at the origin by default. In the GUI, we can see that the ID assigned to our QComponent is “1” and that the QComponent class is “Transmon Pocket.”</p>
 <p>Note that since we didn’t give the QComponent an explicit name, one was assigned automatically (“Pocket_1”) which we can also see in the GUI. Taking a look at the actual QComponent python script, we see that there is a “short name” defined in the QComponent metadata (short_name = “Pocket” in the dictionary), which is where this name comes from.</p>
 <p>It is easy to give a specific name to a QComponent object. We can delete the QComponent “Pocket_1” by just clicking the “Delete all” button in the Qiskit Metal GUI. Alternatively, this can done by executing the following command, which deletes all components in the design (more on deleting later in this tutorial):</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
@@ -589,16 +657,8 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_13_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_13_0.png" />
-</div>
-</div>
 <p>Then, we can create the same transmon pocket with the name “Q1” by typing the command:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
@@ -606,14 +666,6 @@
 <span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># rebuild the design and plot</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_15_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_15_0.png" />
 </div>
 </div>
 <p>The QComponent we’ve just created as a name “Q1” and a QComponent ID of 2, since an ID of 1 was already used for the now-deleted “Pocket_1” object. It is worth noting that the QComponent we’ve just created is not functional yet; it’s just two rectangular metal pads with a thin strip of metal connecting them. In order for a QComponent to be functional in an actual design, we will need to add a few additional things, such as QPins defining where the transmon pocket connects to coplanar waveguides
@@ -735,7 +787,7 @@
 <section id="Modifying-the-Options">
 <h2>Modifying the Options<a class="headerlink" href="#Modifying-the-Options" title="Link to this heading">¶</a></h2>
 <p>We can modify the QComponent by changing the default options. This can be done using either the python API or the GUI. Here’s an example where we’ll move the transmon from (0,0) to (2,2), while also modifying the pad height and width:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
@@ -750,19 +802,11 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_25_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_25_0.png" />
-</div>
-</div>
 </section>
 <section id="Copying-a-QComponent">
 <h2>Copying a QComponent<a class="headerlink" href="#Copying-a-QComponent" title="Link to this heading">¶</a></h2>
 <p>We can copy a QComponent using the “design.copy_qcomponent” command. Let’s make a copy of our transmon qubit, which is located at (2,2) and place the copy at (-2,2):</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
@@ -774,16 +818,8 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_28_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_28_0.png" />
-</div>
-</div>
 <p>We can also copy multiple QComponents at the same time. For example, let’s suppose we want to take our two transmon qubits at (-2,2) and (2,2) and create copies which are located at (-2,2) and (-2,2):</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
@@ -794,14 +830,6 @@
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_30_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_30_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -816,7 +844,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_31_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_31_0.png" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_31_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_31_0.png" width="500" />
 </div>
 </div>
 <p>Now we have four transmon qubits located at the corners of a square: (-2,-2), (-2,2), (2,2) and (2,-2).</p>
@@ -824,7 +852,7 @@
 <h3>More copy patterns<a class="headerlink" href="#More-copy-patterns" title="Link to this heading">¶</a></h3>
 <p>The cells below — adapted from the standalone <em>How to copy a QComponent</em> tutorial — explore richer copy scenarios: bulk copies via lists, partial option overrides, default-overwrite semantics.</p>
 <p>Now we’ll put one transmon at the origin:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
@@ -843,16 +871,8 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_35_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_35_0.png" />
-</div>
-</div>
 <p>First, we’ll copy the component and then manually modify the coordinates to be at (1,0) instead of (0,0):</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
@@ -864,16 +884,8 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_37_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_37_0.png" />
-</div>
-</div>
 <p>Now, we’ll copy the original component and in the same step we’ll move the copy to (-1,0) by passing a dictionary to the “copy_qcomponent” command:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
@@ -884,16 +896,8 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_39_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_39_0.png" />
-</div>
-</div>
 <p>We can copy multiple components at once using the “copy_multiple_qcomponents” command. Here’s an example that copies the three components we’ve just created (Q1 and the two copies: Q1_copy and Q1_another_copy) and moves them up by 2.0mm each:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
@@ -908,16 +912,8 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_41_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_41_0.png" />
-</div>
-</div>
 <p>Note that we can also copy multiple QComponents without passing dictionaries. In this case, the copied QComponents will sit on top of of the original QComponents in the layout:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
@@ -930,16 +926,8 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_43_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_43_0.png" />
-</div>
-</div>
 <p>Note also that we can copy multiple QComponents but only give a dictionary to one of them. The other two dictionaries still need to exist but can be empty:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
@@ -954,14 +942,6 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_45_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_45_0.png" />
-</div>
-</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
@@ -974,7 +954,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_46_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_46_0.png" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_46_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_46_0.png" width="500" />
 </div>
 </div>
 </section>
@@ -984,7 +964,7 @@
 <p>We saw in an earlier example how to delete all QComponents in a design using either the “design.delete_all_components” command or by using the “Delete all” button in the GUI. But what if we only want to delete specific QComponents without deleting everything in a design?</p>
 <p>We can delete a specific QComponent using either the GUI or the python API. If you wish to remove a specific QComponent, you can do so using the “delete_component” or “_delete_component” commands. The first takes the string reference to a Qcomponent, while the second takes an integer reference to a QComponent. Suppose we want to remove qubit ‘Q1’. Presently, we do not need to pass a Boolean corresponding to whether we want to force the delete (true=1) even if the component has dependencies, or
 whether the deletion should not be executed in the event the QComponent does have dependencies (false=0). The bool option is for future potential possibilities of having QComponents with dependencies.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
@@ -992,14 +972,6 @@ whether the deletion should not be executed in the event the QComponent does hav
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_49_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_49_0.png" />
 </div>
 </div>
 <p>We can also delete without checking for QComponent dependencies at all. In this case, we pass only the QComponent ID. As an example, we can force delete ‘Q1_copy” which has QComponent ID=3 by typing:</p>
@@ -1013,21 +985,13 @@ whether the deletion should not be executed in the event the QComponent does hav
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-07:22PM 34s WARNING [_delete_component]: Called _delete_complete, component_id: 3, but component_id is not in design.components dictionary.
+11:25PM 42s WARNING [_delete_component]: Called _delete_complete, component_id: 3, but component_id is not in design.components dictionary.
 </pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_51_1.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_51_1.png" />
-</div>
 </div>
 </section>
 <section id="Renaming-a-QComponent">
@@ -1047,8 +1011,8 @@ whether the deletion should not be executed in the event the QComponent does hav
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-07:22PM 34s WARNING [rename_component]: Called rename_component, component_id=4, but component_id is not in design.components dictionary.
-07:22PM 34s WARNING [rename_component]: Called rename_component, component_id=5, but component_id is not in design.components dictionary.
+11:25PM 42s WARNING [rename_component]: Called rename_component, component_id=4, but component_id is not in design.components dictionary.
+11:25PM 42s WARNING [rename_component]: Called rename_component, component_id=5, but component_id is not in design.components dictionary.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1085,19 +1049,28 @@ whether the deletion should not be executed in the event the QComponent does hav
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_59_0.png" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_59_0.png" />
+<img alt="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_59_0.png" class="no-scaled-link" src="../../_images/tut_2-From-components-to-chip_2.01-How-to-use-a-QComponent_59_0.png" width="500" />
 </div>
 </div>
 </section>
 <section id="Closing-the-Qiskit-Metal-GUI">
 <h2>Closing the Qiskit Metal GUI<a class="headerlink" href="#Closing-the-Qiskit-Metal-GUI" title="Link to this heading">¶</a></h2>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
 </div>
 </section>
 </section>
@@ -1165,7 +1138,7 @@ whether the deletion should not be executed in the event the QComponent does hav
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/07</div>
+              Last updated on 2026/08/11</div>
           </div>
           <div class="right-details">
             
@@ -1208,7 +1181,7 @@ whether the deletion should not be executed in the event the QComponent does hav
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=486e5634"></script>
+</div><script src="../../_static/documentation_options.js?v=ec16d22d"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

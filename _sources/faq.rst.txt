@@ -123,6 +123,35 @@ For ``windows``: this error intermittently shows in conda environments. It was f
 
 If the methods above do not work, consider trying an older version of Python (and related dependencies).
 
+**Q: The GUI crashed my kernel ("the kernel appears to have died") — what now?**
+
+**A:** Just launch it again. Since the fixes for
+`issue #1048 <https://github.com/qiskit-community/qiskit-metal/issues/1048>`_,
+``MetalGUI`` keeps a startup journal: if a launch dies partway through,
+the next launch detects it, discards any persisted window state, and
+starts clean with the default layout. One crash should never repeat
+itself on relaunch.
+
+A few related behaviors and switches worth knowing:
+
+- **Window layout is not auto-restored by default.** Replaying a saved
+  layout into a changed display setup (docking/undocking, monitor swap,
+  DPI change) was the main crash trigger, so startup now always uses the
+  default layout. To opt back in to layout persistence, set
+  ``QISKIT_METAL_RESTORE_LAYOUT=1`` before launching.
+- ``QISKIT_METAL_RESET_UI_SETTINGS=1`` — force-clear all persisted GUI
+  state on the next launch.
+- ``QISKIT_METAL_DEBUG_INIT=1`` — trace every GUI startup step to stderr;
+  the last line printed identifies a failing call. Include this output if
+  you file an issue.
+- On Windows the GUI defaults to software OpenGL (a class of GPU-driver
+  crashes); opt out on healthy hardware with
+  ``QISKIT_METAL_QT_HARDWARE_GL=1``.
+
+If the GUI is unusable on your machine, everything except interactive
+editing works without Qt: ``qm.view(design)`` renders any design
+headlessly — see :doc:`headless-usage`.
+
 **Q: Why am I not able to start Jupyter Lab in the new environment?**
 
 **A:** Based on: `this <https://anaconda.org/conda-forge/jupyterlab>`_, install Jupyter lab by

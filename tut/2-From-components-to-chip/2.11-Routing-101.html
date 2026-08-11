@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="2.12 Simple Meander" href="2.12-Simple-Meander.html"><link rel="prev" title="2.01 QComponent lifecycle — use, copy, delete, rename" href="2.01-How-to-use-a-QComponent.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>2.11 Routing 101 - Quantum Metal 0.8.0</title>
+        <title>2.11 Routing 101 - Quantum Metal 0.8.1</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -158,7 +158,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
+      <a href="../../index.html"><div class="brand">Quantum Metal 0.8.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -180,7 +180,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../search.html" role="search">
@@ -290,6 +290,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -506,7 +507,7 @@
 <section id="Prerequisite">
 <h2>Prerequisite<a class="headerlink" href="#Prerequisite" title="Link to this heading">¶</a></h2>
 <p>Initialize metal</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
@@ -521,12 +522,6 @@
 <span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;cpw_gap&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;6 um&quot;</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<div style='border-left:4px solid #6929C4;padding:8px 12px;background:#f4f1fb;color:#222;font-family:sans-serif;font-size:13px;line-height:1.4;margin:4px 0;'><b>Quantum Metal — headless viewer active.</b> Rendering inline via <code>qm.view(design)</code>; <code>gui.rebuild()</code>, <code>gui.screenshot()</code>, <code>gui.edit_component(...)</code> work as in the desktop GUI.<br>For the full desktop experience (Qt window, dockable panels): <code>pip install 'quantum-metal[gui]'</code> and re-import.</div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -594,8 +589,9 @@
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_14_0.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_14_0.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <p>Then we create the route in between them. Notice we are using the previously defined <code class="docutils literal notranslate"><span class="pre">pin_opt</span></code> to indicate which pins to connect to.</p>
 <div class="nbinput docutils container">
@@ -655,8 +651,9 @@
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_18_0.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_18_0.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <p>Then we connect pair of pins using a straight route. Notice how we update the <code class="docutils literal notranslate"><span class="pre">pin_opt</span></code> component names to the new pair, for each new <code class="docutils literal notranslate"><span class="pre">RouteStraight</span></code>. Indeed, we can only use a pin for one single connection, and we will get an error if we try to connect a second route to the same pin.</p>
 <div class="nbinput docutils container">
@@ -683,8 +680,9 @@
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_20_0.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_20_0.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -727,21 +725,14 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Ignoring fixed x limits to fulfill fixed data aspect with adjustable data limits.
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_23_1.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_23_1.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <p>Let’s make another connection. This time, we add a lead extension to both pins. An extension is a route segment that begins from the pin coordinates and extends straight in the pin direction by the given length.</p>
 <div class="nbinput docutils container">
@@ -848,21 +839,14 @@ Ignoring fixed x limits to fulfill fixed data aspect with adjustable data limits
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Ignoring fixed y limits to fulfill fixed data aspect with adjustable data limits.
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_29_1.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_29_1.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <p>Notice how the <code class="docutils literal notranslate"><span class="pre">RouteFramed</span></code> executed in the previous cell needs to create 2 jogs to complete the routing, as opposed to the previous single 90° job example.</p>
 <p>This algorithm helps also connecting pins not facing each other, like in the next cell.</p>
@@ -998,21 +982,14 @@ Ignoring fixed x limits to fulfill fixed data aspect with adjustable data limits
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Ignoring fixed y limits to fulfill fixed data aspect with adjustable data limits.
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_35_1.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_35_1.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <p>This notebook explains the basics of <code class="docutils literal notranslate"><span class="pre">QRoute</span></code>, illustrating <strong>custom</strong> methods to route. In this same tutorial folder you will find other notebooks describing the use of more automated routing options:</p>
 <ul class="simple">
@@ -1034,8 +1011,9 @@ Ignoring fixed y limits to fulfill fixed data aspect with adjustable data limits
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_37_0.png" src="../../_images/tut_2-From-components-to-chip_2.11-Routing-101_37_0.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
@@ -1112,7 +1090,7 @@ Ignoring fixed y limits to fulfill fixed data aspect with adjustable data limits
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/07</div>
+              Last updated on 2026/08/11</div>
           </div>
           <div class="right-details">
             
@@ -1154,7 +1132,7 @@ Ignoring fixed y limits to fulfill fixed data aspect with adjustable data limits
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=486e5634"></script>
+</div><script src="../../_static/documentation_options.js?v=ec16d22d"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

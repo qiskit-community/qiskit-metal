@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="2.22 Design 100 qubits programmatically" href="2.22-Design-100-qubits-programmatically.html"><link rel="prev" title="Airbridges" href="2.15-Airbridges.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>2.21 Design a 4 qubit full chip - Quantum Metal 0.8.0</title>
+        <title>2.21 Design a 4 qubit full chip - Quantum Metal 0.8.1</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -158,7 +158,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
+      <a href="../../index.html"><div class="brand">Quantum Metal 0.8.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -180,7 +180,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../search.html" role="search">
@@ -290,6 +290,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -472,7 +473,7 @@
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.ipynb">tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.ipynb</a>.</p>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qm</span>  <span class="c1"># alias for qm.gui / qm.view</span>
@@ -490,8 +491,8 @@
 <section id="Preparations">
 <h2>Preparations<a class="headerlink" href="#Preparations" title="Link to this heading">¶</a></h2>
 <p>Import key libraries and open the Metal GUI. Also, we configure the notebook to enable overwriting of existing components.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -503,14 +504,95 @@
 <span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
 <span class="n">gui</span> <span class="o">=</span> <span class="n">qm</span><span class="o">.</span><span class="n">gui</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 
+<span class="c1"># Dark theme for the desktop GUI screenshots below. Guarded because the</span>
+<span class="c1"># inline headless viewer used on Colab/Binder has no stylesheet concept.</span>
+<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">gui</span><span class="p">,</span> <span class="s2">&quot;load_stylesheet&quot;</span><span class="p">):</span>
+    <span class="n">gui</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span><span class="s2">&quot;metal_dark&quot;</span><span class="p">)</span>
+
 <span class="c1"># if you disable the next line, then you will need to delete a component [&lt;component&gt;.delete()] before recreating it</span>
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+11:26PM 17s WARNING [_qt_message_handler]: WARNING: Populating font family aliases took 162 ms. Replace uses of missing font family &#34;Sans Serif&#34; with one that exists to avoid this cost.  (No context available from Qt)
+Python Traceback (most recent call last):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/async_helpers.py&#34;, line 128, in _pseudo_sync_runner
+    coro.send(None)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3400, in run_cell_async
+    has_raised = await self.run_ast_nodes(code_ast.body, cell_name,
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3641, in run_ast_nodes
+    if await self.run_code(code, result, async_=asy):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3701, in run_code
+    exec(code_obj, self.user_global_ns, self.user_ns)
+  File &#34;/var/folders/ll/v2l8gv4n6v59qrqlsc0jf3dc0000gn/T/ipykernel_40029/1732688812.py&#34;, line 8, in &lt;module&gt;
+    gui = qm.gui(design)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/viewer/headless_gui.py&#34;, line 624, in gui
+    return MetalGUI(design, **kwargs)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/main_window.py&#34;, line 570, in __init__
+    super().__init__()
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/main_window_base.py&#34;, line 597, in __init__
+    self.ui.setupUi(self.main_window)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/main_window_ui.py&#34;, line 51, in setupUi
+    self.tabWidget.addTab(self.mainViewTab, icon1, &#34;&#34;)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/utility/_handle_qt_messages.py&#34;, line 81, in _qt_message_handler
+    python_traceback = &#34;&#34;.join(traceback.format_stack(limit=10))
+
+11:26PM 17s WARNING [_qt_message_handler]: WARNING: This plugin does not support propagateSizeHints() (No context available from Qt)
+Python Traceback (most recent call last):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3178, in _run_cell
+    result = runner(coro)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/async_helpers.py&#34;, line 128, in _pseudo_sync_runner
+    coro.send(None)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3400, in run_cell_async
+    has_raised = await self.run_ast_nodes(code_ast.body, cell_name,
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3641, in run_ast_nodes
+    if await self.run_code(code, result, async_=asy):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3701, in run_code
+    exec(code_obj, self.user_global_ns, self.user_ns)
+  File &#34;/var/folders/ll/v2l8gv4n6v59qrqlsc0jf3dc0000gn/T/ipykernel_40029/1732688812.py&#34;, line 8, in &lt;module&gt;
+    gui = qm.gui(design)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/viewer/headless_gui.py&#34;, line 624, in gui
+    return MetalGUI(design, **kwargs)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/main_window.py&#34;, line 582, in __init__
+    self.variables_window = PropertyTableWidget(self, gui=self)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/widgets/variable_table/prop_val_table_gui.py&#34;, line 51, in __init__
+    self.show()
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/utility/_handle_qt_messages.py&#34;, line 81, in _qt_message_handler
+    python_traceback = &#34;&#34;.join(traceback.format_stack(limit=10))
+
+11:26PM 17s WARNING [_qt_message_handler]: WARNING: This plugin does not support propagateSizeHints() (No context available from Qt)
+Python Traceback (most recent call last):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3123, in run_cell
+    result = self._run_cell(
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3178, in _run_cell
+    result = runner(coro)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/async_helpers.py&#34;, line 128, in _pseudo_sync_runner
+    coro.send(None)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3400, in run_cell_async
+    has_raised = await self.run_ast_nodes(code_ast.body, cell_name,
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3641, in run_ast_nodes
+    if await self.run_code(code, result, async_=asy):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3701, in run_code
+    exec(code_obj, self.user_global_ns, self.user_ns)
+  File &#34;/var/folders/ll/v2l8gv4n6v59qrqlsc0jf3dc0000gn/T/ipykernel_40029/1732688812.py&#34;, line 8, in &lt;module&gt;
+    gui = qm.gui(design)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/viewer/headless_gui.py&#34;, line 624, in gui
+    return MetalGUI(design, **kwargs)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/main_window.py&#34;, line 627, in __init__
+    self.main_window.show()
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/utility/_handle_qt_messages.py&#34;, line 81, in _qt_message_handler
+    python_traceback = &#34;&#34;.join(traceback.format_stack(limit=10))
+
+</pre></div></div>
+</div>
 <p>Import components that will be necessary for the design.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket_cl</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocketCL</span>
@@ -528,7 +610,7 @@
 <h3>Let’s design the core of the chip<a class="headerlink" href="#Let's-design-the-core-of-the-chip" title="Link to this heading">¶</a></h3>
 <p>Setup the design-wide default settings for trace width and trace gap. These can be customized later for individual transmission lines.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;cpw_width&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;10 um&quot;</span>
@@ -540,7 +622,7 @@
 </div>
 <p>We need 4 transmons with 3 connection pads each and a chargeline. Let’s explore the options of one transmon</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TransmonPocketCL</span><span class="o">.</span><span class="n">get_template_options</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
@@ -548,7 +630,7 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -606,7 +688,7 @@
 <p>We want to change the <code class="docutils literal notranslate"><span class="pre">pad_width</span></code> for these transmons, as well as define the 3 connection pads and chargeline.</p>
 <p>To apply the same modifications to all 4 transmons, we define a single option-dictionary to pass to all transmons at the monent of creation.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transmon_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -624,7 +706,7 @@
 </div>
 <p>We can now create the 4 transmons by specifying the desired coordinates and orientations.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">offset_tm</span> <span class="o">=</span> <span class="mi">69</span>  <span class="c1"># we the transmon slightly out of center-line</span>
@@ -658,7 +740,7 @@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -674,7 +756,7 @@
 </div>
 <p>Let’s now connect the transmons with transmission lines. We want to have an “exact length” transmission line, so we will use the <code class="docutils literal notranslate"><span class="pre">RouteMeander</span></code>. Let’s first observe what the default options are.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">RouteMeander</span><span class="o">.</span><span class="n">get_template_options</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
@@ -682,7 +764,7 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -709,7 +791,7 @@
 </div>
 <p>We want to globally override the default lead (straight initial segment leaving the transmon) and the default fillet (corner rounding radius). Let’s collect this information in one dictionary.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fillet</span> <span class="o">=</span> <span class="s2">&quot;99.99um&quot;</span>
@@ -721,7 +803,7 @@
 </div>
 <p>We then want each transmission line to be connected to different pins and to have different lengths and asymmetry w.r.t their centerline. Let’s collect this information in other dictionaries. Before doing that, to manage the dictionaries in a simpler way, we redefine the <code class="docutils literal notranslate"><span class="pre">RouteMeander</span></code> signature by wrapping it into a convenient method named <code class="docutils literal notranslate"><span class="pre">connect</span></code></p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span>
@@ -749,7 +831,7 @@
 </div>
 <p>We can now proceed and define the meanders following the signature: <code class="docutils literal notranslate"><span class="pre">connect(cpw_name,</span> <span class="pre">pin1_comp_name,</span> <span class="pre">pin1_comp_pin,</span> <span class="pre">pin2_comp_name,</span> <span class="pre">pin2_comp_pin,</span> <span class="pre">length,</span> <span class="pre">asymmetry)</span></code></p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">asym</span> <span class="o">=</span> <span class="mi">500</span>
@@ -767,8 +849,8 @@
 <section id="Let's-now-connect-the-core-elements-to-the-launchpads">
 <h3>Let’s now connect the core elements to the launchpads<a class="headerlink" href="#Let's-now-connect-the-core-elements-to-the-launchpads" title="Link to this heading">¶</a></h3>
 <p>First we setup the launchpad location and orientation.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># V1 - Corners</span>
@@ -820,8 +902,38 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+11:26PM 18s WARNING [_qt_message_handler]: WARNING: This plugin does not support propagateSizeHints() (No context available from Qt)
+Python Traceback (most recent call last):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3400, in run_cell_async
+    has_raised = await self.run_ast_nodes(code_ast.body, cell_name,
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3641, in run_ast_nodes
+    if await self.run_code(code, result, async_=asy):
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&#34;, line 3701, in run_code
+    exec(code_obj, self.user_global_ns, self.user_ns)
+  File &#34;/var/folders/ll/v2l8gv4n6v59qrqlsc0jf3dc0000gn/T/ipykernel_40029/2304210001.py&#34;, line 46, in &lt;module&gt;
+    gui.autoscale()
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/main_window.py&#34;, line 1443, in autoscale
+    self.plot_win.auto_scale(include_chip=include_chip)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/widgets/plot_widget/plot_window.py&#34;, line 248, in auto_scale
+    self.canvas.auto_scale(include_chip=include_chip)
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/renderers/renderer_mpl/mpl_canvas.py&#34;, line 833, in auto_scale
+    self.refresh()
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/renderers/renderer_mpl/mpl_canvas.py&#34;, line 558, in refresh
+    self.flush_events()
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/.venv/lib/python3.11/site-packages/matplotlib/backends/backend_qt.py&#34;, line 466, in flush_events
+    QtWidgets.QApplication.instance().processEvents()
+  File &#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/src/qiskit_metal/_gui/utility/_handle_qt_messages.py&#34;, line 81, in _qt_message_handler
+    python_traceback = &#34;&#34;.join(traceback.format_stack(limit=10))
+
+</pre></div></div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -837,7 +949,7 @@
 </div>
 <p>Then we route. First the V2 launchpads - Exchange Coupler Lines to Edges.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">asym</span> <span class="o">=</span> <span class="mi">150</span>
@@ -858,7 +970,7 @@
 <p>Finally we route the V1 launchpads - Chargelines to Corners.</p>
 <p>We create the transmission lines between the corner launchpads and the qubit charge lines.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
@@ -900,7 +1012,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jogsB_in</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
@@ -950,7 +1062,7 @@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -970,7 +1082,7 @@
 <h2>Export to GDS<a class="headerlink" href="#Export-to-GDS" title="Link to this heading">¶</a></h2>
 <p>QDesign enables GDS renderer during init. Let’s see what the available option defaults are.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_gds</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span>
@@ -980,7 +1092,7 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1017,7 +1129,7 @@
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;no_cheese&quot;</span><span class="p">][</span><span class="s2">&quot;buffer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;50um&quot;</span>
@@ -1026,7 +1138,7 @@
 </div>
 <p>Correct the path to point to the junction GDS that we intend to include in the output GDS. Then stream out all components in the design.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;path_filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;../../resources/Fake_Junctions.GDS&quot;</span>
@@ -1039,11 +1151,11 @@
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-11:16PM 43s INFO [import_junction_gds_file]: Rescaling imported junction library from unit=1e-06 to unit=0.001 (scale factor=0.001).
+11:26PM 20s WARNING [import_junction_gds_file]: Not able to find file:&#34;../../resources/Fake_Junctions.GDS&#34;.  Not used to replace junction. Checked directory:&#34;/Users/zlatkominev/CODE_REPOS/quantum_hardware_all/qiskit-metal/docs/resources&#34;.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1055,7 +1167,7 @@
 <div><p><strong>TODO:</strong> Add load GDS and preview here.</p>
 </div></blockquote>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gui.main_window.close()</span>
@@ -1128,7 +1240,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/07</div>
+              Last updated on 2026/08/11</div>
           </div>
           <div class="right-details">
             
@@ -1167,7 +1279,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=486e5634"></script>
+</div><script src="../../_static/documentation_options.js?v=ec16d22d"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

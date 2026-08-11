@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="MplInteraction" href="qiskit_metal.renderers.MplInteraction.html"><link rel="prev" title="QRendererAnalysis" href="qiskit_metal.renderers.QRendererAnalysis.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>PlotCanvas - Quantum Metal 0.8.0</title>
+        <title>PlotCanvas - Quantum Metal 0.8.1</title>
       <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -157,7 +157,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
+      <a href="../index.html"><div class="brand">Quantum Metal 0.8.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -179,7 +179,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../search.html" role="search">
@@ -289,6 +289,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
@@ -487,6 +488,54 @@
 </ul>
 </dd>
 </dl>
+<p class="rubric">Attributes</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.CLICK_PIXEL_TOLERANCE">
+<span class="sig-name descname"><span class="pre">CLICK_PIXEL_TOLERANCE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.CLICK_PIXEL_TOLERANCE" title="Link to this definition">¶</a></dt>
+<dd><p>A press and release within this many pixels counts as a click rather
+than a drag. Matches the threshold <code class="docutils literal notranslate"><span class="pre">_zoom_area</span></code> uses to ignore
+accidental rubber-band drags, so pan and select agree on the boundary.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.NUDGE_COARSE_FACTOR">
+<span class="sig-name descname"><span class="pre">NUDGE_COARSE_FACTOR</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10.0</span></span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.NUDGE_COARSE_FACTOR" title="Link to this definition">¶</a></dt>
+<dd><p>Multipliers for the modifier keys. Shift coarsens, Alt refines –
+the convention every drawing tool uses.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.NUDGE_FINE_FACTOR">
+<span class="sig-name descname"><span class="pre">NUDGE_FINE_FACTOR</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.1</span></span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.NUDGE_FINE_FACTOR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.NUDGE_STEP_MM">
+<span class="sig-name descname"><span class="pre">NUDGE_STEP_MM</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.05</span></span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.NUDGE_STEP_MM" title="Link to this definition">¶</a></dt>
+<dd><p>Grid step for one arrow-key press, in millimetres.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.PICK_PIXEL_TOLERANCE">
+<span class="sig-name descname"><span class="pre">PICK_PIXEL_TOLERANCE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.PICK_PIXEL_TOLERANCE" title="Link to this definition">¶</a></dt>
+<dd><p>Click tolerance in pixels, converted to data units at query time.
+Routes are zero-width paths, so an exact point-in-polygon test would
+make them practically unclickable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.ROTATE_FINE_DEG">
+<span class="sig-name descname"><span class="pre">ROTATE_FINE_DEG</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">15.0</span></span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.ROTATE_FINE_DEG" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.ROTATE_STEP_DEG">
+<span class="sig-name descname"><span class="pre">ROTATE_STEP_DEG</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">90.0</span></span><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.ROTATE_STEP_DEG" title="Link to this definition">¶</a></dt>
+<dd><p>Rotation step for one bracket-key press, in degrees. 90 is the
+common case (most qlibrary layouts are built on a 90-degree grid);
+Shift gives finer control for anything off-grid.</p>
+</dd></dl>
+
 <p class="rubric">Methods</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.__call__">
@@ -506,8 +555,23 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.auto_scale">
-<span class="sig-name descname"><span class="pre">auto_scale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_canvas.html#PlotCanvas.auto_scale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.auto_scale" title="Link to this definition">¶</a></dt>
-<dd><p>Automaticlaly scale.</p>
+<span class="sig-name descname"><span class="pre">auto_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_chip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_canvas.html#PlotCanvas.auto_scale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.auto_scale" title="Link to this definition">¶</a></dt>
+<dd><p>Frame the design.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>include_chip</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Frame the whole chip rather than just the
+components. Defaults to False.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The default deliberately ignores the chip. <code class="docutils literal notranslate"><span class="pre">QMplRenderer</span></code> draws
+the die outline, so a plain <code class="docutils literal notranslate"><span class="pre">ax.autoscale()</span></code> frames the full
+chip – a default 9x6mm die around a 0.65mm transmon leaves the
+component an unreadable speck. The tutorials were all written
+assuming the chip is ignored.</p>
+<p>Falls back to framing everything when no component has usable
+bounds, so an empty design still shows the chip rather than an
+arbitrary window.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -530,6 +594,28 @@
 <dd class="field-odd"><p><strong>ax</strong> (<em>plt.Axes</em>) – Clear an axis, or
 if None, then clear all axes.
 Defaults to None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.component_at_point">
+<span class="sig-name descname"><span class="pre">component_at_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_canvas.html#PlotCanvas.component_at_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.component_at_point" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the component under a data-space point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – X in data (mm) coordinates.</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Y in data (mm) coordinates.</p></li>
+<li><p><strong>tolerance</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Search radius in data units. Defaults to
+<a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.PICK_PIXEL_TOLERANCE" title="qiskit_metal.renderers.PlotCanvas.PICK_PIXEL_TOLERANCE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">PICK_PIXEL_TOLERANCE</span></code></a> pixels converted to data units.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Component name, or None if the point hits nothing.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -567,12 +653,59 @@ Defaults to None.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.highlight_all_components">
+<span class="sig-name descname"><span class="pre">highlight_all_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show_pins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_canvas.html#PlotCanvas.highlight_all_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.highlight_all_components" title="Link to this definition">¶</a></dt>
+<dd><p>Highlight and label every component in the design.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>show_pins</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Also draw pin arrows and pin names.
+Defaults to True.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of components labelled.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.highlight_components">
-<span class="sig-name descname"><span class="pre">highlight_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_canvas.html#PlotCanvas.highlight_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.highlight_components" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">highlight_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_pins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_canvas.html#PlotCanvas.highlight_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.highlight_components" title="Link to this definition">¶</a></dt>
 <dd><p>Highlight a list of components.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>component_names</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – A list of component names</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component_names</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – A list of component names</p></li>
+<li><p><strong>show_pins</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Draw pin arrows and pin names alongside the
+component name. Turn off on dense chips, where per-pin
+labels swamp the component labels. Defaults to True.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.renderers.PlotCanvas.keyPressEvent">
+<span class="sig-name descname"><span class="pre">keyPressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/renderers/renderer_mpl/mpl_canvas.html#PlotCanvas.keyPressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.renderers.PlotCanvas.keyPressEvent" title="Link to this definition">¶</a></dt>
+<dd><p>Nudge or rotate the selected component with the keyboard.</p>
+<p>Lives here, not on the <code class="docutils literal notranslate"><span class="pre">QMainWindowPlot</span></code> container that used to
+own this logic, because this canvas – not its parent – is the
+widget that actually holds keyboard focus after a click-select
+(see <code class="docutils literal notranslate"><span class="pre">_on_pick_release</span></code>’s <code class="docutils literal notranslate"><span class="pre">setFocus</span></code> above). <code class="docutils literal notranslate"><span class="pre">FigureCanvas</span></code>
+(the base class) has its own <code class="docutils literal notranslate"><span class="pre">keyPressEvent</span></code> for matplotlib’s
+built-in shortcuts and does not propagate unhandled keys to the
+parent, so a handler on the container was simply never reached –
+confirmed by sending a real <code class="docutils literal notranslate"><span class="pre">QTest</span></code>-injected key both ways: to
+this canvas (silently swallowed) and directly to
+<code class="docutils literal notranslate"><span class="pre">QMainWindowPlot</span></code> (moved the component correctly). Deliberately
+keyboard-only: dragging would have to share the left mouse button
+with panning and needs a live preview, and a rebuild per
+mouse-move is far too slow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> (<em>QKeyEvent</em>) – The key event.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -763,7 +896,7 @@ values for the bounds of the series as a whole.</p></li>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/07</div>
+              Last updated on 2026/08/11</div>
           </div>
           <div class="right-details">
             
@@ -786,16 +919,26 @@ values for the bounds of the series as a whole.</p></li>
             <ul>
 <li><a class="reference internal" href="#">PlotCanvas</a><ul>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas"><code class="docutils literal notranslate"><span class="pre">PlotCanvas</span></code></a><ul>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.CLICK_PIXEL_TOLERANCE"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.CLICK_PIXEL_TOLERANCE</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.NUDGE_COARSE_FACTOR"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.NUDGE_COARSE_FACTOR</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.NUDGE_FINE_FACTOR"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.NUDGE_FINE_FACTOR</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.NUDGE_STEP_MM"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.NUDGE_STEP_MM</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.PICK_PIXEL_TOLERANCE"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.PICK_PIXEL_TOLERANCE</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.ROTATE_FINE_DEG"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.ROTATE_FINE_DEG</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.ROTATE_STEP_DEG"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.ROTATE_STEP_DEG</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.__call__"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.__call__()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.__getitem__"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.__getitem__()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.__len__"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.__len__()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.auto_scale"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.auto_scale()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.clear_annotation"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.clear_annotation()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.clear_axis"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.clear_axis()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.component_at_point"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.component_at_point()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.debug_axis_config"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.debug_axis_config()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.find_component_bounds"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.find_component_bounds()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.get_axis"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.get_axis()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.highlight_all_components"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.highlight_all_components()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.highlight_components"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.highlight_components()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.keyPressEvent"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.keyPressEvent()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.plot"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.plot()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.refresh"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.refresh()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.renderers.PlotCanvas.set_component"><code class="docutils literal notranslate"><span class="pre">PlotCanvas.set_component()</span></code></a></li>
@@ -820,7 +963,7 @@ values for the bounds of the series as a whole.</p></li>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=486e5634"></script>
+</div><script src="../_static/documentation_options.js?v=ec16d22d"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

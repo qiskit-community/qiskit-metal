@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Using Quantum Metal without the Qt GUI" href="headless-usage.html"><link rel="prev" title="Contributing to Quantum Metal" href="contributor-guide.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Architecture - Quantum Metal 0.8.0</title>
+        <title>Architecture - Quantum Metal 0.8.1</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -157,7 +157,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
+      <a href="index.html"><div class="brand">Quantum Metal 0.8.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -168,7 +168,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
@@ -179,7 +179,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -289,6 +289,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -461,7 +462,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
@@ -534,6 +535,137 @@ auto-picks one based on the environment.</p>
     </pre><p>For deeper contributor-side detail on each abstraction (lifecycle,
 options parsing, the lazy-Qt setup), read
 <code class="docutils literal notranslate"><span class="pre">.claude/context/architecture.md</span></code> in the repo root.</p>
+<section id="extending-the-base-classes">
+<h2>Extending the base classes<a class="headerlink" href="#extending-the-base-classes" title="Link to this heading">¶</a></h2>
+<p>When writing a custom <code class="docutils literal notranslate"><span class="pre">QComponent</span></code> or <code class="docutils literal notranslate"><span class="pre">QRenderer</span></code>, these are the
+attributes and methods a subclass is expected to define or override.</p>
+<section id="qcomponent-qlibrary-core-base-py">
+<h3>QComponent (<code class="docutils literal notranslate"><span class="pre">qlibrary/core/base.py</span></code>)<a class="headerlink" href="#qcomponent-qlibrary-core-base-py" title="Link to this heading">¶</a></h3>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Attribute</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">default_options</span></code></p></td>
+<td><p>Default drawing options.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">component_metadata</span></code></p></td>
+<td><p>Component metadata.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">options</span></code></p></td>
+<td><p>Dictionary of the component-designer-defined options.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">make</span></code></p></td>
+<td><p>Implements the logic that creates the geometry (poly, path, etc.)
+from <code class="docutils literal notranslate"><span class="pre">qcomponent.options</span></code>, then adds it to the design via
+<code class="docutils literal notranslate"><span class="pre">qcomponent.add_qgeometry(...)</span></code> — including extra needed
+information such as layer, subtract, etc.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="qrenderer-renderers-renderer-base-renderer-base-py">
+<h3>QRenderer (<code class="docutils literal notranslate"><span class="pre">renderers/renderer_base/renderer_base.py</span></code>)<a class="headerlink" href="#qrenderer-renderers-renderer-base-renderer-base-py" title="Link to this heading">¶</a></h3>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Attribute</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>Renderer name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">element_extensions</span></code></p></td>
+<td><p>Element extensions dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">element_table_data</span></code></p></td>
+<td><p>Element table data.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_initiate_renderer</span></code></p></td>
+<td><p>Abstract. One-time setup before the first render (connect to an
+API/COM, import material libraries, etc.). Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> on
+success.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_close_renderer</span></code></p></td>
+<td><p>Abstract. Teardown after the final render (disconnect, close
+threads, free memory, etc.). Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> on success.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">render_design</span></code></p></td>
+<td><p>Abstract. Renders all design chips and components.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="qrenderergui-renderers-renderer-base-renderer-gui-base-py">
+<h3>QRendererGui (<code class="docutils literal notranslate"><span class="pre">renderers/renderer_base/renderer_gui_base.py</span></code>)<a class="headerlink" href="#qrenderergui-renderers-renderer-base-renderer-gui-base-py" title="Link to this heading">¶</a></h3>
+<p>In addition to the <code class="docutils literal notranslate"><span class="pre">QRenderer</span></code> methods above, a GUI-facing renderer
+overrides:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">setup_fig</span></code></p></td>
+<td><p>Set up the given figure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">style_axis</span></code></p></td>
+<td><p>Style the axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">render_design</span></code></p></td>
+<td><p>Render the design.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">render_component</span></code></p></td>
+<td><p>Render the given component.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">render_shapely</span></code></p></td>
+<td><p>Render shapely geometry.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">render_connectors</span></code></p></td>
+<td><p>Render connectors.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">clear_axis</span></code></p></td>
+<td><p>Clear the axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">clear_figure</span></code></p></td>
+<td><p>Clear the figure.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
 </section>
 
         </article>
@@ -571,7 +703,7 @@ options parsing, the lazy-Qt setup), read
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/07</div>
+              Last updated on 2026/08/11</div>
           </div>
           <div class="right-details">
             
@@ -580,13 +712,37 @@ options parsing, the lazy-Qt setup), read
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Architecture</a><ul>
+<li><a class="reference internal" href="#extending-the-base-classes">Extending the base classes</a><ul>
+<li><a class="reference internal" href="#qcomponent-qlibrary-core-base-py">QComponent (<code class="docutils literal notranslate"><span class="pre">qlibrary/core/base.py</span></code>)</a></li>
+<li><a class="reference internal" href="#qrenderer-renderers-renderer-base-renderer-base-py">QRenderer (<code class="docutils literal notranslate"><span class="pre">renderers/renderer_base/renderer_base.py</span></code>)</a></li>
+<li><a class="reference internal" href="#qrenderergui-renderers-renderer-base-renderer-gui-base-py">QRendererGui (<code class="docutils literal notranslate"><span class="pre">renderers/renderer_base/renderer_gui_base.py</span></code>)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=486e5634"></script>
+</div><script src="_static/documentation_options.js?v=ec16d22d"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

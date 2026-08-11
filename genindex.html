@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#"><link rel="search" title="Search" href="search.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 --><title>Index - Quantum Metal 0.8.0</title>
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 --><title>Index - Quantum Metal 0.8.1</title>
 <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -155,7 +155,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
+      <a href="index.html"><div class="brand">Quantum Metal 0.8.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -177,7 +177,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -287,6 +287,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -1385,9 +1386,15 @@
         </ul></li>
         <li><a href="apidocs/qiskit_metal.renderers.QRendererGui.html#qiskit_metal.renderers.QRendererGui.clear_figure">clear_figure() (QRendererGui method)</a>
 </li>
+        <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.clear_highlight">clear_highlight() (MetalGUI method)</a>
+</li>
         <li><a href="apidocs/qiskit_metal.renderers.QMplRenderer.html#qiskit_metal.renderers.QMplRenderer.clear_options">clear_options() (QMplRenderer method)</a>
 </li>
+        <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.clear_selection">clear_selection() (MetalGUI method)</a>
+</li>
         <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.clear_settings">clear_settings() (MetalGUI method)</a>
+</li>
+        <li><a href="apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.CLICK_PIXEL_TOLERANCE">CLICK_PIXEL_TOLERANCE (PlotCanvas attribute)</a>
 </li>
         <li><a href="apidocs/qiskit_metal.analyses.EigenmodeSim.html#qiskit_metal.analyses.EigenmodeSim.close">close() (EigenmodeSim method)</a>
 
@@ -1417,6 +1424,8 @@
           <li><a href="apidocs/qiskit_metal.analyses.ScatteringImpedanceSim.html#qiskit_metal.analyses.ScatteringImpedanceSim.close">(ScatteringImpedanceSim method)</a>
 </li>
         </ul></li>
+        <li><a href="apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.component_at_point">component_at_point() (PlotCanvas method)</a>
+</li>
         <li><a href="apidocs/qiskit_metal.qlibrary.BaseQubit.html#qiskit_metal.qlibrary.BaseQubit.component_metadata">component_metadata (BaseQubit attribute)</a>
 
         <ul>
@@ -3147,14 +3156,20 @@
 </li>
         <li><a href="apidocs/qiskit_metal.analyses.Hcpb_analytic.html#qiskit_metal.analyses.Hcpb_analytic">Hcpb_analytic (class in qiskit_metal.analyses)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="apidocs/qiskit_metal.renderers.QHFSSRenderer.html#qiskit_metal.renderers.QHFSSRenderer.hfss_options">hfss_options (QHFSSRenderer attribute)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="apidocs/qiskit_metal.renderers.QMplRenderer.html#qiskit_metal.renderers.QMplRenderer.hide_component">hide_component() (QMplRenderer method)</a>
 </li>
         <li><a href="apidocs/qiskit_metal.renderers.QMplRenderer.html#qiskit_metal.renderers.QMplRenderer.hide_layer">hide_layer() (QMplRenderer method)</a>
 </li>
+        <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.highlight_all_components">highlight_all_components() (MetalGUI method)</a>
+
+        <ul>
+          <li><a href="apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.highlight_all_components">(PlotCanvas method)</a>
+</li>
+        </ul></li>
         <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.highlight_components">highlight_components() (MetalGUI method)</a>
 
         <ul>
@@ -3377,10 +3392,12 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="apidocs/qiskit_metal.analyses.kappa_calculation.html#qiskit_metal.analyses.kappa_calculation.kappa_in">kappa_in() (in module qiskit_metal.analyses.kappa_calculation)</a>
 </li>
-        <li><a href="apidocs/qiskit_metal.designs.Components.html#qiskit_metal.designs.Components.keys">keys() (Components method)</a>
+        <li><a href="apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.keyPressEvent">keyPressEvent() (PlotCanvas method)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="apidocs/qiskit_metal.designs.Components.html#qiskit_metal.designs.Components.keys">keys() (Components method)</a>
+</li>
         <li><a href="apidocs/qiskit_metal.analyses.transmon_analytics.html#qiskit_metal.analyses.transmon_analytics.kidx">kidx() (in module qiskit_metal.analyses.transmon_analytics)</a>
 </li>
         <li><a href="apidocs/qiskit_metal.analyses.transmon_analytics.html#qiskit_metal.analyses.transmon_analytics.kidx_raw">kidx_raw() (in module qiskit_metal.analyses.transmon_analytics)</a>
@@ -4194,6 +4211,16 @@
 </li>
         <li><a href="apidocs/qiskit_metal.qlibrary.NSquareSpiral.html#qiskit_metal.qlibrary.NSquareSpiral">NSquareSpiral (class in qiskit_metal.qlibrary)</a>
 </li>
+        <li><a href="apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.NUDGE_COARSE_FACTOR">NUDGE_COARSE_FACTOR (PlotCanvas attribute)</a>
+</li>
+        <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.nudge_component">nudge_component() (MetalGUI method)</a>
+</li>
+        <li><a href="apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.NUDGE_FINE_FACTOR">NUDGE_FINE_FACTOR (PlotCanvas attribute)</a>
+</li>
+        <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.nudge_selected">nudge_selected() (MetalGUI method)</a>
+</li>
+        <li><a href="apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.NUDGE_STEP_MM">NUDGE_STEP_MM (PlotCanvas attribute)</a>
+</li>
     </ul></td>
   </tr></table>
 </section>
@@ -4599,6 +4626,8 @@
         <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.path_stylesheets">path_stylesheets (MetalGUI attribute)</a>
 </li>
         <li><a href="apidocs/qiskit_metal.renderers.Vec3DArray.html#qiskit_metal.renderers.Vec3DArray.path_vecs">path_vecs (Vec3DArray attribute)</a>
+</li>
+        <li><a href="apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.PICK_PIXEL_TOLERANCE">PICK_PIXEL_TOLERANCE (PlotCanvas attribute)</a>
 </li>
         <li><a href="apidocs/qiskit_metal.qlibrary.BaseQubit.html#qiskit_metal.qlibrary.BaseQubit.pin_names">pin_names (BaseQubit attribute)</a>
 
@@ -6249,6 +6278,14 @@
 </li>
         <li><a href="apidocs/qiskit_metal.qlibrary.ResonatorLumped.html#qiskit_metal.qlibrary.ResonatorLumped">ResonatorLumped (class in qiskit_metal.qlibrary)</a>
 </li>
+        <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.rotate_component">rotate_component() (MetalGUI method)</a>
+</li>
+        <li><a href="apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.ROTATE_FINE_DEG">ROTATE_FINE_DEG (PlotCanvas attribute)</a>
+</li>
+        <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.rotate_selected">rotate_selected() (MetalGUI method)</a>
+</li>
+        <li><a href="apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.ROTATE_STEP_DEG">ROTATE_STEP_DEG (PlotCanvas attribute)</a>
+</li>
         <li><a href="apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html#qiskit_metal.toolbox_metal.math_and_overrides.round">round() (in module qiskit_metal.toolbox_metal.math_and_overrides)</a>
 </li>
         <li><a href="apidocs/qiskit_metal.qlibrary.RouteAnchors.html#qiskit_metal.qlibrary.RouteAnchors">RouteAnchors (class in qiskit_metal.qlibrary)</a>
@@ -6403,6 +6440,8 @@
           <li><a href="apidocs/qiskit_metal.analyses.ScatteringImpedanceSim.html#qiskit_metal.analyses.ScatteringImpedanceSim.select_renderer">(ScatteringImpedanceSim method)</a>
 </li>
         </ul></li>
+        <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.selected_component">selected_component (MetalGUI attribute)</a>
+</li>
         <li><a href="apidocs/qiskit_metal.renderers.QRendererGui.html#qiskit_metal.renderers.QRendererGui.set_ax">set_ax() (QRendererGui method)</a>
 </li>
         <li><a href="apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.set_component">set_component() (PlotCanvas method)</a>
@@ -6835,6 +6874,10 @@
           <li><a href="apidocs/qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign.template_renderer_options">(QDesign attribute)</a>
 </li>
         </ul></li>
+        <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.THEME_DARK">THEME_DARK (MetalGUI attribute)</a>
+</li>
+        <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.THEME_LIGHT">THEME_LIGHT (MetalGUI attribute)</a>
+</li>
         <li><a href="apidocs/qiskit_metal.renderers.AnimatedText.html#qiskit_metal.renderers.AnimatedText.timer_tick">timer_tick() (AnimatedText method)</a>
 </li>
         <li><a href="apidocs/qiskit_metal.designs.DesignFlipChip.html#qiskit_metal.designs.DesignFlipChip.to_python_script">to_python_script() (DesignFlipChip method)</a>
@@ -6939,6 +6982,10 @@
         </ul></li>
         <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.toggle_docks">toggle_docks() (MetalGUI method)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.toggle_theme">toggle_theme() (MetalGUI method)</a>
+</li>
         <li><a href="apidocs/qiskit_metal.qlibrary.BaseQubit.html#qiskit_metal.qlibrary.BaseQubit.TOOLTIP">TOOLTIP (BaseQubit attribute)</a>
 
         <ul>
@@ -7029,8 +7076,6 @@
           <li><a href="apidocs/qiskit_metal.qlibrary.TunableCoupler02.html#qiskit_metal.qlibrary.TunableCoupler02.TOOLTIP">(TunableCoupler02 attribute)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="apidocs/qiskit_metal.qlibrary.RouteFramed.html#qiskit_metal.qlibrary.RouteFramed.totlength">totlength() (RouteFramed method)</a>
 </li>
         <li><a href="apidocs/qiskit_metal.analyses.transmon_analytics.html#qiskit_metal.analyses.transmon_analytics.transmon_eigenvalue">transmon_eigenvalue() (in module qiskit_metal.analyses.transmon_analytics)</a>
@@ -7247,7 +7292,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/07</div>
+              Last updated on 2026/08/11</div>
           </div>
           <div class="right-details">
             
@@ -7262,7 +7307,7 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=486e5634"></script>
+</div><script src="_static/documentation_options.js?v=ec16d22d"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>qiskit_metal.renderers.renderer_mpl.mpl_canvas - Quantum Metal 0.8.0</title>
+        <title>qiskit_metal.renderers.renderer_mpl.mpl_canvas - Quantum Metal 0.8.1</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -156,7 +156,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
+      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.8.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -178,7 +178,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
@@ -288,6 +288,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -487,10 +488,11 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.backends.backend_qt5agg</span><span class="w"> </span><span class="kn">import</span> <span class="n">FigureCanvasQTAgg</span> <span class="k">as</span> <span class="n">FigureCanvas</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.figure</span><span class="w"> </span><span class="kn">import</span> <span class="n">Figure</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.transforms</span><span class="w"> </span><span class="kn">import</span> <span class="n">Bbox</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QTimer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Qt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QSizePolicy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.utility._toolbox_qt</span><span class="w"> </span><span class="kn">import</span> <span class="n">doShowHighlighWidget</span><span class="p">,</span> <span class="n">single_shot</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_mpl.mpl_interaction</span><span class="w"> </span><span class="kn">import</span> <span class="n">PanAndZoom</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_mpl.mpl_renderer</span><span class="w"> </span><span class="kn">import</span> <span class="n">QMplRenderer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_mpl.mpl_toolbox</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -806,6 +808,23 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
 
+        <span class="c1"># Explicit rather than trusting the backend default: a click-select</span>
+        <span class="c1"># (_on_pick_release, below) needs the canvas to actually be</span>
+        <span class="c1"># focusable, or the arrow-key nudge it enables silently goes</span>
+        <span class="c1"># nowhere -- keys keep going to whatever dock (e.g. the component</span>
+        <span class="c1"># list) had focus before the click.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">StrongFocus</span><span class="p">)</span>
+
+        <span class="c1"># Without this, Qt only sends mouseMoveEvent (and so matplotlib&#39;s</span>
+        <span class="c1"># motion_notify_event) while a button is held down -- pure hover</span>
+        <span class="c1"># motion never reaches the canvas at all. The status-bar hover</span>
+        <span class="c1"># readout (PanAndZoom._report_hover_position) depends on exactly</span>
+        <span class="c1"># that, and silently never fires without it: it looked &quot;frozen&quot;</span>
+        <span class="c1"># under real mouse movement despite working under QTest&#39;s</span>
+        <span class="c1"># synthetic mouseMove, which injects the event directly and</span>
+        <span class="c1"># doesn&#39;t depend on this setting.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMouseTracking</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
         <span class="n">FigureCanvas</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
         <span class="n">FigureCanvas</span><span class="o">.</span><span class="n">updateGeometry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -818,6 +837,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">metal_renderer</span> <span class="o">=</span> <span class="n">QMplRenderer</span><span class="p">(</span>
             <span class="n">canvas</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span>
         <span class="p">)</span>
+
+        <span class="c1"># Click-to-select. Rebuilt lazily; invalidated by every plot().</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pick_tree</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pick_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_press_xy</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span><span class="s2">&quot;button_press_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_pick_press</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span><span class="s2">&quot;button_release_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_pick_release</span><span class="p">)</span>
 
         <span class="c1"># self.plot()</span>
         <span class="c1"># self.welcome_message()</span>
@@ -939,16 +965,30 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_watermark_axis</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">final</span><span class="p">():</span>
+            <span class="c1"># Restore the view BEFORE drawing. ``clear_axis`` resets the axes</span>
+            <span class="c1"># and ``_plot`` re-autoscales to the new data, so at this point the</span>
+            <span class="c1"># axes hold the autoscaled view rather than the user&#39;s. ``draw()``</span>
+            <span class="c1"># renders the canvas buffer from whatever the limits are *at that</span>
+            <span class="c1"># moment*; restoring them afterwards fixes the axes but leaves the</span>
+            <span class="c1"># buffer showing the autoscaled view. The user sees the view jump</span>
+            <span class="c1"># on edit, then snap back on the next interaction-driven redraw.</span>
+            <span class="k">if</span> <span class="s2">&quot;xlim&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">[</span><span class="s2">&quot;xlim&quot;</span><span class="p">])</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">[</span><span class="s2">&quot;ylim&quot;</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-            <span class="c1"># Restore the state</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">[</span><span class="s2">&quot;xlim&quot;</span><span class="p">])</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">[</span><span class="s2">&quot;ylim&quot;</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="c1"># The drawn geometry is about to change, so any cached hit-test index</span>
+        <span class="c1"># is stale. Rebuilt lazily on the next click.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_invalidate_pick_index</span><span class="p">()</span>
+
+        <span class="c1"># ``prep`` must run on both paths: ``final`` restores from</span>
+        <span class="c1"># ``self._state``, so skipping it would replay a previous plot&#39;s view.</span>
+        <span class="n">prep</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">with_try</span><span class="p">:</span>
             <span class="c1"># speed impact?</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">prep</span><span class="p">()</span>
                 <span class="n">main_plot</span><span class="p">()</span>
 
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -1082,10 +1122,364 @@
 
         <span class="c1"># self.figure.tight_layout()</span>
 
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Click-to-select</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="c1">#: A press and release within this many pixels counts as a click rather</span>
+    <span class="c1">#: than a drag. Matches the threshold ``_zoom_area`` uses to ignore</span>
+    <span class="c1">#: accidental rubber-band drags, so pan and select agree on the boundary.</span>
+    <span class="n">CLICK_PIXEL_TOLERANCE</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="c1">#: Click tolerance in pixels, converted to data units at query time.</span>
+    <span class="c1">#: Routes are zero-width paths, so an exact point-in-polygon test would</span>
+    <span class="c1">#: make them practically unclickable.</span>
+    <span class="n">PICK_PIXEL_TOLERANCE</span> <span class="o">=</span> <span class="mi">5</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_invalidate_pick_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Drop the cached hit-test index.</span>
+
+<span class="sd">        Called whenever the drawn geometry may have changed. Rebuilding is</span>
+<span class="sd">        deferred to the next click, so a rebuild-heavy session does not pay</span>
+<span class="sd">        for an index nobody queries.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pick_tree</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pick_names</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_pick_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build an R-tree over every component&#39;s geometry.</span>
+
+<span class="sd">        Hit-testing every polygon linearly would make a click cost O(n) on a</span>
+<span class="sd">        design with hundreds of components. ``STRtree`` gives a spatial index</span>
+<span class="sd">        instead, built once per rebuild and queried per click.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">shapely</span><span class="w"> </span><span class="kn">import</span> <span class="n">STRtree</span>  <span class="c1"># local: keeps import cost off startup</span>
+
+        <span class="n">geometries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">shapes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">qgeometry_list</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pragma: no cover — defensive</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">shape</span><span class="o">.</span><span class="n">is_empty</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">geometries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+                <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pick_names</span> <span class="o">=</span> <span class="n">names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pick_tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">geometries</span><span class="p">)</span> <span class="k">if</span> <span class="n">geometries</span> <span class="k">else</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="PlotCanvas.component_at_point">
+<a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.component_at_point">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">component_at_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the name of the component under a data-space point.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (float): X in data (mm) coordinates.</span>
+<span class="sd">            y (float): Y in data (mm) coordinates.</span>
+<span class="sd">            tolerance (float): Search radius in data units. Defaults to</span>
+<span class="sd">                :attr:`PICK_PIXEL_TOLERANCE` pixels converted to data units.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Component name, or None if the point hits nothing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pick_tree</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_pick_index</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pick_tree</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># still nothing to hit</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span>
+
+        <span class="k">if</span> <span class="n">tolerance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tolerance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixels_to_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PICK_PIXEL_TOLERANCE</span><span class="p">)</span>
+
+        <span class="n">probe</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">tolerance</span><span class="p">)</span>
+        <span class="n">hits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pick_tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">probe</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># query() is bounding-box based, so confirm a real intersection and</span>
+        <span class="c1"># prefer the closest match when several overlap.</span>
+        <span class="n">best_name</span><span class="p">,</span> <span class="n">best_distance</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">hits</span><span class="p">:</span>
+            <span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pick_tree</span><span class="o">.</span><span class="n">geometries</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">best_distance</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">best_distance</span><span class="p">:</span>
+                <span class="n">best_distance</span> <span class="o">=</span> <span class="n">distance</span>
+                <span class="n">best_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pick_names</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">best_name</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_pixels_to_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pixels</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a pixel distance to data units at the current zoom.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pixels (float): Distance in display pixels.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: The same distance in data units.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_axis</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">origin</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">transData</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">transData</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">((</span><span class="n">pixels</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pragma: no cover — defensive</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_on_pick_press</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Record where a press started, to tell a click from a drag.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event: Matplotlib mouse event.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_press_xy</span> <span class="o">=</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_on_pick_release</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select the component under the cursor, if this was a click.</span>
+
+<span class="sd">        Left-drag pans, so a release is only treated as a selection when the</span>
+<span class="sd">        pointer barely moved. Without that check every pan would also</span>
+<span class="sd">        re-select whatever happened to be under the release point.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event: Matplotlib mouse event.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">press_xy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_press_xy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_press_xy</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">press_xy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">xdata</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">event</span><span class="o">.</span><span class="n">ydata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">abs</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">press_xy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">CLICK_PIXEL_TOLERANCE</span>
+            <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">press_xy</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">CLICK_PIXEL_TOLERANCE</span>
+        <span class="p">):</span>
+            <span class="k">return</span>  <span class="c1"># a drag (pan), not a click</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_at_point</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">xdata</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">ydata</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># ``logger`` is an optional constructor argument, so it can be None.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Selected component: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">gui</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;gui&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">already_selected</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">gui</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">gui</span><span class="p">,</span> <span class="s2">&quot;selected_component&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="n">name</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">gui</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">gui</span><span class="p">,</span> <span class="s2">&quot;edit_component&quot;</span><span class="p">):</span>
+            <span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="n">name</span><span class="p">])</span>
+
+        <span class="c1"># A real double-click (event.dblclick, matplotlib&#39;s own flag) or a</span>
+        <span class="c1"># second click on the component already selected -- either reads</span>
+        <span class="c1"># as &quot;I want to work on this one&quot; -- brings the Edit dock to the</span>
+        <span class="c1"># front. edit_component() above already populates it regardless;</span>
+        <span class="c1"># this only handles whether the user can actually *see* that</span>
+        <span class="c1"># without hunting through tabs for it.</span>
+        <span class="c1">#</span>
+        <span class="c1"># This is ``dockComponent``, titled &quot;Edit component&quot; -- not</span>
+        <span class="c1"># ``dockDesign`` (titled &quot;QComponents&quot;, the component *list*).</span>
+        <span class="c1"># The two are named the opposite of what they hold; an earlier</span>
+        <span class="c1"># version of this code raised ``dockDesign`` by mistake, which</span>
+        <span class="c1"># brought the list to the front instead of the actual editor.</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="s2">&quot;dblclick&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">or</span> <span class="n">already_selected</span><span class="p">:</span>
+            <span class="n">main_window</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">gui</span><span class="p">,</span> <span class="s2">&quot;main_window&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">dock_component</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="n">main_window</span><span class="p">,</span> <span class="s2">&quot;ui&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;dockComponent&quot;</span><span class="p">,</span> <span class="kc">None</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">dock_component</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Not dock_component.doShow() -- that&#39;s the toggle-aware</span>
+                <span class="c1"># version (see #48). dockComponent isn&#39;t tabified with</span>
+                <span class="c1"># anything, so there&#39;s no &quot;already the active tab&quot; case to</span>
+                <span class="c1"># avoid, but doShowHighlighWidget also gives the nicer</span>
+                <span class="c1"># highlight-flash feedback than the plain show()+raise_()</span>
+                <span class="c1"># that QTableView_AllComponents.viewClicked uses.</span>
+                <span class="n">doShowHighlighWidget</span><span class="p">(</span><span class="n">dock_component</span><span class="p">)</span>
+
+        <span class="c1"># gui.edit_component() above populates the component list / options</span>
+        <span class="c1"># tree, which steals keyboard focus if either already had it. Take</span>
+        <span class="c1"># it back explicitly so the arrow-key nudge the selection hint</span>
+        <span class="c1"># promises actually goes to the canvas, not to whichever dock last</span>
+        <span class="c1"># held focus.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFocus</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">MouseFocusReason</span><span class="p">)</span>
+
+    <span class="c1">#: Grid step for one arrow-key press, in millimetres.</span>
+    <span class="n">NUDGE_STEP_MM</span> <span class="o">=</span> <span class="mf">0.05</span>
+
+    <span class="c1">#: Multipliers for the modifier keys. Shift coarsens, Alt refines --</span>
+    <span class="c1">#: the convention every drawing tool uses.</span>
+    <span class="n">NUDGE_COARSE_FACTOR</span> <span class="o">=</span> <span class="mf">10.0</span>
+    <span class="n">NUDGE_FINE_FACTOR</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+    <span class="c1">#: Arrow key -&gt; unit displacement (x, y). Y is positive upward, matching</span>
+    <span class="c1">#: the data coordinates rather than screen coordinates.</span>
+    <span class="n">_NUDGE_DIRECTIONS</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Left</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Right</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Down</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Up</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="c1">#: Rotation step for one bracket-key press, in degrees. 90 is the</span>
+    <span class="c1">#: common case (most qlibrary layouts are built on a 90-degree grid);</span>
+    <span class="c1">#: Shift gives finer control for anything off-grid.</span>
+    <span class="n">ROTATE_STEP_DEG</span> <span class="o">=</span> <span class="mf">90.0</span>
+    <span class="n">ROTATE_FINE_DEG</span> <span class="o">=</span> <span class="mf">15.0</span>
+
+    <span class="c1">#: Key -&gt; rotation direction. ``]``/``[`` turn clockwise/counter-</span>
+    <span class="c1">#: clockwise -- the same visual sense the characters read in on a</span>
+    <span class="c1">#: standard keyboard layout. Also bound to Q/E (the widely-recognized</span>
+    <span class="c1">#: rotate-CCW/CW convention from games and other creative tools) as</span>
+    <span class="c1">#: the more discoverable, keyboard-layout-independent alternative --</span>
+    <span class="c1">#: added after a user found ] and [ hard to remember and reached for</span>
+    <span class="c1">#: different keys entirely on first try.</span>
+    <span class="c1">#:</span>
+    <span class="c1">#: Key_BraceLeft/Key_BraceRight (curly braces) are included alongside</span>
+    <span class="c1">#: the bracket keys deliberately, not redundantly: on most keyboards</span>
+    <span class="c1">#: Shift+[ produces &quot;{&quot;, which Qt reports as Key_BraceLeft -- a</span>
+    <span class="c1">#: different key code entirely, not Key_BracketLeft with a Shift</span>
+    <span class="c1">#: modifier flag. Without this, holding Shift for the fine rotation</span>
+    <span class="c1">#: step silently missed the lookup and did nothing at all (confirmed:</span>
+    <span class="c1">#: a user found plain [/] rotated fine, but Shift+[/Shift+] did</span>
+    <span class="c1">#: nothing, while Shift+Q/Shift+E -- letters, whose Key_* value</span>
+    <span class="c1">#: doesn&#39;t change when shifted -- worked correctly).</span>
+    <span class="n">_ROTATE_DIRECTIONS</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">Qt</span><span class="o">.</span><span class="n">Key_BracketRight</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">Qt</span><span class="o">.</span><span class="n">Key_BracketLeft</span><span class="p">:</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">Qt</span><span class="o">.</span><span class="n">Key_BraceRight</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">Qt</span><span class="o">.</span><span class="n">Key_BraceLeft</span><span class="p">:</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">Qt</span><span class="o">.</span><span class="n">Key_E</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Q</span><span class="p">:</span> <span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">}</span>
+
+<div class="viewcode-block" id="PlotCanvas.keyPressEvent">
+<a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.keyPressEvent">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Nudge or rotate the selected component with the keyboard.</span>
+
+<span class="sd">        Lives here, not on the ``QMainWindowPlot`` container that used to</span>
+<span class="sd">        own this logic, because this canvas -- not its parent -- is the</span>
+<span class="sd">        widget that actually holds keyboard focus after a click-select</span>
+<span class="sd">        (see ``_on_pick_release``&#39;s ``setFocus`` above). ``FigureCanvas``</span>
+<span class="sd">        (the base class) has its own ``keyPressEvent`` for matplotlib&#39;s</span>
+<span class="sd">        built-in shortcuts and does not propagate unhandled keys to the</span>
+<span class="sd">        parent, so a handler on the container was simply never reached --</span>
+<span class="sd">        confirmed by sending a real ``QTest``-injected key both ways: to</span>
+<span class="sd">        this canvas (silently swallowed) and directly to</span>
+<span class="sd">        ``QMainWindowPlot`` (moved the component correctly). Deliberately</span>
+<span class="sd">        keyboard-only: dragging would have to share the left mouse button</span>
+<span class="sd">        with panning and needs a live preview, and a rebuild per</span>
+<span class="sd">        mouse-move is far too slow.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (QKeyEvent): The key event.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">modifiers</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">modifiers</span><span class="p">()</span>
+
+        <span class="n">direction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_NUDGE_DIRECTIONS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NUDGE_STEP_MM</span>
+            <span class="k">if</span> <span class="n">modifiers</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ShiftModifier</span><span class="p">:</span>
+                <span class="n">step</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NUDGE_COARSE_FACTOR</span>
+            <span class="k">elif</span> <span class="n">modifiers</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AltModifier</span><span class="p">:</span>
+                <span class="n">step</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NUDGE_FINE_FACTOR</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">nudge_selected</span><span class="p">(</span><span class="n">direction</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">step</span><span class="p">,</span> <span class="n">direction</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">step</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">rotate_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ROTATE_DIRECTIONS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">rotate_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ROTATE_FINE_DEG</span>
+                <span class="k">if</span> <span class="n">modifiers</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ShiftModifier</span>
+                <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">ROTATE_STEP_DEG</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">rotate_selected</span><span class="p">(</span><span class="n">rotate_dir</span> <span class="o">*</span> <span class="n">step</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_component_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Union of the qgeometry bounds of the named components.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            component_names (List[str]): Components to include. Defaults to</span>
+<span class="sd">                every component in the design.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: ``(xmin, ymin, xmax, ymax)``, or None when nothing has</span>
+<span class="sd">            usable bounds (an empty design, or components that failed to</span>
+<span class="sd">            build).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">component_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">component_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+        <span class="n">xmins</span><span class="p">,</span> <span class="n">ymins</span><span class="p">,</span> <span class="n">xmaxs</span><span class="p">,</span> <span class="n">ymaxs</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">component_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">qgeometry_bounds</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pragma: no cover — defensive</span>
+                <span class="k">continue</span>
+            <span class="n">xmins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xmin</span><span class="p">)</span>
+            <span class="n">ymins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ymin</span><span class="p">)</span>
+            <span class="n">xmaxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xmax</span><span class="p">)</span>
+            <span class="n">ymaxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ymax</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">xmins</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">xmins</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">ymins</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">xmaxs</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ymaxs</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_limits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">pad_fraction</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Frame the given bounds with padding.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bounds (tuple): ``(xmin, ymin, xmax, ymax)``.</span>
+<span class="sd">            pad_fraction (float): Margin as a fraction of each extent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">bounds</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span><span class="p">)</span> <span class="o">*</span> <span class="n">pad_fraction</span> <span class="ow">or</span> <span class="mf">0.1</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span><span class="p">)</span> <span class="o">*</span> <span class="n">pad_fraction</span> <span class="ow">or</span> <span class="mf">0.1</span>
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xmin</span> <span class="o">-</span> <span class="n">dx</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">+</span> <span class="n">dx</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ymin</span> <span class="o">-</span> <span class="n">dy</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">+</span> <span class="n">dy</span><span class="p">)</span>
+
 <div class="viewcode-block" id="PlotCanvas.auto_scale">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.auto_scale">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">auto_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Automaticlaly scale.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">auto_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_chip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Frame the design.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            include_chip (bool): Frame the whole chip rather than just the</span>
+<span class="sd">                components. Defaults to False.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            The default deliberately ignores the chip. ``QMplRenderer`` draws</span>
+<span class="sd">            the die outline, so a plain ``ax.autoscale()`` frames the full</span>
+<span class="sd">            chip -- a default 9x6mm die around a 0.65mm transmon leaves the</span>
+<span class="sd">            component an unreadable speck. The tutorials were all written</span>
+<span class="sd">            assuming the chip is ignored.</span>
+
+<span class="sd">            Falls back to framing everything when no component has usable</span>
+<span class="sd">            bounds, so an empty design still shows the chip rather than an</span>
+<span class="sd">            arbitrary window.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">include_chip</span><span class="p">:</span>
+            <span class="n">bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_component_bounds</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">bounds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_limits</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+                <span class="k">return</span>
+
         <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span></div>
@@ -1106,27 +1500,10 @@
 <span class="sd">            ``MetalGUIHeadless`` viewer always had it; the Qt canvas</span>
 <span class="sd">            didn&#39;t). 10 % padding is added around the combined bbox.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">xmins</span><span class="p">,</span> <span class="n">ymins</span><span class="p">,</span> <span class="n">xmaxs</span><span class="p">,</span> <span class="n">ymaxs</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">component_names</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">qgeometry_bounds</span><span class="p">()</span>
-                <span class="n">xmins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xmin</span><span class="p">)</span>
-                <span class="n">ymins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ymin</span><span class="p">)</span>
-                <span class="n">xmaxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xmax</span><span class="p">)</span>
-                <span class="n">ymaxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ymax</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pragma: no cover — defensive</span>
-                <span class="k">continue</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">xmins</span><span class="p">:</span>
+        <span class="n">bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_component_bounds</span><span class="p">(</span><span class="n">component_names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">bounds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">xmins</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">ymins</span><span class="p">)</span>
-        <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">xmaxs</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ymaxs</span><span class="p">)</span>
-        <span class="n">dx</span> <span class="o">=</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="ow">or</span> <span class="mf">0.1</span>
-        <span class="n">dy</span> <span class="o">=</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="ow">or</span> <span class="mf">0.1</span>
-        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xmin</span> <span class="o">-</span> <span class="n">dx</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">+</span> <span class="n">dx</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ymin</span> <span class="o">-</span> <span class="n">dy</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">+</span> <span class="n">dy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_limits</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span></div>
 
 
@@ -1144,7 +1521,7 @@
             <span class="n">kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_welcome_start_timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_welcome_message_start</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_welcome_start_timer</span> <span class="o">=</span> <span class="n">single_shot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_welcome_message_start</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_welcome_message_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1245,13 +1622,33 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_annotations</span><span class="p">[</span><span class="s2">&quot;patch&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_annotations</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
+<div class="viewcode-block" id="PlotCanvas.highlight_all_components">
+<a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.highlight_all_components">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">highlight_all_components</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show_pins</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Highlight and label every component in the design.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            show_pins (bool): Also draw pin arrows and pin names.</span>
+<span class="sd">                Defaults to True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Number of components labelled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">show_pins</span><span class="o">=</span><span class="n">show_pins</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="PlotCanvas.highlight_components">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.PlotCanvas.html#qiskit_metal.renderers.PlotCanvas.highlight_components">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">highlight_components</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">highlight_components</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">show_pins</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Highlight a list of components.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            component_names (List[str]): A list of component names</span>
+<span class="sd">            show_pins (bool): Draw pin arrows and pin names alongside the</span>
+<span class="sd">                component name. Turn off on dense chips, where per-pin</span>
+<span class="sd">                labels swamp the component labels. Defaults to True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Defaults - todo eventually move to some option place where can be changed</span>
         <span class="n">text_kw</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -1315,7 +1712,7 @@
                             <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_annotations</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">text</span><span class="p">]</span>
 
-                <span class="k">if</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Draw the pins</span>
+                <span class="k">if</span> <span class="n">show_pins</span><span class="p">:</span>  <span class="c1"># Draw the pins</span>
                     <span class="c1"># for component_id in self.design.components.keys():</span>
                     <span class="k">for</span> <span class="n">pin_name</span> <span class="ow">in</span> <span class="n">component</span><span class="o">.</span><span class="n">pins</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                         <span class="c1"># self.logger.debug(f&#39;Pin {pin_name}&#39;)</span>
@@ -1406,7 +1803,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/07</div>
+              Last updated on 2026/08/11</div>
           </div>
           <div class="right-details">
             
@@ -1421,7 +1818,7 @@
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=486e5634"></script>
+</div><script src="../../../../_static/documentation_options.js?v=ec16d22d"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>

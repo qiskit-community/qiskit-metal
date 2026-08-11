@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Migrating to v0.7.0 (lite-by-default install)" href="migration-to-v0.7.0.html"><link rel="prev" title="Quantum Metal — Roadmap" href="roadmap.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>FAQ’s - Quantum Metal 0.8.0</title>
+        <title>FAQ’s - Quantum Metal 0.8.1</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -157,7 +157,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
+      <a href="index.html"><div class="brand">Quantum Metal 0.8.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -179,7 +179,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -289,6 +289,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -542,6 +543,32 @@ Then open the applicable settings.json in your VS Code. (See how to open command
 <p>For <code class="docutils literal notranslate"><span class="pre">xcb</span></code>: based on <a class="reference external" href="https://forum.qt.io/topic/93247/qt-qpa-plugin-could-not-load-the-qt-platform-plugin-xcb-in-even-though-it-was-found">this source</a>, you might be able to resolve this error by installing the dependency with <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libxcb-xinerama0</span></code>.</p>
 <p>For <code class="docutils literal notranslate"><span class="pre">windows</span></code>: this error intermittently shows in conda environments. It was found that the problem resolves if PySide6 is installed manually through conda: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">pyside6</span></code>.</p>
 <p>If the methods above do not work, consider trying an older version of Python (and related dependencies).</p>
+<p><strong>Q: The GUI crashed my kernel (“the kernel appears to have died”) — what now?</strong></p>
+<p><strong>A:</strong> Just launch it again. Since the fixes for
+<a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1048">issue #1048</a>,
+<code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> keeps a startup journal: if a launch dies partway through,
+the next launch detects it, discards any persisted window state, and
+starts clean with the default layout. One crash should never repeat
+itself on relaunch.</p>
+<p>A few related behaviors and switches worth knowing:</p>
+<ul class="simple">
+<li><p><strong>Window layout is not auto-restored by default.</strong> Replaying a saved
+layout into a changed display setup (docking/undocking, monitor swap,
+DPI change) was the main crash trigger, so startup now always uses the
+default layout. To opt back in to layout persistence, set
+<code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_RESTORE_LAYOUT=1</span></code> before launching.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_RESET_UI_SETTINGS=1</span></code> — force-clear all persisted GUI
+state on the next launch.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_DEBUG_INIT=1</span></code> — trace every GUI startup step to stderr;
+the last line printed identifies a failing call. Include this output if
+you file an issue.</p></li>
+<li><p>On Windows the GUI defaults to software OpenGL (a class of GPU-driver
+crashes); opt out on healthy hardware with
+<code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_QT_HARDWARE_GL=1</span></code>.</p></li>
+</ul>
+<p>If the GUI is unusable on your machine, everything except interactive
+editing works without Qt: <code class="docutils literal notranslate"><span class="pre">qm.view(design)</span></code> renders any design
+headlessly — see <a class="reference internal" href="headless-usage.html"><span class="doc">Using Quantum Metal without the Qt GUI</span></a>.</p>
 <p><strong>Q: Why am I not able to start Jupyter Lab in the new environment?</strong></p>
 <p><strong>A:</strong> Based on: <a class="reference external" href="https://anaconda.org/conda-forge/jupyterlab">this</a>, install Jupyter lab by</p>
 <p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">jupyterlab</span></code></p>
@@ -668,7 +695,7 @@ To download a single notebook, navigate to it on GitHub and click the <strong>Do
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/07</div>
+              Last updated on 2026/08/11</div>
           </div>
           <div class="right-details">
             
@@ -705,7 +732,7 @@ To download a single notebook, navigate to it on GitHub and click the <strong>Do
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=486e5634"></script>
+</div><script src="_static/documentation_options.js?v=ec16d22d"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

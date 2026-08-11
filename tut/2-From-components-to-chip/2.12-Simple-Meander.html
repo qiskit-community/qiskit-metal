@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="2.13 Hybrid Auto and AStar" href="2.13-Hybrid-Auto-and-AStar.html"><link rel="prev" title="2.11 Routing 101" href="2.11-Routing-101.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>2.12 Simple Meander - Quantum Metal 0.8.0</title>
+        <title>2.12 Simple Meander - Quantum Metal 0.8.1</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -158,7 +158,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
+      <a href="../../index.html"><div class="brand">Quantum Metal 0.8.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -180,7 +180,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../search.html" role="search">
@@ -290,6 +290,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -498,7 +499,7 @@
 <section id="Preparations">
 <h2>Preparations<a class="headerlink" href="#Preparations" title="Link to this heading">¶</a></h2>
 <p>Import key libraries and open the Metal GUI. Also we configure the notebook to enable overwriting of existing components</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
@@ -513,12 +514,6 @@
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<div style='border-left:4px solid #6929C4;padding:8px 12px;background:#f4f1fb;color:#222;font-family:sans-serif;font-size:13px;line-height:1.4;margin:4px 0;'><b>Quantum Metal — headless viewer active.</b> Rendering inline via <code>qm.view(design)</code>; <code>gui.rebuild()</code>, <code>gui.screenshot()</code>, <code>gui.edit_component(...)</code> work as in the desktop GUI.<br>For the full desktop experience (Qt window, dockable panels): <code>pip install 'quantum-metal[gui]'</code> and re-import.</div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -659,10 +654,10 @@
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-07:22PM 10s WARNING [check_lengths]: For path table, component=cpw_1, key=trace has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
-07:22PM 10s WARNING [check_lengths]: For path table, component=cpw_1, key=cut has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
-07:22PM 10s WARNING [check_lengths]: For path table, component=cpw_1, key=trace has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
-07:22PM 10s WARNING [check_lengths]: For path table, component=cpw_1, key=cut has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
+10:39PM 41s WARNING [check_lengths]: For path table, component=cpw_1, key=trace has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
+10:39PM 41s WARNING [check_lengths]: For path table, component=cpw_1, key=cut has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
+10:39PM 42s WARNING [check_lengths]: For path table, component=cpw_1, key=trace has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
+10:39PM 42s WARNING [check_lengths]: For path table, component=cpw_1, key=cut has short segments that could cause issues with fillet. Values in (1-1)  are index(es) in shapely geometry.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -670,8 +665,9 @@
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_17_1.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_17_1.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <p>You might have received an expected python “warning - check_lengths” message. This indicates that one of the CPW edges is too short to accommodate the fillet corner rounding previous defined at 90um. Also, the CPW “start lead” does not offer enough clearance from the Qbit, causing a short between two pins.</p>
 <p>Please take a minute to observe this behavior in the GUI</p>
@@ -738,8 +734,9 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_23_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_23_0.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -772,8 +769,8 @@ array([[-1.075     ,  0.195     ],
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-07:22PM 10s WARNING [check_lengths]: For path table, component=cpw_1, key=trace has short segments that could cause issues with fillet. Values in (12-13)  are index(es) in shapely geometry.
-07:22PM 10s WARNING [check_lengths]: For path table, component=cpw_1, key=cut has short segments that could cause issues with fillet. Values in (12-13)  are index(es) in shapely geometry.
+10:39PM 42s WARNING [check_lengths]: For path table, component=cpw_1, key=trace has short segments that could cause issues with fillet. Values in (12-13)  are index(es) in shapely geometry.
+10:39PM 42s WARNING [check_lengths]: For path table, component=cpw_1, key=cut has short segments that could cause issues with fillet. Values in (12-13)  are index(es) in shapely geometry.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -781,8 +778,9 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_26_1.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_26_1.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <p>You can eliminate the warning by either re-enabling the algorithm, or by changing the fillet for this specific CPW. Let’s try the second approach for demonstration purposes</p>
 <div class="nbinput docutils container">
@@ -800,8 +798,9 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_28_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_28_0.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <p>Now let’s create other 3 CPWs for practice</p>
 <div class="nbinput docutils container">
@@ -834,8 +833,9 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_30_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_30_0.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -867,8 +867,9 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_31_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_31_0.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -900,8 +901,9 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_32_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_32_0.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
@@ -963,8 +965,9 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_35_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_35_0.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <p>Here a few additional examples routing flexibility on a brand-new set of Qbits</p>
 <div class="nbinput docutils container">
@@ -1003,13 +1006,25 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+10:39PM 44s WARNING [connect_meandered]: cpw_6: reduced meander_number from 3.0 to 1.0 so each wiggle has room for the 0.09mm fillet (length_perp=0.035mm). The requested meander.spacing packs more wiggles into this route than the available length_excess can support without producing sharp, unfileted kinks. Increase total_length, increase meander.spacing, or decrease fillet to avoid this adjustment.
+10:39PM 44s WARNING [connect_meandered]: cpw_6: even at the minimum meander_number=1.0, length_perp=0.035mm is still smaller than fillet=0.09mm -- this route&#39;s meander cannot be cleanly filleted with the current total_length / spacing / fillet combination and will still show sharp kinks.
+10:39PM 44s WARNING [connect_meandered]: cpw_6: reduced meander_number from 3.0 to 1.0 so each wiggle has room for the 0.09mm fillet (length_perp=0.035mm). The requested meander.spacing packs more wiggles into this route than the available length_excess can support without producing sharp, unfileted kinks. Increase total_length, increase meander.spacing, or decrease fillet to avoid this adjustment.
+10:39PM 44s WARNING [connect_meandered]: cpw_6: even at the minimum meander_number=1.0, length_perp=0.035mm is still smaller than fillet=0.09mm -- this route&#39;s meander cannot be cleanly filleted with the current total_length / spacing / fillet combination and will still show sharp kinks.
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_37_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_37_0.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
@@ -1034,13 +1049,23 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+10:39PM 44s WARNING [connect_meandered]: cpw_6: reduced meander_number from 3.0 to 1.0 so each wiggle has room for the 0.09mm fillet (length_perp=0.035mm). The requested meander.spacing packs more wiggles into this route than the available length_excess can support without producing sharp, unfileted kinks. Increase total_length, increase meander.spacing, or decrease fillet to avoid this adjustment.
+10:39PM 44s WARNING [connect_meandered]: cpw_6: even at the minimum meander_number=1.0, length_perp=0.035mm is still smaller than fillet=0.09mm -- this route&#39;s meander cannot be cleanly filleted with the current total_length / spacing / fillet combination and will still show sharp kinks.
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_38_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_38_0.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
@@ -1065,13 +1090,23 @@ array([[-1.075     ,  0.195     ],
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+10:39PM 45s WARNING [connect_meandered]: cpw_6: reduced meander_number from 3.0 to 1.0 so each wiggle has room for the 0.09mm fillet (length_perp=0.035mm). The requested meander.spacing packs more wiggles into this route than the available length_excess can support without producing sharp, unfileted kinks. Increase total_length, increase meander.spacing, or decrease fillet to avoid this adjustment.
+10:39PM 45s WARNING [connect_meandered]: cpw_6: even at the minimum meander_number=1.0, length_perp=0.035mm is still smaller than fillet=0.09mm -- this route&#39;s meander cannot be cleanly filleted with the current total_length / spacing / fillet combination and will still show sharp kinks.
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_39_0.png" src="../../_images/tut_2-From-components-to-chip_2.12-Simple-Meander_39_0.png" />
-</div>
+<div class="highlight"><pre>
+&lt;Figure size 800x800 with 2 Axes&gt;
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
@@ -1164,7 +1199,7 @@ array([[-1.075     ,  0.195     ],
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/07</div>
+              Last updated on 2026/08/11</div>
           </div>
           <div class="right-details">
             
@@ -1201,7 +1236,7 @@ array([[-1.075     ,  0.195     ],
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=486e5634"></script>
+</div><script src="../../_static/documentation_options.js?v=ec16d22d"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="FAQ’s" href="faq.html"><link rel="prev" title="MetalGUI" href="apidocs/qiskit_metal._gui.MetalGUI.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Quantum Metal — Roadmap - Quantum Metal 0.8.0</title>
+        <title>Quantum Metal — Roadmap - Quantum Metal 0.8.1</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -157,7 +157,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
+      <a href="index.html"><div class="brand">Quantum Metal 0.8.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -179,7 +179,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="search.html" role="search">
@@ -289,6 +289,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -533,11 +534,20 @@ and minimal — no GUI prompts, no hidden state, no
 </ol>
 </section>
 <hr class="docutils" />
-<section id="recently-shipped-post-v0-7-4-cycle-june-2026-shipped">
-<h2>Recently shipped — post-v0.7.4 cycle (June 2026) <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code><a class="headerlink" href="#recently-shipped-post-v0-7-4-cycle-june-2026-shipped" title="Link to this heading">¶</a></h2>
-<p>A maintenance + community-PR cycle on top of v0.7.4. Linked PRs are
-the source of truth.</p>
+<section id="recently-shipped-through-v0-8-0-august-2026-shipped">
+<h2>Recently shipped — through v0.8.0 (August 2026) <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code><a class="headerlink" href="#recently-shipped-through-v0-8-0-august-2026-shipped" title="Link to this heading">¶</a></h2>
+<p>A maintenance + community-PR cycle on top of v0.7.4, followed by the
+v0.8.0 release (#1168): design-rule checking, the die outline, and a
+hero-gif refresh — no breaking changes. Linked PRs are the source of
+truth.</p>
 <ul class="simple">
+<li><p>✅ <strong>Design-rule-check (DRC) validation stage</strong> (#1169, v0.8.0) — see
+the dedicated section below.</p></li>
+<li><p>✅ <strong>RouteMeander sharp-kink geometry fix</strong> (commit <code class="docutils literal notranslate"><span class="pre">541ddf667</span></code>,
+closes #1086) — shipped as part of the v0.8.0 bump.</p></li>
+<li><p>✅ <strong>TransmonCross <code class="docutils literal notranslate"><span class="pre">connector_location='270'</span></code> fix</strong> (closes #1052,
+hardened further by #1174) — the rotation chain now wraps mod 360;
+out-of-range angles no longer land arbitrarily.</p></li>
 <li><p>✅ <strong>Reference design notebooks</strong> (#1108) — three executed,
 headless-rendered full-chip examples (single transmon + readout
 resonator, two coupled transmons, 4-qubit multiplexed readout)
@@ -592,9 +602,9 @@ how-to (high-impact, low-effort: ~half a day total).</p></li>
 dependency blockers, so this is mostly writing.</p></li>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">renderer_palace/</span></code> eigenmode PoC</strong> — the strategic unlock for
 HFSS-free CI validation. Larger effort; external help wanted.</p></li>
-<li><p><strong>Design-rule-check (DRC) validation stage</strong> (#1169) — first pass
-shipped as <code class="docutils literal notranslate"><span class="pre">qiskit_metal.validation</span></code>; more rules, a tutorial, and
-CI integration remain. See the dedicated section below.</p></li>
+<li><p><strong>Design-rule-check (DRC) validation stage</strong> (#1169, shipped v0.8.0) —
+more rules and per-PDK rule sets remain. See the dedicated section
+below.</p></li>
 <li><p><strong>Extend the design-examples gallery</strong> — more patterns
 (e.g. surface-code patch) now that the notebook pattern exists.</p></li>
 </ol>
@@ -786,9 +796,9 @@ shape this — please open an issue or reach out on Discord.
 External contributor leverage is enormous here.</p>
 </section>
 <hr class="docutils" />
-<section id="design-rule-check-drc-validation-stage-in-progress">
-<h2>Design-rule-check (DRC) validation stage <code class="docutils literal notranslate"><span class="pre">[in-progress]</span></code><a class="headerlink" href="#design-rule-check-drc-validation-stage-in-progress" title="Link to this heading">¶</a></h2>
-<p>Tracking issue: #1169. <code class="docutils literal notranslate"><span class="pre">qiskit_metal.validation</span></code> ships the first pass:</p>
+<section id="design-rule-check-drc-validation-stage-shipped-v0-8-0">
+<h2>Design-rule-check (DRC) validation stage <code class="docutils literal notranslate"><span class="pre">[shipped,</span> <span class="pre">v0.8.0]</span></code><a class="headerlink" href="#design-rule-check-drc-validation-stage-shipped-v0-8-0" title="Link to this heading">¶</a></h2>
+<p>Tracking issue: #1169, closed. <code class="docutils literal notranslate"><span class="pre">qiskit_metal.validation</span></code> shipped in v0.8.0:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">validate</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
@@ -1193,11 +1203,13 @@ the contributor guide.</p></li>
 <hr class="docutils" />
 <section id="known-bug-triage-queue-needs-re-verification">
 <h2>Known bug-triage queue <code class="docutils literal notranslate"><span class="pre">[needs</span> <span class="pre">re-verification]</span></code><a class="headerlink" href="#known-bug-triage-queue-needs-re-verification" title="Link to this heading">¶</a></h2>
-<p>10 issues triaged on 2026-05-22. <strong>All reports are on Metal 0.5.x or earlier</strong>
-(0.1.5 / 0.5.2.post4 / 0.5.3.post1); none re-verified against v0.7.x. Before
-acting on any, reproduce on a current <code class="docutils literal notranslate"><span class="pre">quantum-metal[full]</span></code> install — some
-may have been fixed by the lite-flip / renderer-protocol / Qt6 work and just
-need closing.</p>
+<p>10 issues triaged on 2026-05-22 (now ~2.5 months stale against the current
+v0.8.0 release — two have since been fixed, see below; the rest still need
+a re-triage pass). <strong>All reports are on Metal 0.5.x or earlier</strong>
+(0.1.5 / 0.5.2.post4 / 0.5.3.post1); most not yet re-verified against
+v0.8.x. Before acting on any, reproduce on a current <code class="docutils literal notranslate"><span class="pre">quantum-metal[full]</span></code>
+install — some may have been fixed by the lite-flip / renderer-protocol /
+Qt6 work and just need closing.</p>
 <p><strong>Real bugs with reproducer + community-proposed fix:</strong></p>
 <ul class="simple">
 <li><p>✅ <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code> <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1036">#1036</a>
@@ -1206,10 +1218,11 @@ True when both segment endpoints lie inside a component bounding box even
 though the segment intersects the actual contour. <strong>Fixed in #1113</strong>
 (reimplements the community fix #1038 by &#64;Jinyuan426, with a regression
 test).</p></li>
-<li><p><a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1086">#1086</a>
-<code class="docutils literal notranslate"><span class="pre">RouteMeander</span></code> produces asymmetric geometry for rotated routes (filed
-2026-05-22 with HFSS-validation rubric, workaround already in
-<code class="docutils literal notranslate"><span class="pre">scripts/make_hero_gif.py</span></code>).</p></li>
+<li><p>✅ <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code> <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1086">#1086</a>
+<code class="docutils literal notranslate"><span class="pre">RouteMeander</span></code> produces asymmetric geometry for rotated routes. <strong>Fixed
+in commit <code class="docutils literal notranslate"><span class="pre">541ddf667</span></code></strong> (part of the v0.8.0 bump, capping
+<code class="docutils literal notranslate"><span class="pre">meander_number</span></code> in <code class="docutils literal notranslate"><span class="pre">meandered.py</span></code>); <code class="docutils literal notranslate"><span class="pre">scripts/make_hero_gif.py</span></code> still
+references the fix in a comment on its sizing logic.</p></li>
 </ul>
 <p><strong>Easy / small fixes:</strong></p>
 <ul class="simple">
@@ -1242,12 +1255,15 @@ fixed in #1104 (v0.7.4); #1110 added defensive init guards
 job for the still-open on-screen init crash — not yet confirmed fixed,
 awaiting reporter validation.</p></li>
 </ul>
-<p><strong>Needs reproducer:</strong></p>
+<p><strong>Needs reproducer:</strong> (none remaining in this batch — see shipped fixes below)</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1052">#1052</a>
-Xmon angle bug — bus angle 270° doesn’t put pin at bottom. Reporter
-posted screenshots but left “Steps to reproduce” + “Expected behavior”
-sections blank.</p></li>
+<li><p>✅ <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code> <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1052">#1052</a>
+<code class="docutils literal notranslate"><span class="pre">TransmonCross</span></code> <code class="docutils literal notranslate"><span class="pre">connector_location='270'</span></code> placed the connector on the
+east arm instead of the south arm — the rotation chain had no branch
+above 225°, so 270 matched the <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">135</span></code> test. <strong>Fixed</strong>, and
+<code class="docutils literal notranslate"><span class="pre">connector_location</span></code> now wraps mod 360 so out-of-range angles no
+longer land arbitrarily (#1174, which also hardened
+<code class="docutils literal notranslate"><span class="pre">TransmonCrossFL</span></code>’s south-arm flux-line warning).</p></li>
 </ul>
 <p><strong>Filed by us (info-only, needs external action):</strong></p>
 <ul class="simple">
@@ -1351,7 +1367,7 @@ https://qdc-qcsa.vercel.app.</p></li>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/07</div>
+              Last updated on 2026/08/11</div>
           </div>
           <div class="right-details">
             
@@ -1374,13 +1390,13 @@ https://qdc-qcsa.vercel.app.</p></li>
             <ul>
 <li><a class="reference internal" href="#">Quantum Metal — Roadmap</a><ul>
 <li><a class="reference internal" href="#vision">Vision</a></li>
-<li><a class="reference internal" href="#recently-shipped-post-v0-7-4-cycle-june-2026-shipped">Recently shipped — post-v0.7.4 cycle (June 2026) <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code></a></li>
+<li><a class="reference internal" href="#recently-shipped-through-v0-8-0-august-2026-shipped">Recently shipped — through v0.8.0 (August 2026) <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code></a></li>
 <li><a class="reference internal" href="#near-term-priorities-planned">Near-term priorities <code class="docutils literal notranslate"><span class="pre">[planned]</span></code></a></li>
 <li><a class="reference internal" href="#lite-by-default-flip-v0-7-0-shipped">Lite-by-default flip (v0.7.0) <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code></a></li>
 <li><a class="reference internal" href="#downstream-ecosystem-rollout-in-progress">Downstream ecosystem rollout <code class="docutils literal notranslate"><span class="pre">[in-progress]</span></code></a></li>
 <li><a class="reference internal" href="#next-ai-orchestration-profile">Next — AI-orchestration profile</a></li>
 <li><a class="reference internal" href="#open-fem-stack-gmsh-elmer-aws-palace-research">Open FEM stack — gmsh + Elmer + AWS Palace <code class="docutils literal notranslate"><span class="pre">[research]</span></code></a></li>
-<li><a class="reference internal" href="#design-rule-check-drc-validation-stage-in-progress">Design-rule-check (DRC) validation stage <code class="docutils literal notranslate"><span class="pre">[in-progress]</span></code></a></li>
+<li><a class="reference internal" href="#design-rule-check-drc-validation-stage-shipped-v0-8-0">Design-rule-check (DRC) validation stage <code class="docutils literal notranslate"><span class="pre">[shipped,</span> <span class="pre">v0.8.0]</span></code></a></li>
 <li><a class="reference internal" href="#architectural-items-research">Architectural items <code class="docutils literal notranslate"><span class="pre">[research]</span></code></a></li>
 <li><a class="reference internal" href="#group-and-lab-adoption-pathway">Group and lab adoption pathway</a><ul>
 <li><a class="reference internal" href="#high-impact-low-effort">High impact, low effort</a></li>
@@ -1412,7 +1428,7 @@ https://qdc-qcsa.vercel.app.</p></li>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=486e5634"></script>
+</div><script src="_static/documentation_options.js?v=ec16d22d"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

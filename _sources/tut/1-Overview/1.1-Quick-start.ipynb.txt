@@ -16,7 +16,7 @@
     "[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/1%20Overview/1.1%20Quick%20start.ipynb)\n",
     "[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=tutorials%2F1%20Overview%2F1.1%20Quick%20start.ipynb)\n",
     "\n",
-    "> \ud83d\udca1 **Running in Colab or Binder?** Skip the desktop GUI install \u2014 the cell below grabs the lite (no-Qt) wheel, and `qm.gui(design)` auto-picks an inline matplotlib viewer with the same API (`gui.rebuild()`, `gui.screenshot()`, `gui.edit_component(...)`) as the desktop `MetalGUI`."
+    "> 💡 **Running in Colab or Binder?** Skip the desktop GUI install — the cell below grabs the lite (no-Qt) wheel, and `qm.gui(design)` auto-picks an inline matplotlib viewer with the same API (`gui.rebuild()`, `gui.screenshot()`, `gui.edit_component(...)`) as the desktop `MetalGUI`."
    ]
   },
   {
@@ -96,19 +96,16 @@
     "\n",
     "``qm.gui(design)`` is a factory: it returns the desktop ``MetalGUI`` when you have PySide6 and a display, and an inline matplotlib viewer (``MetalGUIHeadless``) otherwise. The same ``gui.*`` API works in both.\n",
     "\n",
-    "Run the cells below to instantiate a design and view it. The chip starts empty \u2014 let's add a qubit."
+    "Run the cells below to instantiate a design and view it. The chip starts empty — let's add a qubit."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": null,
    "id": "b3d30573",
    "metadata": {},
    "outputs": [],
-   "source": [
-    "design = designs.DesignPlanar()\n",
-    "gui = qm.gui(design)  # Qt locally, inline matplotlib in Colab/Binder"
-   ]
+   "source": "design = designs.DesignPlanar()\ngui = qm.gui(design)  # Qt locally, inline matplotlib in Colab/Binder\n\n# Dark theme for the desktop GUI screenshots below. Guarded because the\n# inline headless viewer used on Colab/Binder has no stylesheet concept.\nif hasattr(gui, \"load_stylesheet\"):\n    gui.load_stylesheet(\"metal_dark\")"
   },
   {
    "cell_type": "code",
@@ -175,7 +172,7 @@
    "id": "bdde3245",
    "metadata": {},
    "source": [
-    "## My first QComponent \u2014 a transmon qubit\n",
+    "## My first QComponent — a transmon qubit\n",
     "\n",
     "Quantum Metal ships a ready-made transmon in ``qiskit_metal.qlibrary.qubits.transmon_pocket``. Adding one is a single line; the GUI refreshes automatically."
    ]
@@ -293,7 +290,7 @@
    "source": [
     "### Default options\n",
     "\n",
-    "Every QComponent has a ``default_options`` dictionary. Quantum Metal parses these strings into numeric values during ``rebuild()``. You can change them through the GUI or the Python API \u2014 both call the same underlying setters."
+    "Every QComponent has a ``default_options`` dictionary. Quantum Metal parses these strings into numeric values during ``rebuild()``. You can change them through the GUI or the Python API — both call the same underlying setters."
    ]
   },
   {
@@ -392,7 +389,7 @@
    "source": [
     "## Compare before and after\n",
     "\n",
-    "Design-as-code means every parameter change is immediate and visual. ``qm.view()`` renders into any matplotlib axes \u2014 drop two of them side-by-side to see what changed."
+    "Design-as-code means every parameter change is immediate and visual. ``qm.view()`` renders into any matplotlib axes — drop two of them side-by-side to see what changed."
    ]
   },
   {
@@ -627,8 +624,8 @@
    "source": [
     "Two ways to set component options:\n",
     "\n",
-    "- **Instance-level** \u2014 ``q1.options.<field> = ...`` changes only ``q1``.\n",
-    "- **Class-level** \u2014 ``QComponent.default_options.<field> = ...`` changes the default for every future component instance.\n",
+    "- **Instance-level** — ``q1.options.<field> = ...`` changes only ``q1``.\n",
+    "- **Class-level** — ``QComponent.default_options.<field> = ...`` changes the default for every future component instance.\n",
     "\n",
     "The cell below demonstrates both and restores the class defaults at the end so the rest of the notebook isn't polluted."
    ]
@@ -642,12 +639,12 @@
    "source": [
     "# Two different \"change the options\" patterns:\n",
     "\n",
-    "# 1. Change THIS instance only \u2014 what the tutorial has been doing so far.\n",
+    "# 1. Change THIS instance only — what the tutorial has been doing so far.\n",
     "#    Affects q1, not any future TransmonPocket you create.\n",
     "q1.options.pos_x = \"0.5 mm\"\n",
     "q1.options.pos_y = \"250 um\"\n",
     "\n",
-    "# 2. Change the CLASS-LEVEL DEFAULTS \u2014 affects every TransmonPocket\n",
+    "# 2. Change the CLASS-LEVEL DEFAULTS — affects every TransmonPocket\n",
     "#    you instantiate after this point. The base ``QComponent.default_options``\n",
     "#    dict carries ``pos_x``/``pos_y``; component subclasses inherit them.\n",
     "#    (To change a TransmonPocket-specific default like ``pad_width``,\n",
@@ -874,7 +871,7 @@
        "    </tr>\n",
        "  </tbody>\n",
        "</table>\n",
-       "<p>1 rows \u00d7 21 columns</p>\n",
+       "<p>1 rows × 21 columns</p>\n",
        "</div>"
       ],
       "text/plain": [
@@ -996,7 +993,7 @@
    "id": "087010a2",
    "metadata": {},
    "source": [
-    "Each QComponent contributes one or more shapely geometries to the design. They're grouped by kind \u2014 ``poly``, ``path``, ``junction`` \u2014 accessible via ``qgeometry_table(kind)``."
+    "Each QComponent contributes one or more shapely geometries to the design. They're grouped by kind — ``poly``, ``path``, ``junction`` — accessible via ``qgeometry_table(kind)``."
    ]
   },
   {
@@ -1465,7 +1462,7 @@
        "    </tr>\n",
        "  </tbody>\n",
        "</table>\n",
-       "<p>1 rows \u00d7 21 columns</p>\n",
+       "<p>1 rows × 21 columns</p>\n",
        "</div>"
       ],
       "text/plain": [
@@ -1501,9 +1498,9 @@
    "id": "a740da4e",
    "metadata": {},
    "source": [
-    "### Advanced \u2014 arrays and expressions\n",
+    "### Advanced — arrays and expressions\n",
     "\n",
-    "Option strings support pythonic ``ast.literal_eval`` \u2014 you can embed lists, tuples, and arithmetic, all parsed lazily."
+    "Option strings support pythonic ``ast.literal_eval`` — you can embed lists, tuples, and arithmetic, all parsed lazily."
    ]
   },
   {
@@ -1620,7 +1617,7 @@
    "id": "6edb4043",
    "metadata": {},
    "source": [
-    "### QPins \u2014 the dynamic way to connect components\n",
+    "### QPins — the dynamic way to connect components\n",
     "\n",
     "A component designer can expose ``QPin`` endpoints. Pins let components link up: two transmons each expose a pin, a ``RouteMeander`` connects them into a CPW. Below, we recreate ``Q1`` with named connection pads."
    ]
@@ -1731,7 +1728,7 @@
    "source": [
     "### Editing component source from the API\n",
     "\n",
-    "``gui.edit_component(\"Q1\")`` opens the Qt source editor in the desktop GUI. In the headless viewer it's a no-op \u2014 edit the source file directly and call ``gui.rebuild()``."
+    "``gui.edit_component(\"Q1\")`` opens the Qt source editor in the desktop GUI. In the headless viewer it's a no-op — edit the source file directly and call ``gui.rebuild()``."
    ]
   },
   {
@@ -1754,10 +1751,10 @@
     "\n",
     "You've placed a transmon, modified it, compared variants, connected two qubits with a CPW, and inspected geometry. Plenty for one tutorial.\n",
     "\n",
-    "- **Want the concepts?** [1.2 Bird's eye view](./1.2-Bird's-eye-view-of-Quantum-Metal.ipynb) \u2014 what is a QDesign / QComponent / QRenderer, with diagrams.\n",
-    "- **Build the full chip:** [1.3 Build a 4-qubit chip](./1.3-Build-a-4-qubit-chip.ipynb) \u2014 ring layout, CPW routing, design variables.\n",
-    "- **Save & export:** [1.4 Saving & exporting](./1.4-Saving-Your-Chip-Design.ipynb) \u2014 `to_python_script()` + GDS for fabrication.\n",
-    "- **Browse every component:** [QComponent Gallery](../../qcomponents-gallery.rst) \u2014 visual catalog of every qubit, coupler, route, resonator, and termination.\n"
+    "- **Want the concepts?** [1.2 Bird's eye view](./1.2-Bird's-eye-view-of-Quantum-Metal.ipynb) — what is a QDesign / QComponent / QRenderer, with diagrams.\n",
+    "- **Build the full chip:** [1.3 Build a 4-qubit chip](./1.3-Build-a-4-qubit-chip.ipynb) — ring layout, CPW routing, design variables.\n",
+    "- **Save & export:** [1.4 Saving & exporting](./1.4-Saving-Your-Chip-Design.ipynb) — `to_python_script()` + GDS for fabrication.\n",
+    "- **Browse every component:** [QComponent Gallery](../../qcomponents-gallery.rst) — visual catalog of every qubit, coupler, route, resonator, and termination.\n"
    ]
   }
  ],

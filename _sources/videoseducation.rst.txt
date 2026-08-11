@@ -50,3 +50,103 @@ Further reading & references
 - Kwon et al., *Gate-based superconducting quantum computing*, J. Appl. Phys. 129, 041102 (2021).
 - Blais et al., *Circuit quantum electrodynamics*, Rev. Mod. Phys. 93, 025005 (2021).
 - Gao et al., *Practical Guide for Building Superconducting Quantum Devices*, PRX Quantum 2, 040202 (2021).
+
+Historical office-hours & tutorial recording log (2021–2023)
+--------------------------------------------------------------
+
+Dated recordings from the original Qiskit Metal team's live tutorial and
+Q&A series. Superseded as a going concern (the series is not ongoing), but
+many of the individual recordings are still useful references.
+
+.. list-table::
+   :header-rows: 1
+
+   * - Date
+     - Type
+     - Topic
+   * - April 1
+     - Tutorial
+     - `Introduction to Qiskit Metal <https://youtu.be/NCNv3YPvveM>`_
+   * - April 8
+     - Tutorial
+     - Overview: Qubit chip design-flow, `Part 1 <https://youtu.be/bsrsKZLTkTo>`_
+   * - April 15
+     - Tutorial
+     - Overview: Qubit chip design-flow, `Part 2 <https://youtu.be/fj1hpAqZfmg>`_
+   * - April 22
+     - Forum
+     - First impressions — Qiskit Metal team answers questions and invites feedback.
+   * - April 29
+     - Tutorial
+     - `QComponents <https://youtu.be/ljzWF3dNHEU>`_: how to use, modify, and extend the Qiskit Metal library.
+   * - May 6
+     - Forum
+     - Q&A — customizing Qiskit Metal designs.
+   * - May 6
+     - Offline recordings
+     - Analysis methods: `Capacitance and frequency control <https://youtu.be/rY7Os7B9sg0>`_,
+       `Eigenmode & Energy Participation Ratio <https://youtu.be/mvT9Fb7UGH4>`_,
+       `Energy Participation Ratio Theory <https://youtu.be/ITCkKfjxcbc>`_,
+       `EPR Quantization with Code Example <https://youtu.be/FXmPyYEyL9U>`_,
+       `Finish Eigenmode + Impedance Analysis <https://youtu.be/4jBVdHzmJdw>`_,
+       `Impedance Analysis Example <https://youtu.be/Bi8ZVAq-0tw>`_
+   * - May 13
+     - Tutorial
+     - `Quantum Analysis 101 <https://youtu.be/QIr2Rlj1cpI>`_
+   * - May 20
+     - Tutorial
+     - `Introduction to the Transmon Qubit <https://youtu.be/6KgOaU1BAxg>`_
+   * - May 27
+     - Tutorial
+     - `Physics of the Cooper Pair Box Transmon <https://youtu.be/Ql8AS4Iay-Q>`_
+   * - June 3
+     - Tutorial
+     - `Parametric Sweeps <https://youtu.be/ZRsk5dvH1K0>`_, `Github Contribution How-to <https://youtu.be/rJWo1Pt19vI>`_
+   * - July 15
+     - Tutorial
+     - `Energy Participation Ratio in Qiskit Metal <https://youtu.be/HJNKG5z6Jys>`_,
+       `New Feature: LOM Analysis for Composite Systems <https://youtu.be/XpnTJSBjb8E>`_,
+       `New Feature: Export Design to Script <https://youtu.be/JpoD3SjObHc>`_
+   * - Sept 23
+     - Tutorial
+     - `Making a QComponent from Scratch <https://youtu.be/5iEOJDMWXDE>`_
+   * - Oct 7
+     - Tutorial
+     - `New LOM Analysis Methodology — Part 1 <https://youtu.be/S8Wx2Lo2CxQ>`_
+   * - Oct 21
+     - Tutorial
+     - `New LOM Analysis Methodology — Part 2 <https://youtu.be/b2azGJ-RCjk>`_
+   * - Nov 4
+     - Tutorial
+     - `New LOM Analysis Methodology — Part 3 <https://youtu.be/kWFYYUa0V3k>`_
+   * - Nov 18
+     - Forum
+     - Q&A — ask anything to the Qiskit Metal team.
+   * - Jan 13, 2022
+     - Forum
+     - Q&A — open discussion with the Qiskit Metal team.
+   * - Jan 27, 2022
+     - Forum
+     - Helping users generate a custom component.
+   * - Feb 10, 2022
+     - Tutorial
+     - `GUI Icons <https://youtu.be/aE2Dsc67S8w>`_, `Jaynes-Cummings Model <https://youtu.be/dtwL_K-TJtY>`_,
+       `Template Options, Default Options <https://youtu.be/qKLyEyW7cbQ>`_
+   * - Feb 24, 2022
+     - Tutorial
+     - `Flip Chip, by guest speaker Sandoko Kosen <https://youtu.be/BUojR6Uti5Q>`_
+   * - Mar 10, 2022
+     - Forum
+     - Metal community feedback session.
+   * - Mar 24, 2022
+     - Tutorial
+     - `Time Evolution for the CR Gate <https://www.youtube.com/watch?v=icDryjZrUQ4>`_
+   * - Aug 4, 2022
+     - Tutorial
+     - `Open-Source Rendering and Simulation Solution for Qiskit Metal <https://youtu.be/sA0uXtCAhWw>`_
+   * - Aug 11, 2022
+     - Tutorial
+     - `Qiskit Metal E21: Quantum Spice Web App — Sneak Peak <https://youtu.be/3UE57DaG-HI>`_
+   * - Feb 2, 2023
+     - Tutorial
+     - `Qiskit Metal E22: Open-Source Simulation Renderers — Gmsh & ElmerFEM <https://youtu.be/84j3l_9fHko>`_

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Quantum Metal — Roadmap" href="../roadmap.html"><link rel="prev" title="GUI (qiskit_metal._gui)" href="gui.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>MetalGUI - Quantum Metal 0.8.0</title>
+        <title>MetalGUI - Quantum Metal 0.8.1</title>
       <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -157,7 +157,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
+      <a href="../index.html"><div class="brand">Quantum Metal 0.8.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -179,7 +179,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../search.html" role="search">
@@ -289,6 +289,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
@@ -505,6 +506,24 @@ identifies the failing call without needing a custom branch.</p>
 </dl>
 <p class="rubric">Attributes</p>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.THEME_DARK">
+<span class="sig-name descname"><span class="pre">THEME_DARK</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'metal_dark'</span></span><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.THEME_DARK" title="Link to this definition">¶</a></dt>
+<dd><p>Themes the toolbar toggle flips between. <code class="docutils literal notranslate"><span class="pre">load_stylesheet</span></code> also
+accepts “qdarkstyle”, “default” and an arbitrary .qss path; those stay
+on the View &gt; Color theme menu, which remains the full picker.</p>
+<p>THEME_LIGHT is deliberately “metal_light_gray”, not “default”:
+“default” means <em>no</em> stylesheet, which follows the OS/Qt native
+theme – on a system with OS-level dark mode that renders dark too,
+so toggling into it from metal_dark looked like nothing happened.
+metal_light_gray is an actual designed light theme.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.THEME_LIGHT">
+<span class="sig-name descname"><span class="pre">THEME_LIGHT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'metal_light_gray'</span></span><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.THEME_LIGHT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.axes">
 <span class="sig-name descname"><span class="pre">axes</span></span><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.axes" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the axes.</p>
@@ -537,17 +556,50 @@ main functions.</p>
 <dd><p>Returns the path to the stylesheet.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.selected_component">
+<span class="sig-name descname"><span class="pre">selected_component</span></span><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.selected_component" title="Link to this definition">¶</a></dt>
+<dd><p>Name of the component last opened in the editor, or None.</p>
+<p>Set by <a class="reference internal" href="#qiskit_metal._gui.MetalGUI.edit_component" title="qiskit_metal._gui.MetalGUI.edit_component"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edit_component()</span></code></a>, which the canvas calls on click, so
+clicking a component on the canvas is enough to make it the nudge
+target.</p>
+</dd></dl>
+
 <p class="rubric">Methods</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.autoscale">
-<span class="sig-name descname"><span class="pre">autoscale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.autoscale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.autoscale" title="Link to this definition">¶</a></dt>
-<dd><p>Shortcut to autoscale all views.</p>
+<span class="sig-name descname"><span class="pre">autoscale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_chip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.autoscale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.autoscale" title="Link to this definition">¶</a></dt>
+<dd><p>Frame the design in the plot window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>include_chip</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Frame the whole chip rather than just the
+components. Defaults to False – a default 9x6mm die around a
+sub-millimetre component leaves it unreadably small, and the
+tutorials assume the chip is ignored.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.btn_comp_zoom_fx">
 <span class="sig-name descname"><span class="pre">btn_comp_zoom_fx</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.btn_comp_zoom_fx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.btn_comp_zoom_fx" title="Link to this definition">¶</a></dt>
 <dd><p>Zooms in display on selected QComponent</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.clear_highlight">
+<span class="sig-name descname"><span class="pre">clear_highlight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.clear_highlight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.clear_highlight" title="Link to this definition">¶</a></dt>
+<dd><p>Remove any component labels/highlights from the canvas.</p>
+<p><code class="docutils literal notranslate"><span class="pre">clear_annotation</span></code> detaches the artists but does not redraw –
+<code class="docutils literal notranslate"><span class="pre">highlight_components</span></code> refreshes at the end of its own run, so the
+clear path has to do it too or the labels stay on screen until
+something else happens to trigger a draw.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.clear_selection">
+<span class="sig-name descname"><span class="pre">clear_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.clear_selection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.clear_selection" title="Link to this definition">¶</a></dt>
+<dd><p>Forget the selected component and clear its hint.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -652,12 +704,40 @@ of all components for the design.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.highlight_all_components">
+<span class="sig-name descname"><span class="pre">highlight_all_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show_pins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.highlight_all_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.highlight_all_components" title="Link to this definition">¶</a></dt>
+<dd><p>Label every component in the design on the canvas.</p>
+<p>Draws each component’s bounding box and name, and by default its
+pins. Useful for orienting yourself on a design someone else built,
+or for a labelled screenshot.</p>
+<p>Bound to the “Label all” button on the plot toolbar (shortcut <code class="docutils literal notranslate"><span class="pre">L</span></code>);
+<code class="docutils literal notranslate"><span class="pre">Shift+L</span></code> labels components only, without pins.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>show_pins</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Also draw pin arrows and pin names. Turn off on
+dense chips, where per-pin labels swamp the component names.
+Defaults to True.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of components labelled.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.highlight_components">
-<span class="sig-name descname"><span class="pre">highlight_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.highlight_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.highlight_components" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">highlight_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_pins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.highlight_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.highlight_components" title="Link to this definition">¶</a></dt>
 <dd><p>Visually highlight components in the plot canvas.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>component_names</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – Names to highlight; others remain unhighlighted.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component_names</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – Names to highlight; others remain unhighlighted.</p></li>
+<li><p><strong>show_pins</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Also draw pin arrows and pin names.
+Defaults to True.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -669,8 +749,10 @@ of all components for the design.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to stylesheet or its name.
-Can be: ‘default’, ‘qdarkstyle’ or None.
-<cite>qdarkstyle</cite> requires
+Can be: ‘default’ (no stylesheet – follows the OS/Qt native
+theme, which is dark on a dark-mode OS despite the name),
+‘metal_dark’, ‘metal_light_gray’, ‘qdarkstyle’, or an
+arbitrary .qss file path. <cite>qdarkstyle</cite> requires
 &gt;&gt;&gt; pip install qdarkstyle</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -681,6 +763,53 @@ Can be: ‘default’, ‘qdarkstyle’ or None.
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ImportError" title="(in Python v3.14)"><strong>ImportError</strong></a> – Import failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.nudge_component">
+<span class="sig-name descname"><span class="pre">nudge_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx_mm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy_mm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.nudge_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.nudge_component" title="Link to this definition">¶</a></dt>
+<dd><p>Move a component by a displacement in millimetres.</p>
+<p>Positions are unit-bearing strings, so the displacement is converted
+into whatever unit each option already uses – a design authored in
+microns stays in microns rather than being silently rewritten in mm.</p>
+<p>Only components exposing <code class="docutils literal notranslate"><span class="pre">pos_x</span></code>/<code class="docutils literal notranslate"><span class="pre">pos_y</span></code> can be moved. Routes are
+positioned by their pins, so nudging one is meaningless and is
+refused rather than half-applied.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Component to move.</p></li>
+<li><p><strong>dx_mm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Displacement along x, in millimetres.</p></li>
+<li><p><strong>dy_mm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Displacement along y, in millimetres.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the component moved.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.nudge_selected">
+<span class="sig-name descname"><span class="pre">nudge_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dx_mm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy_mm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.nudge_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.nudge_selected" title="Link to this definition">¶</a></dt>
+<dd><p>Nudge the currently selected component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dx_mm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Displacement along x, in millimetres.</p></li>
+<li><p><strong>dy_mm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Displacement along y, in millimetres.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if a component moved.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -726,6 +855,48 @@ For that, call rebuild.</p>
 <dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.refresh_plot">
 <span class="sig-name descname"><span class="pre">refresh_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.refresh_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.refresh_plot" title="Link to this definition">¶</a></dt>
 <dd><p>Redraw only the plot window contents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.rotate_component">
+<span class="sig-name descname"><span class="pre">rotate_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_deg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.rotate_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.rotate_component" title="Link to this definition">¶</a></dt>
+<dd><p>Rotate a component in place by a change in orientation, in degrees.</p>
+<p>Only components exposing <code class="docutils literal notranslate"><span class="pre">orientation</span></code> can be rotated. Unlike
+<code class="docutils literal notranslate"><span class="pre">pos_x</span></code>/<code class="docutils literal notranslate"><span class="pre">pos_y</span></code>, <code class="docutils literal notranslate"><span class="pre">orientation</span></code> is stored as a bare number (no
+unit suffix), so the arithmetic here doesn’t need offset_length’s
+unit-preserving parsing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Component to rotate.</p></li>
+<li><p><strong>delta_deg</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Change in orientation, in degrees. Positive
+is counter-clockwise, matching the option’s own convention.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the component rotated.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.rotate_selected">
+<span class="sig-name descname"><span class="pre">rotate_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta_deg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.rotate_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.rotate_selected" title="Link to this definition">¶</a></dt>
+<dd><p>Rotate the currently selected component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>delta_deg</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Change in orientation, in degrees.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if a component rotated.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -794,6 +965,23 @@ Call this once after constructing the GUI or when swapping designs.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.toggle_theme">
+<span class="sig-name descname"><span class="pre">toggle_theme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.toggle_theme"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.toggle_theme" title="Link to this definition">¶</a></dt>
+<dd><p>Flip between the dark and light stylesheet.</p>
+<p>Reads the currently applied stylesheet rather than tracking a
+separate flag, so the button stays correct when the theme is changed
+from the View menu instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The stylesheet now applied.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal._gui.MetalGUI.update_design_name">
 <span class="sig-name descname"><span class="pre">update_design_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/_gui/main_window.html#MetalGUI.update_design_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal._gui.MetalGUI.update_design_name" title="Link to this definition">¶</a></dt>
 <dd><p>Update the design name.</p>
@@ -849,7 +1037,7 @@ Call this once after constructing the GUI or when swapping designs.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/07</div>
+              Last updated on 2026/08/11</div>
           </div>
           <div class="right-details">
             
@@ -872,12 +1060,17 @@ Call this once after constructing the GUI or when swapping designs.</p>
             <ul>
 <li><a class="reference internal" href="#">MetalGUI</a><ul>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI"><code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code></a><ul>
+<li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.THEME_DARK"><code class="docutils literal notranslate"><span class="pre">MetalGUI.THEME_DARK</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.THEME_LIGHT"><code class="docutils literal notranslate"><span class="pre">MetalGUI.THEME_LIGHT</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.axes"><code class="docutils literal notranslate"><span class="pre">MetalGUI.axes</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.canvas"><code class="docutils literal notranslate"><span class="pre">MetalGUI.canvas</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.figure"><code class="docutils literal notranslate"><span class="pre">MetalGUI.figure</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.path_stylesheets"><code class="docutils literal notranslate"><span class="pre">MetalGUI.path_stylesheets</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.selected_component"><code class="docutils literal notranslate"><span class="pre">MetalGUI.selected_component</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.autoscale"><code class="docutils literal notranslate"><span class="pre">MetalGUI.autoscale()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.btn_comp_zoom_fx"><code class="docutils literal notranslate"><span class="pre">MetalGUI.btn_comp_zoom_fx()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.clear_highlight"><code class="docutils literal notranslate"><span class="pre">MetalGUI.clear_highlight()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.clear_selection"><code class="docutils literal notranslate"><span class="pre">MetalGUI.clear_selection()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.clear_settings"><code class="docutils literal notranslate"><span class="pre">MetalGUI.clear_settings()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.create_log_handler"><code class="docutils literal notranslate"><span class="pre">MetalGUI.create_log_handler()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.dockLibrary_filter_onChanged"><code class="docutils literal notranslate"><span class="pre">MetalGUI.dockLibrary_filter_onChanged()</span></code></a></li>
@@ -887,12 +1080,17 @@ Call this once after constructing the GUI or when swapping designs.</p>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.filter_text_design_onChanged"><code class="docutils literal notranslate"><span class="pre">MetalGUI.filter_text_design_onChanged()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.get_axes"><code class="docutils literal notranslate"><span class="pre">MetalGUI.get_axes()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.gui_create_build_log_window"><code class="docutils literal notranslate"><span class="pre">MetalGUI.gui_create_build_log_window()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.highlight_all_components"><code class="docutils literal notranslate"><span class="pre">MetalGUI.highlight_all_components()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.highlight_components"><code class="docutils literal notranslate"><span class="pre">MetalGUI.highlight_components()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.load_stylesheet"><code class="docutils literal notranslate"><span class="pre">MetalGUI.load_stylesheet()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.nudge_component"><code class="docutils literal notranslate"><span class="pre">MetalGUI.nudge_component()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.nudge_selected"><code class="docutils literal notranslate"><span class="pre">MetalGUI.nudge_selected()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.rebuild"><code class="docutils literal notranslate"><span class="pre">MetalGUI.rebuild()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.refresh"><code class="docutils literal notranslate"><span class="pre">MetalGUI.refresh()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.refresh_design"><code class="docutils literal notranslate"><span class="pre">MetalGUI.refresh_design()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.refresh_plot"><code class="docutils literal notranslate"><span class="pre">MetalGUI.refresh_plot()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.rotate_component"><code class="docutils literal notranslate"><span class="pre">MetalGUI.rotate_component()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.rotate_selected"><code class="docutils literal notranslate"><span class="pre">MetalGUI.rotate_selected()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.save_file"><code class="docutils literal notranslate"><span class="pre">MetalGUI.save_file()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.screenshot"><code class="docutils literal notranslate"><span class="pre">MetalGUI.screenshot()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.set_design"><code class="docutils literal notranslate"><span class="pre">MetalGUI.set_design()</span></code></a></li>
@@ -900,6 +1098,7 @@ Call this once after constructing the GUI or when swapping designs.</p>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.show"><code class="docutils literal notranslate"><span class="pre">MetalGUI.show()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.style_window"><code class="docutils literal notranslate"><span class="pre">MetalGUI.style_window()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.toggle_docks"><code class="docutils literal notranslate"><span class="pre">MetalGUI.toggle_docks()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.toggle_theme"><code class="docutils literal notranslate"><span class="pre">MetalGUI.toggle_theme()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.update_design_name"><code class="docutils literal notranslate"><span class="pre">MetalGUI.update_design_name()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal._gui.MetalGUI.zoom_on_components"><code class="docutils literal notranslate"><span class="pre">MetalGUI.zoom_on_components()</span></code></a></li>
 </ul>
@@ -915,7 +1114,7 @@ Call this once after constructing the GUI or when swapping designs.</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=486e5634"></script>
+</div><script src="../_static/documentation_options.js?v=ec16d22d"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

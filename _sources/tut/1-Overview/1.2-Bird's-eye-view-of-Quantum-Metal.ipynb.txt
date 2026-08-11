@@ -15,7 +15,7 @@
     "[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/1%20Overview/1.2%20Bird%27s%20eye%20view%20of%20Quantum%20Metal.ipynb)\n",
     "[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=tutorials%2F1%20Overview%2F1.2%20Bird%27s%20eye%20view%20of%20Quantum%20Metal.ipynb)\n",
     "\n",
-    "> \ud83d\udca1 **Running in Colab or Binder?** Skip the desktop GUI install \u2014 the cell below grabs the lite (no-Qt) wheel, and `qm.gui(design)` auto-picks an inline matplotlib viewer with the same API (`gui.rebuild()`, `gui.screenshot()`, `gui.edit_component(...)`) as the desktop `MetalGUI`."
+    "> 💡 **Running in Colab or Binder?** Skip the desktop GUI install — the cell below grabs the lite (no-Qt) wheel, and `qm.gui(design)` auto-picks an inline matplotlib viewer with the same API (`gui.rebuild()`, `gui.screenshot()`, `gui.edit_component(...)`) as the desktop `MetalGUI`."
    ]
   },
   {
@@ -78,7 +78,7 @@
     "> In a few lines you:\n",
     "> 1. Created a **quantum chip design canvas** (`DesignPlanar`)\n",
     "> 2. Placed a **superconducting transmon qubit** on it (`TransmonPocket`)\n",
-    "> 3. Rendered it to a **matplotlib figure** \u2014 no Qt, no GUI, no extra setup\n",
+    "> 3. Rendered it to a **matplotlib figure** — no Qt, no GUI, no extra setup\n",
     ">\n",
     "> The rest of this tutorial unpacks what each step means and how to control every detail.\n",
     "> Skip ahead to [1.2 Your First Chip](./1.1-Quick-start.ipynb) if you want to keep building immediately."
@@ -94,11 +94,11 @@
     "Designing a superconducting chip in Quantum Metal is a four-step loop:\n",
     "\n",
     "1. **Pick a design canvas** (``DesignPlanar``, ``DesignFlipChip``, ...).\n",
-    "2. **Place QComponents** \u2014 transmons, couplers, routes, terminations.\n",
+    "2. **Place QComponents** — transmons, couplers, routes, terminations.\n",
     "3. **Render** to your backend of choice: GDS for fabrication, HFSS/Q3D or open FEM (gmsh + Elmer / AWS Palace) for simulation.\n",
-    "4. **Analyse** \u2014 Hamiltonian, capacitance, eigenmodes, EPR.\n",
+    "4. **Analyse** — Hamiltonian, capacitance, eigenmodes, EPR.\n",
     "\n",
-    "This tutorial focuses on the first two steps and shows both the inline matplotlib view (``qm.view``) and the desktop GUI (``MetalGUI``) \u2014 ``qm.gui(design)`` picks the right one automatically."
+    "This tutorial focuses on the first two steps and shows both the inline matplotlib view (``qm.view``) and the desktop GUI (``MetalGUI``) — ``qm.gui(design)`` picks the right one automatically."
    ]
   },
   {
@@ -106,7 +106,7 @@
    "id": "f8f2523b",
    "metadata": {},
    "source": [
-    "### Step 1 \u2192 4: from design to fab\n",
+    "### Step 1 → 4: from design to fab\n",
     "\n",
     "```mermaid\n",
     "flowchart LR\n",
@@ -122,7 +122,7 @@
     "    class B,D sec\n",
     "```\n",
     "\n",
-    "This tutorial focuses on **steps 1 and 2** \u2014 creating a design and adding components. Tutorial 1.3 covers step 3 (export to GDS); the 4-Analysis tutorials cover step 4.\n"
+    "This tutorial focuses on **steps 1 and 2** — creating a design and adding components. Tutorial 1.3 covers step 3 (export to GDS); the 4-Analysis tutorials cover step 4.\n"
    ]
   },
   {
@@ -134,11 +134,11 @@
     "\n",
     "You can run Quantum Metal in three ways:\n",
     "\n",
-    "- **Jupyter / Colab / Binder** \u2014 interactive, fastest for exploration. The Colab badge at the top of this notebook installs the lite (no-Qt) wheel in seconds.\n",
-    "- **Plain Python scripts** \u2014 for reproducible CI / batch runs.\n",
-    "- **Desktop ``MetalGUI``** \u2014 the Qt-based interactive editor (``pip install 'quantum-metal[gui]'``).\n",
+    "- **Jupyter / Colab / Binder** — interactive, fastest for exploration. The Colab badge at the top of this notebook installs the lite (no-Qt) wheel in seconds.\n",
+    "- **Plain Python scripts** — for reproducible CI / batch runs.\n",
+    "- **Desktop ``MetalGUI``** — the Qt-based interactive editor (``pip install 'quantum-metal[gui]'``).\n",
     "\n",
-    "The same Python API drives all three. ``qm.gui(design)`` returns the desktop GUI when Qt is available, an inline viewer otherwise \u2014 your tutorial code is identical in both paths."
+    "The same Python API drives all three. ``qm.gui(design)`` returns the desktop GUI when Qt is available, an inline viewer otherwise — your tutorial code is identical in both paths."
    ]
   },
   {
@@ -150,7 +150,7 @@
     "\n",
     "```mermaid\n",
     "flowchart TB\n",
-    "    subgraph design[QDesign \u2014 the chip canvas]\n",
+    "    subgraph design[QDesign — the chip canvas]\n",
     "        components[design.components<br/><i>Dict of QComponent instances</i>]\n",
     "        variables[design.variables<br/><i>shared option values</i>]\n",
     "        chips[design.chips<br/><i>chip stack + materials</i>]\n",
@@ -184,10 +184,10 @@
     "\n",
     "Quantum Metal organises a chip around a few abstractions:\n",
     "\n",
-    "- **``QComponent``** \u2014 a physical piece (transmon, CPW, launchpad). You instantiate subclasses, not ``QComponent`` itself.\n",
-    "- **``QDesign``** \u2014 the chip canvas; holds components, variables, and chip geometry.\n",
-    "- **``QRenderer``** \u2014 converts the design to a target format (GDS, HFSS, Q3D, gmsh, Elmer, ...).\n",
-    "- **``QGeometry``** \u2014 the per-component shapely shapes (polygons, paths, junctions)."
+    "- **``QComponent``** — a physical piece (transmon, CPW, launchpad). You instantiate subclasses, not ``QComponent`` itself.\n",
+    "- **``QDesign``** — the chip canvas; holds components, variables, and chip geometry.\n",
+    "- **``QRenderer``** — converts the design to a target format (GDS, HFSS, Q3D, gmsh, Elmer, ...).\n",
+    "- **``QGeometry``** — the per-component shapely shapes (polygons, paths, junctions)."
    ]
   },
   {
@@ -252,7 +252,7 @@
    "source": [
     "### Create a design\n",
     "\n",
-    "Every chip starts from a ``QDesign``. ``DesignPlanar`` is the simplest \u2014 a single planar chip."
+    "Every chip starts from a ``QDesign``. ``DesignPlanar`` is the simplest — a single planar chip."
    ]
   },
   {
@@ -389,18 +389,16 @@
    "source": [
     "### Launching the viewer\n",
     "\n",
-    "``qm.gui(design)`` returns either the desktop ``MetalGUI`` (Qt) or ``MetalGUIHeadless`` (inline matplotlib). The tutorial-facing API \u2014 ``gui.rebuild()``, ``gui.autoscale()``, ``gui.screenshot()``, ``gui.edit_component(...)`` \u2014 is the same in both."
+    "``qm.gui(design)`` returns either the desktop ``MetalGUI`` (Qt) or ``MetalGUIHeadless`` (inline matplotlib). The tutorial-facing API — ``gui.rebuild()``, ``gui.autoscale()``, ``gui.screenshot()``, ``gui.edit_component(...)`` — is the same in both."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 8,
+   "execution_count": null,
    "id": "35c5aefc",
    "metadata": {},
    "outputs": [],
-   "source": [
-    "gui = qm.gui(design)"
-   ]
+   "source": "gui = qm.gui(design)\n\n# Dark theme for the desktop GUI screenshots below. Guarded because the\n# inline headless viewer used on Colab/Binder has no stylesheet concept.\nif hasattr(gui, \"load_stylesheet\"):\n    gui.load_stylesheet(\"metal_dark\")"
   },
   {
    "cell_type": "markdown",
@@ -417,7 +415,7 @@
    "source": [
     "### Place your first qubit\n",
     "\n",
-    "Time to add a ``TransmonPocket`` \u2014 a ready-made transmon from ``qiskit_metal.qlibrary.qubits``."
+    "Time to add a ``TransmonPocket`` — a ready-made transmon from ``qiskit_metal.qlibrary.qubits``."
    ]
   },
   {
@@ -549,7 +547,7 @@
    "source": [
     "#### Default options\n",
     "\n",
-    "Each ``QComponent`` ships with a ``default_options`` dict (pad sizes, position, layer, etc.). Quantum Metal parses the strings into numbers during ``make()``. You can change options through the GUI or the Python API \u2014 they call the same setters."
+    "Each ``QComponent`` ships with a ``default_options`` dict (pad sizes, position, layer, etc.). Quantum Metal parses the strings into numbers during ``make()``. You can change options through the GUI or the Python API — they call the same setters."
    ]
   },
   {

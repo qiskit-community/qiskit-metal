@@ -73,3 +73,93 @@ auto-picks one based on the environment.
 For deeper contributor-side detail on each abstraction (lifecycle,
 options parsing, the lazy-Qt setup), read
 ``.claude/context/architecture.md`` in the repo root.
+
+Extending the base classes
+===========================
+
+When writing a custom ``QComponent`` or ``QRenderer``, these are the
+attributes and methods a subclass is expected to define or override.
+
+QComponent (``qlibrary/core/base.py``)
+---------------------------------------
+
+.. list-table::
+   :header-rows: 1
+
+   * - Attribute
+     - Description
+   * - ``default_options``
+     - Default drawing options.
+   * - ``component_metadata``
+     - Component metadata.
+   * - ``options``
+     - Dictionary of the component-designer-defined options.
+
+.. list-table::
+   :header-rows: 1
+
+   * - Method
+     - Description
+   * - ``make``
+     - Implements the logic that creates the geometry (poly, path, etc.)
+       from ``qcomponent.options``, then adds it to the design via
+       ``qcomponent.add_qgeometry(...)`` — including extra needed
+       information such as layer, subtract, etc.
+
+QRenderer (``renderers/renderer_base/renderer_base.py``)
+-----------------------------------------------------------
+
+.. list-table::
+   :header-rows: 1
+
+   * - Attribute
+     - Description
+   * - ``name``
+     - Renderer name.
+   * - ``element_extensions``
+     - Element extensions dictionary.
+   * - ``element_table_data``
+     - Element table data.
+
+.. list-table::
+   :header-rows: 1
+
+   * - Method
+     - Description
+   * - ``_initiate_renderer``
+     - Abstract. One-time setup before the first render (connect to an
+       API/COM, import material libraries, etc.). Returns ``True`` on
+       success.
+   * - ``_close_renderer``
+     - Abstract. Teardown after the final render (disconnect, close
+       threads, free memory, etc.). Returns ``True`` on success.
+   * - ``render_design``
+     - Abstract. Renders all design chips and components.
+
+QRendererGui (``renderers/renderer_base/renderer_gui_base.py``)
+--------------------------------------------------------------------
+
+In addition to the ``QRenderer`` methods above, a GUI-facing renderer
+overrides:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Method
+     - Description
+   * - ``setup_fig``
+     - Set up the given figure.
+   * - ``style_axis``
+     - Style the axis.
+   * - ``render_design``
+     - Render the design.
+   * - ``render_component``
+     - Render the given component.
+   * - ``render_shapely``
+     - Render shapely geometry.
+   * - ``render_connectors``
+     - Render connectors.
+   * - ``clear_axis``
+     - Clear the axis.
+   * - ``clear_figure``
+     - Clear the figure.

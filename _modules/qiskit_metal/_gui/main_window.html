@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>qiskit_metal._gui.main_window - Quantum Metal 0.8.0</title>
+        <title>qiskit_metal._gui.main_window - Quantum Metal 0.8.1</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -156,7 +156,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
+      <a href="../../../index.html"><div class="brand">Quantum Metal 0.8.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -178,7 +178,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
@@ -288,6 +288,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -480,8 +481,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QAction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">QSize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QActionGroup</span><span class="p">,</span> <span class="n">QKeySequence</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">QApplication</span><span class="p">,</span>
     <span class="n">QWidget</span><span class="p">,</span>
@@ -512,14 +513,22 @@
     <span class="n">kick_start_qApp</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.main_window_ui</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ui_MainWindow</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.toolbar_layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">TOOLBAR_ICON_PX</span><span class="p">,</span> <span class="n">apply_toolbar_layout</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.renderer_gds_gui</span><span class="w"> </span><span class="kn">import</span> <span class="n">RendererGDSWidget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.renderer_hfss_gui</span><span class="w"> </span><span class="kn">import</span> <span class="n">RendererHFSSWidget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.renderer_q3d_gui</span><span class="w"> </span><span class="kn">import</span> <span class="n">RendererQ3DWidget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.utility._handle_qt_messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">slot_catch_error</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.utility._toolbox_qt</span><span class="w"> </span><span class="kn">import</span> <span class="n">doShowHighlighWidget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.utility._nudge</span><span class="w"> </span><span class="kn">import</span> <span class="n">offset_length</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.utility._toolbox_qt</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">clear_dock_error_badge</span><span class="p">,</span>
+    <span class="n">doShowHighlighWidget</span><span class="p">,</span>
+    <span class="n">doToggleDockWidget</span><span class="p">,</span>
+    <span class="n">single_shot</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.all_components.table_model_all_components</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">QTableModel_AllComponents</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.pins</span><span class="w"> </span><span class="kn">import</span> <span class="n">QTableModel_Pins</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.build_history.build_history_scroll_area</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">BuildHistoryScrollArea</span><span class="p">,</span>
 <span class="p">)</span>
@@ -528,6 +537,9 @@
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.edit_component.component_widget</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComponentWidget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.plot_widget.plot_window</span><span class="w"> </span><span class="kn">import</span> <span class="n">QMainWindowPlot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.tree_view_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QTreeView_Base</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.edit_chip</span><span class="w"> </span><span class="kn">import</span> <span class="n">QTreeModel_Chips</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.view_control</span><span class="w"> </span><span class="kn">import</span> <span class="n">LayerVisibilityWidget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.variable_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">PropertyTableWidget</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">is_building_docs</span><span class="p">():</span>
@@ -536,6 +548,22 @@
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..renderers.renderer_mpl.mpl_canvas</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlotCanvas</span>
 
+<span class="c1">#: Styling for the selection hint in the status bar. A mid-tone teal reads</span>
+<span class="c1">#: against both the dark and light stylesheets, so the hint does not need to</span>
+<span class="c1">#: change with the theme. Scoped to the one label by being set on it directly.</span>
+<span class="n">SELECTION_HINT_STYLE</span> <span class="o">=</span> <span class="s2">&quot;color: #2a9d8f; font-weight: bold;&quot;</span>
+
+<span class="c1">#: Renderer key -&gt; the pip extra that provides it, for the</span>
+<span class="c1">#: &quot;this renderer is not installed&quot; message. Mirrors the install matrix in</span>
+<span class="c1">#: docs/installation.rst.</span>
+<span class="n">RENDERER_EXTRAS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;hfss&quot;</span><span class="p">:</span> <span class="s2">&quot;ansys&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;q3d&quot;</span><span class="p">:</span> <span class="s2">&quot;ansys&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aedt_hfss&quot;</span><span class="p">:</span> <span class="s2">&quot;ansys&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aedt_q3d&quot;</span><span class="p">:</span> <span class="s2">&quot;ansys&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gmsh&quot;</span><span class="p">:</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;elmer&quot;</span><span class="p">:</span> <span class="s2">&quot;mesh&quot;</span><span class="p">,</span>
+<span class="p">}</span>
 
 <span class="c1"># Issues #1048 / #1109: opt-in init-tracing for reporters whose MetalGUI</span>
 <span class="c1"># silently aborts mid-init on Windows. When QISKIT_METAL_DEBUG_INIT is</span>
@@ -561,12 +589,57 @@
 <span class="sd">    idempotent and exception-safe: it is only a best-effort cleanup.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># From here to process exit, log emission can race stream closure;</span>
+        <span class="c1"># logging catches those internally and prints an un-suppressable</span>
+        <span class="c1"># &quot;--- Logging error ---&quot; block per message via handleError()</span>
+        <span class="c1"># (so a try/except at the call site never sees it). Turning off</span>
+        <span class="c1"># logging.raiseExceptions is the documented switch for exactly</span>
+        <span class="c1"># this production-shutdown situation.</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_logging</span>
+
+        <span class="n">_logging</span><span class="o">.</span><span class="n">raiseExceptions</span> <span class="o">=</span> <span class="kc">False</span>
+
         <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">app</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
+        <span class="c1"># Stop every timer FIRST, then delete. The deleteLater() queue and</span>
+        <span class="c1"># any due timers are drained by the same processEvents() pass below;</span>
+        <span class="c1"># without this sweep a timer callback can interleave with the</span>
+        <span class="c1"># deletions and land on a widget whose C++ half is already gone --</span>
+        <span class="c1"># a native use-after-free at interpreter exit (the pristine-process</span>
+        <span class="c1"># exit segfaults in issue #1048 / the macOS CI matrix). QTimer&#39;s</span>
+        <span class="c1"># stop() is safe to call repeatedly and on never-started timers.</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QTimer</span>
+
+        <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">topLevelWidgets</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">timer</span> <span class="ow">in</span> <span class="n">widget</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QTimer</span><span class="p">):</span>
+                <span class="n">timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">topLevelWidgets</span><span class="p">()):</span>
             <span class="n">widget</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
         <span class="n">app</span><span class="o">.</span><span class="n">processEvents</span><span class="p">()</span>
+
+        <span class="c1"># Finish the job: drain the deferred-delete queue explicitly, then</span>
+        <span class="c1"># destroy the QApplication itself while the interpreter is still</span>
+        <span class="c1"># fully alive. Without this, the C++ QApplication (and with it the</span>
+        <span class="c1"># QPA platform plugin and Qt&#39;s internal threads) is destroyed</span>
+        <span class="c1"># during Py_FinalizeEx in whatever order module teardown happens</span>
+        <span class="c1"># to produce -- the destructor-ordering race behind the rare</span>
+        <span class="c1"># &quot;completed everything, then exited -11&quot; crashes on slow CI</span>
+        <span class="c1"># runners (issue #1048, &quot;Still open&quot; in gui_crash_defenses.md).</span>
+        <span class="c1"># Note the doc&#39;s trap about deleteLater under processEvents():</span>
+        <span class="c1"># DeferredDelete events are only handled by exec() loops or an</span>
+        <span class="c1"># explicit sendPostedEvents(None, DeferredDelete) -- which is why</span>
+        <span class="c1"># that call is here and a plain processEvents() is not enough.</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QEvent</span>
+
+        <span class="n">app</span><span class="o">.</span><span class="n">sendPostedEvents</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">DeferredDelete</span><span class="p">)</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">processEvents</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">shiboken6</span>
+
+            <span class="n">shiboken6</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pragma: no cover - best-effort finalization</span>
+            <span class="k">pass</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pragma: no cover - cleanup must never raise at exit</span>
         <span class="k">pass</span>
 
@@ -619,18 +692,99 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tabWidget</span><span class="o">.</span><span class="n">setCurrentWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mainViewTab</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionElements</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;QGeometry&quot;</span><span class="p">)</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_renderer_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check a renderer registered, and explain it if not.</span>
+
+<span class="sd">        ``QDesign._start_renderers`` skips any renderer whose module or</span>
+<span class="sd">        transitive dependency is missing -- that is what makes a lite install</span>
+<span class="sd">        work. The renderer then simply is not in ``design.renderers``, and</span>
+<span class="sd">        opening its window would fail somewhere deeper with a message that</span>
+<span class="sd">        does not mention the actual problem.</span>
+
+<span class="sd">        This is a dictionary lookup, not an import: the import was already</span>
+<span class="sd">        attempted (or skipped) when the design was created, so checking here</span>
+<span class="sd">        costs nothing and cannot undo the lazy-import work.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            renderer_key (str): Key in ``design.renderers``.</span>
+<span class="sd">            label (str): Human name for the message.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the renderer is registered and its window can open.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">renderer_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> renderer is not available in this install.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Its Python dependencies are not present, so it was skipped when &quot;</span>
+            <span class="s2">&quot;the design was created.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Install the extra that provides it:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s1">&#39;    pip install &quot;quantum-metal[</span><span class="si">{</span><span class="n">RENDERER_EXTRAS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">renderer_key</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;full&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">]&quot;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+            <span class="s2">&quot;See docs/installation.rst for the full matrix.&quot;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> renderer unavailable: &#39;</span><span class="si">{</span><span class="n">renderer_key</span><span class="si">}</span><span class="s2">&#39; is not registered &quot;</span>
+            <span class="s2">&quot;in design.renderers.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> renderer unavailable&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_warn_if_ansys_unlikely</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Note that Ansys AEDT itself is a separate, non-Python requirement.</span>
+
+<span class="sd">        The Python side registering says nothing about whether AEDT is</span>
+<span class="sd">        installed and reachable -- that only surfaces when the renderer tries</span>
+<span class="sd">        to connect. Deliberately does not probe for a running AEDT: that is</span>
+<span class="sd">        slow and can block the UI.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): Human name for the message.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> needs Ansys AEDT, which is Windows-only. The window will &quot;</span>
+            <span class="s2">&quot;open, but connecting to AEDT will fail on this platform. For an &quot;</span>
+            <span class="s2">&quot;Ansys-free path see the open FEM stack (gmsh + Elmer / Palace).&quot;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="c1"># The log dock is hidden by default (see the Log toolbar button),</span>
+        <span class="c1"># so this-platform-can&#39;t-reach-AEDT was easy to miss entirely and</span>
+        <span class="c1"># only surfaced later as a confusing connection failure. A popup is</span>
+        <span class="c1"># appropriate here specifically because it&#39;s low-frequency -- once</span>
+        <span class="c1"># per renderer window opened, not per rebuild -- unlike geometry</span>
+        <span class="c1"># warnings (e.g. check_lengths&#39; short-segment/fillet notices) which</span>
+        <span class="c1"># can fire many times per edit and would make a popup a nuisance;</span>
+        <span class="c1"># those stay log-only. Shown once per label per session -- the</span>
+        <span class="c1"># message doesn&#39;t change on repeat clicks, only the annoyance would.</span>
+        <span class="n">already_warned</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_ansys_unlikely_warned&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">already_warned</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">already_warned</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ansys_unlikely_warned</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">already_warned</span><span class="p">:</span>
+            <span class="n">already_warned</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> renderer&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">show_renderer_gds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles click on GDS Renderer action.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_renderer_available</span><span class="p">(</span><span class="s2">&quot;gds&quot;</span><span class="p">,</span> <span class="s2">&quot;GDS&quot;</span><span class="p">):</span>
+            <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gds_gui</span> <span class="o">=</span> <span class="n">RendererGDSWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gds_gui</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">show_renderer_hfss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles click on HFSS Renderer action.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_renderer_available</span><span class="p">(</span><span class="s2">&quot;hfss&quot;</span><span class="p">,</span> <span class="s2">&quot;HFSS&quot;</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warn_if_ansys_unlikely</span><span class="p">(</span><span class="s2">&quot;HFSS&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hfss_gui</span> <span class="o">=</span> <span class="n">RendererHFSSWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hfss_gui</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">show_renderer_q3d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles click on Q3D Renderer action.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_renderer_available</span><span class="p">(</span><span class="s2">&quot;q3d&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3D&quot;</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warn_if_ansys_unlikely</span><span class="p">(</span><span class="s2">&quot;Q3D&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">q3d_gui</span> <span class="o">=</span> <span class="n">RendererQ3DWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">q3d_gui</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
@@ -703,7 +857,7 @@
                 <span class="n">v</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Saving...&quot;</span><span class="p">))</span>
                 <span class="n">saving_dialog</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
                 <span class="n">saving_dialog</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-                <span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">saving_dialog</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
+                <span class="n">single_shot</span><span class="p">(</span><span class="n">saving_dialog</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">saving_dialog</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No design present.&quot;</span><span class="p">)</span>
             <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Warning&quot;</span><span class="p">,</span> <span class="s2">&quot;No design present! Cant save&quot;</span><span class="p">)</span>
@@ -915,6 +1069,31 @@
 
         <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;MetalGUI.__init__ entered&quot;</span><span class="p">)</span>
 
+        <span class="c1"># Startup crash journal (issue #1048) -- FIRST, before any Qt</span>
+        <span class="c1"># machinery is touched, so a native crash anywhere in the rest of</span>
+        <span class="c1"># this constructor (QPA plugin init, widget construction,</span>
+        <span class="c1"># restoreState, show) leaves the journal file behind and the next</span>
+        <span class="c1"># launch self-heals. See ``startup_journal.py`` for why this is a</span>
+        <span class="c1"># plain fsync&#39;d file rather than the old QSettings cookie.</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.startup_journal</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+            <span class="n">begin_startup</span><span class="p">,</span>
+            <span class="n">previous_startup_crashed</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">previous_startup_crashed</span><span class="p">():</span>
+            <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;startup journal found -- clearing persisted UI state&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;metal&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;The previous MetalGUI launch did not complete startup &quot;</span>
+                <span class="s2">&quot;(crashed or was killed). Clearing persisted window state &quot;</span>
+                <span class="s2">&quot;and starting with the default layout.&quot;</span>
+            <span class="p">)</span>
+            <span class="c1"># QSettings is QtCore-only; safe before QApplication exists.</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QSettings</span>
+
+            <span class="n">QSettings</span><span class="p">(</span><span class="s2">&quot;QiskitMetal&quot;</span><span class="p">,</span> <span class="s2">&quot;MainWindow&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;startup journal: begin&quot;</span><span class="p">)</span>
+        <span class="n">begin_startup</span><span class="p">()</span>
+
         <span class="c1"># Qt backend setup used to run at ``import qiskit_metal`` time;</span>
         <span class="c1"># it&#39;s now lazy, called the first time MetalGUI is instantiated.</span>
         <span class="c1"># Idempotent — second and later calls are no-ops.</span>
@@ -982,10 +1161,16 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_setup_plot_widget</span><span class="p">()</span>
         <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;_setup_design_components_widget&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_design_components_widget</span><span class="p">()</span>
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;_setup_pins_widget&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_pins_widget</span><span class="p">()</span>
         <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;_setup_elements_widget&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_elements_widget</span><span class="p">()</span>
         <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;_setup_variables_widget&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_variables_widget</span><span class="p">()</span>
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;_setup_chip_widget&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_chip_widget</span><span class="p">()</span>
+        <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;_setup_view_control_widget&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_view_control_widget</span><span class="p">()</span>
         <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;_ui_adjustments_final&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ui_adjustments_final</span><span class="p">()</span>
         <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;_setup_library_widget&quot;</span><span class="p">)</span>
@@ -1010,7 +1195,9 @@
         <span class="c1"># self.qApp.processEvents(QEventLoop.AllEvents, 1)</span>
         <span class="c1"># - don&#39;t think I need this here, it doesn&#39;t help to show and raise</span>
         <span class="c1"># - need to call from different thread.</span>
-        <span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raise</span><span class="p">)</span>
+        <span class="c1"># Parented to the main window: _raise touches it, so the deferred</span>
+        <span class="c1"># call must die with it (short-lived GUIs in tests/scripts).</span>
+        <span class="n">single_shot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raise</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">design</span><span class="p">:</span>
             <span class="n">_trace_init</span><span class="p">(</span><span class="s2">&quot;set_design(design)&quot;</span><span class="p">)</span>
@@ -1095,6 +1282,18 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">variables_window</span><span class="o">.</span><span class="n">set_design</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 
+        <span class="c1"># The chip model is constructed before any design exists, so its</span>
+        <span class="c1"># first load found nothing. Reload now rather than leaving the panel</span>
+        <span class="c1"># blank until the refresh timer next fires. Guarded because</span>
+        <span class="c1"># ``set_design`` can be called on a partially built GUI.</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;chips_model&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">chips_model</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;chips_window&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chips_window</span><span class="o">.</span><span class="n">expandAll</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chips_window</span><span class="o">.</span><span class="n">autoresize_columns</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;layers_window&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layers_window</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+
         <span class="c1"># Refresh</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span></div>
 
@@ -1132,9 +1331,25 @@
 
         <span class="c1"># Add a second label to the status bar</span>
         <span class="n">status_bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">statusBar</span><span class="p">()</span>
+
+        <span class="c1"># ``addPermanentWidget``, not ``addWidget``: the window sets a standing</span>
+        <span class="c1"># status message (&quot;Qiskit Metal: Quantum Creator&quot;), and Qt hides every</span>
+        <span class="c1"># *normal* status-bar widget for as long as a message is displayed.</span>
+        <span class="c1"># Added as normal widgets these labels are constructed, updated, and</span>
+        <span class="c1"># never seen. Permanent widgets are exempt, and sit to the right of</span>
+        <span class="c1"># the message rather than fighting it for the same space.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">statusbar_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">status_bar</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">statusbar_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="n">status_bar</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">statusbar_label</span><span class="p">)</span>
+        <span class="n">status_bar</span><span class="o">.</span><span class="n">addPermanentWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">statusbar_label</span><span class="p">)</span>
+
+        <span class="c1"># Second label, for what is selected and what you can do with it.</span>
+        <span class="c1"># Separate from the coordinate readout above because that one updates</span>
+        <span class="c1"># on every mouse-move; sharing one label would erase the hint the</span>
+        <span class="c1"># moment the pointer moved.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statusbar_selection</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">status_bar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statusbar_selection</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statusbar_selection</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">SELECTION_HINT_STYLE</span><span class="p">)</span>
+        <span class="n">status_bar</span><span class="o">.</span><span class="n">addPermanentWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">statusbar_selection</span><span class="p">)</span>
 
         <span class="c1"># Docks</span>
         <span class="c1"># Left handside</span>
@@ -1152,8 +1367,44 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="o">.</span><span class="n">raise_</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">resizeDocks</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">],</span> <span class="p">[</span><span class="mi">350</span><span class="p">],</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
 
+        <span class="c1"># These four are tabified together, so the tab bar already names each</span>
+        <span class="c1"># one -- the per-dock title bar underneath repeated that name and cost</span>
+        <span class="c1"># 17px of height apiece. Replace it with an empty widget. Undocking</span>
+        <span class="c1"># still works by dragging the tab out; show/hide is on the left</span>
+        <span class="c1"># toolbar and the Docks toggle.</span>
+        <span class="k">for</span> <span class="n">_dock</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockConnectors</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockVariables</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="n">_dock</span><span class="o">.</span><span class="n">setTitleBarWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">(</span><span class="n">_dock</span><span class="p">))</span>
+
         <span class="c1"># Log</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">resizeDocks</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">],</span> <span class="p">[</span><span class="mi">120</span><span class="p">],</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">)</span>
+
+        <span class="c1"># Theme toggle. The stylesheets were only reachable from a</span>
+        <span class="c1"># View &gt; Color theme submenu; switching light/dark is frequent enough</span>
+        <span class="c1"># to deserve one click. Created here and attached to ``self.ui`` so</span>
+        <span class="c1"># the toolbar spec can resolve it by name like any .ui action.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionThemeToggle</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Theme&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">)</span>
+        <span class="c1"># Name it like a .ui action: Qt&#39;s saveState() warns about unnamed</span>
+        <span class="c1"># objects, and the toolbar/menu reachability audits key off</span>
+        <span class="c1"># objectName -- an unnamed action reads as &quot;missing from the UI&quot;</span>
+        <span class="c1"># (see DEMOTED_ACTIONS in toolbar_layout.py for why that matters).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionThemeToggle</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;actionThemeToggle&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionThemeToggle</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Switch between the dark and light theme&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionThemeToggle</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionThemeToggle</span><span class="o">.</span><span class="n">toolTip</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionThemeToggle</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toggle_theme</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_view_switch_actions</span><span class="p">()</span>
+
+        <span class="c1"># Compose the top toolbars from the declarative spec in</span>
+        <span class="c1"># ``toolbar_layout``: ordering by how often each control is actually</span>
+        <span class="c1"># used, one shared icon size, and a check that no action is dropped</span>
+        <span class="c1"># without a recorded decision. Kept out of the .ui because</span>
+        <span class="c1"># ``main_window_ui.py`` is pyside6-uic output.</span>
+        <span class="n">apply_toolbar_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="c1"># toolBarView additions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_additional_qactions_tool_bar_view</span><span class="p">()</span>
@@ -1173,37 +1424,177 @@
         <span class="n">toolbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">toolBarView</span>
         <span class="n">toolbarInsertBefore</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionToggleDocks</span>  <span class="c1"># insert before this action</span>
 
+        <span class="c1"># (dock, icon, caption, tooltip). The caption is deliberately one</span>
+        <span class="c1"># short word -- it sits under the icon on a narrow vertical toolbar.</span>
+        <span class="c1"># Without it these buttons were icon-only, and because each QAction</span>
+        <span class="c1"># was built with empty text every one of them inherited the</span>
+        <span class="c1"># toolbar&#39;s own &quot;View Toolbar&quot; tooltip on hover, which said nothing</span>
+        <span class="c1"># about what the button does.</span>
         <span class="n">DOCKS</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/design&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/component&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;-----&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockVariables</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/variables&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockConnectors</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/connectors&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;:/log&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;-----&quot;</span><span class="p">),</span>
+            <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="p">,</span>
+                <span class="sa">r</span><span class="s2">&quot;:/design&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Lib&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;QComponent library — browse and place new components&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">,</span>
+                <span class="sa">r</span><span class="s2">&quot;:/component&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Edit&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;QComponents in this design — select one to edit its options&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;-----&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockVariables</span><span class="p">,</span>
+                <span class="sa">r</span><span class="s2">&quot;:/variables&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Vars&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Design variables — named values reusable in component options&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockConnectors</span><span class="p">,</span>
+                <span class="sa">r</span><span class="s2">&quot;:/connectors&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Pins&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Pins — connection points exposed by each component&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">,</span>
+                <span class="sa">r</span><span class="s2">&quot;:/log&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Log&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Log messages (hidden by default) — click again to close&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;-----&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
         <span class="p">]</span>
 
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">DOCKS</span><span class="p">:</span>
-            <span class="n">dock</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">iconName</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Show the caption under each icon; icon-only left users guessing.</span>
+        <span class="n">toolbar</span><span class="o">.</span><span class="n">setToolButtonStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolButtonTextUnderIcon</span><span class="p">)</span>
+        <span class="n">toolbar</span><span class="o">.</span><span class="n">setIconSize</span><span class="p">(</span><span class="n">QSize</span><span class="p">(</span><span class="n">TOOLBAR_ICON_PX</span><span class="p">,</span> <span class="n">TOOLBAR_ICON_PX</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">dock</span><span class="p">,</span> <span class="n">iconName</span><span class="p">,</span> <span class="n">caption</span><span class="p">,</span> <span class="n">tooltip</span> <span class="ow">in</span> <span class="n">DOCKS</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">iconName</span> <span class="o">==</span> <span class="s2">&quot;-----&quot;</span><span class="p">:</span>
                 <span class="n">toolbar</span><span class="o">.</span><span class="n">insertSeparator</span><span class="p">(</span><span class="n">toolbarInsertBefore</span><span class="p">)</span>
                 <span class="k">continue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_dock_toolbar_action</span><span class="p">(</span><span class="n">dock</span><span class="p">,</span> <span class="n">iconName</span><span class="p">,</span> <span class="n">caption</span><span class="p">,</span> <span class="n">tooltip</span><span class="p">,</span> <span class="n">toggle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-            <span class="c1"># Icons</span>
-            <span class="n">icon</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
-            <span class="n">icon</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">iconName</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+        <span class="c1"># Lets mark_dock_has_error() reach the *real* status bar. dockLog&#39;s</span>
+        <span class="c1"># own parent QMainWindow is plot_win (a sub-window it was moved</span>
+        <span class="c1"># into), whose statusBar() is explicitly hidden -- self.main_window</span>
+        <span class="c1"># is the actual outer window whose status bar carries the hover/</span>
+        <span class="c1"># selection-hint label.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="o">.</span><span class="n">_status_bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">statusBar</span><span class="p">()</span>
 
-            <span class="c1"># Function call &amp; monkey patch class instance ala Monkey Patch</span>
-            <span class="n">dock</span><span class="o">.</span><span class="n">doShow</span> <span class="o">=</span> <span class="n">doShowHighlighWidget</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="n">dock</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">dock</span><span class="p">))</span>
+        <span class="c1"># Errors logged while the (hidden-by-default) log dock isn&#39;t on</span>
+        <span class="c1"># screen are otherwise silent -- clear the badge the moment the</span>
+        <span class="c1"># dock actually becomes visible, regardless of how (toolbar click,</span>
+        <span class="c1"># View menu, programmatically), rather than duplicating that logic</span>
+        <span class="c1"># into every path that can show it.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="o">.</span><span class="n">visibilityChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">visible</span><span class="p">:</span> <span class="n">clear_dock_error_badge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">)</span> <span class="k">if</span> <span class="n">visible</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
 
-            <span class="c1"># QT Action with trigger, embed in toolbar</span>
-            <span class="n">action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">dock</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="n">dock</span><span class="o">.</span><span class="n">doShow</span><span class="p">)</span>
-            <span class="n">action</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
-            <span class="n">dock</span><span class="o">.</span><span class="n">actionShow</span> <span class="o">=</span> <span class="n">action</span>  <span class="c1"># save action</span>
+        <span class="c1"># The two actions that come from the .ui: give the toggle a tooltip</span>
+        <span class="c1"># that says what it does rather than repeating its object name.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionToggleDocks</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Dock&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionToggleDocks</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Show or hide all side panels at once&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionToggleDocks</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionToggleDocks</span><span class="o">.</span><span class="n">toolTip</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionScreenshot</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Snap&quot;</span><span class="p">)</span>
+        <span class="c1"># &quot;Web Help&quot; was long enough to widen the toolbar; kept on it</span>
+        <span class="c1"># (unlike Build History / Delete-all) rather than demoted, so</span>
+        <span class="c1"># shortened to match the other one-word toolbar labels.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionWebHelp</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Docs&quot;</span><span class="p">)</span>
 
-            <span class="c1"># insert action in toolbar</span>
-            <span class="n">toolbar</span><span class="o">.</span><span class="n">insertAction</span><span class="p">(</span><span class="n">toolbarInsertBefore</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+        <span class="c1"># Ctrl+D (from the .ui) is easy to miss; &quot;R&quot; is the one-key</span>
+        <span class="c1"># convention every drawing tool uses for rebuild/refresh, and</span>
+        <span class="c1"># matches the plot toolbar&#39;s own single-letter shortcuts (A, L)</span>
+        <span class="c1"># which already coexist safely with text-entry widgets elsewhere</span>
+        <span class="c1"># in the window via WindowShortcut context. Added, not replacing</span>
+        <span class="c1"># Ctrl+D, so existing muscle memory keeps working too.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionRebuild</span><span class="o">.</span><span class="n">setShortcuts</span><span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionRebuild</span><span class="o">.</span><span class="n">shortcut</span><span class="p">(),</span> <span class="n">QKeySequence</span><span class="p">(</span><span class="s2">&quot;R&quot;</span><span class="p">)]</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_view_switch_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Move the Main View / QGeometry / Net List switch into the toolbar.</span>
+
+<span class="sd">        Those three lived in a tab strip above the canvas, costing a full</span>
+<span class="sd">        32px row to show three words. As an exclusive action group on the top</span>
+<span class="sd">        toolbar they cost no extra height and sit with the other view</span>
+<span class="sd">        controls.</span>
+
+<span class="sd">        The tab widget stays -- it holds the pages -- but its tab bar is</span>
+<span class="sd">        hidden. ``currentChanged`` keeps the buttons in sync, so anything</span>
+<span class="sd">        that switches pages in code (``_set_element_tab``, for instance)</span>
+<span class="sd">        still leaves the right button checked.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tab_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tabWidget</span>
+        <span class="n">group</span> <span class="o">=</span> <span class="n">QActionGroup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">)</span>
+        <span class="n">group</span><span class="o">.</span><span class="n">setExclusive</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_view_switch_actions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tab_widget</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="n">tab_widget</span><span class="o">.</span><span class="n">tabText</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">index</span> <span class="o">==</span> <span class="n">tab_widget</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">())</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Show the </span><span class="si">{</span><span class="n">tab_widget</span><span class="o">.</span><span class="n">tabText</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="si">}</span><span class="s2"> panel&quot;</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">toolTip</span><span class="p">())</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">_checked</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="n">index</span><span class="p">:</span> <span class="n">tab_widget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;actionViewTab</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">group</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_view_switch_actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;actionViewTab</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_sync</span><span class="p">(</span><span class="n">current</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Keep the buttons matching the page actually shown.&quot;&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">act</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_view_switch_actions</span><span class="p">):</span>
+                <span class="n">act</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">current</span><span class="p">)</span>
+
+        <span class="n">tab_widget</span><span class="o">.</span><span class="n">currentChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">_sync</span><span class="p">)</span>
+        <span class="n">tab_widget</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_dock_toolbar_action</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">dock</span><span class="p">,</span> <span class="n">icon_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">caption</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tooltip</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">toggle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add one dock-raising button to the left toolbar.</span>
+
+<span class="sd">        Split out of ``_add_additional_qactions_tool_bar_view`` so docks</span>
+<span class="sd">        created later in startup -- which that method cannot see, since it</span>
+<span class="sd">        runs inside ``_ui_adjustments`` during ``super().__init__()`` -- can</span>
+<span class="sd">        get the same treatment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dock (QDockWidget): Dock the button raises.</span>
+<span class="sd">            icon_name (str): Qt resource path for the icon.</span>
+<span class="sd">            caption (str): Short label shown under the icon. Keep it to about</span>
+<span class="sd">                four characters: on a vertical toolbar the caption sets the</span>
+<span class="sd">                bar&#39;s width.</span>
+<span class="sd">            tooltip (str): Description of the panel. Must be set explicitly --</span>
+<span class="sd">                an action with empty text inherits the toolbar&#39;s own tooltip,</span>
+<span class="sd">                which is how every one of these once read &quot;View Toolbar&quot;.</span>
+<span class="sd">            toggle (bool): If True, clicking the button hides the dock when</span>
+<span class="sd">                it is the one currently on screen, instead of just</span>
+<span class="sd">                re-raising it; clicking a tabified sibling still switches to</span>
+<span class="sd">                it as before. See ``doToggleDockWidget``&#39;s docstring for how</span>
+<span class="sd">                that distinction is made.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">toolbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">toolBarView</span>
+        <span class="n">toolbar_insert_before</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">actionToggleDocks</span>
+
+        <span class="n">icon</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">()</span>
+        <span class="n">icon</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">icon_name</span><span class="p">),</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Off</span><span class="p">)</span>
+
+        <span class="c1"># Function call &amp; monkey patch class instance ala Monkey Patch</span>
+        <span class="n">show_fn</span> <span class="o">=</span> <span class="n">doToggleDockWidget</span> <span class="k">if</span> <span class="n">toggle</span> <span class="k">else</span> <span class="n">doShowHighlighWidget</span>
+        <span class="n">dock</span><span class="o">.</span><span class="n">doShow</span> <span class="o">=</span> <span class="n">show_fn</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="n">dock</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">dock</span><span class="p">))</span>
+
+        <span class="n">action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="n">caption</span><span class="p">,</span> <span class="n">dock</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="n">dock</span><span class="o">.</span><span class="n">doShow</span><span class="p">)</span>
+        <span class="n">action</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
+        <span class="n">action</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">tooltip</span><span class="p">)</span>
+        <span class="n">action</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">tooltip</span><span class="p">)</span>
+        <span class="n">dock</span><span class="o">.</span><span class="n">actionShow</span> <span class="o">=</span> <span class="n">action</span>  <span class="c1"># save action</span>
+        <span class="n">dock</span><span class="o">.</span><span class="n">_icon_normal</span> <span class="o">=</span> <span class="n">icon</span>  <span class="c1"># restore point for mark_log_error&#39;s badge</span>
+
+        <span class="n">toolbar</span><span class="o">.</span><span class="n">insertAction</span><span class="p">(</span><span class="n">toolbar_insert_before</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_element_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yesno</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the elements tabl to Elements or View.</span>
@@ -1224,12 +1615,95 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup_variables_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Setup the variables widget.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockVariables</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables_window</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_chip_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the chip-stack editor dock.</span>
+
+<span class="sd">        Components, variables and pins each had a dock; the chip stack --</span>
+<span class="sd">        die size, material, layer bounds -- had none, so changing it meant</span>
+<span class="sd">        dropping to a notebook. ``design.chips`` is a nested ``Dict`` of the</span>
+<span class="sd">        same shape the component-options tree already edits, so this reuses</span>
+<span class="sd">        that model rather than introducing another editor.</span>
+
+<span class="sd">        Built in code rather than the .ui because ``main_window_ui.py`` is</span>
+<span class="sd">        pyside6-uic output; it is tabified alongside the other left docks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockChips</span> <span class="o">=</span> <span class="n">QDockWidget</span><span class="p">(</span><span class="s2">&quot;Chip&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockChips</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;dockChips&quot;</span><span class="p">)</span>
+
+        <span class="n">view</span> <span class="o">=</span> <span class="n">QTreeView_Base</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockChips</span><span class="p">)</span>
+        <span class="n">view</span><span class="o">.</span><span class="n">setAlternatingRowColors</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chips_model</span> <span class="o">=</span> <span class="n">QTreeModel_Chips</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockChips</span><span class="p">,</span> <span class="n">gui</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="n">view</span><span class="p">)</span>
+        <span class="n">view</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chips_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockChips</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chips_window</span> <span class="o">=</span> <span class="n">view</span>
+
+        <span class="c1"># Chips is a shallow tree (one or two chips, a handful of</span>
+        <span class="c1"># properties each) -- collapsed-by-default just adds a click for</span>
+        <span class="c1"># something you almost always want to see immediately, unlike the</span>
+        <span class="c1"># component/pin trees where collapsed is the useful default.</span>
+        <span class="n">view</span><span class="o">.</span><span class="n">expandAll</span><span class="p">()</span>
+        <span class="n">view</span><span class="o">.</span><span class="n">autoresize_columns</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">tabifyDockWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockVariables</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockChips</span><span class="p">)</span>
+        <span class="c1"># Tabified, so the tab bar names it; a title bar would repeat that.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockChips</span><span class="o">.</span><span class="n">setTitleBarWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockChips</span><span class="p">))</span>
+
+        <span class="c1"># Give it a left-rail button like the other docks. Done here rather</span>
+        <span class="c1"># than in the DOCKS table of _add_additional_qactions_tool_bar_view:</span>
+        <span class="c1"># that runs inside _ui_adjustments during super().__init__(), well</span>
+        <span class="c1"># before this dock exists.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_dock_toolbar_action</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockChips</span><span class="p">,</span>
+            <span class="sa">r</span><span class="s2">&quot;:/variables&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Chip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Chip stack — die size, material and layer bounds&quot;</span><span class="p">,</span>
+            <span class="n">toggle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_view_control_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the layer-visibility dock.</span>
+
+<span class="sd">        ``QMplRenderer`` already tracked ``hidden_layers`` and filtered on it;</span>
+<span class="sd">        nothing in the GUI could reach that, and there was no way to see which</span>
+<span class="sd">        layers a design contains.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLayers</span> <span class="o">=</span> <span class="n">QDockWidget</span><span class="p">(</span><span class="s2">&quot;Layers&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLayers</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;dockLayers&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers_window</span> <span class="o">=</span> <span class="n">LayerVisibilityWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLayers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLayers</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers_window</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">tabifyDockWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockChips</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLayers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLayers</span><span class="o">.</span><span class="n">setTitleBarWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLayers</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_dock_toolbar_action</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLayers</span><span class="p">,</span>
+            <span class="sa">r</span><span class="s2">&quot;:/design&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Layer&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Show or hide layers, like a GDS editor&#39;s layer palette&quot;</span><span class="p">,</span>
+            <span class="n">toggle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="c1"># hookup to delete action</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btn_comp_del</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableComponents</span><span class="o">.</span><span class="n">delete_selected_rows</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btn_comp_rename</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableComponents</span><span class="o">.</span><span class="n">rename_row</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btn_comp_zoom</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_comp_zoom_fx</span><span class="p">)</span>
+
+        <span class="c1"># btn_comp_rename has no icon in the .ui, unlike its two neighbours,</span>
+        <span class="c1"># and no explicit tool-button style -- with the default IconOnly</span>
+        <span class="c1"># style and nothing to show as an icon, it rendered as a blank,</span>
+        <span class="c1"># unlabeled button. TextOnly makes its &quot;Rename&quot; text actually</span>
+        <span class="c1"># visible; the other two keep their icon-only default.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btn_comp_rename</span><span class="o">.</span><span class="n">setToolButtonStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolButtonTextOnly</span><span class="p">)</span>
+        <span class="n">rename_tip</span> <span class="o">=</span> <span class="s2">&quot;Rename the selected component&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btn_comp_rename</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">rename_tip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btn_comp_rename</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">rename_tip</span><span class="p">)</span>
+
+        <span class="n">filter_tip</span> <span class="o">=</span> <span class="s2">&quot;Filter the component list by name, class, or module&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">filter_text_design</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">filter_tip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">filter_text_design</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">filter_tip</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup_plot_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create main Window Widget Plot.&quot;&quot;&quot;</span>
@@ -1242,8 +1716,11 @@
         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">mainViewTab</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">doShow</span> <span class="o">=</span> <span class="n">doShowHighlighWidget</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
 
-        <span class="c1"># Move the dock</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_move_dock_to_new_parent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_win</span><span class="p">)</span>
+        <span class="c1"># Move the dock. Start hidden: the log competes with the canvas for</span>
+        <span class="c1"># vertical space and most sessions never need it. The View toolbar</span>
+        <span class="c1"># button and the Docks toggle both bring it back, and messages</span>
+        <span class="c1"># logged while it is hidden are still there when it is opened.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_move_dock_to_new_parent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_win</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">resizeDocks</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLog</span><span class="p">],</span> <span class="p">[</span><span class="mi">120</span><span class="p">],</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_move_dock_to_new_parent</span><span class="p">(</span>
@@ -1251,6 +1728,7 @@
         <span class="n">dock</span><span class="p">:</span> <span class="n">QDockWidget</span><span class="p">,</span>
         <span class="n">new_parent</span><span class="p">:</span> <span class="n">QMainWindow</span><span class="p">,</span>
         <span class="n">dock_location</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">BottomDockWidgetArea</span><span class="p">,</span>
+        <span class="n">visible</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The the doc to a different parent window.</span>
 
@@ -1259,11 +1737,15 @@
 <span class="sd">            new_parent (QMainWindow): New parent window</span>
 <span class="sd">            dock_location (Qt dock location): Location of the dock.</span>
 <span class="sd">                Defaults to Qt.BottomDockWidgetArea.</span>
+<span class="sd">            visible (bool): Whether the dock is shown after the move.</span>
+<span class="sd">                Reparenting happens after ``restore_window_settings``, so</span>
+<span class="sd">                whatever is set here is the dock&#39;s effective startup state.</span>
+<span class="sd">                Defaults to True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dock</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="n">new_parent</span><span class="p">)</span>
         <span class="n">new_parent</span><span class="o">.</span><span class="n">addDockWidget</span><span class="p">(</span><span class="n">dock_location</span><span class="p">,</span> <span class="n">dock</span><span class="p">)</span>
         <span class="n">dock</span><span class="o">.</span><span class="n">setFloating</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">dock</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">dock</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="n">visible</span><span class="p">)</span>
         <span class="n">dock</span><span class="o">.</span><span class="n">setMaximumHeight</span><span class="p">(</span><span class="mi">99999</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup_elements_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1356,6 +1838,27 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">proxyModel</span><span class="o">.</span><span class="n">setFilterWildcard</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
 
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_pins_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Pins dock: every (component, pin) in the design, flattened into</span>
+<span class="sd">        one table. ``tableConnectors``/``text_filter_connectors`` exist in</span>
+<span class="sd">        the .ui but nothing ever set a model on the view or connected the</span>
+<span class="sd">        filter box -- the dock has shown as permanently empty since it was</span>
+<span class="sd">        added, on every design, not just ones with unusual pins.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">QTableModel_Pins</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">tableView</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableConnectors</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pinsProxyModel</span> <span class="o">=</span> <span class="n">QSortFilterProxyModel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pinsProxyModel</span><span class="o">.</span><span class="n">setSourceModel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pinsProxyModel</span><span class="o">.</span><span class="n">setFilterKeyColumn</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># search all columns</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableConnectors</span><span class="o">.</span><span class="n">setSortingEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableConnectors</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pinsProxyModel</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">text_filter_connectors</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pinsProxyModel</span><span class="o">.</span><span class="n">setFilterWildcard</span>
+        <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_create_new_component_object_from_qlibrary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">full_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1559,7 +2062,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">autoscale</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
+
+        <span class="c1"># Keep the selection across the rebuild. Without this, the</span>
+        <span class="c1"># workflow &quot;click a component, arrow-key it around, press R,</span>
+        <span class="c1"># keep arrowing&quot; broke at the R: the replot dropped the</span>
+        <span class="c1"># highlight and the widget refresh dropped canvas focus, so the</span>
+        <span class="c1"># user had to re-click the component to continue. If the</span>
+        <span class="c1"># selected component no longer exists (deleted then rebuilt),</span>
+        <span class="c1"># clear the stale selection instead.</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_component</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="n">name</span><span class="p">],</span> <span class="n">show_pins</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_show_selection_hint</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_refocus_canvas</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear_selection</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="MetalGUI.refresh">
@@ -1581,6 +2100,14 @@
 
         <span class="c1"># Table models</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableComponents</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">sourceModel</span><span class="p">()</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableConnectors</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">sourceModel</span><span class="p">()</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+
+        <span class="c1"># Layer list -- unlike the chip/component trees this widget has no</span>
+        <span class="c1"># polling timer of its own, so without this call it stays empty</span>
+        <span class="c1"># (or stale) after the first build until set_design() is called</span>
+        <span class="c1"># again, which usually never happens in a normal session.</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;layers_window&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layers_window</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
 
         <span class="c1"># Redraw plots</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh_plot</span><span class="p">()</span></div>
@@ -1596,9 +2123,16 @@
 
 <div class="viewcode-block" id="MetalGUI.autoscale">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.autoscale">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">autoscale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shortcut to autoscale all views.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plot_win</span><span class="o">.</span><span class="n">auto_scale</span><span class="p">()</span></div>
+    <span class="k">def</span><span class="w"> </span><span class="nf">autoscale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_chip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Frame the design in the plot window.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            include_chip (bool): Frame the whole chip rather than just the</span>
+<span class="sd">                components. Defaults to False -- a default 9x6mm die around a</span>
+<span class="sd">                sub-millimetre component leaves it unreadably small, and the</span>
+<span class="sd">                tutorials assume the chip is ignored.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_win</span><span class="o">.</span><span class="n">auto_scale</span><span class="p">(</span><span class="n">include_chip</span><span class="o">=</span><span class="n">include_chip</span><span class="p">)</span></div>
 
 
     <span class="c1">#########################################################</span>
@@ -1614,19 +2148,311 @@
 <span class="sd">        Note:</span>
 <span class="sd">            This does not rebuild geometry; use ``rebuild()`` if options are changed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selected_component</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_selection_hint</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_window</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">component_window</span><span class="o">.</span><span class="n">set_component</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">component_window</span><span class="o">.</span><span class="n">set_component</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="p">,</span> <span class="s2">&quot;tableComponents&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">table</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Keeps the QComponents list dock&#39;s row selection in sync with</span>
+            <span class="c1"># whatever&#39;s loaded in the editor, regardless of which of the</span>
+            <span class="c1"># two triggered this (canvas click, list click, ...). A no-op</span>
+            <span class="c1"># when called from the list&#39;s own click handler, since the row</span>
+            <span class="c1"># is already selected there.</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">select_component</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_show_selection_hint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Say what is selected and that the arrow keys will move it.</span>
+
+<span class="sd">        Nudging is otherwise undiscoverable: nothing on screen suggests the</span>
+<span class="sd">        arrow keys do anything. Components positioned by their pins say so</span>
+<span class="sd">        instead of advertising a move that would be refused.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Selected component, or None to clear the hint.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;statusbar_selection&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">movable</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">options</span>
+            <span class="n">movable</span> <span class="o">=</span> <span class="s2">&quot;pos_x&quot;</span> <span class="ow">in</span> <span class="n">options</span> <span class="ow">and</span> <span class="s2">&quot;pos_y&quot;</span> <span class="ow">in</span> <span class="n">options</span>
+
+        <span class="k">if</span> <span class="n">movable</span><span class="p">:</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> selected  ·  arrow keys move it (Shift = ×10, Alt = ×0.1)&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> selected  ·  positioned by its pins&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MetalGUI.clear_selection">
+<a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.clear_selection">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Forget the selected component and clear its hint.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selected_component</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_selection_hint</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">selected_component</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Name of the component last opened in the editor, or None.</span>
+
+<span class="sd">        Set by :meth:`edit_component`, which the canvas calls on click, so</span>
+<span class="sd">        clicking a component on the canvas is enough to make it the nudge</span>
+<span class="sd">        target.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_selected_component&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_refocus_canvas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Give keyboard focus back to the plot canvas after a nudge/rotate.</span>
+
+<span class="sd">        ``self.refresh()`` (called after every nudge/rotate so the edit</span>
+<span class="sd">        panel shows the new value) repopulates the side docks, and one of</span>
+<span class="sd">        them -- observed: the variables table&#39;s ``RightClickView`` --</span>
+<span class="sd">        ends up with keyboard focus. The next arrow key then navigates</span>
+<span class="sd">        that table instead of moving the component, which is why &quot;arrows</span>
+<span class="sd">        work exactly once&quot; was reported. Same re-assertion</span>
+<span class="sd">        ``_on_pick_release`` does after a click-select.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">canvas</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;canvas&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">canvas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">canvas</span><span class="o">.</span><span class="n">setFocus</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">OtherFocusReason</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MetalGUI.nudge_component">
+<a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.nudge_component">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nudge_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dx_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dy_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Move a component by a displacement in millimetres.</span>
+
+<span class="sd">        Positions are unit-bearing strings, so the displacement is converted</span>
+<span class="sd">        into whatever unit each option already uses -- a design authored in</span>
+<span class="sd">        microns stays in microns rather than being silently rewritten in mm.</span>
+
+<span class="sd">        Only components exposing ``pos_x``/``pos_y`` can be moved. Routes are</span>
+<span class="sd">        positioned by their pins, so nudging one is meaningless and is</span>
+<span class="sd">        refused rather than half-applied.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Component to move.</span>
+<span class="sd">            dx_mm (float): Displacement along x, in millimetres.</span>
+<span class="sd">            dy_mm (float): Displacement along y, in millimetres.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the component moved.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">component</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">options</span>
+        <span class="k">if</span> <span class="s2">&quot;pos_x&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span> <span class="ow">or</span> <span class="s2">&quot;pos_y&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no pos_x/pos_y to nudge — it is positioned by &quot;</span>
+                <span class="s2">&quot;its pins or is fixed.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">new_x</span> <span class="o">=</span> <span class="n">offset_length</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;pos_x&quot;</span><span class="p">],</span> <span class="n">dx_mm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">)</span>
+        <span class="n">new_y</span> <span class="o">=</span> <span class="n">offset_length</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;pos_y&quot;</span><span class="p">],</span> <span class="n">dy_mm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_x</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">new_y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Could not nudge </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: pos_x/pos_y are not simple lengths &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;pos_x&#39;</span><span class="p">]</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;pos_y&#39;</span><span class="p">]</span><span class="si">!r}</span><span class="s2">).&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">options</span><span class="p">[</span><span class="s2">&quot;pos_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_x</span>
+        <span class="n">options</span><span class="p">[</span><span class="s2">&quot;pos_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_y</span>
+
+        <span class="n">component</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="c1"># Re-assert the highlight: the rebuild cleared the annotations, and</span>
+        <span class="c1"># losing the outline mid-nudge makes it unclear what is moving.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="n">name</span><span class="p">],</span> <span class="n">show_pins</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refocus_canvas</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nudged </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> to (</span><span class="si">{</span><span class="n">new_x</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">new_y</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="MetalGUI.rotate_component">
+<a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.rotate_component">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rotate_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delta_deg</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rotate a component in place by a change in orientation, in degrees.</span>
+
+<span class="sd">        Only components exposing ``orientation`` can be rotated. Unlike</span>
+<span class="sd">        ``pos_x``/``pos_y``, ``orientation`` is stored as a bare number (no</span>
+<span class="sd">        unit suffix), so the arithmetic here doesn&#39;t need offset_length&#39;s</span>
+<span class="sd">        unit-preserving parsing.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Component to rotate.</span>
+<span class="sd">            delta_deg (float): Change in orientation, in degrees. Positive</span>
+<span class="sd">                is counter-clockwise, matching the option&#39;s own convention.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the component rotated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">component</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">options</span>
+        <span class="k">if</span> <span class="s2">&quot;orientation&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no orientation to rotate — it is fixed.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">current_deg</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;orientation&quot;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Could not rotate </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: orientation is not a plain number &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;orientation&#39;</span><span class="p">]</span><span class="si">!r}</span><span class="s2">).&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">new_deg</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_deg</span> <span class="o">+</span> <span class="n">delta_deg</span><span class="p">)</span> <span class="o">%</span> <span class="mf">360.0</span>
+        <span class="c1"># Whole-degree values print as e.g. &quot;90&quot;, not &quot;90.0&quot; -- matches how</span>
+        <span class="c1"># a hand-authored design usually writes this option.</span>
+        <span class="n">options</span><span class="p">[</span><span class="s2">&quot;orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">new_deg</span><span class="p">))</span> <span class="k">if</span> <span class="n">new_deg</span><span class="o">.</span><span class="n">is_integer</span><span class="p">()</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_deg</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">component</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="n">name</span><span class="p">],</span> <span class="n">show_pins</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refocus_canvas</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rotated </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;orientation&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">°&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="MetalGUI.rotate_selected">
+<a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.rotate_selected">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rotate_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta_deg</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rotate the currently selected component.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            delta_deg (float): Change in orientation, in degrees.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if a component rotated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_component</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Nothing selected — click a component first.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotate_component</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">delta_deg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MetalGUI.nudge_selected">
+<a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.nudge_selected">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nudge_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dy_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Nudge the currently selected component.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dx_mm (float): Displacement along x, in millimetres.</span>
+<span class="sd">            dy_mm (float): Displacement along y, in millimetres.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if a component moved.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_component</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Nothing selected — click a component first.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nudge_component</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dx_mm</span><span class="p">,</span> <span class="n">dy_mm</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="MetalGUI.highlight_components">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.highlight_components">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">highlight_components</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">highlight_components</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">show_pins</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Visually highlight components in the plot canvas.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            component_names (List[str]): Names to highlight; others remain unhighlighted.</span>
+<span class="sd">            show_pins (bool): Also draw pin arrows and pin names.</span>
+<span class="sd">                Defaults to True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">(</span><span class="n">component_names</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">(</span><span class="n">component_names</span><span class="p">,</span> <span class="n">show_pins</span><span class="o">=</span><span class="n">show_pins</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MetalGUI.highlight_all_components">
+<a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.highlight_all_components">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">highlight_all_components</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show_pins</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Label every component in the design on the canvas.</span>
+
+<span class="sd">        Draws each component&#39;s bounding box and name, and by default its</span>
+<span class="sd">        pins. Useful for orienting yourself on a design someone else built,</span>
+<span class="sd">        or for a labelled screenshot.</span>
+
+<span class="sd">        Bound to the &quot;Label all&quot; button on the plot toolbar (shortcut ``L``);</span>
+<span class="sd">        ``Shift+L`` labels components only, without pins.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            show_pins (bool): Also draw pin arrows and pin names. Turn off on</span>
+<span class="sd">                dense chips, where per-pin labels swamp the component names.</span>
+<span class="sd">                Defaults to True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Number of components labelled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">highlight_all_components</span><span class="p">(</span><span class="n">show_pins</span><span class="o">=</span><span class="n">show_pins</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Labelled </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> component(s)&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; with pins&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">show_pins</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">. &quot;</span>
+            <span class="s2">&quot;Any replot or rebuild clears the labels.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">count</span></div>
+
+
+    <span class="c1">#: Themes the toolbar toggle flips between. ``load_stylesheet`` also</span>
+    <span class="c1">#: accepts &quot;qdarkstyle&quot;, &quot;default&quot; and an arbitrary .qss path; those stay</span>
+    <span class="c1">#: on the View &gt; Color theme menu, which remains the full picker.</span>
+    <span class="c1">#:</span>
+    <span class="c1">#: THEME_LIGHT is deliberately &quot;metal_light_gray&quot;, not &quot;default&quot;:</span>
+    <span class="c1">#: &quot;default&quot; means *no* stylesheet, which follows the OS/Qt native</span>
+    <span class="c1">#: theme -- on a system with OS-level dark mode that renders dark too,</span>
+    <span class="c1">#: so toggling into it from metal_dark looked like nothing happened.</span>
+    <span class="c1">#: metal_light_gray is an actual designed light theme.</span>
+    <span class="n">THEME_DARK</span> <span class="o">=</span> <span class="s2">&quot;metal_dark&quot;</span>
+    <span class="n">THEME_LIGHT</span> <span class="o">=</span> <span class="s2">&quot;metal_light_gray&quot;</span>
+
+<div class="viewcode-block" id="MetalGUI.toggle_theme">
+<a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.toggle_theme">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggle_theme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Flip between the dark and light stylesheet.</span>
+
+<span class="sd">        Reads the currently applied stylesheet rather than tracking a</span>
+<span class="sd">        separate flag, so the button stays correct when the theme is changed</span>
+<span class="sd">        from the View menu instead.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The stylesheet now applied.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_stylesheet&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">THEME_DARK</span><span class="p">)</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">THEME_LIGHT</span> <span class="k">if</span> <span class="n">current</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">THEME_DARK</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">THEME_DARK</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Theme: </span><span class="si">{</span><span class="n">new</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new</span></div>
+
+
+<div class="viewcode-block" id="MetalGUI.clear_highlight">
+<a class="viewcode-back" href="../../../apidocs/qiskit_metal._gui.MetalGUI.html#qiskit_metal._gui.MetalGUI.clear_highlight">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear_highlight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove any component labels/highlights from the canvas.</span>
+
+<span class="sd">        ``clear_annotation`` detaches the artists but does not redraw --</span>
+<span class="sd">        ``highlight_components`` refreshes at the end of its own run, so the</span>
+<span class="sd">        clear path has to do it too or the labels stay on screen until</span>
+<span class="sd">        something else happens to trigger a draw.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">clear_annotation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="MetalGUI.zoom_on_components">
@@ -1692,7 +2518,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/07</div>
+              Last updated on 2026/08/11</div>
           </div>
           <div class="right-details">
             
@@ -1707,7 +2533,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=486e5634"></script>
+</div><script src="../../../_static/documentation_options.js?v=ec16d22d"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

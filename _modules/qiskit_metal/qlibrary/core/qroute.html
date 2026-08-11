@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>qiskit_metal.qlibrary.core.qroute - Quantum Metal 0.8.0</title>
+        <title>qiskit_metal.qlibrary.core.qroute - Quantum Metal 0.8.1</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -156,7 +156,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.8.0</div></a>
+      <a href="../../../../index.html"><div class="brand">Quantum Metal 0.8.1</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -178,7 +178,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
   
-  <span class="sidebar-brand-text">Quantum Metal 0.8.0</span>
+  <span class="sidebar-brand-text">Quantum Metal 0.8.1</span>
   
 </a>
 <form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
@@ -288,6 +288,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -703,8 +704,27 @@
 
 <span class="sd">        Return:</span>
 <span class="sd">            The actual pin object.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: ``pin_data.component`` no longer exists in the</span>
+<span class="sd">                design (e.g. it was deleted, but this route&#39;s</span>
+<span class="sd">                ``pin_inputs`` still names it).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">pin_data</span><span class="o">.</span><span class="n">component</span><span class="p">]</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="n">pin_data</span><span class="o">.</span><span class="n">pin</span><span class="p">]</span>
+        <span class="n">component</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">pin_data</span><span class="o">.</span><span class="n">component</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">component</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># ``Components.__getitem__`` returns None rather than raising</span>
+            <span class="c1"># for an unknown name (already logged there), which otherwise</span>
+            <span class="c1"># surfaces here as an opaque &quot;&#39;NoneType&#39; object has no</span>
+            <span class="c1"># attribute &#39;pins&#39;&quot; -- correct, but it doesn&#39;t say what&#39;s</span>
+            <span class="c1"># actually wrong or which route has the stale reference.</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;s pin_inputs references component &quot;</span>
+                <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">pin_data</span><span class="o">.</span><span class="n">component</span><span class="si">}</span><span class="s1">&quot;, which no longer exists in this &#39;</span>
+                <span class="sa">f</span><span class="s2">&quot;design (deleted, or never existed). Update or remove &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;s pin_inputs, or delete </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> along &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;with the component it was connected to.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">component</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="n">pin_data</span><span class="o">.</span><span class="n">pin</span><span class="p">]</span>
 
 <div class="viewcode-block" id="QRoute.set_pin">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QRoute.html#qiskit_metal.qlibrary.QRoute.set_pin">[docs]</a>
@@ -1312,7 +1332,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/07</div>
+              Last updated on 2026/08/11</div>
           </div>
           <div class="right-details">
             
@@ -1327,7 +1347,7 @@
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=486e5634"></script>
+</div><script src="../../../../_static/documentation_options.js?v=ec16d22d"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
