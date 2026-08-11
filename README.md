@@ -21,6 +21,12 @@
 
 <p align="center"><sub><a href="./scripts/make_hero_gif.py">Regenerate this GIF</a> · <a href="./tutorials/2 From components to chip/C. My first full quantum chip design/2.21 Design a 4 qubit full chip.ipynb">Full tutorial: 2.21</a></sub></p>
 
+**New in v0.8.1:** the desktop GUI canvas is now directly editable — click a
+component to select it, move and rotate it with the keyboard, rebuild to
+re-route connected CPWs (selection survives). See the
+[GUI Navigation & Shortcuts](https://qiskit-community.github.io/qiskit-metal/gui-shortcuts.html)
+docs page.
+
 ### 🚀 Try it now — zero install
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/1%20Overview/1.1%20Quick%20start.ipynb)
