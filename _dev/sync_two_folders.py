@@ -356,6 +356,14 @@ PAIRS = {
         "docs/circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.ipynb",
         "tutorials/Appendix C Circuit examples/F. Small-quantum-chips/51-Four_qubit_chip.ipynb",
     ),
+    "52-Barends_5Qubit_Xmon_Processor": (
+        "docs/circuit-examples/F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.ipynb",
+        "tutorials/Appendix C Circuit examples/F. Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.ipynb",
+    ),
+    "53-Walraff_17Qubit_SurfaceCode": (
+        "docs/circuit-examples/F.Small-quantum-chips/53-Walraff_17Qubit_SurfaceCode.ipynb",
+        "tutorials/Appendix C Circuit examples/F. Small-quantum-chips/53-Walraff_17Qubit_SurfaceCode.ipynb",
+    ),
     "Example-full-chip-design": (
         "docs/circuit-examples/full-design-flow-examples/Example-full-chip-design.ipynb",
         "tutorials/Appendix A Full design flow examples/Example full chip design.ipynb",

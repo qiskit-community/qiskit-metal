@@ -1,8 +1,23 @@
 .. _circuit-examples:
 
 ================
-Circuit Examples
+Example Designs
 ================
+
+Quantum Chips
+=============
+
+Complete chip designs — qubits, routing, readout, and control lines end to
+end, each reproducing (or, for the 100-qubit case, illustrating the scale
+of) a real or representative device.
+
+.. nbgallery::
+
+    Google style — 5-Qubit Xmon Processor (Barends et al.) <F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor>
+    Walraff style — 17-Qubit Distance-3 Surface Code <F.Small-quantum-chips/53-Walraff_17Qubit_SurfaceCode>
+    IBM-era Qiskit Metal example — Four-Qubit Chip <F.Small-quantum-chips/51-Four_qubit_chip>
+    100-Qubit Mockup (algorithmic design, no routing) <../tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically>
+    Example Full Chip Design <full-design-flow-examples/Example-full-chip-design>
 
 Qubits
 ======
@@ -12,6 +27,16 @@ Qubits
     :glob:
 
     A.Qubits/*
+
+
+Qubit Couplers
+==============
+
+
+.. nbgallery::
+    :glob:
+
+    D.Qubit-couplers/*
 
 
 Resonators
@@ -34,16 +59,6 @@ Composite Bi-Partite Systems
     C.Composite-bi-partite/*
 
 
-Qubit Couplers
-==============
-
-
-.. nbgallery::
-    :glob:
-
-    D.Qubit-couplers/*
-
-
 Input-Output Coupling
 =====================
 
@@ -52,16 +67,6 @@ Input-Output Coupling
     :glob:
 
     E.Input-output-coupling/*
-
-
-Small Quantum Chips
-===================
-
-
-.. nbgallery::
-    :glob:
-
-    F.Small-quantum-chips/*
 
 
 Design Flow

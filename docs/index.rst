@@ -188,8 +188,8 @@ in a simple, open, community-driven framework.
     :hidden:
 
     Tutorials<tut/index>
-    QComponent Gallery<qcomponents-gallery>
     Example Designs<circuit-examples/index>
+    QComponent Gallery<qcomponents-gallery>
     Videos & Education<videoseducation>
 
 .. toctree::
