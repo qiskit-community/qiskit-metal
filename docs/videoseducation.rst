@@ -36,10 +36,12 @@ Community-driven tutorials
 - `CPW resonator design using Qiskit Metal (video 10) <https://www.youtube.com/watch?v=9INNvUQs3GM>`_
 - `How to use Qiskit Metal (community tutorial) <https://www.youtube.com/watch?v=x4RXYUvQg24>`_
 - `pyEPR original video tutorials <https://www.youtube.com/watch?v=fSRYvD-ITnQ>`_
+- `Automatic multi-parameter design optimization for superconducting quantum devices (Lukas Splitthoff, QDesignOptimizer) <https://www.youtube.com/watch?v=M940wW7Taos>`_
 
 Further reading & references
 ----------------------------
 - `A Review of Design Concerns in Superconducting Quantum Circuits (Levenson-Falk, Shanto, 2024) <https://arxiv.org/html/2411.16967v2>`_
+- Eriksson et al., *QDesignOptimizer based on ANMod: an automated, physics-guided, multi-parameter design optimizer for superconducting quantum devices*, `Quantum Sci. Technol. 11, 035024 (2026) <https://iopscience.iop.org/article/10.1088/2058-9565/ae7ab6>`_
 - Minev et al., Energy-participation (EPR) quantization (see `arXiv:2010.00620 <https://arxiv.org/abs/2010.00620>`_, and pyEPR docs)
 - Minev et al., Lumped Oscillator Model (LOM) quantization (see docs and Qiskit Metal papers)
 - Kjaergaard et al., *Superconducting Qubits: Current State of Play*, Annu. Rev. Cond. Matt. Phys. 11, 369 (2020).
