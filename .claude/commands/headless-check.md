@@ -42,12 +42,12 @@ uv pip install --quiet \
     'gdstk>=0.9' \
     'geopandas>=1.0' \
     'matplotlib>=3.7.0' \
-    'numpy>=1.24.2,<2' \
+    'numpy>=2.1.0' \
     'pandas>=2.1.1' \
     'pint>=0.21.0' \
     'pyEPR-quantum>=0.9.5' \
     'pygments>=2.14.0' \
-    'qutip>=5.0.0' \
+    'qutip>=5.1.0' \
     'scipy>=1.10.0' \
     'shapely>=2.0.1' \
     'scqubits>=4.1.0' \
@@ -158,13 +158,13 @@ rm -rf ~/.local/share/jupyter/kernels/qm_lite_check  # the ipykernel registratio
 
 ## Common failure modes
 
-| Symptom | Likely cause |
-|---------|--------------|
-| `ModuleNotFoundError: No module named 'PySide6'` | Some non-`_gui/` module added a top-level `from PySide6 import …`. Use the traceback hook (step 3) to find it. |
-| `ModuleNotFoundError: No module named 'gmsh'` | A renderer auto-import in `_start_renderers` isn't wrapped in `try/except ImportError`. Check `designs/design_base.py:_start_renderers`. |
-| `KeyError: 1` in `render_junction` | pandas 2.2 positional-indexing issue. Replace `x[1]` with `x.iloc[1]`. See `lessons-learned.md`. |
-| Tests pass but `nbconvert --execute` fails with import error | Kernel issue — verify you registered the venv as `qm_lite_check` and passed `--ExecutePreprocessor.kernel_name=qm_lite_check`. |
-| `uv run` re-installs PySide6 | You used `uv run` instead of `.venv/bin/python`. See `lessons-learned.md`. |
+| Symptom                                                      | Likely cause                                                                                                                             |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `ModuleNotFoundError: No module named 'PySide6'`             | Some non-`_gui/` module added a top-level `from PySide6 import …`. Use the traceback hook (step 3) to find it.                           |
+| `ModuleNotFoundError: No module named 'gmsh'`                | A renderer auto-import in `_start_renderers` isn't wrapped in `try/except ImportError`. Check `designs/design_base.py:_start_renderers`. |
+| `KeyError: 1` in `render_junction`                           | pandas 2.2 positional-indexing issue. Replace `x[1]` with `x.iloc[1]`. See `lessons-learned.md`.                                         |
+| Tests pass but `nbconvert --execute` fails with import error | Kernel issue — verify you registered the venv as `qm_lite_check` and passed `--ExecutePreprocessor.kernel_name=qm_lite_check`.           |
+| `uv run` re-installs PySide6                                 | You used `uv run` instead of `.venv/bin/python`. See `lessons-learned.md`.                                                               |
 
 ## What to report
 
@@ -180,5 +180,6 @@ After running, produce a short status:
 - 1.4 notebook execute: <OK / error>
 
 ### Issues found
+
 - ...
 ```

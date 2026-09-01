@@ -17,6 +17,8 @@
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "Topic :: Scientific/Engineering",
     ]
     keywords = [ "eda", "qiskit", "quantum", "sdk" ]
@@ -48,11 +50,11 @@
         "gdstk>=0.9",
         "geopandas>=1.0",
         "matplotlib>=3.7.0",
-        "numpy>=1.24.2,<2",
+        "numpy>=2.1.0",
         "pandas>=2.1.1",
         "pint>=0.21.0",
         "pygments>=2.14.0", # Used by docs builders + some GUI widgets.
-        "qutip>=5.0.0",
+        "qutip>=5.1.0",
         "scipy>=1.10.0",
         "shapely>=2.0.1",
         "scqubits>=4.1.0",
@@ -70,7 +72,7 @@
             "qdarkstyle>=3.1",
         ]
         ansys = [
-            "pyaedt>=0.21,<0.24",
+            "pyaedt>=1.0.1",
             "pyEPR-quantum>=1.0.1",
         ]
         # gmsh — the universal mesher. Used by Elmer (today), Palace
@@ -90,7 +92,7 @@
         full = [
             "pyside6>=6.8",
             "qdarkstyle>=3.1",
-            "pyaedt>=0.21,<0.24",
+            "pyaedt>=1.0.1",
             "pyEPR-quantum>=1.0.1",
             "gmsh>=4.15.0,<5",
         ]
@@ -223,8 +225,8 @@
 
 [tool.tox]
     requires = [ "tox>=4", "tox-uv>=1.29" ]
-    env_list = [ "py3.12", "py3.11", "py3.10", "lint", "format", "docs", "gettext" ]
-    labels   = { test = [ "py3.12", "py3.11", "py3.10" ] }
+    env_list = [ "py3.14", "py3.13", "py3.12", "py3.11", "py3.10", "lint", "format", "docs", "gettext" ]
+    labels   = { test = [ "py3.14", "py3.13", "py3.12", "py3.11", "py3.10" ] }
 
 
 [tool.tox.env_run_base]
