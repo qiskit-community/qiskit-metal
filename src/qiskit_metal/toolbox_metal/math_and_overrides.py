@@ -64,7 +64,9 @@ def cross(vector_1: np.array, vector_2: np.array) -> float:
     Returns:
         float: Rounded cross product
     """
-    return round(np.cross(vector_1, vector_2))
+    return round(
+        vector_1[..., 0] * vector_2[..., 1] - vector_1[..., 1] * vector_2[..., 0]
+    )
 
 
 def aligned_pts(points: list) -> bool:
