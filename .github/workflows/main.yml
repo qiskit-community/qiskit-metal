@@ -33,6 +33,8 @@ jobs:
           - "3.10"
           - "3.11"
           - "3.12"
+          - "3.13"
+          - "3.14"
     steps:
       - uses: actions/checkout@v6
         with:
@@ -185,7 +187,7 @@ jobs:
             'pandas>=2.1.1' \
             'pint>=0.21.0' \
             'pygments>=2.14.0' \
-            'qutip>=5.0.0' \
+            'qutip>=5.1.0' \
             'scipy>=1.10.0' \
             'shapely>=2.0.1' \
             'scqubits>=4.1.0' \

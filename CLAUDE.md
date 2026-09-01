@@ -12,7 +12,7 @@ is `quantum-metal`; the import path is still `qiskit_metal` for backward
 compatibility. The community-maintained successor to IBM's original
 Qiskit Metal — the rebrand is in progress through the v0.6.x line.
 
-Stack: Python 3.10–3.12 · `shapely` for geometry · `geopandas` /
+Stack: Python 3.10–3.14 · `shapely` for geometry · `geopandas` /
 `pandas` for storage · `matplotlib` for headless viewing · `PySide6` for
 the optional desktop GUI · `pyEPR-quantum` / `pyaedt` / `gmsh` /
 `Elmer` for analysis backends.
