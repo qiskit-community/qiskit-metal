@@ -1288,6 +1288,33 @@ name='{strname}'{other_args}
 
     ######################################
 
+    def to_html(
+        self, docs: bool = True, parsed: bool = False, pins: bool = True
+    ) -> str:
+        """HTML table of this component's options and pins, for notebooks.
+
+        Jupyter shows it automatically when a component is the last thing in
+        a cell. Reads correctly in light and dark themes.
+
+        Args:
+            docs (bool): Add each option's description, parsed from the
+                ``Default Options:`` sections of the class docstrings. Defaults
+                to True.
+            parsed (bool): Add each option's parsed value (design units).
+                Defaults to False.
+            pins (bool): Add a table of the pins: position, normal direction,
+                width, and what each connects to. Defaults to True.
+
+        Returns:
+            str: The HTML.
+        """
+        from ._html_repr import component_html
+
+        return component_html(self, docs=docs, parsed=parsed, pins=pins)
+
+    def _repr_html_(self):
+        return self.to_html()
+
     def __repr__(self, *args):
 
         b = "\033[95m\033[1m"

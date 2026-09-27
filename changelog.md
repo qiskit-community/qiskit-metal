@@ -16,6 +16,8 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 - **`Airbridge` pins `a`/`b`** for signal crossovers: cut the upper line and connect the cut ends to the bridge.
 - **`StarQubit.rotation_jj`** places the junction independently of the couplers (same convention as the connector rotations). The default `'auto'` keeps the old placement.
 - **Shape rules (`validation.SHAPE_RULES`, opt-in):** `SelfIntersectionRule`, `SharpTurnRule`, `FilletStarvationRule`, `DanglingEndRule` (an unconnected CPW end fabricates as a short), and `PinAlignmentRule` (a line must leave the pin it connects to square-on). Run with `validate(design, rules=[*DEFAULT_RULES, *SHAPE_RULES])`.
+- **`QComponent.to_html()` and a Jupyter HTML view.** A component shown in a notebook now renders as a table of its options -- nested groups indented, each option's description parsed from the `Default Options:` sections of the class docstrings, optionally the parsed values -- and a table of its pins with their position, direction, width and what each connects to. Readable in light and dark themes. `to_html(docs=False, parsed=True, pins=False)` selects the columns.
+- **Two-qubit cell notebook:** a cell of the 17-qubit chip (two qubits and their coupler) built as its own cropped design and meshed with gmsh; the ElmerFEM capacitance step runs where `ElmerSolver` is installed.
 - **DRC waivers:** `validate(..., waivers=[Waiver(...)])` accepts named exceptions with a reason and an optional bound; waived findings are reported separately.
 - **Example designs:** a 17-qubit distance-3 surface-code chip (Wallraff group, ETH Zurich; Krinner *et al.*, Nature 2022) built stage by stage with a design-rule check after each stage, GUI or headless; and a 5-qubit Xmon processor (Barends *et al.*, Nature 2014), adapted from a Quantum Device Workshop 2026 project by Murat Can Sarihan.
 - **Docs:** keycap-badge GIFs on the GUI shortcuts page; QDesignOptimizer (202Q-lab, Chalmers) on the ecosystem and videos pages.
@@ -28,6 +30,7 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 - **`StarQubit` left floating slivers of island metal** when two arms are close together (e.g. a readout arm 45 degrees from a coupler); only the island part at the center is kept.
 - **Ground-continuity rule fooled by nanometer slivers.** Floating-point booleans leave ground strips a nanometer wide where two etched edges almost coincide, joining regions no metal joins. `GroundContinuityRule(min_link_width=1e-4)` ignores links narrower than 0.1 um (`0` restores the exact check).
 - **GUI: the left dock could not be narrower than ~430 px on macOS**, because the native style disables tab-bar scroll arrows; they are now enabled.
+- **gmsh renderer: "Could not create circle arc"** on paths through nearly straight corners (as resampled or traced lines have): the path angle came from an unclipped `arccos`, and a corner bent by ~1e-6 rad got a fillet arc shorter than the rounding of its control points. Such corners are now drawn straight.
 - **Pre-commit hook** split staged paths containing spaces (e.g. `tutorials/Appendix C ...`) into nonexistent files.
 
 ## Quantum Metal v0.9.0 (Python 3.13/3.14, numpy 2; raised dependency minimums)
