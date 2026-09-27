@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -481,7 +481,7 @@
 <div class="viewcode-block" id="CoupledLineTee">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.CoupledLineTee.html#qiskit_metal.qlibrary.CoupledLineTee">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CoupledLineTee</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates a three pin (+) structure comprised of a primary two pin CPW</span>
+<span class="w">    </span><span class="sd">"""Generates a three pin (+) structure comprised of a primary two pin CPW</span>
 <span class="sd">    transmission line, and a secondary one pin neighboring CPW transmission</span>
 <span class="sd">    line that is capacitively/inductively coupled to the primary. Such a</span>
 <span class="sd">    structure can be used, as an example, for generating CPW resonator hangars</span>
@@ -506,51 +506,51 @@
 <span class="sd">        :description: Coupled Line Tee</span>
 
 <span class="sd">    Default Options:</span>
-<span class="sd">        * prime_width: &#39;10um&#39; -- The width of the trace of the two pin CPW transmission line</span>
-<span class="sd">        * prime_gap: &#39;6um&#39; -- The dielectric gap of the two pin CPW transmission line</span>
-<span class="sd">        * second_width: &#39;10um&#39; -- The width of the trace of the one pin CPW transmission line</span>
-<span class="sd">        * second_gap: &#39;6um&#39; -- The dielectric gap of the one pin CPW transmission line</span>
-<span class="sd">        * coupling_space: &#39;3um&#39; -- The amount of ground plane between the two transmission lines</span>
-<span class="sd">        * coupling_length: &#39;100um&#39; -- The length of parallel between the two transmission lines</span>
+<span class="sd">        * prime_width: '10um' -- The width of the trace of the two pin CPW transmission line</span>
+<span class="sd">        * prime_gap: '6um' -- The dielectric gap of the two pin CPW transmission line</span>
+<span class="sd">        * second_width: '10um' -- The width of the trace of the one pin CPW transmission line</span>
+<span class="sd">        * second_gap: '6um' -- The dielectric gap of the one pin CPW transmission line</span>
+<span class="sd">        * coupling_space: '3um' -- The amount of ground plane between the two transmission lines</span>
+<span class="sd">        * coupling_length: '100um' -- The length of parallel between the two transmission lines</span>
 <span class="sd">          note: this includes the distance of the curved second of the second line</span>
-<span class="sd">        * down_length: &#39;100um&#39; -- The length of the hanging part of the resonator, including the curved region</span>
-<span class="sd">        * fillet: &#39;25um&#39;</span>
+<span class="sd">        * down_length: '100um' -- The length of the hanging part of the resonator, including the curved region</span>
+<span class="sd">        * fillet: '25um'</span>
 <span class="sd">        * mirror: False -- Flips the hanger around the y-axis</span>
 <span class="sd">        * open_termination: True -- sets if the termination of the second line at the coupling side</span>
 <span class="sd">          is an open to ground or short to ground</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;cpw&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">"cpw"</span><span class="p">,</span> <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">"True"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
     <span class="c1"># Currently setting the primary CPW length based on the coupling_length</span>
-    <span class="c1"># May want it to be it&#39;s own value that the user can control?</span>
+    <span class="c1"># May want it to be it's own value that the user can control?</span>
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">prime_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">prime_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-        <span class="n">second_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">second_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-        <span class="n">coupling_space</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span>
-        <span class="n">coupling_length</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
-        <span class="n">down_length</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;25um&quot;</span><span class="p">,</span>
+        <span class="n">prime_width</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">prime_gap</span><span class="o">=</span><span class="s2">"6um"</span><span class="p">,</span>
+        <span class="n">second_width</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">second_gap</span><span class="o">=</span><span class="s2">"6um"</span><span class="p">,</span>
+        <span class="n">coupling_space</span><span class="o">=</span><span class="s2">"3um"</span><span class="p">,</span>
+        <span class="n">coupling_length</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>
+        <span class="n">down_length</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>
+        <span class="n">fillet</span><span class="o">=</span><span class="s2">"25um"</span><span class="p">,</span>
         <span class="n">mirror</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">open_termination</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default connector options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default connector options"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Generates a three pin (+)</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""Generates a three pin (+)</span>
 <span class="s2">    structure comprised of a primary two</span>
 <span class="s2">    pin CPW transmission line, and a</span>
 <span class="s2">    secondary one pin neighboring CPW</span>
 <span class="s2">    transmission line that is</span>
 <span class="s2">    capacitively/inductively coupled</span>
-<span class="s2">    to the primary.&quot;&quot;&quot;</span>
+<span class="s2">    to the primary."""</span>
 
 <div class="viewcode-block" id="CoupledLineTee.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.CoupledLineTee.html#qiskit_metal.qlibrary.CoupledLineTee.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build the component.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Build the component."""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
 
         <span class="n">prime_cpw_length</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">coupling_length</span> <span class="o">*</span> <span class="mi">2</span>
@@ -599,19 +599,19 @@
         <span class="p">[</span><span class="n">prime_cpw</span><span class="p">,</span> <span class="n">second_cpw</span><span class="p">,</span> <span class="n">second_cpw_etch</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_items</span>
 
         <span class="c1"># Add to qgeometry tables</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;prime_cpw&quot;</span><span class="p">:</span> <span class="n">prime_cpw</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"path"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"prime_cpw"</span><span class="p">:</span> <span class="n">prime_cpw</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;prime_cpw_sub&quot;</span><span class="p">:</span> <span class="n">prime_cpw</span><span class="p">},</span>
+            <span class="s2">"path"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"prime_cpw_sub"</span><span class="p">:</span> <span class="n">prime_cpw</span><span class="p">},</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">prime_gap</span><span class="p">,</span>
             <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;second_cpw&quot;</span><span class="p">:</span> <span class="n">second_cpw</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">second_width</span><span class="p">,</span> <span class="n">fillet</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span>
+            <span class="s2">"path"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"second_cpw"</span><span class="p">:</span> <span class="n">second_cpw</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">second_width</span><span class="p">,</span> <span class="n">fillet</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;second_cpw_sub&quot;</span><span class="p">:</span> <span class="n">second_cpw_etch</span><span class="p">},</span>
+            <span class="s2">"path"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"second_cpw_sub"</span><span class="p">:</span> <span class="n">second_cpw_etch</span><span class="p">},</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">second_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">second_gap</span><span class="p">,</span>
             <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">fillet</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="p">,</span>
@@ -622,19 +622,19 @@
         <span class="n">second_pin_list</span> <span class="o">=</span> <span class="n">second_cpw</span><span class="o">.</span><span class="n">coords</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;prime_start&quot;</span><span class="p">,</span>
+            <span class="s2">"prime_start"</span><span class="p">,</span>
             <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">prime_pin_list</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span><span class="p">,</span>
             <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;prime_end&quot;</span><span class="p">,</span>
+            <span class="s2">"prime_end"</span><span class="p">,</span>
             <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">prime_pin_list</span><span class="p">),</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">prime_width</span><span class="p">,</span>
             <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;second_end&quot;</span><span class="p">,</span>
+            <span class="s2">"second_end"</span><span class="p">,</span>
             <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">second_pin_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">second_width</span><span class="p">,</span>
             <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -659,7 +659,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -682,6 +682,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

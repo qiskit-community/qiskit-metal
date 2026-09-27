@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -469,23 +469,23 @@
 <div class="viewcode-block" id="Sweeper">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Sweeper.html#qiskit_metal.analyses.Sweeper">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Sweeper</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The methods allow users to sweep a variable in a components&#39;s options.</span>
-<span class="sd">    Need access to renderers which are registered in QDesign.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""The methods allow users to sweep a variable in a components's options.</span>
+<span class="sd">    Need access to renderers which are registered in QDesign."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect to the QAnalysis child we sweeping can happen.</span>
+<span class="w">        </span><span class="sd">"""Connect to the QAnalysis child we sweeping can happen.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (QAnalysis): Will not be just QAnalysis, but a child or grandchild, etc. of QAnalysis.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># Reference to the instance (or child or grandchild) of QAnalysis.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
 
         <span class="c1"># For easy access, make a reference to QDesign.</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;sim&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">"sim"</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">design</span>
-        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;design&quot;</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">"design"</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">design</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="o">=</span> <span class="kc">None</span>
@@ -493,7 +493,7 @@
 <div class="viewcode-block" id="Sweeper.run_sweep">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Sweeper.html#qiskit_metal.analyses.Sweeper.run_sweep">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">run_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwarg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ansys will be opened, if not already open, with an inserted project.</span>
+<span class="w">        </span><span class="sd">"""Ansys will be opened, if not already open, with an inserted project.</span>
 <span class="sd">        A design will be inserted by this method.</span>
 
 <span class="sd">        There are two ways to pass arguments.  You can use the previous run or</span>
@@ -511,7 +511,7 @@
 <span class="sd">            open_terminations (list): Identify which kind of pins. Follow the</span>
 <span class="sd">                        details from renderer QQ3DRenderer.render_design, or</span>
 <span class="sd">                        QHFSSRenderer.render_design.</span>
-<span class="sd">            port_list (list): List of tuples of jj&#39;s that shouldn&#39;t</span>
+<span class="sd">            port_list (list): List of tuples of jj's that shouldn't</span>
 <span class="sd">                            be rendered.  Follow details from</span>
 <span class="sd">                            renderer in QHFSSRenderer.render_design.</span>
 <span class="sd">            jj_to_port (list): List of junctions (qcomp, qgeometry_name,</span>
@@ -538,7 +538,7 @@
 <span class="sd">            * 4 option_sweep is empty, need at least one entry.</span>
 <span class="sd">            * 5 last key in option_name is not in Dict.</span>
 <span class="sd">            * 6 need to have at least three arguments</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Dict of all swept information.</span>
         <span class="n">all_sweep</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
         <span class="n">previous_run</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
@@ -549,7 +549,7 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwarg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">use_previous_run</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="c1"># Do not populate the previous_run if more than minimum required is passed.</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;sim&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">"sim"</span><span class="p">):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
                     <span class="n">previous_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">run</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
@@ -566,22 +566,22 @@
             <span class="k">return</span> <span class="n">all_sweep</span><span class="p">,</span> <span class="n">check_result</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">clean_kwargs</span><span class="p">[</span><span class="s2">&quot;components&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">clean_kwargs</span><span class="p">[</span><span class="s2">"components"</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="n">clean_kwargs</span><span class="p">[</span><span class="s2">&quot;open_terminations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+            <span class="n">clean_kwargs</span><span class="p">[</span><span class="s2">"open_terminations"</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="s2">&quot;design_name&quot;</span> <span class="ow">in</span> <span class="n">kwarg</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"design_name"</span> <span class="ow">in</span> <span class="n">kwarg</span><span class="p">:</span>
             <span class="c1"># means use_previous_run=False</span>
-            <span class="n">clean_kwargs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwarg</span><span class="p">[</span><span class="s2">&quot;design_name&quot;</span><span class="p">]</span>
-            <span class="k">del</span> <span class="n">kwarg</span><span class="p">[</span><span class="s2">&quot;design_name&quot;</span><span class="p">]</span>
+            <span class="n">clean_kwargs</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwarg</span><span class="p">[</span><span class="s2">"design_name"</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">kwarg</span><span class="p">[</span><span class="s2">"design_name"</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">clean_kwargs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Sweep_default&quot;</span>
+            <span class="n">clean_kwargs</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Sweep_default"</span>
 
-        <span class="k">if</span> <span class="n">use_previous_run</span> <span class="ow">and</span> <span class="s2">&quot;box_plus_buffer&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">previous_run</span><span class="p">:</span>
-            <span class="n">clean_kwargs</span><span class="p">[</span><span class="s2">&quot;box_plus_buffer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">use_previous_run</span> <span class="ow">and</span> <span class="s2">"box_plus_buffer"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">previous_run</span><span class="p">:</span>
+            <span class="n">clean_kwargs</span><span class="p">[</span><span class="s2">"box_plus_buffer"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">use_previous_run</span> <span class="ow">and</span> <span class="s2">&quot;box_plus_buffer&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwarg</span><span class="p">:</span>
-            <span class="n">clean_kwargs</span><span class="p">[</span><span class="s2">&quot;box_plus_buffer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">use_previous_run</span> <span class="ow">and</span> <span class="s2">"box_plus_buffer"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwarg</span><span class="p">:</span>
+            <span class="n">clean_kwargs</span><span class="p">[</span><span class="s2">"box_plus_buffer"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="n">all_dicts</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">previous_run</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwarg</span><span class="p">}</span>
 
@@ -606,7 +606,7 @@
         <span class="n">a_value</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
         <span class="n">all_sweep</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate through the values that user gave in option_sweep.</span>
+<span class="w">        </span><span class="sd">"""Iterate through the values that user gave in option_sweep.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            args (Dict): Holds the three mandatory arguments in an expected sequence.</span>
@@ -623,14 +623,14 @@
 
 <span class="sd">                * 0 Have list of capacitance matrix.</span>
 <span class="sd">                * 5 last key in option_name is not in Dict.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
             <span class="c1"># Last item in list.</span>
             <span class="k">if</span> <span class="n">option_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">a_value</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="n">a_value</span><span class="p">[</span><span class="n">option_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Key=&quot;</span><span class="si">{</span><span class="n">option_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot; is not in dict.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Key="</span><span class="si">{</span><span class="n">option_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">" is not in dict.'</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">all_sweep</span><span class="p">,</span> <span class="mi">5</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -638,12 +638,12 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">**</span><span class="n">all_dicts</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-                <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;An exception of type </span><span class="si">{0}</span><span class="s2"> occurred. Arguments:</span><span class="se">\n</span><span class="si">{1!r}</span><span class="s2">&quot;</span>
+                <span class="n">template</span> <span class="o">=</span> <span class="s2">"An exception of type </span><span class="si">{0}</span><span class="s2"> occurred. Arguments:</span><span class="se">\n</span><span class="si">{1!r}</span><span class="s2">"</span>
                 <span class="n">message</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;For class </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">, &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;option_name=</span><span class="si">{</span><span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">option_path</span><span class="p">)</span><span class="si">}</span><span class="s2">, key=</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">, &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;run() did not execute as expected: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"For class </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">, "</span>
+                    <span class="sa">f</span><span class="s2">"option_name=</span><span class="si">{</span><span class="s1">'.'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">option_path</span><span class="p">)</span><span class="si">}</span><span class="s2">, key=</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">, "</span>
+                    <span class="sa">f</span><span class="s2">"run() did not execute as expected: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">populate_all_sweep</span><span class="p">(</span><span class="n">all_sweep</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -655,7 +655,7 @@
 <div class="viewcode-block" id="Sweeper.populate_all_sweep">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Sweeper.html#qiskit_metal.analyses.Sweeper.populate_all_sweep">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">populate_all_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_sweep</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">option_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Populate the Dict passed in all_sweep from QAnalysis.</span>
+<span class="w">        </span><span class="sd">"""Populate the Dict passed in all_sweep from QAnalysis.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            all_sweep (Dict): Reference to hold each item which corresponds</span>
@@ -663,13 +663,13 @@
 <span class="sd">            item (str): The value of each item that we want to sweep</span>
 <span class="sd">              in option_name.</span>
 <span class="sd">            option_name (str): The option of QComponent that we want to sweep.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">sweep_values</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
-        <span class="n">sweep_values</span><span class="p">[</span><span class="s2">&quot;option_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">option_name</span>
-        <span class="n">sweep_values</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">_variables</span>
+        <span class="n">sweep_values</span><span class="p">[</span><span class="s2">"option_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">option_name</span>
+        <span class="n">sweep_values</span><span class="p">[</span><span class="s2">"variables"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">_variables</span>
 
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;sim&quot;</span><span class="p">):</span>
-            <span class="n">sweep_values</span><span class="p">[</span><span class="s2">&quot;sim_variables&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">_variables</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">"sim"</span><span class="p">):</span>
+            <span class="n">sweep_values</span><span class="p">[</span><span class="s2">"sim_variables"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">_variables</span>
 
         <span class="n">all_sweep</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="n">sweep_values</span></div>
 
@@ -681,7 +681,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">error_check_sweep_input</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">qcomp_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">option_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">option_sweep</span><span class="p">:</span> <span class="nb">list</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implement error checking of data for sweeping.</span>
+<span class="w">        </span><span class="sd">"""Implement error checking of data for sweeping.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            qcomp_name (str): Component that contains the option to be swept.</span>
@@ -700,7 +700,7 @@
 <span class="sd">            * 2 option_name is empty.</span>
 <span class="sd">            * 3 option_name is not found as key in Dict.</span>
 <span class="sd">            * 4 option_sweep is empty, need at least one entry.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">option_path</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">a_value</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -708,7 +708,7 @@
             <span class="k">return</span> <span class="n">option_path</span><span class="p">,</span> <span class="n">a_value</span><span class="p">,</span> <span class="mi">4</span>
 
         <span class="k">if</span> <span class="n">option_name</span><span class="p">:</span>
-            <span class="n">option_path</span> <span class="o">=</span> <span class="n">option_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="n">option_path</span> <span class="o">=</span> <span class="n">option_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">option_path</span><span class="p">,</span> <span class="n">a_value</span><span class="p">,</span> <span class="mi">2</span>
 
@@ -724,7 +724,7 @@
             <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">a_value</span><span class="p">:</span>
                 <span class="n">a_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option_value</span><span class="p">(</span><span class="n">a_value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Key=&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; is not in dict.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Key="</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">" is not in dict.'</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">option_path</span><span class="p">,</span> <span class="n">a_value</span><span class="p">,</span> <span class="mi">3</span>
 
         <span class="k">return</span> <span class="n">option_path</span><span class="p">,</span> <span class="n">a_value</span><span class="p">,</span> <span class="mi">0</span></div>
@@ -734,7 +734,7 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Sweeper.html#qiskit_metal.analyses.Sweeper.option_value">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">option_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get value from dict based on key.  This method is used for unknown</span>
+<span class="w">        </span><span class="sd">"""Get value from dict based on key.  This method is used for unknown</span>
 <span class="sd">        depth, dict search, within a dict.</span>
 
 <span class="sd">        Args:</span>
@@ -743,7 +743,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Value from the dictionary of the searched term.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">a_dict</span><span class="p">[</span><span class="n">search</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">value</span></div>
 </div>
@@ -766,7 +766,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -789,6 +789,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

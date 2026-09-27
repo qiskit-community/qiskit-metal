@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -473,29 +473,29 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">This code calculates the energy eigenvalues of the transmon qubit cooper pair box</span>
 <span class="sd">as a function of the offset charge and plots the corresponding results.</span>
 
 <span class="sd">Key References:</span>
-<span class="sd">    - J. Koch et al. &quot;Charge-insensitive qubit design derived from the Cooper pair box&quot;</span>
+<span class="sd">    - J. Koch et al. "Charge-insensitive qubit design derived from the Cooper pair box"</span>
 <span class="sd">      Phys. Rev. A. 76, 042319 (2007).</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">mathieu_a</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;kidx&quot;</span><span class="p">,</span> <span class="s2">&quot;kidx_raw&quot;</span><span class="p">,</span> <span class="s2">&quot;plot_eigenvalues&quot;</span><span class="p">,</span> <span class="s2">&quot;transmon_eigenvalue&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"kidx"</span><span class="p">,</span> <span class="s2">"kidx_raw"</span><span class="p">,</span> <span class="s2">"plot_eigenvalues"</span><span class="p">,</span> <span class="s2">"transmon_eigenvalue"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="kidx_raw">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.transmon_analytics.html#qiskit_metal.analyses.transmon_analytics.kidx_raw">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">kidx_raw</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">my_ng</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    This function calculates the integers which correct sort the eigenstates and eigenenergies</span>
-<span class="sd">    of the solution to Mathieu&#39;s equation.</span>
+<span class="sd">    of the solution to Mathieu's equation.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            m (int): The energy level of the qubit (m=0,1,2,3,etc.)</span>
@@ -503,7 +503,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: the calculated index</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">my_ng</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">m</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">((</span><span class="n">m</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span>
 
@@ -519,7 +519,7 @@
 <div class="viewcode-block" id="kidx">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.transmon_analytics.html#qiskit_metal.analyses.transmon_analytics.kidx">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">kidx</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">my_ng</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    This function is a placeholder which performs an additional modulo operation</span>
 <span class="sd">    with an offset of ng=0.5, but is not necessary when only integer values of</span>
 <span class="sd">    kidxRAW(m, my_ng) are used. If non-integer values of kidxRAW are used, then</span>
@@ -531,7 +531,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: the calculated energy eigenvalue, after an ng=0.5 offset.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">kidx_raw</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">my_ng</span><span class="p">)</span></div>
 
 
@@ -546,11 +546,11 @@
 <div class="viewcode-block" id="transmon_eigenvalue">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.transmon_analytics.html#qiskit_metal.analyses.transmon_analytics.transmon_eigenvalue">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">transmon_eigenvalue</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">my_ng</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    This function calculate the energy eigenvalue of the transmon qubit for a given</span>
 <span class="sd">    energy level (m) and offset charge (my_ng). The input values are first used to</span>
 <span class="sd">    calculate the index using the function defined above, and then the calculated</span>
-<span class="sd">    index is used to calculate the energy eigenvalue using Mathieu&#39;s characteristic values.</span>
+<span class="sd">    index is used to calculate the energy eigenvalue using Mathieu's characteristic values.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            m (int): The energy level of the qubit (m=0,1,2,3,etc.)</span>
@@ -558,7 +558,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: the calculated energy eigenvalue.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">index</span> <span class="o">=</span> <span class="n">kidx</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">my_ng</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">E_C</span><span class="p">)</span> <span class="o">*</span> <span class="n">mathieu_a</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">RATIO</span><span class="p">)</span></div>
 
@@ -611,20 +611,20 @@
 <div class="viewcode-block" id="plot_eigenvalues">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.transmon_analytics.html#qiskit_metal.analyses.transmon_analytics.plot_eigenvalues">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">plot_eigenvalues</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    This function actually creates the plot(s) of eigenvalues as a function of</span>
 <span class="sd">    offset charge. No arguments need to be passed.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A plot of the eigenvalues as a function of offset charge.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># plot the PERIODIC eigen energies between (-2.0, 2.0)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E0_periodic</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>  <span class="c1"># m=0</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E1_periodic</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>  <span class="c1"># m=1</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E2_periodic</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">)</span>  <span class="c1"># m=2</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E3_periodic</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>  <span class="c1"># m=3</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Offset Charge [ng]&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Energy E_m[ng]&quot;</span><span class="p">)</span></div>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E0_periodic</span><span class="p">,</span> <span class="s2">"k"</span><span class="p">)</span>  <span class="c1"># m=0</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E1_periodic</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span>  <span class="c1"># m=1</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E2_periodic</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">)</span>  <span class="c1"># m=2</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ng_periodic</span><span class="p">,</span> <span class="n">E3_periodic</span><span class="p">,</span> <span class="s2">"m"</span><span class="p">)</span>  <span class="c1"># m=3</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Offset Charge [ng]"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Energy E_m[ng]"</span><span class="p">)</span></div>
 
 </pre></div>
         </article>
@@ -644,7 +644,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -667,6 +667,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

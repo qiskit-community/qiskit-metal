@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,8 +472,8 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;Child of transmon cross, adds a flux line (galvanic T) to the arm with the</span>
-<span class="sd">DC SQUID.&quot;&quot;&quot;</span>
+<span class="sd">"""Child of transmon cross, adds a flux line (galvanic T) to the arm with the</span>
+<span class="sd">DC SQUID."""</span>
 <span class="c1"># Modification of Transmon Pocket Object to include a charge line (would be better to just make as a child)</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -487,34 +487,34 @@
 <div class="viewcode-block" id="TransmonCrossFL">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html#qiskit_metal.qlibrary.TransmonCrossFL">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TransmonCrossFL</span><span class="p">(</span><span class="n">TransmonCross</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The base `TransmonCrossFL` class.</span>
+<span class="w">    </span><span class="sd">"""The base `TransmonCrossFL` class.</span>
 
 <span class="sd">    Inherits `TransmonCross` class</span>
 
 <span class="sd">    Description:</span>
 <span class="sd">        Simple Metal Transmon Cross object. Creates the X cross-shaped island,</span>
-<span class="sd">        the &quot;junction&quot; on the south end, and up to 3 connectors on the remaining arms</span>
+<span class="sd">        the "junction" on the south end, and up to 3 connectors on the remaining arms</span>
 <span class="sd">        (claw or gap).</span>
 
-<span class="sd">        &#39;claw_width&#39; and &#39;claw_gap&#39; define the width/gap of the CPW line that</span>
+<span class="sd">        'claw_width' and 'claw_gap' define the width/gap of the CPW line that</span>
 <span class="sd">        makes up the connector. Note, DC SQUID currently represented by single</span>
 <span class="sd">        inductance sheet</span>
 
 <span class="sd">        Add connectors to it using the `connection_pads` dictonary. See BaseQubit for more</span>
 <span class="sd">        information.</span>
 
-<span class="sd">        Flux line is added by default to the &#39;south&#39; arm where the DC SQUID is located,</span>
+<span class="sd">        Flux line is added by default to the 'south' arm where the DC SQUID is located,</span>
 <span class="sd">        default is a symmetric T style</span>
 
 <span class="sd">        Default Options:</span>
-<span class="sd">        Convention: Values (unless noted) are strings with units included, (e.g., &#39;30um&#39;)</span>
+<span class="sd">        Convention: Values (unless noted) are strings with units included, (e.g., '30um')</span>
 
 <span class="sd">        * make_fl -         (Boolean) If True, adds a flux line</span>
 <span class="sd">        * t_top -           length of the flux line for mutual inductance to the SQUID</span>
 <span class="sd">        * t_inductive_gap - amount of metallization between the flux line and SQUID</span>
 <span class="sd">        * t_offset -        degree by which the tail of the T is offset from the center</span>
-<span class="sd">        * t_width -         width of the flux line&#39;s transmission line center trace</span>
-<span class="sd">        * t_gap -           dielectric gap of the flux line&#39;s transmission line</span>
+<span class="sd">        * t_width -         width of the flux line's transmission line center trace</span>
+<span class="sd">        * t_gap -           dielectric gap of the flux line's transmission line</span>
 
 <span class="sd">    .. image::</span>
 <span class="sd">        TransmonCrossFL.png</span>
@@ -522,31 +522,31 @@
 <span class="sd">    .. meta::</span>
 <span class="sd">        :description: Transmon Cross Flux Line</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">&quot;True&quot;</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">"Q"</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">"True"</span><span class="p">,</span> <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">"True"</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="n">make_fl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">fl_options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">t_top</span><span class="o">=</span><span class="s2">&quot;15um&quot;</span><span class="p">,</span>
-            <span class="n">t_offset</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
-            <span class="n">t_inductive_gap</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span>
-            <span class="n">t_width</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
-            <span class="n">t_gap</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span>
+            <span class="n">t_top</span><span class="o">=</span><span class="s2">"15um"</span><span class="p">,</span>
+            <span class="n">t_offset</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">,</span>
+            <span class="n">t_inductive_gap</span><span class="o">=</span><span class="s2">"3um"</span><span class="p">,</span>
+            <span class="n">t_width</span><span class="o">=</span><span class="s2">"5um"</span><span class="p">,</span>
+            <span class="n">t_gap</span><span class="o">=</span><span class="s2">"3um"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The base `TransmonCrossFL` class.&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""The base `TransmonCrossFL` class."""</span>
 
 <div class="viewcode-block" id="TransmonCrossFL.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html#qiskit_metal.qlibrary.TransmonCrossFL.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the way the options are turned into QGeometry.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Define the way the options are turned into QGeometry."""</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">make</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">make_fl</span><span class="p">:</span>
@@ -557,28 +557,28 @@
     <span class="c1">#####################################################################</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_warn_on_south_arm_connectors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Warn about connectors that share the south arm with the flux line.</span>
+<span class="w">        </span><span class="sd">"""Warn about connectors that share the south arm with the flux line.</span>
 
 <span class="sd">        The flux line is drawn on the south arm, so a connector placed there</span>
-<span class="sd">        (``connector_location=&#39;270&#39;``) overlaps it — the claw and the flux</span>
+<span class="sd">        (``connector_location='270'``) overlaps it — the claw and the flux</span>
 <span class="sd">        line end up galvanically shorted rather than merely close.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">:</span>
             <span class="n">con_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">connector_location</span>
-            <span class="k">if</span> <span class="n">connector_arm_name</span><span class="p">(</span><span class="n">con_loc</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;south&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">connector_arm_name</span><span class="p">(</span><span class="n">con_loc</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"south"</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: connection pad &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; has &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;connector_location=&#39;</span><span class="si">{</span><span class="n">con_loc</span><span class="si">}</span><span class="s2">&#39;, placing it on the south &quot;</span>
-                    <span class="s2">&quot;arm — the same arm as the flux line. The claw and the &quot;</span>
-                    <span class="s2">&quot;flux line will overlap. Use 0 (west), 90 (north) or &quot;</span>
-                    <span class="s2">&quot;180 (east), or set make_fl=False.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: connection pad '</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">' has "</span>
+                    <span class="sa">f</span><span class="s2">"connector_location='</span><span class="si">{</span><span class="n">con_loc</span><span class="si">}</span><span class="s2">', placing it on the south "</span>
+                    <span class="s2">"arm — the same arm as the flux line. The claw and the "</span>
+                    <span class="s2">"flux line will overlap. Use 0 (west), 90 (north) or "</span>
+                    <span class="s2">"180 (east), or set make_fl=False."</span>
                 <span class="p">)</span>
 
 <div class="viewcode-block" id="TransmonCrossFL.make_flux_line">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html#qiskit_metal.qlibrary.TransmonCrossFL.make_flux_line">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_flux_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates the charge line if the user has charge line option to</span>
-<span class="sd">        TRUE.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Creates the charge line if the user has charge line option to</span>
+<span class="sd">        TRUE."""</span>
 
         <span class="c1"># Grab option values</span>
         <span class="n">pf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fl_options</span>
@@ -610,15 +610,15 @@
 
         <span class="c1"># Adding to qgeometry table</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;h_line&quot;</span><span class="p">:</span> <span class="n">h_line</span><span class="p">,</span> <span class="s2">&quot;v_line&quot;</span><span class="p">:</span> <span class="n">v_line</span><span class="p">},</span>
+            <span class="s2">"path"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"h_line"</span><span class="p">:</span> <span class="n">h_line</span><span class="p">,</span> <span class="s2">"v_line"</span><span class="p">:</span> <span class="n">v_line</span><span class="p">},</span>
             <span class="n">width</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">t_width</span><span class="p">,</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;h_line_sub&quot;</span><span class="p">:</span> <span class="n">h_line</span><span class="p">,</span> <span class="s2">&quot;v_line_sub&quot;</span><span class="p">:</span> <span class="n">v_line</span><span class="p">},</span>
+            <span class="s2">"path"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"h_line_sub"</span><span class="p">:</span> <span class="n">h_line</span><span class="p">,</span> <span class="s2">"v_line_sub"</span><span class="p">:</span> <span class="n">v_line</span><span class="p">},</span>
             <span class="n">width</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">t_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pf</span><span class="o">.</span><span class="n">t_gap</span><span class="p">,</span>
             <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
@@ -627,7 +627,7 @@
         <span class="c1"># Generating pin</span>
         <span class="n">pin_line</span> <span class="o">=</span> <span class="n">v_line</span><span class="o">.</span><span class="n">coords</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;flux_line&quot;</span><span class="p">,</span>
+            <span class="s2">"flux_line"</span><span class="p">,</span>
             <span class="n">points</span><span class="o">=</span><span class="n">pin_line</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">t_width</span><span class="p">,</span>
             <span class="n">gap</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">t_gap</span><span class="p">,</span>
@@ -653,7 +653,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -676,6 +676,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

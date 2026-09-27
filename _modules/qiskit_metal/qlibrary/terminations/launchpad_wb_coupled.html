@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -489,9 +489,9 @@
 <div class="viewcode-block" id="LaunchpadWirebondCoupled">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled.html#qiskit_metal.qlibrary.LaunchpadWirebondCoupled">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LaunchpadWirebondCoupled</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Launch pad to feed/read signals to/from the chip.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Launch pad to feed/read signals to/from the chip.</span>
 
-<span class="sd">    Inherits &#39;QComponent&#39; class.</span>
+<span class="sd">    Inherits 'QComponent' class.</span>
 
 <span class="sd">    .. image:</span>
 <span class="sd">        LaunchpadWirebondCoupled.png</span>
@@ -510,7 +510,7 @@
 <span class="sd">        (0,0) point is the midpoint of the necking of the launch tip.</span>
 <span class="sd">        Pocket is a negative shape that is cut out of the ground plane</span>
 
-<span class="sd">    Values (unless noted) are strings with units included, (e.g., &#39;30um&#39;)</span>
+<span class="sd">    Values (unless noted) are strings with units included, (e.g., '30um')</span>
 
 <span class="sd">    Sketch:</span>
 <span class="sd">        Below is a sketch of the launch</span>
@@ -533,27 +533,27 @@
 <span class="sd">        LaunchpadWirebondCoupled.png</span>
 
 <span class="sd">    Default Options:</span>
-<span class="sd">        * trace_width: &#39;cpw_width&#39; -- center trace width of the terminating transmission line</span>
-<span class="sd">        * trace_gap: &#39;cpw_gap&#39; -- gap of the transmission line</span>
-<span class="sd">        * coupler_length: &#39;62.5um&#39; -- distance between the necking and the end of the coupler external finger</span>
-<span class="sd">        * lead_length: &#39;25um&#39; -- length of the cpw line attached to the end of the launch pad</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        * trace_width: 'cpw_width' -- center trace width of the terminating transmission line</span>
+<span class="sd">        * trace_gap: 'cpw_gap' -- gap of the transmission line</span>
+<span class="sd">        * coupler_length: '62.5um' -- distance between the necking and the end of the coupler external finger</span>
+<span class="sd">        * lead_length: '25um' -- length of the cpw line attached to the end of the launch pad</span>
+<span class="sd">    """</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;cpw_width&quot;</span><span class="p">,</span>
-        <span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;cpw_gap&quot;</span><span class="p">,</span>
-        <span class="n">coupler_length</span><span class="o">=</span><span class="s2">&quot;62.5um&quot;</span><span class="p">,</span>
-        <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;25um&quot;</span><span class="p">,</span>
+        <span class="n">trace_width</span><span class="o">=</span><span class="s2">"cpw_width"</span><span class="p">,</span>
+        <span class="n">trace_gap</span><span class="o">=</span><span class="s2">"cpw_gap"</span><span class="p">,</span>
+        <span class="n">coupler_length</span><span class="o">=</span><span class="s2">"62.5um"</span><span class="p">,</span>
+        <span class="n">lead_length</span><span class="o">=</span><span class="s2">"25um"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default options"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Launch pad to feed/read signals to/from the chip.&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""Launch pad to feed/read signals to/from the chip."""</span>
 
 <div class="viewcode-block" id="LaunchpadWirebondCoupled.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled.html#qiskit_metal.qlibrary.LaunchpadWirebondCoupled.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is executed by the user to generate the qgeometry for the</span>
-<span class="sd">        component.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This is executed by the user to generate the qgeometry for the</span>
+<span class="sd">        component."""</span>
 
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
         <span class="n">lead_length</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">lead_length</span>
@@ -640,21 +640,21 @@
         <span class="n">polys1</span> <span class="o">=</span> <span class="p">[</span><span class="n">main_pin_line</span><span class="p">,</span> <span class="n">launch_pad</span><span class="p">,</span> <span class="n">ind_stub</span><span class="p">,</span> <span class="n">pocket</span><span class="p">]</span>
 
         <span class="c1"># Rotates and translates all the objects as requested. Uses package functions</span>
-        <span class="c1"># in &#39;draw_utility&#39; for easy rotation/translation</span>
+        <span class="c1"># in 'draw_utility' for easy rotation/translation</span>
         <span class="n">polys1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">polys1</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">polys1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">polys1</span><span class="p">,</span> <span class="n">xoff</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">yoff</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
         <span class="p">[</span><span class="n">main_pin_line</span><span class="p">,</span> <span class="n">launch_pad</span><span class="p">,</span> <span class="n">ind_stub</span><span class="p">,</span> <span class="n">pocket</span><span class="p">]</span> <span class="o">=</span> <span class="n">polys1</span>
 
         <span class="c1"># Adds the object to the qgeometry table</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">launch_pad</span><span class="o">=</span><span class="n">launch_pad</span><span class="p">,</span> <span class="n">ind_stub</span><span class="o">=</span><span class="n">ind_stub</span><span class="p">),</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span>
+            <span class="s2">"poly"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">launch_pad</span><span class="o">=</span><span class="n">launch_pad</span><span class="p">,</span> <span class="n">ind_stub</span><span class="o">=</span><span class="n">ind_stub</span><span class="p">),</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span>
         <span class="p">)</span>
 
         <span class="c1"># Subtracts out ground plane on the layer its on</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pocket</span><span class="o">=</span><span class="n">pocket</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pocket</span><span class="o">=</span><span class="n">pocket</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
 
         <span class="c1"># Generates the pins</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;tie&quot;</span><span class="p">,</span> <span class="n">main_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">trace_width</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">"tie"</span><span class="p">,</span> <span class="n">main_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">trace_width</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
@@ -675,7 +675,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -698,6 +698,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

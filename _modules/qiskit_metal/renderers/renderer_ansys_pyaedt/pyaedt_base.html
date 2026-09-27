@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -485,11 +485,11 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_require_pyaedt</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise a clear error if pyaedt isn&#39;t installed.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Raise a clear error if pyaedt isn't installed."""</span>
     <span class="k">if</span> <span class="n">Desktop</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-            <span class="s2">&quot;QPyaedt requires pyaedt (ansys.aedt.core). Install with: &quot;</span>
-            <span class="s2">&quot;pip install &#39;quantum-metal[ansys]&#39;&quot;</span>
+            <span class="s2">"QPyaedt requires pyaedt (ansys.aedt.core). Install with: "</span>
+            <span class="s2">"pip install 'quantum-metal[ansys]'"</span>
         <span class="p">)</span>
 
 
@@ -514,12 +514,12 @@
 <div class="viewcode-block" id="QPyaedt">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">QPyaedt</span><span class="p">(</span><span class="n">QRendererAnalysis</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Will fill this out later.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Will fill this out later."""</span>
 
     <span class="c1"># Get name of subclass to set project and design name</span>
-    <span class="n">GROUPS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Non Model&quot;</span><span class="p">,</span> <span class="s2">&quot;Solids&quot;</span><span class="p">,</span> <span class="s2">&quot;Unclassified&quot;</span><span class="p">,</span> <span class="s2">&quot;Sheets&quot;</span><span class="p">,</span> <span class="s2">&quot;Lines&quot;</span><span class="p">]</span>
+    <span class="n">GROUPS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Non Model"</span><span class="p">,</span> <span class="s2">"Solids"</span><span class="p">,</span> <span class="s2">"Unclassified"</span><span class="p">,</span> <span class="s2">"Sheets"</span><span class="p">,</span> <span class="s2">"Lines"</span><span class="p">]</span>
 
-    <span class="n">renderer_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;HFSS_DM&quot;</span><span class="p">,</span> <span class="s2">&quot;HFSS_EM&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3D&quot;</span><span class="p">]</span>
+    <span class="n">renderer_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"HFSS_DM"</span><span class="p">,</span> <span class="s2">"HFSS_EM"</span><span class="p">,</span> <span class="s2">"Q3D"</span><span class="p">]</span>
 
     <span class="c1"># yapf: disable</span>
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
@@ -530,57 +530,57 @@
         <span class="n">y_buffer_width_mm</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>  <span class="c1"># Buffer between max/min y and edge of ground plane, in mm</span>
 
         <span class="c1"># For HFSS</span>
-        <span class="n">sample_holder_top</span><span class="o">=</span><span class="s1">&#39;1.2mm&#39;</span><span class="p">,</span>  <span class="c1"># how tall is the vacuum above center_z</span>
-        <span class="n">sample_holder_bottom</span><span class="o">=</span><span class="s1">&#39;-1.2mm&#39;</span><span class="p">,</span>  <span class="c1"># how tall is the vacuum below z=0</span>
+        <span class="n">sample_holder_top</span><span class="o">=</span><span class="s1">'1.2mm'</span><span class="p">,</span>  <span class="c1"># how tall is the vacuum above center_z</span>
+        <span class="n">sample_holder_bottom</span><span class="o">=</span><span class="s1">'-1.2mm'</span><span class="p">,</span>  <span class="c1"># how tall is the vacuum below z=0</span>
 
         <span class="n">Lj</span><span class="o">=</span><span class="mf">10e-9</span><span class="p">,</span>  <span class="c1"># Lj has been previously with units of nanoHenries (nH), pyaedt expects (H)</span>
-        <span class="c1">#Lj=&#39;10nH&#39;,  # Lj has units of nanoHenries (nH)</span>
+        <span class="c1">#Lj='10nH',  # Lj has units of nanoHenries (nH)</span>
         <span class="n">Cj</span><span class="o">=</span><span class="mi">0</span>  <span class="c1"># Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)</span>
         <span class="c1"># _Rj=0,  # _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms</span>
         <span class="c1"># project_path=None,  # default project path; if None --&gt; get active</span>
         <span class="c1"># project_name=project_name,  # default project name</span>
         <span class="c1"># design_name=design_name,  # default design name</span>
 
-        <span class="c1"># bounding_box_scale_x = 1.2, # Ratio of &#39;main&#39; chip width to bounding box width</span>
-        <span class="c1"># bounding_box_scale_y = 1.2, # Ratio of &#39;main&#39; chip length to bounding box length</span>
+        <span class="c1"># bounding_box_scale_x = 1.2, # Ratio of 'main' chip width to bounding box width</span>
+        <span class="c1"># bounding_box_scale_y = 1.2, # Ratio of 'main' chip length to bounding box length</span>
 
 
-        <span class="c1"># wb_threshold = &#39;400um&#39;,</span>
-        <span class="c1"># wb_offset = &#39;0um&#39;,</span>
+        <span class="c1"># wb_threshold = '400um',</span>
+        <span class="c1"># wb_offset = '0um',</span>
         <span class="c1"># wb_size = 5,</span>
         <span class="c1"># plot_ansys_fields_options = Dict(</span>
-        <span class="c1">#     name=&quot;NAME:Mag_E1&quot;,</span>
-        <span class="c1">#     UserSpecifyName=&#39;0&#39;,</span>
-        <span class="c1">#     UserSpecifyFolder=&#39;0&#39;,</span>
-        <span class="c1">#     QuantityName= &quot;Mag_E&quot;,</span>
-        <span class="c1">#     PlotFolder= &quot;E Field&quot;,</span>
-        <span class="c1">#     StreamlinePlot= &quot;False&quot;,</span>
-        <span class="c1">#     AdjacentSidePlot= &quot;False&quot;,</span>
-        <span class="c1">#     FullModelPlot= &quot;False&quot;,</span>
-        <span class="c1">#     IntrinsicVar= &quot;Phase=\&#39;0deg\&#39;&quot;,</span>
-        <span class="c1">#     PlotGeomInfo_0= &quot;1&quot;,</span>
-        <span class="c1">#     PlotGeomInfo_1= &quot;Surface&quot;,</span>
-        <span class="c1">#     PlotGeomInfo_2= &quot;FacesList&quot;,</span>
-        <span class="c1">#     PlotGeomInfo_3= &quot;1&quot;,</span>
+        <span class="c1">#     name="NAME:Mag_E1",</span>
+        <span class="c1">#     UserSpecifyName='0',</span>
+        <span class="c1">#     UserSpecifyFolder='0',</span>
+        <span class="c1">#     QuantityName= "Mag_E",</span>
+        <span class="c1">#     PlotFolder= "E Field",</span>
+        <span class="c1">#     StreamlinePlot= "False",</span>
+        <span class="c1">#     AdjacentSidePlot= "False",</span>
+        <span class="c1">#     FullModelPlot= "False",</span>
+        <span class="c1">#     IntrinsicVar= "Phase=\'0deg\'",</span>
+        <span class="c1">#     PlotGeomInfo_0= "1",</span>
+        <span class="c1">#     PlotGeomInfo_1= "Surface",</span>
+        <span class="c1">#     PlotGeomInfo_2= "FacesList",</span>
+        <span class="c1">#     PlotGeomInfo_3= "1",</span>
         <span class="c1"># ),</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default options"""</span>
     <span class="c1"># yapf: enable</span>
 
-    <span class="n">NAME_DELIM</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;_&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Name delimiter&quot;&quot;&quot;</span>
+    <span class="n">NAME_DELIM</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"_"</span>
+<span class="w">    </span><span class="sd">"""Name delimiter"""</span>
 
     <span class="c1"># This is expected to be populated by each child/grandchild of the renderer.</span>
     <span class="c1"># It will not be aggregated, just overwritten.</span>
     <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default setup.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default setup."""</span>
 
     <span class="c1"># When additional columns are added to QGeometry, this is the example to populate it.</span>
     <span class="c1"># e.g. element_extensions = dict(</span>
     <span class="c1">#         base=dict(color=str, klayer=int),</span>
     <span class="c1">#         path=dict(thickness=float, material=str, perfectE=bool),</span>
     <span class="c1">#         poly=dict(thickness=float, material=str), )</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Element extensions dictionary   element_extensions = dict() from base class&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Element extensions dictionary   element_extensions = dict() from base class"""</span>
 
     <span class="c1"># Add columns to junction table during QAnsysRenderer.load()</span>
     <span class="c1"># element_extensions  is now being populated as part of load().</span>
@@ -594,11 +594,11 @@
     <span class="n">element_table_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">path</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">wire_bonds</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
         <span class="n">junction</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">inductance</span><span class="o">=</span><span class="n">default_options</span><span class="p">[</span><span class="s2">&quot;Lj&quot;</span><span class="p">],</span> <span class="n">capacitance</span><span class="o">=</span><span class="n">default_options</span><span class="p">[</span><span class="s2">&quot;Cj&quot;</span><span class="p">]</span>
+            <span class="n">inductance</span><span class="o">=</span><span class="n">default_options</span><span class="p">[</span><span class="s2">"Lj"</span><span class="p">],</span> <span class="n">capacitance</span><span class="o">=</span><span class="n">default_options</span><span class="p">[</span><span class="s2">"Cj"</span><span class="p">]</span>
         <span class="p">),</span>
-        <span class="c1"># resistance=default_options[&quot;_Rj&quot;]),</span>
+        <span class="c1"># resistance=default_options["_Rj"]),</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Element table data.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Element table data."""</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_child_class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -607,19 +607,19 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">,</span>
+        <span class="n">design</span><span class="p">:</span> <span class="s2">"QDesign"</span><span class="p">,</span>
         <span class="n">renderer_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">project_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">design_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;_summary_</span>
+<span class="w">        </span><span class="sd">"""_summary_</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            design (QDesign): Use QGeometry within either QDesign or MultiPlanar design to</span>
 <span class="sd">                            obtain elements for Ansys.</span>
-<span class="sd">            renderer_type (str): Choose string from list [&#39;HFSS_DM&#39;, &#39;HFSS_EM&#39;, &#39;Q3D&#39;] for the type of</span>
+<span class="sd">            renderer_type (str): Choose string from list ['HFSS_DM', 'HFSS_EM', 'Q3D'] for the type of</span>
 <span class="sd">                                design to insert into project.</span>
 <span class="sd">            project_name (Union[str, None], optional):  Give a name, or one will be made based on class name of renderer.</span>
 <span class="sd">                                            Defaults to None.</span>
@@ -627,7 +627,7 @@
 <span class="sd">                                            Defaults to None.</span>
 <span class="sd">            initiate (bool, optional):  True to initiate the renderer. Defaults to False.</span>
 <span class="sd">            options (Dict, optional): Used to override all options. Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">_require_pyaedt</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_desktop</span> <span class="o">=</span> <span class="kc">None</span>
@@ -685,22 +685,22 @@
 <div class="viewcode-block" id="QPyaedt.initialized">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.initialized">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">initialized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract method. Must be implemented by the subclass.</span>
+<span class="w">        </span><span class="sd">"""Abstract method. Must be implemented by the subclass.</span>
 <span class="sd">        Is renderer ready to be used?</span>
 <span class="sd">        Implementation must return boolean True if successful. False otherwise.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="QPyaedt.render_component">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.render_component">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract method. Must be implemented by the subclass.</span>
+<span class="w">        </span><span class="sd">"""Abstract method. Must be implemented by the subclass.</span>
 <span class="sd">        Render the specified component.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            component (QComponent): Component to render.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 <div class="viewcode-block" id="QPyaedt.render_chips">
@@ -708,12 +708,12 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">render_chips</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">draw_sample_holder</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render all chips containing components in self.qcomp_ids.</span>
+<span class="w">        </span><span class="sd">"""Render all chips containing components in self.qcomp_ids.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            draw_sample_holder (bool, optional): Option to draw vacuum box around chip. Defaults to True.</span>
 <span class="sd">            box_plus_buffer (bool, optional): Whether or not to use a box plus buffer. Defaults to True.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Abstract method. Must be implemented by the subclass.</span>
         <span class="c1"># Render all chips of the design.</span>
         <span class="c1"># Calls render_chip for each chip.</span>
@@ -722,7 +722,7 @@
         <span class="k">for</span> <span class="n">chip_name</span> <span class="ow">in</span> <span class="n">chip_list</span><span class="p">:</span>
             <span class="c1"># This is done obtained at the start of render_design</span>
             <span class="c1">#  since the box includes all the chips and placed in self.box_for_ansys</span>
-            <span class="c1">#  We don&#39;t do this for just one chip, as was done for planar.</span>
+            <span class="c1">#  We don't do this for just one chip, as was done for planar.</span>
             <span class="c1"># if box_plus_buffer:</span>
             <span class="c1">#     # Get bounding box of components first</span>
             <span class="c1">#     pass</span>
@@ -739,13 +739,13 @@
 <div class="viewcode-block" id="QPyaedt.render_chip">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.render_chip">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_chip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chip_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">draw_sample_holder</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Render individual chips.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            chip_name (str): Name of chip.</span>
 <span class="sd">            draw_sample_holder (bool): Option to draw vacuum box around chip.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
         <span class="c1"># This is for HFSS, will do later.  Also, we may want to do just once, BUT</span>
@@ -761,36 +761,36 @@
         <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
         <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Render components by breaking them down into individual elements.</span>
 <span class="sd">        Render all components of the design.</span>
 <span class="sd">        If selection is none, then render all components.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            table_type (str): Table type (poly, path, or junction).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">table_type</span><span class="p">]</span>
 
         <span class="c1"># If user selected a subset, then need to use subset of table,</span>
         <span class="c1"># otherwise use the whole table.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
-            <span class="n">mask_component</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">)</span>
+            <span class="n">mask_component</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">)</span>
             <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">mask_component</span><span class="p">]</span>
 
-        <span class="n">mask_layer</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer_num</span>
+        <span class="n">mask_layer</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer_num</span>
         <span class="n">table_to_use</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">mask_layer</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">qgeom</span> <span class="ow">in</span> <span class="n">table_to_use</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">render_element</span><span class="p">(</span>
                 <span class="n">qgeom</span><span class="p">,</span>
-                <span class="nb">bool</span><span class="p">(</span><span class="n">table_type</span> <span class="o">==</span> <span class="s2">&quot;junction&quot;</span><span class="p">),</span>
+                <span class="nb">bool</span><span class="p">(</span><span class="n">table_type</span> <span class="o">==</span> <span class="s2">"junction"</span><span class="p">),</span>
                 <span class="n">port_list</span><span class="o">=</span><span class="n">port_list</span><span class="p">,</span>
                 <span class="n">jj_to_port</span><span class="o">=</span><span class="n">jj_to_port</span><span class="p">,</span>
                 <span class="n">ignored_jjs</span><span class="o">=</span><span class="n">ignored_jjs</span><span class="p">,</span>
             <span class="p">)</span></div>
 
 
-        <span class="c1"># if table_type == &#39;path&#39;:</span>
+        <span class="c1"># if table_type == 'path':</span>
         <span class="c1">#     self.auto_wirebonds(table)</span>
 
 <div class="viewcode-block" id="QPyaedt.render_element">
@@ -810,19 +810,19 @@
 <div class="viewcode-block" id="QPyaedt.render_element_path">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.render_element_path">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_element_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qgeom</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render one row from the qgeometry table.</span>
+<span class="w">        </span><span class="sd">"""Render one row from the qgeometry table.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            qgeom (pd.Series): One row from the qgeometry table.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># super().render_element_path(qgeom)</span>
 
-        <span class="n">qc_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">qc_elt</span> <span class="o">=</span> <span class="n">get_clean_name</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="n">qc_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">qc_elt</span> <span class="o">=</span> <span class="n">get_clean_name</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>
 
         <span class="n">qc_shapely</span> <span class="o">=</span> <span class="n">qgeom</span><span class="o">.</span><span class="n">geometry</span>  <span class="c1"># shapely geom</span>
-        <span class="n">subtract</span> <span class="o">=</span> <span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;subtract&quot;</span><span class="p">]</span>  <span class="c1"># expect a bool</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">qc_elt</span><span class="si">}{</span><span class="n">QPyaedt</span><span class="o">.</span><span class="n">NAME_DELIM</span><span class="si">}{</span><span class="n">qc_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">subtract</span> <span class="o">=</span> <span class="n">qgeom</span><span class="p">[</span><span class="s2">"subtract"</span><span class="p">]</span>  <span class="c1"># expect a bool</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">qc_elt</span><span class="si">}{</span><span class="n">QPyaedt</span><span class="o">.</span><span class="n">NAME_DELIM</span><span class="si">}{</span><span class="n">qc_name</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="n">qc_width</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">qgeom</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
 
@@ -830,7 +830,7 @@
         <span class="n">datatype</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">chip_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">qgeom</span><span class="o">.</span><span class="n">chip</span><span class="p">)</span>  <span class="c1"># noqa: F841</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_properties_for_layer_datatype</span><span class="p">(</span>
-            <span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">,</span> <span class="s2">&quot;z_coord&quot;</span><span class="p">,</span> <span class="s2">&quot;material&quot;</span><span class="p">,</span> <span class="s2">&quot;fill&quot;</span><span class="p">],</span> <span class="n">layer</span><span class="p">,</span> <span class="n">datatype</span>
+            <span class="p">[</span><span class="s2">"thickness"</span><span class="p">,</span> <span class="s2">"z_coord"</span><span class="p">,</span> <span class="s2">"material"</span><span class="p">,</span> <span class="s2">"fill"</span><span class="p">],</span> <span class="n">layer</span><span class="p">,</span> <span class="n">datatype</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
             <span class="n">thickness</span><span class="p">,</span> <span class="n">z_coord</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">fill_value</span> <span class="o">=</span> <span class="n">result</span>
@@ -860,10 +860,10 @@
 
         <span class="k">if</span> <span class="n">subtract</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">fill_value</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">subtract==True and Fill is False&quot;</span>
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">We don&#39;t render the geometry since there is nothing to subtract from.&quot;</span>
-                <span class="s2">&quot;FYI: The fill value comes from layer_stack, &quot;</span>
-                <span class="s2">&quot;and the subtract value comes from component.&quot;</span>
+                <span class="s2">"</span><span class="se">\n</span><span class="s2">subtract==True and Fill is False"</span>
+                <span class="s2">"</span><span class="se">\n</span><span class="s2">We don't render the geometry since there is nothing to subtract from."</span>
+                <span class="s2">"FYI: The fill value comes from layer_stack, "</span>
+                <span class="s2">"and the subtract value comes from component."</span>
             <span class="p">)</span>
             <span class="k">return</span>
 
@@ -904,26 +904,26 @@
 <div class="viewcode-block" id="QPyaedt.render_element_poly">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.render_element_poly">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_element_poly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qgeom</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render a closed polygon.</span>
+<span class="w">        </span><span class="sd">"""Render a closed polygon.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            qgeom (pd.Series): GeoSeries of element properties.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># super().render_element_poly(qgeom)</span>
         <span class="n">ansys_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">transparency</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>  <span class="c1"># noqa: F841</span>
-        <span class="n">qc_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">qc_elt</span> <span class="o">=</span> <span class="n">get_clean_name</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="n">qc_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">qc_elt</span> <span class="o">=</span> <span class="n">get_clean_name</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>
 
         <span class="n">qc_shapely</span> <span class="o">=</span> <span class="n">qgeom</span><span class="o">.</span><span class="n">geometry</span>  <span class="c1"># shapely geom</span>
         <span class="n">layer</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">qgeom</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
         <span class="n">datatype</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">chip_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">qgeom</span><span class="o">.</span><span class="n">chip</span><span class="p">)</span>  <span class="c1"># noqa: F841</span>
-        <span class="n">subtract</span> <span class="o">=</span> <span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;subtract&quot;</span><span class="p">]</span>  <span class="c1"># expect a bool</span>
+        <span class="n">subtract</span> <span class="o">=</span> <span class="n">qgeom</span><span class="p">[</span><span class="s2">"subtract"</span><span class="p">]</span>  <span class="c1"># expect a bool</span>
         <span class="c1"># qgeom.helper is ignored since the material for each layer is</span>
         <span class="c1"># obtained from the layer_stack.</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_properties_for_layer_datatype</span><span class="p">(</span>
-            <span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">,</span> <span class="s2">&quot;z_coord&quot;</span><span class="p">,</span> <span class="s2">&quot;material&quot;</span><span class="p">,</span> <span class="s2">&quot;fill&quot;</span><span class="p">],</span> <span class="n">layer</span><span class="p">,</span> <span class="n">datatype</span>
+            <span class="p">[</span><span class="s2">"thickness"</span><span class="p">,</span> <span class="s2">"z_coord"</span><span class="p">,</span> <span class="s2">"material"</span><span class="p">,</span> <span class="s2">"fill"</span><span class="p">],</span> <span class="n">layer</span><span class="p">,</span> <span class="n">datatype</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
@@ -933,17 +933,17 @@
 
         <span class="k">if</span> <span class="n">subtract</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">fill_value</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">subtract==True and Fill is False&quot;</span>
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">We don&#39;t render the geometry since there is nothing to subtract from.&quot;</span>
-                <span class="s2">&quot;FYI: The fill value comes from layer_stack, &quot;</span>
-                <span class="s2">&quot;and the subtract value comes from component.&quot;</span>
+                <span class="s2">"</span><span class="se">\n</span><span class="s2">subtract==True and Fill is False"</span>
+                <span class="s2">"</span><span class="se">\n</span><span class="s2">We don't render the geometry since there is nothing to subtract from."</span>
+                <span class="s2">"FYI: The fill value comes from layer_stack, "</span>
+                <span class="s2">"and the subtract value comes from component."</span>
             <span class="p">)</span>
             <span class="k">return</span>
 
         <span class="c1"># still need to deal with fillet for polygons?????</span>
         <span class="n">qc_fillet</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">qgeom</span><span class="o">.</span><span class="n">fillet</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>  <span class="c1"># noqa: F841</span>
 
-        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">qc_elt</span><span class="si">}{</span><span class="n">QPyaedt</span><span class="o">.</span><span class="n">NAME_DELIM</span><span class="si">}{</span><span class="n">qc_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">qc_elt</span><span class="si">}{</span><span class="n">QPyaedt</span><span class="o">.</span><span class="n">NAME_DELIM</span><span class="si">}{</span><span class="n">qc_name</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="n">points_3d</span> <span class="o">=</span> <span class="n">to_vec3D_list</span><span class="p">(</span>
             <span class="nb">list</span><span class="p">(</span><span class="n">qc_shapely</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span> <span class="n">z_coord</span> <span class="o">+</span> <span class="p">(</span><span class="n">thickness</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
@@ -1006,12 +1006,12 @@
             <span class="c1"># self.chip_subtract_dict[chip_name][layer].add(name)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_initiate_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Open a session of the default Ansys EDT.</span>
 <span class="sd">        Establishes the connection to the App and Desktop only.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># https://aedtdocs.pyansys.com/API/_autosummary/pyaedt.Desktop.html</span>
-        <span class="c1"># Don&#39;t need to add the version: Version of AEDT to use.</span>
+        <span class="c1"># Don't need to add the version: Version of AEDT to use.</span>
         <span class="c1"># The default is None, in which case the active setup or latest installed version is used.</span>
         <span class="n">desktop</span> <span class="o">=</span> <span class="n">Desktop</span><span class="p">(</span>
             <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1025,7 +1025,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">begin_enable_autosave</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_desktop</span><span class="o">.</span><span class="n">disable_autosave</span><span class="p">()</span>
 
-        <span class="c1"># with Desktop(specified_version=&quot;2021.2&quot;,</span>
+        <span class="c1"># with Desktop(specified_version="2021.2",</span>
         <span class="c1">#              non_graphical=False,</span>
         <span class="c1">#              new_desktop_session=True,</span>
         <span class="c1">#              close_on_exit=False,</span>
@@ -1038,20 +1038,20 @@
 <div class="viewcode-block" id="QPyaedt.force_exit_ansys">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.force_exit_ansys">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">force_exit_ansys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This will allow user to force closing of Ansys.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This will allow user to force closing of Ansys."""</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_desktop</span><span class="o">.</span><span class="n">force_close_desktop</span><span class="p">()</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_close_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Step required to close the renderer after final execution.</span>
 <span class="sd">        Close the connection to Ansys through pyaedt. Implementation must</span>
 <span class="sd">        return boolean True if successful. False otherwise.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: True</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Can use any one of three. In future, we may want to switch.</span>
         <span class="c1"># self._desktop.close_desktop</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">close_enable_autosave</span><span class="p">:</span>
@@ -1066,7 +1066,7 @@
 <div class="viewcode-block" id="QPyaedt.disconnect_ansys">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.disconnect_ansys">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">disconnect_ansys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Disconnect Ansys. In future, may want this to behave differently.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Disconnect Ansys. In future, may want this to behave differently."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_desktop</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_close_renderer</span><span class="p">()</span></div>
 
@@ -1074,18 +1074,18 @@
 <div class="viewcode-block" id="QPyaedt.close">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.close">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias of _close_renderer()</span>
+<span class="w">        </span><span class="sd">"""Alias of _close_renderer()</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: True</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_close_renderer</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="QPyaedt.save_screenshot">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.save_screenshot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">save_screenshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the screenshot.</span>
+<span class="w">        </span><span class="sd">"""Save the screenshot.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            path (str, optional): Path to save location.  Defaults to None.</span>
@@ -1093,7 +1093,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pathlib.WindowsPath: path to png formatted screenshot.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 <div class="viewcode-block" id="QPyaedt.render_design">
@@ -1101,11 +1101,11 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">render_design</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Must be implemented by the subclass to finish the logic for HFSS  OR Q3D within project.</span>
+<span class="w">        </span><span class="sd">"""Must be implemented by the subclass to finish the logic for HFSS  OR Q3D within project.</span>
 
 <span class="sd">        Renders all design chips and components.</span>
 <span class="sd">        Note: This needs to be extended with additional logic for Q3D and HFSS.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># # They are reset for each time render_design happens.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">box_plus_buffer</span> <span class="o">=</span> <span class="n">box_plus_buffer</span>
 
@@ -1114,15 +1114,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">clean_user_design</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">chip_subtract_dict</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="c1"># Get from layer_stack, previously everything was a perfect E, except for junction., can&#39;t apply perfect boundary to 3d.</span>
+        <span class="c1"># Get from layer_stack, previously everything was a perfect E, except for junction., can't apply perfect boundary to 3d.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assign_perfE</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assign_mesh</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_unique_component_ids</span><span class="p">(</span><span class="n">selection</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_and_poly_with_valid_comps</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># Add the buffer, using options for renderer.</span>
-        <span class="n">x_buff</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;x_buffer_width_mm&quot;</span><span class="p">])</span>
-        <span class="n">y_buff</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">&quot;y_buffer_width_mm&quot;</span><span class="p">])</span>
+        <span class="n">x_buff</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">"x_buffer_width_mm"</span><span class="p">])</span>
+        <span class="n">y_buff</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">[</span><span class="s2">"y_buffer_width_mm"</span><span class="p">])</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds_handler</span><span class="o">.</span><span class="n">get_bounds_of_path_and_poly_tables</span><span class="p">(</span>
             <span class="n">box_plus_buffer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span><span class="p">,</span> <span class="n">x_buff</span><span class="p">,</span> <span class="n">y_buff</span>
@@ -1144,37 +1144,37 @@
 <div class="viewcode-block" id="QPyaedt.create_fill_true_box">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.create_fill_true_box">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">create_fill_true_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create 3D box used for both fill and or as a</span>
+<span class="w">        </span><span class="sd">"""Create 3D box used for both fill and or as a</span>
 <span class="sd">        subtract box for geometries when subtract==True from qgeometry table.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="p">(</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_for_ansys</span>
 
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fill_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="c1"># Don&#39;t need to close the polygon. But for now, being consistent with rendering Poly.</span>
+            <span class="c1"># Don't need to close the polygon. But for now, being consistent with rendering Poly.</span>
             <span class="n">fill_rect</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="p">[</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;z_coord&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)],</span>
-                <span class="p">[</span><span class="n">maxx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;z_coord&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)],</span>
-                <span class="p">[</span><span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;z_coord&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)],</span>
-                <span class="p">[</span><span class="n">minx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;z_coord&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)],</span>
-                <span class="p">[</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;z_coord&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)],</span>
+                <span class="p">[</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s2">"z_coord"</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">"thickness"</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)],</span>
+                <span class="p">[</span><span class="n">maxx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s2">"z_coord"</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">"thickness"</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)],</span>
+                <span class="p">[</span><span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s2">"z_coord"</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">"thickness"</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)],</span>
+                <span class="p">[</span><span class="n">minx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s2">"z_coord"</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">"thickness"</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)],</span>
+                <span class="p">[</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s2">"z_coord"</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">"thickness"</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)],</span>
             <span class="p">]</span>
 
-            <span class="n">box_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;layer_</span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;layer&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_datatype_</span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;datatype&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_plane&quot;</span>
+            <span class="n">box_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"layer_</span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="s1">'layer'</span><span class="p">]</span><span class="si">}</span><span class="s2">_datatype_</span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="s1">'datatype'</span><span class="p">]</span><span class="si">}</span><span class="s2">_plane"</span>
 
             <span class="n">box_at_layer_datatype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">create_polyline</span><span class="p">(</span>
                 <span class="n">fill_rect</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="n">box_name</span><span class="p">,</span>
                 <span class="n">cover_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">close_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">matname</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;material&quot;</span><span class="p">],</span>
+                <span class="n">matname</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="s2">"material"</span><span class="p">],</span>
             <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">thicken_sheet</span><span class="p">(</span>
-                <span class="n">box_at_layer_datatype</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">],</span> <span class="n">bBothSides</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">box_at_layer_datatype</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="s2">"thickness"</span><span class="p">],</span> <span class="n">bBothSides</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">fill_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;box_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_at_layer_datatype</span><span class="o">.</span><span class="n">id</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fill_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;box_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_at_layer_datatype</span><span class="o">.</span><span class="n">name</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fill_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">"box_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_at_layer_datatype</span><span class="o">.</span><span class="n">id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fill_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">"box_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_at_layer_datatype</span><span class="o">.</span><span class="n">name</span></div>
 
 
 <div class="viewcode-block" id="QPyaedt.aedt_render_by_layer_then_tables">
@@ -1196,7 +1196,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">add_linestring_width</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">qc_width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">a_polyline</span><span class="p">:</span> <span class="n">Polyline</span><span class="p">,</span> <span class="n">points_3d</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">material</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Polyline</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine the orthogonal vector.  Then sweep along a_polyline using qc_width.</span>
+<span class="w">        </span><span class="sd">"""Determine the orthogonal vector.  Then sweep along a_polyline using qc_width.</span>
 <span class="sd">        Then return the reference to new polyline with sweep in Ansys.</span>
 
 <span class="sd">        Args:</span>
@@ -1207,7 +1207,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Polyline: Reference to polyline that was widened.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">z0</span> <span class="o">=</span> <span class="n">points_3d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span> <span class="o">=</span> <span class="n">points_3d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -1218,7 +1218,7 @@
         <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">z0</span><span class="p">])</span> <span class="o">+</span> <span class="n">qc_width</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">vlen</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x0</span> <span class="o">-</span> <span class="n">x1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
         <span class="c1"># yapf: enable</span>
 
-        <span class="n">shortline_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a_polyline</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_shortline&quot;</span>
+        <span class="n">shortline_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">a_polyline</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_shortline"</span>
         <span class="n">shortline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">create_polyline</span><span class="p">(</span>
             <span class="p">[</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">shortline_name</span><span class="p">,</span> <span class="n">close_surface</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matname</span><span class="o">=</span><span class="n">material</span>
         <span class="p">)</span>
@@ -1231,9 +1231,9 @@
 <div class="viewcode-block" id="QPyaedt.add_one_endcap">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.add_one_endcap">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_one_endcap</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pin_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">endcap_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;endcap&quot;</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pin_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">endcap_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"endcap"</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a rectangle, then add thickness and denote to be</span>
+<span class="w">        </span><span class="sd">"""Create a rectangle, then add thickness and denote to be</span>
 <span class="sd">        subtracted for open pin.</span>
 
 <span class="sd">        Args:</span>
@@ -1241,20 +1241,20 @@
 <span class="sd">            pin_name (str): Name of pin which in open within the component.</span>
 <span class="sd">            layer (int): The layer which the user choose to put the component on.</span>
 <span class="sd">            endcap_str (str): Used to name the geometry when rendered to Ansys.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">pin_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="n">pin_name</span><span class="p">]</span>
-        <span class="n">width</span><span class="p">,</span> <span class="n">gap</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">([</span><span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">],</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;gap&quot;</span><span class="p">]])</span>
-        <span class="n">mid</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;middle&quot;</span><span class="p">]),</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;normal&quot;</span><span class="p">]</span>
+        <span class="n">width</span><span class="p">,</span> <span class="n">gap</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">([</span><span class="n">pin_dict</span><span class="p">[</span><span class="s2">"width"</span><span class="p">],</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">"gap"</span><span class="p">]])</span>
+        <span class="n">mid</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">pin_dict</span><span class="p">[</span><span class="s2">"middle"</span><span class="p">]),</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">"normal"</span><span class="p">]</span>
         <span class="n">chip_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">chip</span>  <span class="c1"># noqa: F841</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_properties_for_layer_datatype</span><span class="p">(</span>
-            <span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">,</span> <span class="s2">&quot;z_coord&quot;</span><span class="p">,</span> <span class="s2">&quot;material&quot;</span><span class="p">,</span> <span class="s2">&quot;fill&quot;</span><span class="p">],</span> <span class="n">layer</span>
+            <span class="p">[</span><span class="s2">"thickness"</span><span class="p">,</span> <span class="s2">"z_coord"</span><span class="p">,</span> <span class="s2">"material"</span><span class="p">,</span> <span class="s2">"fill"</span><span class="p">],</span> <span class="n">layer</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
             <span class="n">thickness</span><span class="p">,</span> <span class="n">z_coord</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">result</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">layer_stack_handler_pilot_error</span><span class="p">()</span>
 
-        <span class="n">endcap_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">endcap_str</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">pin_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">endcap_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">endcap_str</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">pin_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="n">start_vec_xyz</span> <span class="o">=</span> <span class="n">mid</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="n">start_vec_xyz</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z_coord</span> <span class="o">+</span> <span class="p">(</span><span class="n">thickness</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
@@ -1269,7 +1269,7 @@
             <span class="n">cover_surface</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">matname</span><span class="o">=</span><span class="n">material</span><span class="p">,</span>
             <span class="n">close_surface</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">xsection_type</span><span class="o">=</span><span class="s2">&quot;Line&quot;</span><span class="p">,</span>
+            <span class="n">xsection_type</span><span class="o">=</span><span class="s2">"Line"</span><span class="p">,</span>
             <span class="n">xsection_width</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gap</span> <span class="o">+</span> <span class="n">width</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -1286,9 +1286,9 @@
 <div class="viewcode-block" id="QPyaedt.add_endcaps">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.add_endcaps">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_endcaps</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">layer_open_pins_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">endcap_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;endcap&quot;</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">layer_open_pins_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">endcap_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"endcap"</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a list of end-caps for open pins for a specific layer ONLY.</span>
+<span class="w">        </span><span class="sd">"""Add a list of end-caps for open pins for a specific layer ONLY.</span>
 <span class="sd">        This method ASSUMES there is something in open_pins list.</span>
 <span class="sd">        This method ASSUMES that the components and corresponding pins</span>
 <span class="sd">        are within design.</span>
@@ -1301,7 +1301,7 @@
 <span class="sd">                            for the layer passed to this method.</span>
 <span class="sd">            layer_num (int): The layer which the end-caps should be on.</span>
 <span class="sd">            endcap_str (str): Used to name the geometry when rendered to Ansys.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">layer_open_pins_list</span><span class="p">:</span>
             <span class="c1"># Now add the end-caps for this layer only!</span>
             <span class="k">for</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">pin_name</span> <span class="ow">in</span> <span class="n">layer_open_pins_list</span><span class="p">:</span>
@@ -1313,7 +1313,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">add_fillet_linestring</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">qgeom</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">points_3d</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">qc_fillet</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">a_polyline</span><span class="p">:</span> <span class="n">Polyline</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine the idx of Polyline vertices to fillet and fillet them.</span>
+<span class="w">        </span><span class="sd">"""Determine the idx of Polyline vertices to fillet and fillet them.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            qgeom (pd.Series): One row from QGeometry table._</span>
@@ -1321,7 +1321,7 @@
 <span class="sd">            qc_fillet (float): Radius of fillet value</span>
 <span class="sd">            a_polyline (Polyline): A pyaetd primitive</span>
 <span class="sd">                                                        used for linestring from qgeometry table.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">qc_fillet</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">qc_fillet</span><span class="p">)</span>
         <span class="n">idxs_to_fillet</span> <span class="o">=</span> <span class="n">good_fillet_idxs</span><span class="p">(</span>
             <span class="n">points_3d</span><span class="p">,</span>
@@ -1339,25 +1339,25 @@
 <div class="viewcode-block" id="QPyaedt.subtract_from_ground">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.subtract_from_ground">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">subtract_from_ground</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">data_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;For each chip, subtract all &quot;negative&quot; shapes residing on its</span>
+<span class="w">        </span><span class="sd">"""For each chip, subtract all "negative" shapes residing on its</span>
 <span class="sd">        surface if any such shapes exist.</span>
 <span class="sd">        Data is stored by layer, but we always assume each layer to be unique</span>
 
 <span class="sd">        Need to use a rectangular for each layer, which has fill,</span>
 <span class="sd">        has been made as part of create_fill_true_box.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Subtract all the geometries for current layer from the fill/ground plane.</span>
         <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fill_info</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">fill_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;box_name&quot;</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fill_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">"box_name"</span><span class="p">],</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">chip_subtract_dict</span><span class="p">[</span><span class="n">layer_num</span><span class="p">],</span>
                 <span class="n">keepOriginals</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span></div>
 
 
         <span class="c1"># if is_rectangle(qc_shapely):  # Draw as rectangle</span>
-        <span class="c1">#     self.logger.debug(f&quot;Drawing a rectangle: {name}&quot;)</span>
+        <span class="c1">#     self.logger.debug(f"Drawing a rectangle: {name}")</span>
         <span class="c1">#     x_min, y_min, x_max, y_max = qc_shapely.bounds</span>
         <span class="c1">#     poly_ansys = self.modeler.draw_rect_corner(</span>
         <span class="c1">#         *parse_units([</span>
@@ -1404,14 +1404,14 @@
         <span class="c1"># if qgeom.chip not in self.chip_subtract_dict:</span>
         <span class="c1">#     self.chip_subtract_dict[qgeom.chip] = set()</span>
 
-        <span class="c1"># if qgeom[&quot;subtract&quot;]:</span>
+        <span class="c1"># if qgeom["subtract"]:</span>
         <span class="c1">#     self.chip_subtract_dict[qgeom.chip].add(name)</span>
 
     <span class="c1"># Still implementing</span>
 <div class="viewcode-block" id="QPyaedt.auto_wirebonds">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.auto_wirebonds">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">auto_wirebonds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Adds wirebonds to the Ansys model for path elements where;</span>
 <span class="sd">        subtract = True and wire_bonds = True.</span>
 
@@ -1420,22 +1420,22 @@
 <span class="sd">        wirebond to be added.</span>
 <span class="sd">        * wb_offset -- offset distance for wirebond placement (along the direction</span>
 <span class="sd">        of the cpw)</span>
-<span class="sd">        * wb_size -- controls the width of the wirebond (wb_size * path[&#39;width&#39;])</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        * wb_size -- controls the width of the wirebond (wb_size * path['width'])</span>
+<span class="sd">        """</span></div>
 
         <span class="c1"># norm_z = np.array([0, 0, 1])</span>
 
-        <span class="c1"># wb_threshold = parse_units(self._options[&quot;wb_threshold&quot;])</span>
-        <span class="c1"># wb_offset = parse_units(self._options[&quot;wb_offset&quot;])</span>
+        <span class="c1"># wb_threshold = parse_units(self._options["wb_threshold"])</span>
+        <span class="c1"># wb_offset = parse_units(self._options["wb_offset"])</span>
 
         <span class="c1"># # selecting only the qgeometry which meet criteria</span>
-        <span class="c1"># wb_table = table.loc[table[&quot;hfss_wire_bonds&quot;]]</span>
-        <span class="c1"># wb_table2 = wb_table.loc[wb_table[&quot;subtract&quot;]]</span>
+        <span class="c1"># wb_table = table.loc[table["hfss_wire_bonds"]]</span>
+        <span class="c1"># wb_table2 = wb_table.loc[wb_table["subtract"]]</span>
 
         <span class="c1"># # looping through each qgeometry</span>
         <span class="c1"># for _, row in wb_table2.iterrows():</span>
-        <span class="c1">#     geom = row[&quot;geometry&quot;]</span>
-        <span class="c1">#     width = row[&quot;width&quot;]</span>
+        <span class="c1">#     geom = row["geometry"]</span>
+        <span class="c1">#     width = row["width"]</span>
         <span class="c1">#     # looping through the linestring of the path to determine where WBs should be</span>
         <span class="c1">#     for index, i_p in enumerate(geom.coords[:-1], start=0):</span>
         <span class="c1">#         j_p = np.asarray(geom.coords[:][index + 1])</span>
@@ -1458,47 +1458,47 @@
         <span class="c1">#                 self.modeler.draw_wirebond(</span>
         <span class="c1">#                     pos=wb_pos_step + parse_units(wb_pos * wb_i),</span>
         <span class="c1">#                     ori=wb_perp,</span>
-        <span class="c1">#                     width=parse_units(width * self._options[&quot;wb_size&quot;]),</span>
+        <span class="c1">#                     width=parse_units(width * self._options["wb_size"]),</span>
         <span class="c1">#                     height=parse_units(width *</span>
-        <span class="c1">#                                        self._options[&quot;wb_size&quot;]),</span>
+        <span class="c1">#                                        self._options["wb_size"]),</span>
         <span class="c1">#                     z=0,</span>
-        <span class="c1">#                     wire_diameter=&quot;0.015mm&quot;,</span>
+        <span class="c1">#                     wire_diameter="0.015mm",</span>
         <span class="c1">#                     NumSides=6,</span>
-        <span class="c1">#                     name=&quot;g_wb&quot;,</span>
-        <span class="c1">#                     material=&quot;pec&quot;,</span>
+        <span class="c1">#                     name="g_wb",</span>
+        <span class="c1">#                     material="pec",</span>
         <span class="c1">#                     solve_inside=False,</span>
         <span class="c1">#                 )</span>
 
 <div class="viewcode-block" id="QPyaedt.get_chip_names">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.get_chip_names">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_chip_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Obtain a list of chips on which the selection of components, if valid, resides.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            List[str]: Chips to render.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># One or more components not in QDesign.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;One or more components not found.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"One or more components not found."</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">[]</span>
         <span class="n">chip_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># All components rendered.</span>
             <span class="n">comps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span>
             <span class="k">for</span> <span class="n">qcomp</span> <span class="ow">in</span> <span class="n">comps</span><span class="p">:</span>
-                <span class="k">if</span> <span class="s2">&quot;chip&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">comps</span><span class="p">[</span><span class="n">qcomp</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">"chip"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">comps</span><span class="p">[</span><span class="n">qcomp</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">chip_designation_error</span><span class="p">()</span>
                     <span class="k">return</span> <span class="p">[]</span>
-                <span class="c1"># elif comps[qcomp].options.chip != &#39;main&#39;:</span>
+                <span class="c1"># elif comps[qcomp].options.chip != 'main':</span>
                 <span class="c1">#     #self.chip_not_main()</span>
                 <span class="c1">#     return []</span>
                 <span class="n">chip_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">comps</span><span class="p">[</span><span class="n">qcomp</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">chip</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># Strict subset rendered.</span>
             <span class="n">icomps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span>
             <span class="k">for</span> <span class="n">qcomp_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
-                <span class="k">if</span> <span class="s2">&quot;chip&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">icomps</span><span class="p">[</span><span class="n">qcomp_id</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">"chip"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">icomps</span><span class="p">[</span><span class="n">qcomp_id</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">chip_designation_error</span><span class="p">()</span>
                     <span class="k">return</span> <span class="p">[]</span>
-                <span class="c1"># elif icomps[qcomp_id].options.chip != &#39;main&#39;:</span>
+                <span class="c1"># elif icomps[qcomp_id].options.chip != 'main':</span>
                 <span class="c1">#     #self.chip_not_main()</span>
                 <span class="c1">#     return []</span>
                 <span class="n">chip_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">icomps</span><span class="p">[</span><span class="n">qcomp_id</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">chip</span><span class="p">)</span>
@@ -1508,7 +1508,7 @@
 <div class="viewcode-block" id="QPyaedt.get_open_pins_in_layer">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.get_open_pins_in_layer">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_open_pins_in_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">open_pins</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reduce the open_pins list and only return the open_pins for layer_nums.</span>
+<span class="w">        </span><span class="sd">"""Reduce the open_pins list and only return the open_pins for layer_nums.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            open_pins (list): The list given by user for render_design.</span>
@@ -1516,15 +1516,15 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: A subset of open_pins for the denoted layer_num.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">layer_open_pins_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-        <span class="n">mask_comp_pin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_and_poly_with_valid_comps</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer_num</span>
+        <span class="n">mask_comp_pin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_and_poly_with_valid_comps</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer_num</span>
         <span class="n">path_poly_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_and_poly_with_valid_comps</span><span class="p">[</span><span class="n">mask_comp_pin</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">pin_name</span> <span class="ow">in</span> <span class="n">open_pins</span><span class="p">:</span>
             <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
-            <span class="n">comp_pin_layer_mask</span> <span class="o">=</span> <span class="n">path_poly_layer</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">id</span>
+            <span class="n">comp_pin_layer_mask</span> <span class="o">=</span> <span class="n">path_poly_layer</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]</span> <span class="o">==</span> <span class="nb">id</span>
             <span class="n">valid_df</span> <span class="o">=</span> <span class="n">path_poly_layer</span><span class="p">[</span><span class="n">comp_pin_layer_mask</span><span class="p">]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
                 <span class="n">layer_open_pins_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">comp_name</span><span class="p">,</span> <span class="n">pin_name</span><span class="p">))</span>
@@ -1537,7 +1537,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">confirm_open_pins_are_valid_names</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">open_pins</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">pair_used</span><span class="p">:</span> <span class="nb">list</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if all names of components and corresponding pins are</span>
+<span class="w">        </span><span class="sd">"""Check if all names of components and corresponding pins are</span>
 <span class="sd">        within design.  Otherwise log an error</span>
 
 <span class="sd">        Args:</span>
@@ -1548,7 +1548,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: True if all components and pins found in design.</span>
 <span class="sd">                 False if any one component or pin is not found in design.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">open_pins</span><span class="p">:</span>
             <span class="n">comp_name</span><span class="p">,</span> <span class="n">pin</span> <span class="o">=</span> <span class="n">item</span>
@@ -1556,10 +1556,10 @@
                 <span class="c1"># User wants to render a subset, ensure part of selection.</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;You entered the component_name=&quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> and the corresponding&quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot; name is not selection.&quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;The geometries will not be rendered to Ansys.&quot;</span>
+                        <span class="sa">f</span><span class="s2">"You entered the component_name="</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> and the corresponding"</span>
+                        <span class="sa">f</span><span class="s2">" name is not selection."</span>
+                        <span class="sa">f</span><span class="s2">"The geometries will not be rendered to Ansys."</span>
                     <span class="p">)</span>
                     <span class="k">return</span> <span class="kc">False</span>
             <span class="k">if</span> <span class="n">comp_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -1571,8 +1571,8 @@
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">pair_used</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;You entered the component_name=</span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s2"> and pin=</span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s2"> pair twice.  &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;The geometries will not be rendered to Ansys.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"You entered the component_name=</span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s2"> and pin=</span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s2"> pair twice.  "</span>
+                    <span class="sa">f</span><span class="s2">"The geometries will not be rendered to Ansys."</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
@@ -1583,10 +1583,10 @@
 <div class="viewcode-block" id="QPyaedt.activate_user_project_design">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.activate_user_project_design">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">activate_user_project_design</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;If Ansys is not started, then start using the project and name defined by user.</span>
+<span class="w">        </span><span class="sd">"""If Ansys is not started, then start using the project and name defined by user.</span>
 <span class="sd">        Otherwise, activate the project and design that user chose. It appears that pyaedt</span>
 <span class="sd">        can identify the project, if needed, we can pro-actively activate the project.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">set_active_design</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="p">)</span>
@@ -1596,37 +1596,37 @@
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Was not able to activate user&#39;s project and design name.  The exception is </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Project Name:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="si">}</span><span class="s2">, Design Name: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Was not able to activate user's project and design name.  The exception is </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2"> Project Name:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="si">}</span><span class="s2">, Design Name: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QPyaedt.populate_project_and_design">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.populate_project_and_design">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">populate_project_and_design</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add project and design based on user input.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Add project and design based on user input."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_types</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># Can use for future reference.</span>
                 <span class="c1"># from pyaedt import generate_unique_project_name</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_child_class_name</span><span class="p">()</span><span class="si">}</span><span class="s2">_project&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_child_class_name</span><span class="p">()</span><span class="si">}</span><span class="s2">_project"</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_child_class_name</span><span class="p">()</span><span class="si">}</span><span class="s2">_design&quot;</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_type</span> <span class="o">==</span> <span class="s2">&quot;Q3D&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_child_class_name</span><span class="p">()</span><span class="si">}</span><span class="s2">_design"</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_type</span> <span class="o">==</span> <span class="s2">"Q3D"</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span> <span class="o">=</span> <span class="n">Q3d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_type</span> <span class="o">==</span> <span class="s2">&quot;HFSS_DM&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_type</span> <span class="o">==</span> <span class="s2">"HFSS_DM"</span><span class="p">:</span>
                 <span class="c1"># Default solution type is driven modal.</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span> <span class="o">=</span> <span class="n">Hfss</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="s2">&quot;Modal&quot;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="s2">"Modal"</span>
                 <span class="p">)</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_type</span> <span class="o">==</span> <span class="s2">&quot;HFSS_EM&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_type</span> <span class="o">==</span> <span class="s2">"HFSS_EM"</span><span class="p">:</span>
                 <span class="c1"># need to explicitly identify a solution type</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span> <span class="o">=</span> <span class="n">Hfss</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="s2">&quot;Eigenmode&quot;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="s2">"Eigenmode"</span>
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Need to implement </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">renderer_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> in pyaedt_base.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Need to implement </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">renderer_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> in pyaedt_base."</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">set_active_design</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="p">)</span>
@@ -1634,21 +1634,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">project_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">design_name</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">model_units</span> <span class="o">=</span> <span class="s2">&quot;mm&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">model_units</span> <span class="o">=</span> <span class="s2">"mm"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">SetModelUnits</span><span class="p">(</span>
-            <span class="p">[</span><span class="s2">&quot;NAME:Units Parameter&quot;</span><span class="p">,</span> <span class="s2">&quot;Units:=&quot;</span><span class="p">,</span> <span class="s2">&quot;mm&quot;</span><span class="p">,</span> <span class="s2">&quot;Rescale:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
+            <span class="p">[</span><span class="s2">"NAME:Units Parameter"</span><span class="p">,</span> <span class="s2">"Units:="</span><span class="p">,</span> <span class="s2">"mm"</span><span class="p">,</span> <span class="s2">"Rescale:="</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QPyaedt.clean_user_design">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.clean_user_design">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">clean_user_design</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clean the user project and design corresponding to the current_app</span>
+<span class="w">        </span><span class="sd">"""Clean the user project and design corresponding to the current_app</span>
 
 <span class="sd">        Args: None</span>
 
 <span class="sd">        Returns: None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_desktop</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="p">:</span>
             <span class="n">all_objects</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="p">:</span>
@@ -1665,45 +1665,45 @@
 <div class="viewcode-block" id="QPyaedt.chip_designation_error">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.chip_designation_error">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">chip_designation_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Warning message that appears when the Ansys renderer fails to locate a component&#39;s chip designation.</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Warning message that appears when the Ansys renderer fails to locate a component's chip designation.</span>
 <span class="sd">        Provides instructions for a temporary workaround until the layer stack is finalized.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">&quot;This component currently lacks a chip designation. Please add chip=&#39;main&#39; to the component&#39;s default_options dictionary, restart the kernel, and try again.&quot;</span>
+            <span class="s2">"This component currently lacks a chip designation. Please add chip='main' to the component's default_options dictionary, restart the kernel, and try again."</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QPyaedt.chip_not_main">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.chip_not_main">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">chip_not_main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Warning message that appears when a component&#39;s chip designation is not &#39;main&#39;.</span>
-<span class="sd">        As of 05/10/21, all chip designations should be &#39;main&#39; until the layer stack is finalized.</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Warning message that appears when a component's chip designation is not 'main'.</span>
+<span class="sd">        As of 05/10/21, all chip designations should be 'main' until the layer stack is finalized.</span>
 <span class="sd">        Provides instructions for a temporary workaround until the layer stack is finalized.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">&quot;The chip designation for this component is not &#39;main&#39;. Please set chip=&#39;main&#39; in its default_options dictionary, restart the kernel, and try again.&quot;</span>
+            <span class="s2">"The chip designation for this component is not 'main'. Please set chip='main' in its default_options dictionary, restart the kernel, and try again."</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QPyaedt.open_pin_names_not_valid">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QPyaedt.html#qiskit_metal.renderers.QPyaedt.open_pin_names_not_valid">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">open_pin_names_not_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pin_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop and give error if the component name or pin name from open_pins</span>
+<span class="w">        </span><span class="sd">"""Stop and give error if the component name or pin name from open_pins</span>
 <span class="sd">        are not valid within design.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            comp_name (str): Name of component which should have an open pin.</span>
 <span class="sd">            pin_name (str): Name of pin which should be open.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> The component name or pin name within list&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">provided to render_design are not valid.&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">You provided: </span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">pin_name</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Valid components: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Valid pins:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">pins</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> ALL tuples within open_pins will not be addressed.&quot;</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2"> The component name or pin name within list"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">provided to render_design are not valid."</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">You provided: </span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">pin_name</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2"> Valid components: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2"> Valid pins:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">pins</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2"> ALL tuples within open_pins will not be addressed."</span>
         <span class="p">)</span></div>
 
 
@@ -1711,11 +1711,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">desktop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Desktop</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access to hidden variable for Ansys desktop.</span>
+<span class="w">        </span><span class="sd">"""Access to hidden variable for Ansys desktop.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Desktop: easier reference to pyaedt desktop.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_desktop</span></div>
 
@@ -1737,7 +1737,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -1760,6 +1760,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

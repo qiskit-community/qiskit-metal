@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -528,8 +528,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new qcomponent object with name &#39;Q1&#39;</span>
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new qcomponent object with name 'Q1'</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -595,7 +595,7 @@ Editing a value there triggers the same full <code class="docutils literal notra
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;germanium&quot;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"germanium"</span><span class="p">]</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -661,14 +661,14 @@ Editing a value there triggers the same full <code class="docutils literal notra
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We will begin by resetting the wafer material to silicon</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;silicon&quot;</span><span class="p">]</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"silicon"</span><span class="p">]</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 
 <span class="c1"># We will then export the current file to a GDS file</span>
 <span class="n">a_gds</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span>
-<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;path_filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;../../resources/Fake_Junctions.GDS&quot;</span>
+<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">"path_filename"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"../../resources/Fake_Junctions.GDS"</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">&quot;Before_size_change.gds&quot;</span><span class="p">)</span>
+<span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">"Before_size_change.gds"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -694,8 +694,8 @@ Editing a value there triggers the same full <code class="docutils literal notra
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;15mm&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;10mm&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">"size_x"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"15mm"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">"size_y"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"10mm"</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -704,7 +704,7 @@ Editing a value there triggers the same full <code class="docutils literal notra
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">&quot;After_size_x_y_change.gds&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">"After_size_x_y_change.gds"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -732,18 +732,18 @@ Editing a value there triggers the same full <code class="docutils literal notra
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First we will rest to the original settings</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;9mm&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;6mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">"size_x"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"9mm"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">"size_y"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"6mm"</span>
 
 <span class="c1"># Next we will shift the center of the chip</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;4.5mm&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">"center_x"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"4.5mm"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">"center_y"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"2mm"</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 
 <span class="c1"># We next export it to GDS</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">&quot;After_center_x_y_change.gds&quot;</span><span class="p">)</span>
+<span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">"After_center_x_y_change.gds"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -820,8 +820,8 @@ options.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">no_cheese</span><span class="p">[</span><span class="s2">&quot;view_in_file&quot;</span><span class="p">][</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
-<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cheese</span><span class="p">[</span><span class="s2">&quot;view_in_file&quot;</span><span class="p">][</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">no_cheese</span><span class="p">[</span><span class="s2">"view_in_file"</span><span class="p">][</span><span class="s2">"main"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cheese</span><span class="p">[</span><span class="s2">"view_in_file"</span><span class="p">][</span><span class="s2">"main"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -830,7 +830,7 @@ options.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">&quot;After_center_x_y_change_no_warning.gds&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">"After_center_x_y_change_no_warning.gds"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -858,18 +858,18 @@ options.</p>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Restore a_gds options</span>
 
-<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">no_cheese</span><span class="p">[</span><span class="s2">&quot;view_in_file&quot;</span><span class="p">][</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
-<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cheese</span><span class="p">[</span><span class="s2">&quot;view_in_file&quot;</span><span class="p">][</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">no_cheese</span><span class="p">[</span><span class="s2">"view_in_file"</span><span class="p">][</span><span class="s2">"main"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="n">a_gds</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cheese</span><span class="p">[</span><span class="s2">"view_in_file"</span><span class="p">][</span><span class="s2">"main"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 
 <span class="c1"># We will shift the center of the chip to origin</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0mm&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">"center_x"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"0mm"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">"center_y"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"0mm"</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 
 <span class="c1"># We next export it to GDS</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">&quot;After_reverting_x_y_change.gds&quot;</span><span class="p">)</span>
+<span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">"After_reverting_x_y_change.gds"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -974,7 +974,7 @@ options.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -475,39 +475,39 @@
 <div class="viewcode-block" id="LayerStackHandler">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LayerStackHandler</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use DataFrame to hold information for multiple chips.</span>
+<span class="w">    </span><span class="sd">"""Use DataFrame to hold information for multiple chips.</span>
 
 <span class="sd">    For all the chips, do NOT reuse the layer-number.  However, within the dataframe,</span>
 <span class="sd">    we can repeat layer numbers since a layer can have multiple datatypes.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">Col_Names</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;chip_name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;layer&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;datatype&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;material&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;thickness&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;z_coord&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;fill&quot;</span><span class="p">,</span>
+        <span class="s2">"chip_name"</span><span class="p">,</span>
+        <span class="s2">"layer"</span><span class="p">,</span>
+        <span class="s2">"datatype"</span><span class="p">,</span>
+        <span class="s2">"material"</span><span class="p">,</span>
+        <span class="s2">"thickness"</span><span class="p">,</span>
+        <span class="s2">"z_coord"</span><span class="p">,</span>
+        <span class="s2">"fill"</span><span class="p">,</span>
     <span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">multi_planar_design</span><span class="p">:</span> <span class="s2">&quot;MultiPlanar&quot;</span><span class="p">,</span> <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">multi_planar_design</span><span class="p">:</span> <span class="s2">"MultiPlanar"</span><span class="p">,</span> <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use the information in MultiPlanar design to parse_value</span>
+<span class="w">        </span><span class="sd">"""Use the information in MultiPlanar design to parse_value</span>
 <span class="sd">        and get the name of filename for layer stack.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            multi_planar_design (MultiPlanar): Class that is child of QDesign.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">multi_planar_design</span> <span class="o">=</span> <span class="n">multi_planar_design</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">multi_planar_design</span><span class="o">.</span><span class="n">logger</span>  <span class="c1"># type: logging.Logger</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">filename_csv_df</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="p">(</span>
-            <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">multi_planar_design</span><span class="p">,</span> <span class="s2">&quot;ls_filename&quot;</span><span class="p">)</span>
+            <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">multi_planar_design</span><span class="p">,</span> <span class="s2">"ls_filename"</span><span class="p">)</span>
             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">multi_planar_design</span><span class="o">.</span><span class="n">ls_filename</span>
         <span class="p">):</span>
             <span class="c1"># populate pandas table from data in this file.</span>
@@ -517,24 +517,24 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># self.column_names = [</span>
-        <span class="c1">#     &#39;chip_name&#39;, &#39;layer&#39;, &#39;datatype&#39;, &#39;material&#39;, &#39;thickness&#39;,</span>
-        <span class="c1">#     &#39;z_coord&#39;, &#39;fill&#39;</span>
+        <span class="c1">#     'chip_name', 'layer', 'datatype', 'material', 'thickness',</span>
+        <span class="c1">#     'z_coord', 'fill'</span>
         <span class="c1"># ]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layer_stack_default</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-            <span class="n">chip_name</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="s2">&quot;main&quot;</span><span class="p">],</span>
+            <span class="n">chip_name</span><span class="o">=</span><span class="p">[</span><span class="s2">"main"</span><span class="p">,</span> <span class="s2">"main"</span><span class="p">],</span>
             <span class="n">layer</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
             <span class="n">datatype</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-            <span class="n">material</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;pec&quot;</span><span class="p">,</span> <span class="s2">&quot;silicon&quot;</span><span class="p">],</span>
-            <span class="n">thickness</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2um&quot;</span><span class="p">,</span> <span class="s2">&quot;-750um&quot;</span><span class="p">],</span>
-            <span class="n">z_coord</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span> <span class="s2">&quot;0um&quot;</span><span class="p">],</span>
-            <span class="n">fill</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">],</span>
+            <span class="n">material</span><span class="o">=</span><span class="p">[</span><span class="s2">"pec"</span><span class="p">,</span> <span class="s2">"silicon"</span><span class="p">],</span>
+            <span class="n">thickness</span><span class="o">=</span><span class="p">[</span><span class="s2">"2um"</span><span class="p">,</span> <span class="s2">"-750um"</span><span class="p">],</span>
+            <span class="n">z_coord</span><span class="o">=</span><span class="p">[</span><span class="s2">"0um"</span><span class="p">,</span> <span class="s2">"0um"</span><span class="p">],</span>
+            <span class="n">fill</span><span class="o">=</span><span class="p">[</span><span class="s2">"true"</span><span class="p">,</span> <span class="s2">"true"</span><span class="p">],</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_dataframe</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_layer_data_unique</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_init_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Must check if filename for layerstack is valid before trying to import to a pandas table.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Must check if filename for layerstack is valid before trying to import to a pandas table."""</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename_csv_df</span><span class="p">:</span>
             <span class="c1"># populate pandas table from data in this file.</span>
@@ -543,8 +543,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_read_csv_df</span><span class="p">(</span><span class="n">abs_path</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Not able to read file.&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;File:</span><span class="si">{</span><span class="n">abs_path</span><span class="si">}</span><span class="s2"> not read. Check the name and path.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Not able to read file."</span>
+                    <span class="sa">f</span><span class="s2">"File:</span><span class="si">{</span><span class="n">abs_path</span><span class="si">}</span><span class="s2"> not read. Check the name and path."</span>
                 <span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
@@ -554,23 +554,23 @@
 <div class="viewcode-block" id="LayerStackHandler.get_layer_datatype_when_fill_is_true">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_layer_datatype_when_fill_is_true">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_layer_datatype_when_fill_is_true</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return layer/datatype rows where ``fill`` is True.</span>
+<span class="w">        </span><span class="sd">"""Return layer/datatype rows where ``fill`` is True.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict | None: Mapping of (layer, datatype) -&gt; dict of parsed column</span>
 <span class="sd">            values, or None if no rows have ``fill=True``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">abs_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename_csv_df</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Not able to read file.&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;File:</span><span class="si">{</span><span class="n">abs_path</span><span class="si">}</span><span class="s2"> not read. Check the name and path.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Not able to read file."</span>
+                <span class="sa">f</span><span class="s2">"File:</span><span class="si">{</span><span class="n">abs_path</span><span class="si">}</span><span class="s2"> not read. Check the name and path."</span>
             <span class="p">)</span>
 
         <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">&quot;fill&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">"fill"</span><span class="p">]</span>
             <span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[&#39;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"[']"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">TRUE_STR</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">search_result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
@@ -581,21 +581,21 @@
                 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">search_result_df</span><span class="o">.</span><span class="n">itertuples</span><span class="p">():</span>
                     <span class="n">a_key</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">datatype</span><span class="p">)</span>
                     <span class="n">layer_datatype_fill</span><span class="p">[</span><span class="n">a_key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-                    <span class="n">layer_datatype_fill</span><span class="p">[</span><span class="n">a_key</span><span class="p">][</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">layer</span>
-                    <span class="n">layer_datatype_fill</span><span class="p">[</span><span class="n">a_key</span><span class="p">][</span><span class="s2">&quot;datatype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">datatype</span>
-                    <span class="n">layer_datatype_fill</span><span class="p">[</span><span class="n">a_key</span><span class="p">][</span><span class="s2">&quot;thickness&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">multi_planar_design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">thickness</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">))</span>
+                    <span class="n">layer_datatype_fill</span><span class="p">[</span><span class="n">a_key</span><span class="p">][</span><span class="s2">"layer"</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">layer</span>
+                    <span class="n">layer_datatype_fill</span><span class="p">[</span><span class="n">a_key</span><span class="p">][</span><span class="s2">"datatype"</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">datatype</span>
+                    <span class="n">layer_datatype_fill</span><span class="p">[</span><span class="n">a_key</span><span class="p">][</span><span class="s2">"thickness"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">multi_planar_design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">thickness</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"'"</span><span class="p">))</span>
                     <span class="p">)</span>
-                    <span class="n">layer_datatype_fill</span><span class="p">[</span><span class="n">a_key</span><span class="p">][</span><span class="s2">&quot;z_coord&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">multi_planar_design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">z_coord</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">))</span>
+                    <span class="n">layer_datatype_fill</span><span class="p">[</span><span class="n">a_key</span><span class="p">][</span><span class="s2">"z_coord"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">multi_planar_design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">z_coord</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"'"</span><span class="p">))</span>
                     <span class="p">)</span>
-                    <span class="n">layer_datatype_fill</span><span class="p">[</span><span class="n">a_key</span><span class="p">][</span><span class="s2">&quot;material&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
-                    <span class="n">layer_datatype_fill</span><span class="p">[</span><span class="n">a_key</span><span class="p">][</span><span class="s2">&quot;chip_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">chip_name</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+                    <span class="n">layer_datatype_fill</span><span class="p">[</span><span class="n">a_key</span><span class="p">][</span><span class="s2">"material"</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"'"</span><span class="p">)</span>
+                    <span class="n">layer_datatype_fill</span><span class="p">[</span><span class="n">a_key</span><span class="p">][</span><span class="s2">"chip_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">chip_name</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"'"</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">layer_datatype_fill</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;User is not using LayerStackHandler.get_layer_datatype_when_fill_is_true correctly. Check your input file.&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ERROR:</span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"User is not using LayerStackHandler.get_layer_datatype_when_fill_is_true correctly. Check your input file."</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">ERROR:</span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
@@ -605,7 +605,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get_properties_for_layer_datatype</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">properties</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">layer_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">datatype</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;When user provides a layer and datatype, they can get properties</span>
+<span class="w">        </span><span class="sd">"""When user provides a layer and datatype, they can get properties</span>
 <span class="sd">         from the layer_stack file. The allowed options for properties must</span>
 <span class="sd">         be in Col_Names.  If any of the properties are not in Col_Names,</span>
 <span class="sd">         None will be returned.  Otherwise a Tuple will be returned with properties</span>
@@ -625,7 +625,7 @@
 <span class="sd">                            layer_stack file, then a Tuple will be returned with the</span>
 <span class="sd">                            requested properties in the same order as provided in</span>
 <span class="sd">                            input variable denoted by properties.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">properties</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
@@ -644,12 +644,12 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">abs_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename_csv_df</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Not able to read file.&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;File:</span><span class="si">{</span><span class="n">abs_path</span><span class="si">}</span><span class="s2"> not read. Check the name and path.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Not able to read file."</span>
+                <span class="sa">f</span><span class="s2">"File:</span><span class="si">{</span><span class="n">abs_path</span><span class="si">}</span><span class="s2"> not read. Check the name and path."</span>
             <span class="p">)</span>
 
-        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer_number</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">&quot;datatype&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">datatype</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer_number</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">"datatype"</span><span class="p">]</span> <span class="o">==</span> <span class="n">datatype</span>
         <span class="p">)</span>
 
         <span class="n">search_result_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
@@ -657,29 +657,29 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">search_result_df</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">thickness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">multi_planar_design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span>
-                    <span class="n">search_result_df</span><span class="o">.</span><span class="n">thickness</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+                    <span class="n">search_result_df</span><span class="o">.</span><span class="n">thickness</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"'"</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="n">z_coord</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">multi_planar_design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span>
-                    <span class="n">search_result_df</span><span class="o">.</span><span class="n">z_coord</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+                    <span class="n">search_result_df</span><span class="o">.</span><span class="n">z_coord</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"'"</span><span class="p">)</span>
                 <span class="p">)</span>
-                <span class="n">material</span> <span class="o">=</span> <span class="n">search_result_df</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
-                <span class="n">chip_name</span> <span class="o">=</span> <span class="n">search_result_df</span><span class="o">.</span><span class="n">chip_name</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">search_result_df</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+                <span class="n">material</span> <span class="o">=</span> <span class="n">search_result_df</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"'"</span><span class="p">)</span>
+                <span class="n">chip_name</span> <span class="o">=</span> <span class="n">search_result_df</span><span class="o">.</span><span class="n">chip_name</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"'"</span><span class="p">)</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">search_result_df</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"'"</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">TRUE_STR</span><span class="p">:</span>
                     <span class="n">fill_value</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">elif</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">FALSE_STR</span><span class="p">:</span>
                     <span class="n">fill_value</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;The &quot;fill&quot; value is neither True nor False.&#39;</span>
-                        <span class="sa">f</span><span class="s2">&quot;You have:</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.  &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;Will return NULL for fill value.&quot;</span>
+                        <span class="sa">f</span><span class="s1">'The "fill" value is neither True nor False.'</span>
+                        <span class="sa">f</span><span class="s2">"You have:</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.  "</span>
+                        <span class="sa">f</span><span class="s2">"Will return NULL for fill value."</span>
                     <span class="p">)</span>
-                <span class="n">props</span><span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">thickness</span>
-                <span class="n">props</span><span class="p">[</span><span class="s2">&quot;z_coord&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">z_coord</span>
-                <span class="n">props</span><span class="p">[</span><span class="s2">&quot;material&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">material</span>
-                <span class="n">props</span><span class="p">[</span><span class="s2">&quot;fill&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fill_value</span>
-                <span class="n">props</span><span class="p">[</span><span class="s2">&quot;chip_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chip_name</span>
+                <span class="n">props</span><span class="p">[</span><span class="s2">"thickness"</span><span class="p">]</span> <span class="o">=</span> <span class="n">thickness</span>
+                <span class="n">props</span><span class="p">[</span><span class="s2">"z_coord"</span><span class="p">]</span> <span class="o">=</span> <span class="n">z_coord</span>
+                <span class="n">props</span><span class="p">[</span><span class="s2">"material"</span><span class="p">]</span> <span class="o">=</span> <span class="n">material</span>
+                <span class="n">props</span><span class="p">[</span><span class="s2">"fill"</span><span class="p">]</span> <span class="o">=</span> <span class="n">fill_value</span>
+                <span class="n">props</span><span class="p">[</span><span class="s2">"chip_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">chip_name</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_warning_search_minus_chip</span><span class="p">(</span><span class="n">layer_number</span><span class="p">,</span> <span class="n">datatype</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -691,20 +691,20 @@
 <div class="viewcode-block" id="LayerStackHandler.is_layer_data_unique">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.is_layer_data_unique">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_layer_data_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;For each layer number make sure the datatypes are unique.  A layers can</span>
+<span class="w">        </span><span class="sd">"""For each layer number make sure the datatypes are unique.  A layers can</span>
 <span class="sd">        #have multiple datatypes.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: True if empty dataframe, True if for each layer, there is ONLY one datatype. Otherwise, False.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">layer_nums</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_unique_layer_ints</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">layer_nums</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">layer_nums</span><span class="p">:</span>
-                <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">num</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">]</span> <span class="o">==</span> <span class="n">num</span>
                 <span class="n">search_result_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">search_result_num</span><span class="o">.</span><span class="n">datatype</span><span class="o">.</span><span class="n">is_unique</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;There WILL BE PROBLEMS since layer </span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2"> does not have unique datatypes.&quot;</span>
+                        <span class="sa">f</span><span class="s2">"There WILL BE PROBLEMS since layer </span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2"> does not have unique datatypes."</span>
                     <span class="p">)</span>
                     <span class="k">return</span> <span class="kc">False</span>
 
@@ -719,51 +719,51 @@
 
         <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Not able to create pandas dataframe.&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;File:</span><span class="si">{</span><span class="n">abs_path</span><span class="si">}</span><span class="s2"> not imported. Expected a CSV formatted file.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Not able to create pandas dataframe."</span>
+                <span class="sa">f</span><span class="s2">"File:</span><span class="si">{</span><span class="n">abs_path</span><span class="si">}</span><span class="s2"> not imported. Expected a CSV formatted file."</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The exception: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The exception: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <div class="viewcode-block" id="LayerStackHandler.get_unique_chip_names">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_unique_chip_names">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_unique_chip_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a set of unique names used in the layer_stack dataframe.</span>
+<span class="w">        </span><span class="sd">"""Get a set of unique names used in the layer_stack dataframe.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            set: Unique names used in the layer stack used as either default or provided by user.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">&quot;chip_name&quot;</span><span class="p">]</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">names</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">))</span>
+<span class="sd">        """</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">"chip_name"</span><span class="p">]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">names</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"'"</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
 
 <div class="viewcode-block" id="LayerStackHandler.get_unique_layer_ints">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.get_unique_layer_ints">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_unique_layer_ints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a set of unique layer ints used in the layer_stack dataframe.</span>
+<span class="w">        </span><span class="sd">"""Get a set of unique layer ints used in the layer_stack dataframe.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            set: Unique layer numbers used in the layer stack used as either default or provided by user.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span>
+<span class="sd">        """</span>
+        <span class="n">layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">]</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_warning_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">properties</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;_Give warning if the properties is</span>
+<span class="w">        </span><span class="sd">"""_Give warning if the properties is</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parameters (list): _description_</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;The list for properties: </span><span class="si">{</span><span class="n">properties</span><span class="si">}</span><span class="s2"> is not a&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;subset of expected column names: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Col_Names</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"The list for properties: </span><span class="si">{</span><span class="n">properties</span><span class="si">}</span><span class="s2"> is not a"</span>
+            <span class="sa">f</span><span class="s2">"subset of expected column names: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Col_Names</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_warning_search</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">chip_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">layer_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">data_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ex</span><span class="p">:</span> <span class="ne">Exception</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Give warning when the layerstack pandas table doesn&#39;t</span>
+<span class="w">        </span><span class="sd">"""Give warning when the layerstack pandas table doesn't</span>
 <span class="sd">        have requested chip_name, layer, and datatype information.</span>
 
 <span class="sd">        Args:</span>
@@ -771,38 +771,38 @@
 <span class="sd">            layer_number (int): The unique layer number through out all chips.</span>
 <span class="sd">                            The same layer number can  not be used on multiple chips.</span>
 <span class="sd">            datatype (int, optional): Datatype of the layer number.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ERROR: </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">There is an error searching in layer_stack dataframe using &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;chip_name=</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">, layer=</span><span class="si">{</span><span class="n">layer_number</span><span class="si">}</span><span class="s2">, datatype=</span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">ERROR: </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">There is an error searching in layer_stack dataframe using "</span>
+            <span class="sa">f</span><span class="s2">"chip_name=</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">, layer=</span><span class="si">{</span><span class="n">layer_number</span><span class="si">}</span><span class="s2">, datatype=</span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_warning_search_minus_chip</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">layer_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">data_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ex</span><span class="p">:</span> <span class="ne">Exception</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Give warning when the layerstack pandas table doesn&#39;t</span>
+<span class="w">        </span><span class="sd">"""Give warning when the layerstack pandas table doesn't</span>
 <span class="sd">        have requested layer, and datatype information.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            layer_number (int): The unique layer number through out all chips.</span>
 <span class="sd">                            The same layer number can  not be used on multiple chips.</span>
 <span class="sd">            datatype (int, optional): Datatype of the layer number.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ERROR: </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">There is an error searching in layer_stack dataframe using &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot; layer=</span><span class="si">{</span><span class="n">layer_number</span><span class="si">}</span><span class="s2">, datatype=</span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">ERROR: </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">There is an error searching in layer_stack dataframe using "</span>
+            <span class="sa">f</span><span class="s2">" layer=</span><span class="si">{</span><span class="n">layer_number</span><span class="si">}</span><span class="s2">, datatype=</span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="LayerStackHandler.layer_stack_handler_pilot_error">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html#qiskit_metal.toolbox_metal.layer_stack_handler.LayerStackHandler.layer_stack_handler_pilot_error">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">layer_stack_handler_pilot_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The handler will return None if incorrect arguments are passed.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""The handler will return None if incorrect arguments are passed."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="s2">&quot;User is not using LayerStackHandler.get_properties_for_chip_layer_datatype correctly.&quot;</span>
+            <span class="s2">"User is not using LayerStackHandler.get_properties_for_chip_layer_datatype correctly."</span>
         <span class="p">)</span></div>
 </div>
 
@@ -824,7 +824,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -847,6 +847,8 @@
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

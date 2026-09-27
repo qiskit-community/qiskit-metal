@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -567,7 +567,7 @@ following steps:</p>
 <span class="p">)</span>
 
 <span class="c1"># Create a TransmonPocket6 object</span>
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket6</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="n">conn_pads</span><span class="p">))</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket6</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="n">conn_pads</span><span class="p">))</span>
 
 <span class="c1"># Rebuild and autoscale the GUI</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -597,7 +597,7 @@ following steps:</p>
 <span class="c1"># Tip: `mesh_geoms = False` will not mesh the design,</span>
 <span class="c1"># but only draw the wire-frame of the geomtries</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span>
-    <span class="n">open_pins</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;coupler1&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;coupler2&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;readout&quot;</span><span class="p">)],</span>
+    <span class="n">open_pins</span><span class="o">=</span><span class="p">[(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"coupler1"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"coupler2"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"readout"</span><span class="p">)],</span>
     <span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
@@ -635,12 +635,12 @@ following steps:</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update the mesh options</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="s2">&quot;5um&quot;</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s2">&quot;20um&quot;</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="s2">"5um"</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s2">"20um"</span>
 
 <span class="c1"># Render the design</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span>
-    <span class="n">open_pins</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;coupler1&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;coupler2&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;readout&quot;</span><span class="p">)],</span>
+    <span class="n">open_pins</span><span class="o">=</span><span class="p">[(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"coupler1"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"coupler2"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"readout"</span><span class="p">)],</span>
     <span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -658,12 +658,12 @@ following steps:</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update the mesh options</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="s2">&quot;5um&quot;</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s2">&quot;50um&quot;</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="s2">"5um"</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s2">"50um"</span>
 
 <span class="c1"># Render and mesh the design (with intelli-mesh)</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span>
-    <span class="n">open_pins</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;coupler1&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;coupler2&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;readout&quot;</span><span class="p">)],</span>
+    <span class="n">open_pins</span><span class="o">=</span><span class="p">[(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"coupler1"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"coupler2"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"readout"</span><span class="p">)],</span>
     <span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">launch_gui</span><span class="p">()</span>
@@ -679,7 +679,7 @@ following steps:</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export the Gmsh generated mesh to a file</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">export_mesh</span><span class="p">(</span><span class="s2">&quot;test.msh&quot;</span><span class="p">)</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">export_mesh</span><span class="p">(</span><span class="s2">"test.msh"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -710,8 +710,8 @@ following steps:</p>
 <span class="c1"># Elmer renderer uses the Gmsh renderer to</span>
 <span class="c1"># generate a mesh for the design</span>
 <span class="c1"># Set initial parameters for meshing in Gmsh (IMPORTANT step!!)</span>
-<span class="n">elmer_renderer</span><span class="o">.</span><span class="n">gmsh</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="s2">&quot;5um&quot;</span>
-<span class="n">elmer_renderer</span><span class="o">.</span><span class="n">gmsh</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s2">&quot;50um&quot;</span>
+<span class="n">elmer_renderer</span><span class="o">.</span><span class="n">gmsh</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="s2">"5um"</span>
+<span class="n">elmer_renderer</span><span class="o">.</span><span class="n">gmsh</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s2">"50um"</span>
 </pre></div>
 </div>
 </div>
@@ -721,7 +721,7 @@ following steps:</p>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Render the design</span>
 <span class="n">elmer_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span>
-    <span class="n">open_pins</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;coupler1&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;coupler2&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;readout&quot;</span><span class="p">)],</span>
+    <span class="n">open_pins</span><span class="o">=</span><span class="p">[(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"coupler1"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"coupler2"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"readout"</span><span class="p">)],</span>
     <span class="n">skip_junctions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
@@ -750,7 +750,7 @@ following steps:</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add a solution setup to solve for the capacitance matrix</span>
-<span class="n">elmer_renderer</span><span class="o">.</span><span class="n">add_solution_setup</span><span class="p">(</span><span class="s2">&quot;capacitance&quot;</span><span class="p">)</span>
+<span class="n">elmer_renderer</span><span class="o">.</span><span class="n">add_solution_setup</span><span class="p">(</span><span class="s2">"capacitance"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -759,7 +759,7 @@ following steps:</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the simulation in ElmerFEM</span>
-<span class="n">elmer_renderer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;capacitance&quot;</span><span class="p">)</span>
+<span class="n">elmer_renderer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"capacitance"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -777,10 +777,10 @@ following steps:</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run this, and in the Gmsh window,</span>
-<span class="c1"># Right click on an empty area, click on &quot;Toggle mesh visibility&quot;</span>
-<span class="c1"># Next, go to: Tools -&gt; Visibility, select &quot;Physical groups&quot; in drop down menu</span>
-<span class="c1"># Select &quot;Volume 2&quot;, click on apply</span>
-<span class="c1"># On the left pane, click on &quot;Post-processing&quot;, and select the views that you want to observe</span>
+<span class="c1"># Right click on an empty area, click on "Toggle mesh visibility"</span>
+<span class="c1"># Next, go to: Tools -&gt; Visibility, select "Physical groups" in drop down menu</span>
+<span class="c1"># Select "Volume 2", click on apply</span>
+<span class="c1"># On the left pane, click on "Post-processing", and select the views that you want to observe</span>
 <span class="n">elmer_renderer</span><span class="o">.</span><span class="n">display_post_processing_data</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -790,7 +790,7 @@ following steps:</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export the capacitance matrix</span>
-<span class="n">elmer_renderer</span><span class="o">.</span><span class="n">save_capacitance_matrix</span><span class="p">(</span><span class="s2">&quot;cap_matrix.txt&quot;</span><span class="p">)</span>
+<span class="n">elmer_renderer</span><span class="o">.</span><span class="n">save_capacitance_matrix</span><span class="p">(</span><span class="s2">"cap_matrix.txt"</span><span class="p">)</span>
 
 <span class="c1"># Close the elmer renderer</span>
 <span class="n">elmer_renderer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -828,7 +828,7 @@ following steps:</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the saved capacitance matrix</span>
-<span class="n">cap_matrix</span> <span class="o">=</span> <span class="n">load_capacitance_matrix_from_file</span><span class="p">(</span><span class="s2">&quot;cap_matrix.txt&quot;</span><span class="p">)</span>
+<span class="n">cap_matrix</span> <span class="o">=</span> <span class="n">load_capacitance_matrix_from_file</span><span class="p">(</span><span class="s2">"cap_matrix.txt"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -839,14 +839,14 @@ following steps:</p>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define cells</span>
 <span class="n">opt1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">node_rename</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;Q1_coupler1_connector_pad&quot;</span><span class="p">:</span> <span class="s2">&quot;coupler1&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;Q1_coupler2_connector_pad&quot;</span><span class="p">:</span> <span class="s2">&quot;coupler2&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;Q1_readout_connector_pad&quot;</span><span class="p">:</span> <span class="s2">&quot;readout&quot;</span><span class="p">,</span>
+        <span class="s2">"Q1_coupler1_connector_pad"</span><span class="p">:</span> <span class="s2">"coupler1"</span><span class="p">,</span>
+        <span class="s2">"Q1_coupler2_connector_pad"</span><span class="p">:</span> <span class="s2">"coupler2"</span><span class="p">,</span>
+        <span class="s2">"Q1_readout_connector_pad"</span><span class="p">:</span> <span class="s2">"readout"</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="n">cap_mat</span><span class="o">=</span><span class="n">cap_matrix</span><span class="p">,</span>
-    <span class="n">ind_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">&quot;Q1_pad_top&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1_pad_bot&quot;</span><span class="p">):</span> <span class="mi">12</span><span class="p">},</span>  <span class="c1"># junction inductance in nH</span>
-    <span class="n">jj_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">&quot;Q1_pad_top&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1_pad_bot&quot;</span><span class="p">):</span> <span class="s2">&quot;j1&quot;</span><span class="p">},</span>
-    <span class="n">cj_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">&quot;Q1_pad_top&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1_pad_bot&quot;</span><span class="p">):</span> <span class="mi">2</span><span class="p">},</span>  <span class="c1"># junction capacitance in fF</span>
+    <span class="n">ind_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">"Q1_pad_top"</span><span class="p">,</span> <span class="s2">"Q1_pad_bot"</span><span class="p">):</span> <span class="mi">12</span><span class="p">},</span>  <span class="c1"># junction inductance in nH</span>
+    <span class="n">jj_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">"Q1_pad_top"</span><span class="p">,</span> <span class="s2">"Q1_pad_bot"</span><span class="p">):</span> <span class="s2">"j1"</span><span class="p">},</span>
+    <span class="n">cj_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">"Q1_pad_top"</span><span class="p">,</span> <span class="s2">"Q1_pad_bot"</span><span class="p">):</span> <span class="mi">2</span><span class="p">},</span>  <span class="c1"># junction capacitance in fF</span>
 <span class="p">)</span>
 <span class="n">cell_1</span> <span class="o">=</span> <span class="n">Cell</span><span class="p">(</span><span class="n">opt1</span><span class="p">)</span>
 </pre></div>
@@ -858,7 +858,7 @@ following steps:</p>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define subsystems</span>
 <span class="c1"># subsystem 1: Transmon</span>
-<span class="n">transmon</span> <span class="o">=</span> <span class="n">Subsystem</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;transmon1_sys&quot;</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">&quot;TRANSMON&quot;</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;j1&quot;</span><span class="p">])</span>
+<span class="n">transmon</span> <span class="o">=</span> <span class="n">Subsystem</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"transmon1_sys"</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">"TRANSMON"</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">"j1"</span><span class="p">])</span>
 
 <span class="c1"># subsystem 2: Coupler 1</span>
 <span class="n">q_opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -867,7 +867,7 @@ following steps:</p>
     <span class="n">vp</span><span class="o">=</span><span class="mf">0.404314</span> <span class="o">*</span> <span class="n">c_light</span><span class="p">,</span>  <span class="c1"># phase velocity</span>
 <span class="p">)</span>
 <span class="n">coup1</span> <span class="o">=</span> <span class="n">Subsystem</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;coup1_sys&quot;</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">&quot;TL_RESONATOR&quot;</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;coupler1&quot;</span><span class="p">],</span> <span class="n">q_opts</span><span class="o">=</span><span class="n">q_opts</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"coup1_sys"</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">"TL_RESONATOR"</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">"coupler1"</span><span class="p">],</span> <span class="n">q_opts</span><span class="o">=</span><span class="n">q_opts</span>
 <span class="p">)</span>
 
 <span class="c1"># subsystem 3: Coupler 2</span>
@@ -877,7 +877,7 @@ following steps:</p>
     <span class="n">vp</span><span class="o">=</span><span class="mf">0.404314</span> <span class="o">*</span> <span class="n">c_light</span><span class="p">,</span>  <span class="c1"># phase velocity</span>
 <span class="p">)</span>
 <span class="n">coup2</span> <span class="o">=</span> <span class="n">Subsystem</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;coup2_sys&quot;</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">&quot;TL_RESONATOR&quot;</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;coupler2&quot;</span><span class="p">],</span> <span class="n">q_opts</span><span class="o">=</span><span class="n">q_opts</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"coup2_sys"</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">"TL_RESONATOR"</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">"coupler2"</span><span class="p">],</span> <span class="n">q_opts</span><span class="o">=</span><span class="n">q_opts</span>
 <span class="p">)</span>
 
 <span class="c1"># subsystem 4: Readout</span>
@@ -887,7 +887,7 @@ following steps:</p>
     <span class="n">vp</span><span class="o">=</span><span class="mf">0.404314</span> <span class="o">*</span> <span class="n">c_light</span><span class="p">,</span>  <span class="c1"># phase velocity</span>
 <span class="p">)</span>
 <span class="n">readout</span> <span class="o">=</span> <span class="n">Subsystem</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;readout_sys&quot;</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">&quot;TL_RESONATOR&quot;</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;readout&quot;</span><span class="p">],</span> <span class="n">q_opts</span><span class="o">=</span><span class="n">q_opts</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"readout_sys"</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">"TL_RESONATOR"</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">"readout"</span><span class="p">],</span> <span class="n">q_opts</span><span class="o">=</span><span class="n">q_opts</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -900,8 +900,8 @@ following steps:</p>
 <span class="n">composite_sys</span> <span class="o">=</span> <span class="n">CompositeSystem</span><span class="p">(</span>
     <span class="n">subsystems</span><span class="o">=</span><span class="p">[</span><span class="n">transmon</span><span class="p">,</span> <span class="n">coup1</span><span class="p">,</span> <span class="n">coup2</span><span class="p">,</span> <span class="n">readout</span><span class="p">],</span>
     <span class="n">cells</span><span class="o">=</span><span class="p">[</span><span class="n">cell_1</span><span class="p">],</span>
-    <span class="n">grd_node</span><span class="o">=</span><span class="s2">&quot;ground_plane&quot;</span><span class="p">,</span>
-    <span class="n">nodes_force_keep</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;coupler1&quot;</span><span class="p">,</span> <span class="s2">&quot;coupler2&quot;</span><span class="p">,</span> <span class="s2">&quot;readout&quot;</span><span class="p">],</span>
+    <span class="n">grd_node</span><span class="o">=</span><span class="s2">"ground_plane"</span><span class="p">,</span>
+    <span class="n">nodes_force_keep</span><span class="o">=</span><span class="p">[</span><span class="s2">"coupler1"</span><span class="p">,</span> <span class="s2">"coupler2"</span><span class="p">,</span> <span class="s2">"readout"</span><span class="p">],</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -953,12 +953,12 @@ following steps:</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chi_df</span> <span class="o">=</span> <span class="n">hamiltonian_results</span><span class="p">[</span><span class="s2">&quot;chi_in_MHz&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chi_df</span> <span class="o">=</span> <span class="n">hamiltonian_results</span><span class="p">[</span><span class="s2">"chi_in_MHz"</span><span class="p">]</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Transmon frequency     :&quot;</span><span class="p">,</span> <span class="n">hamiltonian_results</span><span class="p">[</span><span class="s2">&quot;fQ_in_Ghz&quot;</span><span class="p">][</span><span class="s2">&quot;transmon1_sys&quot;</span><span class="p">],</span> <span class="s2">&quot;GHz&quot;</span>
+    <span class="s2">"Transmon frequency     :"</span><span class="p">,</span> <span class="n">hamiltonian_results</span><span class="p">[</span><span class="s2">"fQ_in_Ghz"</span><span class="p">][</span><span class="s2">"transmon1_sys"</span><span class="p">],</span> <span class="s2">"GHz"</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Transmon Anharmonicity :&quot;</span><span class="p">,</span> <span class="n">chi_df</span><span class="p">[</span><span class="s2">&quot;transmon1_sys&quot;</span><span class="p">][</span><span class="s2">&quot;transmon1_sys&quot;</span><span class="p">],</span> <span class="s2">&quot;MHz&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Readou chi             :&quot;</span><span class="p">,</span> <span class="n">chi_df</span><span class="p">[</span><span class="s2">&quot;readout_sys&quot;</span><span class="p">][</span><span class="s2">&quot;transmon1_sys&quot;</span><span class="p">],</span> <span class="s2">&quot;MHz&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Transmon Anharmonicity :"</span><span class="p">,</span> <span class="n">chi_df</span><span class="p">[</span><span class="s2">"transmon1_sys"</span><span class="p">][</span><span class="s2">"transmon1_sys"</span><span class="p">],</span> <span class="s2">"MHz"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Readou chi             :"</span><span class="p">,</span> <span class="n">chi_df</span><span class="p">[</span><span class="s2">"readout_sys"</span><span class="p">][</span><span class="s2">"transmon1_sys"</span><span class="p">],</span> <span class="s2">"MHz"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -966,7 +966,7 @@ following steps:</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the coupling &#39;g&#39; values between qubit and resonators</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the coupling 'g' values between qubit and resonators</span>
 <span class="n">composite_sys</span><span class="o">.</span><span class="n">compute_gs</span><span class="p">()</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1063,7 +1063,7 @@ following steps:</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

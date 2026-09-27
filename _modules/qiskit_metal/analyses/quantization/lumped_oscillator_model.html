@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -487,11 +487,11 @@
     <span class="kn">from</span><span class="w"> </span><span class="nn">.lumped_capacitive</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract_transmon_coupled_Noscillator</span>
 
 
-<span class="c1"># TODO: eliminate every reference to &quot;renderer&quot; in this file</span>
+<span class="c1"># TODO: eliminate every reference to "renderer" in this file</span>
 <div class="viewcode-block" id="LOManalysis">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.LOManalysis.html#qiskit_metal.analyses.LOManalysis">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LOManalysis</span><span class="p">(</span><span class="n">QAnalysis</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs Lumped Oscillator Model analysis on a simulated or user-provided capacitance matrix.</span>
+<span class="w">    </span><span class="sd">"""Performs Lumped Oscillator Model analysis on a simulated or user-provided capacitance matrix.</span>
 
 <span class="sd">    Default Setup:</span>
 <span class="sd">        * junctions (Dict)</span>
@@ -506,28 +506,28 @@
 <span class="sd">        * lumped_oscillator_all (dict): of pd.DataFrame. Lumped oscillator resulting</span>
 <span class="sd">            at every pass of the simulation</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="n">junctions</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">Lj</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">Cj</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">freq_readout</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">freq_bus</span><span class="o">=</span><span class="p">[</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">6.2</span><span class="p">]</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default setup.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default setup."""</span>
 
     <span class="c1"># supported labels for data generated from the simulation</span>
-    <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;lumped_oscillator&quot;</span><span class="p">,</span> <span class="s2">&quot;lumped_oscillator_all&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default data labels.&quot;&quot;&quot;</span>
+    <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"lumped_oscillator"</span><span class="p">,</span> <span class="s2">"lumped_oscillator_all"</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""Default data labels."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;QDesign&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"QDesign"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Lumped Oscillator Model analysis.</span>
+<span class="w">        </span><span class="sd">"""Initialize the Lumped Oscillator Model analysis.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            design (QDesign): Pointer to the main qiskit-metal design.</span>
 <span class="sd">                Used to access the QRenderer. Defaults to None.</span>
-<span class="sd">            renderer_name (str, optional): Which renderer to use. Valid entries: &#39;q3d&#39;.</span>
+<span class="sd">            renderer_name (str, optional): Which renderer to use. Valid entries: 'q3d'.</span>
 <span class="sd">                Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># QAnalysis are expected to either run simulation or use pre-saved sim outputs</span>
         <span class="c1"># we use a Dict() to store the sim outputs previously saved. Its key names need</span>
         <span class="c1"># to match those found in the correspondent simulation class.</span>
@@ -540,65 +540,65 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">lumped_oscillator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter</span>
+<span class="w">        </span><span class="sd">"""Getter</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Lumped oscillator result at the last simulation pass.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;lumped_oscillator&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">"lumped_oscillator"</span><span class="p">)</span>
 
     <span class="nd">@lumped_oscillator</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">lumped_oscillator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Setter</span>
+<span class="w">        </span><span class="sd">"""Setter</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data (dict): Lumped oscillator result at the last simulation pass.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts dict. Please try again.&quot;</span><span class="p">,</span>
+                <span class="s2">"Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts dict. Please try again."</span><span class="p">,</span>
                 <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)},</span>
             <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;lumped_oscillator&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">"lumped_oscillator"</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">lumped_oscillator_all</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter</span>
+<span class="w">        </span><span class="sd">"""Getter</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pd.DataFrame: each line corresponds to a simulation pass number</span>
 <span class="sd">                and the remainder of the data is the respective lump oscillator information.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;lumped_oscillator_all&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">"lumped_oscillator_all"</span><span class="p">)</span>
 
     <span class="nd">@lumped_oscillator_all</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">lumped_oscillator_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Setter</span>
+<span class="w">        </span><span class="sd">"""Setter</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data (pd.DataFrame): each line corresponds to a simulation pass number</span>
 <span class="sd">                and the remainder of the data is the respective lump oscillator information.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts pd.DataFrame. Please try again.&quot;</span><span class="p">,</span>
+                <span class="s2">"Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts pd.DataFrame. Please try again."</span><span class="p">,</span>
                 <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)},</span>
             <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;lumped_oscillator_all&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">"lumped_oscillator_all"</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
 <div class="viewcode-block" id="LOManalysis.run">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.LOManalysis.html#qiskit_metal.analyses.LOManalysis.run">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes sequentially the system capacitance simulation (if a renderer was provided</span>
+<span class="w">        </span><span class="sd">"""Executes sequentially the system capacitance simulation (if a renderer was provided</span>
 <span class="sd">        at creation of this object) and lom extraction by executing the methods</span>
 <span class="sd">        LumpedElementsSim.run_sim(`*args`, `**kwargs`) and LOManalysis.run_lom().</span>
 <span class="sd">        For input parameter, see documentation for LumpedElementsSim.run_sim().</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            (dict): Pass numbers (keys) and respective lump oscillator information (values).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="p">,</span> <span class="n">LumpedElementsSim</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_lom</span><span class="p">()</span></div>
@@ -607,12 +607,12 @@
 <div class="viewcode-block" id="LOManalysis.run_lom">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.LOManalysis.html#qiskit_metal.analyses.LOManalysis.run_lom">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">run_lom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the lumped oscillator extraction from the capacitance matrix,</span>
+<span class="w">        </span><span class="sd">"""Executes the lumped oscillator extraction from the capacitance matrix,</span>
 <span class="sd">        and based on the setup values.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Pass numbers (keys) and their respective capacitance matrices (values).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># wipe data from the previous run (if any)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_data</span><span class="p">()</span>
 
@@ -621,18 +621,18 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_matrix</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_matrix</span> <span class="o">==</span> <span class="p">{}:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;Please initialize the capacitance_matrix before executing this method.&quot;</span>
-                    <span class="s2">&quot;`self.sim.capacitance_matrix = pd.DataFrame(...)`&quot;</span>
+                    <span class="s2">"Please initialize the capacitance_matrix before executing this method."</span>
+                    <span class="s2">"`self.sim.capacitance_matrix = pd.DataFrame(...)`"</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_all_passes</span> <span class="o">==</span> <span class="p">{}:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_all_passes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_matrix</span><span class="o">.</span><span class="n">values</span>
 
         <span class="n">ureg</span> <span class="o">=</span> <span class="n">UnitRegistry</span><span class="p">()</span>
-        <span class="n">ic_amps</span> <span class="o">=</span> <span class="n">Ic_from_Lj</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">Lj</span><span class="p">,</span> <span class="s2">&quot;nH&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">)</span>
-        <span class="n">cj</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">Cj</span><span class="si">}</span><span class="s2"> fF&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;farad&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-        <span class="n">fread</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">freq_readout</span><span class="si">}</span><span class="s2"> GHz&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;GHz&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-        <span class="n">fbus</span> <span class="o">=</span> <span class="p">[</span><span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2"> GHz&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;GHz&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">freq_bus</span><span class="p">]</span>
+        <span class="n">ic_amps</span> <span class="o">=</span> <span class="n">Ic_from_Lj</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">Lj</span><span class="p">,</span> <span class="s2">"nH"</span><span class="p">,</span> <span class="s2">"A"</span><span class="p">)</span>
+        <span class="n">cj</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">Cj</span><span class="si">}</span><span class="s2"> fF"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"farad"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">fread</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">freq_readout</span><span class="si">}</span><span class="s2"> GHz"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"GHz"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">fbus</span> <span class="o">=</span> <span class="p">[</span><span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2"> GHz"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"GHz"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">freq_bus</span><span class="p">]</span>
 
         <span class="c1"># derive number of coupling pads</span>
         <span class="n">num_cpads</span> <span class="o">=</span> <span class="mi">2</span>
@@ -664,10 +664,10 @@
         <span class="c1"># ``.iloc[0]`` raised ``AttributeError`` on ndarrays. Read the first</span>
         <span class="c1"># element in a way that works for a Series, ndarray, or list. (#1125)</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">_first</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">seq</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="s2">&quot;iloc&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">seq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">seq</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="s2">"iloc"</span><span class="p">)</span> <span class="k">else</span> <span class="n">seq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="n">all_res</span><span class="p">[</span><span class="s2">&quot;χr MHz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">all_res</span><span class="p">[</span><span class="s2">&quot;chi_in_MHz&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">_first</span><span class="p">))</span>
-        <span class="n">all_res</span><span class="p">[</span><span class="s2">&quot;gr MHz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">all_res</span><span class="p">[</span><span class="s2">&quot;gbus&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">_first</span><span class="p">))</span>
+        <span class="n">all_res</span><span class="p">[</span><span class="s2">"χr MHz"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">all_res</span><span class="p">[</span><span class="s2">"chi_in_MHz"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">_first</span><span class="p">))</span>
+        <span class="n">all_res</span><span class="p">[</span><span class="s2">"gr MHz"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">all_res</span><span class="p">[</span><span class="s2">"gbus"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">_first</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lumped_oscillator_all</span> <span class="o">=</span> <span class="n">all_res</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lumped_oscillator_all</span></div>
 
@@ -675,11 +675,11 @@
 <div class="viewcode-block" id="LOManalysis.plot_convergence">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.LOManalysis.html#qiskit_metal.analyses.LOManalysis.plot_convergence">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_convergence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plots alpha and frequency versus pass number, as well as convergence of delta (in %).</span>
+<span class="w">        </span><span class="sd">"""Plots alpha and frequency versus pass number, as well as convergence of delta (in %).</span>
 
 <span class="sd">        It accepts the same inputs as run_lom(), to allow regenerating the LOM</span>
 <span class="sd">        results before plotting them.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lumped_oscillator_all</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run_lom</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># TODO: copy plot_convergence_main() from pyEPR and move it here</span>
@@ -689,11 +689,11 @@
 <div class="viewcode-block" id="LOManalysis.plot_convergence_chi">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.LOManalysis.html#qiskit_metal.analyses.LOManalysis.plot_convergence_chi">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_convergence_chi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot convergence of chi and g, both in MHz, as a function of pass number.</span>
+<span class="w">        </span><span class="sd">"""Plot convergence of chi and g, both in MHz, as a function of pass number.</span>
 
 <span class="sd">        It accepts the same inputs as run_lom(), to allow regenerating the LOM</span>
 <span class="sd">        results before plotting them.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lumped_oscillator_all</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run_lom</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># TODO: copy plot_convergence_main() from pyEPR and move it here</span>
@@ -703,12 +703,12 @@
 <div class="viewcode-block" id="LOManalysis.load_simulation_data">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.LOManalysis.html#qiskit_metal.analyses.LOManalysis.load_simulation_data">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_simulation_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load simulation data for the following analysis. This will override any data found</span>
+<span class="w">        </span><span class="sd">"""Load simulation data for the following analysis. This will override any data found</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data_name (str): name of the variable</span>
 <span class="sd">            data (Any): simulation output</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="p">[</span><span class="n">data_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span></div>
 </div>
 
@@ -730,7 +730,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -753,6 +753,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

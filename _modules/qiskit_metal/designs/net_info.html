@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,7 +472,7 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;Module containing Net information storage.&quot;&quot;&quot;</span>
+<span class="sd">"""Module containing Net information storage."""</span>
 
 <span class="c1"># from typing import Tuple</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -483,50 +483,50 @@
 <div class="viewcode-block" id="QNet">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.designs.QNet.html#qiskit_metal.designs.QNet">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">QNet</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use DataFrame to hold Net Information about the connected pins of a</span>
+<span class="w">    </span><span class="sd">"""Use DataFrame to hold Net Information about the connected pins of a</span>
 <span class="sd">    design.</span>
 
 <span class="sd">    There is one unique net_id for each connected pin.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Hold the net information of all the USED pins within a design.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;net_id&quot;</span><span class="p">,</span> <span class="s2">&quot;component_id&quot;</span><span class="p">,</span> <span class="s2">&quot;pin_name&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="sd">"""Hold the net information of all the USED pins within a design."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"net_id"</span><span class="p">,</span> <span class="s2">"component_id"</span><span class="p">,</span> <span class="s2">"pin_name"</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_qnet_latest_assigned_id</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>  <span class="c1"># type: logging.Logger</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_new_net_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide unique new qnet_id.</span>
+<span class="w">        </span><span class="sd">"""Provide unique new qnet_id.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: ID to use for storing a new net within _net_info.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_qnet_latest_assigned_id</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qnet_latest_assigned_id</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">qnet_latest_assigned_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return unique number for each net in table.</span>
+<span class="w">        </span><span class="sd">"""Return unique number for each net in table.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: For user of the design class to know the lastest id added to _net_info.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qnet_latest_assigned_id</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">net_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide table of all nets within the design.</span>
+<span class="w">        </span><span class="sd">"""Provide table of all nets within the design.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pd.DataFrame: Table of the net of pins within design.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_check_arguments</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">comp1_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pin1_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">comp2_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pin2_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Error check the arguments before using them.</span>
+<span class="w">        </span><span class="sd">"""Error check the arguments before using them.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            comp1_id (int): Name of component 1.</span>
@@ -536,29 +536,29 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: 0 means should not be added to _net_info, else 1.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comp1_id</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Expected an int, but have </span><span class="si">{</span><span class="n">comp1_id</span><span class="si">}</span><span class="s2">. &quot;</span>
-                <span class="s2">&quot;The pins are were not entered to the net_info table.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Expected an int, but have </span><span class="si">{</span><span class="n">comp1_id</span><span class="si">}</span><span class="s2">. "</span>
+                <span class="s2">"The pins are were not entered to the net_info table."</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comp2_id</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Expected an int, but have </span><span class="si">{</span><span class="n">comp2_id</span><span class="si">}</span><span class="s2">. &quot;</span>
-                <span class="s2">&quot;The pins are were not entered to the net_info table.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Expected an int, but have </span><span class="si">{</span><span class="n">comp2_id</span><span class="si">}</span><span class="s2">. "</span>
+                <span class="s2">"The pins are were not entered to the net_info table."</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pin1_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Expected a string, but have </span><span class="si">{</span><span class="n">pin1_name</span><span class="si">}</span><span class="s2">. &quot;</span>
-                <span class="s2">&quot;The pins are were not entered to the net_info table.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Expected a string, but have </span><span class="si">{</span><span class="n">pin1_name</span><span class="si">}</span><span class="s2">. "</span>
+                <span class="s2">"The pins are were not entered to the net_info table."</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pin2_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Expected a string, but have </span><span class="si">{</span><span class="n">pin2_name</span><span class="si">}</span><span class="s2">. &quot;</span>
-                <span class="s2">&quot;The pins are were not entered to the net_info table.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Expected a string, but have </span><span class="si">{</span><span class="n">pin2_name</span><span class="si">}</span><span class="s2">. "</span>
+                <span class="s2">"The pins are were not entered to the net_info table."</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="mi">0</span>
 
@@ -569,7 +569,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">add_pins_to_table</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">comp1_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pin1_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">comp2_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pin2_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add two entries into the _net_info table. If either component/pin is</span>
+<span class="w">        </span><span class="sd">"""Add two entries into the _net_info table. If either component/pin is</span>
 <span class="sd">        already in net_info, the connection will NOT be added to the net_info.</span>
 
 <span class="sd">        Args:</span>
@@ -580,7 +580,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: 0 if not added to list, otherwise the net_id</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_arguments</span><span class="p">(</span><span class="n">comp1_id</span><span class="p">,</span> <span class="n">pin1_name</span><span class="p">,</span> <span class="n">comp2_id</span><span class="p">,</span> <span class="n">pin2_name</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
@@ -591,14 +591,14 @@
         <span class="p">):</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">component_id</span> <span class="o">==</span> <span class="n">comp1_id</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pin_name</span> <span class="o">==</span> <span class="n">pin1_name</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Component: </span><span class="si">{</span><span class="n">comp1_id</span><span class="si">}</span><span class="s2"> and pin: </span><span class="si">{</span><span class="n">pin1_name</span><span class="si">}</span><span class="s2"> are &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;already in net_info with net_id </span><span class="si">{</span><span class="n">net_identity</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Component: </span><span class="si">{</span><span class="n">comp1_id</span><span class="si">}</span><span class="s2"> and pin: </span><span class="si">{</span><span class="n">pin1_name</span><span class="si">}</span><span class="s2"> are "</span>
+                    <span class="sa">f</span><span class="s2">"already in net_info with net_id </span><span class="si">{</span><span class="n">net_identity</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="mi">0</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">component_id</span> <span class="o">==</span> <span class="n">comp2_id</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pin_name</span> <span class="o">==</span> <span class="n">pin2_name</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Component: </span><span class="si">{</span><span class="n">comp2_id</span><span class="si">}</span><span class="s2"> and pin: </span><span class="si">{</span><span class="n">pin2_name</span><span class="si">}</span><span class="s2"> are &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;already in net_info with net_id </span><span class="si">{</span><span class="n">net_identity</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Component: </span><span class="si">{</span><span class="n">comp2_id</span><span class="si">}</span><span class="s2"> and pin: </span><span class="si">{</span><span class="n">pin2_name</span><span class="si">}</span><span class="s2"> are "</span>
+                    <span class="sa">f</span><span class="s2">"already in net_info with net_id </span><span class="si">{</span><span class="n">net_identity</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="mi">0</span>
 
@@ -611,7 +611,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
             <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span><span class="p">,</span> <span class="n">temp_df</span><span class="p">],</span>
             <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">join</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">,</span>
+            <span class="n">join</span><span class="o">=</span><span class="s2">"outer"</span><span class="p">,</span>
             <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">verify_integrity</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -623,27 +623,27 @@
 <div class="viewcode-block" id="QNet.delete_net_id">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.designs.QNet.html#qiskit_metal.designs.QNet.delete_net_id">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">delete_net_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net_id_to_remove</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes the two entries with net_id_to_remove. If id is in</span>
+<span class="w">        </span><span class="sd">"""Removes the two entries with net_id_to_remove. If id is in</span>
 <span class="sd">        _net_info, the entry will be removed.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            net_id_to_remove (int): The id to remove.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span><span class="p">[</span><span class="s2">&quot;net_id&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">net_id_to_remove</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span><span class="p">[</span><span class="s2">"net_id"</span><span class="p">]</span> <span class="o">!=</span> <span class="n">net_id_to_remove</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="QNet.delete_all_pins_for_component">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.designs.QNet.html#qiskit_metal.designs.QNet.delete_all_pins_for_component">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">delete_all_pins_for_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_id_to_remove</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all the pins for a given component id.</span>
+<span class="w">        </span><span class="sd">"""Delete all the pins for a given component id.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            component_id_to_remove (int): Component ID to remove</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            set: All deleted ids</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">all_net_id_deleted</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">net_identity</span><span class="p">,</span> <span class="n">component_id</span><span class="p">,</span> <span class="n">dummy_pin_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(</span>
@@ -659,16 +659,16 @@
 <div class="viewcode-block" id="QNet.get_components_and_pins_for_netid">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.designs.QNet.html#qiskit_metal.designs.QNet.get_components_and_pins_for_netid">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_components_and_pins_for_netid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net_id_search</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Search with a net_id to get component id and pin name.</span>
+<span class="w">        </span><span class="sd">"""Search with a net_id to get component id and pin name.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            net_id_search (int): Unique net id which connects two pins within a design.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pandas.DataFrame: Two rows of the net_info which have the same net_id_search.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">df_subset_based_on_net_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span><span class="p">[</span>
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span><span class="p">[</span><span class="s2">&quot;net_id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">net_id_search</span><span class="p">)</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_net_info</span><span class="p">[</span><span class="s2">"net_id"</span><span class="p">]</span> <span class="o">==</span> <span class="n">net_id_search</span><span class="p">)</span>
         <span class="p">]</span>
         <span class="k">return</span> <span class="n">df_subset_based_on_net_id</span></div>
 </div>
@@ -691,7 +691,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -714,6 +714,8 @@
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

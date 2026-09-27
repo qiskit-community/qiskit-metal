@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,10 +472,10 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;This is the main module that defines what an element is in Qiskit Metal.</span>
+<span class="sd">"""This is the main module that defines what an element is in Qiskit Metal.</span>
 
 <span class="sd">See the docstring of `QGeometryTables`</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
@@ -501,26 +501,26 @@
     <span class="kn">from</span><span class="w"> </span><span class="nn">..designs</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..qlibrary.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;QGeometryTables&quot;</span><span class="p">,</span> <span class="s2">&quot;is_qgeometry_table&quot;</span><span class="p">]</span>  <span class="c1"># , &#39;ElementTypes&#39;]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"QGeometryTables"</span><span class="p">,</span> <span class="s2">"is_qgeometry_table"</span><span class="p">]</span>  <span class="c1"># , 'ElementTypes']</span>
 
 <span class="c1"># from collections import OrderedDict</span>
 <span class="c1"># dict are ordered in Python 3.6+ by default, this is for backward compatibility</span>
 
 <span class="c1"># class ElementTypes:</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     Types of qgeometry</span>
 <span class="c1">#         positive : qgeometry that are positive mask</span>
 <span class="c1">#         negative : qgeometry that will be subtracted from the chip ground plane</span>
 <span class="c1">#         helper   : qgeometry that are only used in a helper capacity,</span>
 <span class="c1">#                    such as labels or mesh rectangles</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     positive = 0</span>
 <span class="c1">#     negative = 1</span>
 <span class="c1">#     helper   = 2</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">is_qgeometry_table</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if an object is a Metal BaseElementTable, i.e., an instance of</span>
+<span class="w">    </span><span class="sd">"""Check if an object is a Metal BaseElementTable, i.e., an instance of</span>
 <span class="sd">    `QGeometryTables`.</span>
 
 <span class="sd">    The problem is that the `isinstance` built-in method fails</span>
@@ -531,11 +531,11 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: True if is a Metal element</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Dict</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;__i_am_qgeometry_table__&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">"__i_am_qgeometry_table__"</span><span class="p">)</span>
 
 
 <span class="c1">#############################################################################</span>
@@ -606,19 +606,19 @@
     <span class="c1"># )</span>
     <span class="c1"># )</span>
 <span class="p">)</span>
-<span class="sd">&quot;&quot;&quot;Dictionary that specifies the column names of various element tables.&quot;&quot;&quot;</span>
+<span class="sd">"""Dictionary that specifies the column names of various element tables."""</span>
 
 <span class="c1">#############################################################################</span>
 <span class="c1">#</span>
 <span class="c1"># Class to create, store, and handle element tables.</span>
 <span class="c1">#</span>
-<span class="n">TRUE_BOOLS</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;Yes&quot;</span><span class="p">,</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">TRUE_BOOLS</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="s2">"True"</span><span class="p">,</span> <span class="s2">"true"</span><span class="p">,</span> <span class="s2">"Yes"</span><span class="p">,</span> <span class="s2">"yes"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="QGeometryTables">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">QGeometryTables</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to create, store, and handle element tables.</span>
+<span class="w">    </span><span class="sd">"""Class to create, store, and handle element tables.</span>
 
 <span class="sd">    A regular user would not need to create tables themselves.</span>
 <span class="sd">    This is handled automatically by the design creation and plugins.</span>
@@ -638,7 +638,7 @@
 <span class="sd">    For plugin developers:</span>
 <span class="sd">        In the following, we provide an example that illustrates for plugin developers how</span>
 <span class="sd">        to add custom qgeometry and custom element properties. For example, we will add, for a renderer</span>
-<span class="sd">        called hfss, a string property called &#39;boundary&#39;, a bool property called &#39;perfectE&#39;, and a property called &#39;material&#39;.</span>
+<span class="sd">        called hfss, a string property called 'boundary', a bool property called 'perfectE', and a property called 'material'.</span>
 
 <span class="sd">    For plugin developers, example use:</span>
 
@@ -652,8 +652,8 @@
 <span class="sd">            design.qgeometry = metal.QGeometryTables(design)</span>
 
 <span class="sd">            # return the path table - give access to ..</span>
-<span class="sd">            design.qgeometry[&#39;path&#39;]</span>
-<span class="sd">            design.qgeometry.table[&#39;path&#39;]</span>
+<span class="sd">            design.qgeometry['path']</span>
+<span class="sd">            design.qgeometry.table['path']</span>
 
 <span class="sd">            # Define interfaces</span>
 <span class="sd">            design.qgeometry.get_component(</span>
@@ -670,7 +670,7 @@
 <span class="sd">            :linenos:</span>
 <span class="sd">            :emphasize-lines: 1-15</span>
 
-<span class="sd">            metal.QGeometryTables.add_renderer_extension(&#39;hfss&#39;, dict(</span>
+<span class="sd">            metal.QGeometryTables.add_renderer_extension('hfss', dict(</span>
 <span class="sd">                base=dict(</span>
 <span class="sd">                    boundary=str,</span>
 <span class="sd">                    perfectE=bool,</span>
@@ -678,7 +678,7 @@
 <span class="sd">                    )</span>
 <span class="sd">                ))</span>
 
-<span class="sd">            metal.QGeometryTables.add_renderer_extension(&#39;gds&#39;, dict(</span>
+<span class="sd">            metal.QGeometryTables.add_renderer_extension('gds', dict(</span>
 <span class="sd">                path=dict(</span>
 <span class="sd">                    color=str,</span>
 <span class="sd">                    pcell=bool,</span>
@@ -688,9 +688,9 @@
 <span class="sd">            design = metal.designs.DesignPlanar()</span>
 <span class="sd">            qgeometry = metal.QGeometryTables(design)</span>
 
-<span class="sd">            qgeometry.tables[&#39;path&#39;]</span>
+<span class="sd">            qgeometry.tables['path']</span>
 <span class="sd">            &gt;&gt;&gt; component	name	geometry	layer	type	chip	subtract	fillet	color	width	hfss_boundary	hfss_perfectE	hfss_material	gds_color	gds_pcell</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Dummy private attribute used to check if an instanciated object is</span>
     <span class="c1"># indeed a element table class. The problem is that the `isinstance`</span>
@@ -699,21 +699,21 @@
     <span class="n">__i_am_qgeometry_table__</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="n">ELEMENT_COLUMNS</span> <span class="o">=</span> <span class="n">ELEMENT_COLUMNS</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Table column names to use to create.</span>
 <span class="sd">    This dict should be updated by renderers.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># For creating names of columns of renderer properties</span>
-    <span class="n">name_delimiter</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Delimiter to use when creating names of columns of renderer properties. &quot;&quot;&quot;</span>
+    <span class="n">name_delimiter</span> <span class="o">=</span> <span class="s2">"_"</span>
+<span class="w">    </span><span class="sd">""" Delimiter to use when creating names of columns of renderer properties. """</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The constructor for the `QGeometryTables` class.</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">"QDesign"</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The constructor for the `QGeometryTables` class.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            design: Design in use</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_design</span> <span class="o">=</span> <span class="n">design</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_tables</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
@@ -722,55 +722,55 @@
         <span class="c1"># self.create_tables()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">design</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a reference to the parent design object.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">design</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"QDesign"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return a reference to the parent design object."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_design</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">logger</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the logger.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the logger."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_design</span><span class="o">.</span><span class="n">logger</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">tables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">GeoDataFrame</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The dictionary of tables containing qgeometry.</span>
+<span class="w">        </span><span class="sd">"""The dictionary of tables containing qgeometry.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Dict_[str, GeoDataFrame]: The keys of this dictionary are</span>
 <span class="sd">            also obtained from `self.get_element_types()`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tables</span>
 
 <div class="viewcode-block" id="QGeometryTables.add_renderer_extension">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.add_renderer_extension">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_renderer_extension</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">qgeometry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add renderer element extension to ELEMENT_COLUMNS. Called when the</span>
+<span class="w">        </span><span class="sd">"""Add renderer element extension to ELEMENT_COLUMNS. Called when the</span>
 <span class="sd">        load function of a renderer is called.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            renderer_name (str): Name of renderer</span>
 <span class="sd">            qgeometry (dict):  dict of dict.  Keys give element type names,</span>
 <span class="sd">                              such as base, poly, path, etc.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Make sure that the base and all other element kinds have this renderer registered</span>
         <span class="k">for</span> <span class="n">element_key</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ELEMENT_COLUMNS</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">renderer_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ELEMENT_COLUMNS</span><span class="p">[</span><span class="n">element_key</span><span class="p">][</span><span class="s2">&quot;__renderers__&quot;</span><span class="p">]:</span>
-                <span class="bp">cls</span><span class="o">.</span><span class="n">ELEMENT_COLUMNS</span><span class="p">[</span><span class="n">element_key</span><span class="p">][</span><span class="s2">&quot;__renderers__&quot;</span><span class="p">][</span><span class="n">renderer_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">if</span> <span class="n">renderer_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ELEMENT_COLUMNS</span><span class="p">[</span><span class="n">element_key</span><span class="p">][</span><span class="s2">"__renderers__"</span><span class="p">]:</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">ELEMENT_COLUMNS</span><span class="p">[</span><span class="n">element_key</span><span class="p">][</span><span class="s2">"__renderers__"</span><span class="p">][</span><span class="n">renderer_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="nb">dict</span><span class="p">()</span>
                 <span class="p">)</span>
 
         <span class="c1"># Now update the dictionaries with all qgeometry that the renderer may have</span>
         <span class="k">for</span> <span class="n">element_key</span><span class="p">,</span> <span class="n">element_column_ext_dict</span> <span class="ow">in</span> <span class="n">qgeometry</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="c1"># The element the render is specifying is not in the specified qgeometry;</span>
-            <span class="c1"># then add it. This shouldn&#39;t really happen.</span>
+            <span class="c1"># then add it. This shouldn't really happen.</span>
             <span class="c1"># The rest of the renderer dict keys in __renderers__  are missing for</span>
             <span class="c1"># the created type. Avoid doing, else hope it works.</span>
             <span class="k">if</span> <span class="n">element_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ELEMENT_COLUMNS</span><span class="p">:</span>
                 <span class="bp">cls</span><span class="o">.</span><span class="n">ELEMENT_COLUMNS</span><span class="p">[</span><span class="n">element_key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">__renderers__</span><span class="o">=</span><span class="nb">dict</span><span class="p">())</span>
 
             <span class="c1"># Now add qgeometry</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">ELEMENT_COLUMNS</span><span class="p">[</span><span class="n">element_key</span><span class="p">][</span><span class="s2">&quot;__renderers__&quot;</span><span class="p">][</span><span class="n">renderer_name</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">ELEMENT_COLUMNS</span><span class="p">[</span><span class="n">element_key</span><span class="p">][</span><span class="s2">"__renderers__"</span><span class="p">][</span><span class="n">renderer_name</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                 <span class="n">element_column_ext_dict</span>
             <span class="p">)</span></div>
 
@@ -781,29 +781,29 @@
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.get_element_types">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_element_types</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the names of the available qgeometry to create. This does not</span>
-<span class="sd">        include &#39;base&#39;, but is rather such as poly and path.</span>
+<span class="w">        </span><span class="sd">"""Return the names of the available qgeometry to create. This does not</span>
+<span class="sd">        include 'base', but is rather such as poly and path.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list(str) : A list of name in self.ELEMENT_COLUMNS</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># TODO: I should probably make this a variable and memorize, only change when qgeometry are added and removed</span>
         <span class="c1"># can be slow for performance to look up each time and recalculate, since may call this often</span>
         <span class="n">names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ELEMENT_COLUMNS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">names</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">)</span>
+        <span class="n">names</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">"base"</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">names</span></div>
 
 
 <div class="viewcode-block" id="QGeometryTables.create_tables">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.create_tables">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">create_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates the default tables once. Populates the dict &#39;tables&#39; of</span>
+<span class="w">        </span><span class="sd">"""Creates the default tables once. Populates the dict 'tables' of</span>
 <span class="sd">        GeoDataFrame, each with columns corresponding to the types of qgeometry</span>
 <span class="sd">        defined in ELEMENT_COLUMNS.</span>
 
 <span class="sd">        Should only be done once when a new design is created.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Creating Element Tables.&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Creating Element Tables."</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">():</span>
             <span class="c1"># Create GeoDataFrame with correct columns and d types</span>
@@ -814,18 +814,18 @@
             <span class="c1"># Base names, add concrete names, then add renderer names</span>
 
             <span class="c1"># Base names</span>
-            <span class="n">columns_base</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ELEMENT_COLUMNS</span><span class="p">[</span><span class="s2">&quot;base&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">columns_base_renderers</span> <span class="o">=</span> <span class="n">columns_base</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__renderers__&quot;</span><span class="p">)</span>
+            <span class="n">columns_base</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ELEMENT_COLUMNS</span><span class="p">[</span><span class="s2">"base"</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">columns_base_renderers</span> <span class="o">=</span> <span class="n">columns_base</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"__renderers__"</span><span class="p">)</span>
 
             <span class="c1"># Concrete names</span>
             <span class="n">columns_concrete</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ELEMENT_COLUMNS</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">columns_concrete_renderer</span> <span class="o">=</span> <span class="n">columns_concrete</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__renderers__&quot;</span><span class="p">)</span>
+            <span class="n">columns_concrete_renderer</span> <span class="o">=</span> <span class="n">columns_concrete</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"__renderers__"</span><span class="p">)</span>
 
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns_base_renderers</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
                 <span class="n">columns_concrete_renderer</span><span class="p">,</span> <span class="nb">dict</span>
             <span class="p">),</span> <span class="p">(</span>
-                <span class="s2">&quot;Please make sure that all qgeometry types have __renderers__</span><span class="se">\</span>
-<span class="s2">                     which is a dictionary.&quot;</span>
+                <span class="s2">"Please make sure that all qgeometry types have __renderers__</span><span class="se">\</span>
+<span class="s2">                     which is a dictionary."</span>
             <span class="p">)</span>
 
             <span class="c1"># Combine all base names and renderer names</span>
@@ -849,7 +849,7 @@
 
             <span class="c1"># Create df with correct column names</span>
             <span class="n">table</span> <span class="o">=</span> <span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">data_frame_empty_typed</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
-            <span class="c1"># not used elsewhere, also the name becomes &quot;name&quot; for some reason</span>
+            <span class="c1"># not used elsewhere, also the name becomes "name" for some reason</span>
             <span class="n">table</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">table_name</span>
 
             <span class="c1"># Assign</span>
@@ -857,39 +857,39 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_validate_column_dictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate A possible error here is if the user did not pass a valid</span>
+<span class="w">        </span><span class="sd">"""Validate A possible error here is if the user did not pass a valid</span>
 <span class="sd">        data type.</span>
 
 <span class="sd">        Throws an error if not valid.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            table_name (str): Name of element table (e.g., &#39;poly&#39;)</span>
+<span class="sd">            table_name (str): Name of element table (e.g., 'poly')</span>
 <span class="sd">            column_dict (dict): Dictionary to check</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            TypeError: Data type &#39;&#39; not understood</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">__pre</span> <span class="o">=</span> <span class="s2">&quot;ERROR CREATING ELEMENT TABLE FOR DESIGN: </span><span class="se">\</span>
+<span class="sd">            TypeError: Data type '' not understood</span>
+<span class="sd">        """</span>
+        <span class="n">__pre</span> <span class="o">=</span> <span class="s2">"ERROR CREATING ELEMENT TABLE FOR DESIGN: </span><span class="se">\</span>
 <span class="s2">            </span><span class="se">\n</span><span class="s2">  ELEMENT_TABLE_NAME = </span><span class="si">{table_name}</span><span class="se">\</span>
 <span class="s2">            </span><span class="se">\n</span><span class="s2">  KEY                = </span><span class="si">{k}</span><span class="s2"> </span><span class="se">\</span>
-<span class="s2">            </span><span class="se">\n</span><span class="s2">  VALUE              = </span><span class="si">{v}</span><span class="se">\n</span><span class="s2"> &quot;</span>
+<span class="s2">            </span><span class="se">\n</span><span class="s2">  VALUE              = </span><span class="si">{v}</span><span class="se">\n</span><span class="s2"> "</span>
 
         <span class="c1"># Are these assertions still holding true?</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">column_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="p">(</span>
-                <span class="n">__pre</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; Key needs to be a string!&quot;</span>
+                <span class="n">__pre</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span> <span class="o">+</span> <span class="s2">" Key needs to be a string!"</span>
             <span class="p">)</span>
             <span class="k">assert</span> <span class="n">k</span><span class="o">.</span><span class="n">isidentifier</span><span class="p">(),</span> <span class="p">(</span>
-                <span class="n">__pre</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; Key needs to be a valid string identifier!&quot;</span>
+                <span class="n">__pre</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span> <span class="o">+</span> <span class="s2">" Key needs to be a valid string identifier!"</span>
             <span class="p">)</span>
             <span class="k">assert</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="p">(</span>
-                <span class="n">__pre</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; Value needs to be a class!&quot;</span>
+                <span class="n">__pre</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span> <span class="o">+</span> <span class="s2">" Value needs to be a class!"</span>
             <span class="p">)</span>
 
 <div class="viewcode-block" id="QGeometryTables.get_rname">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.get_rname">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_rname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get name for renderer property.</span>
+<span class="w">        </span><span class="sd">"""Get name for renderer property.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            renderer_name (str): Name of the renderer</span>
@@ -897,12 +897,12 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: The unique named used as a column in the table</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">renderer_name</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name_delimiter</span> <span class="o">+</span> <span class="n">key</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_prepend_renderer_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">renderer_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rdict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepare all the renderer names.</span>
+<span class="w">        </span><span class="sd">"""Prepare all the renderer names.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            table_name (str): Unused</span>
@@ -914,7 +914,7 @@
 
 <span class="sd">        TODO:</span>
 <span class="sd">            This function has arguments that are unused, fix the function or ditch the unused args</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_rname</span><span class="p">(</span><span class="n">renderer_key</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="n">v</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">rdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">renderer_key</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
@@ -930,21 +930,21 @@
         <span class="n">subtract</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">helper</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">layer</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># chip will be here</span>
-        <span class="n">chip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span>
+        <span class="n">chip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"main"</span><span class="p">,</span>
         <span class="o">**</span><span class="n">other_options</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Main interface to add qgeometries.</span>
+<span class="w">        </span><span class="sd">"""Main interface to add qgeometries.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            kind (str): Must be in get_element_types (&#39;path&#39;, &#39;poly&#39;, etc.).</span>
+<span class="sd">            kind (str): Must be in get_element_types ('path', 'poly', etc.).</span>
 <span class="sd">            component_name (str): Component name.</span>
 <span class="sd">            geometry (dict): Dict of shapely geometry.</span>
 <span class="sd">            subtract (bool): Subtract - passed through.  Defaults to False.</span>
 <span class="sd">            helper (bool): Helper - passed through.  Defaults to False.</span>
 <span class="sd">            layer (Union[int, str]): Layer - passed through.  Defaults to 1.</span>
-<span class="sd">            chip (str): Chip name - passed through.  Defaults to &#39;main&#39;.</span>
+<span class="sd">            chip (str): Chip name - passed through.  Defaults to 'main'.</span>
 <span class="sd">            **other_options (object): Other_options - passed through.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># TODO: Add unit test</span>
 
         <span class="c1"># ensure correct types</span>
@@ -955,24 +955,24 @@
 
         <span class="k">if</span> <span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Creator user error: Unknown element kind=`</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">`&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Kind must be in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">()</span><span class="si">}</span><span class="s2">. This failed for component&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;name = `</span><span class="si">{</span><span class="n">component_name</span><span class="si">}</span><span class="s2">`.</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot; The call was with subtract=</span><span class="si">{</span><span class="n">subtract</span><span class="si">}</span><span class="s2"> and helper=</span><span class="si">{</span><span class="n">helper</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot; and layer=</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">, and options=</span><span class="si">{</span><span class="n">other_options</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Creator user error: Unknown element kind=`</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">`"</span>
+                <span class="sa">f</span><span class="s2">"Kind must be in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">()</span><span class="si">}</span><span class="s2">. This failed for component"</span>
+                <span class="sa">f</span><span class="s2">"name = `</span><span class="si">{</span><span class="n">component_name</span><span class="si">}</span><span class="s2">`.</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">" The call was with subtract=</span><span class="si">{</span><span class="n">subtract</span><span class="si">}</span><span class="s2"> and helper=</span><span class="si">{</span><span class="n">helper</span><span class="si">}</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">" and layer=</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">, and options=</span><span class="si">{</span><span class="n">other_options</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
         <span class="c1"># Checks if (any) of the geometry are MultiPolygons, and breaks them up into</span>
         <span class="c1"># individual polygons. Rounds the coordinate sequences of those values to avoid</span>
         <span class="c1"># numerical errors.</span>
-        <span class="n">rounding_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="p">[</span><span class="s2">&quot;PRECISION&quot;</span><span class="p">]</span>
+        <span class="n">rounding_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="p">[</span><span class="s2">"PRECISION"</span><span class="p">]</span>
         <span class="n">new_dict</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">geometry</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">MultiPolygon</span><span class="p">):</span>
                 <span class="n">temp_multi</span> <span class="o">=</span> <span class="n">geometry</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
                 <span class="n">shape_count</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="k">for</span> <span class="n">shape_temp</span> <span class="ow">in</span> <span class="n">temp_multi</span><span class="o">.</span><span class="n">geoms</span><span class="p">:</span>
-                    <span class="n">new_dict</span><span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">shape_count</span><span class="p">)]</span> <span class="o">=</span> <span class="n">round_coordinate_sequence</span><span class="p">(</span>
+                    <span class="n">new_dict</span><span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">shape_count</span><span class="p">)]</span> <span class="o">=</span> <span class="n">round_coordinate_sequence</span><span class="p">(</span>
                         <span class="n">shape_temp</span><span class="p">,</span> <span class="n">rounding_val</span>
                     <span class="p">)</span>
                     <span class="n">shape_count</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -982,7 +982,7 @@
         <span class="n">geometry</span> <span class="o">=</span> <span class="n">new_dict</span>
 
         <span class="c1"># Create options TODO: Might want to modify this (component_name -&gt; component_id)</span>
-        <span class="c1"># Give warning if length is to be fillet&#39;s and not long enough.</span>
+        <span class="c1"># Give warning if length is to be fillet's and not long enough.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_lengths</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="o">**</span><span class="n">other_options</span><span class="p">)</span>
 
         <span class="c1"># Create options</span>
@@ -997,7 +997,7 @@
 
         <span class="c1"># replaces line above to generate the options.</span>
         <span class="c1"># for keyC in design.qgeometry.tables[kind].columns:</span>
-        <span class="c1">#    if keyC != &#39;geometry&#39;:</span>
+        <span class="c1">#    if keyC != 'geometry':</span>
         <span class="c1">#        options[keyC] = ???[keyC] -&gt; alternative manner to pass options to the add_qgeometry function?</span>
         <span class="c1">#                                       instead have the add_qeometry in baseComponent generate the dict?</span>
 
@@ -1006,8 +1006,8 @@
 
         <span class="c1"># assert that all names in options are in table columns! TODO: New approach will not be wanting</span>
         <span class="c1"># to do this (maybe check that all columns are in options?)</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">GeoDataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">])</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">GeoDataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">"index"</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"geometry"</span><span class="p">])</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"name"</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
@@ -1016,7 +1016,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">kind</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
             <span class="p">[</span><span class="n">table</span><span class="p">,</span> <span class="n">df</span><span class="p">],</span>
             <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">join</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">,</span>
+            <span class="n">join</span><span class="o">=</span><span class="s2">"outer"</span><span class="p">,</span>
             <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">verify_integrity</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1032,17 +1032,17 @@
         <span class="n">component_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="o">**</span><span class="n">other_options</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;If user wants to fillet, check the line-segments to see if it is too</span>
+<span class="w">        </span><span class="sd">"""If user wants to fillet, check the line-segments to see if it is too</span>
 <span class="sd">        short for fillet.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            geometry (shapely.geometry.base.BaseGeometry): The LineString to investigate.</span>
-<span class="sd">            kind (str): Name of table, i.e. &#39;path&#39;, &#39;poly&#39;, &#39;junction, etc</span>
+<span class="sd">            kind (str): Name of table, i.e. 'path', 'poly', 'junction, etc</span>
 <span class="sd">            component_name (str): Is an integer id.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="k">if</span> <span class="s2">&quot;fillet&quot;</span> <span class="ow">in</span> <span class="n">other_options</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">fillet</span> <span class="o">=</span> <span class="n">other_options</span><span class="p">[</span><span class="s2">&quot;fillet&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">"fillet"</span> <span class="ow">in</span> <span class="n">other_options</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">fillet</span> <span class="o">=</span> <span class="n">other_options</span><span class="p">[</span><span class="s2">"fillet"</span><span class="p">]</span>
 
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">geom</span> <span class="ow">in</span> <span class="n">geometry</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">LineString</span><span class="p">):</span>
@@ -1053,35 +1053,35 @@
                     <span class="p">)</span>
 
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">range_vertex_of_short_segments</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                        <span class="n">range_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                        <span class="n">range_string</span> <span class="o">=</span> <span class="s2">""</span>
                         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">range_vertex_of_short_segments</span><span class="p">:</span>
-                            <span class="n">range_string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">) &quot;</span>
+                            <span class="n">range_string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">) "</span>
                         <span class="n">text_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">_name</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;For </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2"> table, component=</span><span class="si">{</span><span class="n">text_id</span><span class="si">}</span><span class="s2">, key=</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
-                            <span class="sa">f</span><span class="s2">&quot; has short segments that could cause issues with fillet. Values in </span><span class="si">{</span><span class="n">range_string</span><span class="si">}</span><span class="s2"> &quot;</span>
-                            <span class="sa">f</span><span class="s2">&quot;are index(es) in shapely geometry.&quot;</span>
+                            <span class="sa">f</span><span class="s2">"For </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2"> table, component=</span><span class="si">{</span><span class="n">text_id</span><span class="si">}</span><span class="s2">, key=</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">"</span>
+                            <span class="sa">f</span><span class="s2">" has short segments that could cause issues with fillet. Values in </span><span class="si">{</span><span class="n">range_string</span><span class="si">}</span><span class="s2"> "</span>
+                            <span class="sa">f</span><span class="s2">"are index(es) in shapely geometry."</span>
                         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QGeometryTables.parse_value">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.parse_value">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Same as design.parse_value. See design for help.</span>
+<span class="w">        </span><span class="sd">"""Same as design.parse_value. See design for help.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Parsed value of input.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QGeometryTables.clear_all_tables">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.clear_all_tables">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">clear_all_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear all the internal tables and all else.</span>
+<span class="w">        </span><span class="sd">"""Clear all the internal tables and all else.</span>
 
 <span class="sd">        Use when clearing a design and starting from scratch.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_tables</span><span class="p">()</span>  <span class="c1"># remake all tables</span></div>
 
@@ -1089,56 +1089,56 @@
 <div class="viewcode-block" id="QGeometryTables.delete_component">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.delete_component">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">delete_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete component by name.</span>
+<span class="w">        </span><span class="sd">"""Delete component by name.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Name of component (case sensitive)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># TODO: Add unit test</span>
         <span class="c1"># TODO: is this the best way to do this, or is there a faster way?</span>
         <span class="n">a_comp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">a_comp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>
                 <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">a_comp</span><span class="o">.</span><span class="n">id</span><span class="p">]</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]</span> <span class="o">!=</span> <span class="n">a_comp</span><span class="o">.</span><span class="n">id</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="QGeometryTables.delete_component_id">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.delete_component_id">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">delete_component_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Drop the components within the qgeometry.tables.</span>
+<span class="w">        </span><span class="sd">"""Drop the components within the qgeometry.tables.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            component_id (int): Unique number to describe the component.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>
             <span class="n">df_table_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span>
-            <span class="c1"># self.tables[table_name] = df_table_name.drop(df_table_name[df_table_name[&#39;component&#39;] == component_id].index)</span>
+            <span class="c1"># self.tables[table_name] = df_table_name.drop(df_table_name[df_table_name['component'] == component_id].index)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_table_name</span><span class="p">[</span>
-                <span class="n">df_table_name</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">component_id</span>
+                <span class="n">df_table_name</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]</span> <span class="o">!=</span> <span class="n">component_id</span>
             <span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="QGeometryTables.get_component">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.get_component">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_component</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"all"</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">GeoDataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">GeoDataFrame</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the table for just a given component. If all, returns a</span>
+<span class="w">        </span><span class="sd">"""Return the table for just a given component. If all, returns a</span>
 <span class="sd">        dictionary with keys as table names and tables of components as values.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Name of component (case sensitive).  Defaults to &#39;all&#39;.</span>
-<span class="sd">            table_name (str): Element table name (&#39;poly&#39;, &#39;path&#39;, etc.).  Defaults to {&#39;all&#39;}.</span>
+<span class="sd">            name (str): Name of component (case sensitive).  Defaults to 'all'.</span>
+<span class="sd">            table_name (str): Element table name ('poly', 'path', etc.).  Defaults to {'all'}.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Union[GeoDataFrame, Dict_[str, GeoDataFrame]]: Either a GeoDataFrame or a dict or GeoDataFrame.</span>
 
 <span class="sd">        Example usage:</span>
-<span class="sd">            ```table = pd.concat(qgeometry.get_component(&#39;Q1&#39;)) # , axis=0```</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">            ```table = pd.concat(qgeometry.get_component('Q1')) # , axis=0```</span>
+<span class="sd">        """</span>
 
-        <span class="k">if</span> <span class="n">table_name</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">table_name</span> <span class="o">==</span> <span class="s2">"all"</span><span class="p">:</span>
             <span class="n">tables</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">():</span>
                 <span class="n">tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_component</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">table_name</span><span class="p">)</span>
@@ -1159,7 +1159,7 @@
 <div class="viewcode-block" id="QGeometryTables.get_component_bounds">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.get_component_bounds">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_component_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a tuple containing minx, miny, maxx, maxy values for the</span>
+<span class="w">        </span><span class="sd">"""Returns a tuple containing minx, miny, maxx, maxy values for the</span>
 <span class="sd">        bounds of the component as a whole.</span>
 
 <span class="sd">        Args:</span>
@@ -1167,7 +1167,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Geometry: Bare element geometry</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">gs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_component_geometry</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>  <span class="c1"># Pandas GeoSeries</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -1178,12 +1178,12 @@
 <div class="viewcode-block" id="QGeometryTables.rename_component">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.rename_component">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">rename_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">new_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rename component by ID (integer) cast to string format.</span>
+<span class="w">        </span><span class="sd">"""Rename component by ID (integer) cast to string format.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            component_id (int) : ID of component (case sensitive)</span>
 <span class="sd">            new_name (str) : The new name of the component (case sensitive)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># comp_id = self.design.components[name].id</span>
         <span class="n">component_int_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">component_id</span><span class="p">)</span>
@@ -1194,27 +1194,27 @@
             <span class="c1"># TODO: is this the best way to do this, or is there a faster way?</span>
             <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span><span class="o">.</span><span class="n">component</span> <span class="o">==</span> <span class="n">a_comp</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;component&quot;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span><span class="o">.</span><span class="n">component</span> <span class="o">==</span> <span class="n">a_comp</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">"component"</span>
                 <span class="p">]</span> <span class="o">=</span> <span class="n">new_name</span></div>
 
 
 <div class="viewcode-block" id="QGeometryTables.get_component_geometry_list">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.get_component_geometry_list">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_component_geometry_list</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"all"</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseGeometry</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return just the bare element geometry (shapely geometry objects) as</span>
+<span class="w">        </span><span class="sd">"""Return just the bare element geometry (shapely geometry objects) as</span>
 <span class="sd">        a list, for the selected component.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str) : Name of component (case sensitive)</span>
-<span class="sd">            table_name (str) : Element type (&#39;poly&#39;, &#39;path&#39;, etc.).</span>
-<span class="sd">                               Can also be &#39;all&#39; to return all. This is the default.</span>
+<span class="sd">            table_name (str) : Element type ('poly', 'path', etc.).</span>
+<span class="sd">                               Can also be 'all' to return all. This is the default.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of shapley.geometry objects</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">table_name</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">table_name</span> <span class="o">==</span> <span class="s2">"all"</span><span class="p">:</span>
             <span class="n">qgeometry</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">():</span>
                 <span class="n">qgeometry</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_component_geometry_list</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
@@ -1230,14 +1230,14 @@
 <div class="viewcode-block" id="QGeometryTables.get_component_geometry">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.get_component_geometry">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_component_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GeoSeries</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns geometry of a given component.</span>
+<span class="w">        </span><span class="sd">"""Returns geometry of a given component.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str) : Name of component (case sensitive)</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            GeoSeries : Geometry of the component</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">comp_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
         <span class="n">qgeometry</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">():</span>
@@ -1255,20 +1255,20 @@
 <div class="viewcode-block" id="QGeometryTables.get_component_geometry_dict">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.get_component_geometry_dict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_component_geometry_dict</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"all"</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseGeometry</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return just the bare element geometry (shapely geometry objects) as</span>
+<span class="w">        </span><span class="sd">"""Return just the bare element geometry (shapely geometry objects) as</span>
 <span class="sd">        a dict, with key being the names of the qgeometry and the values as the</span>
 <span class="sd">        shapely geometry, for the selected component.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str) : Name of component (case sensitive)</span>
-<span class="sd">            table_name (str) : Element type (&#39;poly&#39;, &#39;path&#39;, etc.). Defaults to &#39;all&#39;.</span>
+<span class="sd">            table_name (str) : Element type ('poly', 'path', etc.). Defaults to 'all'.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Bare element geometry</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">table_name</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">table_name</span> <span class="o">==</span> <span class="s2">"all"</span><span class="p">:</span>
             <span class="n">qgeometry</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">():</span>
                 <span class="n">qgeometry</span><span class="p">[</span><span class="n">table</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_component_geometry_list</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
@@ -1279,7 +1279,7 @@
 
             <span class="c1"># mask the rows nad get only 2 columns</span>
             <span class="n">comp_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
-            <span class="n">df_comp_id</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">component</span> <span class="o">==</span> <span class="n">comp_id</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;geometry&quot;</span><span class="p">]]</span>
+            <span class="n">df_comp_id</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">component</span> <span class="o">==</span> <span class="n">comp_id</span><span class="p">,</span> <span class="p">[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"geometry"</span><span class="p">]]</span>
             <span class="n">df_geometry</span> <span class="o">=</span> <span class="n">df_comp_id</span><span class="o">.</span><span class="n">geometry</span>
             <span class="n">df_geometry</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df_comp_id</span><span class="o">.</span><span class="n">name</span>
             <span class="k">return</span> <span class="n">df_geometry</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
@@ -1288,19 +1288,19 @@
 <div class="viewcode-block" id="QGeometryTables.check_element_type">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.check_element_type">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_element_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">log_issue</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the name `table_name` is in the element tables.</span>
+<span class="w">        </span><span class="sd">"""Check if the name `table_name` is in the element tables.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            table_name (str): Element type (&#39;poly&#39;, &#39;path&#39;, etc.) or &#39;all&#39;</span>
+<span class="sd">            table_name (str): Element type ('poly', 'path', etc.) or 'all'</span>
 <span class="sd">            log_issue (bool): Throw an error in the log if name missing.  Defaults to True.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: True if the name is valid, else False</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">table_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">()</span> <span class="ow">or</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">table_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">()</span> <span class="ow">or</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="s2">"all"</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">log_issue</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Element Tables: Tried to access non-existing element table: `</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">`&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Element Tables: Tried to access non-existing element table: `</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">`"</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1312,7 +1312,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get_all_unique_layers_for_all_tables</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">qcomp_ids</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a list of all unique layer number used in all of the geometry tables.</span>
+<span class="w">        </span><span class="sd">"""Get a list of all unique layer number used in all of the geometry tables.</span>
 <span class="sd">        User can get for all components or a subset.</span>
 
 <span class="sd">        Args:</span>
@@ -1321,7 +1321,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: The unique layer numbers for the list of component ids passed in argument.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">qcomp_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">qcomp_ids</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">frames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -1331,15 +1331,15 @@
             <span class="c1"># use all components</span>
             <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">a_df</span><span class="p">]</span> <span class="k">for</span> <span class="n">a_df</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Use just the component ID&#39;s in qcomp_ids.</span>
+            <span class="c1"># Use just the component ID's in qcomp_ids.</span>
             <span class="k">for</span> <span class="n">table_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>
                 <span class="n">temp_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">table_key</span><span class="p">]</span>
-                <span class="n">mask_temp</span> <span class="o">=</span> <span class="n">temp_df</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">qcomp_ids</span><span class="p">)</span>
+                <span class="n">mask_temp</span> <span class="o">=</span> <span class="n">temp_df</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">qcomp_ids</span><span class="p">)</span>
                 <span class="n">subset_temp_df</span> <span class="o">=</span> <span class="n">temp_df</span><span class="p">[</span><span class="n">mask_temp</span><span class="p">]</span>
                 <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subset_temp_df</span><span class="p">)</span>
 
         <span class="c1"># Concat the frames and then determine the unique layer numbers.</span>
-        <span class="n">unique_layers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+        <span class="n">unique_layers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s2">"layer"</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
 
         <span class="k">return</span> <span class="n">unique_layers</span></div>
 
@@ -1347,19 +1347,19 @@
 <div class="viewcode-block" id="QGeometryTables.get_all_unique_layers">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html#qiskit_metal.qgeometries.QGeometryTables.get_all_unique_layers">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_all_unique_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chip_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a lit of unique layers for the given chip names.</span>
+<span class="w">        </span><span class="sd">"""Returns a lit of unique layers for the given chip names.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            chip_name (str): Name of the chip</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of unique layers</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">unique_layers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">():</span>
             <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span>
-            <span class="n">temp</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="p">[</span><span class="s2">&quot;chip&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">chip_name</span><span class="p">]</span>
-            <span class="n">layers</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="p">[</span><span class="s2">"chip"</span><span class="p">]</span> <span class="o">==</span> <span class="n">chip_name</span><span class="p">]</span>
+            <span class="n">layers</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
             <span class="n">unique_layers</span> <span class="o">+=</span> <span class="n">layers</span>
         <span class="n">unique_layers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">unique_layers</span><span class="p">))</span>
 
@@ -1384,7 +1384,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -1407,6 +1407,8 @@
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

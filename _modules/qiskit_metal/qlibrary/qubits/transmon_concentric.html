@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,7 +472,7 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;Concentric Transmon.&quot;&quot;&quot;</span>
+<span class="sd">"""Concentric Transmon."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -483,7 +483,7 @@
 <div class="viewcode-block" id="TransmonConcentric">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonConcentric.html#qiskit_metal.qlibrary.TransmonConcentric">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TransmonConcentric</span><span class="p">(</span><span class="n">BaseQubit</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The base `TrasmonConcentric` class .</span>
+<span class="w">    </span><span class="sd">"""The base `TrasmonConcentric` class .</span>
 
 <span class="sd">    Inherits `BaseQubit` class.</span>
 
@@ -504,54 +504,54 @@
 <span class="sd">          (if any) connection lines of the qubit.</span>
 
 <span class="sd">    Default Options:</span>
-<span class="sd">        * width: &#39;1000um&#39; -- Width of transmon pocket</span>
-<span class="sd">        * height: &#39;1000um&#39; -- Height of transmon pocket</span>
-<span class="sd">        * rad_o: &#39;170um&#39; -- Outer radius</span>
-<span class="sd">        * rad_i: &#39;115um&#39; -- Inner radius</span>
-<span class="sd">        * gap: &#39;35um&#39; -- Radius of gap between two pads</span>
-<span class="sd">        * jj_w: &#39;10um&#39; -- Josephson Junction width</span>
-<span class="sd">        * res_s: &#39;100um&#39; -- Space between top electrode and readout resonator</span>
-<span class="sd">        * res_ext: &#39;100um&#39; -- Extension of readout resonator in x-direction</span>
+<span class="sd">        * width: '1000um' -- Width of transmon pocket</span>
+<span class="sd">        * height: '1000um' -- Height of transmon pocket</span>
+<span class="sd">        * rad_o: '170um' -- Outer radius</span>
+<span class="sd">        * rad_i: '115um' -- Inner radius</span>
+<span class="sd">        * gap: '35um' -- Radius of gap between two pads</span>
+<span class="sd">        * jj_w: '10um' -- Josephson Junction width</span>
+<span class="sd">        * res_s: '100um' -- Space between top electrode and readout resonator</span>
+<span class="sd">        * res_ext: '100um' -- Extension of readout resonator in x-direction</span>
 <span class="sd">          beyond midpoint of transmon</span>
-<span class="sd">        * fbl_rad: &#39;100um&#39; -- Radius of the flux bias line loop</span>
-<span class="sd">        * fbl_sp: &#39;100um&#39; -- Spacing between metal pad and flux bias loop</span>
-<span class="sd">        * fbl_gap: &#39;80um&#39; -- Space between parallel lines of the flux bias loop</span>
-<span class="sd">        * fbl_ext: &#39;300um&#39; -- Run length of flux bias line between circular</span>
+<span class="sd">        * fbl_rad: '100um' -- Radius of the flux bias line loop</span>
+<span class="sd">        * fbl_sp: '100um' -- Spacing between metal pad and flux bias loop</span>
+<span class="sd">        * fbl_gap: '80um' -- Space between parallel lines of the flux bias loop</span>
+<span class="sd">        * fbl_ext: '300um' -- Run length of flux bias line between circular</span>
 <span class="sd">          loop and edge of pocket</span>
-<span class="sd">        * pocket_w: &#39;1500um&#39; -- Transmon pocket width</span>
-<span class="sd">        * pocket_h: &#39;1000um&#39; -- Transmon pocket height</span>
-<span class="sd">        * cpw_width: &#39;10.0um&#39; -- Width of the readout resonator and flux bias line</span>
-<span class="sd">        * layer: &#39;1&#39; -- the design layer where the component will go</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        * pocket_w: '1500um' -- Transmon pocket width</span>
+<span class="sd">        * pocket_h: '1000um' -- Transmon pocket height</span>
+<span class="sd">        * cpw_width: '10.0um' -- Width of the readout resonator and flux bias line</span>
+<span class="sd">        * layer: '1' -- the design layer where the component will go</span>
+<span class="sd">    """</span>
 
     <span class="c1"># default drawing options</span>
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">width</span><span class="o">=</span><span class="s2">&quot;1000um&quot;</span><span class="p">,</span>  <span class="c1"># width of transmon pocket</span>
-        <span class="n">height</span><span class="o">=</span><span class="s2">&quot;1000um&quot;</span><span class="p">,</span>  <span class="c1"># height of transmon pocket</span>
-        <span class="n">rad_o</span><span class="o">=</span><span class="s2">&quot;170um&quot;</span><span class="p">,</span>  <span class="c1"># outer radius</span>
-        <span class="n">rad_i</span><span class="o">=</span><span class="s2">&quot;115um&quot;</span><span class="p">,</span>  <span class="c1"># inner radius</span>
-        <span class="n">gap</span><span class="o">=</span><span class="s2">&quot;35um&quot;</span><span class="p">,</span>  <span class="c1"># radius of gap between two pads</span>
-        <span class="n">jj_w</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>  <span class="c1"># Josephson Junction width</span>
-        <span class="n">res_s</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>  <span class="c1"># space between top electrode and readout resonator</span>
-        <span class="n">res_ext</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>  <span class="c1"># extension of readout resonator in x-direction beyond midpoint of transmon</span>
-        <span class="n">fbl_rad</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>  <span class="c1"># radius of the flux bias line loop</span>
-        <span class="n">fbl_sp</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>  <span class="c1"># spacing between metal pad and flux bias loop</span>
-        <span class="n">fbl_gap</span><span class="o">=</span><span class="s2">&quot;80um&quot;</span><span class="p">,</span>  <span class="c1"># space between parallel lines of the flux bias loop</span>
-        <span class="n">fbl_ext</span><span class="o">=</span><span class="s2">&quot;300um&quot;</span><span class="p">,</span>  <span class="c1"># run length of flux bias line between circular loop and edge of pocket</span>
-        <span class="n">pocket_w</span><span class="o">=</span><span class="s2">&quot;1500um&quot;</span><span class="p">,</span>  <span class="c1"># transmon pocket width</span>
-        <span class="n">pocket_h</span><span class="o">=</span><span class="s2">&quot;1000um&quot;</span><span class="p">,</span>  <span class="c1"># transmon pocket height</span>
-        <span class="n">cpw_width</span><span class="o">=</span><span class="s2">&quot;10.0um&quot;</span><span class="p">,</span>  <span class="c1"># width of the readout resonator and flux bias line</span>
-        <span class="n">inductor_width</span><span class="o">=</span><span class="s2">&quot;5.0um&quot;</span><span class="p">,</span>  <span class="c1"># width of the Josephson Junctions</span>
-        <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>  <span class="c1"># design layer</span>
+        <span class="n">width</span><span class="o">=</span><span class="s2">"1000um"</span><span class="p">,</span>  <span class="c1"># width of transmon pocket</span>
+        <span class="n">height</span><span class="o">=</span><span class="s2">"1000um"</span><span class="p">,</span>  <span class="c1"># height of transmon pocket</span>
+        <span class="n">rad_o</span><span class="o">=</span><span class="s2">"170um"</span><span class="p">,</span>  <span class="c1"># outer radius</span>
+        <span class="n">rad_i</span><span class="o">=</span><span class="s2">"115um"</span><span class="p">,</span>  <span class="c1"># inner radius</span>
+        <span class="n">gap</span><span class="o">=</span><span class="s2">"35um"</span><span class="p">,</span>  <span class="c1"># radius of gap between two pads</span>
+        <span class="n">jj_w</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>  <span class="c1"># Josephson Junction width</span>
+        <span class="n">res_s</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>  <span class="c1"># space between top electrode and readout resonator</span>
+        <span class="n">res_ext</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>  <span class="c1"># extension of readout resonator in x-direction beyond midpoint of transmon</span>
+        <span class="n">fbl_rad</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>  <span class="c1"># radius of the flux bias line loop</span>
+        <span class="n">fbl_sp</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>  <span class="c1"># spacing between metal pad and flux bias loop</span>
+        <span class="n">fbl_gap</span><span class="o">=</span><span class="s2">"80um"</span><span class="p">,</span>  <span class="c1"># space between parallel lines of the flux bias loop</span>
+        <span class="n">fbl_ext</span><span class="o">=</span><span class="s2">"300um"</span><span class="p">,</span>  <span class="c1"># run length of flux bias line between circular loop and edge of pocket</span>
+        <span class="n">pocket_w</span><span class="o">=</span><span class="s2">"1500um"</span><span class="p">,</span>  <span class="c1"># transmon pocket width</span>
+        <span class="n">pocket_h</span><span class="o">=</span><span class="s2">"1000um"</span><span class="p">,</span>  <span class="c1"># transmon pocket height</span>
+        <span class="n">cpw_width</span><span class="o">=</span><span class="s2">"10.0um"</span><span class="p">,</span>  <span class="c1"># width of the readout resonator and flux bias line</span>
+        <span class="n">inductor_width</span><span class="o">=</span><span class="s2">"5.0um"</span><span class="p">,</span>  <span class="c1"># width of the Josephson Junctions</span>
+        <span class="n">layer</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>  <span class="c1"># design layer</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The base `TrasmonConcentric` class.&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""The base `TrasmonConcentric` class."""</span>
 
 <div class="viewcode-block" id="TransmonConcentric.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonConcentric.html#qiskit_metal.qlibrary.TransmonConcentric.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert self.options into QGeometry.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert self.options into QGeometry."""</span>
 
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>  <span class="c1"># Parse the string options into numbers</span>
 
@@ -626,38 +626,38 @@
         <span class="c1">##############################################################</span>
 
         <span class="c1"># Use the geometry to create Metal QGeometry</span>
-        <span class="n">geom_rr</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;path1&quot;</span><span class="p">:</span> <span class="n">rr</span><span class="p">}</span>
-        <span class="n">geom_fbl</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;path2&quot;</span><span class="p">:</span> <span class="n">fbl</span><span class="p">}</span>
-        <span class="n">geom_outer</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly1&quot;</span><span class="p">:</span> <span class="n">outer_pad</span><span class="p">}</span>
-        <span class="n">geom_inner</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly2&quot;</span><span class="p">:</span> <span class="n">inner_pad</span><span class="p">}</span>
-        <span class="n">geom_jjt</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly4&quot;</span><span class="p">:</span> <span class="n">jj_t</span><span class="p">}</span>
-        <span class="n">geom_jjb</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly5&quot;</span><span class="p">:</span> <span class="n">jj_b</span><span class="p">}</span>
-        <span class="n">geom_pocket</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly6&quot;</span><span class="p">:</span> <span class="n">pocket</span><span class="p">}</span>
+        <span class="n">geom_rr</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"path1"</span><span class="p">:</span> <span class="n">rr</span><span class="p">}</span>
+        <span class="n">geom_fbl</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"path2"</span><span class="p">:</span> <span class="n">fbl</span><span class="p">}</span>
+        <span class="n">geom_outer</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"poly1"</span><span class="p">:</span> <span class="n">outer_pad</span><span class="p">}</span>
+        <span class="n">geom_inner</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"poly2"</span><span class="p">:</span> <span class="n">inner_pad</span><span class="p">}</span>
+        <span class="n">geom_jjt</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"poly4"</span><span class="p">:</span> <span class="n">jj_t</span><span class="p">}</span>
+        <span class="n">geom_jjb</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"poly5"</span><span class="p">:</span> <span class="n">jj_b</span><span class="p">}</span>
+        <span class="n">geom_pocket</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"poly6"</span><span class="p">:</span> <span class="n">pocket</span><span class="p">}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_rr</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span>
+            <span class="s2">"path"</span><span class="p">,</span> <span class="n">geom_rr</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_fbl</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span>
+            <span class="s2">"path"</span><span class="p">,</span> <span class="n">geom_fbl</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_outer</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_inner</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom_outer</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom_inner</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;junction&quot;</span><span class="p">,</span> <span class="n">geom_jjt</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">inductor_width</span>
+            <span class="s2">"junction"</span><span class="p">,</span> <span class="n">geom_jjt</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">inductor_width</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;junction&quot;</span><span class="p">,</span> <span class="n">geom_jjb</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">inductor_width</span>
+            <span class="s2">"junction"</span><span class="p">,</span> <span class="n">geom_jjb</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">inductor_width</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_pocket</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom_pocket</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1">###########################################################################</span>
 
         <span class="c1"># Add Qpin connections</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;pin1&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp1b</span><span class="p">,</span> <span class="n">qp1a</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+            <span class="s2">"pin1"</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp1b</span><span class="p">,</span> <span class="n">qp1a</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;pin2&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;pin3&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">h</span><span class="p">,</span> <span class="n">i</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">"pin2"</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">"pin3"</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">h</span><span class="p">,</span> <span class="n">i</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
@@ -678,7 +678,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -701,6 +701,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

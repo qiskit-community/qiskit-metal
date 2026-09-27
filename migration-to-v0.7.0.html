@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -507,16 +507,16 @@ PySide6, qdarkstyle, pyaedt, pyEPR-quantum, or gmsh. Those
 move into opt-in extras.</p>
 <p>The fastest migration is one of:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Want everything? Restore the v0.6.x experience:</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[full]&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[full]"</span>
 
 <span class="c1"># Just MetalGUI?</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[gui]&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[gui]"</span>
 
 <span class="c1"># Just HFSS / Q3D / EPR (no GUI)?</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[ansys]&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[ansys]"</span>
 
 <span class="c1"># Just gmsh meshing (for Elmer / Palace / open FEM)?</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[mesh]&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[mesh]"</span>
 <span class="c1"># ``[fem]`` is a backward-compatible alias of ``[mesh]``.</span>
 
 <span class="c1"># Headless designs, GDS export, qm.view, no heavy deps?</span>
@@ -597,7 +597,7 @@ extra they need.</p>
 <section id="i-am-a-desktop-gui-user">
 <h3><a class="toc-backref" href="#id5" role="doc-backlink">I am a desktop GUI user</a><a class="headerlink" href="#i-am-a-desktop-gui-user" title="Link to this heading">¶</a></h3>
 <p>If your workflow opens <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> and edits designs visually:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[gui]&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[gui]"</span>
 </pre></div>
 </div>
 <p>You’re done. Nothing else changes.</p>
@@ -607,17 +607,17 @@ extra they need.</p>
 <p>Your workflow uses <code class="docutils literal notranslate"><span class="pre">QHFSSPyaedt</span></code> or any of the AEDT-based
 renderers, or the EPR analyses
 (<code class="docutils literal notranslate"><span class="pre">LOManalysis</span></code>, <code class="docutils literal notranslate"><span class="pre">EigenmodeSim</span></code>, <code class="docutils literal notranslate"><span class="pre">LumpedElementsSim</span></code>):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[ansys]&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[ansys]"</span>
 </pre></div>
 </div>
 <p>If you also use <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>, install both:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[gui,ansys]&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[gui,ansys]"</span>
 </pre></div>
 </div>
 </section>
 <section id="i-use-the-gmsh-elmer-fem-path">
 <h3><a class="toc-backref" href="#id7" role="doc-backlink">I use the gmsh / Elmer FEM path</a><a class="headerlink" href="#i-use-the-gmsh-elmer-fem-path" title="Link to this heading">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[mesh]&quot;</span><span class="w">     </span><span class="c1"># or [fem] (alias)</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[mesh]"</span><span class="w">     </span><span class="c1"># or [fem] (alias)</span>
 </pre></div>
 </div>
 <p>Note that gmsh on Apple Silicon Macs still needs the brew
@@ -627,7 +627,7 @@ ship with the extra and must be installed separately.</p>
 </section>
 <section id="i-want-the-v0-6-x-all-batteries-included-install">
 <h3><a class="toc-backref" href="#id8" role="doc-backlink">I want the v0.6.x all-batteries-included install</a><a class="headerlink" href="#i-want-the-v0-6-x-all-batteries-included-install" title="Link to this heading">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[full]&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[full]"</span>
 </pre></div>
 </div>
 <p>This is the no-think migration — the install is bit-for-bit
@@ -646,10 +646,10 @@ pure-Python analyses, GDS export, and the headless
 <p>If your orchestrator dispatches to a specific backend, install
 only that extra at the dispatch layer:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Worker pod handling HFSS jobs</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[ansys]&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[ansys]"</span>
 
 <span class="c1"># Worker pod handling gmsh-based meshing</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[mesh]&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[mesh]"</span>
 </pre></div>
 </div>
 </section>
@@ -659,7 +659,7 @@ pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot
 <section id="modulenotfounderror-no-module-named-pyside6">
 <h3><a class="toc-backref" href="#id11" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'PySide6'</span></code></a><a class="headerlink" href="#modulenotfounderror-no-module-named-pyside6" title="Link to this heading">¶</a></h3>
 <p>You instantiated <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> on a lite install. Fix:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[gui]&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[gui]"</span>
 </pre></div>
 </div>
 </section>
@@ -669,7 +669,7 @@ pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot
 <code class="docutils literal notranslate"><span class="pre">extract_transmon_coupled_Noscillator</span></code>, or any of the
 HFSS/Q3D renderers’ simulation methods) on a lite install.
 Fix:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[ansys]&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[ansys]"</span>
 </pre></div>
 </div>
 </section>
@@ -677,7 +677,7 @@ Fix:</p>
 <h3><a class="toc-backref" href="#id13" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'gmsh'</span></code></a><a class="headerlink" href="#modulenotfounderror-no-module-named-gmsh" title="Link to this heading">¶</a></h3>
 <p>You instantiated <code class="docutils literal notranslate"><span class="pre">QGmshRenderer</span></code> or the Elmer renderer on
 a lite install. Fix:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[mesh]&quot;</span><span class="w">     </span><span class="c1"># or [fem] (alias)</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[mesh]"</span><span class="w">     </span><span class="c1"># or [fem] (alias)</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">Could</span> <span class="pre">not</span> <span class="pre">load</span> <span class="pre">the</span> <span class="pre">Qt</span> <span class="pre">platform</span> <span class="pre">plugin</span> <span class="pre">'xcb'</span></code> (and similar
@@ -820,7 +820,7 @@ search result instead of a wall.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

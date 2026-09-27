@@ -1,3 +1,9 @@
+:root {
+  /* This variable mirrors the per-side margin the PyData Sphinx Theme applies to the
+     children of the admonitions. FIXME later; find a way to keep this stable */
+  --jls-admonition-indent: 1.4rem;
+}
+
 .jupyterlite_sphinx_raw_iframe {
   border-width: 1px;
   border-style: solid;
@@ -60,11 +66,41 @@
   background:
     radial-gradient(farthest-side, #ffa516 94%, #0000) top/8px 8px no-repeat,
     conic-gradient(#0000 30%, #ffa516);
-  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+  mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
   animation: l13 1s infinite linear;
 }
 @keyframes l13 {
   100% {
     transform: rotate(1turn);
   }
+}
+
+/*
+ * A hack to fix the JupyterLite iframes overflowing admonitions in the PyData Sphinx Theme,
+ * (notwithstanding any contemporary themes we don't verify in our CI against).
+ *
+ * The pydata-sphinx-theme applies margins to every sibling of the admonition title:
+ * https://github.com/pydata/pydata-sphinx-theme/blob/213af5a59dd18500fdc3b82fb49afc89a54fff33/src/pydata_sphinx_theme/assets/styles/content/_admonitions.scss#L28-L32
+ *
+ *   .admonition p.admonition-title ~ *,
+ *   div.admonition p.admonition-title ~ * {
+ *     margin-left: 1.4rem;
+ *     margin-right: 1.4rem;
+ *   }
+ *
+ * Because the JupyterLite iframe container already carries a width="100%" (of the
+ * admonition's content box, that is), the extra 1.4rem on each side pushes the
+ * rendered width to 100% + 2.8rem and causes a visible overflow to the right. We
+ * tackle this below. */
+
+/* non-prompted case: the bare <iframe> emitted by _PromptedIframe.html() */
+.admonition p.admonition-title ~ iframe.jupyterlite_sphinx_raw_iframe,
+div.admonition p.admonition-title ~ iframe.jupyterlite_sphinx_raw_iframe {
+  width: calc(100% - 2 * var(--jls-admonition-indent));
+}
+
+/* prompted case: <div class="jupyterlite_sphinx_iframe_container"> */
+.admonition p.admonition-title ~ div.jupyterlite_sphinx_iframe_container,
+div.admonition p.admonition-title ~ div.jupyterlite_sphinx_iframe_container {
+  width: calc(100% - 2 * var(--jls-admonition-indent));
 }

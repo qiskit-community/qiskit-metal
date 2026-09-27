@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -512,12 +512,12 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up chip dimensions</span>
 <span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
-<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;size_z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;-280um&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">"main"</span><span class="p">][</span><span class="s2">"size"</span><span class="p">][</span><span class="s2">"size_x"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"2mm"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">"main"</span><span class="p">][</span><span class="s2">"size"</span><span class="p">][</span><span class="s2">"size_y"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"2mm"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">"main"</span><span class="p">][</span><span class="s2">"size"</span><span class="p">][</span><span class="s2">"size_z"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"-280um"</span>
 <span class="c1"># Resonator and feedline gap width (W) and center conductor width (S) from reference 2</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;cpw_width&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;10 um&quot;</span>  <span class="c1"># S from reference 2</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;cpw_gap&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;6 um&quot;</span>  <span class="c1"># W from reference 2</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">"cpw_width"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"10 um"</span>  <span class="c1"># S from reference 2</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">"cpw_gap"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"6 um"</span>  <span class="c1"># W from reference 2</span>
 
 
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
@@ -544,31 +544,31 @@
 <span class="c1">###################</span>
 
 <span class="c1"># Driven Lauchpad 1</span>
-<span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;-0.5mm&quot;</span>
-<span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;0.5mm&quot;</span>
+<span class="n">x</span> <span class="o">=</span> <span class="s2">"-0.5mm"</span>
+<span class="n">y</span> <span class="o">=</span> <span class="s2">"0.5mm"</span>
 <span class="n">launch_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">pos_x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;360&quot;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span>
+    <span class="n">chip</span><span class="o">=</span><span class="s2">"main"</span><span class="p">,</span> <span class="n">pos_x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"360"</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">"30um"</span>
 <span class="p">)</span>
-<span class="n">LP1</span> <span class="o">=</span> <span class="n">LaunchpadWirebondDriven</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;LP1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">launch_options</span><span class="p">)</span>
+<span class="n">LP1</span> <span class="o">=</span> <span class="n">LaunchpadWirebondDriven</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"LP1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">launch_options</span><span class="p">)</span>
 
 <span class="c1"># Driven Launchpad 2</span>
-<span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;0.5mm&quot;</span>
-<span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;0.5mm&quot;</span>
+<span class="n">x</span> <span class="o">=</span> <span class="s2">"0.5mm"</span>
+<span class="n">y</span> <span class="o">=</span> <span class="s2">"0.5mm"</span>
 <span class="n">launch_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">pos_x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span>
+    <span class="n">chip</span><span class="o">=</span><span class="s2">"main"</span><span class="p">,</span> <span class="n">pos_x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"180"</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">"30um"</span>
 <span class="p">)</span>
-<span class="n">LP2</span> <span class="o">=</span> <span class="n">LaunchpadWirebondDriven</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;LP2&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">launch_options</span><span class="p">)</span>
+<span class="n">LP2</span> <span class="o">=</span> <span class="n">LaunchpadWirebondDriven</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"LP2"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">launch_options</span><span class="p">)</span>
 
 <span class="c1"># coupling resonator to feedline</span>
 <span class="n">q_read</span> <span class="o">=</span> <span class="n">CoupledLineTee</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;Q_Read_T&quot;</span><span class="p">,</span>
+    <span class="s2">"Q_Read_T"</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.0mm&quot;</span><span class="p">,</span>
-        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span>
-        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="n">coupling_space</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-        <span class="n">coupling_length</span><span class="o">=</span><span class="s2">&quot;300um&quot;</span><span class="p">,</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">"0.0mm"</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0.5mm"</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>
+        <span class="n">coupling_space</span><span class="o">=</span><span class="s2">"6um"</span><span class="p">,</span>
+        <span class="n">coupling_length</span><span class="o">=</span><span class="s2">"300um"</span><span class="p">,</span>
         <span class="n">open_termination</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">),</span>
 <span class="p">)</span>
@@ -585,34 +585,34 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using path finder to connect the two launchpads</span>
 <span class="n">TL_LP1_T</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;TL_LP1_T&quot;</span><span class="p">,</span>
+    <span class="s2">"TL_LP1_T"</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
-        <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;99um&quot;</span><span class="p">,</span>
+        <span class="n">chip</span><span class="o">=</span><span class="s2">"main"</span><span class="p">,</span>
+        <span class="n">trace_width</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">trace_gap</span><span class="o">=</span><span class="s2">"6um"</span><span class="p">,</span>
+        <span class="n">fillet</span><span class="o">=</span><span class="s2">"99um"</span><span class="p">,</span>
         <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">),</span>
+        <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">end_straight</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">),</span>
         <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;LP1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;tie&quot;</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q_Read_T&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;prime_start&quot;</span><span class="p">),</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"LP1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"tie"</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q_Read_T"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"prime_start"</span><span class="p">),</span>
         <span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
 
 <span class="n">TL_T_LP2</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;TL_T_LP2&quot;</span><span class="p">,</span>
+    <span class="s2">"TL_T_LP2"</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
-        <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;99um&quot;</span><span class="p">,</span>
+        <span class="n">chip</span><span class="o">=</span><span class="s2">"main"</span><span class="p">,</span>
+        <span class="n">trace_width</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">trace_gap</span><span class="o">=</span><span class="s2">"6um"</span><span class="p">,</span>
+        <span class="n">fillet</span><span class="o">=</span><span class="s2">"99um"</span><span class="p">,</span>
         <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">),</span>
+        <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">end_straight</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">),</span>
         <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q_Read_T&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;prime_end&quot;</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;LP2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;tie&quot;</span><span class="p">),</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q_Read_T"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"prime_end"</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"LP2"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"tie"</span><span class="p">),</span>
         <span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
@@ -631,24 +631,24 @@
 <span class="c1"># First we define the two end-points</span>
 <span class="n">otg</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;otg&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-0.7mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;-90&quot;</span><span class="p">),</span>
+    <span class="s2">"otg"</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">chip</span><span class="o">=</span><span class="s2">"main"</span><span class="p">,</span> <span class="n">pos_x</span><span class="o">=</span><span class="s2">"0.0mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"-0.7mm"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"-90"</span><span class="p">),</span>
 <span class="p">)</span>
 
 <span class="c1"># Use RouteMeander to fix the total length of the resonator</span>
 <span class="n">rt_meander</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;meander&quot;</span><span class="p">,</span>
+    <span class="s2">"meander"</span><span class="p">,</span>
     <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-        <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;3.7mm&quot;</span><span class="p">,</span>
+        <span class="n">trace_width</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">trace_gap</span><span class="o">=</span><span class="s2">"6um"</span><span class="p">,</span>
+        <span class="n">total_length</span><span class="o">=</span><span class="s2">"3.7mm"</span><span class="p">,</span>
         <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;99 um&quot;</span><span class="p">,</span>
-        <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;250um&quot;</span><span class="p">),</span>
+        <span class="n">fillet</span><span class="o">=</span><span class="s2">"99 um"</span><span class="p">,</span>
+        <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"250um"</span><span class="p">),</span>
         <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;otg&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q_Read_T&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;second_end&quot;</span><span class="p">),</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"otg"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"open"</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q_Read_T"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"second_end"</span><span class="p">),</span>
         <span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
@@ -676,7 +676,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">EPRanalysis</span>
 
-<span class="n">eig_qb</span> <span class="o">=</span> <span class="n">EPRanalysis</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;hfss&quot;</span><span class="p">)</span>
+<span class="n">eig_qb</span> <span class="o">=</span> <span class="n">EPRanalysis</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"hfss"</span><span class="p">)</span>
 <span class="n">hfss</span> <span class="o">=</span> <span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">renderer</span>
 <span class="n">hfss</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </pre></div>
@@ -687,7 +687,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em_p</span> <span class="o">=</span> <span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span>
-<span class="n">em_p</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;HangerReso&quot;</span>
+<span class="n">em_p</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"HangerReso"</span>
 <span class="n">em_p</span><span class="o">.</span><span class="n">min_freq_ghz</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">em_p</span><span class="o">.</span><span class="n">n_modes</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">em_p</span><span class="o">.</span><span class="n">max_passes</span> <span class="o">=</span> <span class="mi">15</span>
@@ -695,7 +695,7 @@
 <span class="n">em_p</span><span class="o">.</span><span class="n">min_converged</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">em_p</span><span class="o">.</span><span class="n">basis_order</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="c1"># Design variables can also be added in for direct simulation sweeps.</span>
-<span class="n">em_p</span><span class="o">.</span><span class="n">vars</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">({</span><span class="s2">&quot;Lj&quot;</span><span class="p">:</span> <span class="s2">&quot;0nH&quot;</span><span class="p">,</span> <span class="s2">&quot;Cj&quot;</span><span class="p">:</span> <span class="s2">&quot;0 fF&quot;</span><span class="p">})</span>
+<span class="n">em_p</span><span class="o">.</span><span class="n">vars</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">({</span><span class="s2">"Lj"</span><span class="p">:</span> <span class="s2">"0nH"</span><span class="p">,</span> <span class="s2">"Cj"</span><span class="p">:</span> <span class="s2">"0 fF"</span><span class="p">})</span>
 </pre></div>
 </div>
 </div>
@@ -704,12 +704,12 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eig_qb</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">_render</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HangerReso&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"HangerReso"</span><span class="p">,</span>
     <span class="n">selection</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">solution_type</span><span class="o">=</span><span class="s2">&quot;eigenmode&quot;</span><span class="p">,</span>
+    <span class="n">solution_type</span><span class="o">=</span><span class="s2">"eigenmode"</span><span class="p">,</span>
     <span class="n">vars_to_initialize</span><span class="o">=</span><span class="n">em_p</span><span class="o">.</span><span class="n">vars</span><span class="p">,</span>
     <span class="n">open_pins</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">port_list</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;LP1&quot;</span><span class="p">,</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="s2">&quot;50&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;LP2&quot;</span><span class="p">,</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="s2">&quot;50&quot;</span><span class="p">)],</span>
+    <span class="n">port_list</span><span class="o">=</span><span class="p">[(</span><span class="s2">"LP1"</span><span class="p">,</span> <span class="s2">"in"</span><span class="p">,</span> <span class="s2">"50"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"LP2"</span><span class="p">,</span> <span class="s2">"in"</span><span class="p">,</span> <span class="s2">"50"</span><span class="p">)],</span>
     <span class="n">box_plus_buffer</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
@@ -839,7 +839,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

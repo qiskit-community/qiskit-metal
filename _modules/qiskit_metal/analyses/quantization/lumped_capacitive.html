@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,13 +472,13 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;Handles the capacitive simulation of a transmon pocket model.</span>
+<span class="sd">"""Handles the capacitive simulation of a transmon pocket model.</span>
 
 <span class="sd">Convert capacitance matrices extracted from Q3D into Hamiltonian parameters</span>
 <span class="sd">using the Duffing model. Typical input is the capacitance matrix calculated from Q3D.</span>
 
 <span class="sd">Each function prints out the parameters and outputs a dictionary.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
@@ -500,37 +500,37 @@
 <span class="p">)</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;Cs_from_Ec&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Ic_from_Ej&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Ic_from_Lj&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;chargeline_T1&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;chi&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cos_to_mega_and_delta&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;df_cmat_style_print&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;df_reorder_matrix_basis&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;extract_transmon_coupled_Noscillator&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_C_and_Ic&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;levels_vs_ng_real_units&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;load_q3d_capacitance_matrix&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;lumped_oscillator_from_path&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;move_index_to&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;readin_q3d_matrix&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;readin_q3d_matrix_m&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;transmon_props&quot;</span><span class="p">,</span>
+    <span class="s2">"Cs_from_Ec"</span><span class="p">,</span>
+    <span class="s2">"Ic_from_Ej"</span><span class="p">,</span>
+    <span class="s2">"Ic_from_Lj"</span><span class="p">,</span>
+    <span class="s2">"chargeline_T1"</span><span class="p">,</span>
+    <span class="s2">"chi"</span><span class="p">,</span>
+    <span class="s2">"cos_to_mega_and_delta"</span><span class="p">,</span>
+    <span class="s2">"df_cmat_style_print"</span><span class="p">,</span>
+    <span class="s2">"df_reorder_matrix_basis"</span><span class="p">,</span>
+    <span class="s2">"extract_transmon_coupled_Noscillator"</span><span class="p">,</span>
+    <span class="s2">"get_C_and_Ic"</span><span class="p">,</span>
+    <span class="s2">"levels_vs_ng_real_units"</span><span class="p">,</span>
+    <span class="s2">"load_q3d_capacitance_matrix"</span><span class="p">,</span>
+    <span class="s2">"lumped_oscillator_from_path"</span><span class="p">,</span>
+    <span class="s2">"move_index_to"</span><span class="p">,</span>
+    <span class="s2">"readin_q3d_matrix"</span><span class="p">,</span>
+    <span class="s2">"readin_q3d_matrix_m"</span><span class="p">,</span>
+    <span class="s2">"transmon_props"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="Ic_from_Lj">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.Ic_from_Lj">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">Ic_from_Lj</span><span class="p">(</span><span class="n">Lj</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Critical current In SI units.</span>
+<span class="w">    </span><span class="sd">"""Critical current In SI units.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        Lj (float): In Henries</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: In Amps</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">phi0</span> <span class="o">/</span> <span class="n">Lj</span></div>
 
 
@@ -538,14 +538,14 @@
 <div class="viewcode-block" id="Ic_from_Ej">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.Ic_from_Ej">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">Ic_from_Ej</span><span class="p">(</span><span class="n">Ej</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Critical current In SI units.</span>
+<span class="w">    </span><span class="sd">"""Critical current In SI units.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        Ej (float): In Joules</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: In Amps</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">Ej</span> <span class="o">/</span> <span class="n">phi0</span></div>
 
 
@@ -553,14 +553,14 @@
 <div class="viewcode-block" id="Cs_from_Ec">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.Cs_from_Ec">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">Cs_from_Ec</span><span class="p">(</span><span class="n">Ec</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get total shunt capacitance from charging energy In SI units.</span>
+<span class="w">    </span><span class="sd">"""Get total shunt capacitance from charging energy In SI units.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        Ec (float): In Joules</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: In farads</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">e</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">Ec</span><span class="p">)</span></div>
 
 
@@ -568,7 +568,7 @@
 <div class="viewcode-block" id="transmon_props">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.transmon_props">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">transmon_props</span><span class="p">(</span><span class="n">Ic</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Cq</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Properties of a transmon qubit.</span>
+<span class="w">    </span><span class="sd">"""Properties of a transmon qubit.</span>
 
 <span class="sd">    Calculate LJ, EJ, EC, wq, eps from Ic,Cq.</span>
 
@@ -578,7 +578,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple: [LJ, EJ, Zqp, EC, wq, wq0, eps1] -- Inductance</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">LJ</span> <span class="o">=</span> <span class="n">phi0</span> <span class="o">/</span> <span class="n">Ic</span>
     <span class="n">EJ</span> <span class="o">=</span> <span class="n">phi0</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">LJ</span> <span class="o">/</span> <span class="n">hbar</span>
@@ -606,7 +606,7 @@
 <div class="viewcode-block" id="chi">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.chi">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">chi</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">wr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">w01</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">w12</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Calculate the dispersive shift $\chi$, where $2*\chi$ is</span>
 <span class="sd">    the `|0&gt; --&gt; |1&gt;` splitting).</span>
 
@@ -623,7 +623,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: Calculated chi value</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Push on the i-th transmon level due to the j-th transmon level</span>
     <span class="c1"># mediated by cavity</span>
@@ -655,7 +655,7 @@
     <span class="n">g_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">print_info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Primary analysis function called by the user for lumped-element mode</span>
+<span class="w">    </span><span class="sd">"""Primary analysis function called by the user for lumped-element mode</span>
 <span class="sd">    (LOM) analysis. Uses a Maxwell capacitance matrix generated by a capacitive</span>
 <span class="sd">    extractor, such as Q3D. Additionally takes more values to determine many</span>
 <span class="sd">    parameters of the Hamiltonian of the system.</span>
@@ -690,13 +690,13 @@
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: If N is not positive</span>
 <span class="sd">        ValueError: If the capacitance matrix is the wrong size</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Error checks</span>
     <span class="k">if</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;N must positive&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"N must positive"</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">capMatrix</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">3</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Capacitance matrix is not the right size&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Capacitance matrix is not the right size"</span><span class="p">)</span>
 
     <span class="c1"># make list of angular frequencies of resonators</span>
     <span class="n">wr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>  <span class="c1"># angular freq of resonators (GHz-rad)</span>
@@ -763,7 +763,7 @@
                 <span class="n">Cbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">capMatrix</span><span class="p">[</span><span class="n">bus_index</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">bus_index</span><span class="p">[</span><span class="n">jj</span><span class="p">]]</span>
 
     <span class="c1"># sum of capacitances from each pad to ground</span>
-    <span class="c1"># this assumes the bus couplers are at &quot;ground&quot;</span>
+    <span class="c1"># this assumes the bus couplers are at "ground"</span>
     <span class="n">C1S</span> <span class="o">=</span> <span class="n">Cg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Cbus</span><span class="p">[</span><span class="mi">0</span><span class="p">,])</span>
     <span class="n">C2S</span> <span class="o">=</span> <span class="n">Cg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Cbus</span><span class="p">[</span><span class="mi">1</span><span class="p">,])</span>
 
@@ -822,14 +822,14 @@
     <span class="c1">#</span>
     <span class="c1">#    #readout g</span>
     <span class="c1">#    gr0 = 0.5*Cminv[0,1]/np.sqrt(Zqp*Zr1p)</span>
-    <span class="c1">#    print(&#39;gr0 = %f [MHz]&#39;%(gr0/2/np.pi/1e6))</span>
+    <span class="c1">#    print('gr0 = %f [MHz]'%(gr0/2/np.pi/1e6))</span>
 
-    <span class="c1"># g&#39;s from the qubit</span>
+    <span class="c1"># g's from the qubit</span>
     <span class="n">gqbus</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">wr</span> <span class="o">*</span> <span class="n">bbus</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Zbus</span> <span class="o">/</span> <span class="n">Zqp</span><span class="p">)</span> <span class="o">*</span> <span class="n">g_scale</span>
     <span class="c1"># gbus = bbus*wr*np.sqrt(Zbus)*e*(EJ/8/EC)**(1/4)/np.sqrt(hbar)</span>
     <span class="n">gbus_in_MHz</span> <span class="o">=</span> <span class="n">gqbus</span> <span class="o">/</span> <span class="mf">1e6</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
 
-    <span class="c1"># g&#39;s between pads</span>
+    <span class="c1"># g's between pads</span>
     <span class="n">gbusbus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
@@ -838,7 +838,7 @@
     <span class="c1">########################################################</span>
     <span class="c1">##### Purcell, Qs, dissipative</span>
 
-    <span class="c1"># guesses for the Q&#39;s</span>
+    <span class="c1"># guesses for the Q's</span>
     <span class="n">Qreadout</span> <span class="o">=</span> <span class="mf">1e4</span>
     <span class="n">Qcouplingbus</span> <span class="o">=</span> <span class="mf">1e5</span>
     <span class="n">Qbus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
@@ -863,50 +863,50 @@
     <span class="c1">########################################################</span>
     <span class="c1">##### Transmon properties and final summary</span>
 
-    <span class="c1"># chi&#39;s</span>
+    <span class="c1"># chi's</span>
     <span class="c1"># d = -EC</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">1e6</span>
     <span class="n">Chi_in_MHz</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">chi</span><span class="p">(</span><span class="n">gqbus</span><span class="p">,</span> <span class="n">wr</span><span class="p">,</span> <span class="n">wq</span><span class="p">,</span> <span class="n">d</span> <span class="o">+</span> <span class="n">wq</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1e6</span>  <span class="c1"># Total chi in MHz</span>
 
     <span class="n">ham_dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;fQ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wq</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1e9</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;EC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">EC</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1e6</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;EJ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">EJ</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1e9</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"fQ"</span><span class="p">]</span> <span class="o">=</span> <span class="n">wq</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1e9</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"EC"</span><span class="p">]</span> <span class="o">=</span> <span class="n">EC</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1e6</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"EJ"</span><span class="p">]</span> <span class="o">=</span> <span class="n">EJ</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">1e9</span>
     <span class="c1"># correction to the anharmonicity (from eq 52 of solgun et al.)</span>
-    <span class="c1"># ham_dict[&#39;alpha&#39;] = ((wq0/wq)**2*ham_dict[&#39;EC&#39;])</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;dispersion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">disp</span> <span class="o">/</span> <span class="mf">1e3</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;gbus&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gbus_in_MHz</span>
-    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;chi_in_MHz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Chi_in_MHz</span>
+    <span class="c1"># ham_dict['alpha'] = ((wq0/wq)**2*ham_dict['EC'])</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"alpha"</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"dispersion"</span><span class="p">]</span> <span class="o">=</span> <span class="n">disp</span> <span class="o">/</span> <span class="mf">1e3</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"gbus"</span><span class="p">]</span> <span class="o">=</span> <span class="n">gbus_in_MHz</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"chi_in_MHz"</span><span class="p">]</span> <span class="o">=</span> <span class="n">Chi_in_MHz</span>
 
     <span class="k">if</span> <span class="n">print_info</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">qubit_index</span><span class="p">,</span> <span class="n">bus_index</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Predicted Values&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Predicted Values"</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Transmon Properties&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f_Q </span><span class="si">%f</span><span class="s2"> [GHz]&quot;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;fQ&quot;</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EC </span><span class="si">%f</span><span class="s2"> [MHz]&quot;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;EC&quot;</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EJ </span><span class="si">%f</span><span class="s2"> [GHz]&quot;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;EJ&quot;</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;alpha </span><span class="si">%f</span><span class="s2"> [MHz]&quot;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dispersion </span><span class="si">%f</span><span class="s2"> [KHz]&quot;</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;dispersion&quot;</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Lq </span><span class="si">%f</span><span class="s2"> [nH]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">phi0</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">hbar</span> <span class="o">*</span> <span class="n">EJ</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e-9</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cq </span><span class="si">%f</span><span class="s2"> [fF]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Cq</span> <span class="o">/</span> <span class="mf">1e-15</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;T1 </span><span class="si">%f</span><span class="s2"> [us]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">T1</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">)))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Transmon Properties"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"f_Q </span><span class="si">%f</span><span class="s2"> [GHz]"</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"fQ"</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"EC </span><span class="si">%f</span><span class="s2"> [MHz]"</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"EC"</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"EJ </span><span class="si">%f</span><span class="s2"> [GHz]"</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"EJ"</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"alpha </span><span class="si">%f</span><span class="s2"> [MHz]"</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"alpha"</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"dispersion </span><span class="si">%f</span><span class="s2"> [KHz]"</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"dispersion"</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Lq </span><span class="si">%f</span><span class="s2"> [nH]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">phi0</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">hbar</span> <span class="o">*</span> <span class="n">EJ</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e-9</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Cq </span><span class="si">%f</span><span class="s2"> [fF]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">Cq</span> <span class="o">/</span> <span class="mf">1e-15</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"T1 </span><span class="si">%f</span><span class="s2"> [us]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">T1</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">)))</span>
         <span class="nb">print</span><span class="p">()</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;**Coupling Properties**&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"**Coupling Properties**"</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">tCqbus</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [fF]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tCqbus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-15</span><span class="p">)))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;gbus</span><span class="si">%d</span><span class="s2">_in_MHz </span><span class="si">%f</span><span class="s2"> [MHz]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">&quot;gbus&quot;</span><span class="p">][</span><span class="n">ii</span><span class="p">]))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;χ_bus</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [MHz]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Chi_in_MHz</span><span class="p">[</span><span class="n">ii</span><span class="p">]))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1/T1bus</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [Hz]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">T1bus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;T1bus</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [us]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">T1bus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">)))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">tCqbus</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [fF]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tCqbus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-15</span><span class="p">)))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"gbus</span><span class="si">%d</span><span class="s2">_in_MHz </span><span class="si">%f</span><span class="s2"> [MHz]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"gbus"</span><span class="p">][</span><span class="n">ii</span><span class="p">]))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"χ_bus</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [MHz]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Chi_in_MHz</span><span class="p">[</span><span class="n">ii</span><span class="p">]))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"1/T1bus</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [Hz]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">T1bus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"T1bus</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [us]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">T1bus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">)))</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bus-Bus Couplings&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Bus-Bus Couplings"</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
                 <span class="nb">print</span><span class="p">(</span>
-                    <span class="s2">&quot;gbus</span><span class="si">%d</span><span class="s2">_</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [MHz]&quot;</span>
+                    <span class="s2">"gbus</span><span class="si">%d</span><span class="s2">_</span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="s2"> [MHz]"</span>
                     <span class="o">%</span> <span class="p">(</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">jj</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">gbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">))</span>
                 <span class="p">)</span>
 
@@ -917,7 +917,7 @@
 <div class="viewcode-block" id="levels_vs_ng_real_units">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.levels_vs_ng_real_units">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">levels_vs_ng_real_units</span><span class="p">(</span><span class="n">Cq</span><span class="p">,</span> <span class="n">IC</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">301</span><span class="p">,</span> <span class="n">do_disp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">do_plots</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This numerically computes the exact transmon levels given C and IC as a</span>
+<span class="w">    </span><span class="sd">"""This numerically computes the exact transmon levels given C and IC as a</span>
 <span class="sd">    function of the ng ration -- it subtracts the vacuum flucations so that</span>
 <span class="sd">    the ground state is set to zero energy.</span>
 
@@ -933,7 +933,7 @@
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: If the matrix is not Hermitian</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">C</span> <span class="o">=</span> <span class="n">Cq</span> <span class="o">*</span> <span class="mf">1e-15</span>
     <span class="n">IC</span> <span class="o">=</span> <span class="n">IC</span> <span class="o">*</span> <span class="mf">1e-9</span>
     <span class="n">Ec</span> <span class="o">=</span> <span class="n">e</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">C</span>
@@ -963,7 +963,7 @@
         <span class="n">H</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">Ec</span> <span class="o">*</span> <span class="p">(</span><span class="n">nmat</span> <span class="o">-</span> <span class="n">ng</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">EJ</span> <span class="o">*</span> <span class="n">V</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">H</span><span class="p">))):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Matrix is not Hermitian&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Matrix is not Hermitian"</span><span class="p">)</span>
 
         <span class="p">[</span><span class="n">d</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
         <span class="n">sortIX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
@@ -979,24 +979,24 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
             <span class="n">charge</span><span class="p">,</span>
             <span class="n">elvls</span><span class="p">[</span><span class="mi">0</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
-            <span class="s2">&quot;k&quot;</span><span class="p">,</span>
+            <span class="s2">"k"</span><span class="p">,</span>
             <span class="n">charge</span><span class="p">,</span>
             <span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
-            <span class="s2">&quot;b&quot;</span><span class="p">,</span>
+            <span class="s2">"b"</span><span class="p">,</span>
             <span class="n">charge</span><span class="p">,</span>
             <span class="n">elvls</span><span class="p">[</span><span class="mi">2</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
-            <span class="s2">&quot;r&quot;</span><span class="p">,</span>
+            <span class="s2">"r"</span><span class="p">,</span>
             <span class="n">charge</span><span class="p">,</span>
             <span class="n">elvls</span><span class="p">[</span><span class="mi">3</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
-            <span class="s2">&quot;g&quot;</span><span class="p">,</span>
+            <span class="s2">"g"</span><span class="p">,</span>
             <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Gate charge, n_g [2e]&quot;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Energy, E_n [GHz]&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Gate charge, n_g [2e]"</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Energy, E_n [GHz]"</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">charge</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">+</span> <span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e3</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Gate charge, n_g [2e]&quot;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Energy [kHz], &quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">charge</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">+</span> <span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e3</span><span class="p">,</span> <span class="s2">"k"</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Gate charge, n_g [2e]"</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Energy [kHz], "</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
         <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -1013,8 +1013,8 @@
             <span class="n">charge</span><span class="p">,</span>
             <span class="o">-</span><span class="n">charge</span> <span class="o">*</span> <span class="mi">0</span> <span class="o">-</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">Ec</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Gate charge, n_g [2e]&quot;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;delta [MHZ] green theory, blue numerics &quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Gate charge, n_g [2e]"</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"delta [MHZ] green theory, blue numerics "</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
             <span class="n">charge</span><span class="p">,</span>
@@ -1022,8 +1022,8 @@
             <span class="n">charge</span><span class="p">,</span>
             <span class="n">charge</span> <span class="o">*</span> <span class="mi">0</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">EJ</span> <span class="o">*</span> <span class="n">Ec</span><span class="p">)</span> <span class="o">-</span> <span class="n">Ec</span><span class="p">)</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Gate charge, n_g [2e]&quot;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;F01 [GHZ] green theory, blue numerics &quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Gate charge, n_g [2e]"</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"F01 [GHZ] green theory, blue numerics "</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="n">fqubitGHz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">elvls</span><span class="p">[</span><span class="mi">1</span><span class="p">,]</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">)</span>
@@ -1041,11 +1041,11 @@
     <span class="n">tphi_ms</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">disp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">1e-4</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">do_disp</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean Frequency </span><span class="si">%f</span><span class="s2"> [GHz]&quot;</span> <span class="o">%</span> <span class="n">fqubitGHz</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Anharmonicity </span><span class="si">%f</span><span class="s2"> [MHz]&quot;</span> <span class="o">%</span> <span class="n">anharMHz</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EC </span><span class="si">%f</span><span class="s2"> [GHz]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Ec</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Charge Dispersion </span><span class="si">%f</span><span class="s2"> [kHz]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">disp</span> <span class="o">/</span> <span class="mf">1e3</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dephasing Time </span><span class="si">%f</span><span class="s2"> [ms]&quot;</span> <span class="o">%</span> <span class="n">tphi_ms</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Mean Frequency </span><span class="si">%f</span><span class="s2"> [GHz]"</span> <span class="o">%</span> <span class="n">fqubitGHz</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Anharmonicity </span><span class="si">%f</span><span class="s2"> [MHz]"</span> <span class="o">%</span> <span class="n">anharMHz</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"EC </span><span class="si">%f</span><span class="s2"> [GHz]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">Ec</span> <span class="o">/</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Charge Dispersion </span><span class="si">%f</span><span class="s2"> [kHz]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">disp</span> <span class="o">/</span> <span class="mf">1e3</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Dephasing Time </span><span class="si">%f</span><span class="s2"> [ms]"</span> <span class="o">%</span> <span class="n">tphi_ms</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">fqubitGHz</span><span class="p">,</span> <span class="n">anharMHz</span><span class="p">,</span> <span class="n">disp</span><span class="p">,</span> <span class="n">tphi_ms</span></div>
 
@@ -1054,7 +1054,7 @@
 <div class="viewcode-block" id="get_C_and_Ic">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.get_C_and_Ic">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_C_and_Ic</span><span class="p">(</span><span class="n">Cin_est</span><span class="p">,</span> <span class="n">Icin_est</span><span class="p">,</span> <span class="n">f01</span><span class="p">,</span> <span class="n">f02on2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the capacitance and critical current for a transmon of a certain</span>
+<span class="w">    </span><span class="sd">"""Get the capacitance and critical current for a transmon of a certain</span>
 <span class="sd">    frequency and anharmonicity.</span>
 
 <span class="sd">    Args:</span>
@@ -1066,13 +1066,13 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple: [C,Ic] from levels_vs_ng_real_units that gives the</span>
 <span class="sd">        specified frequency and anharmonicity</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">xrr</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
         <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">cos_to_mega_and_delta</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">f01</span><span class="p">,</span> <span class="n">f02on2</span><span class="p">),</span>
         <span class="p">[</span><span class="n">Cin_est</span><span class="p">,</span> <span class="n">Icin_est</span><span class="p">],</span>
         <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-        <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;maxiter&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;disp&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">"maxiter"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"disp"</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">xrr</span><span class="o">.</span><span class="n">x</span></div>
@@ -1084,13 +1084,13 @@
 
 
 <span class="c1"># Cost function for calculating C and IC</span>
-<span class="c1"># given a C and IC calculate f and f02/2 from &#39;levels_vs_ng_real_units&#39;</span>
+<span class="c1"># given a C and IC calculate f and f02/2 from 'levels_vs_ng_real_units'</span>
 <span class="c1"># and least square with measured f01,f02on2</span>
 <div class="viewcode-block" id="cos_to_mega_and_delta">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.cos_to_mega_and_delta">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">cos_to_mega_and_delta</span><span class="p">(</span><span class="n">Cin</span><span class="p">,</span> <span class="n">ICin</span><span class="p">,</span> <span class="n">f01</span><span class="p">,</span> <span class="n">f02on2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cost function for calculating C and IC given a C and IC calculate f and</span>
-<span class="sd">    f02/2 from &#39;levels_vs_ng_real_units&#39; and least square with measured</span>
+<span class="w">    </span><span class="sd">"""Cost function for calculating C and IC given a C and IC calculate f and</span>
+<span class="sd">    f02/2 from 'levels_vs_ng_real_units' and least square with measured</span>
 <span class="sd">    f01,f02on2.</span>
 
 <span class="sd">    Args:</span>
@@ -1101,7 +1101,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: Calculated value</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">fqubitGHz</span><span class="p">,</span> <span class="n">anharMHz</span><span class="p">,</span> <span class="n">disp</span><span class="p">,</span> <span class="n">tphi_ms</span> <span class="o">=</span> <span class="n">levels_vs_ng_real_units</span><span class="p">(</span><span class="n">Cin</span><span class="p">,</span> <span class="n">ICin</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">51</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="p">(</span>
@@ -1116,7 +1116,7 @@
 <div class="viewcode-block" id="chargeline_T1">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.chargeline_T1">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">chargeline_T1</span><span class="p">(</span><span class="n">Ccharge</span><span class="p">,</span> <span class="n">Cq</span><span class="p">,</span> <span class="n">f01</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the charge line `T1`.</span>
+<span class="w">    </span><span class="sd">"""Calculate the charge line `T1`.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        Cchare (float): Ccharge</span>
@@ -1125,7 +1125,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: Calculated chargeline T1</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">return</span> <span class="n">Cq</span> <span class="o">/</span> <span class="p">(</span><span class="n">Ccharge</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">50.0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f01</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
 
@@ -1137,10 +1137,10 @@
 <div class="viewcode-block" id="readin_q3d_matrix">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">readin_q3d_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read in the txt file created from q3d export as CSV and output the</span>
+<span class="w">    </span><span class="sd">"""Read in the txt file created from q3d export as CSV and output the</span>
 <span class="sd">    capacitance matrix file exported by Ansys Q3D.</span>
 
-<span class="sd">    When exporting pick &quot;save as type: data table&quot;</span>
+<span class="sd">    When exporting pick "save as type: data table"</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        path (str): Path to file</span>
@@ -1152,7 +1152,7 @@
 
 <span class="sd">    ::</span>
 
-<span class="sd">        DesignVariation:$BBoxL=&#39;650um&#39; $boxH=&#39;750um&#39; $boxL=&#39;2mm&#39; $QubitGap=&#39;30um&#39; $QubitH=&#39;90um&#39; $QubitL=&#39;450um&#39; Lj_1=&#39;13nH&#39;</span>
+<span class="sd">        DesignVariation:$BBoxL='650um' $boxH='750um' $boxL='2mm' $QubitGap='30um' $QubitH='90um' $QubitL='450um' Lj_1='13nH'</span>
 <span class="sd">        Setup1:LastAdaptive</span>
 <span class="sd">        Problem Type:C</span>
 <span class="sd">        C Units:farad, G Units:mSie</span>
@@ -1176,17 +1176,17 @@
 <span class="sd">        Q1_pad_bot      0       0       0       0       0       0</span>
 <span class="sd">        Q1_pad_top1     0       0       0       0       0       0</span>
 <span class="sd">        Q1_readout_connector_pad        0       0       0       0       0       0</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">text</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
 
-    <span class="n">s1</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Capacitance Matrix&quot;</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Could not split text to `Capacitance Matrix`&quot;</span>
+    <span class="n">s1</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"Capacitance Matrix"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"Could not split text to `Capacitance Matrix`"</span>
 
-    <span class="n">s2</span> <span class="o">=</span> <span class="n">s1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Conductance Matrix&quot;</span><span class="p">)</span>
+    <span class="n">s2</span> <span class="o">=</span> <span class="n">s1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"Conductance Matrix"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">delim_whitespace</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">sep</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\s+&quot;</span>
+        <span class="n">sep</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"\s+"</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">sep</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -1203,14 +1203,14 @@
     <span class="k">if</span> <span class="n">delim_whitespace</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_cmat</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
         <span class="n">df_cmat</span> <span class="o">=</span> <span class="n">df_cmat</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df_cmat</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="n">units</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;C Units:(.*?),&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">design_variation</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;DesignVariation:(.*?)\n&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">"C Units:(.*?),"</span><span class="p">,</span> <span class="n">text</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">design_variation</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">"DesignVariation:(.*?)\n"</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">design_variation</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">design_variation</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Design Variation:(.*?)\n&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="n">design_variation</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">"Design Variation:(.*?)\n"</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">design_variation</span><span class="p">:</span>
             <span class="n">design_variation</span> <span class="o">=</span> <span class="n">design_variation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">design_variation</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">design_variation</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">design_variation</span> <span class="o">=</span> <span class="n">design_variation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -1221,18 +1221,18 @@
 <div class="viewcode-block" id="readin_q3d_matrix_m">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix_m">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">readin_q3d_matrix_m</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read in Q3D cap matrix from a .m file exported by Ansys Q3d.</span>
+<span class="w">    </span><span class="sd">"""Read in Q3D cap matrix from a .m file exported by Ansys Q3d.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        path (str): Path to .m file</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        pd.DataFrame of cap matrix, with no names of columns.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">text</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
-    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;capMatrix (.*?)]&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">"capMatrix (.*?)]"</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-        <span class="n">match</span> <span class="o">=</span> <span class="n">match</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;= [&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">match</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"= ["</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"]"</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">dfC</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">match</span><span class="p">),</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dfC</span></div>
 
@@ -1243,18 +1243,18 @@
 
 <div class="viewcode-block" id="load_q3d_capacitance_matrix">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.load_q3d_capacitance_matrix">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">load_q3d_capacitance_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">user_units</span><span class="o">=</span><span class="s2">&quot;fF&quot;</span><span class="p">,</span> <span class="n">_disp</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load Q3D capcitance file exported as Maxwell matrix. Do not export</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_q3d_capacitance_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">user_units</span><span class="o">=</span><span class="s2">"fF"</span><span class="p">,</span> <span class="n">_disp</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Load Q3D capcitance file exported as Maxwell matrix. Do not export</span>
 <span class="sd">    conductance. Units are read in automatically and converted to user units.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        path (str): Path to file.</span>
-<span class="sd">        user_units (str): Units.  Defaults to &#39;fF&#39;.</span>
+<span class="sd">        user_units (str): Units.  Defaults to 'fF'.</span>
 <span class="sd">        _disp (bool): whehter or not to display messages.  Defaults to True.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tupe: df_cmat, user_units, design_variation, df_cond</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">df_cmat</span><span class="p">,</span> <span class="n">Cunits</span><span class="p">,</span> <span class="n">design_variation</span><span class="p">,</span> <span class="n">df_cond</span> <span class="o">=</span> <span class="n">readin_q3d_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
     <span class="c1"># Unit convert</span>
@@ -1265,8 +1265,8 @@
     <span class="c1"># Report</span>
     <span class="k">if</span> <span class="n">_disp</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="s2">&quot;Imported capacitance matrix with UNITS: [</span><span class="si">%s</span><span class="s2">] now converted to USER UNITS:[</span><span class="si">%s</span><span class="s2">] </span><span class="se">\</span>
-<span class="s2">                from file:</span><span class="se">\n\t</span><span class="si">%s</span><span class="s2">&quot;</span>
+            <span class="s2">"Imported capacitance matrix with UNITS: [</span><span class="si">%s</span><span class="s2">] now converted to USER UNITS:[</span><span class="si">%s</span><span class="s2">] </span><span class="se">\</span>
+<span class="s2">                from file:</span><span class="se">\n\t</span><span class="si">%s</span><span class="s2">"</span>
             <span class="o">%</span> <span class="p">(</span><span class="n">Cunits</span><span class="p">,</span> <span class="n">user_units</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">df_cmat_style_print</span><span class="p">(</span><span class="n">df_cmat</span><span class="p">)</span>
@@ -1285,7 +1285,7 @@
     <span class="n">fr</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
     <span class="n">fb</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Obtain a single result dataframe from a Q3D capacitance file pointed to by path.</span>
+<span class="w">    </span><span class="sd">"""Obtain a single result dataframe from a Q3D capacitance file pointed to by path.</span>
 <span class="sd">    Similar to member method lumped_oscillator_vs_passes() of QQ3DRenderer but for a user</span>
 <span class="sd">    provided capacitance matrix file.</span>
 
@@ -1302,13 +1302,13 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: A single dataframe corresponding to a single capacitance matrix</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">ureg</span> <span class="o">=</span> <span class="n">UnitRegistry</span><span class="p">()</span>
     <span class="c1"># Local Ic_from_Lj (defined above) takes SI Henries — convert nH inline</span>
     <span class="n">IC_Amps</span> <span class="o">=</span> <span class="n">Ic_from_Lj</span><span class="p">(</span><span class="n">Lj_nH</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">)</span>
-    <span class="n">CJ</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Cj_fF</span><span class="si">}</span><span class="s2"> fF&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;farad&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-    <span class="n">fr</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fr</span><span class="si">}</span><span class="s2"> GHz&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;GHz&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-    <span class="n">fb</span> <span class="o">=</span> <span class="p">[</span><span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2"> GHz&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;GHz&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">fb</span><span class="p">]</span>
+    <span class="n">CJ</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">Cj_fF</span><span class="si">}</span><span class="s2"> fF"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"farad"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="n">fr</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">fr</span><span class="si">}</span><span class="s2"> GHz"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"GHz"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="n">fb</span> <span class="o">=</span> <span class="p">[</span><span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2"> GHz"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"GHz"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">fb</span><span class="p">]</span>
 
     <span class="p">(</span>
         <span class="n">df_cmat</span><span class="p">,</span>
@@ -1316,15 +1316,15 @@
         <span class="n">_</span><span class="p">,</span>
         <span class="n">_</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">=</span> <span class="n">load_q3d_capacitance_matrix</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="n">c_units</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="n">user_units</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;farads&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="n">c_units</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="n">user_units</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"farads"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
 
     <span class="n">RES</span> <span class="o">=</span> <span class="n">extract_transmon_coupled_Noscillator</span><span class="p">(</span>
         <span class="n">df_cmat</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">c_units</span><span class="p">,</span> <span class="n">IC_Amps</span><span class="p">,</span> <span class="n">CJ</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">fb</span><span class="p">,</span> <span class="n">fr</span><span class="p">,</span> <span class="n">g_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">print_info</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
 
     <span class="n">RES</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">RES</span><span class="p">])</span>
-    <span class="n">RES</span><span class="p">[</span><span class="s2">&quot;χr MHz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">RES</span><span class="p">[</span><span class="s2">&quot;chi_in_MHz&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-    <span class="n">RES</span><span class="p">[</span><span class="s2">&quot;gr MHz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">RES</span><span class="p">[</span><span class="s2">&quot;gbus&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">RES</span><span class="p">[</span><span class="s2">"χr MHz"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">RES</span><span class="p">[</span><span class="s2">"chi_in_MHz"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">RES</span><span class="p">[</span><span class="s2">"gr MHz"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">RES</span><span class="p">[</span><span class="s2">"gbus"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="k">return</span> <span class="n">RES</span></div>
 
 
@@ -1332,14 +1332,14 @@
 <div class="viewcode-block" id="df_cmat_style_print">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.df_cmat_style_print">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">df_cmat_style_print</span><span class="p">(</span><span class="n">df_cmat</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display the dataframe in the cmat style.</span>
+<span class="w">    </span><span class="sd">"""Display the dataframe in the cmat style.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        df_cmat (dataframe): Dataframe to display</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
 
-    <span class="n">display</span><span class="p">(</span><span class="n">df_cmat</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;#5fba7d&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span></div>
+    <span class="n">display</span><span class="p">(</span><span class="n">df_cmat</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">"</span><span class="si">{:.2f}</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"#5fba7d"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span></div>
 
 
 
@@ -1350,7 +1350,7 @@
 <div class="viewcode-block" id="move_index_to">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.move_index_to">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">move_index_to</span><span class="p">(</span><span class="n">i_from</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">i_to</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">len_</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Utility function to swap index.</span>
+<span class="w">    </span><span class="sd">"""Utility function to swap index.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        i_from (int): Data frame to swap index</span>
@@ -1359,7 +1359,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: list of indecies, such as  array([1, 2, 3, 4, 0, 5])</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">len_</span><span class="p">)</span>
     <span class="n">idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">idxs</span><span class="p">,</span> <span class="n">i_from</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">idxs</span><span class="p">,</span> <span class="n">i_to</span><span class="p">,</span> <span class="n">i_from</span><span class="p">)</span></div>
@@ -1372,7 +1372,7 @@
 <div class="viewcode-block" id="df_reorder_matrix_basis">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.df_reorder_matrix_basis">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">df_reorder_matrix_basis</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">i_from</span><span class="p">,</span> <span class="n">i_to</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Data frame handle reording of matrix basis.</span>
+<span class="w">    </span><span class="sd">"""Data frame handle reording of matrix basis.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        df (DataFrame): Data frame to swap</span>
@@ -1381,7 +1381,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        DataFrame: The changed index DataFrame</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="n">move_index_to</span><span class="p">(</span><span class="n">i_from</span><span class="p">,</span> <span class="n">i_to</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">idx</span><span class="p">)]</span>
@@ -1406,7 +1406,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -1429,6 +1429,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,11 +472,11 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;This is the main module that defines what a QComponent is in Qiskit Metal.</span>
+<span class="sd">"""This is the main module that defines what a QComponent is in Qiskit Metal.</span>
 
 <span class="sd">To see the docstring of QComponent in Jupyter notebook, use:</span>
 <span class="sd">&gt;&gt; ?QComponent</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
@@ -513,11 +513,11 @@
 <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">is_building_docs</span><span class="p">():</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">...draw</span><span class="w"> </span><span class="kn">import</span> <span class="n">Vector</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;QComponent&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"QComponent"</span><span class="p">]</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="c1"># For linting typechecking, import modules that can&#39;t be loaded here under normal conditions.</span>
-    <span class="c1"># For example, I can&#39;t import QDesign, because it requires QComponent first. We have the</span>
+    <span class="c1"># For linting typechecking, import modules that can't be loaded here under normal conditions.</span>
+    <span class="c1"># For example, I can't import QDesign, because it requires QComponent first. We have the</span>
     <span class="c1"># chicken and egg issue.</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
 
@@ -527,7 +527,7 @@
 <div class="viewcode-block" id="QComponent">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">QComponent</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;.. image::</span>
+<span class="w">    </span><span class="sd">""".. image::</span>
 <span class="sd">        base_qcomponent.png</span>
 
 <span class="sd">    `QComponent` is the core class for all Metal components and is the</span>
@@ -539,7 +539,7 @@
 <span class="sd">            * Manipulates the dictionary of options (stored as string-string key-value</span>
 <span class="sd">              pairs) to change the geometry and properties of the component.</span>
 <span class="sd">            * The options of the class are stored in an options dictionary. These</span>
-<span class="sd">              include the geometric sizes, such as width=&#39;10um&#39; or height=&#39;5mm&#39;, etc.</span>
+<span class="sd">              include the geometric sizes, such as width='10um' or height='5mm', etc.</span>
 <span class="sd">            * The `make` function parses these strings and implements the logic required</span>
 <span class="sd">              to transform the dictionary of options (stored as strings) into shapes</span>
 <span class="sd">              with associated properties.</span>
@@ -550,11 +550,11 @@
 <span class="sd">            * The class provides the interfaces for the component (creator user)</span>
 
 <span class="sd">        Default Options:</span>
-<span class="sd">            * pos_x/_y: &#39;0.0um&#39; -- The x/y position of the center of the QComponent.</span>
-<span class="sd">            * orientation: &#39;0.0&#39; -- The primary direction in degrees of the QComponent.</span>
+<span class="sd">            * pos_x/_y: '0.0um' -- The x/y position of the center of the QComponent.</span>
+<span class="sd">            * orientation: '0.0' -- The primary direction in degrees of the QComponent.</span>
 <span class="sd">              Expressed counter-clockwise orientation.</span>
-<span class="sd">            * chip: &#39;main&#39; -- Chip holding the QComponent.</span>
-<span class="sd">            * layer: &#39;1&#39; -- Manufacturing layer used for the QComponent.</span>
+<span class="sd">            * chip: 'main' -- Chip holding the QComponent.</span>
+<span class="sd">            * layer: '1' -- Manufacturing layer used for the QComponent.</span>
 
 <span class="sd">            Nested default options can be overwritten with the update function.</span>
 <span class="sd">            The following code demonstrates how the update works.</span>
@@ -589,24 +589,24 @@
 <span class="sd">                default.update(overwrite)</span>
 <span class="sd">                default</span>
 
-<span class="sd">            &gt;&gt; {&#39;a&#39;: 10, &#39;b&#39;: 20, &#39;c&#39;: {&#39;d&#39;: 30, &#39;e&#39;: 4, &#39;f&#39;: {&#39;g&#39;: 6, &#39;h&#39;: 70}}, &#39;z&#39;: 33}</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            &gt;&gt; {'a': 10, 'b': 20, 'c': {'d': 30, 'e': 4, 'f': {'g': 6, 'h': 70}}, 'z': 33}</span>
+<span class="sd">    """</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0.0um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.0um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0.0&quot;</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">"0.0um"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0.0um"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"0.0"</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="s2">"main"</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s2">"1"</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
     <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;QComponent&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""QComponent"""</span>
 
     <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A dictionary of the component-designer-defined options.</span>
+<span class="w">    </span><span class="sd">"""A dictionary of the component-designer-defined options.</span>
 <span class="sd">    These options are used in the make function to create the QGeometry and QPins.</span>
 <span class="sd">    All options should have string keys and preferrable string values.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Dummy private attribute used to check if an instantiated object is</span>
     <span class="c1"># indeed a QComponent class. The problem is that the `isinstance`</span>
@@ -616,13 +616,13 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">,</span>
+        <span class="n">design</span><span class="p">:</span> <span class="s2">"QDesign"</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">make</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">component_template</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new Metal component and adds it&#39;s default_options to the</span>
+<span class="w">        </span><span class="sd">"""Create a new Metal component and adds it's default_options to the</span>
 <span class="sd">        design.</span>
 
 <span class="sd">        Args:</span>
@@ -636,7 +636,7 @@
 <span class="sd">                and used every time a new component is instantiated.  Defaults to None.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            ValueError: User supplied design isn&#39;t a QDesign</span>
+<span class="sd">            ValueError: User supplied design isn't a QDesign</span>
 
 <span class="sd">        Note:  Information copied from QDesign class.</span>
 <span class="sd">            self._design.overwrite_enabled (bool):</span>
@@ -655,26 +655,26 @@
 <span class="sd">            Either True or False - If string name, used for component, is NOT</span>
 <span class="sd">            being used in the design, a component will be generated and</span>
 <span class="sd">            added to design using the name.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="c1"># Make the id be None, which means it hasn&#39;t been added to design yet.</span>
+        <span class="c1"># Make the id be None, which means it hasn't been added to design yet.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_made</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_component_template</span> <span class="o">=</span> <span class="n">component_template</span>
 
         <span class="c1"># Status: used to handle building of a component and checking if it succeeded or failed.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;Not Built&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">"Not Built"</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_design</span><span class="p">(</span><span class="n">design</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Error you did not pass in a valid Metal QDesign object as a &#39;</span><span class="se">\</span>
-<span class="s2">                &#39;parent of this QComponent.&quot;</span>
+                <span class="s2">"Error you did not pass in a valid Metal QDesign object as a '</span><span class="se">\</span>
+<span class="s2">                'parent of this QComponent."</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_design</span> <span class="o">=</span> <span class="n">design</span>  <span class="c1"># reference to parent</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delete_evaluation</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;NameInUse&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delete_evaluation</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"NameInUse"</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> already exists! Please choose a different name for your new QComponent&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> already exists! Please choose a different name for your new QComponent"</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
@@ -691,7 +691,7 @@
         <span class="c1"># Parser for options</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">ParsedDynamicAttributes_Component</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="c1"># Should put this earlier so could pass in other error messages?</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_error_message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_message</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_pin_inputs</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_error_message</span><span class="p">)</span>
             <span class="k">return</span>
@@ -709,7 +709,7 @@
 
         <span class="c1">#: Stores the latest status of the component. Values include:</span>
         <span class="c1">#: ``Initialization Successful``, ``Build Failed``, etc.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;Initialization Successful&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">"Initialization Successful"</span>
 
         <span class="c1"># Used for short name, and renderers adding information to tables.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gather_all_children_metadata</span><span class="p">()</span>
@@ -720,14 +720,14 @@
             <span class="c1"># limit names to 24 characters</span>
             <span class="n">name_trunc</span> <span class="o">=</span> <span class="mi">24</span>
             <span class="c1"># if no prefix, use class name</span>
-            <span class="k">if</span> <span class="s2">&quot;short_name&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">prefix</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"short_name"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">prefix</span><span class="p">:</span>
                 <span class="n">short_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">[:</span><span class="n">name_trunc</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">short_name</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[</span><span class="s2">&quot;short_name&quot;</span><span class="p">][:</span><span class="n">name_trunc</span><span class="p">]</span>
+                <span class="n">short_name</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[</span><span class="s2">"short_name"</span><span class="p">][:</span><span class="n">name_trunc</span><span class="p">]</span>
             <span class="n">name_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_get_new_qcomponent_name_id</span><span class="p">(</span><span class="n">short_name</span><span class="p">)</span>
             <span class="c1"># rename loop to make sure that no components manually named by the user conflicts</span>
             <span class="k">while</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">rename_component</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">short_name</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">name_id</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">rename_component</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">short_name</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">name_id</span><span class="p">))</span>
                 <span class="o">!=</span> <span class="mi">1</span>
             <span class="p">):</span>
                 <span class="n">name_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_get_new_qcomponent_name_id</span><span class="p">(</span><span class="n">short_name</span><span class="p">)</span>
@@ -742,12 +742,12 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_gather_all_children_options</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;From the QComponent core class, traverse the child classes to</span>
+<span class="w">        </span><span class="sd">"""From the QComponent core class, traverse the child classes to</span>
 <span class="sd">        gather the `default_options` for each child class.</span>
 
 <span class="sd">        Collects the options starting with the basecomponent,</span>
 <span class="sd">        and stepping through the children.</span>
-<span class="sd">        Each child adds it&#39;s options to the base options.  If the</span>
+<span class="sd">        Each child adds it's options to the base options.  If the</span>
 <span class="sd">        key is the same, the option of the youngest child is used.</span>
 
 <span class="sd">        Note: if keys are the same for child and grandchild,</span>
@@ -757,30 +757,30 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: options from all children</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">options_from_children</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">parents</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmro</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
 
-        <span class="c1"># len-2: generic &quot;object&quot; does not have default_options.</span>
+        <span class="c1"># len-2: generic "object" does not have default_options.</span>
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="p">::</span> <span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
             <span class="c1"># The template default options are in a class dict attribute `default_options`.</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s2">&quot;default_options&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s2">"default_options"</span><span class="p">):</span>
                 <span class="n">options_from_children</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="o">**</span><span class="n">options_from_children</span><span class="p">,</span>
                     <span class="o">**</span><span class="n">child</span><span class="o">.</span><span class="n">default_options</span><span class="p">,</span>
                 <span class="p">}</span>
 
         <span class="k">if</span> <span class="n">qlibrary</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">qroute</span><span class="o">.</span><span class="n">QRoute</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
-            <span class="n">options_from_children</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;pos_x&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="n">options_from_children</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;pos_y&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="n">options_from_children</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;orientation&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">options_from_children</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"pos_x"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">options_from_children</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"pos_y"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">options_from_children</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"orientation"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">options_from_children</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_gather_all_children_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;From the QComponent core class, traverse the child classes to</span>
+<span class="w">        </span><span class="sd">"""From the QComponent core class, traverse the child classes to</span>
 <span class="sd">        gather the component_metadata for each child class.</span>
 
 <span class="sd">        Note: if keys are the same for child and grandchild, grandchild will overwrite child</span>
@@ -788,14 +788,14 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Metadata from all children.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">metadata_from_children</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">parents</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmro</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
         <span class="c1"># Base.py is not expected to have component_metadata dict to add to design class.</span>
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="p">::</span> <span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
             <span class="c1"># There is a developer agreement so the defaults will be in dict named component_metadata.</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s2">&quot;component_metadata&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s2">"component_metadata"</span><span class="p">):</span>
                 <span class="n">metadata_from_children</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="o">**</span><span class="n">metadata_from_children</span><span class="p">,</span>
                     <span class="o">**</span><span class="n">child</span><span class="o">.</span><span class="n">component_metadata</span><span class="p">,</span>
@@ -805,25 +805,25 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_unique_class_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns unique class name based on the module.</span>
+<span class="w">        </span><span class="sd">"""Returns unique class name based on the module.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            str: Example: &#39;qiskit_metal.qlibrary.qubits.transmon_pocket.TransmonPocket&#39;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="sd">            str: Example: 'qiskit_metal.qlibrary.qubits.transmon_pocket.TransmonPocket'</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_register_class_with_design</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">,</span> <span class="n">template_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">component_template</span><span class="p">:</span> <span class="n">Dict</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">"QDesign"</span><span class="p">,</span> <span class="n">template_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">component_template</span><span class="p">:</span> <span class="n">Dict</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Init function to register a component class with the design when</span>
+<span class="w">        </span><span class="sd">"""Init function to register a component class with the design when</span>
 <span class="sd">        first instantiated. Registers the design template options.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            design (QDesign): The parent design</span>
 <span class="sd">            template_key (str): Key to use</span>
 <span class="sd">            component_template (dict): Template of components to copy, with renderer options</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># do not overwrite</span>
         <span class="k">if</span> <span class="n">template_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="p">:</span>
             <span class="c1"># if not component_template:</span>
@@ -836,76 +836,76 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Name of the component.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Name of the component."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
 
     <span class="nd">@name</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rename the component. Change the design dictionaries as well. handle</span>
+<span class="w">        </span><span class="sd">"""Rename the component. Change the design dictionaries as well. handle</span>
 <span class="sd">        components. Delete and remake.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: True is successful, otherwise failure code</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">return_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">rename_component</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">return_code</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;In design_base.name, the new_name=</span><span class="si">{</span><span class="n">new_name</span><span class="si">}</span><span class="s2"> was not set. &quot;</span>
+                <span class="sa">f</span><span class="s2">"In design_base.name, the new_name=</span><span class="si">{</span><span class="n">new_name</span><span class="si">}</span><span class="s2"> was not set. "</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">return_code</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">design</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a reference to the parent design object.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">design</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"QDesign"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return a reference to the parent design object.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            QDesign: design</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_design</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the full name of the class: the full module name with the</span>
+<span class="w">        </span><span class="sd">"""Return the full name of the class: the full module name with the</span>
 <span class="sd">        class name. e.g., qiskit_metal.qlibrary.qubits.TransmonPocket.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Class name</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_class_name</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">logger</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The Qiskit Metal Logger.</span>
+<span class="w">        </span><span class="sd">"""The Qiskit Metal Logger.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            logging.Logger: Logger</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_design</span><span class="o">.</span><span class="n">logger</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">pin_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The names of the pins.</span>
+<span class="w">        </span><span class="sd">"""The names of the pins.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            set: Set of pin names</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pins</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The unique id of component within a design.</span>
+<span class="w">        </span><span class="sd">"""The unique id of component within a design.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: Component id</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_design</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add self to design objects dictionary.</span>
+<span class="w">        </span><span class="sd">"""Add self to design objects dictionary.</span>
 
 <span class="sd">        Method will obtain an unique id for the component within a</span>
 <span class="sd">        design, THEN add itself to design.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">name_to_id</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
 
@@ -914,12 +914,12 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_template_options</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
-        <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">,</span>
+        <span class="n">design</span><span class="p">:</span> <span class="s2">"QDesign"</span><span class="p">,</span>
         <span class="n">component_template</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">logger_</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">template_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates template options for the Metal Component class required for</span>
+<span class="w">        </span><span class="sd">"""Creates template options for the Metal Component class required for</span>
 <span class="sd">        the class to function, based on the design template; i.e., be created,</span>
 <span class="sd">        made, and rendered. Provides the blank option structure required.</span>
 
@@ -934,7 +934,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Dict: dictionary of default options based on design template.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># get key for templates</span>
         <span class="k">if</span> <span class="n">template_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">template_key</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_unique_class_name</span><span class="p">()</span>
@@ -958,8 +958,8 @@
             <span class="n">logger_</span> <span class="o">=</span> <span class="n">logger_</span> <span class="ow">or</span> <span class="n">design</span><span class="o">.</span><span class="n">logger</span>
             <span class="k">if</span> <span class="n">logger_</span><span class="p">:</span>
                 <span class="n">logger_</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;ERROR in the creating component </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!</span><span class="se">\n</span><span class="s2">The default &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;options for the component class </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> are missing&quot;</span>
+                    <span class="sa">f</span><span class="s2">"ERROR in the creating component </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!</span><span class="se">\n</span><span class="s2">The default "</span>
+                    <span class="sa">f</span><span class="s2">"options for the component class </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> are missing"</span>
                 <span class="p">)</span>
 
         <span class="c1"># Specific object template options</span>
@@ -969,35 +969,35 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_delete_evaluation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">check_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;When design.overwrite_enabled, the user is allowed to delete an</span>
+<span class="w">        </span><span class="sd">"""When design.overwrite_enabled, the user is allowed to delete an</span>
 <span class="sd">        existing component within the design if the name is being used.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            check_name (str, optional): Name of new component.  Defaults to None.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            string: Return &#39;NameInUse&#39; if overwrite flag is False and</span>
+<span class="sd">            string: Return 'NameInUse' if overwrite flag is False and</span>
 <span class="sd">            check_name is already being used within design.</span>
 <span class="sd">            Otherwise return None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">answer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_name_used</span><span class="p">(</span><span class="n">check_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="ow">and</span> <span class="n">answer</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="n">check_name</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">answer</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;The QComponent name `</span><span class="si">{</span><span class="n">check_name</span><span class="si">}</span><span class="s2">` is already in use, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;by a component (with QComponent id=</span><span class="si">{</span><span class="n">answer</span><span class="si">}</span><span class="s2">).</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;QComponent NOT made, nor added to the design. </span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="s2">&quot;To force overwrite a QComponent with an existing name &quot;</span>
-                <span class="s2">&quot;use the flag:</span><span class="se">\n</span><span class="s2">`design.overwrite_enabled = True`.&quot;</span>
+                <span class="sa">f</span><span class="s2">"The QComponent name `</span><span class="si">{</span><span class="n">check_name</span><span class="si">}</span><span class="s2">` is already in use, "</span>
+                <span class="sa">f</span><span class="s2">"by a component (with QComponent id=</span><span class="si">{</span><span class="n">answer</span><span class="si">}</span><span class="s2">).</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"QComponent NOT made, nor added to the design. </span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">"To force overwrite a QComponent with an existing name "</span>
+                <span class="s2">"use the flag:</span><span class="se">\n</span><span class="s2">`design.overwrite_enabled = True`."</span>
             <span class="p">)</span>
-            <span class="k">return</span> <span class="s2">&quot;NameInUse&quot;</span>
+            <span class="k">return</span> <span class="s2">"NameInUse"</span>
         <span class="k">return</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="QComponent.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The make function implements the logic that creates the geometry</span>
+<span class="w">        </span><span class="sd">"""The make function implements the logic that creates the geometry</span>
 <span class="sd">        (poly, path, etc.) from the qcomponent.options dictionary of</span>
 <span class="sd">        parameters, and the adds them to the design, using</span>
 <span class="sd">        qcomponent.add_qgeometry(...), adding in extra needed information, such</span>
@@ -1012,17 +1012,17 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            NotImplementedError: Overwrite this function by subclassing.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="QComponent.to_script">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.to_script">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thin</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">is_part_of_chip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            thin: If true then any key in the QComponent&#39;s options whose value</span>
+<span class="sd">            thin: If true then any key in the QComponent's options whose value</span>
 <span class="sd">              is the same value as the default will not be included in the body</span>
 <span class="sd">            is_part_of_chip: If true, body will not include header code</span>
 
@@ -1031,10 +1031,10 @@
 <span class="sd">        an instance of this class with the same properties as the instance calling</span>
 <span class="sd">        this function</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">is_default_options</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Returns true if option&#39;s key value is the same as the default value&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">"""Returns true if option's key value is the same as the default value"""</span>
             <span class="n">temp_option</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_template_options</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">)</span>
             <span class="n">def_options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_options</span>
 
@@ -1047,25 +1047,25 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_unique_class_name</span><span class="p">()</span>
-        <span class="bp">cls</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">obj_name</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="s2">"."</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">obj_name</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="c1">### constructing imports ###</span>
 
         <span class="c1"># header</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_part_of_chip</span><span class="p">:</span>
-            <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="s2">"""</span>
 <span class="s2">from qiskit_metal import designs, MetalGUI</span>
 
 <span class="s2">design = designs.DesignPlanar()</span>
 
 <span class="s2">gui = MetalGUI(design)</span>
-<span class="s2">            &quot;&quot;&quot;</span>
+<span class="s2">            """</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="s2">""</span>
 
         <span class="c1"># component import</span>
-        <span class="n">comp_import</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;from </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2"> import </span><span class="si">{</span><span class="n">obj_name</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="n">comp_import</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""from </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2"> import </span><span class="si">{</span><span class="n">obj_name</span><span class="si">}</span><span class="s2">"""</span>
 
         <span class="n">full_import</span> <span class="o">=</span> <span class="n">header</span> <span class="o">+</span> <span class="n">comp_import</span>
 
@@ -1081,19 +1081,19 @@
             <span class="n">body_options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">body_options</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">str_options</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">str_options</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">pp</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">41</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="n">str_options</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;options=</span><span class="si">{</span><span class="n">pp</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">body_options</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+            <span class="n">str_options</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""options=</span><span class="si">{</span><span class="n">pp</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">body_options</span><span class="p">)</span><span class="si">}</span><span class="s2">"""</span>
 
         <span class="c1">## setting up component-specific args</span>
         <span class="c1"># get init from child?</span>
-        <span class="n">to_ignore</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;self&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;design&quot;</span><span class="p">,</span> <span class="s2">&quot;make&quot;</span><span class="p">,</span> <span class="s2">&quot;kwargs&quot;</span><span class="p">,</span> <span class="s2">&quot;options&quot;</span><span class="p">,</span> <span class="s2">&quot;args&quot;</span><span class="p">}</span>
+        <span class="n">to_ignore</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"self"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">,</span> <span class="s2">"design"</span><span class="p">,</span> <span class="s2">"make"</span><span class="p">,</span> <span class="s2">"kwargs"</span><span class="p">,</span> <span class="s2">"options"</span><span class="p">,</span> <span class="s2">"args"</span><span class="p">}</span>
         <span class="n">class_signature</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
 
         <span class="n">failed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">str_params</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">str_params</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">class_signature</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">to_ignore</span><span class="p">:</span>
                 <span class="n">param_name</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span>
@@ -1101,69 +1101,69 @@
                     <span class="n">param_name</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span>
                     <span class="n">param_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
                     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">param_val</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
-                        <span class="n">param_val</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">param_val</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                        <span class="n">param_val</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">param_val</span><span class="si">}</span><span class="s2">'"</span>
                     <span class="n">params</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_val</span>
-                <span class="k">elif</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
-                    <span class="n">priv_param_name</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">param_name</span>
+                <span class="k">elif</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+                    <span class="n">priv_param_name</span> <span class="o">=</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="n">param_name</span>
                     <span class="n">param_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">priv_param_name</span><span class="p">]</span>
                     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">param_val</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
-                        <span class="n">param_val</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">param_val</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                        <span class="n">param_val</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">param_val</span><span class="si">}</span><span class="s2">'"</span>
                     <span class="n">params</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_val</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">failed</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">param_name</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">str_params</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">,&quot;&quot;&quot;</span>
+            <span class="n">str_params</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"""</span>
+<span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">,"""</span>
 
-        <span class="n">str_failed</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">str_failed</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">failed</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">str_failed</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;</span>
+            <span class="n">str_failed</span> <span class="o">+=</span> <span class="s2">"""</span>
 
-<span class="s2">            # WARNING&quot;&quot;&quot;</span>
+<span class="s2">            # WARNING"""</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">failed</span><span class="p">:</span>
-            <span class="n">str_failed</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">#</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> failed to have a value&quot;&quot;&quot;</span>
+            <span class="n">str_failed</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"""</span>
+<span class="s2">#</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> failed to have a value"""</span>
 
         <span class="c1">## setting up metadata</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">str_meta_d</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+            <span class="n">str_meta_d</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
 <span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.meta = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="si">}</span>
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="s2">        """</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">str_meta_d</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">str_meta_d</span> <span class="o">=</span> <span class="s2">""</span>
 
         <span class="c1">## cleaning up</span>
         <span class="n">strname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">strname</span><span class="o">.</span><span class="n">isidentifier</span><span class="p">():</span>
-            <span class="k">if</span> <span class="s2">&quot;-&quot;</span> <span class="ow">in</span> <span class="n">strname</span><span class="p">:</span>
-                <span class="n">strname</span> <span class="o">=</span> <span class="n">strname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">"-"</span> <span class="ow">in</span> <span class="n">strname</span><span class="p">:</span>
+                <span class="n">strname</span> <span class="o">=</span> <span class="n">strname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">strname</span><span class="o">.</span><span class="n">isidentifier</span><span class="p">():</span>
                 <span class="n">strname</span> <span class="o">=</span> <span class="bp">cls</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">1001</span><span class="p">))</span>
 
-        <span class="n">other_args</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">str_options</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">other_args</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="k">if</span> <span class="n">str_options</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">:</span>
             <span class="n">other_args</span> <span class="o">+=</span> <span class="p">(</span>
-<span class="w">                </span><span class="sd">&quot;&quot;&quot;,</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="w">                </span><span class="sd">""",</span>
+<span class="sd">"""</span>
                 <span class="o">+</span> <span class="n">str_options</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">str_params</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">str_params</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">:</span>
             <span class="n">other_args</span> <span class="o">+=</span> <span class="p">(</span>
-<span class="w">                </span><span class="sd">&quot;&quot;&quot;,</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="w">                </span><span class="sd">""",</span>
+<span class="sd">"""</span>
                 <span class="o">+</span> <span class="n">str_params</span>
             <span class="p">)</span>
 
         <span class="c1">## setting up instantiation</span>
-        <span class="n">body</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
 <span class="si">{</span><span class="n">str_failed</span><span class="si">}</span>
 <span class="si">{</span><span class="n">strname</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">obj_name</span><span class="si">}</span><span class="s2">(</span>
 <span class="s2">design,</span>
-<span class="s2">name=&#39;</span><span class="si">{</span><span class="n">strname</span><span class="si">}</span><span class="s2">&#39;</span><span class="si">{</span><span class="n">other_args</span><span class="si">}</span>
+<span class="s2">name='</span><span class="si">{</span><span class="n">strname</span><span class="si">}</span><span class="s2">'</span><span class="si">{</span><span class="n">other_args</span><span class="si">}</span>
 <span class="s2">)</span>
 <span class="si">{</span><span class="n">str_meta_d</span><span class="si">}</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">"""</span>
 
         <span class="k">return</span> <span class="n">full_import</span><span class="p">,</span> <span class="n">body</span></div>
 
@@ -1171,7 +1171,7 @@
 <div class="viewcode-block" id="QComponent.rebuild">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.rebuild">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds the QComponent.</span>
+<span class="w">        </span><span class="sd">"""Builds the QComponent.</span>
 
 <span class="sd">        This is the main action function of a</span>
 <span class="sd">        QComponent, call it qc. It converts the qc.options into QGeometry with</span>
@@ -1190,8 +1190,8 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            Exception: Component build failure</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;failed&quot;</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">"failed"</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_made</span><span class="p">:</span>  <span class="c1"># already made, just remaking</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">delete_component_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
@@ -1200,18 +1200,18 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">make</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_made</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;good&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">"good"</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">build_logs</span><span class="o">.</span><span class="n">add_success</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">!s}</span><span class="s2"> -- Component: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> successfully built&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">!s}</span><span class="s2"> -- Component: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> successfully built"</span>
             <span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;ERROR in building component name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, error=</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"ERROR in building component name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, error=</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">build_logs</span><span class="o">.</span><span class="n">add_error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">!s}</span><span class="s2"> -- Component: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed with error</span><span class="se">\n</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">!s}</span><span class="s2"> -- Component: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed with error</span><span class="se">\n</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="k">raise</span> <span class="n">error</span></div>
 
@@ -1219,10 +1219,10 @@
 <div class="viewcode-block" id="QComponent.delete">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.delete">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete the QComponent.</span>
+<span class="w">        </span><span class="sd">"""Delete the QComponent.</span>
 
 <span class="sd">        Removes QGeometry, QPins, etc. from the design.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
 
 
@@ -1234,7 +1234,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">parse_value</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a string, mappable (dict, Dict), iterable (list, tuple) to</span>
+<span class="w">        </span><span class="sd">"""Parse a string, mappable (dict, Dict), iterable (list, tuple) to</span>
 <span class="sd">        account for units conversion, some basic arithmetic, and design</span>
 <span class="sd">        variables. This is the main parsing function of Qiskit Metal.</span>
 
@@ -1247,13 +1247,13 @@
 
 <span class="sd">        Handled Inputs:</span>
 <span class="sd">            Strings:</span>
-<span class="sd">                Strings of numbers, numbers with units; e.g., &#39;1&#39;, &#39;1nm&#39;, &#39;1 um&#39;</span>
+<span class="sd">                Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'</span>
 <span class="sd">                    Converts to int or float.</span>
 <span class="sd">                    Some basic arithmetic is possible, see below.</span>
 
-<span class="sd">                Strings of variables &#39;variable1&#39;.</span>
+<span class="sd">                Strings of variables 'variable1'.</span>
 <span class="sd">                    Variable interpretation will use string method</span>
-<span class="sd">                    isidentifier &#39;variable1&#39;.isidentifier()`</span>
+<span class="sd">                    isidentifier 'variable1'.isidentifier()`</span>
 
 <span class="sd">            Dictionaries:</span>
 <span class="sd">                Returns ordered `Dict` with same key-value mappings, where the values have</span>
@@ -1267,7 +1267,7 @@
 
 
 <span class="sd">        Arithmetic:</span>
-<span class="sd">            Some basic arithmetic can be handled as well, such as `&#39;-2 * 1e5 nm&#39;`</span>
+<span class="sd">            Some basic arithmetic can be handled as well, such as `'-2 * 1e5 nm'`</span>
 <span class="sd">            will yield float(-0.2) when the default units are set to `mm`.</span>
 
 <span class="sd">        Default units:</span>
@@ -1276,14 +1276,14 @@
 <span class="sd">        Examples:</span>
 <span class="sd">            See the docstring for this module.</span>
 <span class="sd">                &gt;&gt; ?qiskit_metal.toolbox_metal.parsing</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QComponent.parse_options">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.parse_options">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">parse_options</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the options, converting string into interpreted values. Parses</span>
+<span class="w">        </span><span class="sd">"""Parse the options, converting string into interpreted values. Parses</span>
 <span class="sd">        units, variables, strings, lists, and dictionaries. Explained by</span>
 <span class="sd">        example below.</span>
 
@@ -1296,12 +1296,12 @@
 <span class="sd">        Calls `self.design.parse_options`.</span>
 
 <span class="sd">        See `self.parse_value` for more information.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">options</span> <span class="k">if</span> <span class="n">options</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_is_name_used</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">check_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used to check if name of component already exists.</span>
+<span class="w">        </span><span class="sd">"""Used to check if name of component already exists.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            check_name (str): Name which user requested to apply to current component.</span>
@@ -1312,14 +1312,14 @@
 
 <span class="sd">        Warning: If user has used this text version of the component name already,</span>
 <span class="sd">        warning will be given to user.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="n">check_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_design</span><span class="o">.</span><span class="n">name_to_id</span><span class="p">:</span>
             <span class="n">component_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_design</span><span class="o">.</span><span class="n">name_to_id</span><span class="p">[</span><span class="n">check_name</span><span class="p">]</span>
             <span class="c1"># if not self._overwrite_flag:</span>
-            <span class="c1">#    logger.warning(f&quot;Called _is_name_used, &quot;</span>
-            <span class="c1">#                   f&quot;component_id({check_name}, id={component_id})&quot;</span>
-            <span class="c1">#                   &quot; is already being used in design.&quot;)</span>
+            <span class="c1">#    logger.warning(f"Called _is_name_used, "</span>
+            <span class="c1">#                   f"component_id({check_name}, id={component_id})"</span>
+            <span class="c1">#                   " is already being used in design.")</span>
             <span class="k">return</span> <span class="n">component_id</span>
         <span class="k">return</span> <span class="mi">0</span>
 
@@ -1330,17 +1330,17 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.add_pin">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_pin</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>  <span class="c1"># Should be static based on component designer&#39;s choice</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>  <span class="c1"># Should be static based on component designer's choice</span>
         <span class="n">points</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">input_as_norm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">chip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">gap</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># gap defaults to 0.6 * width</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a pin from two points which are normal/tangent to the intended</span>
-<span class="sd">        plane of the pin. The normal should &#39;point&#39; in the direction of</span>
+<span class="w">        </span><span class="sd">"""Adds a pin from two points which are normal/tangent to the intended</span>
+<span class="sd">        plane of the pin. The normal should 'point' in the direction of</span>
 <span class="sd">        intended connection. Adds the new pin as a subdictionary to parent</span>
-<span class="sd">        component&#39;s pins dictionary.</span>
+<span class="sd">        component's pins dictionary.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            * name (str): name of the pin</span>
@@ -1373,7 +1373,7 @@
 <span class="sd">            * = pin</span>
 <span class="sd">            . = outline of component</span>
 
-<span class="sd">        ---&gt; = the list being passed in as &#39;points&#39; [[x1,y1],[x2,y2]]</span>
+<span class="sd">        ---&gt; = the list being passed in as 'points' [[x1,y1],[x2,y2]]</span>
 
 
 <span class="sd">        normal vector</span>
@@ -1395,7 +1395,7 @@
 <span class="sd">                     .*</span>
 <span class="sd">                     .|</span>
 <span class="sd">            ..........|</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
 
         <span class="k">if</span> <span class="n">gap</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1403,7 +1403,7 @@
         <span class="k">if</span> <span class="n">chip</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">chip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">chip</span>
 
-        <span class="n">rounding_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="p">[</span><span class="s2">&quot;PRECISION&quot;</span><span class="p">]</span>
+        <span class="n">rounding_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="p">[</span><span class="s2">"PRECISION"</span><span class="p">]</span>
         <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span>
             <span class="n">points</span><span class="p">,</span> <span class="n">rounding_val</span>
         <span class="p">)</span>  <span class="c1"># Need points to remain as shapely geom?</span>
@@ -1451,20 +1451,20 @@
 <div class="viewcode-block" id="QComponent.get_pin">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.get_pin">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_pin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Interface for components to get pin data.</span>
+<span class="w">        </span><span class="sd">"""Interface for components to get pin data.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Name of the desired pin.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Returns the data of the pin, see make_pin() for what those values are.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_check_pin_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks that the pin_inputs are valid, sets an error message</span>
+<span class="w">        </span><span class="sd">"""Checks that the pin_inputs are valid, sets an error message</span>
 <span class="sd">        indicating what the error is if the inputs are not valid. Checks</span>
 <span class="sd">        regardless of user passing the component name or component id (probably</span>
 <span class="sd">        a smoother way to do this check).</span>
@@ -1476,14 +1476,14 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Status test, or None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Add check for if user inputs nonsense?</span>
         <span class="n">false_component</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">false_pin</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">pin_in_use</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">for</span> <span class="n">pin_check</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pin_inputs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">component</span> <span class="o">=</span> <span class="n">pin_check</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]</span>
-            <span class="n">pin</span> <span class="o">=</span> <span class="n">pin_check</span><span class="p">[</span><span class="s2">&quot;pin&quot;</span><span class="p">]</span>
+            <span class="n">component</span> <span class="o">=</span> <span class="n">pin_check</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]</span>
+            <span class="n">pin</span> <span class="o">=</span> <span class="n">pin_check</span><span class="p">[</span><span class="s2">"pin"</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">component</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
                     <span class="n">false_component</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1501,22 +1501,22 @@
             <span class="c1"># Should modify to allow for multiple error messages to be returned.</span>
             <span class="k">if</span> <span class="n">false_component</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_error_message</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Component </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> does not exist. </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has not been built. &quot;</span>
-                    <span class="s2">&quot;Please check your pin_input values.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Component </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> does not exist. </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has not been built. "</span>
+                    <span class="s2">"Please check your pin_input values."</span>
                 <span class="p">)</span>
-                <span class="k">return</span> <span class="s2">&quot;Component Does Not Exist&quot;</span>
+                <span class="k">return</span> <span class="s2">"Component Does Not Exist"</span>
             <span class="k">if</span> <span class="n">false_pin</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_error_message</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Pin </span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s2"> does not exist in component </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">. &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has not been built. Please check your pin_input values.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Pin </span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s2"> does not exist in component </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">. "</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has not been built. Please check your pin_input values."</span>
                 <span class="p">)</span>
-                <span class="k">return</span> <span class="s2">&quot;Pin Does Not Exist&quot;</span>
+                <span class="k">return</span> <span class="s2">"Pin Does Not Exist"</span>
             <span class="k">if</span> <span class="n">pin_in_use</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_error_message</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Pin </span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s2"> of component </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> is already in use. &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has not been built. Please check your pin_input values.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Pin </span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s2"> of component </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> is already in use. "</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has not been built. Please check your pin_input values."</span>
                 <span class="p">)</span>
-                <span class="k">return</span> <span class="s2">&quot;Pin In Use&quot;</span>
+                <span class="k">return</span> <span class="s2">"Pin In Use"</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="c1"># This method does not appear to be being used anywhere.</span>
@@ -1525,7 +1525,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">connect_components_already_in_design</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">pin_name_self</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">comp2_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pin2_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;WARNING: Do NOT use this method during generation of component instance.</span>
+<span class="w">        </span><span class="sd">"""WARNING: Do NOT use this method during generation of component instance.</span>
 <span class="sd">            This method is expecting self to be added to design._components dict.  More importantly,</span>
 <span class="sd">            the unique id of self component needs to be in design._components dict.</span>
 
@@ -1536,35 +1536,35 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: A unique net_id for the connection.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">net_id_rtn</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">:</span>
             <span class="c1"># Component not in design.</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No connection made. Component_id </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> not in design.&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No connection made. Component_id </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> not in design."</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">net_id_rtn</span>
 
         <span class="k">if</span> <span class="n">comp2_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">:</span>
             <span class="c1"># Component not in design.</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;No connection made. Component_id </span><span class="si">{</span><span class="n">comp2_id</span><span class="si">}</span><span class="s2"> not in design.&quot;</span>
+                <span class="sa">f</span><span class="s2">"No connection made. Component_id </span><span class="si">{</span><span class="n">comp2_id</span><span class="si">}</span><span class="s2"> not in design."</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="n">net_id_rtn</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">]</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="n">pin_name_self</span><span class="p">]</span><span class="o">.</span><span class="n">net_id</span><span class="p">:</span>
             <span class="c1"># Pin already in use.</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Component_id </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2"> not connected.  The pin &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pin_name_self</span><span class="si">}</span><span class="s2"> is already connected to something else.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Component_id </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2"> not connected.  The pin "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">pin_name_self</span><span class="si">}</span><span class="s2"> is already connected to something else."</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="n">net_id_rtn</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">comp2_id</span><span class="p">]</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="n">pin2_name</span><span class="p">]</span><span class="o">.</span><span class="n">net_id</span><span class="p">:</span>
             <span class="c1"># Pin already in use.</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Component_id </span><span class="si">{</span><span class="n">comp2_id</span><span class="si">}</span><span class="s2"> not connected.  The pin &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pin2_name</span><span class="si">}</span><span class="s2"> is already connected to something else.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Component_id </span><span class="si">{</span><span class="n">comp2_id</span><span class="si">}</span><span class="s2"> not connected.  The pin "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">pin2_name</span><span class="si">}</span><span class="s2"> is already connected to something else."</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="n">net_id_rtn</span>
 
@@ -1580,13 +1580,13 @@
 <div class="viewcode-block" id="QComponent.add_dependency">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.add_dependency">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a dependency between one component and another. Calls parent</span>
+<span class="w">        </span><span class="sd">"""Add a dependency between one component and another. Calls parent</span>
 <span class="sd">        design.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): The component on which the child depends</span>
 <span class="sd">            child (str): The child cannot live without the parent.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">add_dependency</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span></div>
 
 
@@ -1605,12 +1605,12 @@
         <span class="n">chip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add QGeometry.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Add QGeometry.</span>
 
 <span class="sd">        Takes any additional options in options.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            kind (str): The kind of QGeometry, such as &#39;path&#39;, &#39;poly&#39;, etc.</span>
+<span class="sd">            kind (str): The kind of QGeometry, such as 'path', 'poly', etc.</span>
 <span class="sd">                        All geometry in the dictionary should have the same kind,</span>
 <span class="sd">                        such as Polygon or LineString.</span>
 <span class="sd">            geometry (Dict[BaseGeometry]): Key-value pairs of name of the geometry</span>
@@ -1628,9 +1628,9 @@
 <span class="sd">        Assumptions:</span>
 <span class="sd">            * Assumes all geometry in the `geometry` argument are homogeneous in kind;</span>
 <span class="sd">              i.e., all lines or polys etc.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># assert (subtract and helper) == False, &quot;The object can&#39;t be a subtracted helper. Please&quot;\</span>
-        <span class="c1">#    &quot; choose it to either be a helper or a a subtracted layer, but not both. Thank you.&quot;</span>
+<span class="sd">        """</span>
+        <span class="c1"># assert (subtract and helper) == False, "The object can't be a subtracted helper. Please"\</span>
+        <span class="c1">#    " choose it to either be a helper or a a subtracted layer, but not both. Thank you."</span>
 
         <span class="k">if</span> <span class="n">layer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">layer</span>
@@ -1641,8 +1641,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">qgeometry_table_usage</span><span class="p">[</span><span class="n">kind</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Component with classname=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="si">}</span><span class="s2"> does not know about &quot;</span>
-                <span class="sa">f</span><span class="s1">&#39;table name &quot;</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1">&quot;.&#39;</span>
+                <span class="sa">f</span><span class="s2">"Component with classname=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="si">}</span><span class="s2"> does not know about "</span>
+                <span class="sa">f</span><span class="s1">'table name "</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s1">".'</span>
             <span class="p">)</span>
 
         <span class="n">renderer_key_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_specific_table_values_from_renderers</span><span class="p">(</span><span class="n">kind</span><span class="p">)</span>
@@ -1669,7 +1669,7 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_specific_table_values_from_renderers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Populate a dict to combine with options for the qcomponent.</span>
+<span class="w">        </span><span class="sd">"""Populate a dict to combine with options for the qcomponent.</span>
 
 <span class="sd">        Based on kind, which the table name, the component-developer denotes in the metadata,</span>
 <span class="sd">        assume those qgeometry.tables are used for the component. The method</span>
@@ -1680,7 +1680,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Dict: key is column names for tables, value is data for the column.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">all_renderers_key_value</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="c1"># design.renderer_defaults_by_table[table_name][renderer_name][column_name]</span>
@@ -1690,14 +1690,14 @@
             <span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">renderer_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col_value</span> <span class="ow">in</span> <span class="n">renderer_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                        <span class="n">render_col_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name_renderer</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">col_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="n">render_col_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name_renderer</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">col_name</span><span class="si">}</span><span class="s2">"</span>
                         <span class="n">all_renderers_key_value</span><span class="p">[</span><span class="n">render_col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_value</span>
 
         <span class="k">return</span> <span class="n">all_renderers_key_value</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_table_values_from_renderers</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Populate a dict to combine with options for the qcomponent.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_table_values_from_renderers</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">"QDesign"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Populate a dict to combine with options for the qcomponent.</span>
 
 <span class="sd">        Based on tables the component-developer denotes in the metadata,</span>
 <span class="sd">        assume those qgeometry.tables are used for the component. The method</span>
@@ -1705,7 +1705,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Dict: key is column names for tables, value is data for the column.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">metadata_dict</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_gather_all_children_metadata</span><span class="p">()</span>
         <span class="n">tables_list</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">get_list_of_tables_in_metadata</span><span class="p">(</span><span class="n">metadata_dict</span><span class="p">)</span>
 
@@ -1718,7 +1718,7 @@
                 <span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">renderer_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col_value</span> <span class="ow">in</span> <span class="n">renderer_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                            <span class="n">render_col_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name_renderer</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">col_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="n">render_col_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name_renderer</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">col_name</span><span class="si">}</span><span class="s2">"</span>
                             <span class="n">all_renderers_key_value</span><span class="p">[</span><span class="n">render_col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_value</span>
         <span class="k">return</span> <span class="n">all_renderers_key_value</span>
 
@@ -1726,20 +1726,20 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
 
-        <span class="n">b</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[95m</span><span class="se">\033</span><span class="s2">[1m&quot;</span>
-        <span class="n">b1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[94m</span><span class="se">\033</span><span class="s2">[1m&quot;</span>
-        <span class="n">e</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\033</span><span class="s2">[95m</span><span class="se">\033</span><span class="s2">[1m"</span>
+        <span class="n">b1</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\033</span><span class="s2">[94m</span><span class="se">\033</span><span class="s2">[1m"</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\033</span><span class="s2">[0m"</span>
 
         <span class="c1"># id = {hex(id(self))}</span>
         <span class="c1"># options = pprint.pformat(self.options)</span>
 
         <span class="n">options</span> <span class="o">=</span> <span class="n">format_dict_ala_z</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
         <span class="n">text</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">name:    </span><span class="si">{</span><span class="n">b1</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">class:   </span><span class="si">{</span><span class="n">b1</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">:</span><span class="s2">&lt;22s</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">options: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">options</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">module:  </span><span class="si">{</span><span class="n">b1</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">id:      </span><span class="si">{</span><span class="n">b1</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">name:    </span><span class="si">{</span><span class="n">b1</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">class:   </span><span class="si">{</span><span class="n">b1</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">:</span><span class="s2">&lt;22s</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">options: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">options</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">module:  </span><span class="si">{</span><span class="n">b1</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">id:      </span><span class="si">{</span><span class="n">b1</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">text</span>
 
@@ -1748,29 +1748,29 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">qgeometry_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a list of the names of the element tables.</span>
+<span class="w">        </span><span class="sd">"""Get a list of the names of the element tables.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            List[str]: Name of element table or type; e.g., &#39;poly&#39; and &#39;path&#39;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">            List[str]: Name of element table or type; e.g., 'poly' and 'path'</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">()</span>
 
 <div class="viewcode-block" id="QComponent.qgeometry_dict">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.qgeometry_dict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">qgeometry_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BaseGeometry</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dict of element qgeometry (shapely geometry) of the</span>
+<span class="w">        </span><span class="sd">"""Returns a dict of element qgeometry (shapely geometry) of the</span>
 <span class="sd">        component as a python dict, where the dict keys are the names of the</span>
 <span class="sd">        qgeometry and the corresponding values are the shapely geometries.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            element_type (str): Name of element table or type; e.g., &#39;poly&#39; and &#39;path&#39;</span>
+<span class="sd">            element_type (str): Name of element table or type; e.g., 'poly' and 'path'</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            List[BaseGeometry]: Geometry diction or None if an error in the name of the element</span>
 <span class="sd">            type (ie. table)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="k">if</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">check_element_type</span><span class="p">(</span>
+        <span class="k">if</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s2">"all"</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">check_element_type</span><span class="p">(</span>
             <span class="n">element_type</span>
         <span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_component_geometry_dict</span><span class="p">(</span>
@@ -1780,20 +1780,20 @@
 
 <div class="viewcode-block" id="QComponent.qgeometry_list">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.qgeometry_list">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">qgeometry_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseGeometry</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of element qgeometry (shapely geometry) of the</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">qgeometry_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"all"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseGeometry</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Returns a list of element qgeometry (shapely geometry) of the</span>
 <span class="sd">        component as a python list of shapely geometries.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            element_type (str): Name of element table or type; e.g., &#39;poly&#39; and &#39;path&#39;.</span>
+<span class="sd">            element_type (str): Name of element table or type; e.g., 'poly' and 'path'.</span>
 <span class="sd">                                Can also specify all</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            List[BaseGeometry]: Geometry list or None if an error in the name of the element type</span>
 <span class="sd">            (ie. table)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="k">if</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">check_element_type</span><span class="p">(</span>
+        <span class="k">if</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s2">"all"</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">check_element_type</span><span class="p">(</span>
             <span class="n">element_type</span>
         <span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_component_geometry_list</span><span class="p">(</span>
@@ -1804,17 +1804,17 @@
 <div class="viewcode-block" id="QComponent.qgeometry_table">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.qgeometry_table">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">qgeometry_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the entire element table for the component.</span>
+<span class="w">        </span><span class="sd">"""Returns the entire element table for the component.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            element_type (str): Name of element table or type; e.g., &#39;poly&#39; and &#39;path&#39;</span>
+<span class="sd">            element_type (str): Name of element table or type; e.g., 'poly' and 'path'</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pd.DataFrame: Element table for the component or None if an error in the name of</span>
 <span class="sd">            the element type (ie. table)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="k">if</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">check_element_type</span><span class="p">(</span>
+        <span class="k">if</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s2">"all"</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">check_element_type</span><span class="p">(</span>
             <span class="n">element_type</span>
         <span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_component</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">element_type</span><span class="p">)</span></div>
@@ -1823,7 +1823,7 @@
 <div class="viewcode-block" id="QComponent.qgeometry_bounds">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.qgeometry_bounds">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">qgeometry_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetched the component bound dict_value.</span>
+<span class="w">        </span><span class="sd">"""Fetched the component bound dict_value.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple: containing (minx, miny, maxx, maxy) bound values for the bounds of the</span>
@@ -1831,7 +1831,7 @@
 
 <span class="sd">        Uses:</span>
 <span class="sd">            design.qgeometry.get_component_bounds</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_component_bounds</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">bounds</span></div>
 
@@ -1839,9 +1839,9 @@
 <div class="viewcode-block" id="QComponent.qgeometry_plot">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.qgeometry_plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">qgeometry_plot</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">:</span> <span class="s2">&quot;matplotlib.axes.Axes&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">plot_kw</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">:</span> <span class="s2">"matplotlib.axes.Axes"</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">plot_kw</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw all the qgeometry of the component (polys and path etc.)</span>
+<span class="w">        </span><span class="sd">"""Draw all the qgeometry of the component (polys and path etc.)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            ax (matplotlib.axes.Axes): Matplotlib axis to draw on.  Defaults to None.</span>
@@ -1856,7 +1856,7 @@
 
 <span class="sd">                fig, ax = draw.mpl.figure_spawn()</span>
 <span class="sd">                q1.qgeometry_plot(ax)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">qgeometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qgeometry_list</span><span class="p">()</span>
         <span class="n">plot_kw</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">draw</span><span class="o">.</span><span class="n">mpl</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">qgeometry</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">kw</span><span class="o">=</span><span class="n">plot_kw</span><span class="p">)</span>
@@ -1866,13 +1866,13 @@
 <div class="viewcode-block" id="QComponent.populate_to_track_table_usage">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.QComponent.html#qiskit_metal.qlibrary.QComponent.populate_to_track_table_usage">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">populate_to_track_table_usage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use the element_handler to get a list of all the table names used in</span>
+<span class="w">        </span><span class="sd">"""Use the element_handler to get a list of all the table names used in</span>
 <span class="sd">        QGeometry.</span>
 
 <span class="sd">        The dict qgeometry_able_usage should get updated by</span>
 <span class="sd">        add_qgeometry(). This dict is used to get a summary tables used</span>
 <span class="sd">        for this component.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">qgeometry_table_usage</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></div>
 </div>
@@ -1895,7 +1895,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -1918,6 +1918,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -511,45 +511,45 @@
 <div class="viewcode-block" id="QQ3DRenderer">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">QQ3DRenderer</span><span class="p">(</span><span class="n">QAnsysRenderer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of QAnsysRenderer for running Q3D simulations.</span>
+<span class="w">    </span><span class="sd">"""Subclass of QAnsysRenderer for running Q3D simulations.</span>
 
 <span class="sd">    QAnsysRenderer Default Options:</span>
-<span class="sd">        * Lj: &#39;10nH&#39; -- Lj has units of nanoHenries (nH)</span>
+<span class="sd">        * Lj: '10nH' -- Lj has units of nanoHenries (nH)</span>
 <span class="sd">        * Cj: 0 -- Cj *must* be 0 for pyEPR analysis! Cj has units of femtofarads (fF)</span>
 <span class="sd">        * _Rj: 0 -- _Rj *must* be 0 for pyEPR analysis! _Rj has units of Ohms</span>
-<span class="sd">        * max_mesh_length_jj: &#39;7um&#39; -- Maximum mesh length for Josephson junction elements</span>
+<span class="sd">        * max_mesh_length_jj: '7um' -- Maximum mesh length for Josephson junction elements</span>
 <span class="sd">        * project_path: None -- Default project path; if None --&gt; get active</span>
 <span class="sd">        * project_name: None -- Default project name</span>
 <span class="sd">        * design_name: None -- Default design name</span>
-<span class="sd">        * ansys_file_extension: &#39;.aedt&#39; -- Ansys file extension for 2016 version and newer</span>
+<span class="sd">        * ansys_file_extension: '.aedt' -- Ansys file extension for 2016 version and newer</span>
 <span class="sd">        * x_buffer_width_mm: 0.2 -- Buffer between max/min x and edge of ground plane, in mm</span>
 <span class="sd">        * y_buffer_width_mm: 0.2 -- Buffer between max/min y and edge of ground plane, in mm</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;q3d&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;name&quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">"q3d"</span>
+<span class="w">    </span><span class="sd">"""name"""</span>
 
-    <span class="n">q3d_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">material_type</span><span class="o">=</span><span class="s2">&quot;pec&quot;</span><span class="p">,</span> <span class="n">material_thickness</span><span class="o">=</span><span class="s2">&quot;200nm&quot;</span><span class="p">)</span>
+    <span class="n">q3d_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">material_type</span><span class="o">=</span><span class="s2">"pec"</span><span class="p">,</span> <span class="n">material_thickness</span><span class="o">=</span><span class="s2">"200nm"</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a QRenderer for Q3D simulations, subclassed from</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">"QDesign"</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Create a QRenderer for Q3D simulations, subclassed from</span>
 <span class="sd">        QAnsysRenderer.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            design (QDesign): Use QGeometry within QDesign to obtain elements for Ansys.</span>
 <span class="sd">            initiate (bool, optional): True to initiate the renderer. Defaults to True.</span>
 <span class="sd">            options (Dict, optional):  Used to override all options. Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">design</span><span class="o">=</span><span class="n">design</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="n">initiate</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
         <span class="n">QQ3DRenderer</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reference to BoundarySetup in active design in Ansys.</span>
+<span class="w">        </span><span class="sd">"""Reference to BoundarySetup in active design in Ansys.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            win32com.client.CDispatch: COMObject GetModule, obtained by running within pyEPR: design.GetModule(&quot;BoundarySetup&quot;)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">            win32com.client.CDispatch: COMObject GetModule, obtained by running within pyEPR: design.GetModule("BoundarySetup")</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_boundaries</span>
@@ -562,8 +562,8 @@
         <span class="n">open_pins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initiate rendering of components in design contained in selection,</span>
-<span class="sd">        assuming they&#39;re valid. Components are rendered before the chips they</span>
+<span class="w">        </span><span class="sd">"""Initiate rendering of components in design contained in selection,</span>
+<span class="sd">        assuming they're valid. Components are rendered before the chips they</span>
 <span class="sd">        reside on, and subtraction of negative shapes is performed at the very</span>
 <span class="sd">        end.</span>
 
@@ -575,7 +575,7 @@
 <span class="sd">        Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that</span>
 <span class="sd">        will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have</span>
 <span class="sd">        meshing to self.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists. Note</span>
-<span class="sd">        that these objects are &quot;refreshed&quot; each time render_design is called (as opposed to in the init function)</span>
+<span class="sd">        that these objects are "refreshed" each time render_design is called (as opposed to in the init function)</span>
 <span class="sd">        to clear QAnsysRenderer of any leftover items from the last call to render_design.</span>
 
 <span class="sd">        Among the components selected for export, there may or may not be unused (unconnected) pins.</span>
@@ -589,9 +589,9 @@
 <span class="sd">        minimum rectangular bounding box of all rendered components and adds a buffer of x_buffer_width_mm and</span>
 <span class="sd">        y_buffer_width_mm horizontally and vertically, respectively, to the chip size. The center of the chip</span>
 <span class="sd">        lies at the midpoint x/y coordinates of the minimum rectangular bounding box and may change depending</span>
-<span class="sd">        on which components are rendered and how they&#39;re positioned. If box_plus_buffer is False, however, the</span>
+<span class="sd">        on which components are rendered and how they're positioned. If box_plus_buffer is False, however, the</span>
 <span class="sd">        chip position and dimensions are taken from the chip info dictionary found in self.design, irrespective</span>
-<span class="sd">        of what&#39;s being rendered. While this latter option is faster because it doesn&#39;t require calculating a</span>
+<span class="sd">        of what's being rendered. While this latter option is faster because it doesn't require calculating a</span>
 <span class="sd">        bounding box, it runs the risk of rendered components being too close to the edge of the chip or even</span>
 <span class="sd">        falling outside its boundaries.</span>
 
@@ -600,12 +600,12 @@
 <span class="sd">            open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.</span>
 <span class="sd">            box_plus_buffer (bool, optional): Either calculate a bounding box based on the location of rendered geometries</span>
 <span class="sd">                                     or use chip size from design class.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_unique_component_ids</span><span class="p">(</span><span class="n">selection</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Unable to proceed with rendering. Please check selection.&quot;</span>
+                <span class="s2">"Unable to proceed with rendering. Please check selection."</span>
             <span class="p">)</span>
             <span class="k">return</span>
 
@@ -629,26 +629,26 @@
 <div class="viewcode-block" id="QQ3DRenderer.assign_thin_conductor">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer.assign_thin_conductor">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">assign_thin_conductor</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">material_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pec&quot;</span><span class="p">,</span> <span class="n">thickness</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;200 nm&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">material_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"pec"</span><span class="p">,</span> <span class="n">thickness</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"200 nm"</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Assign thin conductor property to all exported shapes. Unless</span>
-<span class="sd">        otherwise specified, all 2-D shapes are pec&#39;s with a thickness of 200</span>
+<span class="w">        </span><span class="sd">"""Assign thin conductor property to all exported shapes. Unless</span>
+<span class="sd">        otherwise specified, all 2-D shapes are pec's with a thickness of 200</span>
 <span class="sd">        nm.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            material_type (str): Material assignment.</span>
 <span class="sd">            thickness (str): Thickness of thin conductor. Must include units.</span>
 <span class="sd">            name (str): Name assigned to this group of thin conductors.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="o">.</span><span class="n">AssignThinConductor</span><span class="p">(</span>
             <span class="p">[</span>
-                <span class="s2">&quot;NAME:&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="n">name</span> <span class="k">if</span> <span class="n">name</span> <span class="k">else</span> <span class="s2">&quot;ThinCond1&quot;</span><span class="p">),</span>
-                <span class="s2">&quot;Objects:=&quot;</span><span class="p">,</span>
+                <span class="s2">"NAME:"</span> <span class="o">+</span> <span class="p">(</span><span class="n">name</span> <span class="k">if</span> <span class="n">name</span> <span class="k">else</span> <span class="s2">"ThinCond1"</span><span class="p">),</span>
+                <span class="s2">"Objects:="</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">assign_perfE</span><span class="p">,</span>
-                <span class="s2">&quot;Material:=&quot;</span><span class="p">,</span>
-                <span class="n">material_type</span> <span class="k">if</span> <span class="n">material_type</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">q3d_options</span><span class="p">[</span><span class="s2">&quot;material_type&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;Thickness:=&quot;</span><span class="p">,</span>
-                <span class="n">thickness</span> <span class="k">if</span> <span class="n">thickness</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">q3d_options</span><span class="p">[</span><span class="s2">&quot;material_thickness&quot;</span><span class="p">],</span>
+                <span class="s2">"Material:="</span><span class="p">,</span>
+                <span class="n">material_type</span> <span class="k">if</span> <span class="n">material_type</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">q3d_options</span><span class="p">[</span><span class="s2">"material_type"</span><span class="p">],</span>
+                <span class="s2">"Thickness:="</span><span class="p">,</span>
+                <span class="n">thickness</span> <span class="k">if</span> <span class="n">thickness</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">q3d_options</span><span class="p">[</span><span class="s2">"material_thickness"</span><span class="p">],</span>
             <span class="p">]</span>
         <span class="p">)</span></div>
 
@@ -656,18 +656,18 @@
 <div class="viewcode-block" id="QQ3DRenderer.assign_nets">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer.assign_nets">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">assign_nets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Auto assign nets to exported shapes.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Auto assign nets to exported shapes."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="o">.</span><span class="n">AutoIdentifyNets</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="QQ3DRenderer.activate_q3d_setup">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer.activate_q3d_setup">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">activate_q3d_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup_name_activate</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        (deprecated) use activate_ansys_setup()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">&quot;This method is deprecated. Change your scripts to use activate_ansys_setup()&quot;</span>
+            <span class="s2">"This method is deprecated. Change your scripts to use activate_ansys_setup()"</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activate_ansys_setup</span><span class="p">(</span><span class="n">setup_name_activate</span><span class="p">)</span></div>
 
@@ -691,7 +691,7 @@
         <span class="o">*</span><span class="n">args</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a solution setup in Ansys Q3D. If user does not provide</span>
+<span class="w">        </span><span class="sd">"""Create a solution setup in Ansys Q3D. If user does not provide</span>
 <span class="sd">        arguments, they will be obtained from q3d_options dict.</span>
 
 <span class="sd">        Args:</span>
@@ -707,33 +707,33 @@
 <span class="sd">            auto_increase_solution_order (bool, optional): Whether or not to increase solution order automatically. Defaults to None.</span>
 <span class="sd">            solution_order (str, optional): Solution order. Defaults to None.</span>
 <span class="sd">            solver_type (str, optional): Solver type. Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">su</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_setup</span><span class="o">.</span><span class="n">q3d</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">freq_ghz</span><span class="p">:</span>
-            <span class="n">freq_ghz</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;freq_ghz&quot;</span><span class="p">]))</span>
+            <span class="n">freq_ghz</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">"freq_ghz"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">save_fields</span><span class="p">:</span>
-            <span class="n">save_fields</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;save_fields&quot;</span><span class="p">])</span>
+            <span class="n">save_fields</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">"save_fields"</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">enabled</span><span class="p">:</span>
-            <span class="n">enabled</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;enabled&quot;</span><span class="p">])</span>
+            <span class="n">enabled</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">"enabled"</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">max_passes</span><span class="p">:</span>
-            <span class="n">max_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;max_passes&quot;</span><span class="p">]))</span>
+            <span class="n">max_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">"max_passes"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">min_passes</span><span class="p">:</span>
-            <span class="n">min_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;min_passes&quot;</span><span class="p">]))</span>
+            <span class="n">min_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">"min_passes"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">min_converged_passes</span><span class="p">:</span>
-            <span class="n">min_converged_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;min_converged_passes&quot;</span><span class="p">]))</span>
+            <span class="n">min_converged_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">"min_converged_passes"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">percent_error</span><span class="p">:</span>
-            <span class="n">percent_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;percent_error&quot;</span><span class="p">]))</span>
+            <span class="n">percent_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">"percent_error"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">percent_refinement</span><span class="p">:</span>
-            <span class="n">percent_refinement</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;percent_refinement&quot;</span><span class="p">]))</span>
+            <span class="n">percent_refinement</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">"percent_refinement"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">auto_increase_solution_order</span><span class="p">:</span>
-            <span class="n">auto_increase_solution_order</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;auto_increase_solution_order&quot;</span><span class="p">])</span>
+            <span class="n">auto_increase_solution_order</span> <span class="o">=</span> <span class="n">is_true</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">"auto_increase_solution_order"</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">solution_order</span><span class="p">:</span>
-            <span class="n">solution_order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;solution_order&quot;</span><span class="p">])</span>
+            <span class="n">solution_order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">"solution_order"</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">solver_type</span><span class="p">:</span>
-            <span class="n">solver_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">&quot;solver_type&quot;</span><span class="p">])</span>
+            <span class="n">solver_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">su</span><span class="p">[</span><span class="s2">"solver_type"</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="p">:</span>
@@ -756,14 +756,14 @@
 <div class="viewcode-block" id="QQ3DRenderer.edit_q3d_setup">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer.edit_q3d_setup">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">edit_q3d_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup_args</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;User can pass key/values to edit the setup for active q3d setup.</span>
+<span class="w">        </span><span class="sd">"""User can pass key/values to edit the setup for active q3d setup.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            setup_args (Dict): a Dict with possible keys/values.</span>
 
 <span class="sd">        **setup_args** dict contents:</span>
 <span class="sd">            * freq_ghz (float, optional): Frequency in GHz. Defaults to 5..</span>
-<span class="sd">            * name (str, optional): Name of solution setup. Defaults to &quot;Setup&quot;.</span>
+<span class="sd">            * name (str, optional): Name of solution setup. Defaults to "Setup".</span>
 <span class="sd">            * max_passes (int, optional): Maximum number of passes. Defaults to 15.</span>
 <span class="sd">            * min_passes (int, optional): Minimum number of passes. Defaults to 2.</span>
 <span class="sd">            * percent_error (float, optional): Error tolerance as a percentage. Defaults to 0.5.</span>
@@ -778,9 +778,9 @@
 <span class="sd">            * min_converged_passes (int, optional): Minimum number of converged passes. Defaults to 2.</span>
 <span class="sd">            * percent_refinement (int, optional): Refinement as a percentage. Defaults to 30.</span>
 <span class="sd">            * auto_increase_solution_order (bool, optional): Whether or not to increase solution order automatically. Defaults to True.</span>
-<span class="sd">            * solution_order (str, optional): Solution order. Defaults to &#39;High&#39;.</span>
-<span class="sd">            * solver_type (str, optional): Solver type. Defaults to &#39;Iterative&#39;.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">            * solution_order (str, optional): Solution order. Defaults to 'High'.</span>
+<span class="sd">            * solver_type (str, optional): Solver type. Defaults to 'Iterative'.</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
@@ -788,108 +788,108 @@
                     <span class="k">if</span> <span class="n">is_q3d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">solution_type</span><span class="p">):</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span> <span class="o">!=</span> <span class="n">setup_args</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s2">&quot;The name of active setup=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span><span class="si">}</span><span class="s2"> does not match&quot;</span>
-                                <span class="sa">f</span><span class="s2">&quot;the name of of setup_args.name=</span><span class="si">{</span><span class="n">setup_args</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">. &quot;</span>
-                                <span class="sa">f</span><span class="s2">&quot;To use this method, activate the desired Setup before editing it. &quot;</span>
-                                <span class="sa">f</span><span class="s2">&quot;The setup_args was not used to update the active Setup.&quot;</span>
+                                <span class="sa">f</span><span class="s2">"The name of active setup=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span><span class="si">}</span><span class="s2"> does not match"</span>
+                                <span class="sa">f</span><span class="s2">"the name of of setup_args.name=</span><span class="si">{</span><span class="n">setup_args</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">. "</span>
+                                <span class="sa">f</span><span class="s2">"To use this method, activate the desired Setup before editing it. "</span>
+                                <span class="sa">f</span><span class="s2">"The setup_args was not used to update the active Setup."</span>
                             <span class="p">)</span>
                             <span class="k">return</span>
 
                         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">setup_args</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"name"</span><span class="p">:</span>
                                 <span class="k">continue</span>  <span class="c1"># Checked for above.</span>
-                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;freq_ghz&quot;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"freq_ghz"</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="s2">&quot;The value for min_freq_ghz should be a &quot;</span>
-                                        <span class="sa">f</span><span class="s2">&quot;float.  The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span>
+                                        <span class="s2">"The value for min_freq_ghz should be a "</span>
+                                        <span class="sa">f</span><span class="s2">"float.  The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">."</span>
                                     <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="c1">### This EditSetup works if we change all of the arguments</span>
-                                    <span class="c1"># at the same time.  We don&#39;t always want to change all of them.</span>
+                                    <span class="c1"># at the same time.  We don't always want to change all of them.</span>
                                     <span class="c1"># Need to have a way to read all of the arguments to</span>
                                     <span class="c1"># avoid overwriting arguments. Presently, will use</span>
                                     <span class="c1"># the variables set in pyEPR with @property.</span>
                                     <span class="c1"># args_editsetup = [</span>
-                                    <span class="c1">#     f&quot;NAME:{setup_args.name}&quot;,</span>
-                                    <span class="c1">#     &quot;AdaptiveFreq:=&quot;, f&quot;{value}GHz&quot;,</span>
-                                    <span class="c1">#     &quot;SaveFields:=&quot;, False, &quot;Enabled:=&quot;,</span>
+                                    <span class="c1">#     f"NAME:{setup_args.name}",</span>
+                                    <span class="c1">#     "AdaptiveFreq:=", f"{value}GHz",</span>
+                                    <span class="c1">#     "SaveFields:=", False, "Enabled:=",</span>
                                     <span class="c1">#     True,</span>
                                     <span class="c1">#     [</span>
-                                    <span class="c1">#         &quot;NAME:Cap&quot;, &quot;MaxPass:=&quot;, 15,</span>
-                                    <span class="c1">#         &quot;MinPass:=&quot;, 2, &quot;MinConvPass:=&quot;, 2,</span>
-                                    <span class="c1">#         &quot;PerError:=&quot;, 0.5, &quot;PerRefine:=&quot;,</span>
-                                    <span class="c1">#         30, &quot;AutoIncreaseSolutionOrder:=&quot;,</span>
-                                    <span class="c1">#         True, &quot;SolutionOrder:=&quot;, &quot;High&quot;,</span>
-                                    <span class="c1">#         &quot;Solver Type:=&quot;, &quot;Iterative&quot;</span>
+                                    <span class="c1">#         "NAME:Cap", "MaxPass:=", 15,</span>
+                                    <span class="c1">#         "MinPass:=", 2, "MinConvPass:=", 2,</span>
+                                    <span class="c1">#         "PerError:=", 0.5, "PerRefine:=",</span>
+                                    <span class="c1">#         30, "AutoIncreaseSolutionOrder:=",</span>
+                                    <span class="c1">#         True, "SolutionOrder:=", "High",</span>
+                                    <span class="c1">#         "Solver Type:=", "Iterative"</span>
                                     <span class="c1">#     ]</span>
                                     <span class="c1"># ]</span>
                                     <span class="c1"># self.pinfo.design._setup_module.EditSetup(</span>
                                     <span class="c1">#     setup_args.name, args_editsetup)</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">frequency</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">GHz&quot;</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">frequency</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">GHz"</span>
                                     <span class="k">continue</span>
-                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;max_passes&quot;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"max_passes"</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="s2">&quot;The value for max_passes should be an int. &quot;</span>
-                                        <span class="sa">f</span><span class="s2">&quot;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span>
+                                        <span class="s2">"The value for max_passes should be an int. "</span>
+                                        <span class="sa">f</span><span class="s2">"The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">."</span>
                                     <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">max_pass</span> <span class="o">=</span> <span class="n">value</span>
                                     <span class="k">continue</span>
 
-                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;min_passes&quot;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"min_passes"</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="s2">&quot;The value for min_passes should be an int. &quot;</span>
-                                        <span class="sa">f</span><span class="s2">&quot;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span>
+                                        <span class="s2">"The value for min_passes should be an int. "</span>
+                                        <span class="sa">f</span><span class="s2">"The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">."</span>
                                     <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">min_pass</span> <span class="o">=</span> <span class="n">value</span>
                                     <span class="k">continue</span>
 
-                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;percent_error&quot;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"percent_error"</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                        <span class="s2">&quot;The value for percent_error should be a float. &quot;</span>
-                                        <span class="sa">f</span><span class="s2">&quot;The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span>
+                                        <span class="s2">"The value for percent_error should be a float. "</span>
+                                        <span class="sa">f</span><span class="s2">"The present value is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">."</span>
                                     <span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">pct_error</span> <span class="o">=</span> <span class="n">value</span>
                                     <span class="k">continue</span>
 
                             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s2">&quot;In setup_args, key=</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">, value=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> is not in pinfo.setup, &quot;</span>
-                                <span class="s2">&quot;the key/value pair from setup_args not added to Setup in Ansys.&quot;</span>
+                                <span class="sa">f</span><span class="s2">"In setup_args, key=</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">, value=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> is not in pinfo.setup, "</span>
+                                <span class="s2">"the key/value pair from setup_args not added to Setup in Ansys."</span>
                             <span class="p">)</span>
 
                     <span class="k">else</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                            <span class="s1">&#39;The design does not have solution type as &quot;Q3D&quot;. The Setup not updated.&#39;</span>
+                            <span class="s1">'The design does not have solution type as "Q3D". The Setup not updated.'</span>
                         <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="s2">&quot;A design is not in active project. The Setup not updated.&quot;</span>
+                        <span class="s2">"A design is not in active project. The Setup not updated."</span>
                     <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;Project not available, have you opened a project? Setup not updated.&quot;</span>
+                    <span class="s2">"Project not available, have you opened a project? Setup not updated."</span>
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Have you run connect_ansys()?  &quot;</span>
-                <span class="s2">&quot;Cannot find a reference to Ansys in QRenderer. Setup not updated. &quot;</span>
+                <span class="s2">"Have you run connect_ansys()?  "</span>
+                <span class="s2">"Cannot find a reference to Ansys in QRenderer. Setup not updated. "</span>
             <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QQ3DRenderer.analyze_setup">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer.analyze_setup">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">analyze_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run a specific solution setup in Ansys Q3D.</span>
+<span class="w">        </span><span class="sd">"""Run a specific solution setup in Ansys Q3D.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            setup_name (str): Name of setup.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="p">:</span>
             <span class="n">setup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">get_setup</span><span class="p">(</span><span class="n">setup_name</span><span class="p">)</span>
             <span class="n">setup</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">setup_name</span><span class="p">)</span></div>
@@ -899,24 +899,24 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer.get_capacitance_matrix">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_capacitance_matrix</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">variation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">solution_kind</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;LastAdaptive&quot;</span><span class="p">,</span>
+        <span class="n">variation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="n">solution_kind</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"LastAdaptive"</span><span class="p">,</span>
         <span class="n">pass_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtain capacitance matrix after the analysis.</span>
+<span class="w">        </span><span class="sd">"""Obtain capacitance matrix after the analysis.</span>
 <span class="sd">        Must be executed *after* analyze_setup.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            variation (str, optional): An empty string returns nominal variation.</span>
-<span class="sd">                Otherwise need the list. Defaults to &#39;&#39;.</span>
-<span class="sd">            solution_kind (str, optional): Solution type. Defaults to &#39;LastAdaptive&#39;.</span>
-<span class="sd">                                Set to &#39;AdaptivePass&#39; to return the capacitance matrix of a specific pass.</span>
+<span class="sd">                Otherwise need the list. Defaults to ''.</span>
+<span class="sd">            solution_kind (str, optional): Solution type. Defaults to 'LastAdaptive'.</span>
+<span class="sd">                                Set to 'AdaptivePass' to return the capacitance matrix of a specific pass.</span>
 <span class="sd">            pass_number (int, optional): Which adaptive pass to acquire the capacitance</span>
-<span class="sd">                matrix from. Only in effect with &#39;AdaptivePass&#39; chosen. Defaults to 1.</span>
+<span class="sd">                matrix from. Only in effect with 'AdaptivePass' chosen. Defaults to 1.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pd.DataFrame, str: Capacitance matrix, and units.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="p">:</span>
             <span class="n">df_cmat</span><span class="p">,</span> <span class="n">user_units</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">(</span>
                 <span class="n">variation</span><span class="o">=</span><span class="n">variation</span><span class="p">,</span>
@@ -929,27 +929,27 @@
 
 <div class="viewcode-block" id="QQ3DRenderer.get_capacitance_all_passes">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer.get_capacitance_all_passes">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_capacitance_all_passes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtain a dictionary of the capacitance matrices from each simulation pass.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_capacitance_all_passes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Obtain a dictionary of the capacitance matrices from each simulation pass.</span>
 <span class="sd">        Must be executed *after* analyze_setup.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            variation (str, optional): An empty string returns nominal variation.</span>
-<span class="sd">                Otherwise need the list. Defaults to &#39;&#39;.</span>
+<span class="sd">                Otherwise need the list. Defaults to ''.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict, str: dict of pd.DataFrames containing the capacitance matrix</span>
 <span class="sd">                for each simulation pass, and units.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># TODO: is there a way to get all of the matrices in one query?</span>
         <span class="c1">#  If yes, change get_capacitance_matrix() to get all the matrices and delete this.</span>
         <span class="n">all_mtx</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">):</span>  <span class="c1"># 1000 is an arbitrary large number</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">df_cmat</span><span class="p">,</span> <span class="n">user_units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_capacitance_matrix</span><span class="p">(</span>
-                    <span class="n">variation</span><span class="p">,</span> <span class="s2">&quot;AdaptivePass&quot;</span><span class="p">,</span> <span class="n">pass_number</span><span class="o">=</span><span class="n">i</span>
+                    <span class="n">variation</span><span class="p">,</span> <span class="s2">"AdaptivePass"</span><span class="p">,</span> <span class="n">pass_number</span><span class="o">=</span><span class="n">i</span>
                 <span class="p">)</span>
-                <span class="n">c_units</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="n">user_units</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;farads&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                <span class="n">c_units</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="n">user_units</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"farads"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
                 <span class="n">all_mtx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cmat</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">c_units</span>
             <span class="k">except</span> <span class="n">pd</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">EmptyDataError</span><span class="p">:</span>
                 <span class="k">break</span>
@@ -959,21 +959,21 @@
 <div class="viewcode-block" id="QQ3DRenderer.lumped_oscillator_vs_passes">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer.lumped_oscillator_vs_passes">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">lumped_oscillator_vs_passes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        (deprecated) use analysis.quantitative.capacitance_lom.run_lom()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">&quot;This method is deprecated. Change your scripts to use&quot;</span>
-            <span class="s2">&quot;analysis.quantitative.capacitance_lom.run_lom()&quot;</span>
+            <span class="s2">"This method is deprecated. Change your scripts to use"</span>
+            <span class="s2">"analysis.quantitative.capacitance_lom.run_lom()"</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QQ3DRenderer.get_convergence">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer.get_convergence">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_convergence</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts convergence from Ansys simulation result&quot;&quot;&quot;</span>
-        <span class="c1"># If &#39;LastAdaptive&#39; is used, then the pass_number won&#39;t affect anything.</span>
-        <span class="c1"># If &#39;AdaptivePass&#39; is used, then the pass_number is used.</span>
+<span class="w">        </span><span class="sd">"""Extracts convergence from Ansys simulation result"""</span>
+        <span class="c1"># If 'LastAdaptive' is used, then the pass_number won't affect anything.</span>
+        <span class="c1"># If 'AdaptivePass' is used, then the pass_number is used.</span>
         <span class="n">convergence_df</span><span class="p">,</span> <span class="n">convergence_txt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pinfo</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">get_convergence</span><span class="p">()</span>
         <span class="n">target</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">pass_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_text_from_q3d_convergence</span><span class="p">(</span>
             <span class="n">convergence_txt</span>
@@ -986,7 +986,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_test_if_q3d_analysis_converged</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">passes_min</span><span class="p">:</span> <span class="nb">int</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use solution-data from Ansys-Q3d to determine if converged.</span>
+<span class="w">        </span><span class="sd">"""Use solution-data from Ansys-Q3d to determine if converged.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            target (float): Delta percentage for target. Default is None.</span>
@@ -996,7 +996,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Union[bool, None]: Had solution data converged.  Default is None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="kc">None</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">passes_min</span><span class="p">):</span>
             <span class="c1"># Confirm that all three numbers have an value.</span>
@@ -1012,7 +1012,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_text_from_q3d_convergence</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">gui_text</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse gui_text using a priori known formatting. Ansys-Q3D</span>
+<span class="w">        </span><span class="sd">"""Parse gui_text using a priori known formatting. Ansys-Q3D</span>
 <span class="sd">        solution-data provides gui_text.</span>
 
 <span class="sd">        Args:</span>
@@ -1021,18 +1021,18 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            1st Union[None, float]: Delta percentage for target. Default is None.</span>
 <span class="sd">            2nd Union[None, float]: Delta percentage for current. Default is None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">text_list</span> <span class="o">=</span> <span class="n">gui_text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
 
         <span class="c1"># Find Target information in text.</span>
-        <span class="n">target_all</span> <span class="o">=</span> <span class="p">[</span><span class="n">string</span> <span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">text_list</span> <span class="k">if</span> <span class="s2">&quot;Target&quot;</span> <span class="ow">in</span> <span class="n">string</span><span class="p">]</span>
+        <span class="n">target_all</span> <span class="o">=</span> <span class="p">[</span><span class="n">string</span> <span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">text_list</span> <span class="k">if</span> <span class="s2">"Target"</span> <span class="ow">in</span> <span class="n">string</span><span class="p">]</span>
 
         <span class="c1"># Find Current information in text.</span>
-        <span class="n">current_all</span> <span class="o">=</span> <span class="p">[</span><span class="n">string</span> <span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">text_list</span> <span class="k">if</span> <span class="s2">&quot;Current&quot;</span> <span class="ow">in</span> <span class="n">string</span><span class="p">]</span>
+        <span class="n">current_all</span> <span class="o">=</span> <span class="p">[</span><span class="n">string</span> <span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">text_list</span> <span class="k">if</span> <span class="s2">"Current"</span> <span class="ow">in</span> <span class="n">string</span><span class="p">]</span>
 
         <span class="c1"># Find Minimum number of passes from solution-data.</span>
-        <span class="n">min_passes_all</span> <span class="o">=</span> <span class="p">[</span><span class="n">string</span> <span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">text_list</span> <span class="k">if</span> <span class="s2">&quot;Minimum&quot;</span> <span class="ow">in</span> <span class="n">string</span><span class="p">]</span>
+        <span class="n">min_passes_all</span> <span class="o">=</span> <span class="p">[</span><span class="n">string</span> <span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">text_list</span> <span class="k">if</span> <span class="s2">"Minimum"</span> <span class="ow">in</span> <span class="n">string</span><span class="p">]</span>
 
         <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_target_delta</span><span class="p">(</span><span class="n">target_all</span><span class="p">)</span>
         <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_current_delta</span><span class="p">(</span><span class="n">current_all</span><span class="p">)</span>
@@ -1041,8 +1041,8 @@
         <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">min_passes</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_extract_min_passes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_passes_all</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a pre-formatted list, search and return the &quot;Minimum Number</span>
-<span class="sd">        Of Passes.&quot;</span>
+<span class="w">        </span><span class="sd">"""Given a pre-formatted list, search and return the "Minimum Number</span>
+<span class="sd">        Of Passes."</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            min_passes_all (list): Result of search through string returned from Ansys-Q3D.</span>
@@ -1050,29 +1050,29 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Union[None, float]: Regarding convergence, minimum number of passes.</span>
 <span class="sd">              Default is None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">min_num_of_passes</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">min_passes_all</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">min_passes_all</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">min_passes_str</span> <span class="o">=</span> <span class="n">min_passes_all</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">min_passes_str</span> <span class="o">=</span> <span class="n">min_passes_all</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">min_num_of_passes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">min_passes_str</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Target=</span><span class="si">{</span><span class="n">min_passes_str</span><span class="si">}</span><span class="s2"> in GUI is not an int.&quot;</span>
-                        <span class="s2">&quot;Force Minimum Number Of Passes to be None.&quot;</span>
+                        <span class="sa">f</span><span class="s2">"Target=</span><span class="si">{</span><span class="n">min_passes_str</span><span class="si">}</span><span class="s2"> in GUI is not an int."</span>
+                        <span class="s2">"Force Minimum Number Of Passes to be None."</span>
                     <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Either could not find Minimum Number of Passes &quot;</span>
-                <span class="s2">&quot;information or too many entries in text. &quot;</span>
-                <span class="s2">&quot;Force Minimum Number of Passes to be None.&quot;</span>
+                <span class="s2">"Either could not find Minimum Number of Passes "</span>
+                <span class="s2">"information or too many entries in text. "</span>
+                <span class="s2">"Force Minimum Number of Passes to be None."</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">min_num_of_passes</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_extract_target_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_all</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a pre-formatted list, search and return the target-delta</span>
+<span class="w">        </span><span class="sd">"""Given a pre-formatted list, search and return the target-delta</span>
 <span class="sd">        percentage for convergence.</span>
 
 <span class="sd">        Args:</span>
@@ -1080,28 +1080,28 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Union[None, float]: Delta percentage for target. Default is None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">target</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_all</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">target_all</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">target_str</span> <span class="o">=</span> <span class="n">target_all</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">target_str</span> <span class="o">=</span> <span class="n">target_all</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">target</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">target_str</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Target=</span><span class="si">{</span><span class="n">target_str</span><span class="si">}</span><span class="s2"> in GUI is not a float.&quot;</span>
-                        <span class="s2">&quot;Force Target Delta to be None.&quot;</span>
+                        <span class="sa">f</span><span class="s2">"Target=</span><span class="si">{</span><span class="n">target_str</span><span class="si">}</span><span class="s2"> in GUI is not a float."</span>
+                        <span class="s2">"Force Target Delta to be None."</span>
                     <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Either could not find Target Delta information or too many &quot;</span>
-                <span class="s2">&quot;entries in text. Force Target Delta to be None.&quot;</span>
+                <span class="s2">"Either could not find Target Delta information or too many "</span>
+                <span class="s2">"entries in text. Force Target Delta to be None."</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">target</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_extract_current_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_all</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a pre-formatted list, search and return the current-delta</span>
+<span class="w">        </span><span class="sd">"""Given a pre-formatted list, search and return the current-delta</span>
 <span class="sd">        percentage for convergence.</span>
 
 <span class="sd">        Args:</span>
@@ -1109,59 +1109,59 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Union[None, float]: Delta percentage for current. Default is None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">current</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_all</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">current_all</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">current_str</span> <span class="o">=</span> <span class="n">current_all</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">current_str</span> <span class="o">=</span> <span class="n">current_all</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">current</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">current_str</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Target=</span><span class="si">{</span><span class="n">current_str</span><span class="si">}</span><span class="s2"> in GUI is not a float.&quot;</span>
-                        <span class="s2">&quot;Force Current Delta to be None.&quot;</span>
+                        <span class="sa">f</span><span class="s2">"Target=</span><span class="si">{</span><span class="n">current_str</span><span class="si">}</span><span class="s2"> in GUI is not a float."</span>
+                        <span class="s2">"Force Current Delta to be None."</span>
                     <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Either could not find Current Delta information or too many &quot;</span>
-                <span class="s2">&quot;entries in text. Force Current Delta to be None.&quot;</span>
+                <span class="s2">"Either could not find Current Delta information or too many "</span>
+                <span class="s2">"entries in text. Force Current Delta to be None."</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">current</span>
 
 <div class="viewcode-block" id="QQ3DRenderer.plot_convergence_main">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer.plot_convergence_main">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_convergence_main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">RES</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot alpha and frequency versus pass number, as well as convergence</span>
+<span class="w">        </span><span class="sd">"""Plot alpha and frequency versus pass number, as well as convergence</span>
 <span class="sd">        of delta (in %).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            RES (pd.DataFrame): Dictionary of capacitance matrices versus pass number, organized as pandas table.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            The convergence plot, or ``None`` if constructing pyEPR&#39;s</span>
+<span class="sd">            The convergence plot, or ``None`` if constructing pyEPR's</span>
 <span class="sd">            ``DistributedAnalysis`` failed (see issue #1127).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pinfo</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">eprd</span> <span class="o">=</span> <span class="n">epr</span><span class="o">.</span><span class="n">DistributedAnalysis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pinfo</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="c1"># pyEPR&#39;s DistributedAnalysis construction can raise</span>
+                <span class="c1"># pyEPR's DistributedAnalysis construction can raise</span>
                 <span class="c1"># ``TypeError: tuple indices must be integers or slices,</span>
                 <span class="c1"># not Quantity`` from an internal bug in its own</span>
                 <span class="c1"># variation-key handling -- ``core_distributed_analysis.py``</span>
                 <span class="c1"># calls ``self._list_variations[ureg(variation)]``, which</span>
                 <span class="c1"># units-parses the variation label via pint instead of</span>
                 <span class="c1"># treating it as a plain index (issue #1127). This is a</span>
-                <span class="c1"># pyEPR-internal bug that Metal&#39;s call site cannot work</span>
+                <span class="c1"># pyEPR-internal bug that Metal's call site cannot work</span>
                 <span class="c1"># around, but an uncaught exception here previously</span>
                 <span class="c1"># crashed with a confusing traceback deep in pyEPR</span>
                 <span class="c1"># internals rather than a clear, attributable message.</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="s2">&quot;plot_convergence_main() failed constructing pyEPR&#39;s &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;DistributedAnalysis: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">. This is a known pyEPR &quot;</span>
-                    <span class="s2">&quot;internal bug in its variation-key handling, not a &quot;</span>
-                    <span class="s2">&quot;Qiskit Metal bug (see qiskit-metal#1127).&quot;</span>
+                    <span class="s2">"plot_convergence_main() failed constructing pyEPR's "</span>
+                    <span class="sa">f</span><span class="s2">"DistributedAnalysis: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">. This is a known pyEPR "</span>
+                    <span class="s2">"internal bug in its variation-key handling, not a "</span>
+                    <span class="s2">"Qiskit Metal bug (see qiskit-metal#1127)."</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="n">epr</span><span class="o">.</span><span class="n">toolbox</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">mpl_dpi</span><span class="p">(</span><span class="mi">110</span><span class="p">)</span>
@@ -1171,12 +1171,12 @@
 <div class="viewcode-block" id="QQ3DRenderer.plot_convergence_chi">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer.plot_convergence_chi">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_convergence_chi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">RES</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot convergence of chi and g, both in MHz, as a function of pass</span>
+<span class="w">        </span><span class="sd">"""Plot convergence of chi and g, both in MHz, as a function of pass</span>
 <span class="sd">        number.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            RES (pd.DataFrame): Dictionary of capacitance matrices versus pass number, organized as pandas table.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">epr</span><span class="o">.</span><span class="n">toolbox</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">mpl_dpi</span><span class="p">(</span><span class="mi">110</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_plot_q3d_convergence_chi_f</span><span class="p">(</span><span class="n">RES</span><span class="p">)</span></div>
 
@@ -1184,25 +1184,25 @@
 <div class="viewcode-block" id="QQ3DRenderer.add_q3d_design">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer.add_q3d_design">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_q3d_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">connect</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        (deprecated) use new_ansys_design()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">&quot;This method is deprecated. Change your scripts to use new_ansys_design()&quot;</span>
+            <span class="s2">"This method is deprecated. Change your scripts to use new_ansys_design()"</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">new_ansys_design</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;capacitive&quot;</span><span class="p">,</span> <span class="n">connect</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_ansys_design</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">"capacitive"</span><span class="p">,</span> <span class="n">connect</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QQ3DRenderer.activate_q3d_design">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html#qiskit_metal.renderers.QQ3DRenderer.activate_q3d_design">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">activate_q3d_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;MetalQ3ds&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">activate_q3d_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"MetalQ3ds"</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        (deprecated) use activate_ansys_design()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">&quot;This method is deprecated. Change your scripts to use activate_ansys_design()&quot;</span>
+            <span class="s2">"This method is deprecated. Change your scripts to use activate_ansys_design()"</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">activate_ansys_design</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;capacitive&quot;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activate_ansys_design</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">"capacitive"</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
@@ -1223,7 +1223,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -1246,6 +1246,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

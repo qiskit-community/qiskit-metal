@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -501,24 +501,24 @@
     <span class="p">)</span>
 <span class="p">)</span>
 <span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-1.5mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">connection_pads</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-1.5mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"+0.0mm"</span><span class="p">,</span> <span class="o">**</span><span class="n">connection_pads</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+1.5mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">connection_pads</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"Q2"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"+1.5mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"+0.0mm"</span><span class="p">,</span> <span class="o">**</span><span class="n">connection_pads</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">q3</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+1.3mm&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">connection_pads</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"Q3"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"+0.0mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"+1.3mm"</span><span class="p">,</span> <span class="o">**</span><span class="n">connection_pads</span><span class="p">)</span>
 <span class="p">)</span>
 
 
 <span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
     <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">),</span> <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"a"</span><span class="p">),</span> <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q2"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"b"</span><span class="p">)</span>
     <span class="p">),</span>
 <span class="p">)</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">=</span> <span class="s2">&quot;10um&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">cpw_gap</span> <span class="o">=</span> <span class="s2">&quot;6um&quot;</span>
-<span class="n">cpw</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw&quot;</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">=</span> <span class="s2">"10um"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">cpw_gap</span> <span class="o">=</span> <span class="s2">"6um"</span>
+<span class="n">cpw</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"cpw"</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -529,7 +529,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s2">&quot;[&#39;10um&#39;, &#39;1nm&#39;]&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s2">"['10um', '1nm']"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -623,12 +623,12 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set variables in the design</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;400 um&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">"400 um"</span>
 
 <span class="c1"># Assign variables to component options</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;pad_width&quot;</span>
-<span class="n">q2</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;pad_width&quot;</span>
-<span class="n">q3</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;pad_width&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">"pad_width"</span>
+<span class="n">q2</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">"pad_width"</span>
+<span class="n">q3</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">"pad_width"</span>
 
 <span class="c1"># Rebuild all compoinent and refresh the gui</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -641,7 +641,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set variables in the design</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;300 um&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">"300 um"</span>
 
 <span class="c1"># Rebuild all compoinent and refresh the gui</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -654,7 +654,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set variables in the design</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;550 um&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">"550 um"</span>
 
 <span class="c1"># Rebuild all compoinent and refresh the gui</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -792,7 +792,7 @@ array([-1.925, -0.325, -1.075,  0.325])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -809,7 +809,7 @@ geopandas.geodataframe.GeoDataFrame
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1002,7 +1002,7 @@ geopandas.geodataframe.GeoDataFrame
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

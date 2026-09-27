@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -562,13 +562,13 @@
 
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonInterdigitated</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;qubit1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-2.0mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;-90&quot;</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"qubit1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-2.0mm"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"-90"</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonInterdigitated</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;qubit2&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;2.0mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"qubit2"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"2.0mm"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"90"</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">q3</span> <span class="o">=</span> <span class="n">TransmonInterdigitated</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;qubit3&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;3.0mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"qubit3"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_y</span><span class="o">=</span><span class="s2">"3.0mm"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"180"</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -588,7 +588,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fillet</span><span class="o">=</span><span class="s2">"90um"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -597,18 +597,18 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-    <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;5mm&quot;</span><span class="p">,</span>
+    <span class="n">total_length</span><span class="o">=</span><span class="s2">"5mm"</span><span class="p">,</span>
     <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;qubit1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;bus1&quot;</span><span class="p">),</span>
-        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;qubit3&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;bus2&quot;</span><span class="p">),</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"qubit1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"bus1"</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"qubit3"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"bus2"</span><span class="p">),</span>
     <span class="p">),</span>
-    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0.0mm&quot;</span><span class="p">),</span>
-    <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">),</span>
+    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"0.5mm"</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">"0.0mm"</span><span class="p">),</span>
+    <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">asymmetry</span><span class="o">=</span><span class="s2">"0mm"</span><span class="p">),</span>
     <span class="o">**</span><span class="n">ops</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Below I am creating a CPW without assigning its name.</span>
-<span class="c1">#  Therefore running this cell twice will create two CPW&#39;s instead of overwriting the previous one</span>
+<span class="c1">#  Therefore running this cell twice will create two CPW's instead of overwriting the previous one</span>
 <span class="c1">#  To prevent that we add the cpw.delete() statement.</span>
 <span class="c1">#  The try-except wrapping is needed to suppress errors during the first run of this cell</span>
 <span class="k">try</span><span class="p">:</span>
@@ -628,13 +628,13 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-    <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;5mm&quot;</span><span class="p">,</span>
+    <span class="n">total_length</span><span class="o">=</span><span class="s2">"5mm"</span><span class="p">,</span>
     <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;qubit2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;bus2&quot;</span><span class="p">),</span>
-        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;qubit3&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;bus1&quot;</span><span class="p">),</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"qubit2"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"bus2"</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"qubit3"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"bus1"</span><span class="p">),</span>
     <span class="p">),</span>
-    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0.0mm&quot;</span><span class="p">),</span>
-    <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">),</span>
+    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"0.5mm"</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">"0.0mm"</span><span class="p">),</span>
+    <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">asymmetry</span><span class="o">=</span><span class="s2">"0mm"</span><span class="p">),</span>
     <span class="o">**</span><span class="n">ops</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -654,13 +654,13 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-    <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;8mm&quot;</span><span class="p">,</span>
+    <span class="n">total_length</span><span class="o">=</span><span class="s2">"8mm"</span><span class="p">,</span>
     <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;qubit1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;bus2&quot;</span><span class="p">),</span>
-        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;qubit2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;bus1&quot;</span><span class="p">),</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"qubit1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"bus2"</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"qubit2"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"bus1"</span><span class="p">),</span>
     <span class="p">),</span>
-    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">),</span>
-    <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">),</span>
+    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"0.5mm"</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">"0.5mm"</span><span class="p">),</span>
+    <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">asymmetry</span><span class="o">=</span><span class="s2">"0mm"</span><span class="p">),</span>
     <span class="o">**</span><span class="n">ops</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -763,7 +763,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -479,48 +479,48 @@
 <span class="c1">#: Rotation applied to a connector claw for each arm of the cross. The claw is</span>
 <span class="c1">#: drawn on the west arm, so the rotation is the negative of the requested</span>
 <span class="c1">#: ``connector_location`` angle taken mod 360 — e.g. 270 =&gt; +90.</span>
-<span class="n">ARM_ROTATION</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;west&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;north&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="s2">&quot;east&quot;</span><span class="p">:</span> <span class="mi">180</span><span class="p">,</span> <span class="s2">&quot;south&quot;</span><span class="p">:</span> <span class="mi">90</span><span class="p">}</span>
+<span class="n">ARM_ROTATION</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"west"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="s2">"east"</span><span class="p">:</span> <span class="mi">180</span><span class="p">,</span> <span class="s2">"south"</span><span class="p">:</span> <span class="mi">90</span><span class="p">}</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">connector_arm_name</span><span class="p">(</span><span class="n">connector_location</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Snap a ``connector_location`` angle to the cross arm it selects.</span>
+<span class="w">    </span><span class="sd">"""Snap a ``connector_location`` angle to the cross arm it selects.</span>
 
 <span class="sd">    The angle is taken mod 360 and snapped to the nearest arm, so out-of-range</span>
-<span class="sd">    values behave sensibly (``360`` =&gt; &#39;west&#39;, ``-90`` =&gt; &#39;south&#39;). Angles</span>
+<span class="sd">    values behave sensibly (``360`` =&gt; 'west', ``-90`` =&gt; 'south'). Angles</span>
 <span class="sd">    exactly half-way between two arms (45, 135, 225, 315) snap to the lower</span>
 <span class="sd">    one, matching the historical behaviour of this mapping.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        connector_location (float): Angle in degrees. 0 =&gt; &#39;west&#39;,</span>
-<span class="sd">            90 =&gt; &#39;north&#39;, 180 =&gt; &#39;east&#39;, 270 =&gt; &#39;south&#39;.</span>
+<span class="sd">        connector_location (float): Angle in degrees. 0 =&gt; 'west',</span>
+<span class="sd">            90 =&gt; 'north', 180 =&gt; 'east', 270 =&gt; 'south'.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        str: One of &#39;west&#39;, &#39;north&#39;, &#39;east&#39;, &#39;south&#39;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        str: One of 'west', 'north', 'east', 'south'.</span>
+<span class="sd">    """</span>
     <span class="n">angle</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">connector_location</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
     <span class="k">if</span> <span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">315</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;west&quot;</span>
+        <span class="k">return</span> <span class="s2">"west"</span>
     <span class="k">if</span> <span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">225</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;south&quot;</span>
+        <span class="k">return</span> <span class="s2">"south"</span>
     <span class="k">if</span> <span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">135</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;east&quot;</span>
+        <span class="k">return</span> <span class="s2">"east"</span>
     <span class="k">if</span> <span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">45</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;north&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;west&quot;</span>
+        <span class="k">return</span> <span class="s2">"north"</span>
+    <span class="k">return</span> <span class="s2">"west"</span>
 
 
 <div class="viewcode-block" id="TransmonCross">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCross.html#qiskit_metal.qlibrary.TransmonCross">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TransmonCross</span><span class="p">(</span><span class="n">BaseQubit</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The base `TransmonCross` class.</span>
+<span class="w">    </span><span class="sd">"""The base `TransmonCross` class.</span>
 
 <span class="sd">    Inherits `BaseQubit` class.</span>
 
 <span class="sd">    Simple Metal Transmon Cross object. Creates the X cross-shaped island,</span>
-<span class="sd">    the &quot;junction&quot; on the south end, and up to 3 connectors on the remaining arms</span>
+<span class="sd">    the "junction" on the south end, and up to 3 connectors on the remaining arms</span>
 <span class="sd">    (claw or gap).</span>
 
-<span class="sd">    &#39;claw_width&#39; and &#39;claw_gap&#39; define the width/gap of the CPW line that</span>
+<span class="sd">    'claw_width' and 'claw_gap' define the width/gap of the CPW line that</span>
 <span class="sd">    makes up the connector. Note, DC SQUID currently represented by single</span>
 <span class="sd">    inductance sheet</span>
 
@@ -528,7 +528,7 @@
 <span class="sd">    information.</span>
 
 <span class="sd">    A connector may also be placed on the south arm with</span>
-<span class="sd">    ``connector_location=&#39;270&#39;``, but that is the arm carrying the junction:</span>
+<span class="sd">    ``connector_location='270'``, but that is the arm carrying the junction:</span>
 <span class="sd">    at the default options the claw clears the junction by ~11um and its etch</span>
 <span class="sd">    region comes within ~5um of it. Check the clearance against your process</span>
 <span class="sd">    design rules before using it, and note that `TransmonCrossFL` puts its</span>
@@ -557,56 +557,56 @@
 <span class="sd">        * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.</span>
 
 <span class="sd">    Default Options:</span>
-<span class="sd">        * cross_width: &#39;20um&#39; -- Width of the CPW center trace making up the Crossmon</span>
-<span class="sd">        * cross_length: &#39;200um&#39; -- Length of one Crossmon arm (from center)</span>
-<span class="sd">        * cross_gap: &#39;20um&#39; -- Width of the CPW gap making up the Crossmon</span>
+<span class="sd">        * cross_width: '20um' -- Width of the CPW center trace making up the Crossmon</span>
+<span class="sd">        * cross_length: '200um' -- Length of one Crossmon arm (from center)</span>
+<span class="sd">        * cross_gap: '20um' -- Width of the CPW gap making up the Crossmon</span>
 <span class="sd">        * _default_connection_pads: Dict</span>
-<span class="sd">            * connector_type: &#39;0&#39; -- 0 = Claw type, 1 = gap type</span>
-<span class="sd">            * claw_length: &#39;30um&#39; -- Length of the claw &#39;arms&#39;, measured from the connector center trace</span>
-<span class="sd">            * ground_spacing: &#39;5um&#39; -- Amount of ground plane between the connector and Crossmon arm (minimum should be based on fabrication capabilities)</span>
+<span class="sd">            * connector_type: '0' -- 0 = Claw type, 1 = gap type</span>
+<span class="sd">            * claw_length: '30um' -- Length of the claw 'arms', measured from the connector center trace</span>
+<span class="sd">            * ground_spacing: '5um' -- Amount of ground plane between the connector and Crossmon arm (minimum should be based on fabrication capabilities)</span>
 <span class="sd">            * ground_spacing_back: None -- Ground plane between the cpw-side (back) of the connector and the Crossmon arm. Defaults to ground_spacing when None</span>
-<span class="sd">            * claw_width: &#39;10um&#39; -- The width of the CPW center trace making up the claw/gap connector</span>
+<span class="sd">            * claw_width: '10um' -- The width of the CPW center trace making up the claw/gap connector</span>
 <span class="sd">            * claw_width_back: None -- The width of the back (towards the incoming CPW) of the claw connector. Defaults to claw_width when None</span>
-<span class="sd">            * claw_gap: &#39;6um&#39; -- The gap of the CPW center trace making up the claw/gap connector</span>
-<span class="sd">            * connector_location: &#39;0&#39; -- 0 =&gt; &#39;west&#39; arm, 90 =&gt; &#39;north&#39; arm, 180 =&gt; &#39;east&#39; arm, 270 =&gt; &#39;south&#39; arm</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            * claw_gap: '6um' -- The gap of the CPW center trace making up the claw/gap connector</span>
+<span class="sd">            * connector_location: '0' -- 0 =&gt; 'west' arm, 90 =&gt; 'north' arm, 180 =&gt; 'east' arm, 270 =&gt; 'south' arm</span>
+<span class="sd">    """</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">cross_width</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
-        <span class="n">cross_length</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">,</span>
-        <span class="n">cross_gap</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
-        <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
+        <span class="n">cross_width</span><span class="o">=</span><span class="s2">"20um"</span><span class="p">,</span>
+        <span class="n">cross_length</span><span class="o">=</span><span class="s2">"200um"</span><span class="p">,</span>
+        <span class="n">cross_gap</span><span class="o">=</span><span class="s2">"20um"</span><span class="p">,</span>
+        <span class="n">chip</span><span class="o">=</span><span class="s2">"main"</span><span class="p">,</span>
         <span class="n">_default_connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">connector_type</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>  <span class="c1"># 0 = Claw type, 1 = gap type</span>
-            <span class="n">claw_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span>
-            <span class="n">ground_spacing</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
+            <span class="n">connector_type</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>  <span class="c1"># 0 = Claw type, 1 = gap type</span>
+            <span class="n">claw_length</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">,</span>
+            <span class="n">ground_spacing</span><span class="o">=</span><span class="s2">"5um"</span><span class="p">,</span>
             <span class="n">ground_spacing_back</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Defaults to `ground_spacing` when None</span>
-            <span class="n">claw_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+            <span class="n">claw_width</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
             <span class="n">claw_width_back</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Defaults to `claw_width` when None</span>
-            <span class="n">claw_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-            <span class="n">claw_cpw_length</span><span class="o">=</span><span class="s2">&quot;40um&quot;</span><span class="p">,</span>
-            <span class="n">claw_cpw_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-            <span class="n">connector_location</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>  <span class="c1"># 0 =&gt; &#39;west&#39; arm, 90 =&gt; &#39;north&#39; arm, 180 =&gt; &#39;east&#39; arm, 270 =&gt; &#39;south&#39; arm</span>
+            <span class="n">claw_gap</span><span class="o">=</span><span class="s2">"6um"</span><span class="p">,</span>
+            <span class="n">claw_cpw_length</span><span class="o">=</span><span class="s2">"40um"</span><span class="p">,</span>
+            <span class="n">claw_cpw_width</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+            <span class="n">connector_location</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>  <span class="c1"># 0 =&gt; 'west' arm, 90 =&gt; 'north' arm, 180 =&gt; 'east' arm, 270 =&gt; 'south' arm</span>
         <span class="p">),</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default options.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default options."""</span>
 
     <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;Cross&quot;</span><span class="p">,</span>
-        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
-        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">"Cross"</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">"True"</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">"True"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Simple Metal Transmon Cross.&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""Simple Metal Transmon Cross."""</span>
 
     <span class="c1">##############################################MAKE######################################################</span>
 
 <div class="viewcode-block" id="TransmonCross.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCross.html#qiskit_metal.qlibrary.TransmonCross.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is executed by the GUI/user to generate the qgeometry for the</span>
-<span class="sd">        component.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This is executed by the GUI/user to generate the qgeometry for the</span>
+<span class="sd">        component."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">make_pocket</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">make_connection_pads</span><span class="p">()</span></div>
 
@@ -616,7 +616,7 @@
 <div class="viewcode-block" id="TransmonCross.make_pocket">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCross.html#qiskit_metal.qlibrary.TransmonCross.make_pocket">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_pocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Makes a basic Crossmon, 4 arm cross.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Makes a basic Crossmon, 4 arm cross."""</span>
 
         <span class="c1"># self.p allows us to directly access parsed values (string -&gt; numbers) from the user option</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
@@ -652,12 +652,12 @@
         <span class="p">[</span><span class="n">cross</span><span class="p">,</span> <span class="n">cross_etch</span><span class="p">,</span> <span class="n">rect_jj</span><span class="p">]</span> <span class="o">=</span> <span class="n">polys</span>
 
         <span class="c1"># generate qgeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cross</span><span class="o">=</span><span class="n">cross</span><span class="p">),</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cross</span><span class="o">=</span><span class="n">cross</span><span class="p">),</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cross_etch</span><span class="o">=</span><span class="n">cross_etch</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span>
+            <span class="s2">"poly"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cross_etch</span><span class="o">=</span><span class="n">cross_etch</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;junction&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rect_jj</span><span class="o">=</span><span class="n">rect_jj</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">cross_width</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span>
+            <span class="s2">"junction"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rect_jj</span><span class="o">=</span><span class="n">rect_jj</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">cross_width</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span>
         <span class="p">)</span></div>
 
 
@@ -666,7 +666,7 @@
 <div class="viewcode-block" id="TransmonCross.make_connection_pads">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCross.html#qiskit_metal.qlibrary.TransmonCross.make_connection_pads">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_connection_pads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Goes through connector pads and makes each one.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Goes through connector pads and makes each one."""</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">make_connection_pad</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -674,11 +674,11 @@
 <div class="viewcode-block" id="TransmonCross.make_connection_pad">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonCross.html#qiskit_metal.qlibrary.TransmonCross.make_connection_pad">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_connection_pad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Makes individual connector pad.</span>
+<span class="w">        </span><span class="sd">"""Makes individual connector pad.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str) : Name of the connector pad</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># self.p allows us to directly access parsed values (string -&gt; numbers) from the user option</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
@@ -745,10 +745,10 @@
         <span class="p">[</span><span class="n">connector_arm</span><span class="p">,</span> <span class="n">connector_etcher</span><span class="p">,</span> <span class="n">port_line</span><span class="p">]</span> <span class="o">=</span> <span class="n">polys</span>
 
         <span class="c1"># Generates qgeometry for the connector pads</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_connector_arm&quot;</span><span class="p">:</span> <span class="n">connector_arm</span><span class="p">},</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_connector_arm"</span><span class="p">:</span> <span class="n">connector_arm</span><span class="p">},</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_connector_etcher&quot;</span><span class="p">:</span> <span class="n">connector_etcher</span><span class="p">},</span>
+            <span class="s2">"poly"</span><span class="p">,</span>
+            <span class="p">{</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_connector_etcher"</span><span class="p">:</span> <span class="n">connector_etcher</span><span class="p">},</span>
             <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">,</span>
         <span class="p">)</span>
@@ -774,7 +774,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -797,6 +797,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

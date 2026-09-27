@@ -17,6 +17,11 @@
         "command": "terminal:refresh",
         "selector": ".jp-Terminal",
         "rank": 3
+      },
+      {
+        "command": "terminal:open-folder-in-terminal",
+        "selector": ".jp-DirListing-item[data-isdir=\"true\"]",
+        "rank": 2
       }
     ]
   },
@@ -36,7 +41,12 @@
       "minimum": 1.0
     },
     "theme": {
-      "enum": ["dark", "light", "inherit"]
+      "type": "string",
+      "oneOf": [
+        { "const": "dark", "title": "Dark" },
+        { "const": "light", "title": "Light" },
+        { "const": "inherit", "title": "Inherit" }
+      ]
     },
     "scrollback": {
       "type": "number"

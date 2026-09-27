@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -490,7 +490,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the function &quot;kappa_in&quot; from the file kappa_calculation.py</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the function "kappa_in" from the file kappa_calculation.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.em.kappa_calculation</span><span class="w"> </span><span class="kn">import</span> <span class="n">kappa_in</span>
 </pre></div>
 </div>
@@ -503,14 +503,14 @@ ideal resonator, in which case some additional inputs are required (1/2 or 1/4 d
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SANITY CHECK #1</span>
-<span class="c1"># Let&#39;s check that output is only given for three and six arguments</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output for N=1 Args:&quot;</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output for N=2 Args:&quot;</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output for N=3 Args:&quot;</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output for N=4 Args:&quot;</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output for N=5 Args:&quot;</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output for N=6 Args:&quot;</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output for N=7 Args:&quot;</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<span class="c1"># Let's check that output is only given for three and six arguments</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=1 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=2 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=3 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=4 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=5 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=6 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=7 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -534,12 +534,12 @@ Output for N=7 Args: None
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SANITY CHECK #2</span>
-<span class="c1"># Let&#39;s check that the magnitude of the output is what we would expect for 3 arguments:</span>
+<span class="c1"># Let's check that the magnitude of the output is what we would expect for 3 arguments:</span>
 <span class="c1"># Input #1: omega = 5GHz = 5E9 Hertz</span>
 <span class="c1"># Input #2: C_in = 30fF = 30E-15 Farads</span>
 <span class="c1"># Input #3: omega_n = 4GHz = 4.5E9 Hertz</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculated kappa (in Hz):&quot;</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">5.0e9</span><span class="p">,</span> <span class="mf">30.0e-15</span><span class="p">,</span> <span class="mf">4.5e9</span><span class="p">),</span> <span class="s2">&quot;Hz&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculated kappa (in MHz):&quot;</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">5.0e9</span><span class="p">,</span> <span class="mf">30.0e-15</span><span class="p">,</span> <span class="mf">4.5e9</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1.0e6</span><span class="p">,</span> <span class="s2">&quot;MHz&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Calculated kappa (in Hz):"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">5.0e9</span><span class="p">,</span> <span class="mf">30.0e-15</span><span class="p">,</span> <span class="mf">4.5e9</span><span class="p">),</span> <span class="s2">"Hz"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Calculated kappa (in MHz):"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">5.0e9</span><span class="p">,</span> <span class="mf">30.0e-15</span><span class="p">,</span> <span class="mf">4.5e9</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1.0e6</span><span class="p">,</span> <span class="s2">"MHz"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -617,7 +617,7 @@ Calculated kappa (in MHz): 0.16114437988054403 MHz
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

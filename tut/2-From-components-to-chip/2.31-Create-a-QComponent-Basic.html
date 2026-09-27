@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -598,32 +598,32 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MyQComponent</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Use this class as a template for your components - have fun</span>
 
 <span class="sd">    Description:</span>
 
 <span class="sd">    Options:</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Edit these to define your own tempate options for creation</span>
     <span class="c1"># Default drawing options</span>
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">width</span><span class="o">=</span><span class="s2">&quot;500um&quot;</span><span class="p">,</span>
-        <span class="n">height</span><span class="o">=</span><span class="s2">&quot;300um&quot;</span><span class="p">,</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
-        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
-        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="s2">"500um"</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="s2">"300um"</span><span class="p">,</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>
+        <span class="n">layer</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
-    <span class="c1"># Name prefix of component, if user doesn&#39;t provide name</span>
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+    <span class="c1"># Name prefix of component, if user doesn't provide name</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">"component"</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">"True"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert self.options into QGeometry.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert self.options into QGeometry."""</span>
 
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>  <span class="c1"># Parse the string options into numbers</span>
 
@@ -635,8 +635,8 @@
         <span class="n">rect</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">)</span>
         <span class="n">rect</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
 
-        <span class="n">geom</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;my_polygon&quot;</span><span class="p">:</span> <span class="n">rect</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"my_polygon"</span><span class="p">:</span> <span class="n">rect</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -762,8 +762,8 @@ width), with the <code class="docutils literal notranslate"><span class="pre">ga
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">MySimpleGapCapacitor</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Inherits &#39;QComponent&#39; class.</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Inherits 'QComponent' class.</span>
 
 <span class="sd">    Description:</span>
 <span class="sd">        A simple CPW style gap capacitor, with endcap islands each coupled to their own</span>
@@ -779,32 +779,32 @@ width), with the <code class="docutils literal notranslate"><span class="pre">ga
 <span class="sd">        * layer: the layer number for the layout</span>
 
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Edit these to define your own tempate options for creation</span>
     <span class="c1"># Default drawing options</span>
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">cpw_width</span><span class="o">=</span><span class="s2">&quot;15um&quot;</span><span class="p">,</span>
-        <span class="n">cpw_gap</span><span class="o">=</span><span class="s2">&quot;9um&quot;</span><span class="p">,</span>
-        <span class="n">cap_width</span><span class="o">=</span><span class="s2">&quot;35um&quot;</span><span class="p">,</span>
-        <span class="n">cap_gap</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
-        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
-        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="n">cpw_width</span><span class="o">=</span><span class="s2">"15um"</span><span class="p">,</span>
+        <span class="n">cpw_gap</span><span class="o">=</span><span class="s2">"9um"</span><span class="p">,</span>
+        <span class="n">cap_width</span><span class="o">=</span><span class="s2">"35um"</span><span class="p">,</span>
+        <span class="n">cap_gap</span><span class="o">=</span><span class="s2">"3um"</span><span class="p">,</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>
+        <span class="n">layer</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
-    <span class="c1"># Name prefix of component, if user doesn&#39;t provide name</span>
+    <span class="c1"># Name prefix of component, if user doesn't provide name</span>
     <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">,</span>
-        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
-        <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">"component"</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">"True"</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">"True"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert self.options into QGeometry.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert self.options into QGeometry."""</span>
 
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>  <span class="c1"># Parse the string options into numbers</span>
 
@@ -830,32 +830,32 @@ width), with the <code class="docutils literal notranslate"><span class="pre">ga
         <span class="p">[</span><span class="n">pad_left</span><span class="p">,</span> <span class="n">pad_right</span><span class="p">,</span> <span class="n">cpw_left</span><span class="p">,</span> <span class="n">cpw_right</span><span class="p">,</span> <span class="n">pad_etch</span><span class="p">]</span> <span class="o">=</span> <span class="n">geom_list</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;cpw_left&quot;</span><span class="p">:</span> <span class="n">cpw_left</span><span class="p">,</span> <span class="s2">&quot;cpw_right&quot;</span><span class="p">:</span> <span class="n">cpw_right</span><span class="p">},</span>
+            <span class="s2">"path"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"cpw_left"</span><span class="p">:</span> <span class="n">cpw_left</span><span class="p">,</span> <span class="s2">"cpw_right"</span><span class="p">:</span> <span class="n">cpw_right</span><span class="p">},</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;cpw_left_etch&quot;</span><span class="p">:</span> <span class="n">cpw_left</span><span class="p">,</span> <span class="s2">&quot;cpw_right_etch&quot;</span><span class="p">:</span> <span class="n">cpw_right</span><span class="p">},</span>
+            <span class="s2">"path"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"cpw_left_etch"</span><span class="p">:</span> <span class="n">cpw_left</span><span class="p">,</span> <span class="s2">"cpw_right_etch"</span><span class="p">:</span> <span class="n">cpw_right</span><span class="p">},</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">cpw_gap</span><span class="p">,</span>
             <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;pad_left&quot;</span><span class="p">:</span> <span class="n">pad_left</span><span class="p">,</span> <span class="s2">&quot;pad_right&quot;</span><span class="p">:</span> <span class="n">pad_right</span><span class="p">},</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span>
+            <span class="s2">"poly"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"pad_left"</span><span class="p">:</span> <span class="n">pad_left</span><span class="p">,</span> <span class="s2">"pad_right"</span><span class="p">:</span> <span class="n">pad_right</span><span class="p">},</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;pad_etch&quot;</span><span class="p">:</span> <span class="n">pad_etch</span><span class="p">},</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"pad_etch"</span><span class="p">:</span> <span class="n">pad_etch</span><span class="p">},</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;cap_left&quot;</span><span class="p">,</span>
+            <span class="s2">"cap_left"</span><span class="p">,</span>
             <span class="n">cpw_left</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span>
             <span class="n">gap</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_gap</span><span class="p">,</span>
             <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;cap_right&quot;</span><span class="p">,</span>
+            <span class="s2">"cap_right"</span><span class="p">,</span>
             <span class="n">cpw_right</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span>
             <span class="n">gap</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_gap</span><span class="p">,</span>
@@ -878,7 +878,7 @@ width), with the <code class="docutils literal notranslate"><span class="pre">ga
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_cap</span> <span class="o">=</span> <span class="n">MySimpleGapCapacitor</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;my_cap&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_cap</span> <span class="o">=</span> <span class="n">MySimpleGapCapacitor</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"my_cap"</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
@@ -977,7 +977,7 @@ width), with the <code class="docutils literal notranslate"><span class="pre">ga
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

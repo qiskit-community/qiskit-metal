@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -480,75 +480,75 @@ such as <cite>‘-2 * 1e5 nm’</cite> will yield float(-0.2) when the default u
 
 <span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">_vars</span><span class="p">):</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">parse_value</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">_vars</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">:</span><span class="s1">&lt;6</span><span class="si">}</span><span class="s1"> |</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s1">&gt;12</span><span class="si">}</span><span class="s1"> &gt;&gt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="si">:</span><span class="s1">&lt;20</span><span class="si">}</span><span class="s1"> | </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">:</span><span class="s1">&lt;6</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">:</span><span class="s1">&lt;6</span><span class="si">}</span><span class="s1"> |</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s1">&gt;12</span><span class="si">}</span><span class="s1"> &gt;&gt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="si">:</span><span class="s1">&lt;20</span><span class="si">}</span><span class="s1"> | </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">:</span><span class="s1">&lt;6</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">test2</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">_vars</span><span class="p">):</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">parse_value</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">_vars</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">:</span><span class="s1">&lt;6</span><span class="si">}</span><span class="s1"> |</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;38</span><span class="si">}</span><span class="s1"> &gt;&gt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="si">:</span><span class="s1">&lt;47</span><span class="si">}</span><span class="s1"> | </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">:</span><span class="s1">&lt;6</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">:</span><span class="s1">&lt;6</span><span class="si">}</span><span class="s1"> |</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;38</span><span class="si">}</span><span class="s1"> &gt;&gt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="si">:</span><span class="s1">&lt;47</span><span class="si">}</span><span class="s1"> | </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">:</span><span class="s1">&lt;6</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 
-<span class="n">vars_</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span><span class="mf">5.0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span><span class="s1">&#39;5um&#39;</span><span class="p">,</span> <span class="s1">&#39;cpw_width&#39;</span><span class="p">:</span><span class="s1">&#39;10um&#39;</span><span class="p">})</span>
+<span class="n">vars_</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">({</span><span class="s1">'x'</span><span class="p">:</span><span class="mf">5.0</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">:</span><span class="s1">'5um'</span><span class="p">,</span> <span class="s1">'cpw_width'</span><span class="p">:</span><span class="s1">'10um'</span><span class="p">})</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------------------------------------&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;String: Basics&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'------------------------------------------------'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'String: Basics'</span><span class="p">)</span>
 <span class="n">test</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
 <span class="n">test</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;1.&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;+1.&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;-1.&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;1mm&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39; 1  mm &#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;100mm&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;1.mm&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;1.0mm&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;1um&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;+1um&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;-1um&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;-0.1um&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;.1um&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;  0.1  m&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;-1E6 nm&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;-1e6 nm&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;.1e6 nm&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39; - .1e6nm &#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39; - .1e6 nm &#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39; - 1e6 nm &#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;- 1e6 nm &#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39; - 1. &#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39; + 1. &#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;1 .&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'1'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'1.'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'+1.'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'-1.'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'1.0'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'1mm'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">' 1  mm '</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'100mm'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'1.mm'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'1.0mm'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'1um'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'+1um'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'-1um'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'-0.1um'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'.1um'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'  0.1  m'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'-1E6 nm'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'-1e6 nm'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'.1e6 nm'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">' - .1e6nm '</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">' - .1e6 nm '</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">' - 1e6 nm '</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'- 1e6 nm '</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">' - 1. '</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">' + 1. '</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'1 .'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------------------------------------&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;String: Arithmetic&#39;</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;2*1&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;2*10mm&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;-2 * 1e5 nm&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'------------------------------------------------'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'String: Arithmetic'</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'2*1'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'2*10mm'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'-2 * 1e5 nm'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------------------------------------&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;String: Variable&#39;</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test</span><span class="p">(</span><span class="s1">&#39;2*y&#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'------------------------------------------------'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'String: Variable'</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'z'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'x1'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="s1">'2*y'</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------------------------------------&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;String: convert list and dict&#39;</span><span class="p">)</span>
-<span class="n">test2</span><span class="p">(</span><span class="s1">&#39; [1,2,3.,4., &quot;5um&quot;, &quot; -0.1e6 nm&quot;  ] &#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
-<span class="n">test2</span><span class="p">(</span><span class="s1">&#39; {3:2, 4: &quot; -0.1e6 nm&quot;  } &#39;</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'------------------------------------------------'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'String: convert list and dict'</span><span class="p">)</span>
+<span class="n">test2</span><span class="p">(</span><span class="s1">' [1,2,3.,4., "5um", " -0.1e6 nm"  ] '</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
+<span class="n">test2</span><span class="p">(</span><span class="s1">' {3:2, 4: " -0.1e6 nm"  } '</span><span class="p">,</span> <span class="n">vars_</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------------------------------------&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dict: convert list and dict&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'------------------------------------------------'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Dict: convert list and dict'</span><span class="p">)</span>
 <span class="n">my_dict</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-    <span class="n">string1</span> <span class="o">=</span> <span class="s1">&#39;1m&#39;</span><span class="p">,</span>
-    <span class="n">string2</span> <span class="o">=</span> <span class="s1">&#39;1mm&#39;</span><span class="p">,</span>
-    <span class="n">string3</span> <span class="o">=</span> <span class="s1">&#39;1um&#39;</span><span class="p">,</span>
-    <span class="n">string4</span> <span class="o">=</span> <span class="s1">&#39;1nm&#39;</span><span class="p">,</span>
-    <span class="n">variable1</span> <span class="o">=</span> <span class="s1">&#39;cpw_width&#39;</span><span class="p">,</span>
-    <span class="n">list1</span> <span class="o">=</span> <span class="s2">&quot;[&#39;1m&#39;, &#39;5um&#39;, &#39;cpw_width&#39;, -1, False, &#39;a string&#39;]&quot;</span><span class="p">,</span>
-    <span class="n">dict1</span> <span class="o">=</span> <span class="s2">&quot;{&#39;key1&#39;:&#39;4e-6mm&#39;, &#39;2mm&#39;:&#39;100um&#39;}&quot;</span>
+    <span class="n">string1</span> <span class="o">=</span> <span class="s1">'1m'</span><span class="p">,</span>
+    <span class="n">string2</span> <span class="o">=</span> <span class="s1">'1mm'</span><span class="p">,</span>
+    <span class="n">string3</span> <span class="o">=</span> <span class="s1">'1um'</span><span class="p">,</span>
+    <span class="n">string4</span> <span class="o">=</span> <span class="s1">'1nm'</span><span class="p">,</span>
+    <span class="n">variable1</span> <span class="o">=</span> <span class="s1">'cpw_width'</span><span class="p">,</span>
+    <span class="n">list1</span> <span class="o">=</span> <span class="s2">"['1m', '5um', 'cpw_width', -1, False, 'a string']"</span><span class="p">,</span>
+    <span class="n">dict1</span> <span class="o">=</span> <span class="s2">"{'key1':'4e-6mm', '2mm':'100um'}"</span>
 <span class="p">)</span>
 <span class="c1">#test2(my_dict, vars_)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">parse_value</span><span class="p">(</span><span class="n">my_dict</span><span class="p">,</span> <span class="n">vars_</span><span class="p">))</span>
@@ -603,20 +603,20 @@ such as <cite>‘-2 * 1e5 nm’</cite> will yield float(-0.2) when the default u
 <span class="nb">str</span>    <span class="o">|</span>         <span class="mi">2</span><span class="o">*</span><span class="n">y</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span>                  <span class="o">|</span> <span class="nb">str</span>
 <span class="o">------------------------------------------------</span>
 <span class="n">String</span><span class="p">:</span> <span class="n">convert</span> <span class="nb">list</span> <span class="ow">and</span> <span class="nb">dict</span>
-<span class="nb">str</span>    <span class="o">|</span>   <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">3.</span><span class="p">,</span><span class="mf">4.</span><span class="p">,</span> <span class="s2">&quot;5um&quot;</span><span class="p">,</span> <span class="s2">&quot; -0.1e6 nm&quot;</span>  <span class="p">]</span>  <span class="o">&gt;&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.10000000000000002</span><span class="p">]</span>   <span class="o">|</span> <span class="nb">list</span>
-<span class="nb">str</span>    <span class="o">|</span>             <span class="p">{</span><span class="mi">3</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot; -0.1e6 nm&quot;</span>  <span class="p">}</span>  <span class="o">&gt;&gt;</span> <span class="p">{</span><span class="mi">3</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.10000000000000002</span><span class="p">}</span>                 <span class="o">|</span> <span class="n">Dict</span>
+<span class="nb">str</span>    <span class="o">|</span>   <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">3.</span><span class="p">,</span><span class="mf">4.</span><span class="p">,</span> <span class="s2">"5um"</span><span class="p">,</span> <span class="s2">" -0.1e6 nm"</span>  <span class="p">]</span>  <span class="o">&gt;&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.10000000000000002</span><span class="p">]</span>   <span class="o">|</span> <span class="nb">list</span>
+<span class="nb">str</span>    <span class="o">|</span>             <span class="p">{</span><span class="mi">3</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s2">" -0.1e6 nm"</span>  <span class="p">}</span>  <span class="o">&gt;&gt;</span> <span class="p">{</span><span class="mi">3</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.10000000000000002</span><span class="p">}</span>                 <span class="o">|</span> <span class="n">Dict</span>
 
 
 <span class="o">------------------------------------------------</span>
 <span class="n">Dict</span><span class="p">:</span> <span class="n">convert</span> <span class="nb">list</span> <span class="ow">and</span> <span class="nb">dict</span>
 
-<span class="p">{</span><span class="s1">&#39;string1&#39;</span><span class="p">:</span> <span class="mf">1000.0</span><span class="p">,</span>
-<span class="s1">&#39;string2&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-<span class="s1">&#39;string3&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
-<span class="s1">&#39;string4&#39;</span><span class="p">:</span> <span class="mf">1.0000000000000002e-06</span><span class="p">,</span>
-<span class="s1">&#39;variable1&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
-<span class="s1">&#39;list1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1000.0</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;a string&#39;</span><span class="p">],</span>
-<span class="s1">&#39;dict1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;key1&#39;</span><span class="p">:</span> <span class="mf">4e-06</span><span class="p">,</span> <span class="s1">&#39;2mm&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
+<span class="p">{</span><span class="s1">'string1'</span><span class="p">:</span> <span class="mf">1000.0</span><span class="p">,</span>
+<span class="s1">'string2'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="s1">'string3'</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+<span class="s1">'string4'</span><span class="p">:</span> <span class="mf">1.0000000000000002e-06</span><span class="p">,</span>
+<span class="s1">'variable1'</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+<span class="s1">'list1'</span><span class="p">:</span> <span class="p">[</span><span class="mf">1000.0</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">'a string'</span><span class="p">],</span>
+<span class="s1">'dict1'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'key1'</span><span class="p">:</span> <span class="mf">4e-06</span><span class="p">,</span> <span class="s1">'2mm'</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -660,84 +660,84 @@ such as <cite>‘-2 * 1e5 nm’</cite> will yield float(-0.2) when the default u
 </section>
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.parsing.is_for_ast_eval">
-<span class="sig-name descname"><span class="pre">is_for_ast_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_for_ast_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_for_ast_eval" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">is_for_ast_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_for_ast_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_for_ast_eval" title="Link to this definition">¶</a></dt>
 <dd><p>Is the test string a valid list of dict string, such as “[1, 2]”, that
 can be evaluated by ast eval.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Test string</p>
+<dd class="field-odd"><p><strong>test_str</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Test string</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Is test_str a valid list of dict strings</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.parsing.is_numeric_possible">
-<span class="sig-name descname"><span class="pre">is_numeric_possible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_numeric_possible"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_numeric_possible" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">is_numeric_possible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_numeric_possible"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_numeric_possible" title="Link to this definition">¶</a></dt>
 <dd><p>Is the test string a valid possible numerical with /or w/o units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Test string</p>
+<dd class="field-odd"><p><strong>test_str</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Test string</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Is the test string a valid possible numerical</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.parsing.is_true">
-<span class="sig-name descname"><span class="pre">is_true</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_true"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_true" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">is_true</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_true"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_true" title="Link to this definition">¶</a></dt>
 <dd><p>Check if a value is true or not.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Value to check</p>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Value to check</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Is the string a true</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.parsing.is_variable_name">
-<span class="sig-name descname"><span class="pre">is_variable_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_variable_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_variable_name" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">is_variable_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#is_variable_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.is_variable_name" title="Link to this definition">¶</a></dt>
 <dd><p>Is the test string a valid name for a variable or not?</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>test_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Test string</p>
+<dd class="field-odd"><p><strong>test_str</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Test string</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Is str a variable name</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.parsing.parse_options">
-<span class="sig-name descname"><span class="pre">parse_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#parse_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.parse_options" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#parse_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.parse_options" title="Link to this definition">¶</a></dt>
 <dd><p>Calls parse_value to extract from a dictionary a small subset of values.
 You can specify parse_names = ‘x,y,z,cpw_width’.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Dictionary of params</p></li>
-<li><p><strong>parse_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name to parse</p></li>
-<li><p><strong>variable_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Dictionary of variables.  Defaults to None.</p></li>
+<li><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Dictionary of params</p></li>
+<li><p><strong>parse_names</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name to parse</p></li>
+<li><p><strong>variable_dict</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Dictionary of variables.  Defaults to None.</p></li>
 </ul>
 </dd>
 </dl>
@@ -745,7 +745,7 @@ You can specify parse_names = ‘x,y,z,cpw_width’.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.toolbox_metal.parsing.parse_value">
-<span class="sig-name descname"><span class="pre">parse_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#parse_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.parse_value" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/toolbox_metal/parsing.html#parse_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.toolbox_metal.parsing.parse_value" title="Link to this definition">¶</a></dt>
 <dd><p>Parse a string, mappable (dict, Dict), iterable (list, tuple) to account
 for units conversion, some basic arithmetic, and design variables. This is
 the main parsing function of Qiskit Metal.</p>
@@ -782,15 +782,15 @@ will yield float(-0.2) when the default units are set to <cite>mm</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – String to parse</p></li>
-<li><p><strong>variable_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – dict pointer of variables</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – String to parse</p></li>
+<li><p><strong>variable_dict</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – dict pointer of variables</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Parsed value</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>, or ast eval</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)">str</a>, <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)">float</a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)">list</a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>, or ast eval</p>
 </dd>
 </dl>
 </dd></dl>
@@ -832,7 +832,7 @@ will yield float(-0.2) when the default units are set to <cite>mm</cite>.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

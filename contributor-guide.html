@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -735,10 +735,10 @@ should be a <code class="docutils literal notranslate"><span class="pre">Depreca
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">foo</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The Quantum.foo() function is deprecated as of 0.9.0, and &#39;</span>
-                  <span class="s1">&#39;will be removed no earlier than 3 months after that &#39;</span>
-                  <span class="s1">&#39;release date. You should use the Quantum.bar() function &#39;</span>
-                  <span class="s1">&#39;instead.&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">'The Quantum.foo() function is deprecated as of 0.9.0, and '</span>
+                  <span class="s1">'will be removed no earlier than 3 months after that '</span>
+                  <span class="s1">'release date. You should use the Quantum.bar() function '</span>
+                  <span class="s1">'instead.'</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>One thing to note here is the <code class="docutils literal notranslate"><span class="pre">stack_level</span></code> kwarg on the warn() call. This
@@ -895,7 +895,7 @@ be</p>
 <p>The module docstring should follow this shape (here using non-functional
 placeholders so this example doesn’t itself fire the autosummary
 extension at doc-build time):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\&quot;\&quot;\&quot;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\"\"\"
 My Module (:mod:`example_pkg.my_module`)
 =========================================
 
@@ -911,7 +911,7 @@ Submodules
 
    submodule_a.feature_one
    submodule_b.feature_two
-\&quot;\&quot;\&quot;
+\"\"\"
 </pre></div>
 </div>
 <div class="admonition note">
@@ -987,7 +987,7 @@ uv<span class="w"> </span>version<span class="w"> </span>--bump<span class="w"> 
 </div>
 </li>
 <li><p>Commit (and optionally tag) using the version manually:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;Bump version to 0.7.1&quot;</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">"Bump version to 0.7.1"</span>
 git<span class="w"> </span>tag<span class="w"> </span>v0.7.1
 git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main<span class="w"> </span>--tags
 </pre></div>
@@ -1045,7 +1045,7 @@ folder. If you add a new feature, please add a demonstration of its use to a not
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

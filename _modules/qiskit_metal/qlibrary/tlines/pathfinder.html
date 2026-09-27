@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -486,7 +486,7 @@
 <div class="viewcode-block" id="RoutePathfinder">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RoutePathfinder.html#qiskit_metal.qlibrary.RoutePathfinder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RoutePathfinder</span><span class="p">(</span><span class="n">RouteAnchors</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;.. image::</span>
+<span class="w">    </span><span class="sd">""".. image::</span>
 <span class="sd">        RoutePathfinder.png</span>
 
 
@@ -500,28 +500,28 @@
 <span class="sd">        :description: Route Pathfinder</span>
 
 <span class="sd">    RouteAnchors Default Options:</span>
-<span class="sd">        * anchors: OrderedDict -- Intermediate anchors only; doesn&#39;t include endpoints</span>
+<span class="sd">        * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints</span>
 <span class="sd">        * advanced: Dict</span>
-<span class="sd">            * avoid_collision: &#39;false&#39; -- true/false, defines if the route needs to avoid collisions</span>
+<span class="sd">            * avoid_collision: 'false' -- true/false, defines if the route needs to avoid collisions</span>
 
 <span class="sd">    Default Options:</span>
-<span class="sd">        * step_size: &#39;0.25mm&#39; -- Length of the step for the A* pathfinding algorithm</span>
+<span class="sd">        * step_size: '0.25mm' -- Length of the step for the A* pathfinding algorithm</span>
 <span class="sd">        * advanced: Dict</span>
-<span class="sd">            * avoid_collision: &#39;true&#39; -- true/false, defines if the route needs to avoid collisions</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            * avoid_collision: 'true' -- true/false, defines if the route needs to avoid collisions</span>
+<span class="sd">    """</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">step_size</span><span class="o">=</span><span class="s2">&quot;0.25mm&quot;</span><span class="p">,</span> <span class="n">advanced</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">avoid_collision</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="p">))</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default options&quot;&quot;&quot;</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">step_size</span><span class="o">=</span><span class="s2">"0.25mm"</span><span class="p">,</span> <span class="n">advanced</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">avoid_collision</span><span class="o">=</span><span class="s2">"true"</span><span class="p">))</span>
+<span class="w">    </span><span class="sd">"""Default options"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot; Non-meandered CPW class that combines A* pathfinding algorithm with</span>
-<span class="s2">    simple 1-, 2-, or S-shaped segment checks and user-specified anchor points.&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">""" Non-meandered CPW class that combines A* pathfinding algorithm with</span>
+<span class="s2">    simple 1-, 2-, or S-shaped segment checks and user-specified anchor points."""</span>
 
 <div class="viewcode-block" id="RoutePathfinder.connect_astar_or_simple">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RoutePathfinder.html#qiskit_metal.qlibrary.RoutePathfinder.connect_astar_or_simple">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">connect_astar_or_simple</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">start_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span> <span class="n">end_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect start and end via A* algo if connect_simple doesn&#39;t work.</span>
+<span class="w">        </span><span class="sd">"""Connect start and end via A* algo if connect_simple doesn't work.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            start_direction (np.array): Vector indicating direction of starting point</span>
@@ -533,7 +533,7 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            QiskitMetalDesignError: If the connect_simple() has failed.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">start_direction</span> <span class="o">=</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">position</span>
@@ -551,7 +551,7 @@
         <span class="c1"># path from self.start, path]</span>
         <span class="n">visited</span> <span class="o">=</span> <span class="p">(</span>
             <span class="nb">set</span><span class="p">()</span>
-        <span class="p">)</span>  <span class="c1"># maintain record of points we&#39;ve already visited to avoid self-intersections</span>
+        <span class="p">)</span>  <span class="c1"># maintain record of points we've already visited to avoid self-intersections</span>
         <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">start</span><span class="p">))</span>
         <span class="c1"># TODO: add to visited all of the current points in the route, to prevent self intersecting</span>
         <span class="n">priority_queue</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># A* priority queue. Implemented as heap</span>
@@ -616,7 +616,7 @@
                         <span class="c1"># Destination has been reached within acceptable error tolerance (errors due to rounding in Python)</span>
                         <span class="k">return</span> <span class="p">(</span>
                             <span class="n">new_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">end</span><span class="p">]</span>
-                        <span class="p">)</span>  <span class="c1"># Replace last element of new_path with end since they&#39;re basically the same</span>
+                        <span class="p">)</span>  <span class="c1"># Replace last element of new_path with end since they're basically the same</span>
                     <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span>
                         <span class="n">priority_queue</span><span class="p">,</span>
                         <span class="p">(</span>
@@ -633,23 +633,23 @@
                         <span class="p">)</span>
                     <span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_length_travelled</span><span class="p">,</span> <span class="n">new_path</span><span class="p">]</span>
                     <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">neighbor</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">[]</span>  <span class="c1"># Shouldn&#39;t actually reach here - if it fails, there&#39;s a convergence issue</span></div>
+        <span class="k">return</span> <span class="p">[]</span>  <span class="c1"># Shouldn't actually reach here - if it fails, there's a convergence issue</span></div>
 
 
 <div class="viewcode-block" id="RoutePathfinder.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RoutePathfinder.html#qiskit_metal.qlibrary.RoutePathfinder.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates path from start pin to end pin.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Generates path from start pin to end pin."""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>
         <span class="n">anchors</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">anchors</span>
 
         <span class="c1"># Set the CPW pins and add the points/directions to the lead-in/out arrays</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">"start"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">"end"</span><span class="p">)</span>
 
         <span class="c1"># Align the lead-in/out to the input options set from the user</span>
-        <span class="n">start_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>  <span class="c1"># noqa: F841</span>
-        <span class="n">end_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="n">start_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">"start"</span><span class="p">)</span>  <span class="c1"># noqa: F841</span>
+        <span class="n">end_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">"end"</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">arc_num</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">anchors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -692,7 +692,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -715,6 +715,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

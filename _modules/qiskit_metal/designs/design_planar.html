@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,18 +472,18 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;Module containing the basic planar (2D) design for CPW-style geometries.&quot;&quot;&quot;</span>
+<span class="sd">"""Module containing the basic planar (2D) design for CPW-style geometries."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs.design_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span><span class="p">,</span> <span class="n">Dict</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DesignPlanar&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"DesignPlanar"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="DesignPlanar">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.designs.DesignPlanar.html#qiskit_metal.designs.DesignPlanar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DesignPlanar</span><span class="p">(</span><span class="n">QDesign</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Planar (2D) design with a single chip and CPW-style geometries.</span>
+<span class="w">    </span><span class="sd">"""Planar (2D) design with a single chip and CPW-style geometries.</span>
 
 <span class="sd">    Use this as the default design class when you are laying out coplanar</span>
 <span class="sd">    waveguides, qubits, resonators, and other planar components on a single</span>
@@ -517,9 +517,9 @@
 <span class="sd">      ``DesignFlipChip``; the API is similar, but those classes manage multiple</span>
 <span class="sd">      chip entries and inter-chip alignments.</span>
 <span class="sd">    - Chip size and origin matter: routing, subtraction, and cheesing rely on</span>
-<span class="sd">      the chip bounds. Adjust ``self._chips[&#39;main&#39;][&#39;size&#39;]`` early to avoid</span>
+<span class="sd">      the chip bounds. Adjust ``self._chips['main']['size']`` early to avoid</span>
 <span class="sd">      surprises in exports.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -527,7 +527,7 @@
         <span class="n">overwrite_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">enable_renderers</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a planar design with optional metadata and renderer control.</span>
+<span class="w">        </span><span class="sd">"""Create a planar design with optional metadata and renderer control.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            metadata: Optional metadata dict to annotate the design (e.g.,</span>
@@ -536,7 +536,7 @@
 <span class="sd">                Keep False to catch accidental collisions.</span>
 <span class="sd">            enable_renderers: Initialize renderer registration on creation.</span>
 <span class="sd">                Set False for lightweight geometry-only workflows.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
@@ -548,31 +548,31 @@
 <div class="viewcode-block" id="DesignPlanar.add_chip_info">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.designs.DesignPlanar.html#qiskit_metal.designs.DesignPlanar.add_chip_info">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_chip_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;TODO How to get the values into self.chip. Will need to set up</span>
-<span class="sd">        parser for &quot;self.p&quot; for design base. For now, just hard code in</span>
+<span class="w">        </span><span class="sd">"""TODO How to get the values into self.chip. Will need to set up</span>
+<span class="sd">        parser for "self.p" for design base. For now, just hard code in</span>
 <span class="sd">        something.</span>
 
 <span class="sd">        # GDSTK is using numbers based on 1 meter unit.</span>
-<span class="sd">        # When the gds file is exported, data is converted to &quot;user-selected&quot; units.</span>
+<span class="sd">        # When the gds file is exported, data is converted to "user-selected" units.</span>
 <span class="sd">        # centered at (0,0) and 9 by 6 size.</span>
 
 <span class="sd">        NOTE: self._chips dict comes from QDesign base class.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-            <span class="n">material</span><span class="o">=</span><span class="s2">&quot;silicon&quot;</span><span class="p">,</span>
-            <span class="n">layer_start</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-            <span class="n">layer_end</span><span class="o">=</span><span class="s2">&quot;2048&quot;</span><span class="p">,</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">"main"</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+            <span class="n">material</span><span class="o">=</span><span class="s2">"silicon"</span><span class="p">,</span>
+            <span class="n">layer_start</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>
+            <span class="n">layer_end</span><span class="o">=</span><span class="s2">"2048"</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-            <span class="n">center_x</span><span class="o">=</span><span class="s2">&quot;0.0mm&quot;</span><span class="p">,</span>
-            <span class="n">center_y</span><span class="o">=</span><span class="s2">&quot;0.0mm&quot;</span><span class="p">,</span>
-            <span class="n">center_z</span><span class="o">=</span><span class="s2">&quot;0.0mm&quot;</span><span class="p">,</span>
-            <span class="n">size_x</span><span class="o">=</span><span class="s2">&quot;9mm&quot;</span><span class="p">,</span>
-            <span class="n">size_y</span><span class="o">=</span><span class="s2">&quot;6mm&quot;</span><span class="p">,</span>
-            <span class="n">size_z</span><span class="o">=</span><span class="s2">&quot;-750um&quot;</span><span class="p">,</span>  <span class="c1"># chip extends in negative z direction by 750 um</span>
-            <span class="n">sample_holder_top</span><span class="o">=</span><span class="s2">&quot;890um&quot;</span><span class="p">,</span>  <span class="c1"># how tall is the vacuum above center_z</span>
-            <span class="n">sample_holder_bottom</span><span class="o">=</span><span class="s2">&quot;1650um&quot;</span><span class="p">,</span>  <span class="c1"># how tall is the vacuum below z=0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">"main"</span><span class="p">][</span><span class="s2">"size"</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
+            <span class="n">center_x</span><span class="o">=</span><span class="s2">"0.0mm"</span><span class="p">,</span>
+            <span class="n">center_y</span><span class="o">=</span><span class="s2">"0.0mm"</span><span class="p">,</span>
+            <span class="n">center_z</span><span class="o">=</span><span class="s2">"0.0mm"</span><span class="p">,</span>
+            <span class="n">size_x</span><span class="o">=</span><span class="s2">"9mm"</span><span class="p">,</span>
+            <span class="n">size_y</span><span class="o">=</span><span class="s2">"6mm"</span><span class="p">,</span>
+            <span class="n">size_z</span><span class="o">=</span><span class="s2">"-750um"</span><span class="p">,</span>  <span class="c1"># chip extends in negative z direction by 750 um</span>
+            <span class="n">sample_holder_top</span><span class="o">=</span><span class="s2">"890um"</span><span class="p">,</span>  <span class="c1"># how tall is the vacuum above center_z</span>
+            <span class="n">sample_holder_bottom</span><span class="o">=</span><span class="s2">"1650um"</span><span class="p">,</span>  <span class="c1"># how tall is the vacuum below z=0</span>
         <span class="p">)</span></div>
 
 
@@ -581,7 +581,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get_x_y_for_chip</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">chip_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;If the chip_name is in self.chips, along with entry for size</span>
+<span class="w">        </span><span class="sd">"""If the chip_name is in self.chips, along with entry for size</span>
 <span class="sd">        information then return a tuple=(minx, miny, maxx, maxy). Used for</span>
 <span class="sd">        subtraction while exporting design.</span>
 
@@ -594,17 +594,17 @@
 <span class="sd">            int: 0=all is good</span>
 <span class="sd">            1=chip_name not in self._chips</span>
 <span class="sd">            2=size information missing or no good</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">x_y_location</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">chip_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;size&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">]:</span>
-                <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s2">"size"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">]:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chips</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="s2">"size"</span><span class="p">])</span>
                 <span class="k">if</span> <span class="p">(</span>
-                    <span class="s2">&quot;center_x&quot;</span> <span class="ow">in</span> <span class="n">size</span>
-                    <span class="ow">and</span> <span class="s2">&quot;center_y&quot;</span> <span class="ow">in</span> <span class="n">size</span>
-                    <span class="ow">and</span> <span class="s2">&quot;size_x&quot;</span> <span class="ow">in</span> <span class="n">size</span>
-                    <span class="ow">and</span> <span class="s2">&quot;size_y&quot;</span> <span class="ow">in</span> <span class="n">size</span>
+                    <span class="s2">"center_x"</span> <span class="ow">in</span> <span class="n">size</span>
+                    <span class="ow">and</span> <span class="s2">"center_y"</span> <span class="ow">in</span> <span class="n">size</span>
+                    <span class="ow">and</span> <span class="s2">"size_x"</span> <span class="ow">in</span> <span class="n">size</span>
+                    <span class="ow">and</span> <span class="s2">"size_y"</span> <span class="ow">in</span> <span class="n">size</span>
                 <span class="p">):</span>
                     <span class="k">if</span> <span class="p">(</span>
                         <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">center_x</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
@@ -613,33 +613,33 @@
                         <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
                     <span class="p">):</span>
                         <span class="n">x_y_location</span> <span class="o">=</span> <span class="p">(</span>
-                            <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_x&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
-                            <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_y&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
-                            <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_x&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
-                            <span class="n">size</span><span class="p">[</span><span class="s2">&quot;center_y&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                            <span class="n">size</span><span class="p">[</span><span class="s2">"center_x"</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">"size_x"</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                            <span class="n">size</span><span class="p">[</span><span class="s2">"center_y"</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">"size_y"</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                            <span class="n">size</span><span class="p">[</span><span class="s2">"center_x"</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">"size_x"</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                            <span class="n">size</span><span class="p">[</span><span class="s2">"center_y"</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">"size_y"</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
                         <span class="p">)</span>
                         <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">0</span>
 
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;Size information within self.chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">][&quot;size&quot;]&#39;</span>
-                        <span class="sa">f</span><span class="s2">&quot; is NOT an int or float.&quot;</span>
+                        <span class="sa">f</span><span class="s1">'Size information within self.chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">]["size"]'</span>
+                        <span class="sa">f</span><span class="s2">" is NOT an int or float."</span>
                     <span class="p">)</span>
                     <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">2</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;center_x or center_y or size_x or size_y &quot;</span>
-                    <span class="sa">f</span><span class="s1">&#39; NOT in self._chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">][&quot;size&quot;]&#39;</span>
+                    <span class="s2">"center_x or center_y or size_x or size_y "</span>
+                    <span class="sa">f</span><span class="s1">' NOT in self._chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">]["size"]'</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">2</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Information for size in NOT in self._chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">]&quot;</span>
-                <span class="s1">&#39; dict. Return &quot;None&quot; in tuple.&#39;</span>
+                <span class="sa">f</span><span class="s2">"Information for size in NOT in self._chips[</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">]"</span>
+                <span class="s1">' dict. Return "None" in tuple.'</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">2</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;Chip name &quot;</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">&quot; is not in self._chips dict. Return &quot;None&quot; in tuple.&#39;</span>
+            <span class="sa">f</span><span class="s1">'Chip name "</span><span class="si">{</span><span class="n">chip_name</span><span class="si">}</span><span class="s1">" is not in self._chips dict. Return "None" in tuple.'</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">x_y_location</span><span class="p">,</span> <span class="mi">1</span></div>
 </div>
@@ -662,7 +662,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -685,6 +685,8 @@
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

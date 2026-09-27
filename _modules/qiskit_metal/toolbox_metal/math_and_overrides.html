@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -473,11 +473,11 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 
-<span class="sd">&quot;&quot;&quot;Math and override functions.&quot;&quot;&quot;</span>
+<span class="sd">"""Math and override functions."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cross&quot;</span><span class="p">,</span> <span class="s2">&quot;dot&quot;</span><span class="p">,</span> <span class="s2">&quot;round&quot;</span><span class="p">,</span> <span class="s2">&quot;set_decimal_precision&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"cross"</span><span class="p">,</span> <span class="s2">"dot"</span><span class="p">,</span> <span class="s2">"round"</span><span class="p">,</span> <span class="s2">"set_decimal_precision"</span><span class="p">]</span>
 
 <span class="n">DECIMAL_PRECISION</span> <span class="o">=</span> <span class="mi">10</span>
 
@@ -485,11 +485,11 @@
 <div class="viewcode-block" id="set_decimal_precision">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html#qiskit_metal.toolbox_metal.math_and_overrides.set_decimal_precision">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">set_decimal_precision</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Override the decimal_precision default (10).</span>
+<span class="w">    </span><span class="sd">"""Override the decimal_precision default (10).</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        value: Any integer. If present, decimal part will be truncated (flooring)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">global</span> <span class="n">DECIMAL_PRECISION</span>
     <span class="n">DECIMAL_PRECISION</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
@@ -498,7 +498,7 @@
 <div class="viewcode-block" id="dot">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html#qiskit_metal.toolbox_metal.math_and_overrides.dot">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dot</span><span class="p">(</span><span class="n">vector_1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">vector_2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Numpy dot product with decimal_precision.</span>
+<span class="w">    </span><span class="sd">"""Numpy dot product with decimal_precision.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        vector_1 (np.array): First of the dot product vectors</span>
@@ -506,7 +506,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: Rounded dot product</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vector_1</span><span class="p">,</span> <span class="n">vector_2</span><span class="p">))</span></div>
 
 
@@ -514,14 +514,14 @@
 <div class="viewcode-block" id="round">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html#qiskit_metal.toolbox_metal.math_and_overrides.round">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Numpy rounding with decimal_precision.</span>
+<span class="w">    </span><span class="sd">"""Numpy rounding with decimal_precision.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        value: Any numerical type supported by np.round()</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: Rounded number</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">DECIMAL_PRECISION</span><span class="p">)</span></div>
 
 
@@ -529,7 +529,7 @@
 <div class="viewcode-block" id="cross">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html#qiskit_metal.toolbox_metal.math_and_overrides.cross">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">cross</span><span class="p">(</span><span class="n">vector_1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">vector_2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Numpy cross product with decimal_precision.</span>
+<span class="w">    </span><span class="sd">"""Numpy cross product with decimal_precision.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        vector_1 (np.array): First of the cross product vectors</span>
@@ -537,22 +537,22 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: Rounded cross product</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">vector_1</span><span class="p">,</span> <span class="n">vector_2</span><span class="p">))</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">aligned_pts</span><span class="p">(</span><span class="n">points</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Are the three points aligned? with decimal_precision.</span>
+<span class="w">    </span><span class="sd">"""Are the three points aligned? with decimal_precision.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        points (list): of 3 points expressed as list or np.array</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: True if they are aligned. False otherwise</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Ambiguous. You can only pass exactly 3 points to this method&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Ambiguous. You can only pass exactly 3 points to this method"</span><span class="p">)</span>
     <span class="n">v1</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">v1_dir</span> <span class="o">=</span> <span class="n">v1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
     <span class="n">v2</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -577,7 +577,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -600,6 +600,8 @@
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -479,12 +479,12 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_require_gmsh</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise a clear error if gmsh isn&#39;t installed.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Raise a clear error if gmsh isn't installed."""</span>
     <span class="k">if</span> <span class="n">gmsh</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-            <span class="s2">&quot;renderer_gmsh requires gmsh. Install with: &quot;</span>
-            <span class="s2">&quot;pip install &#39;quantum-metal[mesh]&#39; &quot;</span>
-            <span class="s2">&quot;(or the legacy alias &#39;quantum-metal[fem]&#39;)&quot;</span>
+            <span class="s2">"renderer_gmsh requires gmsh. Install with: "</span>
+            <span class="s2">"pip install 'quantum-metal[mesh]' "</span>
+            <span class="s2">"(or the legacy alias 'quantum-metal[fem]')"</span>
         <span class="p">)</span>
 
 
@@ -495,7 +495,7 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.Vec3DArray.html#qiskit_metal.renderers.Vec3DArray">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Vec3DArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to define an array of np.ndarray objects</span>
+<span class="w">    </span><span class="sd">"""Class to define an array of np.ndarray objects</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        TypeError: if layer_z value is not provided for 2D design</span>
@@ -503,18 +503,18 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Vec3DArray: Array of np.ndarray objects</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">points</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
     <span class="n">path_vecs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is to initialize the `path_vecs` field separately</span>
+<span class="w">        </span><span class="sd">"""This is to initialize the `path_vecs` field separately</span>
 <span class="sd">        as it depends on the `points` field, and needs to be</span>
 <span class="sd">        calculated after the __init__ for the dataclass is called.</span>
 
-<span class="sd">        CAUTION: Please don&#39;t change this unless you really need to!</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        CAUTION: Please don't change this unless you really need to!</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_vecs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">v1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -525,18 +525,18 @@
 <div class="viewcode-block" id="Vec3DArray.append">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.Vec3DArray.html#qiskit_metal.renderers.Vec3DArray.append">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vecs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Append vector to the array</span>
+<span class="w">        </span><span class="sd">"""Append vector to the array</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            vecs (List[np.ndarray]): list of vectors to append</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">+=</span> <span class="n">vecs</span></div>
 
 
 <div class="viewcode-block" id="Vec3DArray.get_angle_between">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.Vec3DArray.html#qiskit_metal.renderers.Vec3DArray.get_angle_between">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_angle_between</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ret_path_angle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return acute angle between two vectors depending on &quot;ret_path_angle&quot;</span>
+<span class="w">        </span><span class="sd">"""Return acute angle between two vectors depending on "ret_path_angle"</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            i (int): i^th index from path_vecs or points list</span>
@@ -546,7 +546,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: angle between the corresponding vectors</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">ret_path_angle</span><span class="p">:</span>
             <span class="n">v1</span> <span class="o">=</span> <span class="n">Vec3D</span><span class="o">.</span><span class="n">normed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_vecs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">v2</span> <span class="o">=</span> <span class="n">Vec3D</span><span class="o">.</span><span class="n">normed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_vecs</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
@@ -561,7 +561,7 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.Vec3DArray.html#qiskit_metal.renderers.Vec3DArray.make_vec3DArray">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_vec3DArray</span><span class="p">(</span><span class="n">points</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span> <span class="n">layer_z</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Vec3DArray object from list of points</span>
+<span class="w">        </span><span class="sd">"""Create a Vec3DArray object from list of points</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            points (List[List[Union[int, float]]]): list of points</span>
@@ -574,7 +574,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Vec3DArray: return a Vec3DArray object</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">vecs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
@@ -584,11 +584,11 @@
                     <span class="n">vecs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">layer_z</span><span class="p">]))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                        <span class="s2">&quot;Expected a layer_z value for 2D geometry, found NoneType.&quot;</span>
+                        <span class="s2">"Expected a layer_z value for 2D geometry, found NoneType."</span>
                     <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Expected a 2-D or 3-D coordinate, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span><span class="si">}</span><span class="s2">-D instead.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Expected a 2-D or 3-D coordinate, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span><span class="si">}</span><span class="s2">-D instead."</span>
                 <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Vec3DArray</span><span class="p">(</span><span class="n">vecs</span><span class="p">)</span></div>
@@ -597,7 +597,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">vecs_to_gmsh_points</span><span class="p">(</span><span class="n">vecs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">layer_z</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create Gmsh points from np.ndarray objs</span>
+<span class="w">    </span><span class="sd">"""Create Gmsh points from np.ndarray objs</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        vecs (List[np.ndarray]): list of np.ndarray objs</span>
@@ -605,7 +605,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: list of Gmsh points</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vecs</span><span class="p">:</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">layer_z</span><span class="p">)</span>
@@ -621,7 +621,7 @@
     <span class="n">layer_z</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">ret_pts</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create offset points for straight line</span>
+<span class="w">    </span><span class="sd">"""Create offset points for straight line</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        pt_vec (np.ndarray): vectors of points in line</span>
@@ -633,7 +633,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: list of Gmsh points or vec3D objs</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">path_angle</span> <span class="o">=</span> <span class="n">Vec3D</span><span class="o">.</span><span class="n">angle_azimuth</span><span class="p">(</span><span class="n">path_vec</span><span class="p">)</span>
     <span class="n">perp_angle</span> <span class="o">=</span> <span class="n">path_angle</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">cos_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">perp_angle</span><span class="p">),</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
@@ -654,7 +654,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">arc_width_offset_pts</span><span class="p">(</span>
     <span class="n">vec1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">vec3</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">layer_z</span><span class="p">:</span> <span class="nb">float</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create offset points for Circle Arcs</span>
+<span class="w">    </span><span class="sd">"""Create offset points for Circle Arcs</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        vec1 (np.ndarray): incoming vector to arc</span>
@@ -665,7 +665,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: list of Gmsh points</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">perp_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">angle</span>  <span class="c1"># π - (angle + π/2)</span>
     <span class="n">cos_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">perp_angle</span><span class="p">),</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
     <span class="n">sin_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">perp_angle</span><span class="p">),</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
@@ -688,7 +688,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">make_arc_vecs</span><span class="p">(</span>
     <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">fillet</span><span class="p">:</span> <span class="nb">float</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create vectors for the circle arc</span>
+<span class="w">    </span><span class="sd">"""Create vectors for the circle arc</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        angle (float): angle of arc</span>
@@ -696,7 +696,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Tuple[np.ndarray, np.ndarray, np.ndarray]: vectors defining the arc control points</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">sector_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">angle</span>
     <span class="n">intercept</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">fillet</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">sector_angle</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
     <span class="n">cos_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sector_angle</span><span class="p">),</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
@@ -717,7 +717,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">transform_arc_points</span><span class="p">(</span><span class="n">pts</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">translate</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">path_vecs</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply transformation to arc points</span>
+<span class="w">    </span><span class="sd">"""Apply transformation to arc points</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        pts (list): list of Gmsh points</span>
@@ -726,7 +726,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: list of Gmsh points</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">dim_tags</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pts</span><span class="p">]</span>
     <span class="n">new_pts</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pts</span><span class="p">]</span>
 
@@ -748,10 +748,10 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">remove_degenerate_segments</span><span class="p">(</span><span class="n">coords</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">min_len</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Drop interior vertices that would create a segment shorter than</span>
+<span class="w">    </span><span class="sd">"""Drop interior vertices that would create a segment shorter than</span>
 <span class="sd">    ``min_len``, always preserving the two endpoints.</span>
 
-<span class="sd">    A CPW path segment shorter than the conductor&#39;s own width collapses the</span>
+<span class="sd">    A CPW path segment shorter than the conductor's own width collapses the</span>
 <span class="sd">    width-offset geometry in :func:`render_path_curves`: the two offset points</span>
 <span class="sd">    of adjacent vertices coincide, and Gmsh rejects the resulting zero-length</span>
 <span class="sd">    line (``Could not create line``). Routes routinely add such sub-width lead</span>
@@ -768,7 +768,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: the cleaned vertex list (endpoints preserved).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">pts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">min_len</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pts</span>
@@ -791,7 +791,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">draw_curves</span><span class="p">(</span>
     <span class="n">recent_pts</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">curves1</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">curves2</span><span class="p">:</span> <span class="nb">list</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw the curves using control points</span>
+<span class="w">    </span><span class="sd">"""Draw the curves using control points</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        recent_pts (list): list to keep track of recent points</span>
@@ -804,12 +804,12 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Tuple[list, list, list]: returns a tuple of recent_pts, curves1, curves2</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">rec_pts</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">recent_pts</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="s2">&quot;Unexpected geometry {len(recent_pts) not in [4,7]}. Check your geometry and retry.&quot;</span>
+            <span class="s2">"Unexpected geometry {len(recent_pts) not in [4,7]}. Check your geometry and retry."</span>
         <span class="p">)</span>
 
     <span class="n">l1</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="n">recent_pts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">recent_pts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -836,7 +836,7 @@
     <span class="n">bad_fillet_idxs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
     <span class="n">straight_line_tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function for rendering path QGeometry curves</span>
+<span class="w">    </span><span class="sd">"""Helper function for rendering path QGeometry curves</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        vecs (Vec3DArray): vector array</span>
@@ -851,7 +851,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: list of Gmsh curves</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">recent_pts</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># To store recent Gmsh points</span>
     <span class="n">curves1</span><span class="p">,</span> <span class="n">curves2</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>  <span class="c1"># To store lines and arcs for each visual side</span>
 
@@ -874,7 +874,7 @@
         <span class="n">is_filleted</span> <span class="o">=</span> <span class="kc">False</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">bad_fillet_idxs</span> <span class="k">else</span> <span class="kc">True</span>
 
         <span class="k">if</span> <span class="n">fillet</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected positive fillet radius, got </span><span class="si">{</span><span class="n">fillet</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected positive fillet radius, got </span><span class="si">{</span><span class="n">fillet</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">fillet</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">is_filleted</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">angle12</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">straight_line_tol</span><span class="p">):</span>
@@ -941,7 +941,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -964,6 +964,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -486,7 +486,7 @@
 <div class="viewcode-block" id="RouteMixed">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteMixed.html#qiskit_metal.qlibrary.RouteMixed">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RouteMixed</span><span class="p">(</span><span class="n">RoutePathfinder</span><span class="p">,</span> <span class="n">RouteMeander</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;.. image::</span>
+<span class="w">    </span><span class="sd">""".. image::</span>
 <span class="sd">        RouteMixed.png</span>
 
 <span class="sd">    Implements fully featured Routing, allowing different type of</span>
@@ -497,39 +497,39 @@
 <span class="sd">            :description: Route Mixed</span>
 
 <span class="sd">        Default Options:</span>
-<span class="sd">            * between_anchors: Empty OrderedDict -- Intermediate anchors only; doesn&#39;t include endpoints</span>
+<span class="sd">            * between_anchors: Empty OrderedDict -- Intermediate anchors only; doesn't include endpoints</span>
 
 <span class="sd">        QRoute Default Options:</span>
 <span class="sd">            * pin_inputs: Dict</span>
 <span class="sd">                * start_pin: Dict -- Component and pin string pair. Define which pin to start from</span>
-<span class="sd">                    * component: &#39;&#39; -- Name of component to start from, which has a pin</span>
-<span class="sd">                    * pin: &#39;&#39; -- Name of pin used for pin_start</span>
+<span class="sd">                    * component: '' -- Name of component to start from, which has a pin</span>
+<span class="sd">                    * pin: '' -- Name of pin used for pin_start</span>
 <span class="sd">                * end_pin=Dict -- Component and pin string pair. Define which pin to start from</span>
-<span class="sd">                    * component: &#39;&#39; -- Name of component to end on, which has a pin</span>
-<span class="sd">                    * pin: &#39;&#39; -- Name of pin used for pin_end</span>
+<span class="sd">                    * component: '' -- Name of component to end on, which has a pin</span>
+<span class="sd">                    * pin: '' -- Name of pin used for pin_end</span>
 <span class="sd">            * lead: Dict</span>
-<span class="sd">                * start_straight: &#39;0mm&#39; -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.</span>
-<span class="sd">                * end_straight: &#39;0mm&#39; -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.</span>
-<span class="sd">                * start_jogged_extension: &#39;&#39; -- Lead-in, jogged extension of lead-in. Described as list of tuples</span>
-<span class="sd">                * end_jogged_extension: &#39;&#39; -- Lead-out, jogged extension of lead-out. Described as list of tuples</span>
-<span class="sd">            * fillet: &#39;0&#39;</span>
-<span class="sd">            * total_length: &#39;7mm&#39;</span>
-<span class="sd">            * trace_width: &#39;cpw_width&#39; -- Defines the width of the line</span>
+<span class="sd">                * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.</span>
+<span class="sd">                * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.</span>
+<span class="sd">                * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples</span>
+<span class="sd">                * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples</span>
+<span class="sd">            * fillet: '0'</span>
+<span class="sd">            * total_length: '7mm'</span>
+<span class="sd">            * trace_width: 'cpw_width' -- Defines the width of the line</span>
 
 <span class="sd">        RouteAnchors Default Options:</span>
-<span class="sd">            * anchors: OrderedDict -- Intermediate anchors only; doesn&#39;t include endpoints</span>
+<span class="sd">            * anchors: OrderedDict -- Intermediate anchors only; doesn't include endpoints</span>
 
 <span class="sd">        RoutePathfinder Default Options:</span>
-<span class="sd">            * step_size: &#39;0.25mm&#39; -- Length of the step for the A* pathfinding algorithm</span>
+<span class="sd">            * step_size: '0.25mm' -- Length of the step for the A* pathfinding algorithm</span>
 <span class="sd">            * advanced: Dict</span>
-<span class="sd">                * avoid_collision: &#39;true&#39; -- true/false, defines if the route needs to avoid collisions.  Defaults to &#39;true&#39;.</span>
+<span class="sd">                * avoid_collision: 'true' -- true/false, defines if the route needs to avoid collisions.  Defaults to 'true'.</span>
 
 <span class="sd">        RouteMeander Default Options:</span>
 <span class="sd">            * meander: Dict</span>
-<span class="sd">                * spacing: &#39;200um&#39; -- Minimum spacing between adjacent meander curves</span>
-<span class="sd">                * asymmetry=&#39;0um&#39; -- Offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out.  Defaults to &#39;0um&#39;.</span>
-<span class="sd">            * snap: &#39;true&#39;</span>
-<span class="sd">            * prevent_short_edges: &#39;true&#39;</span>
+<span class="sd">                * spacing: '200um' -- Minimum spacing between adjacent meander curves</span>
+<span class="sd">                * asymmetry='0um' -- Offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out.  Defaults to '0um'.</span>
+<span class="sd">            * snap: 'true'</span>
+<span class="sd">            * prevent_short_edges: 'true'</span>
 
 <span class="sd">        How to specify between_anchors for the RouteMixed</span>
 <span class="sd">            `between_anchors` have to be specified in an OrderedDict with incremental keys.</span>
@@ -542,47 +542,47 @@
 <span class="sd">                :linenos:</span>
 
 <span class="sd">                between_anchors = OrderedDict()</span>
-<span class="sd">                between_anchors[0] = &quot;S&quot;</span>
-<span class="sd">                between_anchors[1] = &quot;M&quot;</span>
-<span class="sd">                between_anchors[2] = &quot;S&quot;</span>
-<span class="sd">                between_anchors[3] = &quot;M&quot;</span>
-<span class="sd">                between_anchors[4] = &quot;PF&quot;</span>
+<span class="sd">                between_anchors[0] = "S"</span>
+<span class="sd">                between_anchors[1] = "M"</span>
+<span class="sd">                between_anchors[2] = "S"</span>
+<span class="sd">                between_anchors[3] = "M"</span>
+<span class="sd">                between_anchors[4] = "PF"</span>
 
-<span class="sd">            * &quot;S&quot; = Utilizes the RouteStraight methods</span>
-<span class="sd">            * &quot;M&quot; = Utilizes the RouteMeander methods</span>
-<span class="sd">            * &quot;PF&quot; = Utilizes the RoutePathfinder methods</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            * "S" = Utilizes the RouteStraight methods</span>
+<span class="sd">            * "M" = Utilizes the RouteMeander methods</span>
+<span class="sd">            * "PF" = Utilizes the RoutePathfinder methods</span>
+<span class="sd">    """</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">between_anchors</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(),</span>  <span class="c1"># Intermediate anchors only; doesn&#39;t include endpoints</span>
-        <span class="c1"># Example: {1: &quot;M&quot;, 2: &quot;S&quot;, 3: &quot;PF&quot;}</span>
+        <span class="n">between_anchors</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(),</span>  <span class="c1"># Intermediate anchors only; doesn't include endpoints</span>
+        <span class="c1"># Example: {1: "M", 2: "S", 3: "PF"}</span>
         <span class="c1"># startpin -&gt; startpin + leadin -&gt; anchors -&gt; endpin + leadout -&gt; endpin</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default options"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Implements fully featured Routing, allowing different type of</span>
-<span class="s2">    connections between anchors.&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""Implements fully featured Routing, allowing different type of</span>
+<span class="s2">    connections between anchors."""</span>
 
 <div class="viewcode-block" id="RouteMixed.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteMixed.html#qiskit_metal.qlibrary.RouteMixed.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates path from start pin to end pin.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Generates path from start pin to end pin."""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>
         <span class="n">anchors</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">anchors</span>
         <span class="n">between_anchors</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">between_anchors</span>
 
         <span class="c1"># Set the CPW pins and add the points/directions to the lead-in/out arrays</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">"start"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">"end"</span><span class="p">)</span>
 
         <span class="c1"># Align the lead-in/out to the input options set from the user</span>
-        <span class="n">start_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
-        <span class="n">end_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="n">start_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">"start"</span><span class="p">)</span>
+        <span class="n">end_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">"end"</span><span class="p">)</span>
 
         <span class="c1"># approximate length needed for individual meanders</span>
         <span class="c1"># the meander algorithm directly reads from self._length_segment</span>
         <span class="n">count_meanders_list</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;M&quot;</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">between_anchors</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s2">"M"</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">between_anchors</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_length_segment</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">count_meanders_list</span><span class="p">):</span>
@@ -596,7 +596,7 @@
             <span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_manhattan_length_anchors</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">count_meanders_list</span><span class="p">))</span>
 
         <span class="c1"># find the points to connect between each pair of anchors, or between anchors and leads</span>
-        <span class="c1"># at first, store points &quot;per segment&quot; in a dictionary, so it is easier to apply length requirements</span>
+        <span class="c1"># at first, store points "per segment" in a dictionary, so it is easier to apply length requirements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="n">meanders</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">arc_num</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">anchors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -661,7 +661,7 @@
 <div class="viewcode-block" id="RouteMixed.select_connect_method">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteMixed.html#qiskit_metal.qlibrary.RouteMixed.select_connect_method">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">select_connect_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment_num</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Translates the user-selected connection method into the right method</span>
+<span class="w">        </span><span class="sd">"""Translates the user-selected connection method into the right method</span>
 <span class="sd">        to execute.</span>
 
 <span class="sd">        Args:</span>
@@ -669,18 +669,18 @@
 
 <span class="sd">        Return:</span>
 <span class="sd">            object: selected method</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">between_anchors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span><span class="o">.</span><span class="n">between_anchors</span>
         <span class="k">if</span> <span class="n">segment_num</span> <span class="ow">in</span> <span class="n">between_anchors</span><span class="p">:</span>
             <span class="n">type_connect</span> <span class="o">=</span> <span class="n">between_anchors</span><span class="p">[</span><span class="n">segment_num</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">type_connect</span> <span class="o">=</span> <span class="s2">&quot;S&quot;</span>
+            <span class="n">type_connect</span> <span class="o">=</span> <span class="s2">"S"</span>
         <span class="c1"># print(type_connect)</span>
-        <span class="k">if</span> <span class="n">type_connect</span> <span class="o">==</span> <span class="s2">&quot;S&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">type_connect</span> <span class="o">==</span> <span class="s2">"S"</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_simple</span>
-        <span class="k">if</span> <span class="n">type_connect</span> <span class="o">==</span> <span class="s2">&quot;PF&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">type_connect</span> <span class="o">==</span> <span class="s2">"PF"</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_astar_or_simple</span>
-        <span class="k">if</span> <span class="n">type_connect</span> <span class="o">==</span> <span class="s2">&quot;M&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">type_connect</span> <span class="o">==</span> <span class="s2">"M"</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_meandered</span></div>
 </div>
 
@@ -702,7 +702,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -725,6 +725,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

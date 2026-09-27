@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -498,12 +498,12 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Gmsh </span><span class="si">{</span><span class="n">gmsh</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> is available.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Gmsh </span><span class="si">{</span><span class="n">gmsh</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> is available."</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-        <span class="s2">&quot;Gmsh is not installed. &quot;</span>
-        <span class="s2">&quot;Install it with: pip install gmsh</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="s2">&quot;or: conda install -c conda-forge gmsh&quot;</span>
+        <span class="s2">"Gmsh is not installed. "</span>
+        <span class="s2">"Install it with: pip install gmsh</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="s2">"or: conda install -c conda-forge gmsh"</span>
     <span class="p">)</span>
 </pre></div>
 </div>
@@ -561,30 +561,30 @@ Gmsh 4.15.0 is available.
 
 <span class="c1"># Making the qubit</span>
 <span class="n">q_opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;2mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;2mm&quot;</span><span class="p">,</span> <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">()),</span> <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mi">1</span>
+    <span class="n">pos_x</span><span class="o">=</span><span class="s2">"2mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"2mm"</span><span class="p">,</span> <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">()),</span> <span class="n">chip</span><span class="o">=</span><span class="s2">"main"</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mi">1</span>
 <span class="p">)</span>
 
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">q_opts</span><span class="p">)</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">q_opts</span><span class="p">)</span>
 
 <span class="c1"># Making the open to ground</span>
-<span class="n">otg_opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;4mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;2mm&quot;</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">otg_opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"4mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"2mm"</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="s2">"main"</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="n">otg1</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;otg1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">otg_opts</span><span class="p">)</span>
+<span class="n">otg1</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"otg1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">otg_opts</span><span class="p">)</span>
 
 <span class="c1"># Making the meandered resonator</span>
 <span class="n">meander_opts1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">pin_inputs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">start_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;readout&quot;</span><span class="p">),</span>
-        <span class="n">end_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;otg1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"readout"</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"otg1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"open"</span><span class="p">),</span>
     <span class="p">),</span>
-    <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">),</span>
-    <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;99.99um&quot;</span><span class="p">,</span>
-    <span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
-    <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
+    <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">),</span>
+    <span class="n">fillet</span><span class="o">=</span><span class="s2">"99.99um"</span><span class="p">,</span>
+    <span class="n">asymmetry</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>
+    <span class="n">chip</span><span class="o">=</span><span class="s2">"main"</span><span class="p">,</span>
     <span class="n">layer</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">mtl1</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;mtl1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">meander_opts1</span><span class="p">)</span>
+<span class="n">mtl1</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"mtl1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">meander_opts1</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -698,7 +698,7 @@ Issue tracker : https://gitlab.onelab.info/gmsh/gmsh/issues
 <section id="Renderer-options">
 <h2>Renderer options<a class="headerlink" href="#Renderer-options" title="Link to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">gmsh_renderer.options</span></code> dict controls geometry import, meshing, and display. Override any value before calling <code class="docutils literal notranslate"><span class="pre">render_design</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s1">&#39;50um&#39;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s1">'50um'</span>
 </pre></div>
 </div>
 <section id="Chip-boundary-padding">
@@ -834,8 +834,8 @@ Issue tracker : https://gitlab.onelab.info/gmsh/gmsh/issues
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rendering the &#39;Q1&#39; component</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span><span class="n">selection</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">],</span> <span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rendering the 'Q1' component</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span><span class="n">selection</span><span class="o">=</span><span class="p">[</span><span class="s2">"Q1"</span><span class="p">],</span> <span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">launch_gui</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -879,8 +879,8 @@ FALLBACK (log once): Fallback to SW vertex processing in drawCore, m_disable_cod
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rendering the &#39;mtl1&#39; component</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span><span class="n">selection</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mtl1&quot;</span><span class="p">],</span> <span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rendering the 'mtl1' component</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span><span class="n">selection</span><span class="o">=</span><span class="p">[</span><span class="s2">"mtl1"</span><span class="p">],</span> <span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">launch_gui</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -893,9 +893,9 @@ FALLBACK (log once): Fallback to SW vertex processing in drawCore, m_disable_cod
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rendering the &#39;Q1&#39; component with open_pins</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rendering the 'Q1' component with open_pins</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span>
-    <span class="n">selection</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">],</span> <span class="n">open_pins</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;readout&quot;</span><span class="p">)],</span> <span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">selection</span><span class="o">=</span><span class="p">[</span><span class="s2">"Q1"</span><span class="p">],</span> <span class="n">open_pins</span><span class="o">=</span><span class="p">[(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"readout"</span><span class="p">)],</span> <span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">launch_gui</span><span class="p">()</span>
 </pre></div>
@@ -933,8 +933,8 @@ Issue tracker : https://gitlab.onelab.info/gmsh/gmsh/issues
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rendering the &#39;Q1&#39; component without the junction</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span><span class="n">selection</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">],</span> <span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_junctions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rendering the 'Q1' component without the junction</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span><span class="n">selection</span><span class="o">=</span><span class="p">[</span><span class="s2">"Q1"</span><span class="p">],</span> <span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_junctions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">launch_gui</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1782,8 +1782,8 @@ Issue tracker : https://gitlab.onelab.info/gmsh/gmsh/issues
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setting initial mesh size constraints (might take a while to run!!)</span>
 <span class="c1"># DISCLAIMER: this might also crash if your system has less than 8GB of memory</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s2">&quot;20um&quot;</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="s2">&quot;5um&quot;</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s2">"20um"</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="s2">"5um"</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span><span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">intelli_mesh</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">launch_gui</span><span class="p">()</span>
@@ -1801,8 +1801,8 @@ Issue tracker : https://gitlab.onelab.info/gmsh/gmsh/issues
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Intelli-mesh is ON by default and will work</span>
 <span class="c1"># automatically when calling the render_design() method</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s2">&quot;70um&quot;</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="s2">&quot;5um&quot;</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s2">"70um"</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="s2">"5um"</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">()</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">launch_gui</span><span class="p">()</span>
 </pre></div>
@@ -1820,8 +1820,8 @@ Issue tracker : https://gitlab.onelab.info/gmsh/gmsh/issues
 <span class="k">def</span><span class="w"> </span><span class="nf">my_custom_meshing_function</span><span class="p">():</span>
 
     <span class="c1"># Selectively increase mesh density for the following QGeometries</span>
-    <span class="n">q1_top_pad</span> <span class="o">=</span> <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">polys_dict</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;Q1_pad_top&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">q1_readout_wire</span> <span class="o">=</span> <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">paths_dict</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;Q1_readout_wire&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">q1_top_pad</span> <span class="o">=</span> <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">polys_dict</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">"Q1_pad_top"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">q1_readout_wire</span> <span class="o">=</span> <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">paths_dict</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">"Q1_readout_wire"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="c1"># Extract surfaces from Gmsh volume tags</span>
     <span class="n">volumes_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">q1_top_pad</span><span class="p">,</span> <span class="n">q1_readout_wire</span><span class="p">]</span>
@@ -1837,18 +1837,18 @@ Issue tracker : https://gitlab.onelab.info/gmsh/gmsh/issues
 
     <span class="c1"># Define Gmsh fields</span>
     <span class="c1"># Field: Distance</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Distance&quot;</span><span class="p">)</span>
-    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumbers</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;SurfacesList&quot;</span><span class="p">,</span> <span class="n">surfaces</span><span class="p">)</span>
-    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;NumPointsPerCurve&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"Distance"</span><span class="p">)</span>
+    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumbers</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">"SurfacesList"</span><span class="p">,</span> <span class="n">surfaces</span><span class="p">)</span>
+    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">"NumPointsPerCurve"</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
     <span class="c1"># Field: Threshold</span>
-    <span class="n">tf</span> <span class="o">=</span> <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Threshold&quot;</span><span class="p">)</span>
-    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;DistMin&quot;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
-    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;DistMax&quot;</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">)</span>
-    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;Sigmoid&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;InField&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
-    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;SizeMin&quot;</span><span class="p">,</span> <span class="n">min_size</span><span class="p">)</span>
-    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">&quot;SizeMax&quot;</span><span class="p">,</span> <span class="n">max_size</span><span class="p">)</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"Threshold"</span><span class="p">)</span>
+    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">"DistMin"</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">"DistMax"</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">)</span>
+    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">"Sigmoid"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">"InField"</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">"SizeMin"</span><span class="p">,</span> <span class="n">min_size</span><span class="p">)</span>
+    <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="s2">"SizeMax"</span><span class="p">,</span> <span class="n">max_size</span><span class="p">)</span>
 
     <span class="c1"># Set as background mesh to generate the mesh</span>
     <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">setAsBackgroundMesh</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
@@ -1860,11 +1860,11 @@ Issue tracker : https://gitlab.onelab.info/gmsh/gmsh/issues
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define initial mesh sizes</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s2">&quot;70um&quot;</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="s2">&quot;5um&quot;</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="s2">"70um"</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="s2">"5um"</span>
 
 <span class="c1"># render design wireframe</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span><span class="n">selection</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">],</span> <span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">render_design</span><span class="p">(</span><span class="n">selection</span><span class="o">=</span><span class="p">[</span><span class="s2">"Q1"</span><span class="p">],</span> <span class="n">mesh_geoms</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Pass your custom mehsing function to add_mesh()</span>
 <span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">intelli_mesh</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">custom_mesh_fn</span><span class="o">=</span><span class="n">my_custom_meshing_function</span><span class="p">)</span>
@@ -1889,15 +1889,15 @@ Issue tracker : https://gitlab.onelab.info/gmsh/gmsh/issues
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export the mesh to a file.</span>
 <span class="c1"># Supported extensions: .msh, .msh2, .mesh</span>
-<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">export_mesh</span><span class="p">(</span><span class="s2">&quot;test.msh&quot;</span><span class="p">)</span>
+<span class="n">gmsh_renderer</span><span class="o">.</span><span class="n">export_mesh</span><span class="p">(</span><span class="s2">"test.msh"</span><span class="p">)</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 
-<span class="n">msh</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;test.msh&quot;</span><span class="p">)</span>
+<span class="n">msh</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"test.msh"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">&quot;Exported: </span><span class="si">{</span><span class="n">msh</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">msh</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_size</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kB)&quot;</span>
+    <span class="sa">f</span><span class="s2">"Exported: </span><span class="si">{</span><span class="n">msh</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">msh</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_size</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kB)"</span>
     <span class="k">if</span> <span class="n">msh</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
-    <span class="k">else</span> <span class="s2">&quot;Export failed — check Gmsh log above&quot;</span>
+    <span class="k">else</span> <span class="s2">"Export failed — check Gmsh log above"</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -1986,7 +1986,7 @@ Issue tracker : https://gitlab.onelab.info/gmsh/gmsh/issues
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

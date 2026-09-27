@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -480,7 +480,7 @@
 <div class="viewcode-block" id="RouteStraight">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteStraight.html#qiskit_metal.qlibrary.RouteStraight">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RouteStraight</span><span class="p">(</span><span class="n">QRoute</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;.. image::</span>
+<span class="w">    </span><span class="sd">""".. image::</span>
 <span class="sd">        RouteStraight.png</span>
 
 
@@ -488,28 +488,28 @@
 
 <span class="sd">    .. meta::</span>
 <span class="sd">        :description: Route Straight</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;cpw&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">"cpw"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Draw a straight Route connecting two pins.&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""Draw a straight Route connecting two pins."""</span>
 
 <div class="viewcode-block" id="RouteStraight.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteStraight.html#qiskit_metal.qlibrary.RouteStraight.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The make function implements the logic that creates the geometry</span>
+<span class="w">        </span><span class="sd">"""The make function implements the logic that creates the geometry</span>
 <span class="sd">        (poly, path, etc.) from the qcomponent.options dictionary of</span>
 <span class="sd">        parameters, and the adds them to the design, using</span>
 <span class="sd">        qcomponent.add_qgeometry(...), adding in extra needed information, such</span>
-<span class="sd">        as layer, subtract, etc.&quot;&quot;&quot;</span>
+<span class="sd">        as layer, subtract, etc."""</span>
         <span class="c1"># Set the CPW pins and add the points/directions to the lead-in/out arrays</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">"start"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">"end"</span><span class="p">)</span>
 
         <span class="c1"># Align the lead-in/out to the input options set from the user</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">"start"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">"end"</span><span class="p">)</span>
 
         <span class="c1"># Make points into elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">make_elements</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_points</span><span class="p">())</span></div>
@@ -533,7 +533,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -556,6 +556,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

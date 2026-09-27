@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -503,8 +503,8 @@
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
 
 <span class="c1"># The default die is 9mm x 6mm; the launchpads below sit outside it.</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span> <span class="o">=</span> <span class="s2">&quot;14mm&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span> <span class="o">=</span> <span class="s2">&quot;9mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span> <span class="o">=</span> <span class="s2">"14mm"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span> <span class="o">=</span> <span class="s2">"9mm"</span>
 </pre></div>
 </div>
 </div>
@@ -521,12 +521,12 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">feed</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">ap</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">bp</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Auto-route a coplanar-waveguide feedline segment between two pins.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Auto-route a coplanar-waveguide feedline segment between two pins."""</span>
     <span class="n">RoutePathfinder</span><span class="p">(</span>
         <span class="n">design</span><span class="p">,</span>
         <span class="n">name</span><span class="p">,</span>
         <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">,</span>
+            <span class="n">fillet</span><span class="o">=</span><span class="s2">"90um"</span><span class="p">,</span>
             <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
                 <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="n">ap</span><span class="p">),</span> <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="n">bp</span><span class="p">)</span>
             <span class="p">),</span>
@@ -535,17 +535,17 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">readout</span><span class="p">(</span><span class="n">clt</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Meandered lambda/4 readout resonator: coupled-line tee -&gt; qubit readout pad.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Meandered lambda/4 readout resonator: coupled-line tee -&gt; qubit readout pad."""</span>
     <span class="n">RouteMeander</span><span class="p">(</span>
         <span class="n">design</span><span class="p">,</span>
         <span class="n">name</span><span class="p">,</span>
         <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">,</span>
+            <span class="n">fillet</span><span class="o">=</span><span class="s2">"90um"</span><span class="p">,</span>
             <span class="n">total_length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span>
-            <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">),</span>
+            <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">),</span>
             <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">clt</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;second_end&quot;</span><span class="p">),</span>
-                <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">q</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;readout&quot;</span><span class="p">),</span>
+                <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">clt</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"second_end"</span><span class="p">),</span>
+                <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">q</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"readout"</span><span class="p">),</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">)</span>
@@ -561,12 +561,12 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TransmonPocket</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;Q1&quot;</span><span class="p">,</span>
+    <span class="s2">"Q1"</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-2.5mm&quot;</span><span class="p">,</span>
-        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-1.5mm&quot;</span><span class="p">,</span>
-        <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425um&quot;</span><span class="p">,</span>
-        <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">"-2.5mm"</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">"-1.5mm"</span><span class="p">,</span>
+        <span class="n">pad_width</span><span class="o">=</span><span class="s2">"425um"</span><span class="p">,</span>
+        <span class="n">pocket_height</span><span class="o">=</span><span class="s2">"650um"</span><span class="p">,</span>
         <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
             <span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">coupler</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
         <span class="p">),</span>
@@ -574,12 +574,12 @@
 <span class="p">)</span>
 <span class="n">TransmonPocket</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;Q2&quot;</span><span class="p">,</span>
+    <span class="s2">"Q2"</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;2.5mm&quot;</span><span class="p">,</span>
-        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-1.5mm&quot;</span><span class="p">,</span>
-        <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425um&quot;</span><span class="p">,</span>
-        <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">"2.5mm"</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">"-1.5mm"</span><span class="p">,</span>
+        <span class="n">pad_width</span><span class="o">=</span><span class="s2">"425um"</span><span class="p">,</span>
+        <span class="n">pocket_height</span><span class="o">=</span><span class="s2">"650um"</span><span class="p">,</span>
         <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
             <span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">coupler</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
         <span class="p">),</span>
@@ -669,39 +669,39 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">CoupledLineTee</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;clt1&quot;</span><span class="p">,</span>
+    <span class="s2">"clt1"</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-2.5mm&quot;</span><span class="p">,</span>
-        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.5mm&quot;</span><span class="p">,</span>
-        <span class="n">coupling_length</span><span class="o">=</span><span class="s2">&quot;350um&quot;</span><span class="p">,</span>
-        <span class="n">down_length</span><span class="o">=</span><span class="s2">&quot;300um&quot;</span><span class="p">,</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">,</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">"-2.5mm"</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">"1.5mm"</span><span class="p">,</span>
+        <span class="n">coupling_length</span><span class="o">=</span><span class="s2">"350um"</span><span class="p">,</span>
+        <span class="n">down_length</span><span class="o">=</span><span class="s2">"300um"</span><span class="p">,</span>
+        <span class="n">fillet</span><span class="o">=</span><span class="s2">"90um"</span><span class="p">,</span>
         <span class="n">open_termination</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">),</span>
 <span class="p">)</span>
 <span class="n">CoupledLineTee</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;clt2&quot;</span><span class="p">,</span>
+    <span class="s2">"clt2"</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;2.5mm&quot;</span><span class="p">,</span>
-        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.5mm&quot;</span><span class="p">,</span>
-        <span class="n">coupling_length</span><span class="o">=</span><span class="s2">&quot;350um&quot;</span><span class="p">,</span>
-        <span class="n">down_length</span><span class="o">=</span><span class="s2">&quot;300um&quot;</span><span class="p">,</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">,</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">"2.5mm"</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">"1.5mm"</span><span class="p">,</span>
+        <span class="n">coupling_length</span><span class="o">=</span><span class="s2">"350um"</span><span class="p">,</span>
+        <span class="n">down_length</span><span class="o">=</span><span class="s2">"300um"</span><span class="p">,</span>
+        <span class="n">fillet</span><span class="o">=</span><span class="s2">"90um"</span><span class="p">,</span>
         <span class="n">open_termination</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">),</span>
 <span class="p">)</span>
 <span class="n">LaunchpadWirebond</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;LP1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-6mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.5mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"LP1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-6mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"1.5mm"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"0"</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">LaunchpadWirebond</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;LP2&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;6mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;1.5mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"LP2"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"6mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"1.5mm"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"180"</span><span class="p">)</span>
 <span class="p">)</span>
-<span class="n">feed</span><span class="p">(</span><span class="s2">&quot;LP1&quot;</span><span class="p">,</span> <span class="s2">&quot;tie&quot;</span><span class="p">,</span> <span class="s2">&quot;clt1&quot;</span><span class="p">,</span> <span class="s2">&quot;prime_start&quot;</span><span class="p">,</span> <span class="s2">&quot;feed_L&quot;</span><span class="p">)</span>
-<span class="n">feed</span><span class="p">(</span><span class="s2">&quot;clt1&quot;</span><span class="p">,</span> <span class="s2">&quot;prime_end&quot;</span><span class="p">,</span> <span class="s2">&quot;clt2&quot;</span><span class="p">,</span> <span class="s2">&quot;prime_start&quot;</span><span class="p">,</span> <span class="s2">&quot;feed_M&quot;</span><span class="p">)</span>
-<span class="n">feed</span><span class="p">(</span><span class="s2">&quot;clt2&quot;</span><span class="p">,</span> <span class="s2">&quot;prime_end&quot;</span><span class="p">,</span> <span class="s2">&quot;LP2&quot;</span><span class="p">,</span> <span class="s2">&quot;tie&quot;</span><span class="p">,</span> <span class="s2">&quot;feed_R&quot;</span><span class="p">)</span>
-<span class="n">readout</span><span class="p">(</span><span class="s2">&quot;clt1&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;read1&quot;</span><span class="p">,</span> <span class="s2">&quot;7.0mm&quot;</span><span class="p">)</span>
-<span class="n">readout</span><span class="p">(</span><span class="s2">&quot;clt2&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;read2&quot;</span><span class="p">,</span> <span class="s2">&quot;7.2mm&quot;</span><span class="p">)</span>
+<span class="n">feed</span><span class="p">(</span><span class="s2">"LP1"</span><span class="p">,</span> <span class="s2">"tie"</span><span class="p">,</span> <span class="s2">"clt1"</span><span class="p">,</span> <span class="s2">"prime_start"</span><span class="p">,</span> <span class="s2">"feed_L"</span><span class="p">)</span>
+<span class="n">feed</span><span class="p">(</span><span class="s2">"clt1"</span><span class="p">,</span> <span class="s2">"prime_end"</span><span class="p">,</span> <span class="s2">"clt2"</span><span class="p">,</span> <span class="s2">"prime_start"</span><span class="p">,</span> <span class="s2">"feed_M"</span><span class="p">)</span>
+<span class="n">feed</span><span class="p">(</span><span class="s2">"clt2"</span><span class="p">,</span> <span class="s2">"prime_end"</span><span class="p">,</span> <span class="s2">"LP2"</span><span class="p">,</span> <span class="s2">"tie"</span><span class="p">,</span> <span class="s2">"feed_R"</span><span class="p">)</span>
+<span class="n">readout</span><span class="p">(</span><span class="s2">"clt1"</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"read1"</span><span class="p">,</span> <span class="s2">"7.0mm"</span><span class="p">)</span>
+<span class="n">readout</span><span class="p">(</span><span class="s2">"clt2"</span><span class="p">,</span> <span class="s2">"Q2"</span><span class="p">,</span> <span class="s2">"read2"</span><span class="p">,</span> <span class="s2">"7.2mm"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -715,15 +715,15 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">RouteMeander</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;coupler_bus&quot;</span><span class="p">,</span>
+    <span class="s2">"coupler_bus"</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">,</span>
-        <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;8mm&quot;</span><span class="p">,</span>
-        <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;150um&quot;</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;150um&quot;</span><span class="p">),</span>
-        <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">),</span>
+        <span class="n">fillet</span><span class="o">=</span><span class="s2">"90um"</span><span class="p">,</span>
+        <span class="n">total_length</span><span class="o">=</span><span class="s2">"8mm"</span><span class="p">,</span>
+        <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"150um"</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">"150um"</span><span class="p">),</span>
+        <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">asymmetry</span><span class="o">=</span><span class="s2">"200um"</span><span class="p">),</span>
         <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;coupler&quot;</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;coupler&quot;</span><span class="p">),</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"coupler"</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q2"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"coupler"</span><span class="p">),</span>
         <span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
@@ -907,7 +907,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

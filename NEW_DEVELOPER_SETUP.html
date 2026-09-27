@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -487,7 +487,7 @@
 </li>
 <li><p>Open a file with simple python code: <code class="docutils literal notranslate"><span class="pre">helloworld.py</span></code> example below:</p></li>
 </ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;hello world&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">=</span> <span class="s2">"hello world"</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -519,10 +519,10 @@
 <li><p>Install pylint and yapf: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pylint</span> <span class="pre">yapf</span></code></p></li>
 <li><p>To run automatically in vscode every time you save, put these settings in <code class="docutils literal notranslate"><span class="pre">settings.json</span></code> file:</p></li>
 </ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;python.linting.pylintEnabled&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-<span class="s2">&quot;python.linting.enabled&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-<span class="s2">&quot;editor.formatOnSave&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-<span class="s2">&quot;python.formatting.provider&quot;</span><span class="p">:</span> <span class="s2">&quot;yapf&quot;</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"python.linting.pylintEnabled"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+<span class="s2">"python.linting.enabled"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+<span class="s2">"editor.formatOnSave"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+<span class="s2">"python.formatting.provider"</span><span class="p">:</span> <span class="s2">"yapf"</span><span class="p">,</span>
 </pre></div>
 </div>
 <p>For help finding your <code class="docutils literal notranslate"><span class="pre">settings.json</span></code> file click <a class="reference external" href="https://www.google.com/search?q=vscode+where+is+settings.json">here</a>.</p>
@@ -539,15 +539,15 @@
 You can add these settings
 to your <code class="docutils literal notranslate"><span class="pre">settings.json</span></code> to enforce your code to our style. Make sure to add PySide2 to the linter:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;python.linting.pylintEnabled&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-    <span class="s2">&quot;python.linting.enabled&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-    <span class="s2">&quot;python.linting.pylintArgs&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s2">&quot;--extension-pkg-whitelist=PySide2&quot;</span>
+    <span class="s2">"python.linting.pylintEnabled"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">"python.linting.enabled"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">"python.linting.pylintArgs"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"--extension-pkg-whitelist=PySide2"</span>
     <span class="p">],</span>
-    <span class="s2">&quot;python.formatting.provider&quot;</span><span class="p">:</span> <span class="s2">&quot;yapf&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;editor.formatOnSave&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-    <span class="s2">&quot;files.trimTrailingWhitespace&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-    <span class="s2">&quot;files.trimFinalNewlines&quot;</span><span class="p">:</span> <span class="n">true</span>
+    <span class="s2">"python.formatting.provider"</span><span class="p">:</span> <span class="s2">"yapf"</span><span class="p">,</span>
+    <span class="s2">"editor.formatOnSave"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">"files.trimTrailingWhitespace"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">"files.trimFinalNewlines"</span><span class="p">:</span> <span class="n">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -615,7 +615,7 @@ to your <code class="docutils literal notranslate"><span class="pre">settings.js
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

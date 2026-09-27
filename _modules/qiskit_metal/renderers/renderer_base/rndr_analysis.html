@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -479,31 +479,31 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span><span class="p">,</span> <span class="n">is_design</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;QRendererAnalysis&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"QRendererAnalysis"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="QRendererAnalysis">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html#qiskit_metal.renderers.QRendererAnalysis">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">QRendererAnalysis</span><span class="p">(</span><span class="n">QRenderer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for all Renderers intended for Analysis.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Abstract base class for all Renderers intended for Analysis."""</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">&quot;QDesign&quot;</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="s2">"QDesign"</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            design (QDesign): The design.</span>
 <span class="sd">            initiate (bool): True to initiate the renderer (Default: False).</span>
 <span class="sd">            settings (Dict, optional): Used to override default settings. Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">design</span><span class="o">=</span><span class="n">design</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="n">initiate</span><span class="p">,</span> <span class="n">render_options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
 
 <div class="viewcode-block" id="QRendererAnalysis.initialized">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html#qiskit_metal.renderers.QRendererAnalysis.initialized">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">initialized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract method. Must be implemented by the subclass.</span>
+<span class="w">        </span><span class="sd">"""Abstract method. Must be implemented by the subclass.</span>
 <span class="sd">        Is renderer ready to be used?</span>
 <span class="sd">        Implementation must return boolean True if successful. False otherwise.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
@@ -511,59 +511,59 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html#qiskit_metal.renderers.QRendererAnalysis.render_chips">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_chips</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract method. Must be implemented by the subclass.</span>
+<span class="w">        </span><span class="sd">"""Abstract method. Must be implemented by the subclass.</span>
 <span class="sd">        Render all chips of the design.</span>
 <span class="sd">        Calls render_chip for each chip.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 <div class="viewcode-block" id="QRendererAnalysis.render_chip">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html#qiskit_metal.renderers.QRendererAnalysis.render_chip">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_chip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract method. Must be implemented by the subclass.</span>
+<span class="w">        </span><span class="sd">"""Abstract method. Must be implemented by the subclass.</span>
 <span class="sd">        Render the given chip.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): chip to render</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 <div class="viewcode-block" id="QRendererAnalysis.render_components">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html#qiskit_metal.renderers.QRendererAnalysis.render_components">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_components</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract method. Must be implemented by the subclass.</span>
+<span class="w">        </span><span class="sd">"""Abstract method. Must be implemented by the subclass.</span>
 <span class="sd">        Render all components of the design.</span>
 <span class="sd">        If selection is none, then render all components.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            selection (QComponent): Component to render.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 <div class="viewcode-block" id="QRendererAnalysis.render_component">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html#qiskit_metal.renderers.QRendererAnalysis.render_component">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract method. Must be implemented by the subclass.</span>
+<span class="w">        </span><span class="sd">"""Abstract method. Must be implemented by the subclass.</span>
 <span class="sd">        Render the specified component.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            component (QComponent): Component to render.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 <div class="viewcode-block" id="QRendererAnalysis.render_element">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html#qiskit_metal.renderers.QRendererAnalysis.render_element">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract method. Must be implemented by the subclass.</span>
+<span class="w">        </span><span class="sd">"""Abstract method. Must be implemented by the subclass.</span>
 <span class="sd">        Render the specified element</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            element (Element): Element to render.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
         <span class="c1"># if isinstance(element, path):</span>
         <span class="c1">#    self.render_element_path(element)</span>
@@ -572,37 +572,37 @@
         <span class="c1">#    self.render_element_poly(element)</span>
 
         <span class="c1"># else:</span>
-        <span class="c1">#    self.logger.error(&#39;RENDERER ERROR: Unkown element {element}&#39;)</span>
+        <span class="c1">#    self.logger.error('RENDERER ERROR: Unkown element {element}')</span>
 
 <div class="viewcode-block" id="QRendererAnalysis.render_element_path">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html#qiskit_metal.renderers.QRendererAnalysis.render_element_path">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_element_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract method. Must be implemented by the subclass.</span>
+<span class="w">        </span><span class="sd">"""Abstract method. Must be implemented by the subclass.</span>
 <span class="sd">        Render an element path.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            path (str): Path to render.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 <div class="viewcode-block" id="QRendererAnalysis.render_element_poly">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html#qiskit_metal.renderers.QRendererAnalysis.render_element_poly">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_element_poly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poly</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract method. Must be implemented by the subclass.</span>
+<span class="w">        </span><span class="sd">"""Abstract method. Must be implemented by the subclass.</span>
 <span class="sd">        Render an element poly.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            poly (Poly): Poly to render.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 <div class="viewcode-block" id="QRendererAnalysis.save_screenshot">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html#qiskit_metal.renderers.QRendererAnalysis.save_screenshot">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">save_screenshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the screenshot.</span>
+<span class="w">        </span><span class="sd">"""Save the screenshot.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            path (str, optional): Path to save location.  Defaults to None.</span>
@@ -610,7 +610,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pathlib.WindowsPath: path to png formatted screenshot.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 </div>
 
 
@@ -635,7 +635,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -658,6 +658,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

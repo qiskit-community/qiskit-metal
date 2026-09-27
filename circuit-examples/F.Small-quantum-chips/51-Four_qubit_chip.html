@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -484,7 +484,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Colab / Binder, uncomment to install Quantum Metal (lite, no Qt).</span>
 <span class="c1"># Locally you should already have it via `pip install quantum-metal` or</span>
-<span class="c1"># `pip install &#39;quantum-metal[gui]&#39;` for the desktop GUI.</span>
+<span class="c1"># `pip install 'quantum-metal[gui]'` for the desktop GUI.</span>
 <span class="c1"># !pip install -q quantum-metal</span>
 </pre></div>
 </div>
@@ -540,10 +540,10 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;cpw_width&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;10 um&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;cpw_gap&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;6 um&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;9mm&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;6.5mm&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">"cpw_width"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"10 um"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">"cpw_gap"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"6 um"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">"main"</span><span class="p">][</span><span class="s2">"size"</span><span class="p">][</span><span class="s2">"size_y"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"9mm"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">_chips</span><span class="p">[</span><span class="s2">"main"</span><span class="p">][</span><span class="s2">"size"</span><span class="p">][</span><span class="s2">"size_y"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"6.5mm"</span>
 </pre></div>
 </div>
 </div>
@@ -613,13 +613,13 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transmon_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;70um&quot;</span><span class="p">,</span> <span class="n">cpw_extend</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">),</span>
-        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;125um&quot;</span><span class="p">,</span> <span class="n">cpw_extend</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">),</span>
-        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;110um&quot;</span><span class="p">,</span> <span class="n">cpw_extend</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">),</span>
+        <span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"70um"</span><span class="p">,</span> <span class="n">cpw_extend</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
+        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"125um"</span><span class="p">,</span> <span class="n">cpw_extend</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
+        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"110um"</span><span class="p">,</span> <span class="n">cpw_extend</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
     <span class="p">),</span>
-    <span class="n">gds_cell_name</span><span class="o">=</span><span class="s2">&quot;FakeJunction_01&quot;</span><span class="p">,</span>
-    <span class="n">cl_off_center</span><span class="o">=</span><span class="s2">&quot;-50um&quot;</span><span class="p">,</span>
-    <span class="n">cl_pocket_edge</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">,</span>
+    <span class="n">gds_cell_name</span><span class="o">=</span><span class="s2">"FakeJunction_01"</span><span class="p">,</span>
+    <span class="n">cl_off_center</span><span class="o">=</span><span class="s2">"-50um"</span><span class="p">,</span>
+    <span class="n">cl_pocket_edge</span><span class="o">=</span><span class="s2">"180"</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -633,25 +633,25 @@
 
 <span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocketCL</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;Q1&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+2420um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">offset_tm</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">transmon_options</span><span class="p">),</span>
+    <span class="s2">"Q1"</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"+2420um"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">offset_tm</span><span class="si">}</span><span class="s2">um"</span><span class="p">,</span> <span class="o">**</span><span class="n">transmon_options</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocketCL</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;Q2&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-857.6um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;270&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">transmon_options</span><span class="p">),</span>
+    <span class="s2">"Q2"</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"-857.6um"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"270"</span><span class="p">,</span> <span class="o">**</span><span class="n">transmon_options</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">q3</span> <span class="o">=</span> <span class="n">TransmonPocketCL</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;Q3&quot;</span><span class="p">,</span>
+    <span class="s2">"Q3"</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-2420um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">offset_tm</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">transmon_options</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">"-2420um"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">offset_tm</span><span class="si">}</span><span class="s2">um"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"180"</span><span class="p">,</span> <span class="o">**</span><span class="n">transmon_options</span>
     <span class="p">),</span>
 <span class="p">)</span>
 <span class="n">q4</span> <span class="o">=</span> <span class="n">TransmonPocketCL</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;Q4&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+857.6um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">transmon_options</span><span class="p">),</span>
+    <span class="s2">"Q4"</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"+857.6um"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"90"</span><span class="p">,</span> <span class="o">**</span><span class="n">transmon_options</span><span class="p">),</span>
 <span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -697,9 +697,9 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fillet</span> <span class="o">=</span> <span class="s2">&quot;99.99um&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fillet</span> <span class="o">=</span> <span class="s2">"99.99um"</span>
 <span class="n">cpw_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;250um&quot;</span><span class="p">),</span> <span class="n">fillet</span><span class="o">=</span><span class="n">fillet</span>
+    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">"250um"</span><span class="p">),</span> <span class="n">fillet</span><span class="o">=</span><span class="n">fillet</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -716,9 +716,9 @@
     <span class="n">pin2_comp_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">pin2_comp_pin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">length</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;0 um&quot;</span><span class="p">,</span>
+    <span class="n">asymmetry</span><span class="o">=</span><span class="s2">"0 um"</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Connect two pins with a CPW.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Connect two pins with a CPW."""</span>
     <span class="n">myoptions</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
             <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">pin1_comp_name</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="n">pin1_comp_pin</span><span class="p">),</span>
@@ -738,10 +738,10 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">asym</span> <span class="o">=</span> <span class="mi">500</span>
-<span class="n">cpw1</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw1&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;9000um&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;-</span><span class="si">{</span><span class="n">asym</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.25</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">offset_tm</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">)</span>
-<span class="n">cpw2</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw2&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;9000um&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">asym</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.25</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">offset_tm</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">)</span>
-<span class="n">cpw3</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw3&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;9000um&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;-</span><span class="si">{</span><span class="n">asym</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.75</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">offset_tm</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">)</span>
-<span class="n">cpw4</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;cpw4&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;9000um&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">asym</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.75</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">offset_tm</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">)</span>
+<span class="n">cpw1</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">"cpw1"</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">,</span> <span class="s2">"Q4"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"9000um"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"-</span><span class="si">{</span><span class="n">asym</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.25</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">offset_tm</span><span class="si">}</span><span class="s2">um"</span><span class="p">)</span>
+<span class="n">cpw2</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">"cpw2"</span><span class="p">,</span> <span class="s2">"Q3"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"Q4"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">,</span> <span class="s2">"9000um"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"+</span><span class="si">{</span><span class="n">asym</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.25</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">offset_tm</span><span class="si">}</span><span class="s2">um"</span><span class="p">)</span>
+<span class="n">cpw3</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">"cpw3"</span><span class="p">,</span> <span class="s2">"Q3"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">,</span> <span class="s2">"Q2"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"9000um"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"-</span><span class="si">{</span><span class="n">asym</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.75</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">offset_tm</span><span class="si">}</span><span class="s2">um"</span><span class="p">)</span>
+<span class="n">cpw4</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">"cpw4"</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"Q2"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">,</span> <span class="s2">"9000um"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"+</span><span class="si">{</span><span class="n">asym</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.75</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">offset_tm</span><span class="si">}</span><span class="s2">um"</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -759,45 +759,45 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># V1 - Corners</span>
 <span class="n">p1_c</span> <span class="o">=</span> <span class="n">LaunchpadWirebond</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;P1_C&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;3545um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;2812um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;270&quot;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">),</span>
+    <span class="s2">"P1_C"</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"3545um"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"2812um"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"270"</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">p2_c</span> <span class="o">=</span> <span class="n">LaunchpadWirebond</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;P2_C&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;3545um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-2812um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">),</span>
+    <span class="s2">"P2_C"</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"3545um"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"-2812um"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"90"</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">p3_c</span> <span class="o">=</span> <span class="n">LaunchpadWirebond</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;P3_C&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-3545um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-2812um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">),</span>
+    <span class="s2">"P3_C"</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-3545um"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"-2812um"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"90"</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">p4_c</span> <span class="o">=</span> <span class="n">LaunchpadWirebond</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;P4_C&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-3545um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;2812um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;270&quot;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">),</span>
+    <span class="s2">"P4_C"</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-3545um"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"2812um"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"270"</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">),</span>
 <span class="p">)</span>
 
 <span class="c1"># V2</span>
 <span class="n">p1_q</span> <span class="o">=</span> <span class="n">LaunchpadWirebondCoupled</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;P1_Q&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;4020um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">),</span>
+    <span class="s2">"P1_Q"</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"4020um"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"180"</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">p2_q</span> <span class="o">=</span> <span class="n">LaunchpadWirebondCoupled</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;P2_Q&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-990um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-2812um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">),</span>
+    <span class="s2">"P2_Q"</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-990um"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"-2812um"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"90"</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">p3_q</span> <span class="o">=</span> <span class="n">LaunchpadWirebondCoupled</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;P3_Q&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-4020um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">),</span>
+    <span class="s2">"P3_Q"</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-4020um"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">p4_q</span> <span class="o">=</span> <span class="n">LaunchpadWirebondCoupled</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;P4_Q&quot;</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;990um&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;2812um&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;270&quot;</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">),</span>
+    <span class="s2">"P4_Q"</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"990um"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"2812um"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"270"</span><span class="p">,</span> <span class="n">lead_length</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">),</span>
 <span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -811,14 +811,14 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">asym</span> <span class="o">=</span> <span class="mi">150</span>
-<span class="n">cpw_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;430um&quot;</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">),</span> <span class="n">fillet</span><span class="o">=</span><span class="n">fillet</span><span class="p">)</span>
-<span class="n">ol1</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;ol1&quot;</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;P1_Q&quot;</span><span class="p">,</span> <span class="s2">&quot;tie&quot;</span><span class="p">,</span> <span class="s2">&quot;8.6 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">)</span>
-<span class="n">ol3</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;ol3&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;P3_Q&quot;</span><span class="p">,</span> <span class="s2">&quot;tie&quot;</span><span class="p">,</span> <span class="s2">&quot;8.6 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">)</span>
+<span class="n">cpw_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"430um"</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">),</span> <span class="n">fillet</span><span class="o">=</span><span class="n">fillet</span><span class="p">)</span>
+<span class="n">ol1</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">"ol1"</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">,</span> <span class="s2">"P1_Q"</span><span class="p">,</span> <span class="s2">"tie"</span><span class="p">,</span> <span class="s2">"8.6 mm"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um"</span><span class="p">)</span>
+<span class="n">ol3</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">"ol3"</span><span class="p">,</span> <span class="s2">"Q3"</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">,</span> <span class="s2">"P3_Q"</span><span class="p">,</span> <span class="s2">"tie"</span><span class="p">,</span> <span class="s2">"8.6 mm"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um"</span><span class="p">)</span>
 
 <span class="n">asym</span> <span class="o">=</span> <span class="mi">200</span>
-<span class="n">cpw_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;535um&quot;</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">),</span> <span class="n">fillet</span><span class="o">=</span><span class="n">fillet</span><span class="p">)</span>
-<span class="n">ol2</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;ol2&quot;</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;P2_Q&quot;</span><span class="p">,</span> <span class="s2">&quot;tie&quot;</span><span class="p">,</span> <span class="s2">&quot;8.6 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">)</span>
-<span class="n">ol4</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">&quot;ol4&quot;</span><span class="p">,</span> <span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;P4_Q&quot;</span><span class="p">,</span> <span class="s2">&quot;tie&quot;</span><span class="p">,</span> <span class="s2">&quot;8.6 mm&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um&quot;</span><span class="p">)</span>
+<span class="n">cpw_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"535um"</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">),</span> <span class="n">fillet</span><span class="o">=</span><span class="n">fillet</span><span class="p">)</span>
+<span class="n">ol2</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">"ol2"</span><span class="p">,</span> <span class="s2">"Q2"</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">,</span> <span class="s2">"P2_Q"</span><span class="p">,</span> <span class="s2">"tie"</span><span class="p">,</span> <span class="s2">"8.6 mm"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um"</span><span class="p">)</span>
+<span class="n">ol4</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s2">"ol4"</span><span class="p">,</span> <span class="s2">"Q4"</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">,</span> <span class="s2">"P4_Q"</span><span class="p">,</span> <span class="s2">"tie"</span><span class="p">,</span> <span class="s2">"8.6 mm"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"+</span><span class="si">{</span><span class="n">asym</span><span class="si">}</span><span class="s2">um"</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -834,35 +834,35 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
 
 <span class="n">jogsA_in</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-<span class="n">jogsA_in</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;200um&quot;</span><span class="p">]</span>
+<span class="n">jogsA_in</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"L"</span><span class="p">,</span> <span class="s2">"200um"</span><span class="p">]</span>
 
 <span class="n">options_line_cl1</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;pin_inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;start_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;Charge_Line&quot;</span><span class="p">},</span>
-        <span class="s2">&quot;end_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;P1_C&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;tie&quot;</span><span class="p">},</span>
+    <span class="s2">"pin_inputs"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"start_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"Charge_Line"</span><span class="p">},</span>
+        <span class="s2">"end_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"P1_C"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"tie"</span><span class="p">},</span>
     <span class="p">},</span>
-    <span class="s2">&quot;lead&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;start_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;120um&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;end_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;225um&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;start_jogged_extension&quot;</span><span class="p">:</span> <span class="n">jogsA_in</span><span class="p">,</span>
+    <span class="s2">"lead"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"start_straight"</span><span class="p">:</span> <span class="s2">"120um"</span><span class="p">,</span>
+        <span class="s2">"end_straight"</span><span class="p">:</span> <span class="s2">"225um"</span><span class="p">,</span>
+        <span class="s2">"start_jogged_extension"</span><span class="p">:</span> <span class="n">jogsA_in</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;fillet&quot;</span><span class="p">:</span> <span class="n">fillet</span><span class="p">,</span>
+    <span class="s2">"fillet"</span><span class="p">:</span> <span class="n">fillet</span><span class="p">,</span>
 <span class="p">}</span>
-<span class="n">cl1</span> <span class="o">=</span> <span class="n">RouteAnchors</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;line_cl1&quot;</span><span class="p">,</span> <span class="n">options_line_cl1</span><span class="p">)</span>
+<span class="n">cl1</span> <span class="o">=</span> <span class="n">RouteAnchors</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"line_cl1"</span><span class="p">,</span> <span class="n">options_line_cl1</span><span class="p">)</span>
 
 <span class="n">options_line_cl3</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;pin_inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;start_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;Q3&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;Charge_Line&quot;</span><span class="p">},</span>
-        <span class="s2">&quot;end_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;P3_C&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;tie&quot;</span><span class="p">},</span>
+    <span class="s2">"pin_inputs"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"start_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"Q3"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"Charge_Line"</span><span class="p">},</span>
+        <span class="s2">"end_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"P3_C"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"tie"</span><span class="p">},</span>
     <span class="p">},</span>
-    <span class="s2">&quot;lead&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;start_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;120um&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;end_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;225um&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;start_jogged_extension&quot;</span><span class="p">:</span> <span class="n">jogsA_in</span><span class="p">,</span>
+    <span class="s2">"lead"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"start_straight"</span><span class="p">:</span> <span class="s2">"120um"</span><span class="p">,</span>
+        <span class="s2">"end_straight"</span><span class="p">:</span> <span class="s2">"225um"</span><span class="p">,</span>
+        <span class="s2">"start_jogged_extension"</span><span class="p">:</span> <span class="n">jogsA_in</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;fillet&quot;</span><span class="p">:</span> <span class="n">fillet</span><span class="p">,</span>
+    <span class="s2">"fillet"</span><span class="p">:</span> <span class="n">fillet</span><span class="p">,</span>
 <span class="p">}</span>
-<span class="n">cl3</span> <span class="o">=</span> <span class="n">RouteAnchors</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;line_cl3&quot;</span><span class="p">,</span> <span class="n">options_line_cl3</span><span class="p">)</span>
+<span class="n">cl3</span> <span class="o">=</span> <span class="n">RouteAnchors</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"line_cl3"</span><span class="p">,</span> <span class="n">options_line_cl3</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -874,45 +874,45 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jogsB_in</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-<span class="n">jogsB_in</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;300um&quot;</span><span class="p">]</span>
+<span class="n">jogsB_in</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"L"</span><span class="p">,</span> <span class="s2">"300um"</span><span class="p">]</span>
 
 <span class="n">anchors2c</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
 <span class="n">anchors2c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="p">])</span>
 
 <span class="n">options_line_cl2</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;pin_inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;start_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;Charge_Line&quot;</span><span class="p">},</span>
-        <span class="s2">&quot;end_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;P2_C&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;tie&quot;</span><span class="p">},</span>
+    <span class="s2">"pin_inputs"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"start_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"Q2"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"Charge_Line"</span><span class="p">},</span>
+        <span class="s2">"end_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"P2_C"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"tie"</span><span class="p">},</span>
     <span class="p">},</span>
-    <span class="s2">&quot;lead&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;start_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;200um&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;end_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;225um&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;start_jogged_extension&quot;</span><span class="p">:</span> <span class="n">jogsB_in</span><span class="p">,</span>
+    <span class="s2">"lead"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"start_straight"</span><span class="p">:</span> <span class="s2">"200um"</span><span class="p">,</span>
+        <span class="s2">"end_straight"</span><span class="p">:</span> <span class="s2">"225um"</span><span class="p">,</span>
+        <span class="s2">"start_jogged_extension"</span><span class="p">:</span> <span class="n">jogsB_in</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;anchors&quot;</span><span class="p">:</span> <span class="n">anchors2c</span><span class="p">,</span>
-    <span class="s2">&quot;fillet&quot;</span><span class="p">:</span> <span class="n">fillet</span><span class="p">,</span>
+    <span class="s2">"anchors"</span><span class="p">:</span> <span class="n">anchors2c</span><span class="p">,</span>
+    <span class="s2">"fillet"</span><span class="p">:</span> <span class="n">fillet</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="n">cl2</span> <span class="o">=</span> <span class="n">RouteAnchors</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;line_cl2&quot;</span><span class="p">,</span> <span class="n">options_line_cl2</span><span class="p">)</span>
+<span class="n">cl2</span> <span class="o">=</span> <span class="n">RouteAnchors</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"line_cl2"</span><span class="p">,</span> <span class="n">options_line_cl2</span><span class="p">)</span>
 
 <span class="n">anchors4c</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
 <span class="n">anchors4c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">])</span>
 
 <span class="n">options_line_cl4</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;pin_inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;start_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;Q4&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;Charge_Line&quot;</span><span class="p">},</span>
-        <span class="s2">&quot;end_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;P4_C&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;tie&quot;</span><span class="p">},</span>
+    <span class="s2">"pin_inputs"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"start_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"Q4"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"Charge_Line"</span><span class="p">},</span>
+        <span class="s2">"end_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"P4_C"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"tie"</span><span class="p">},</span>
     <span class="p">},</span>
-    <span class="s2">&quot;lead&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;start_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;200um&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;end_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;225um&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;start_jogged_extension&quot;</span><span class="p">:</span> <span class="n">jogsB_in</span><span class="p">,</span>
+    <span class="s2">"lead"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"start_straight"</span><span class="p">:</span> <span class="s2">"200um"</span><span class="p">,</span>
+        <span class="s2">"end_straight"</span><span class="p">:</span> <span class="s2">"225um"</span><span class="p">,</span>
+        <span class="s2">"start_jogged_extension"</span><span class="p">:</span> <span class="n">jogsB_in</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;anchors&quot;</span><span class="p">:</span> <span class="n">anchors4c</span><span class="p">,</span>
-    <span class="s2">&quot;fillet&quot;</span><span class="p">:</span> <span class="n">fillet</span><span class="p">,</span>
+    <span class="s2">"anchors"</span><span class="p">:</span> <span class="n">anchors4c</span><span class="p">,</span>
+    <span class="s2">"fillet"</span><span class="p">:</span> <span class="n">fillet</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="n">cl4</span> <span class="o">=</span> <span class="n">RouteAnchors</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;line_cl4&quot;</span><span class="p">,</span> <span class="n">options_line_cl4</span><span class="p">)</span>
+<span class="n">cl4</span> <span class="o">=</span> <span class="n">RouteAnchors</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"line_cl4"</span><span class="p">,</span> <span class="n">options_line_cl4</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -960,12 +960,12 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Screenshot the canvas only as a .png formatted file.</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;shot.png&quot;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">"shot.png"</span><span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
 
 <span class="n">_disp_ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;shot.png&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">_disp_ops</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="s2">"shot.png"</span><span class="p">,</span> <span class="o">**</span><span class="n">_disp_ops</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1069,7 +1069,7 @@ True
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

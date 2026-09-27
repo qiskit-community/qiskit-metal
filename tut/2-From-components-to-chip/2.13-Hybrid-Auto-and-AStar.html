@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -484,7 +484,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Colab / Binder, uncomment to install Quantum Metal (lite, no Qt).</span>
 <span class="c1"># Locally you should already have it via `pip install quantum-metal` or</span>
-<span class="c1"># `pip install &#39;quantum-metal[gui]&#39;` for the desktop GUI.</span>
+<span class="c1"># `pip install 'quantum-metal[gui]'` for the desktop GUI.</span>
 <span class="c1"># !pip install -q quantum-metal</span>
 </pre></div>
 </div>
@@ -529,24 +529,24 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocket</span>
 
 <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425 um&quot;</span><span class="p">,</span>
-    <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
+    <span class="n">pad_width</span><span class="o">=</span><span class="s2">"425 um"</span><span class="p">,</span>
+    <span class="n">pocket_height</span><span class="o">=</span><span class="s2">"650um"</span><span class="p">,</span>
     <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>  <span class="c1"># pin connectors</span>
         <span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
-        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">),</span>
-        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">),</span>
-        <span class="n">d</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">),</span>
+        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">),</span>
+        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"200um"</span><span class="p">),</span>
+        <span class="n">d</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
 
 <span class="n">q0</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q0&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-1.0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;-1.0mm&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"Q0"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-1.0mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"-1.0mm"</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1.0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.0mm&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"1.0mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"+0.0mm"</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-1.0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0.0mm&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"Q2"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-1.0mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0.0mm"</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
 <span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -613,7 +613,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fillet</span><span class="o">=</span><span class="s2">"90um"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -632,17 +632,17 @@ larger anchor numbers are farther along the path. The numpy array stores the x a
 <span class="n">anchors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.048</span><span class="p">,</span> <span class="mf">0.195</span><span class="p">])</span>
 
 <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;pin_inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;start_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;Q0&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;b&quot;</span><span class="p">},</span>
-        <span class="s2">&quot;end_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;b&quot;</span><span class="p">},</span>
+    <span class="s2">"pin_inputs"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"start_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"Q0"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"b"</span><span class="p">},</span>
+        <span class="s2">"end_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"b"</span><span class="p">},</span>
     <span class="p">},</span>
-    <span class="s2">&quot;lead&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;start_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;91um&quot;</span><span class="p">,</span> <span class="s2">&quot;end_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;90um&quot;</span><span class="p">},</span>
-    <span class="s2">&quot;step_size&quot;</span><span class="p">:</span> <span class="s2">&quot;0.25mm&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;anchors&quot;</span><span class="p">:</span> <span class="n">anchors</span><span class="p">,</span>
+    <span class="s2">"lead"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"start_straight"</span><span class="p">:</span> <span class="s2">"91um"</span><span class="p">,</span> <span class="s2">"end_straight"</span><span class="p">:</span> <span class="s2">"90um"</span><span class="p">},</span>
+    <span class="s2">"step_size"</span><span class="p">:</span> <span class="s2">"0.25mm"</span><span class="p">,</span>
+    <span class="s2">"anchors"</span><span class="p">:</span> <span class="n">anchors</span><span class="p">,</span>
     <span class="o">**</span><span class="n">ops</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="n">qa</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+<span class="n">qa</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"line"</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -678,7 +678,7 @@ larger anchor numbers are farther along the path. The numpy array stores the x a
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="s2">"line"</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
@@ -704,17 +704,17 @@ larger anchor numbers are farther along the path. The numpy array stores the x a
 <span class="n">anchors</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.048</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">])</span>
 
 <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;pin_inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;start_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;Q0&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;b&quot;</span><span class="p">},</span>
-        <span class="s2">&quot;end_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;b&quot;</span><span class="p">},</span>
+    <span class="s2">"pin_inputs"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"start_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"Q0"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"b"</span><span class="p">},</span>
+        <span class="s2">"end_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"b"</span><span class="p">},</span>
     <span class="p">},</span>
-    <span class="s2">&quot;lead&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;start_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;91um&quot;</span><span class="p">,</span> <span class="s2">&quot;end_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;90um&quot;</span><span class="p">},</span>
-    <span class="s2">&quot;step_size&quot;</span><span class="p">:</span> <span class="s2">&quot;0.25mm&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;anchors&quot;</span><span class="p">:</span> <span class="n">anchors</span><span class="p">,</span>
+    <span class="s2">"lead"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"start_straight"</span><span class="p">:</span> <span class="s2">"91um"</span><span class="p">,</span> <span class="s2">"end_straight"</span><span class="p">:</span> <span class="s2">"90um"</span><span class="p">},</span>
+    <span class="s2">"step_size"</span><span class="p">:</span> <span class="s2">"0.25mm"</span><span class="p">,</span>
+    <span class="s2">"anchors"</span><span class="p">:</span> <span class="n">anchors</span><span class="p">,</span>
     <span class="o">**</span><span class="n">ops</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="n">qa</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+<span class="n">qa</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"line"</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -734,7 +734,7 @@ larger anchor numbers are farther along the path. The numpy array stores the x a
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="s2">"line"</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
@@ -755,16 +755,16 @@ larger anchor numbers are farther along the path. The numpy array stores the x a
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;pin_inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;start_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;Q0&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">},</span>
-        <span class="s2">&quot;end_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;d&quot;</span><span class="p">},</span>
+    <span class="s2">"pin_inputs"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"start_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"Q0"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"a"</span><span class="p">},</span>
+        <span class="s2">"end_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"Q2"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"d"</span><span class="p">},</span>
     <span class="p">},</span>
-    <span class="s2">&quot;lead&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;start_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;90um&quot;</span><span class="p">,</span> <span class="s2">&quot;end_straight&quot;</span><span class="p">:</span> <span class="s2">&quot;90um&quot;</span><span class="p">},</span>
-    <span class="s2">&quot;step_size&quot;</span><span class="p">:</span> <span class="s2">&quot;0.25mm&quot;</span><span class="p">,</span>
+    <span class="s2">"lead"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"start_straight"</span><span class="p">:</span> <span class="s2">"90um"</span><span class="p">,</span> <span class="s2">"end_straight"</span><span class="p">:</span> <span class="s2">"90um"</span><span class="p">},</span>
+    <span class="s2">"step_size"</span><span class="p">:</span> <span class="s2">"0.25mm"</span><span class="p">,</span>
     <span class="o">**</span><span class="n">ops</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="n">qa</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+<span class="n">qa</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"line"</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -799,7 +799,7 @@ larger anchor numbers are farther along the path. The numpy array stores the x a
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_component</span><span class="p">(</span><span class="s2">"line"</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 </pre></div>
@@ -826,16 +826,16 @@ larger anchor numbers are farther along the path. The numpy array stores the x a
 <span class="n">anchors</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
 <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;pin_inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;start_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;Q0&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;d&quot;</span><span class="p">},</span>
-        <span class="s2">&quot;end_pin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;pin&quot;</span><span class="p">:</span> <span class="s2">&quot;c&quot;</span><span class="p">},</span>
+    <span class="s2">"pin_inputs"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"start_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"Q0"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"d"</span><span class="p">},</span>
+        <span class="s2">"end_pin"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"component"</span><span class="p">:</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"pin"</span><span class="p">:</span> <span class="s2">"c"</span><span class="p">},</span>
     <span class="p">},</span>
-    <span class="s2">&quot;step_size&quot;</span><span class="p">:</span> <span class="s2">&quot;0.25mm&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;anchors&quot;</span><span class="p">:</span> <span class="n">anchors</span><span class="p">,</span>
+    <span class="s2">"step_size"</span><span class="p">:</span> <span class="s2">"0.25mm"</span><span class="p">,</span>
+    <span class="s2">"anchors"</span><span class="p">:</span> <span class="n">anchors</span><span class="p">,</span>
     <span class="o">**</span><span class="n">ops</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="n">qc</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+<span class="n">qc</span> <span class="o">=</span> <span class="n">RoutePathfinder</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"line"</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -939,7 +939,7 @@ larger anchor numbers are farther along the path. The numpy array stores the x a
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

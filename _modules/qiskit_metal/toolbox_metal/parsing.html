@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -474,11 +474,11 @@
 <span class="c1"># that they have been altered from the originals.</span>
 
 
-<span class="sd">&quot;&quot;&quot;Parsing module Qiskit Metal.</span>
+<span class="sd">"""Parsing module Qiskit Metal.</span>
 
 <span class="sd">The main function in this module is `parse_value`, and it explains what</span>
 <span class="sd">and how it is handled. Some basic arithmetic can be handled as well,</span>
-<span class="sd">such as `&#39;-2 * 1e5 nm&#39;` will yield float(-0.2) when the default units are set to `mm`.</span>
+<span class="sd">such as `'-2 * 1e5 nm'` will yield float(-0.2) when the default units are set to `mm`.</span>
 
 <span class="sd">Example parsing values test:</span>
 <span class="sd">----------------------------</span>
@@ -488,75 +488,75 @@
 
 <span class="sd">        def test(val, _vars):</span>
 <span class="sd">            res = parse_value(val, _vars)</span>
-<span class="sd">            print( f&#39;{type(val).__name__:&lt;6} |{val:&gt;12} &gt;&gt; {str(res):&lt;20} | {type(res).__name__:&lt;6}&#39;)</span>
+<span class="sd">            print( f'{type(val).__name__:&lt;6} |{val:&gt;12} &gt;&gt; {str(res):&lt;20} | {type(res).__name__:&lt;6}')</span>
 
 <span class="sd">        def test2(val, _vars):</span>
 <span class="sd">            res = parse_value(val, _vars)</span>
-<span class="sd">            print( f&#39;{type(val).__name__:&lt;6} |{str(val):&gt;38} &gt;&gt; {str(res):&lt;47} | {type(res).__name__:&lt;6}&#39;)</span>
+<span class="sd">            print( f'{type(val).__name__:&lt;6} |{str(val):&gt;38} &gt;&gt; {str(res):&lt;47} | {type(res).__name__:&lt;6}')</span>
 
-<span class="sd">        vars_ = Dict({&#39;x&#39;:5.0, &#39;y&#39;:&#39;5um&#39;, &#39;cpw_width&#39;:&#39;10um&#39;})</span>
+<span class="sd">        vars_ = Dict({'x':5.0, 'y':'5um', 'cpw_width':'10um'})</span>
 
-<span class="sd">        print(&#39;------------------------------------------------&#39;)</span>
-<span class="sd">        print(&#39;String: Basics&#39;)</span>
+<span class="sd">        print('------------------------------------------------')</span>
+<span class="sd">        print('String: Basics')</span>
 <span class="sd">        test(1, vars_)</span>
 <span class="sd">        test(1., vars_)</span>
-<span class="sd">        test(&#39;1&#39;, vars_)</span>
-<span class="sd">        test(&#39;1.&#39;, vars_)</span>
-<span class="sd">        test(&#39;+1.&#39;, vars_)</span>
-<span class="sd">        test(&#39;-1.&#39;, vars_)</span>
-<span class="sd">        test(&#39;1.0&#39;, vars_)</span>
-<span class="sd">        test(&#39;1mm&#39;, vars_)</span>
-<span class="sd">        test(&#39; 1  mm &#39;, vars_)</span>
-<span class="sd">        test(&#39;100mm&#39;, vars_)</span>
-<span class="sd">        test(&#39;1.mm&#39;, vars_)</span>
-<span class="sd">        test(&#39;1.0mm&#39;, vars_)</span>
-<span class="sd">        test(&#39;1um&#39;, vars_)</span>
-<span class="sd">        test(&#39;+1um&#39;, vars_)</span>
-<span class="sd">        test(&#39;-1um&#39;, vars_)</span>
-<span class="sd">        test(&#39;-0.1um&#39;, vars_)</span>
-<span class="sd">        test(&#39;.1um&#39;, vars_)</span>
-<span class="sd">        test(&#39;  0.1  m&#39;, vars_)</span>
-<span class="sd">        test(&#39;-1E6 nm&#39;, vars_)</span>
-<span class="sd">        test(&#39;-1e6 nm&#39;, vars_)</span>
-<span class="sd">        test(&#39;.1e6 nm&#39;, vars_)</span>
-<span class="sd">        test(&#39; - .1e6nm &#39;, vars_)</span>
-<span class="sd">        test(&#39; - .1e6 nm &#39;, vars_)</span>
-<span class="sd">        test(&#39; - 1e6 nm &#39;, vars_)</span>
-<span class="sd">        test(&#39;- 1e6 nm &#39;, vars_)</span>
-<span class="sd">        test(&#39; - 1. &#39;, vars_)</span>
-<span class="sd">        test(&#39; + 1. &#39;, vars_)</span>
-<span class="sd">        test(&#39;1 .&#39;, vars_)</span>
+<span class="sd">        test('1', vars_)</span>
+<span class="sd">        test('1.', vars_)</span>
+<span class="sd">        test('+1.', vars_)</span>
+<span class="sd">        test('-1.', vars_)</span>
+<span class="sd">        test('1.0', vars_)</span>
+<span class="sd">        test('1mm', vars_)</span>
+<span class="sd">        test(' 1  mm ', vars_)</span>
+<span class="sd">        test('100mm', vars_)</span>
+<span class="sd">        test('1.mm', vars_)</span>
+<span class="sd">        test('1.0mm', vars_)</span>
+<span class="sd">        test('1um', vars_)</span>
+<span class="sd">        test('+1um', vars_)</span>
+<span class="sd">        test('-1um', vars_)</span>
+<span class="sd">        test('-0.1um', vars_)</span>
+<span class="sd">        test('.1um', vars_)</span>
+<span class="sd">        test('  0.1  m', vars_)</span>
+<span class="sd">        test('-1E6 nm', vars_)</span>
+<span class="sd">        test('-1e6 nm', vars_)</span>
+<span class="sd">        test('.1e6 nm', vars_)</span>
+<span class="sd">        test(' - .1e6nm ', vars_)</span>
+<span class="sd">        test(' - .1e6 nm ', vars_)</span>
+<span class="sd">        test(' - 1e6 nm ', vars_)</span>
+<span class="sd">        test('- 1e6 nm ', vars_)</span>
+<span class="sd">        test(' - 1. ', vars_)</span>
+<span class="sd">        test(' + 1. ', vars_)</span>
+<span class="sd">        test('1 .', vars_)</span>
 
-<span class="sd">        print(&#39;------------------------------------------------&#39;)</span>
-<span class="sd">        print(&#39;String: Arithmetic&#39;)</span>
-<span class="sd">        test(&#39;2*1&#39;, vars_)</span>
-<span class="sd">        test(&#39;2*10mm&#39;, vars_)</span>
-<span class="sd">        test(&#39;-2 * 1e5 nm&#39;, vars_)</span>
+<span class="sd">        print('------------------------------------------------')</span>
+<span class="sd">        print('String: Arithmetic')</span>
+<span class="sd">        test('2*1', vars_)</span>
+<span class="sd">        test('2*10mm', vars_)</span>
+<span class="sd">        test('-2 * 1e5 nm', vars_)</span>
 
-<span class="sd">        print(&#39;------------------------------------------------&#39;)</span>
-<span class="sd">        print(&#39;String: Variable&#39;)</span>
-<span class="sd">        test(&#39;x&#39;, vars_)</span>
-<span class="sd">        test(&#39;y&#39;, vars_)</span>
-<span class="sd">        test(&#39;z&#39;, vars_)</span>
-<span class="sd">        test(&#39;x1&#39;, vars_)</span>
-<span class="sd">        test(&#39;2*y&#39;, vars_)</span>
+<span class="sd">        print('------------------------------------------------')</span>
+<span class="sd">        print('String: Variable')</span>
+<span class="sd">        test('x', vars_)</span>
+<span class="sd">        test('y', vars_)</span>
+<span class="sd">        test('z', vars_)</span>
+<span class="sd">        test('x1', vars_)</span>
+<span class="sd">        test('2*y', vars_)</span>
 
-<span class="sd">        print(&#39;------------------------------------------------&#39;)</span>
-<span class="sd">        print(&#39;String: convert list and dict&#39;)</span>
-<span class="sd">        test2(&#39; [1,2,3.,4., &quot;5um&quot;, &quot; -0.1e6 nm&quot;  ] &#39;, vars_)</span>
-<span class="sd">        test2(&#39; {3:2, 4: &quot; -0.1e6 nm&quot;  } &#39;, vars_)</span>
+<span class="sd">        print('------------------------------------------------')</span>
+<span class="sd">        print('String: convert list and dict')</span>
+<span class="sd">        test2(' [1,2,3.,4., "5um", " -0.1e6 nm"  ] ', vars_)</span>
+<span class="sd">        test2(' {3:2, 4: " -0.1e6 nm"  } ', vars_)</span>
 
-<span class="sd">        print(&#39;&#39;)</span>
-<span class="sd">        print(&#39;------------------------------------------------&#39;)</span>
-<span class="sd">        print(&#39;Dict: convert list and dict&#39;)</span>
+<span class="sd">        print('')</span>
+<span class="sd">        print('------------------------------------------------')</span>
+<span class="sd">        print('Dict: convert list and dict')</span>
 <span class="sd">        my_dict = Dict(</span>
-<span class="sd">            string1 = &#39;1m&#39;,</span>
-<span class="sd">            string2 = &#39;1mm&#39;,</span>
-<span class="sd">            string3 = &#39;1um&#39;,</span>
-<span class="sd">            string4 = &#39;1nm&#39;,</span>
-<span class="sd">            variable1 = &#39;cpw_width&#39;,</span>
-<span class="sd">            list1 = &quot;[&#39;1m&#39;, &#39;5um&#39;, &#39;cpw_width&#39;, -1, False, &#39;a string&#39;]&quot;,</span>
-<span class="sd">            dict1 = &quot;{&#39;key1&#39;:&#39;4e-6mm&#39;, &#39;2mm&#39;:&#39;100um&#39;}&quot;</span>
+<span class="sd">            string1 = '1m',</span>
+<span class="sd">            string2 = '1mm',</span>
+<span class="sd">            string3 = '1um',</span>
+<span class="sd">            string4 = '1nm',</span>
+<span class="sd">            variable1 = 'cpw_width',</span>
+<span class="sd">            list1 = "['1m', '5um', 'cpw_width', -1, False, 'a string']",</span>
+<span class="sd">            dict1 = "{'key1':'4e-6mm', '2mm':'100um'}"</span>
 <span class="sd">        )</span>
 <span class="sd">        #test2(my_dict, vars_)</span>
 <span class="sd">        display(parse_value(my_dict, vars_))</span>
@@ -611,21 +611,21 @@
 <span class="sd">        str    |         2*y &gt;&gt; 2*y                  | str</span>
 <span class="sd">        ------------------------------------------------</span>
 <span class="sd">        String: convert list and dict</span>
-<span class="sd">        str    |   [1,2,3.,4., &quot;5um&quot;, &quot; -0.1e6 nm&quot;  ]  &gt;&gt; [1, 2, 3.0, 4.0, 0.005, -0.10000000000000002]   | list</span>
-<span class="sd">        str    |             {3:2, 4: &quot; -0.1e6 nm&quot;  }  &gt;&gt; {3: 2, 4: -0.10000000000000002}                 | Dict</span>
+<span class="sd">        str    |   [1,2,3.,4., "5um", " -0.1e6 nm"  ]  &gt;&gt; [1, 2, 3.0, 4.0, 0.005, -0.10000000000000002]   | list</span>
+<span class="sd">        str    |             {3:2, 4: " -0.1e6 nm"  }  &gt;&gt; {3: 2, 4: -0.10000000000000002}                 | Dict</span>
 
 
 <span class="sd">        ------------------------------------------------</span>
 <span class="sd">        Dict: convert list and dict</span>
 
-<span class="sd">        {&#39;string1&#39;: 1000.0,</span>
-<span class="sd">        &#39;string2&#39;: 1,</span>
-<span class="sd">        &#39;string3&#39;: 0.001,</span>
-<span class="sd">        &#39;string4&#39;: 1.0000000000000002e-06,</span>
-<span class="sd">        &#39;variable1&#39;: 0.01,</span>
-<span class="sd">        &#39;list1&#39;: [1000.0, 0.005, 0.01, -1, False, &#39;a string&#39;],</span>
-<span class="sd">        &#39;dict1&#39;: {&#39;key1&#39;: 4e-06, &#39;2mm&#39;: 0.1}}</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        {'string1': 1000.0,</span>
+<span class="sd">        'string2': 1,</span>
+<span class="sd">        'string3': 0.001,</span>
+<span class="sd">        'string4': 1.0000000000000002e-06,</span>
+<span class="sd">        'variable1': 0.01,</span>
+<span class="sd">        'list1': [1000.0, 0.005, 0.01, -1, False, 'a string'],</span>
+<span class="sd">        'dict1': {'key1': 4e-06, '2mm': 0.1}}</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
@@ -639,12 +639,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">logger</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;is_for_ast_eval&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_numeric_possible&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_true&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_variable_name&quot;</span><span class="p">,</span>  <span class="c1"># extra helpers</span>
-    <span class="s2">&quot;parse_options&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;parse_value&quot;</span><span class="p">,</span>  <span class="c1"># Main function</span>
+    <span class="s2">"is_for_ast_eval"</span><span class="p">,</span>
+    <span class="s2">"is_numeric_possible"</span><span class="p">,</span>
+    <span class="s2">"is_true"</span><span class="p">,</span>
+    <span class="s2">"is_variable_name"</span><span class="p">,</span>  <span class="c1"># extra helpers</span>
+    <span class="s2">"parse_options"</span><span class="p">,</span>
+    <span class="s2">"parse_value"</span><span class="p">,</span>  <span class="c1"># Main function</span>
 <span class="p">]</span>
 
 <span class="c1">#########################################################################</span>
@@ -652,32 +652,32 @@
 
 <span class="c1"># Values that can represent True bool</span>
 <span class="n">TRUE_STR</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;true&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;True&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;TRUE&quot;</span><span class="p">,</span>
+    <span class="s2">"true"</span><span class="p">,</span>
+    <span class="s2">"True"</span><span class="p">,</span>
+    <span class="s2">"TRUE"</span><span class="p">,</span>
     <span class="kc">True</span><span class="p">,</span>
-    <span class="s2">&quot;1&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;t&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;y&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Y&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;YES&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;yes&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;yeah&quot;</span><span class="p">,</span>
+    <span class="s2">"1"</span><span class="p">,</span>
+    <span class="s2">"t"</span><span class="p">,</span>
+    <span class="s2">"y"</span><span class="p">,</span>
+    <span class="s2">"Y"</span><span class="p">,</span>
+    <span class="s2">"YES"</span><span class="p">,</span>
+    <span class="s2">"yes"</span><span class="p">,</span>
+    <span class="s2">"yeah"</span><span class="p">,</span>
     <span class="mi">1</span><span class="p">,</span>
     <span class="mf">1.0</span><span class="p">,</span>
 <span class="p">]</span>
 <span class="n">FALSE_STR</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;false&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;False&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;FALSE&quot;</span><span class="p">,</span>
+    <span class="s2">"false"</span><span class="p">,</span>
+    <span class="s2">"False"</span><span class="p">,</span>
+    <span class="s2">"FALSE"</span><span class="p">,</span>
     <span class="kc">False</span><span class="p">,</span>
-    <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;f&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;n&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;N&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;NO&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;no&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;na&quot;</span><span class="p">,</span>
+    <span class="s2">"0"</span><span class="p">,</span>
+    <span class="s2">"f"</span><span class="p">,</span>
+    <span class="s2">"n"</span><span class="p">,</span>
+    <span class="s2">"N"</span><span class="p">,</span>
+    <span class="s2">"NO"</span><span class="p">,</span>
+    <span class="s2">"no"</span><span class="p">,</span>
+    <span class="s2">"na"</span><span class="p">,</span>
     <span class="mi">0</span><span class="p">,</span>
     <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">]</span>
@@ -686,14 +686,14 @@
 <div class="viewcode-block" id="is_true">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.parsing.html#qiskit_metal.toolbox_metal.parsing.is_true">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">is_true</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a value is true or not.</span>
+<span class="w">    </span><span class="sd">"""Check if a value is true or not.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        value (str): Value to check</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">       bool: Is the string a true</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">TRUE_STR</span>  <span class="c1"># membership test operator</span></div>
 
 
@@ -708,22 +708,22 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_parse_string_to_float</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the value of a string.</span>
+<span class="w">    </span><span class="sd">"""Extract the value of a string.</span>
 
 <span class="sd">    If the passed value is not convertable,</span>
 <span class="sd">    the input value `expr` will just ne returned.</span>
 
 <span class="sd">    Note that you can also pass in some arithmetic:</span>
-<span class="sd">        `UREG.Quantity(&#39;2*130um&#39;).to(&#39;mm&#39;).magnitude`</span>
+<span class="sd">        `UREG.Quantity('2*130um').to('mm').magnitude`</span>
 <span class="sd">        &gt;&gt; 0.26</span>
 
 <span class="sd">    Original code: pyEPR.hfss - see file.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        expr (str): String expression such as &#39;1nm&#39;.</span>
+<span class="sd">        expr (str): String expression such as '1nm'.</span>
 
 <span class="sd">    Internal:</span>
-<span class="sd">        to_units (str): Units to convert the value to, such as &#39;mm&#39;.</span>
+<span class="sd">        to_units (str): Units to convert the value to, such as 'mm'.</span>
 <span class="sd">                        Hardcoded to  config.DEFAULT.units</span>
 
 <span class="sd">    Returns:</span>
@@ -731,7 +731,7 @@
 
 <span class="sd">    Raises:</span>
 <span class="sd">        Exception: Errors in parsing</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">UREG</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
 
@@ -750,14 +750,14 @@
 <div class="viewcode-block" id="is_variable_name">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.parsing.html#qiskit_metal.toolbox_metal.parsing.is_variable_name">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">is_variable_name</span><span class="p">(</span><span class="n">test_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Is the test string a valid name for a variable or not?</span>
+<span class="w">    </span><span class="sd">"""Is the test string a valid name for a variable or not?</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        test_str (str): Test string</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: Is str a variable name</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">test_str</span><span class="o">.</span><span class="n">isidentifier</span><span class="p">()</span></div>
 
 
@@ -765,7 +765,7 @@
 <div class="viewcode-block" id="is_for_ast_eval">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.parsing.html#qiskit_metal.toolbox_metal.parsing.is_for_ast_eval">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">is_for_ast_eval</span><span class="p">(</span><span class="n">test_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Is the test string a valid list of dict string, such as &quot;[1, 2]&quot;, that</span>
+<span class="w">    </span><span class="sd">"""Is the test string a valid list of dict string, such as "[1, 2]", that</span>
 <span class="sd">    can be evaluated by ast eval.</span>
 
 <span class="sd">    Args:</span>
@@ -773,9 +773,9 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: Is test_str a valid list of dict strings</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;[&quot;</span> <span class="ow">in</span> <span class="n">test_str</span> <span class="ow">and</span> <span class="s2">&quot;]&quot;</span> <span class="ow">in</span> <span class="n">test_str</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
-        <span class="s2">&quot;{&quot;</span> <span class="ow">in</span> <span class="n">test_str</span> <span class="ow">and</span> <span class="s2">&quot;}&quot;</span> <span class="ow">in</span> <span class="n">test_str</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="p">(</span><span class="s2">"["</span> <span class="ow">in</span> <span class="n">test_str</span> <span class="ow">and</span> <span class="s2">"]"</span> <span class="ow">in</span> <span class="n">test_str</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="s2">"{"</span> <span class="ow">in</span> <span class="n">test_str</span> <span class="ow">and</span> <span class="s2">"}"</span> <span class="ow">in</span> <span class="n">test_str</span>
     <span class="p">)</span></div>
 
 
@@ -783,15 +783,15 @@
 <div class="viewcode-block" id="is_numeric_possible">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.parsing.html#qiskit_metal.toolbox_metal.parsing.is_numeric_possible">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">is_numeric_possible</span><span class="p">(</span><span class="n">test_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Is the test string a valid possible numerical with /or w/o units.</span>
+<span class="w">    </span><span class="sd">"""Is the test string a valid possible numerical with /or w/o units.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        test_str (str): Test string</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: Is the test string a valid possible numerical</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">test_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">or</span> <span class="n">test_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">]</span></div>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">test_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">or</span> <span class="n">test_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"+"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="s2">"."</span><span class="p">]</span></div>
 
     <span class="c1"># look into pyparsing</span>
 
@@ -799,18 +799,18 @@
 <div class="viewcode-block" id="parse_value">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.parsing.html#qiskit_metal.toolbox_metal.parsing.parse_value">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">variable_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a string, mappable (dict, Dict), iterable (list, tuple) to account</span>
+<span class="w">    </span><span class="sd">"""Parse a string, mappable (dict, Dict), iterable (list, tuple) to account</span>
 <span class="sd">    for units conversion, some basic arithmetic, and design variables. This is</span>
 <span class="sd">    the main parsing function of Qiskit Metal.</span>
 
 <span class="sd">    Handled Inputs:</span>
 
-<span class="sd">        Strings of numbers, numbers with units; e.g., &#39;1&#39;, &#39;1nm&#39;, &#39;1 um&#39;</span>
+<span class="sd">        Strings of numbers, numbers with units; e.g., '1', '1nm', '1 um'</span>
 <span class="sd">            Converts to int or float.</span>
 <span class="sd">            Some basic arithmetic is possible, see below.</span>
-<span class="sd">        Strings of variables &#39;variable1&#39;.</span>
+<span class="sd">        Strings of variables 'variable1'.</span>
 <span class="sd">            Variable interpretation will use string method</span>
-<span class="sd">            isidentifier &#39;variable1&#39;.isidentifier()</span>
+<span class="sd">            isidentifier 'variable1'.isidentifier()</span>
 <span class="sd">        Strings of Dictionaries:</span>
 <span class="sd">            Returns ordered `Dict` with same key-value mappings, where the values have</span>
 <span class="sd">            been subjected to parse_value.</span>
@@ -821,7 +821,7 @@
 <span class="sd">            Returns the number as is. Int to int, etc.</span>
 
 <span class="sd">    Arithmetic:</span>
-<span class="sd">        Some basic arithmetic can be handled as well, such as `&#39;-2 * 1e5 nm&#39;`</span>
+<span class="sd">        Some basic arithmetic can be handled as well, such as `'-2 * 1e5 nm'`</span>
 <span class="sd">        will yield float(-0.2) when the default units are set to `mm`.</span>
 
 <span class="sd">    Default units:</span>
@@ -837,7 +837,7 @@
 
 <span class="sd">    Return:</span>
 <span class="sd">        str, float, list, tuple, or ast eval: Parsed value</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="c1"># remove trailing and leading white spaces in the name</span>
@@ -847,7 +847,7 @@
             <span class="k">if</span> <span class="n">is_variable_name</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
                 <span class="c1"># we have a string that could be interpreted as a variable</span>
                 <span class="c1"># check if there is such a variable name, else return as string</span>
-                <span class="c1"># logger.warning(f&#39;Missing variable {opts[name]} from variable list.\n&#39;)</span>
+                <span class="c1"># logger.warning(f'Missing variable {opts[name]} from variable list.\n')</span>
 
                 <span class="k">if</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">variable_dict</span><span class="p">:</span>
                     <span class="c1"># Parse the returned value</span>
@@ -855,14 +855,14 @@
 
                 <span class="c1"># Assume it is a string and just return it</span>
                 <span class="c1"># CAUTION: This could cause issues for the user, if they meant to pass a variable</span>
-                <span class="c1"># but mistyped it or didn&#39;t define it. But they might also want to pass a string</span>
+                <span class="c1"># but mistyped it or didn't define it. But they might also want to pass a string</span>
                 <span class="c1"># that is variable name compatible, such as pec.</span>
                 <span class="c1"># This is basically about type checking, which we can get back to later.</span>
                 <span class="k">return</span> <span class="n">val</span>
 
             <span class="k">if</span> <span class="n">is_for_ast_eval</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
                 <span class="c1"># If it is a list or dict, this will do a literal eval, so string have</span>
-                <span class="c1"># to be in &quot;&quot; else [5um , 4um ] wont work, but [&quot;5um&quot;, &quot;0.4 um&quot;] will</span>
+                <span class="c1"># to be in "" else [5um , 4um ] wont work, but ["5um", "0.4 um"] will</span>
                 <span class="n">evaluated</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">evaluated</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                     <span class="c1"># check if list, parse each element of the list</span>
@@ -878,7 +878,7 @@
                     <span class="p">)</span>
 
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Unknown error in `is_for_ast_eval`</span><span class="se">\n</span><span class="s2">val=</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="se">\n</span><span class="s2">evaluated=</span><span class="si">{</span><span class="n">evaluated</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Unknown error in `is_for_ast_eval`</span><span class="se">\n</span><span class="s2">val=</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="se">\n</span><span class="s2">evaluated=</span><span class="si">{</span><span class="n">evaluated</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="n">evaluated</span>
 
@@ -915,27 +915,27 @@
 <div class="viewcode-block" id="parse_options">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.parsing.html#qiskit_metal.toolbox_metal.parsing.parse_options">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_options</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">parse_names</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">variable_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calls parse_value to extract from a dictionary a small subset of values.</span>
-<span class="sd">    You can specify parse_names = &#39;x,y,z,cpw_width&#39;.</span>
+<span class="sd">    You can specify parse_names = 'x,y,z,cpw_width'.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        params (dict): Dictionary of params</span>
 <span class="sd">        parse_names (str): Name to parse</span>
 <span class="sd">        variable_dict (dict): Dictionary of variables.  Defaults to None.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Prep args</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">variable_dict</span><span class="p">:</span>  <span class="c1"># If None, create an empty dict</span>
         <span class="n">variable_dict</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parse_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parse_names</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># remove trailing and leading white spaces in the name</span>
 
         <span class="c1"># is the name in the options at all?</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing key </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> from params </span><span class="si">{</span><span class="n">params</span><span class="si">}</span><span class="s2">. Skipping ...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Missing key </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> from params </span><span class="si">{</span><span class="n">params</span><span class="si">}</span><span class="s2">. Skipping ...</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
             <span class="k">continue</span>
 
         <span class="c1"># option_dict[name] should be a string</span>
@@ -948,30 +948,30 @@
 <span class="c1">##############################################################################</span>
 <span class="c1"># From pyepr, being used by renderer using comm port.</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;The methods in this section were copied from Ansys renderer which used comm-ports.&quot;&quot;&quot;</span>
+<span class="sd">"""The methods in this section were copied from Ansys renderer which used comm-ports."""</span>
 
 <span class="c1"># UNITS</span>
 <span class="c1"># LENGTH_UNIT         --- HFSS UNITS</span>
 <span class="c1"># #Assumed default input units for ansys hfss</span>
-<span class="n">LENGTH_UNIT</span> <span class="o">=</span> <span class="s2">&quot;meter&quot;</span>
+<span class="n">LENGTH_UNIT</span> <span class="o">=</span> <span class="s2">"meter"</span>
 <span class="c1"># LENGTH_UNIT_ASSUMED --- USER UNITS</span>
 <span class="c1"># if a user inputs a blank number with no units in `parse_fix`,</span>
 <span class="c1"># we can assume the following using</span>
-<span class="n">LENGTH_UNIT_ASSUMED</span> <span class="o">=</span> <span class="s2">&quot;mm&quot;</span>
+<span class="n">LENGTH_UNIT_ASSUMED</span> <span class="o">=</span> <span class="s2">"mm"</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="n">u_reg</span> <span class="o">=</span> <span class="n">UnitRegistry</span><span class="p">()</span>
     <span class="n">Q</span> <span class="o">=</span> <span class="n">u_reg</span><span class="o">.</span><span class="n">Quantity</span>
 <span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
-    <span class="k">pass</span>  <span class="c1"># raise NameError (&quot;Pint module not installed. Please install.&quot;)</span>
+    <span class="k">pass</span>  <span class="c1"># raise NameError ("Pint module not installed. Please install.")</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">extract_value_unit</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    :type expr: str</span>
 <span class="sd">    :type units: str</span>
 <span class="sd">    :return: float</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -982,14 +982,14 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">fix_units</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">unit_assumed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Convert all numbers to string and append the assumed units if needed.</span>
 <span class="sd">    For an iterable, returns a list</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">unit_assumed</span> <span class="o">=</span> <span class="n">LENGTH_UNIT_ASSUMED</span> <span class="k">if</span> <span class="n">unit_assumed</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">unit_assumed</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="c1"># Check if there are already units defined, assume of form 2.46mm  or 2.0 or 4.</span>
-        <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">or</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>  <span class="c1"># number</span>
+        <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">or</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"."</span><span class="p">:</span>  <span class="c1"># number</span>
             <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">unit_assumed</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># units are already applied</span>
             <span class="k">return</span> <span class="n">x</span>
@@ -997,17 +997,17 @@
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Number</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">fix_units</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">unit_assumed</span><span class="p">,</span> <span class="n">unit_assumed</span><span class="o">=</span><span class="n">unit_assumed</span><span class="p">)</span>
 
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>  <span class="c1"># hasattr(x, &#39;__iter__&#39;):</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>  <span class="c1"># hasattr(x, '__iter__'):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">fix_units</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">unit_assumed</span><span class="o">=</span><span class="n">unit_assumed</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">x</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_entry</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">convert_to_unit</span><span class="o">=</span><span class="n">LENGTH_UNIT</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Should take a list of tuple of list... of int, float or str...</span>
 <span class="sd">    For iterables, returns lists</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">extract_value_unit</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">convert_to_unit</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -1019,7 +1019,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_units</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Convert number, string, and lists/arrays/tuples to numbers scaled</span>
 <span class="sd">    in HFSS units.</span>
 
@@ -1027,7 +1027,7 @@
 <span class="sd">    Assumes input units  LENGTH_UNIT_ASSUMED = mm      [USER UNITS]</span>
 
 <span class="sd">    [USER UNITS] ----&gt; [HFSS UNITS]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">fix_units</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 </pre></div>
         </article>
@@ -1047,7 +1047,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -1070,6 +1070,8 @@
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

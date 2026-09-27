@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -481,7 +481,7 @@
 <div class="viewcode-block" id="TunableCoupler01">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html#qiskit_metal.qlibrary.TunableCoupler01">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TunableCoupler01</span><span class="p">(</span><span class="n">BaseQubit</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;One of the tunable couplers Based off the implementation in</span>
+<span class="w">    </span><span class="sd">"""One of the tunable couplers Based off the implementation in</span>
 <span class="sd">    https://arxiv.org/pdf/2011.01261.pdf.</span>
 
 <span class="sd">    WIP - initial test structure</span>
@@ -510,60 +510,60 @@
 
 <span class="sd">    Options:</span>
 <span class="sd">        Convention: Values (unless noted) are strings with units included,</span>
-<span class="sd">        (e.g., &#39;30um&#39;)</span>
+<span class="sd">        (e.g., '30um')</span>
 
 <span class="sd">    BaseQubit Default Options:</span>
 <span class="sd">        * connection_pads: empty Dict -- Currently not used, connection count is static. (WIP)</span>
 <span class="sd">        * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.</span>
 
 <span class="sd">    Default Options:</span>
-<span class="sd">        * c_width: &#39;400um&#39; -- The width (x-axis) of the interdigitated charge island</span>
-<span class="sd">        * l_width: &#39;20um&#39; -- The width of lines forming the body and arms of the charge island</span>
-<span class="sd">        * l_gap: &#39;10um&#39; -- The dielectric gap of the charge island to ground</span>
-<span class="sd">        * a_height: &#39;60um&#39; -- The length of the arms forming the &#39;fingers&#39; of the charge island</span>
-<span class="sd">        * cp_height: &#39;15um&#39; -- The thickness (y-axis) of the connection claw</span>
-<span class="sd">        * cp_arm_length: &#39;30um&#39; -- The length of the &#39;fingers&#39; of the connection claw (Warning: can break</span>
+<span class="sd">        * c_width: '400um' -- The width (x-axis) of the interdigitated charge island</span>
+<span class="sd">        * l_width: '20um' -- The width of lines forming the body and arms of the charge island</span>
+<span class="sd">        * l_gap: '10um' -- The dielectric gap of the charge island to ground</span>
+<span class="sd">        * a_height: '60um' -- The length of the arms forming the 'fingers' of the charge island</span>
+<span class="sd">        * cp_height: '15um' -- The thickness (y-axis) of the connection claw</span>
+<span class="sd">        * cp_arm_length: '30um' -- The length of the 'fingers' of the connection claw (Warning: can break</span>
 <span class="sd">          the component if they are too long)</span>
-<span class="sd">        * cp_arm_width: &#39;6um&#39; -- The width of the &#39;fingers&#39; of the connection claw (Warning: can break</span>
+<span class="sd">        * cp_arm_width: '6um' -- The width of the 'fingers' of the connection claw (Warning: can break</span>
 <span class="sd">          the component if too wide)</span>
-<span class="sd">        * cp_gap: &#39;6um&#39; -- The dielectric gap of the connection claw</span>
-<span class="sd">        * cp_gspace: &#39;3um&#39; -- How much ground remains between the connection claw and the charge island</span>
-<span class="sd">        * fl_width: &#39;5um&#39; -- Width of the flux line</span>
-<span class="sd">        * fl_gap: &#39;3um&#39; -- Dielectric gap of the flux line</span>
-<span class="sd">        * fl_length: &#39;10um&#39; -- Length of the flux line for mutual inductance to the SQUID</span>
-<span class="sd">        * fl_ground: &#39;2um&#39; -- Amount of ground between the SQUID and the flux line</span>
+<span class="sd">        * cp_gap: '6um' -- The dielectric gap of the connection claw</span>
+<span class="sd">        * cp_gspace: '3um' -- How much ground remains between the connection claw and the charge island</span>
+<span class="sd">        * fl_width: '5um' -- Width of the flux line</span>
+<span class="sd">        * fl_gap: '3um' -- Dielectric gap of the flux line</span>
+<span class="sd">        * fl_length: '10um' -- Length of the flux line for mutual inductance to the SQUID</span>
+<span class="sd">        * fl_ground: '2um' -- Amount of ground between the SQUID and the flux line</span>
 <span class="sd">        * _default_connection_pads: Currently empty</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">c_width</span><span class="o">=</span><span class="s2">&quot;400um&quot;</span><span class="p">,</span>
-        <span class="n">l_width</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
-        <span class="n">l_gap</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">a_height</span><span class="o">=</span><span class="s2">&quot;60um&quot;</span><span class="p">,</span>
-        <span class="n">cp_height</span><span class="o">=</span><span class="s2">&quot;15um&quot;</span><span class="p">,</span>
-        <span class="n">cp_arm_length</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span>
-        <span class="n">cp_arm_width</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-        <span class="n">cp_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-        <span class="n">cp_gspace</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span>
-        <span class="n">fl_width</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
-        <span class="n">fl_gap</span><span class="o">=</span><span class="s2">&quot;3um&quot;</span><span class="p">,</span>
-        <span class="n">fl_length</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">fl_ground</span><span class="o">=</span><span class="s2">&quot;2um&quot;</span><span class="p">,</span>
+        <span class="n">c_width</span><span class="o">=</span><span class="s2">"400um"</span><span class="p">,</span>
+        <span class="n">l_width</span><span class="o">=</span><span class="s2">"20um"</span><span class="p">,</span>
+        <span class="n">l_gap</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">a_height</span><span class="o">=</span><span class="s2">"60um"</span><span class="p">,</span>
+        <span class="n">cp_height</span><span class="o">=</span><span class="s2">"15um"</span><span class="p">,</span>
+        <span class="n">cp_arm_length</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">,</span>
+        <span class="n">cp_arm_width</span><span class="o">=</span><span class="s2">"6um"</span><span class="p">,</span>
+        <span class="n">cp_gap</span><span class="o">=</span><span class="s2">"6um"</span><span class="p">,</span>
+        <span class="n">cp_gspace</span><span class="o">=</span><span class="s2">"3um"</span><span class="p">,</span>
+        <span class="n">fl_width</span><span class="o">=</span><span class="s2">"5um"</span><span class="p">,</span>
+        <span class="n">fl_gap</span><span class="o">=</span><span class="s2">"3um"</span><span class="p">,</span>
+        <span class="n">fl_length</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">fl_ground</span><span class="o">=</span><span class="s2">"2um"</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;Pocket&quot;</span><span class="p">,</span>
-        <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
-        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
-        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">"Pocket"</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_path</span><span class="o">=</span><span class="s2">"True"</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">"True"</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">"True"</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;One of the tunable couplers&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""One of the tunable couplers"""</span>
 
 <div class="viewcode-block" id="TunableCoupler01.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html#qiskit_metal.qlibrary.TunableCoupler01.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds the component.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Builds the component."""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
 
         <span class="c1"># Draw the charge island</span>
@@ -671,39 +671,39 @@
 
         <span class="c1"># Add to qgeometry</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;cap_island&quot;</span><span class="p">:</span> <span class="n">cap_island</span><span class="p">,</span> <span class="s2">&quot;connector_body&quot;</span><span class="p">:</span> <span class="n">con_body</span><span class="p">},</span>
+            <span class="s2">"poly"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"cap_island"</span><span class="p">:</span> <span class="n">cap_island</span><span class="p">,</span> <span class="s2">"connector_body"</span><span class="p">:</span> <span class="n">con_body</span><span class="p">},</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;cap_subtract&quot;</span><span class="p">:</span> <span class="n">cap_subtract</span><span class="p">,</span> <span class="s2">&quot;connector_sub&quot;</span><span class="p">:</span> <span class="n">con_sub</span><span class="p">},</span>
+            <span class="s2">"poly"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"cap_subtract"</span><span class="p">:</span> <span class="n">cap_subtract</span><span class="p">,</span> <span class="s2">"connector_sub"</span><span class="p">:</span> <span class="n">con_sub</span><span class="p">},</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
             <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;flux_line&quot;</span><span class="p">:</span> <span class="n">flux_line</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fl_width</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span>
+            <span class="s2">"path"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"flux_line"</span><span class="p">:</span> <span class="n">flux_line</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fl_width</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;flux_line_sub&quot;</span><span class="p">:</span> <span class="n">flux_line</span><span class="p">},</span>
+            <span class="s2">"path"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"flux_line_sub"</span><span class="p">:</span> <span class="n">flux_line</span><span class="p">},</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">fl_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">fl_gap</span><span class="p">,</span>
             <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;junction&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rect_jj</span><span class="o">=</span><span class="n">rect_jj</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">l_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"junction"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rect_jj</span><span class="o">=</span><span class="n">rect_jj</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">l_width</span><span class="p">)</span>
 
         <span class="c1"># Add pin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;Control&quot;</span><span class="p">,</span>
+            <span class="s2">"Control"</span><span class="p">,</span>
             <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">con_pin</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">l_width</span><span class="p">,</span>
             <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;Flux&quot;</span><span class="p">,</span>
+            <span class="s2">"Flux"</span><span class="p">,</span>
             <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">flux_line</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]),</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">l_width</span><span class="p">,</span>
             <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -728,7 +728,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -751,6 +751,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

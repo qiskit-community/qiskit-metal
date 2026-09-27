@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,7 +472,7 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;Parsed dynamic attributes.&quot;&quot;&quot;</span>
+<span class="sd">"""Parsed dynamic attributes."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
@@ -484,30 +484,30 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">is_ipython_magic</span><span class="p">(</span><span class="n">check_attribute</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ignore the following checks by jupyter.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Ignore the following checks by jupyter."""</span>
     <span class="k">return</span> <span class="n">check_attribute</span> <span class="ow">in</span> <span class="p">{</span>
-        <span class="s2">&quot;_ipython_canary_method_should_not_exist_&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_ipython_display_&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_repr_mimebundle_&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_repr_html_&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_repr_markdown_&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_repr_svg_&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_repr_png_&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_repr_pdf_&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_repr_jpeg_&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_repr_latex_&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_repr_json_&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_repr_javascript_&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_rapped&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;__wrapped__&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;__call__&quot;</span><span class="p">,</span>
+        <span class="s2">"_ipython_canary_method_should_not_exist_"</span><span class="p">,</span>
+        <span class="s2">"_ipython_display_"</span><span class="p">,</span>
+        <span class="s2">"_repr_mimebundle_"</span><span class="p">,</span>
+        <span class="s2">"_repr_html_"</span><span class="p">,</span>
+        <span class="s2">"_repr_markdown_"</span><span class="p">,</span>
+        <span class="s2">"_repr_svg_"</span><span class="p">,</span>
+        <span class="s2">"_repr_png_"</span><span class="p">,</span>
+        <span class="s2">"_repr_pdf_"</span><span class="p">,</span>
+        <span class="s2">"_repr_jpeg_"</span><span class="p">,</span>
+        <span class="s2">"_repr_latex_"</span><span class="p">,</span>
+        <span class="s2">"_repr_json_"</span><span class="p">,</span>
+        <span class="s2">"_repr_javascript_"</span><span class="p">,</span>
+        <span class="s2">"_rapped"</span><span class="p">,</span>
+        <span class="s2">"__wrapped__"</span><span class="p">,</span>
+        <span class="s2">"__call__"</span><span class="p">,</span>
     <span class="p">}</span>
 
 
 <div class="viewcode-block" id="ParsedDynamicAttributes_Component">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html#qiskit_metal.qlibrary.ParsedDynamicAttributes_Component">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ParsedDynamicAttributes_Component</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;.. image::</span>
+<span class="w">    </span><span class="sd">""".. image::</span>
 <span class="sd">        internal_parsed_attrs.png</span>
 
 <span class="sd">    Provides a parsing view of the component options.</span>
@@ -518,13 +518,13 @@
 <span class="sd">        Example:</span>
 <span class="sd">            .. code-block:: python</span>
 
-<span class="sd">                component.options = {&#39;x&#39;:&#39;1nm&#39;}</span>
+<span class="sd">                component.options = {'x':'1nm'}</span>
 <span class="sd">                print(component.p.x)</span>
 
 <span class="sd">            &gt;&gt; `float(1e7)`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Special method names:</span>
 <span class="sd">        See Python Data Module for Objects:</span>
 <span class="sd">            https://docs.python.org/3/reference/datamodel.html</span>
@@ -536,15 +536,15 @@
 <span class="sd">        __getattr__:        Called when an attribute lookup has not found the attribute in the usual places.</span>
 <span class="sd">        __setattr__:        Called when an attribute assignment is attempted.</span>
 <span class="sd">        __delattr__:        Called when an attribute deletion is attempted.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">:</span> <span class="s2">&quot;QComponent&quot;</span><span class="p">,</span> <span class="n">key_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">:</span> <span class="s2">"QComponent"</span><span class="p">,</span> <span class="n">key_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            component (QComponent): Component to get options from.</span>
 <span class="sd">            key_list (List[str]): List of keys.  Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># print(f&#39;*** Created with {key_list}&#39;)</span>
+<span class="sd">        """</span>
+        <span class="c1"># print(f'*** Created with {key_list}')</span>
         <span class="c1"># These names must have __xx__ or else they will go to getattr instead of getattribute</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__component__</span> <span class="o">=</span> <span class="n">component</span>
@@ -566,7 +566,7 @@
 <div class="viewcode-block" id="ParsedDynamicAttributes_Component.__len__">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html#qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.__len__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the length.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the length."""</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__getdict__</span><span class="p">())</span></div>
 
 
@@ -579,36 +579,36 @@
 <div class="viewcode-block" id="ParsedDynamicAttributes_Component.items">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html#qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.items">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Produces tuples consisting of keys and respective parsed values for</span>
-<span class="sd">        iterating over a dictionary.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Produces tuples consisting of keys and respective parsed values for</span>
+<span class="sd">        iterating over a dictionary."""</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>  <span class="c1"># calls __iter__</span>
             <span class="k">yield</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">key</span><span class="p">))</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delegating Attribute Access After regular attribute access, try</span>
+<span class="w">        </span><span class="sd">"""Delegating Attribute Access After regular attribute access, try</span>
 <span class="sd">        looking up the name This allows simpler access to columns for</span>
-<span class="sd">        interactive use.&quot;&quot;&quot;</span>
-        <span class="c1">#### Note: obj.x will always call obj.__getattribute__(&#39;x&#39;) prior to</span>
-        <span class="c1"># calling obj.__getattr__(&#39;x&#39;).</span>
+<span class="sd">        interactive use."""</span>
+        <span class="c1">#### Note: obj.x will always call obj.__getattribute__('x') prior to</span>
+        <span class="c1"># calling obj.__getattr__('x').</span>
         <span class="c1">#</span>
         <span class="c1">#### Former issues:</span>
         <span class="c1"># These two only come up when trying to use in ipython /jupyter environemtn</span>
         <span class="c1"># and acessing a sub dictionary in the past</span>
         <span class="c1"># Exmaple:</span>
-        <span class="c1">#   xx = ParsedDynamicAttributes(self, [&#39;c&#39;])</span>
+        <span class="c1">#   xx = ParsedDynamicAttributes(self, ['c'])</span>
         <span class="c1">#   xx</span>
-        <span class="c1"># if name.startswith(&#39;_repr&#39;) or name.startswith(&#39;_ipython&#39;):</span>
+        <span class="c1"># if name.startswith('_repr') or name.startswith('_ipython'):</span>
         <span class="c1">#    return</span>
 
-        <span class="c1"># print(f&#39;__getattr__ NAME = {name};  dict=&#39;,self.__getdict__())</span>
+        <span class="c1"># print(f'__getattr__ NAME = {name};  dict=',self.__getdict__())</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ParsedDynamicAttributes_Component.__getitem__">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html#qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.__getitem__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the item associated with the given name.</span>
+<span class="w">        </span><span class="sd">"""Get the item associated with the given name.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Name of the item</span>
@@ -618,18 +618,18 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            AttributeError: The given name is a magic method not in the dictionary</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">dic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getdict__</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dic</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ipython_magic</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
                 <span class="c1"># log_error_easy(self.__component__.logger, post_text=</span>
                 <span class="n">xx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__keylist__</span>
-                <span class="n">xx</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">name</span>
+                <span class="n">xx</span> <span class="o">=</span> <span class="s2">"."</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"."</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">name</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__component__</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Warning: User tried to access a variable in the parse options&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot; that is not there!</span><span class="se">\n</span><span class="s2"> Component name = `</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__component__</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">`</span><span class="se">\n</span><span class="s2">&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot; Option name    = `</span><span class="si">{</span><span class="n">xx</span><span class="si">}</span><span class="s2">`&quot;</span>
+                    <span class="s2">"</span><span class="se">\n</span><span class="s2">Warning: User tried to access a variable in the parse options"</span>
+                    <span class="sa">f</span><span class="s2">" that is not there!</span><span class="se">\n</span><span class="s2"> Component name = `</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__component__</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">`</span><span class="se">\n</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">" Option name    = `</span><span class="si">{</span><span class="n">xx</span><span class="si">}</span><span class="s2">`"</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
@@ -639,9 +639,9 @@
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">val</span> <span class="o">=</span> <span class="n">dic</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-            <span class="c1"># print(f&#39;val = {val}&#39;)</span>
+            <span class="c1"># print(f'val = {val}')</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="c1"># print(f&#39;  -&gt; Going to create a new {self.__keylist__ + [name]}&#39;)</span>
+                <span class="c1"># print(f'  -&gt; Going to create a new {self.__keylist__ + [name]}')</span>
                 <span class="k">return</span> <span class="n">ParsedDynamicAttributes_Component</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__component__</span><span class="p">,</span> <span class="n">key_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__keylist__</span> <span class="o">+</span> <span class="p">[</span><span class="n">name</span><span class="p">]</span>
                 <span class="p">)</span>
@@ -652,59 +652,59 @@
     <span class="c1">####### SERIALIZATION</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1">#  &quot;I&#39;m being pickled&quot;</span>
+        <span class="c1">#  "I'm being pickled"</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
-        <span class="c1">#  f&quot;I&#39;m being unpickled with these values: {d}&quot;</span>
+        <span class="c1">#  f"I'm being unpickled with these values: {d}"</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">d</span>
 
     <span class="c1"># def __repr__(self):</span>
     <span class="c1">#     return self.__getdict__().__repr__()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;For viewing.</span>
+<span class="w">        </span><span class="sd">"""For viewing.</span>
 
 <span class="sd">        Just return the whole parse dictionary.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[95m</span><span class="se">\033</span><span class="s2">[1m&quot;</span>
-        <span class="n">e</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
+<span class="sd">        """</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\033</span><span class="s2">[95m</span><span class="se">\033</span><span class="s2">[1m"</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\033</span><span class="s2">[0m"</span>
 
         <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__component__</span>
         <span class="n">parsed</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
         <span class="n">parsed_text</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">parsed</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">Current parsed *view* of options for </span><span class="si">{</span><span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">Current parsed *view* of options for </span><span class="si">{</span><span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span>
 <span class="s2"> (Units are parsed to floats in default design units.)</span>
-<span class="s2"> </span><span class="si">{</span><span class="n">parsed_text</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2"> </span><span class="si">{</span><span class="n">parsed_text</span><span class="si">}</span><span class="s2">"""</span>
         <span class="k">return</span> <span class="n">text</span></div>
 
 
 
 <span class="c1"># TESTING code:</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">from qiskit_metal.qlibrary.core.base import QComponent</span>
 
 <span class="sd">class Test(QComponent):</span>
 <span class="sd">    def make(self):</span>
 <span class="sd">        pass</span>
-<span class="sd">DEFAULT_OPTIONS[&#39;Test&#39;] = {     #instead of using DEFAULT_OPTIONS, use the dicts within QDesign class.</span>
-<span class="sd">    &#39;a&#39; : &#39;1mm&#39;,</span>
-<span class="sd">    &#39;b&#39; : &#39;1um&#39;,</span>
-<span class="sd">    &#39;c&#39; : {</span>
-<span class="sd">        &#39;d&#39; : &#39;15um&#39;,</span>
-<span class="sd">        &#39;e&#39; : &#39;10um&#39;,</span>
+<span class="sd">DEFAULT_OPTIONS['Test'] = {     #instead of using DEFAULT_OPTIONS, use the dicts within QDesign class.</span>
+<span class="sd">    'a' : '1mm',</span>
+<span class="sd">    'b' : '1um',</span>
+<span class="sd">    'c' : {</span>
+<span class="sd">        'd' : '15um',</span>
+<span class="sd">        'e' : '10um',</span>
 <span class="sd">        }</span>
 <span class="sd">    }</span>
-<span class="sd">self = Test(design, &#39;test&#39;)</span>
+<span class="sd">self = Test(design, 'test')</span>
 <span class="sd">self.p = ParsedDynamicAttributes(self)</span>
 <span class="sd">self.p</span>
 <span class="sd">self.p.a</span>
 <span class="sd">self.p.a.c</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_nested_dict_item</span><span class="p">(</span><span class="n">dic</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">key_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the nested dictionary item.</span>
+<span class="w">    </span><span class="sd">"""Get the nested dictionary item.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        dic (dict): Dictionary of nested items</span>
@@ -721,28 +721,28 @@
 <span class="sd">            myDict = Dict(</span>
 <span class="sd">                aa=Dict(</span>
 <span class="sd">                    x1={</span>
-<span class="sd">                        &#39;dda&#39;: &#39;34fF&#39;</span>
+<span class="sd">                        'dda': '34fF'</span>
 <span class="sd">                    },</span>
-<span class="sd">                    y1=&#39;Y&#39;,</span>
-<span class="sd">                    z=&#39;10um&#39;</span>
+<span class="sd">                    y1='Y',</span>
+<span class="sd">                    z='10um'</span>
 <span class="sd">                ),</span>
 <span class="sd">                bb=Dict(</span>
 <span class="sd">                    x2=5,</span>
-<span class="sd">                    y2=&#39;YYYsdg&#39;,</span>
-<span class="sd">                    z=&#39;100um&#39;</span>
+<span class="sd">                    y2='YYYsdg',</span>
+<span class="sd">                    z='100um'</span>
 <span class="sd">                ),</span>
-<span class="sd">                cc=&#39;100nm&#39;</span>
+<span class="sd">                cc='100nm'</span>
 <span class="sd">            )</span>
-<span class="sd">            key_list = [&#39;cc&#39;]</span>
+<span class="sd">            key_list = ['cc']</span>
 <span class="sd">            print(get_nested_dict_item(myDict, key_list))</span>
 
-<span class="sd">            key_list = [&#39;aa&#39;, &#39;x1&#39;, &#39;dda&#39;]</span>
+<span class="sd">            key_list = ['aa', 'x1', 'dda']</span>
 <span class="sd">            print(get_nested_dict_item(myDict, key_list))</span>
 
 <span class="sd">        Results in</span>
 <span class="sd">            &gt;&gt; 100nm</span>
 <span class="sd">            &gt;&gt; 34fF</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">key_list</span><span class="p">:</span>  <span class="c1"># get the root</span>
         <span class="k">return</span> <span class="n">dic</span>
@@ -754,30 +754,30 @@
 
 
 <span class="c1"># Example use</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">myDict = Dict(</span>
 <span class="sd">    aa=Dict(</span>
 <span class="sd">        x1={</span>
-<span class="sd">            &#39;dda&#39;: &#39;34fF&#39;</span>
+<span class="sd">            'dda': '34fF'</span>
 <span class="sd">        },</span>
-<span class="sd">        y1=&#39;Y&#39;,</span>
-<span class="sd">        z=&#39;10um&#39;</span>
+<span class="sd">        y1='Y',</span>
+<span class="sd">        z='10um'</span>
 <span class="sd">    ),</span>
 <span class="sd">    bb=Dict(</span>
 <span class="sd">        x2=5,</span>
-<span class="sd">        y2=&#39;YYYsdg&#39;,</span>
-<span class="sd">        z=&#39;100um&#39;</span>
+<span class="sd">        y2='YYYsdg',</span>
+<span class="sd">        z='100um'</span>
 <span class="sd">    ),</span>
-<span class="sd">    cc=&#39;100nm&#39;</span>
+<span class="sd">    cc='100nm'</span>
 <span class="sd">)</span>
-<span class="sd">key_list = [&#39;cc&#39;]</span>
+<span class="sd">key_list = ['cc']</span>
 <span class="sd">print(get_nested_dict_item(myDict, key_list))</span>
 
-<span class="sd">key_list = [&#39;aa&#39;, &#39;x1&#39;, &#39;dda&#39;]</span>
+<span class="sd">key_list = ['aa', 'x1', 'dda']</span>
 <span class="sd">print(get_nested_dict_item(myDict, key_list))</span>
 
-<span class="sd">print(get_nested_dict_item(myDict, [&#39;aa&#39;]))</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">print(get_nested_dict_item(myDict, ['aa']))</span>
+<span class="sd">"""</span>
 </pre></div>
         </article>
       </div>
@@ -796,7 +796,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -819,6 +819,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

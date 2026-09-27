@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -586,7 +586,7 @@ Jupyter, CI, headless / non-interactive workflows.</p>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 🖥️ GUI</div>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[gui]&quot;</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[gui]"</span>
 </pre></div>
 </div>
 <p class="sd-card-text"><strong>Adds:</strong> <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> desktop application (PySide6,
@@ -600,7 +600,7 @@ qdarkstyle).</p>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 🧲 Ansys / HFSS / Q3D</div>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[ansys]&quot;</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[ansys]"</span>
 </pre></div>
 </div>
 <p class="sd-card-text"><strong>Adds:</strong> HFSS / Q3D renderers, EPR analyses (pyaedt,
@@ -615,7 +615,7 @@ AEDT license (typically Windows).</p>
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 🔺 Open FEM mesher (gmsh)</div>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[mesh]&quot;</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[mesh]"</span>
 </pre></div>
 </div>
 <p class="sd-card-text"><strong>Adds:</strong> gmsh-based meshing — the foundation for the
@@ -634,7 +634,7 @@ license. (<code class="docutils literal notranslate"><span class="pre">[fem]</sp
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 📦 Everything</div>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[full]&quot;</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[full]"</span>
 </pre></div>
 </div>
 <p class="sd-card-text">All of the above — GUI + Ansys + FEM. Use this if you’re
@@ -647,8 +647,8 @@ upgrading from v0.6.x and want <strong>zero</strong> behavior change.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p><strong>Extras compose</strong> — combine them with comma-separated names:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[gui,ansys]&quot;</span><span class="w">   </span><span class="c1"># MetalGUI + HFSS/Q3D</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;quantum-metal[gui,mesh]&quot;</span><span class="w">    </span><span class="c1"># MetalGUI + gmsh</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[gui,ansys]"</span><span class="w">   </span><span class="c1"># MetalGUI + HFSS/Q3D</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[gui,mesh]"</span><span class="w">    </span><span class="c1"># MetalGUI + gmsh</span>
 </pre></div>
 </div>
 </div>
@@ -834,7 +834,7 @@ python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </sp
 uv / venv</label><div class="sd-tab-content docutils">
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w">      </span><span class="c1"># adjust to your venv; Windows: .venv\\Scripts\\activate</span>
 python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>jupyterlab<span class="w"> </span>ipykernel
-python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>--name<span class="w"> </span>quantum-metal-uv<span class="w"> </span>--display-name<span class="w"> </span><span class="s2">&quot;Quantum Metal (uv)&quot;</span>
+python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>--name<span class="w"> </span>quantum-metal-uv<span class="w"> </span>--display-name<span class="w"> </span><span class="s2">"Quantum Metal (uv)"</span>
 </pre></div>
 </div>
 </div>
@@ -843,7 +843,7 @@ python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"
 conda</label><div class="sd-tab-content docutils">
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>&lt;env_name&gt;
 conda<span class="w"> </span>install<span class="w"> </span>jupyterlab<span class="w"> </span>ipykernel
-python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>--name<span class="w"> </span>quantum-metal-conda<span class="w"> </span>--display-name<span class="w"> </span><span class="s2">&quot;Quantum Metal (conda)&quot;</span>
+python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>--name<span class="w"> </span>quantum-metal-conda<span class="w"> </span>--display-name<span class="w"> </span><span class="s2">"Quantum Metal (conda)"</span>
 </pre></div>
 </div>
 </div>
@@ -945,7 +945,7 @@ Click for YouTube Video</a><br><br>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

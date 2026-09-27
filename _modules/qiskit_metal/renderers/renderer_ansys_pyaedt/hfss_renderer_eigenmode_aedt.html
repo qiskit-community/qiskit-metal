@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -483,25 +483,25 @@
 <div class="viewcode-block" id="QHFSSEigenmodePyaedt">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html#qiskit_metal.renderers.QHFSSEigenmodePyaedt">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">QHFSSEigenmodePyaedt</span><span class="p">(</span><span class="n">QHFSSPyaedt</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of pyaedt HFSS renderer for methods unique to driven-modal solutions within HFSS.</span>
+<span class="w">    </span><span class="sd">"""Subclass of pyaedt HFSS renderer for methods unique to driven-modal solutions within HFSS.</span>
 <span class="sd">    QPyaedt Default Options:</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;aedt_hfss_eigenmode&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">"aedt_hfss_eigenmode"</span>
 
     <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;QHFSSEigenmodePyaedt_setup&quot;</span><span class="p">,</span>
-        <span class="n">MinimumFrequency</span><span class="o">=</span><span class="s2">&quot;5.0&quot;</span><span class="p">,</span>  <span class="c1"># GHz</span>
-        <span class="n">NumModes</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-        <span class="n">MaxDeltaFreq</span><span class="o">=</span><span class="s2">&quot;0.5&quot;</span><span class="p">,</span>
-        <span class="n">MaximumPasses</span><span class="o">=</span><span class="s2">&quot;10&quot;</span><span class="p">,</span>
-        <span class="n">MinimumPasses</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-        <span class="n">MinimumConvergedPasses</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-        <span class="n">PercentRefinement</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">,</span>
-        <span class="n">BasisOrder</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">"QHFSSEigenmodePyaedt_setup"</span><span class="p">,</span>
+        <span class="n">MinimumFrequency</span><span class="o">=</span><span class="s2">"5.0"</span><span class="p">,</span>  <span class="c1"># GHz</span>
+        <span class="n">NumModes</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
+        <span class="n">MaxDeltaFreq</span><span class="o">=</span><span class="s2">"0.5"</span><span class="p">,</span>
+        <span class="n">MaximumPasses</span><span class="o">=</span><span class="s2">"10"</span><span class="p">,</span>
+        <span class="n">MinimumPasses</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
+        <span class="n">MinimumConvergedPasses</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
+        <span class="n">PercentRefinement</span><span class="o">=</span><span class="s2">"30"</span><span class="p">,</span>
+        <span class="n">BasisOrder</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;aedt HFSS Options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""aedt HFSS Options"""</span>
 
     <span class="n">default_pyepr_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="n">ansys</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
@@ -510,17 +510,17 @@
         <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">cos_trunc</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">fock_trunc</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">numeric</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
         <span class="n">print_result</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;pyEPR options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""pyEPR options"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">multilayer_design</span><span class="p">:</span> <span class="s2">&quot;MultiPlanar&quot;</span><span class="p">,</span>
+        <span class="n">multilayer_design</span><span class="p">:</span> <span class="s2">"MultiPlanar"</span><span class="p">,</span>
         <span class="n">project_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">design_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a QRenderer for HFSS simulations using pyaedt and multiplanar design.</span>
+<span class="w">        </span><span class="sd">"""Create a QRenderer for HFSS simulations using pyaedt and multiplanar design.</span>
 <span class="sd">        QHFSSPyaedt is subclassed from QPyaedt, subclassed from QRendererAnalysis and</span>
 <span class="sd">        subclassed from QRenderer.  The default_setup options are expected to be defined by</span>
 <span class="sd">        child class of QHFSSPyaedt for driven-modal and eigenmode solution types.</span>
@@ -535,11 +535,11 @@
 <span class="sd">                                            Defaults to None.</span>
 <span class="sd">            initiate (bool, optional): True to initiate the renderer. Defaults to False.</span>
 <span class="sd">            options (Dict, optional):  Used to override all options. Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">multilayer_design</span><span class="p">,</span>
-            <span class="n">renderer_type</span><span class="o">=</span><span class="s2">&quot;HFSS_EM&quot;</span><span class="p">,</span>
+            <span class="n">renderer_type</span><span class="o">=</span><span class="s2">"HFSS_EM"</span><span class="p">,</span>
             <span class="n">project_name</span><span class="o">=</span><span class="n">project_name</span><span class="p">,</span>
             <span class="n">design_name</span><span class="o">=</span><span class="n">design_name</span><span class="p">,</span>
             <span class="n">initiate</span><span class="o">=</span><span class="n">initiate</span><span class="p">,</span>
@@ -563,7 +563,7 @@
         <span class="n">PercentRefinement</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">BasisOrder</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a solution setup in Ansys HFSS Driven-Modal solution type. If user does not provide</span>
+<span class="w">        </span><span class="sd">"""Create a solution setup in Ansys HFSS Driven-Modal solution type. If user does not provide</span>
 <span class="sd">        arguments, they will be obtained from QHFSSDrivenmodalPyaedt.default_setup dict.</span>
 
 <span class="sd">        Args:</span>
@@ -582,52 +582,52 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            new_setup (pyaedt.modules.SolveSetup.SetupHFSS): pyAEDT simulation setup object.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">activate_user_project_design</span><span class="p">()</span>
 
         <span class="n">esu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_setup</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">setup_names</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;The setup name already exists within &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;project:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="si">}</span><span class="s2"> design: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="si">}</span><span class="s2">. &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;So a new setup with name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> was NOT added to design.&quot;</span>
+                <span class="sa">f</span><span class="s2">"The setup name already exists within "</span>
+                <span class="sa">f</span><span class="s2">"project:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="si">}</span><span class="s2"> design: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="si">}</span><span class="s2">. "</span>
+                <span class="sa">f</span><span class="s2">"So a new setup with name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> was NOT added to design."</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MinimumFrequency</span><span class="p">:</span>
-            <span class="n">MinimumFrequency</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;MinimumFrequency&quot;</span><span class="p">]))</span>
+            <span class="n">MinimumFrequency</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">"MinimumFrequency"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">NumModes</span><span class="p">:</span>
-            <span class="n">NumModes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;NumModes&quot;</span><span class="p">]))</span>
+            <span class="n">NumModes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">"NumModes"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MaxDeltaFreq</span><span class="p">:</span>
-            <span class="n">MaxDeltaFreq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;MaxDeltaFreq&quot;</span><span class="p">]))</span>
+            <span class="n">MaxDeltaFreq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">"MaxDeltaFreq"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MaximumPasses</span><span class="p">:</span>
-            <span class="n">MaximumPasses</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;MaximumPasses&quot;</span><span class="p">]))</span>
+            <span class="n">MaximumPasses</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">"MaximumPasses"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MinimumPasses</span><span class="p">:</span>
-            <span class="n">MinimumPasses</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;MinimumPasses&quot;</span><span class="p">]))</span>
+            <span class="n">MinimumPasses</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">"MinimumPasses"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MinimumConvergedPasses</span><span class="p">:</span>
             <span class="n">MinimumConvergedPasses</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;MinimumConvergedPasses&quot;</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">"MinimumConvergedPasses"</span><span class="p">])</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">PercentRefinement</span><span class="p">:</span>
-            <span class="n">PercentRefinement</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;PercentRefinement&quot;</span><span class="p">]))</span>
+            <span class="n">PercentRefinement</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">"PercentRefinement"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">BasisOrder</span><span class="p">:</span>
-            <span class="n">BasisOrder</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">&quot;BasisOrder&quot;</span><span class="p">]))</span>
+            <span class="n">BasisOrder</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">esu</span><span class="p">[</span><span class="s2">"BasisOrder"</span><span class="p">]))</span>
 
         <span class="n">new_setup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">create_setup</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;MinimumFrequency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">MinimumFrequency</span><span class="si">}</span><span class="s2">GHz&quot;</span>
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;NumModes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NumModes</span>
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;MaxDeltaFreq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MaxDeltaFreq</span>
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;MaximumPasses&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MaximumPasses</span>
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;MinimumPasses&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MinimumPasses</span>
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;MinimumConvergedPasses&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MinimumConvergedPasses</span>
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;PercentRefinement&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PercentRefinement</span>
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;BasisOrder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">BasisOrder</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"MinimumFrequency"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">MinimumFrequency</span><span class="si">}</span><span class="s2">GHz"</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"NumModes"</span><span class="p">]</span> <span class="o">=</span> <span class="n">NumModes</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"MaxDeltaFreq"</span><span class="p">]</span> <span class="o">=</span> <span class="n">MaxDeltaFreq</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"MaximumPasses"</span><span class="p">]</span> <span class="o">=</span> <span class="n">MaximumPasses</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"MinimumPasses"</span><span class="p">]</span> <span class="o">=</span> <span class="n">MinimumPasses</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"MinimumConvergedPasses"</span><span class="p">]</span> <span class="o">=</span> <span class="n">MinimumConvergedPasses</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"PercentRefinement"</span><span class="p">]</span> <span class="o">=</span> <span class="n">PercentRefinement</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"BasisOrder"</span><span class="p">]</span> <span class="o">=</span> <span class="n">BasisOrder</span>
 
         <span class="n">new_setup</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
@@ -637,7 +637,7 @@
 <div class="viewcode-block" id="QHFSSEigenmodePyaedt.analyze_setup">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html#qiskit_metal.renderers.QHFSSEigenmodePyaedt.analyze_setup">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">analyze_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run a specific solution setup in Ansys HFSS DrivenModal.</span>
+<span class="w">        </span><span class="sd">"""Run a specific solution setup in Ansys HFSS DrivenModal.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            setup_name (str): Name of setup.</span>
@@ -645,14 +645,14 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Value returned from pyaedt.analyze_setup().</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Activate project_name and design_name before anything else</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activate_user_project_design</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">setup_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">setup_names</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, &quot;</span>
-                <span class="s2">&quot;a new setup will be added to design with default settings for HFSS DrivenModal.&quot;</span>
+                <span class="s2">"Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, "</span>
+                <span class="s2">"a new setup will be added to design with default settings for HFSS DrivenModal."</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_hfss_dm_setup</span><span class="p">(</span><span class="n">setup_name</span><span class="p">)</span>
 
@@ -670,11 +670,11 @@
         <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This render_design will add additional logic for just eigenmode design within project.</span>
 
 <span class="sd">        Initiate rendering of components in design contained in selection,</span>
-<span class="sd">        assuming they&#39;re valid. Components are rendered before the chips they</span>
+<span class="sd">        assuming they're valid. Components are rendered before the chips they</span>
 <span class="sd">        reside on, and subtraction of negative shapes is performed at the very</span>
 <span class="sd">        end.</span>
 
@@ -686,7 +686,7 @@
 <span class="sd">        Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that</span>
 <span class="sd">        will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have</span>
 <span class="sd">        meshing to self.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists. Note</span>
-<span class="sd">        that these objects are &quot;refreshed&quot; each time render_design is called (as opposed to in the init function)</span>
+<span class="sd">        that these objects are "refreshed" each time render_design is called (as opposed to in the init function)</span>
 <span class="sd">        to clear QAnsysRenderer of any leftover items from the last call to render_design.</span>
 
 <span class="sd">        Among the components selected for export, there may or may not be unused (unconnected) pins.</span>
@@ -700,10 +700,10 @@
 <span class="sd">        minimum rectangular bounding box of all rendered components and adds a buffer of x_buffer_width_mm and</span>
 <span class="sd">        y_buffer_width_mm horizontally and vertically, respectively, to the chip size. The center of the chip</span>
 <span class="sd">        lies at the midpoint x/y coordinates of the minimum rectangular bounding box and may change depending</span>
-<span class="sd">        on which components are rendered and how they&#39;re positioned. If box generated with box_plus_buffer</span>
+<span class="sd">        on which components are rendered and how they're positioned. If box generated with box_plus_buffer</span>
 <span class="sd">        passes the chip size, the box will be cropped to chip size. If box_plus_buffer is False, however, the</span>
 <span class="sd">        chip position and dimensions are taken from the chip info dictionary found in self.design, irrespective</span>
-<span class="sd">        of what&#39;s being rendered. While this latter option is faster because it doesn&#39;t require calculating a</span>
+<span class="sd">        of what's being rendered. While this latter option is faster because it doesn't require calculating a</span>
 <span class="sd">        bounding box, it runs the risk of rendered components being too close to the edge of the chip or even</span>
 <span class="sd">        falling outside its boundaries.</span>
 
@@ -712,7 +712,7 @@
 <span class="sd">            open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.</span>
 <span class="sd">            box_plus_buffer (bool, optional): Either calculate a bounding box based on the location of rendered geometries</span>
 <span class="sd">                                     or use chip size from design class.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># self.fill_info will hold the name of newly generated box,</span>
         <span class="c1"># along with information from layer stack</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fill_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_layer_datatype_when_fill_is_true</span><span class="p">()</span>
@@ -724,7 +724,7 @@
         <span class="c1"># jj_to_port SHOULD not bew in eigenmode solution type. So will give error</span>
         <span class="k">if</span> <span class="n">jj_to_port</span> <span class="ow">or</span> <span class="n">port_list</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;In eigenmode solution, there should NOT be any values for jj_to_port or port_list.&quot;</span>
+                <span class="s2">"In eigenmode solution, there should NOT be any values for jj_to_port or port_list."</span>
             <span class="p">)</span>
             <span class="k">return</span>
 
@@ -734,13 +734,13 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Unable to proceed with rendering. Please check selection.&quot;</span>
+                <span class="s2">"Unable to proceed with rendering. Please check selection."</span>
             <span class="p">)</span>
             <span class="k">return</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">activate_user_project_design</span><span class="p">()</span>
 
-        <span class="c1"># Ansys default units is &#39;mm&#39;?????, but metal using &#39;meter&#39;.</span>
+        <span class="c1"># Ansys default units is 'mm'?????, but metal using 'meter'.</span>
         <span class="c1"># pyaedt.generic.constants.SI_UNITS.Length is meter.</span>
 
         <span class="c1"># self.add_mesh()</span>
@@ -767,7 +767,7 @@
         <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
         <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Logic Just for eigenmode</span>
+<span class="w">        </span><span class="sd">"""Logic Just for eigenmode</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            qgeom (pd.Series): One row of the junction table.</span>
@@ -778,12 +778,12 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: If the junction should be rendered based on row from junction</span>
 <span class="sd">                table and ignored_jjs.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="n">ignored_jjs</span><span class="p">:</span>
             <span class="n">search_junction</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">qgeom</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">search_junction</span> <span class="ow">in</span> <span class="n">ignored_jjs</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
@@ -801,7 +801,7 @@
         <span class="n">numeric</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">print_result</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run EPR analysis and return the results dict.</span>
+<span class="w">        </span><span class="sd">"""Run EPR analysis and return the results dict.</span>
 
 <span class="sd">        Interpreting results:</span>
 <span class="sd">        - ``f_0`` [MHz]: Eigenmode frequencies from HFSS (linear).</span>
@@ -819,7 +819,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: ``self.epr_quantum_analysis.data`` with all EPR results.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">print_result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">print_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_pyepr_options</span><span class="o">.</span><span class="n">print_result</span>
 
@@ -857,45 +857,45 @@
 <div class="viewcode-block" id="QHFSSEigenmodePyaedt.setup_jjs_for_epr">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html#qiskit_metal.renderers.QHFSSEigenmodePyaedt.setup_jjs_for_epr">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">setup_jjs_for_epr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Finds all names, inductances, and capacitances of Josephson Junctions rendered into ANSYS.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Get all josephson junctions from rendered components table</span>
         <span class="n">geom_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_poly_and_junction_with_valid_comps</span>
-        <span class="n">all_jjs</span> <span class="o">=</span> <span class="n">geom_table</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">geom_table</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;rect_jj&quot;</span><span class="p">)]</span>
+        <span class="n">all_jjs</span> <span class="o">=</span> <span class="n">geom_table</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">geom_table</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">"rect_jj"</span><span class="p">)]</span>
         <span class="n">all_jjs</span> <span class="o">=</span> <span class="n">all_jjs</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">all_jjs</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="c1">### Parsing Data ###</span>
-            <span class="n">component</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">])</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
-            <span class="n">inductance</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;aedt_hfss_inductance&quot;</span><span class="p">]</span>  <span class="c1"># Lj in Henries</span>
-            <span class="n">capacitance</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;aedt_hfss_capacitance&quot;</span><span class="p">]</span>  <span class="c1"># Cj in Farads</span>
+            <span class="n">component</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"component"</span><span class="p">])</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>
+            <span class="n">inductance</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">"aedt_hfss_inductance"</span><span class="p">]</span>  <span class="c1"># Lj in Henries</span>
+            <span class="n">capacitance</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">"aedt_hfss_capacitance"</span><span class="p">]</span>  <span class="c1"># Cj in Farads</span>
 
             <span class="c1"># Get ANSYS &gt; Model &gt; Sheet corresponding to JJs</span>
-            <span class="n">rect_name</span> <span class="o">=</span> <span class="s2">&quot;JJ_rect_Lj_&quot;</span> <span class="o">+</span> <span class="n">component</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">name</span>
+            <span class="n">rect_name</span> <span class="o">=</span> <span class="s2">"JJ_rect_Lj_"</span> <span class="o">+</span> <span class="n">component</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="n">name</span>
 
             <span class="c1"># Get ANSYS &gt; Model &gt; Lines corresponding to JJs</span>
-            <span class="n">line_name</span> <span class="o">=</span> <span class="s2">&quot;JJ_Lj_&quot;</span> <span class="o">+</span> <span class="n">component</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span>
+            <span class="n">line_name</span> <span class="o">=</span> <span class="s2">"JJ_Lj_"</span> <span class="o">+</span> <span class="n">component</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">"_"</span>
 
             <span class="c1">### Appending data ###</span>
             <span class="c1"># Add global Lj and Cj variables to ANSYS (for EPR analysis)</span>
-            <span class="n">ansys_Lj_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Lj_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="n">ansys_Cj_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Cj_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">ansys_Lj_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Lj_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">ansys_Cj_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Cj_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">ansys_Lj_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">inductance</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;nH&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">ansys_Cj_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">capacitance</span> <span class="o">*</span> <span class="mf">1e15</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;fF&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">ansys_Lj_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">inductance</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"nH"</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">ansys_Cj_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">capacitance</span> <span class="o">*</span> <span class="mf">1e15</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"fF"</span><span class="p">)</span>
 
             <span class="c1"># Append data in pyEPR.ProjectInfo.junctions data format</span>
             <span class="n">junction_dict</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;Lj_variable&quot;</span><span class="p">:</span> <span class="n">ansys_Lj_name</span><span class="p">,</span>
-                <span class="s2">&quot;rect&quot;</span><span class="p">:</span> <span class="n">rect_name</span><span class="p">,</span>
-                <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="n">line_name</span><span class="p">,</span>
-                <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="n">epr</span><span class="o">.</span><span class="n">parse_units</span><span class="p">(</span><span class="s2">&quot;100um&quot;</span><span class="p">),</span>
-                <span class="s2">&quot;Cj_variable&quot;</span><span class="p">:</span> <span class="n">ansys_Cj_name</span><span class="p">,</span>
+                <span class="s2">"Lj_variable"</span><span class="p">:</span> <span class="n">ansys_Lj_name</span><span class="p">,</span>
+                <span class="s2">"rect"</span><span class="p">:</span> <span class="n">rect_name</span><span class="p">,</span>
+                <span class="s2">"line"</span><span class="p">:</span> <span class="n">line_name</span><span class="p">,</span>
+                <span class="s2">"length"</span><span class="p">:</span> <span class="n">epr</span><span class="o">.</span><span class="n">parse_units</span><span class="p">(</span><span class="s2">"100um"</span><span class="p">),</span>
+                <span class="s2">"Cj_variable"</span><span class="p">:</span> <span class="n">ansys_Cj_name</span><span class="p">,</span>
             <span class="p">}</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">junctions</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;j</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">junction_dict</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">junctions</span><span class="p">[</span><span class="sa">f</span><span class="s2">"j</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">junction_dict</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">validate_junction_info</span><span class="p">()</span></div>
 
@@ -903,16 +903,16 @@
 <div class="viewcode-block" id="QHFSSEigenmodePyaedt.setup_dielectric_for_epr">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html#qiskit_metal.renderers.QHFSSEigenmodePyaedt.setup_dielectric_for_epr">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">setup_dielectric_for_epr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dielectric_layers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Find name of dielectric layer rendered in ANSYS, then</span>
 <span class="sd">        define it as a dissipative dielectric surface for pyEPR.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            dielectric_layers (list, optional): Specify which layers are dielectrics.</span>
-<span class="sd">                Layer specified in `LayerStackHandler.ls_df[&#39;layer&#39;]`.</span>
+<span class="sd">                Layer specified in `LayerStackHandler.ls_df['layer']`.</span>
 <span class="sd">                Defaults to self.default_pyepr_options, which is the default silicon layer.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Check for default values</span>
         <span class="k">if</span> <span class="n">dielectric_layers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dielectric_layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_pyepr_options</span><span class="o">.</span><span class="n">ansys</span><span class="o">.</span><span class="n">dielectric_layers</span>
@@ -920,20 +920,20 @@
         <span class="c1"># Check if layerstack (self.design.ls) is uniquely specified</span>
         <span class="n">ls_unique</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">is_layer_data_unique</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">ls_unique</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Layer data in `MultiPlanar` design is not unique&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Layer data in `MultiPlanar` design is not unique"</span><span class="p">)</span>
 
         <span class="n">dielectric_names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">ls_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">ls_df</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">dielectric_layers</span><span class="p">:</span>
             <span class="c1"># Find layer names</span>
-            <span class="n">selected_ls_df</span> <span class="o">=</span> <span class="n">ls_df</span><span class="p">[</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer</span><span class="p">]</span>
-            <span class="n">datatype</span> <span class="o">=</span> <span class="n">selected_ls_df</span><span class="p">[</span><span class="s2">&quot;datatype&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">dielectric_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;layer_</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">_datatype_</span><span class="si">{</span><span class="n">datatype</span><span class="si">}</span><span class="s2">_plane&quot;</span>
+            <span class="n">selected_ls_df</span> <span class="o">=</span> <span class="n">ls_df</span><span class="p">[</span><span class="n">ls_df</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer</span><span class="p">]</span>
+            <span class="n">datatype</span> <span class="o">=</span> <span class="n">selected_ls_df</span><span class="p">[</span><span class="s2">"datatype"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">dielectric_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"layer_</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">_datatype_</span><span class="si">{</span><span class="n">datatype</span><span class="si">}</span><span class="s2">_plane"</span>
 
             <span class="n">dielectric_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dielectric_name</span><span class="p">)</span>
 
         <span class="c1"># Define them as dielectrics in pyEPR.ProjectInfo object</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">dissipative</span><span class="p">[</span><span class="s2">&quot;dielectric_surfaces&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dielectric_names</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">dissipative</span><span class="p">[</span><span class="s2">"dielectric_surfaces"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dielectric_names</span></div>
 
 
 <div class="viewcode-block" id="QHFSSEigenmodePyaedt.epr_spectrum_analysis">
@@ -941,13 +941,13 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">epr_spectrum_analysis</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">cos_trunc</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fock_trunc</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">print_result</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Core EPR analysis method.</span>
+<span class="w">        </span><span class="sd">"""Core EPR analysis method.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            cos_trunc (int, optional): Truncation of the cosine. Defaults to self.default_pyepr_options.</span>
 <span class="sd">            fock_trunc (int, optional): Truncation of the fock. Defaults to self.default_pyepr_options.</span>
 <span class="sd">            print (boo, optional): Print results of EPR analysis. Defaults to self.default_pyepr_options.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">cos_trunc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cos_trunc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_pyepr_options</span><span class="o">.</span><span class="n">hamiltonian</span><span class="o">.</span><span class="n">cos_trunc</span>
         <span class="k">if</span> <span class="n">fock_trunc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -966,11 +966,11 @@
 <div class="viewcode-block" id="QHFSSEigenmodePyaedt.epr_report_hamiltonian">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html#qiskit_metal.renderers.QHFSSEigenmodePyaedt.epr_report_hamiltonian">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">epr_report_hamiltonian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">numeric</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reports in a markdown friendly table the hamiltonian results.</span>
+<span class="w">        </span><span class="sd">"""Reports in a markdown friendly table the hamiltonian results.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            numeric (bool, optional): Use numerical diagonalization. Defaults to self.default_pyepr_options.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">numeric</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">numeric</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_pyepr_options</span><span class="o">.</span><span class="n">hamiltonian</span><span class="o">.</span><span class="n">numeric</span>
 
@@ -996,7 +996,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -1019,6 +1019,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

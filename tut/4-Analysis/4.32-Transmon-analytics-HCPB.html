@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -491,7 +491,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We&#39;ll use the variable x to represent the offset charge (ng), which will vary from -2.0 to 2.0</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We'll use the variable x to represent the offset charge (ng), which will vary from -2.0 to 2.0</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -514,11 +514,11 @@ minimum value of the lowest energy eigenvalue (called “floor”) and set this 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we&#39;ll normalize the calculated energies by the 0-&gt;1 transition state energy evaluated at the degenercy point (ng=0.5)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we'll normalize the calculated energies by the 0-&gt;1 transition state energy evaluated at the degenercy point (ng=0.5)</span>
 <span class="n">H_norm</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">E_J</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_C</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">norm</span> <span class="o">=</span> <span class="n">H_norm</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="c1"># Next we&#39;ll empty lists to the first three eigenvalues (m=0, m=1, m=2):</span>
+<span class="c1"># Next we'll empty lists to the first three eigenvalues (m=0, m=1, m=2):</span>
 <span class="n">E0</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">E1</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">E2</span> <span class="o">=</span> <span class="p">[]</span>
@@ -533,11 +533,11 @@ minimum value of the lowest energy eigenvalue (called “floor”) and set this 
 <span class="c1"># define the minimum of E0 and set this to E=0</span>
 <span class="n">floor</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">E0</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E0</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E1</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E2</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;ng&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Em/E01&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E0</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s2">"k"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E1</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E2</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"ng"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Em/E01"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -616,7 +616,7 @@ Text(0, 0.5, &#39;Em/E01&#39;)
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

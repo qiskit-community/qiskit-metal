@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,12 +472,12 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Models the transmon qubit in the cooper-pair charge basis</span>
 <span class="sd">and calculate the exact (analytic) solutions</span>
 
 <span class="sd">@author: Nick Lanzillo (IBM)</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">mathieu_a</span>
@@ -486,14 +486,14 @@
 <div class="viewcode-block" id="Hcpb_analytic">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb_analytic.html#qiskit_metal.analyses.Hcpb_analytic">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Hcpb_analytic</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Analytic version of Hamiltonian-model Cooper pair box (Hcpb) class.</span>
 
 <span class="sd">    Used calculate the exact eigenvalues for arbitrary Ej, Ec, ng values.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ej</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Ec</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ng</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Generate a Cooper-pair box (CPB) model.</span>
 
 <span class="sd">        Arguments:</span>
@@ -502,7 +502,7 @@
 <span class="sd">            ng (float): Offset charge of the CPB (ng=0.5 is the sweet spot).</span>
 <span class="sd">                        `ng` only needs to run between -0.5 and 0.5.</span>
 <span class="sd">                        `ng` is defined in units of cooper pairs (2e)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_Ej</span> <span class="o">=</span> <span class="n">Ej</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_Ec</span> <span class="o">=</span> <span class="n">Ec</span>
@@ -518,7 +518,7 @@
 <div class="viewcode-block" id="Hcpb_analytic.evalue_k">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb_analytic.html#qiskit_metal.analyses.Hcpb_analytic.evalue_k">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evalue_k</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the eigenvalue of the Hamiltonian for level k.</span>
 
 <span class="sd">        Arguments:</span>
@@ -526,7 +526,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: eigenvalue of the Hamiltonian</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ng</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">((</span><span class="n">k</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -560,7 +560,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -583,6 +583,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

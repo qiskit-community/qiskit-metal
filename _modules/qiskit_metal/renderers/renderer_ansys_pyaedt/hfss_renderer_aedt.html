@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -461,13 +461,13 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Variables</span>
 
 <span class="sd">from pyaedt.HFSS import HFSS</span>
 <span class="sd">with HFSS as hfss:</span>
-<span class="sd">     hfss[&quot;dim&quot;] = &quot;1mm&quot;   # design variable</span>
-<span class="sd">     hfss[&quot;$dim&quot;] = &quot;1mm&quot;  # project variable</span>
+<span class="sd">     hfss["dim"] = "1mm"   # design variable</span>
+<span class="sd">     hfss["$dim"] = "1mm"  # project variable</span>
 
 <span class="sd">Modeler</span>
 
@@ -475,11 +475,11 @@
 
 <span class="sd">from pyaedt.hfss import Hfss</span>
 <span class="sd">with Hfss as hfss:</span>
-<span class="sd">     hfss.modeler.create_box([0, 0, 0], [10, &quot;dim&quot;, 10],</span>
-<span class="sd">                             &quot;mybox&quot;, &quot;aluminum&quot;)</span>
+<span class="sd">     hfss.modeler.create_box([0, 0, 0], [10, "dim", 10],</span>
+<span class="sd">                             "mybox", "aluminum")</span>
 
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
@@ -499,55 +499,55 @@
 <div class="viewcode-block" id="QHFSSPyaedt">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">QHFSSPyaedt</span><span class="p">(</span><span class="n">QPyaedt</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of pyaedt renderer for running HFSS simulations.</span>
+<span class="w">    </span><span class="sd">"""Subclass of pyaedt renderer for running HFSS simulations.</span>
 
 <span class="sd">    QPyaedt Default Options:</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">default_setup</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">Dict</span><span class="p">(</span>
             <span class="n">drivenmodal</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Setup&quot;</span><span class="p">,</span>
-                <span class="n">freq_ghz</span><span class="o">=</span><span class="s2">&quot;5.0&quot;</span><span class="p">,</span>
-                <span class="n">max_delta_s</span><span class="o">=</span><span class="s2">&quot;0.1&quot;</span><span class="p">,</span>
-                <span class="n">max_passes</span><span class="o">=</span><span class="s2">&quot;10&quot;</span><span class="p">,</span>
-                <span class="n">min_passes</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-                <span class="n">min_converged</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-                <span class="n">pct_refinement</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">,</span>
-                <span class="n">basis_order</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">"Setup"</span><span class="p">,</span>
+                <span class="n">freq_ghz</span><span class="o">=</span><span class="s2">"5.0"</span><span class="p">,</span>
+                <span class="n">max_delta_s</span><span class="o">=</span><span class="s2">"0.1"</span><span class="p">,</span>
+                <span class="n">max_passes</span><span class="o">=</span><span class="s2">"10"</span><span class="p">,</span>
+                <span class="n">min_passes</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
+                <span class="n">min_converged</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
+                <span class="n">pct_refinement</span><span class="o">=</span><span class="s2">"30"</span><span class="p">,</span>
+                <span class="n">basis_order</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="n">eigenmode</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Setup&quot;</span><span class="p">,</span>
-                <span class="n">min_freq_ghz</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-                <span class="n">n_modes</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-                <span class="n">max_delta_f</span><span class="o">=</span><span class="s2">&quot;0.5&quot;</span><span class="p">,</span>
-                <span class="n">max_passes</span><span class="o">=</span><span class="s2">&quot;10&quot;</span><span class="p">,</span>
-                <span class="n">min_passes</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-                <span class="n">min_converged</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-                <span class="n">pct_refinement</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">,</span>
-                <span class="n">basis_order</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">"Setup"</span><span class="p">,</span>
+                <span class="n">min_freq_ghz</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
+                <span class="n">n_modes</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
+                <span class="n">max_delta_f</span><span class="o">=</span><span class="s2">"0.5"</span><span class="p">,</span>
+                <span class="n">max_passes</span><span class="o">=</span><span class="s2">"10"</span><span class="p">,</span>
+                <span class="n">min_passes</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
+                <span class="n">min_converged</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
+                <span class="n">pct_refinement</span><span class="o">=</span><span class="s2">"30"</span><span class="p">,</span>
+                <span class="n">basis_order</span><span class="o">=</span><span class="s2">"-1"</span><span class="p">,</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;aedt_hfss&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">"aedt_hfss"</span>
 
     <span class="n">aedt_hfss_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="c1"># spacing between port and inductor if junction is drawn both ways</span>
-        <span class="n">port_inductor_gap</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span>
+        <span class="n">port_inductor_gap</span><span class="o">=</span><span class="s2">"10um"</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;aedt HFSS Options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""aedt HFSS Options"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">multilayer_design</span><span class="p">:</span> <span class="s2">&quot;MultiPlanar&quot;</span><span class="p">,</span>
-        <span class="n">renderer_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;HFSS&quot;</span><span class="p">,</span>
+        <span class="n">multilayer_design</span><span class="p">:</span> <span class="s2">"MultiPlanar"</span><span class="p">,</span>
+        <span class="n">renderer_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"HFSS"</span><span class="p">,</span>
         <span class="n">project_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">design_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a QRenderer for HFSS simulations using pyaedt and multiplanar design.</span>
+<span class="w">        </span><span class="sd">"""Create a QRenderer for HFSS simulations using pyaedt and multiplanar design.</span>
 <span class="sd">        QHFSSPyaedt is subclassed from QPyaedt, subclassed from QRendererAnalysis and</span>
 <span class="sd">        subclassed from QRenderer.  The default_setup options are expected to be defined by</span>
 <span class="sd">        child class of QHFSSPyaedt for driven-modal and eigenmode solution types.</span>
@@ -556,7 +556,7 @@
 <span class="sd">        Args:</span>
 
 <span class="sd">            multilayer_design (MultiPlanar): Use QGeometry within MultiPlanar to obtain elements for Ansys.</span>
-<span class="sd">            renderer_type (str): Choose string from list [&#39;HFSS_DM&#39;, &#39;HFSS_EM&#39;, &#39;Q3D&#39;] for the type of</span>
+<span class="sd">            renderer_type (str): Choose string from list ['HFSS_DM', 'HFSS_EM', 'Q3D'] for the type of</span>
 <span class="sd">                                design to insert into project.</span>
 <span class="sd">            project_name (Union[str, None], optional): Give a name, or one will be made based on class name of renderer.</span>
 <span class="sd">                                            Defaults to None.</span>
@@ -564,7 +564,7 @@
 <span class="sd">                                            Defaults to None.</span>
 <span class="sd">            initiate (bool, optional): True to initiate the renderer. Defaults to False.</span>
 <span class="sd">            options (Dict, optional):  Used to override all options. Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">multilayer_design</span><span class="p">,</span>
@@ -591,7 +591,7 @@
         <span class="c1"># Keep copy of ignored_jjs to use after rendering.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="c1"># QRenderer has a &quot;cls&quot; method called load()</span>
+        <span class="c1"># QRenderer has a "cls" method called load()</span>
         <span class="n">if_registered_in_design</span> <span class="o">=</span> <span class="n">QHFSSPyaedt</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>  <span class="c1"># noqa: F841</span>
 
         <span class="c1"># make a class to read in pandas table.</span>
@@ -608,12 +608,12 @@
         <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This render_design will add additional logic for HFSS within project.</span>
 <span class="sd">        In particular, when used by BOTH solution types of eigenmode and drivenmodal.</span>
 
 <span class="sd">        Initiate rendering of components in design contained in selection,</span>
-<span class="sd">        assuming they&#39;re valid. Components are rendered before the chips they</span>
+<span class="sd">        assuming they're valid. Components are rendered before the chips they</span>
 <span class="sd">        reside on, and subtraction of negative shapes is performed at the very</span>
 <span class="sd">        end.</span>
 
@@ -625,7 +625,7 @@
 <span class="sd">        Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that</span>
 <span class="sd">        will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have</span>
 <span class="sd">        meshing to self.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists. Note</span>
-<span class="sd">        that these objects are &quot;refreshed&quot; each time render_design is called (as opposed to in the init function)</span>
+<span class="sd">        that these objects are "refreshed" each time render_design is called (as opposed to in the init function)</span>
 <span class="sd">        to clear QAnsysRenderer of any leftover items from the last call to render_design.</span>
 
 <span class="sd">        Among the components selected for export, there may or may not be unused (unconnected) pins.</span>
@@ -647,12 +647,12 @@
 <span class="sd">        lumped ports and/or inductors, or omit them altogether. To do so,</span>
 <span class="sd">        tuples of the form (component_name, element_name, impedance)</span>
 <span class="sd">        are added to the list jj_to_port. For example,</span>
-<span class="sd">        (&#39;Q1&#39;, &#39;rect_jj&#39;, 70) indicates that rect_jj of component Q1 is</span>
+<span class="sd">        ('Q1', 'rect_jj', 70) indicates that rect_jj of component Q1 is</span>
 <span class="sd">        to be rendered as both a lumped port with an impedance of 70 Ohms.</span>
 
 <span class="sd">        Alternatively for driven modal solutions, one may want to disregard</span>
 <span class="sd">        select junctions in the Metal design altogether to simulate the</span>
-<span class="sd">        capacitive effect while keeping the qubit in an &quot;off&quot; state. Such</span>
+<span class="sd">        capacitive effect while keeping the qubit in an "off" state. Such</span>
 <span class="sd">        junctions are specified in the form (component_name, element_name)</span>
 <span class="sd">        in the list ignored_jjs.</span>
 
@@ -661,9 +661,9 @@
 <span class="sd">        minimum rectangular bounding box of all rendered components and adds a buffer of x_buffer_width_mm and</span>
 <span class="sd">        y_buffer_width_mm horizontally and vertically, respectively, to the chip size. The center of the chip</span>
 <span class="sd">        lies at the midpoint x/y coordinates of the minimum rectangular bounding box and may change depending</span>
-<span class="sd">        on which components are rendered and how they&#39;re positioned. If box_plus_buffer is False, however, the</span>
+<span class="sd">        on which components are rendered and how they're positioned. If box_plus_buffer is False, however, the</span>
 <span class="sd">        chip position and dimensions are taken from the chip info dictionary found in self.design, irrespective</span>
-<span class="sd">        of what&#39;s being rendered. While this latter option is faster because it doesn&#39;t require calculating a</span>
+<span class="sd">        of what's being rendered. While this latter option is faster because it doesn't require calculating a</span>
 <span class="sd">        bounding box, it runs the risk of rendered components being too close to the edge of the chip or even</span>
 <span class="sd">        falling outside its boundaries.</span>
 
@@ -672,15 +672,15 @@
 <span class="sd">            open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.</span>
 <span class="sd">            port_list (Union[list, None], optional): List of tuples of pins to</span>
 <span class="sd">                                        be rendered as ports. Defaults to None.</span>
-<span class="sd">            jj_to_port (Union[list, None], optional): List of tuples of jj&#39;s to</span>
+<span class="sd">            jj_to_port (Union[list, None], optional): List of tuples of jj's to</span>
 <span class="sd">                                        be rendered as ports. Defaults to None.</span>
-<span class="sd">            ignored_jjs (Union[list, None], optional): List of tuples of jj&#39;s</span>
-<span class="sd">                                        that shouldn&#39;t be rendered.</span>
+<span class="sd">            ignored_jjs (Union[list, None], optional): List of tuples of jj's</span>
+<span class="sd">                                        that shouldn't be rendered.</span>
 <span class="sd">                                        Defaults to None.</span>
 <span class="sd">            box_plus_buffer (bool, optional): Either calculate a bounding box based on the</span>
 <span class="sd">                                            location of rendered geometries or use chip size</span>
 <span class="sd">                                            from design class.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Draw in fill = True pieces. based on either full chip or box_plus</span>
 
         <span class="c1"># They are reset for each time render_design happens.</span>
@@ -688,7 +688,7 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Unable to proceed with rendering. Please check selection.&quot;</span>
+                <span class="s2">"Unable to proceed with rendering. Please check selection."</span>
             <span class="p">)</span>
             <span class="k">return</span>
 
@@ -703,10 +703,10 @@
             <span class="n">open_pins</span><span class="p">,</span> <span class="n">port_list</span><span class="p">,</span> <span class="n">jj_to_port</span><span class="p">,</span> <span class="n">ignored_jjs</span>
         <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;Check the arguments to render_design, invalid name was probably used.&quot;</span>
+                <span class="s2">"Check the arguments to render_design, invalid name was probably used."</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Ansys default units is &#39;mm&#39;?????, but metal using &#39;meter&#39;.</span>
+            <span class="c1"># Ansys default units is 'mm'?????, but metal using 'meter'.</span>
             <span class="c1"># pyaedt.generic.constants.SI_UNITS.Length is meter.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">activate_user_project_design</span><span class="p">()</span>
 
@@ -737,7 +737,7 @@
         <span class="n">skip_junction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">data_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;_summary_</span>
+<span class="w">        </span><span class="sd">"""_summary_</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            skip_junction (bool, optional): Should the renderer add junctions to HFSS.</span>
@@ -753,7 +753,7 @@
 <span class="sd">                                                    Defaults to None.</span>
 <span class="sd">            datatype (int, optional): This comes for the layer_stack file; regarding</span>
 <span class="sd">                                                    layer and datatype. Defaults to 0.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">aedt_render_by_layer_then_tables</span><span class="p">(</span>
             <span class="n">skip_junction</span><span class="o">=</span><span class="n">skip_junction</span><span class="p">,</span>
@@ -780,7 +780,7 @@
             <span class="p">)</span> <span class="o">=</span> <span class="n">result_subset</span>
 
             <span class="k">for</span> <span class="n">table_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">get_element_types</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">table_type</span> <span class="o">!=</span> <span class="s2">&quot;junction&quot;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">skip_junction</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">table_type</span> <span class="o">!=</span> <span class="s2">"junction"</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">skip_junction</span><span class="p">:</span>
                     <span class="c1"># At this point, we know table type,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">render_components</span><span class="p">(</span>
                         <span class="n">table_type</span><span class="p">,</span>
@@ -802,7 +802,7 @@
             <span class="n">solution_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">solution_type</span>
 
             <span class="k">if</span> <span class="p">(</span>
-                <span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Modal&quot;</span>
+                <span class="n">solution_type</span> <span class="o">==</span> <span class="s2">"Modal"</span>
                 <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span>
                 <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">port_list_subset</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
             <span class="p">):</span>
@@ -833,7 +833,7 @@
                                             <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
                                             <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]:</span>
         <span class="c1">#yapf: enable</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;When user adds arguments through render_design, they do not identify the layer that the</span>
+<span class="w">        </span><span class="sd">"""When user adds arguments through render_design, they do not identify the layer that the</span>
 <span class="sd">        component is on.  So This method returns a subset of the components which are to be</span>
 <span class="sd">        rendered for the layer_num passed to this method.</span>
 
@@ -848,7 +848,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple[ Union[list, None], Union[list, None], Union[list, None], Union[list, None]]: Subset</span>
 <span class="sd">            of the components which are to be rendered for the layer_num passed to this method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">open_pins_subset</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">port_list_subset</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">jj_to_port_subset</span> <span class="o">=</span> <span class="kc">None</span>
@@ -874,7 +874,7 @@
 <div class="viewcode-block" id="QHFSSPyaedt.get_port_list_in_layer">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.get_port_list_in_layer">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_port_list_in_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reduce the port_list list and only return the port_list for layer_nums.</span>
+<span class="w">        </span><span class="sd">"""Reduce the port_list list and only return the port_list for layer_nums.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            port_list (list): The list given by user for render_design.</span>
@@ -882,18 +882,18 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: A subset of port_list for the denoted layer_num.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">layer_port_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
         <span class="n">mask_comp_element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_poly_and_junction_with_valid_comps</span><span class="p">[</span>
-            <span class="s1">&#39;layer&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer_num</span>
+            <span class="s1">'layer'</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer_num</span>
         <span class="n">path_poly_junction_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_poly_and_junction_with_valid_comps</span><span class="p">[</span>
             <span class="n">mask_comp_element</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">element</span><span class="p">,</span> <span class="n">impedance</span> <span class="ow">in</span> <span class="n">port_list</span><span class="p">:</span>
             <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
             <span class="n">comp_element_layer_mask</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">path_poly_junction_layer</span><span class="p">[</span><span class="s1">&#39;component&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span>
+                <span class="n">path_poly_junction_layer</span><span class="p">[</span><span class="s1">'component'</span><span class="p">]</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span>
             <span class="n">valid_df</span> <span class="o">=</span> <span class="n">path_poly_junction_layer</span><span class="p">[</span><span class="n">comp_element_layer_mask</span><span class="p">]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
                 <span class="n">layer_port_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">comp_name</span><span class="p">,</span> <span class="n">element</span><span class="p">,</span> <span class="n">impedance</span><span class="p">))</span>
@@ -904,7 +904,7 @@
 <div class="viewcode-block" id="QHFSSPyaedt.get_jj_to_port_in_layer">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.get_jj_to_port_in_layer">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_jj_to_port_in_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jj_to_port</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reduce the port_list list and only return the port_list for layer_nums.</span>
+<span class="w">        </span><span class="sd">"""Reduce the port_list list and only return the port_list for layer_nums.</span>
 <span class="sd">        This is very similar to get_port_list_in_layer.  This format is different</span>
 <span class="sd">        than what was done with renderer with comm port. The inductance and creation</span>
 <span class="sd">        of extra sheet has been dropped.</span>
@@ -915,17 +915,17 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: Use definition from render_design.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">layer_jj_to_port</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="n">mask_comp_element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_poly_and_junction_with_valid_comps</span><span class="p">[</span>
-            <span class="s1">&#39;layer&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer_num</span>
+            <span class="s1">'layer'</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer_num</span>
         <span class="n">path_poly_junction_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_poly_and_junction_with_valid_comps</span><span class="p">[</span>
             <span class="n">mask_comp_element</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">element</span><span class="p">,</span> <span class="n">impedance</span> <span class="ow">in</span> <span class="n">jj_to_port</span><span class="p">:</span>
             <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
             <span class="n">comp_element_layer_mask</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">path_poly_junction_layer</span><span class="p">[</span><span class="s1">&#39;component&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span>
+                <span class="n">path_poly_junction_layer</span><span class="p">[</span><span class="s1">'component'</span><span class="p">]</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span>
             <span class="n">valid_df</span> <span class="o">=</span> <span class="n">path_poly_junction_layer</span><span class="p">[</span><span class="n">comp_element_layer_mask</span><span class="p">]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
                 <span class="n">layer_jj_to_port</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">comp_name</span><span class="p">,</span> <span class="n">element</span><span class="p">,</span> <span class="n">impedance</span><span class="p">))</span>
@@ -935,7 +935,7 @@
 <div class="viewcode-block" id="QHFSSPyaedt.get_ignored_jjs_in_layer">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.get_ignored_jjs_in_layer">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_ignored_jjs_in_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignored_jjs</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reduce the ignored_jjs list and only return the ignored_jjs for layer_nums.</span>
+<span class="w">        </span><span class="sd">"""Reduce the ignored_jjs list and only return the ignored_jjs for layer_nums.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            ignored_jjs (_type_): Use definition from render_design.</span>
@@ -943,17 +943,17 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: Use definition from render_design.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">layer_ignored_jjs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="n">mask_comp_element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_poly_and_junction_with_valid_comps</span><span class="p">[</span>
-            <span class="s1">&#39;layer&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer_num</span>
+            <span class="s1">'layer'</span><span class="p">]</span> <span class="o">==</span> <span class="n">layer_num</span>
         <span class="n">path_poly_junction_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_poly_and_junction_with_valid_comps</span><span class="p">[</span>
             <span class="n">mask_comp_element</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">ignored_jjs</span><span class="p">:</span>
             <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
             <span class="n">comp_element_layer_mask</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">path_poly_junction_layer</span><span class="p">[</span><span class="s1">&#39;component&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span>
+                <span class="n">path_poly_junction_layer</span><span class="p">[</span><span class="s1">'component'</span><span class="p">]</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span>
             <span class="n">valid_df</span> <span class="o">=</span> <span class="n">path_poly_junction_layer</span><span class="p">[</span><span class="n">comp_element_layer_mask</span><span class="p">]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
                 <span class="n">layer_ignored_jjs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">comp_name</span><span class="p">,</span> <span class="n">element</span><span class="p">))</span>
@@ -970,7 +970,7 @@
                         <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
                         <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]):</span>
         <span class="c1"># yapf: enable</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render an individual shape whose properties are listed in a row of</span>
+<span class="w">        </span><span class="sd">"""Render an individual shape whose properties are listed in a row of</span>
 <span class="sd">        QGeometry table. Junction elements are handled separately from non-</span>
 <span class="sd">        junction elements, as the former consist of two rendered shapes, not</span>
 <span class="sd">        just one.</span>
@@ -981,7 +981,7 @@
 <span class="sd">            port_list (Union[list, None], optional): _description_. Defaults to None.</span>
 <span class="sd">            jj_to_port (Union[list, None], optional): _description_. Defaults to None.</span>
 <span class="sd">            ignored_jjs (Union[list, None], optional): _description_. Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">qc_shapely</span> <span class="o">=</span> <span class="n">qgeom</span><span class="o">.</span><span class="n">geometry</span>
         <span class="k">if</span> <span class="n">is_junction</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_render_junction</span><span class="p">(</span><span class="n">qgeom</span><span class="p">,</span> <span class="n">port_list</span><span class="p">,</span> <span class="n">jj_to_port</span><span class="p">,</span>
@@ -1000,7 +1000,7 @@
                                                                         <span class="kc">None</span><span class="p">],</span>
                                <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
                                <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expected to be replaced by grandchild of this class.</span>
+<span class="w">        </span><span class="sd">"""Expected to be replaced by grandchild of this class.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            qgeom (pd.Series): _description_</span>
@@ -1010,7 +1010,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: _description_</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 <div class="viewcode-block" id="QHFSSPyaedt.render_element_junction">
@@ -1019,7 +1019,7 @@
                                 <span class="n">qgeom</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span>
                                 <span class="n">port_list</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                                 <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Render a Josephson junction consisting of</span>
 <span class="sd">            1. A rectangle of length pad_gap and width inductor_width. Defines lumped element</span>
 <span class="sd">               RLC boundary condition.</span>
@@ -1029,17 +1029,17 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            qgeom (pd.Series): GeoSeries of element properties.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1">#ansys_options = dict(transparency=0.0)</span>
 
-        <span class="n">qc_name</span> <span class="o">=</span> <span class="s2">&quot;Lj_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">])</span>
-        <span class="n">qc_elt</span> <span class="o">=</span> <span class="n">get_clean_name</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="n">qc_name</span> <span class="o">=</span> <span class="s2">"Lj_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">"component"</span><span class="p">])</span>
+        <span class="n">qc_elt</span> <span class="o">=</span> <span class="n">get_clean_name</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>
         <span class="n">qc_shapely</span> <span class="o">=</span> <span class="n">qgeom</span><span class="o">.</span><span class="n">geometry</span>
 
         <span class="c1"># Hardcode in datatype since it is not passed in qgeometry  tables.</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_properties_for_layer_datatype</span><span class="p">(</span>
-            <span class="p">[</span><span class="s1">&#39;thickness&#39;</span><span class="p">,</span> <span class="s1">&#39;z_coord&#39;</span><span class="p">,</span> <span class="s1">&#39;material&#39;</span><span class="p">,</span> <span class="s1">&#39;fill&#39;</span><span class="p">],</span>
-            <span class="n">qgeom</span><span class="p">[</span><span class="s1">&#39;layer&#39;</span><span class="p">],</span>
+            <span class="p">[</span><span class="s1">'thickness'</span><span class="p">,</span> <span class="s1">'z_coord'</span><span class="p">,</span> <span class="s1">'material'</span><span class="p">,</span> <span class="s1">'fill'</span><span class="p">],</span>
+            <span class="n">qgeom</span><span class="p">[</span><span class="s1">'layer'</span><span class="p">],</span>
             <span class="n">datatype</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
@@ -1049,17 +1049,17 @@
 
         <span class="n">qc_width</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">qgeom</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
 
-        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">qc_name</span><span class="si">}{</span><span class="n">QAnsysRenderer</span><span class="o">.</span><span class="n">NAME_DELIM</span><span class="si">}{</span><span class="n">qc_elt</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">qc_name</span><span class="si">}{</span><span class="n">QAnsysRenderer</span><span class="o">.</span><span class="n">NAME_DELIM</span><span class="si">}{</span><span class="n">qc_elt</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="n">endpoints</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">qc_shapely</span><span class="o">.</span><span class="n">coords</span><span class="p">))</span>
         <span class="n">endpoints_3d</span> <span class="o">=</span> <span class="n">to_vec3D</span><span class="p">(</span><span class="n">endpoints</span><span class="p">,</span> <span class="p">(</span><span class="n">z_coord</span> <span class="o">+</span> <span class="p">(</span><span class="n">thickness</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">z0</span> <span class="o">=</span> <span class="n">endpoints_3d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z0</span> <span class="o">=</span> <span class="n">endpoints_3d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">assign_mesh</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;JJ_rect_&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assign_mesh</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"JJ_rect_"</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="c1"># Draw line</span>
-        <span class="n">poly_jj_name</span> <span class="o">=</span> <span class="s2">&quot;JJ_&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span>
+        <span class="n">poly_jj_name</span> <span class="o">=</span> <span class="s2">"JJ_"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">"_"</span>
 
         <span class="n">poly_jj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">create_polyline</span><span class="p">(</span>
             <span class="n">endpoints_3d</span><span class="p">,</span>
@@ -1069,32 +1069,32 @@
         <span class="n">poly_jj</span><span class="o">.</span><span class="n">show_arrow</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">poly_jj</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
 
-        <span class="n">jj_name</span> <span class="o">=</span> <span class="s2">&quot;JJ_rect_&quot;</span> <span class="o">+</span> <span class="n">name</span>
+        <span class="n">jj_name</span> <span class="o">=</span> <span class="s2">"JJ_rect_"</span> <span class="o">+</span> <span class="n">name</span>
 
         <span class="n">poly_sheet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">create_polyline</span><span class="p">(</span>
             <span class="n">endpoints_3d</span><span class="p">,</span>
             <span class="c1">#[endpoints_3d[0], endpoints_3d[1]],</span>
             <span class="n">name</span><span class="o">=</span><span class="n">jj_name</span><span class="p">,</span>
             <span class="n">close_surface</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">xsection_type</span><span class="o">=</span><span class="s1">&#39;Line&#39;</span><span class="p">,</span>
+            <span class="n">xsection_type</span><span class="o">=</span><span class="s1">'Line'</span><span class="p">,</span>
             <span class="n">xsection_width</span><span class="o">=</span><span class="n">qc_width</span><span class="p">)</span>
 
         <span class="n">solution_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">solution_type</span>
 
         <span class="c1"># If junction not in the port list or ignore list, THEN sheet inductance, if not in jj_to_port.</span>
         <span class="c1"># At this method, ASSUME that junction is not in the ignored_jjs</span>
-        <span class="k">if</span> <span class="n">solution_type</span> <span class="o">==</span> <span class="s1">&#39;Modal&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="k">if</span> <span class="n">solution_type</span> <span class="o">==</span> <span class="s1">'Modal'</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
                 <span class="n">jj_to_port</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">jj_to_port</span><span class="p">:</span>
             <span class="c1"># Only use this logic if user defines drivenmodal solution_type,</span>
             <span class="c1"># and  jj_to_port list is provided by user.</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_list_dict_populate</span><span class="p">(</span><span class="n">jj_to_port</span><span class="p">)</span>
-            <span class="n">search_junction</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                               <span class="n">qgeom</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+            <span class="n">search_junction</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                               <span class="n">qgeom</span><span class="p">[</span><span class="s1">'name'</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">search_junction</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="n">impedance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_dict</span><span class="p">[</span><span class="n">search_junction</span><span class="p">]</span>
-                <span class="n">jj_name_port</span> <span class="o">=</span> <span class="s2">&quot;JJ_rect_&quot;</span> <span class="o">+</span> <span class="s2">&quot;R_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span>
-                    <span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+                <span class="n">jj_name_port</span> <span class="o">=</span> <span class="s2">"JJ_rect_"</span> <span class="o">+</span> <span class="s2">"R_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span>
+                    <span class="n">qgeom</span><span class="p">[</span><span class="s2">"component"</span><span class="p">])</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s1">'name'</span><span class="p">])</span>
                 <span class="n">jj_to_port_boundary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">create_lumped_port_to_sheet</span><span class="p">(</span>  <span class="c1"># noqa: F841</span>
                     <span class="n">sheet_name</span><span class="o">=</span><span class="n">poly_sheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                     <span class="n">portname</span><span class="o">=</span><span class="n">jj_name_port</span><span class="p">,</span>
@@ -1102,14 +1102,14 @@
                     <span class="n">impedance</span><span class="o">=</span><span class="n">impedance</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Looks QGeometry table to pull Lj and Cj</span>
-            <span class="n">jj_geom_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;junction&#39;</span><span class="p">]</span>
-            <span class="n">jj_of_interest</span> <span class="o">=</span> <span class="n">jj_geom_table</span><span class="p">[</span><span class="n">jj_geom_table</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">qc_elt</span><span class="p">]</span>
-            <span class="n">Lvalue</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">jj_of_interest</span><span class="p">[</span><span class="s1">&#39;aedt_hfss_inductance&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">Cvalue</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">jj_of_interest</span><span class="p">[</span><span class="s1">&#39;aedt_hfss_capacitance&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">jj_geom_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">'junction'</span><span class="p">]</span>
+            <span class="n">jj_of_interest</span> <span class="o">=</span> <span class="n">jj_geom_table</span><span class="p">[</span><span class="n">jj_geom_table</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="o">==</span> <span class="n">qc_elt</span><span class="p">]</span>
+            <span class="n">Lvalue</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">jj_of_interest</span><span class="p">[</span><span class="s1">'aedt_hfss_inductance'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">Cvalue</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">jj_of_interest</span><span class="p">[</span><span class="s1">'aedt_hfss_capacitance'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 
             <span class="n">lumped_rlc_boundary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">assign_lumped_rlc_to_sheet</span><span class="p">(</span>  <span class="c1"># noqa: F841</span>
                 <span class="n">sheet_name</span><span class="o">=</span><span class="n">poly_sheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">sourcename</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;rlc_</span><span class="si">{</span><span class="n">poly_sheet</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                <span class="n">sourcename</span><span class="o">=</span><span class="sa">f</span><span class="s1">'rlc_</span><span class="si">{</span><span class="n">poly_sheet</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span>
                 <span class="n">axisdir</span><span class="o">=</span><span class="n">endpoints_3d</span><span class="p">,</span>
                 <span class="n">Lvalue</span><span class="o">=</span><span class="n">Lvalue</span><span class="p">,</span>
                 <span class="n">Cvalue</span><span class="o">=</span><span class="n">Cvalue</span><span class="p">)</span></div>
@@ -1118,22 +1118,22 @@
 <div class="viewcode-block" id="QHFSSPyaedt.draw_sample_holder">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.draw_sample_holder">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">draw_sample_holder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a vacuum box to HFSS design.  The xy coordinates are determined by</span>
+<span class="w">        </span><span class="sd">"""Adds a vacuum box to HFSS design.  The xy coordinates are determined by</span>
 <span class="sd">        results of using box_plus_buffer.  The z coordinate of the box is determined</span>
 <span class="sd">        by default_options of this class. This the user can update the options prior</span>
 <span class="sd">        to render_design.</span>
 
 <span class="sd">        Note: the height of the box is NOT found by going to Multiplanar Design.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s2">&quot;sample_holder_top&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="s2">"sample_holder_top"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">variables</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span>
 
-        <span class="n">top</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;sample_holder_top&quot;</span><span class="p">],</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s2">"sample_holder_top"</span><span class="p">],</span>
                           <span class="n">convert_to_unit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">model_units</span><span class="p">)</span>
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span>
-            <span class="n">p</span><span class="p">[</span><span class="s2">&quot;sample_holder_bottom&quot;</span><span class="p">],</span>
+            <span class="n">p</span><span class="p">[</span><span class="s2">"sample_holder_bottom"</span><span class="p">],</span>
             <span class="n">convert_to_unit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">model_units</span><span class="p">)</span>
         <span class="n">vac_height</span> <span class="o">=</span> <span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span>
         <span class="n">half_vac_height</span> <span class="o">=</span> <span class="p">(</span><span class="n">vac_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
@@ -1149,14 +1149,14 @@
                      <span class="p">[</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">half_z_coord</span><span class="p">]]</span>
         <span class="c1"># yapf: enable</span>
 
-        <span class="n">box_name</span> <span class="o">=</span> <span class="s2">&quot;vacuum_box&quot;</span>
+        <span class="n">box_name</span> <span class="o">=</span> <span class="s2">"vacuum_box"</span>
 
         <span class="n">sample_holder_rectangle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">create_polyline</span><span class="p">(</span>
             <span class="n">vacuum_rect</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="n">box_name</span><span class="p">,</span>
             <span class="n">cover_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">close_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">matname</span><span class="o">=</span><span class="s2">&quot;vacuum&quot;</span><span class="p">)</span>
+            <span class="n">matname</span><span class="o">=</span><span class="s2">"vacuum"</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">thicken_sheet</span><span class="p">(</span><span class="n">sample_holder_rectangle</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                                                <span class="n">thickness</span><span class="o">=</span><span class="n">vac_height</span><span class="p">,</span>
@@ -1187,7 +1187,7 @@
                             <span class="n">port_list</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
                             <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
                             <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The arguments should be valid names in design.  Also (component, pin)</span>
+<span class="w">        </span><span class="sd">"""The arguments should be valid names in design.  Also (component, pin)</span>
 <span class="sd">        pairs can not be repeated within the four arguments.</span>
 
 <span class="sd">        Args:</span>
@@ -1198,7 +1198,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            _type_: _description_</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># yapf: enable</span>
 
         <span class="n">pair_used</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -1207,7 +1207,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_open_pins_are_valid_names</span><span class="p">(</span>
                 <span class="n">open_pins</span><span class="p">,</span> <span class="n">pair_used</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Arguments are not in Design for open_pins.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">'Arguments are not in Design for open_pins.'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -1215,7 +1215,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_port_list_have_valid_request</span><span class="p">(</span>
                 <span class="n">port_list</span><span class="p">,</span> <span class="n">pair_used</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Arguments are not in Design for port_list.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">'Arguments are not in Design for port_list.'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span>
 
@@ -1224,7 +1224,7 @@
                 <span class="n">jj_to_port</span><span class="p">,</span> <span class="n">pair_used</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="s1">&#39;Arguments are not in Design for jj_to_port.&#39;</span><span class="p">)</span>
+                    <span class="s1">'Arguments are not in Design for jj_to_port.'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span>
 
@@ -1233,7 +1233,7 @@
                 <span class="n">ignored_jjs</span><span class="p">,</span> <span class="n">pair_used</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs_is_valid</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="s1">&#39;Arguments are not in Design for ignored_jjs.&#39;</span><span class="p">)</span>
+                    <span class="s1">'Arguments are not in Design for ignored_jjs.'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs_is_valid</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -1246,8 +1246,8 @@
 <div class="viewcode-block" id="QHFSSPyaedt.reset_hfss_arguments">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.reset_hfss_arguments">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">reset_hfss_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the value to None each time render_design is started.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Reset the value to None each time render_design is started.</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">open_pins_is_valid</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">port_list_is_valid</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1259,7 +1259,7 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.confirm_jj_to_port_has_valid_request">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">confirm_jj_to_port_has_valid_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jj_to_port</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
                                              <span class="n">pair_used</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; The jj_to_port, make sure the component_nam and element type are in design.</span>
+<span class="w">        </span><span class="sd">""" The jj_to_port, make sure the component_nam and element type are in design.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            jj_to_port (list): List of tuples denoted (component_name, element_name, impedance).</span>
@@ -1269,10 +1269,10 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: True if pair in junction table.</span>
 <span class="sd">                False if  any entry in list not found in design.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># (component_name, element_name, impedance)</span>
         <span class="c1"># are added to the list jj_to_port. For example,</span>
-        <span class="c1"># (&#39;Q1&#39;, &#39;rect_jj&#39;, 70)</span>
+        <span class="c1"># ('Q1', 'rect_jj', 70)</span>
 
         <span class="k">for</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">element_name</span><span class="p">,</span> <span class="n">impedance</span> <span class="ow">in</span> <span class="n">jj_to_port</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
@@ -1280,33 +1280,33 @@
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span>
                         <span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;You entered the component_name=&#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> and the corresponding&#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39; name is not selection.&#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39;The geometries will not be rendered to Ansys.&#39;</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s1">'You entered the component_name='</span>
+                        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> and the corresponding'</span>
+                        <span class="sa">f</span><span class="s1">' name is not selection.'</span>
+                        <span class="sa">f</span><span class="s1">'The geometries will not be rendered to Ansys.'</span><span class="p">)</span>
                     <span class="k">return</span> <span class="kc">False</span>
-            <span class="n">junction_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;junction&#39;</span><span class="p">]</span>
+            <span class="n">junction_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">'junction'</span><span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component_name</span><span class="p">]:</span>
                 <span class="n">comp_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
-            <span class="n">mask_comp_element</span> <span class="o">=</span> <span class="p">(</span><span class="n">junction_table</span><span class="p">[</span><span class="s1">&#39;component&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">comp_id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>
-                <span class="n">junction_table</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">element_name</span><span class="p">)</span>
+            <span class="n">mask_comp_element</span> <span class="o">=</span> <span class="p">(</span><span class="n">junction_table</span><span class="p">[</span><span class="s1">'component'</span><span class="p">]</span> <span class="o">==</span> <span class="n">comp_id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>
+                <span class="n">junction_table</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="o">==</span> <span class="n">element_name</span><span class="p">)</span>
             <span class="n">result_found_df</span> <span class="o">=</span> <span class="n">junction_table</span><span class="p">[</span><span class="n">mask_comp_element</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result_found_df</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">impedance</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">impedance</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Impedance should be either float or int. &#39;</span>
-                                  <span class="sa">f</span><span class="s1">&#39;You have impedance=</span><span class="si">{</span><span class="n">impedance</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Impedance should be either float or int. '</span>
+                                  <span class="sa">f</span><span class="s1">'You have impedance=</span><span class="si">{</span><span class="n">impedance</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="n">item</span> <span class="o">=</span> <span class="p">(</span><span class="n">component_name</span><span class="p">,</span> <span class="n">element_name</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">pair_used</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;You entered the component_name=</span><span class="si">{</span><span class="n">component_name</span><span class="si">}</span><span class="s1"> and element_name=</span><span class="si">{</span><span class="n">element_name</span><span class="si">}</span><span class="s1"> pair twice.  &#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39;The geometries will not be rendered to Ansys.&#39;</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s1">'You entered the component_name=</span><span class="si">{</span><span class="n">component_name</span><span class="si">}</span><span class="s1"> and element_name=</span><span class="si">{</span><span class="n">element_name</span><span class="si">}</span><span class="s1"> pair twice.  '</span>
+                    <span class="sa">f</span><span class="s1">'The geometries will not be rendered to Ansys.'</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
             <span class="n">pair_used</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
@@ -1318,7 +1318,7 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.confirm_ignored_jjs_has_valid_request">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">confirm_ignored_jjs_has_valid_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignored_jjs</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
                                               <span class="n">pair_used</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check within the qgeometry junction table to confirm the component_name</span>
+<span class="w">        </span><span class="sd">"""Check within the qgeometry junction table to confirm the component_name</span>
 <span class="sd">        and element_name are paired on a row.</span>
 
 <span class="sd">        Args:</span>
@@ -1329,7 +1329,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: True if pair in junction table.</span>
 <span class="sd">                False if  any entry in list not found in design.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">ignored_jjs</span><span class="p">:</span>
             <span class="n">component_name</span><span class="p">,</span> <span class="n">element_name</span> <span class="o">=</span> <span class="n">item</span>
@@ -1338,26 +1338,26 @@
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span>
                         <span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;You entered the component_name=&#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> and the corresponding&#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39; name is not selection.&#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39;The geometries will not be rendered to Ansys.&#39;</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s1">'You entered the component_name='</span>
+                        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> and the corresponding'</span>
+                        <span class="sa">f</span><span class="s1">' name is not selection.'</span>
+                        <span class="sa">f</span><span class="s1">'The geometries will not be rendered to Ansys.'</span><span class="p">)</span>
                     <span class="k">return</span> <span class="kc">False</span>
-            <span class="n">junction_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;junction&#39;</span><span class="p">]</span>
+            <span class="n">junction_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">'junction'</span><span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component_name</span><span class="p">]:</span>
                 <span class="n">comp_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
-            <span class="n">mask_comp_element</span> <span class="o">=</span> <span class="p">(</span><span class="n">junction_table</span><span class="p">[</span><span class="s1">&#39;component&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">comp_id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>
-                <span class="n">junction_table</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">element_name</span><span class="p">)</span>
+            <span class="n">mask_comp_element</span> <span class="o">=</span> <span class="p">(</span><span class="n">junction_table</span><span class="p">[</span><span class="s1">'component'</span><span class="p">]</span> <span class="o">==</span> <span class="n">comp_id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>
+                <span class="n">junction_table</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="o">==</span> <span class="n">element_name</span><span class="p">)</span>
             <span class="n">result_found_df</span> <span class="o">=</span> <span class="n">junction_table</span><span class="p">[</span><span class="n">mask_comp_element</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result_found_df</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">pair_used</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;You entered the component_name=</span><span class="si">{</span><span class="n">component_name</span><span class="si">}</span><span class="s1"> and element_name=</span><span class="si">{</span><span class="n">element_name</span><span class="si">}</span><span class="s1"> pair twice.  &#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39;The geometries will not be rendered to Ansys.&#39;</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s1">'You entered the component_name=</span><span class="si">{</span><span class="n">component_name</span><span class="si">}</span><span class="s1"> and element_name=</span><span class="si">{</span><span class="n">element_name</span><span class="si">}</span><span class="s1"> pair twice.  '</span>
+                    <span class="sa">f</span><span class="s1">'The geometries will not be rendered to Ansys.'</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
             <span class="n">pair_used</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
@@ -1368,7 +1368,7 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.confirm_port_list_have_valid_request">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">confirm_port_list_have_valid_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
                                              <span class="n">pair_used</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if all names of ports are within design.  Otherwise log an error.</span>
+<span class="w">        </span><span class="sd">"""Check if all names of ports are within design.  Otherwise log an error.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            port_list (list): The user input for ports. List of tuples of pins to</span>
@@ -1379,16 +1379,16 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: True if all ports found in design.</span>
 <span class="sd">                 False if any one component or pin is not found in design.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">impedance</span> <span class="ow">in</span> <span class="n">port_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
                 <span class="c1"># User wants to render a subset, ensure part of selection.</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;You entered the component_name=&#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> and the corresponding&#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39; name is not selection.&#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39;The geometries will not be rendered to Ansys.&#39;</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s1">'You entered the component_name='</span>
+                        <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> and the corresponding'</span>
+                        <span class="sa">f</span><span class="s1">' name is not selection.'</span>
+                        <span class="sa">f</span><span class="s1">'The geometries will not be rendered to Ansys.'</span><span class="p">)</span>
                     <span class="k">return</span> <span class="kc">False</span>
             <span class="k">if</span> <span class="n">comp_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">port_list_names_not_valid</span><span class="p">(</span><span class="n">comp_name</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span>
@@ -1397,14 +1397,14 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">port_list_names_not_valid</span><span class="p">(</span><span class="n">comp_name</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">impedance</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">impedance</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Impedance should be either float or int. &#39;</span>
-                                  <span class="sa">f</span><span class="s1">&#39;You have impedance=</span><span class="si">{</span><span class="n">impedance</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Impedance should be either float or int. '</span>
+                                  <span class="sa">f</span><span class="s1">'You have impedance=</span><span class="si">{</span><span class="n">impedance</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="n">search_item</span> <span class="o">=</span> <span class="p">(</span><span class="n">comp_name</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">search_item</span> <span class="ow">in</span> <span class="n">pair_used</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;You entered the component_name=</span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s1"> and pin=</span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s1"> pair twice.  &#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39;The geometries will not be rendered to Ansys.&#39;</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s1">'You entered the component_name=</span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s1"> and pin=</span><span class="si">{</span><span class="n">pin</span><span class="si">}</span><span class="s1"> pair twice.  '</span>
+                    <span class="sa">f</span><span class="s1">'The geometries will not be rendered to Ansys.'</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
             <span class="n">pair_used</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">search_item</span><span class="p">)</span>
@@ -1415,41 +1415,41 @@
 <div class="viewcode-block" id="QHFSSPyaedt.port_list_dict_populate">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.port_list_dict_populate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">port_list_dict_populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the port_list to a searchable dict.</span>
+<span class="w">        </span><span class="sd">"""Convert the port_list to a searchable dict.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            port_list (list): _description_</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
         <span class="c1"># This should be overwritten by drivenmodal class.</span>
 
 <div class="viewcode-block" id="QHFSSPyaedt.jj_to_port_list_dict_populate">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.jj_to_port_list_dict_populate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">jj_to_port_list_dict_populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jj_to_port</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert jj_to_port to a searchable dict.</span>
+<span class="w">        </span><span class="sd">"""Convert jj_to_port to a searchable dict.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            jj_to_port (list): _description_</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
         <span class="c1"># This should be overwritten by drivenmodal class.</span>
 
 <div class="viewcode-block" id="QHFSSPyaedt.set_variable">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.set_variable">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Sets project-level variable in ANSYS.</span>
 
 <span class="sd">        Example usage:</span>
-<span class="sd">                self.set_variable(&#39;Lj_1&#39;, &#39;10nH&#39;)</span>
-<span class="sd">                self.set_variable(&#39;Cj&#39;, &#39;0fF&#39;)</span>
-<span class="sd">                self.set_variable(&#39;dimensionless&#39;, 1/137)</span>
+<span class="sd">                self.set_variable('Lj_1', '10nH')</span>
+<span class="sd">                self.set_variable('Cj', '0fF')</span>
+<span class="sd">                self.set_variable('dimensionless', 1/137)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Name of variable.</span>
 <span class="sd">            value (str): Amount and unit associated w/ variable.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">variable_manager</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">_variable_manager</span>
         <span class="n">variable_manager</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
 
@@ -1459,20 +1459,20 @@
 <div class="viewcode-block" id="QHFSSPyaedt.port_list_names_not_valid">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html#qiskit_metal.renderers.QHFSSPyaedt.port_list_names_not_valid">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">port_list_names_not_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pin_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop and give error if the component name or pin name from port_list</span>
+<span class="w">        </span><span class="sd">"""Stop and give error if the component name or pin name from port_list</span>
 <span class="sd">        are not valid within design.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            comp_name (str): Name of component which should have an open pin.</span>
 <span class="sd">            pin_name (str): Name of pin which should be open.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> The component name or pin name within list&#39;</span>
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">provided to render_design are not valid.&#39;</span>
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">You provided: </span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s1"> and </span><span class="si">{</span><span class="n">pin_name</span><span class="si">}</span><span class="s1">&#39;</span>
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Valid components: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Valid pins:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">pins</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> ALL tuples within port_list will not be addressed.&#39;</span><span class="p">)</span></div>
+            <span class="sa">f</span><span class="s1">'</span><span class="se">\n</span><span class="s1"> The component name or pin name within list'</span>
+            <span class="sa">f</span><span class="s1">'</span><span class="se">\n</span><span class="s1">provided to render_design are not valid.'</span>
+            <span class="sa">f</span><span class="s1">'</span><span class="se">\n</span><span class="s1">You provided: </span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s1"> and </span><span class="si">{</span><span class="n">pin_name</span><span class="si">}</span><span class="s1">'</span>
+            <span class="sa">f</span><span class="s1">'</span><span class="se">\n</span><span class="s1"> Valid components: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span>
+            <span class="sa">f</span><span class="s1">'</span><span class="se">\n</span><span class="s1"> Valid pins:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">pins</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span>
+            <span class="sa">f</span><span class="s1">'</span><span class="se">\n</span><span class="s1"> ALL tuples within port_list will not be addressed.'</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
@@ -1493,7 +1493,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -1516,6 +1516,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

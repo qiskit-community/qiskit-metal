@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -488,7 +488,7 @@
 <div class="viewcode-block" id="RouteMeander">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteMeander.html#qiskit_metal.qlibrary.RouteMeander">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RouteMeander</span><span class="p">(</span><span class="n">QRoute</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;.. image::</span>
+<span class="w">    </span><span class="sd">""".. image::</span>
 <span class="sd">        RouteMeander.png</span>
 
 <span class="sd">    Implements a simple CPW, with a single meander.  The base</span>
@@ -502,58 +502,58 @@
 <span class="sd">        QRoute Default Options:</span>
 <span class="sd">            * pin_inputs: Dict</span>
 <span class="sd">                * start_pin: Dict -- Component and pin string pair. Define which pin to start from</span>
-<span class="sd">                    * component: &#39;&#39; -- Name of component to start from, which has a pin</span>
-<span class="sd">                    * pin: &#39;&#39; -- Name of pin used for pin_start</span>
+<span class="sd">                    * component: '' -- Name of component to start from, which has a pin</span>
+<span class="sd">                    * pin: '' -- Name of pin used for pin_start</span>
 <span class="sd">                * end_pin=Dict -- Component and pin string pair. Define which pin to start from</span>
-<span class="sd">                    * component: &#39;&#39; -- Name of component to end on, which has a pin</span>
-<span class="sd">                    * pin: &#39;&#39; -- Name of pin used for pin_end</span>
-<span class="sd">            * fillet: &#39;0&#39;</span>
+<span class="sd">                    * component: '' -- Name of component to end on, which has a pin</span>
+<span class="sd">                    * pin: '' -- Name of pin used for pin_end</span>
+<span class="sd">            * fillet: '0'</span>
 <span class="sd">            * lead: Dict</span>
-<span class="sd">                * start_straight: &#39;0mm&#39; -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.</span>
-<span class="sd">                * end_straight: &#39;0mm&#39; -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.</span>
-<span class="sd">                * start_jogged_extension: &#39;&#39; -- Lead-in, jogged extension of lead-in. Described as list of tuples</span>
-<span class="sd">                * end_jogged_extension: &#39;&#39; -- Lead-out, jogged extension of lead-out. Described as list of tuples</span>
-<span class="sd">            * total_length: &#39;7mm&#39;</span>
-<span class="sd">            * trace_width: &#39;cpw_width&#39; -- Defines the width of the line.  Defaults to &#39;cpw_width&#39;.</span>
+<span class="sd">                * start_straight: '0mm' -- Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.</span>
+<span class="sd">                * end_straight: '0mm' -- Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.</span>
+<span class="sd">                * start_jogged_extension: '' -- Lead-in, jogged extension of lead-in. Described as list of tuples</span>
+<span class="sd">                * end_jogged_extension: '' -- Lead-out, jogged extension of lead-out. Described as list of tuples</span>
+<span class="sd">            * total_length: '7mm'</span>
+<span class="sd">            * trace_width: 'cpw_width' -- Defines the width of the line.  Defaults to 'cpw_width'.</span>
 
 <span class="sd">        Default Options:</span>
 <span class="sd">            * meander: Dict</span>
-<span class="sd">                * spacing: &#39;200um&#39; -- Minimum spacing between adjacent meander curves.  Defaults to 200um.</span>
-<span class="sd">                * asymmetry=&#39;0um&#39; -- offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out.  Defaults to &#39;0um&#39;.</span>
-<span class="sd">            * snap: &#39;true&#39;</span>
-<span class="sd">            * prevent_short_edges: &#39;true&#39;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">                * spacing: '200um' -- Minimum spacing between adjacent meander curves.  Defaults to 200um.</span>
+<span class="sd">                * asymmetry='0um' -- offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out.  Defaults to '0um'.</span>
+<span class="sd">            * snap: 'true'</span>
+<span class="sd">            * prevent_short_edges: 'true'</span>
+<span class="sd">    """</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;cpw&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">"cpw"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">,</span> <span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">),</span>
-        <span class="n">snap</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="p">,</span>
-        <span class="n">prevent_short_edges</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="p">,</span>
+        <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="s2">"200um"</span><span class="p">,</span> <span class="n">asymmetry</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">),</span>
+        <span class="n">snap</span><span class="o">=</span><span class="s2">"true"</span><span class="p">,</span>
+        <span class="n">prevent_short_edges</span><span class="o">=</span><span class="s2">"true"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default options"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Implements a simple CPW, with a single meander.&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""Implements a simple CPW, with a single meander."""</span>
 
 <div class="viewcode-block" id="RouteMeander.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteMeander.html#qiskit_metal.qlibrary.RouteMeander.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The make function implements the logic that creates the geometry</span>
+<span class="w">        </span><span class="sd">"""The make function implements the logic that creates the geometry</span>
 <span class="sd">        (poly, path, etc.) from the qcomponent.options dictionary of</span>
 <span class="sd">        parameters, and the adds them to the design, using</span>
 <span class="sd">        qcomponent.add_qgeometry(...), adding in extra needed information, such</span>
-<span class="sd">        as layer, subtract, etc.&quot;&quot;&quot;</span>
+<span class="sd">        as layer, subtract, etc."""</span>
         <span class="c1"># parsed options</span>
         <span class="c1"># snap = is_true(self.p.snap)</span>
 
         <span class="c1"># Set the CPW pins and add the points/directions to the lead-in/out arrays</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">"start"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">"end"</span><span class="p">)</span>
 
         <span class="c1"># Align the lead-in/out to the input options set from the user</span>
-        <span class="n">meander_start_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
-        <span class="n">meander_end_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="n">meander_start_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">"start"</span><span class="p">)</span>
+        <span class="n">meander_end_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">"end"</span><span class="p">)</span>
 
         <span class="c1"># approximate length needed for the meander</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_length_segment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span> <span class="o">-</span> <span class="p">(</span>
@@ -580,7 +580,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">connect_meandered</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">start_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span> <span class="n">end_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Meanders using a fixed length and fixed spacing.</span>
+<span class="w">        </span><span class="sd">"""Meanders using a fixed length and fixed spacing.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            start_pt (QRoutePoint): QRoutePoint of the start</span>
@@ -592,7 +592,7 @@
 <span class="sd">        Adjusts the width of the meander:</span>
 <span class="sd">            * Includes the start but not the given end point</span>
 <span class="sd">            * If it cannot meander just returns the initial start point</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1">################################################################</span>
         <span class="c1"># Setup</span>
@@ -636,12 +636,12 @@
         <span class="c1"># Breakup into sections</span>
         <span class="n">meander_number</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">length_direct</span> <span class="o">/</span> <span class="n">spacing</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">meander_number</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Zero meanders for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Zero meanders for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
 
         <span class="c1"># The start and end points can have 4 directions each. Depending on the direction</span>
         <span class="c1"># there might be not enough space for all the meanders, thus here we adjust</span>
-        <span class="c1"># meander_number w.r.t. what the start and end points &quot;directionality&quot; allows</span>
+        <span class="c1"># meander_number w.r.t. what the start and end points "directionality" allows</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="n">mao</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
                 <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">sideways</span><span class="p">)</span>
@@ -669,7 +669,7 @@
         <span class="c1"># IndexError. Same graceful no-meander degradation as the first</span>
         <span class="c1"># check after floor().</span>
         <span class="k">if</span> <span class="n">meander_number</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Zero meanders for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Zero meanders for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
 
         <span class="c1"># should the first meander go sideways or counter sideways?</span>
@@ -685,7 +685,7 @@
             <span class="k">elif</span> <span class="n">end_meander_direction</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># opposite to sideway direction</span>
                 <span class="n">first_meander_sideways</span> <span class="o">=</span> <span class="p">(</span><span class="n">meander_number</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># either direction is fine, so let&#39;s just pick one</span>
+                <span class="c1"># either direction is fine, so let's just pick one</span>
                 <span class="n">first_meander_sideways</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="c1"># length to distribute on the meanders (excess w.r.t a straight line between start and end)</span>
@@ -712,23 +712,23 @@
                 <span class="n">length_perp</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">length_excess</span> <span class="o">/</span> <span class="p">(</span><span class="n">meander_number</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">meander_number</span> <span class="o">!=</span> <span class="n">original_meander_number</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: reduced meander_number from &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">original_meander_number</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">meander_number</span><span class="si">}</span><span class="s2"> so each &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;wiggle has room for the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="si">}</span><span class="s2">mm fillet &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;(length_perp=</span><span class="si">{</span><span class="n">length_perp</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">mm). The requested &quot;</span>
-                    <span class="s2">&quot;meander.spacing packs more wiggles into this route than &quot;</span>
-                    <span class="s2">&quot;the available length_excess can support without &quot;</span>
-                    <span class="s2">&quot;producing sharp, unfileted kinks. Increase total_length, &quot;</span>
-                    <span class="s2">&quot;increase meander.spacing, or decrease fillet to avoid &quot;</span>
-                    <span class="s2">&quot;this adjustment.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: reduced meander_number from "</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">original_meander_number</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">meander_number</span><span class="si">}</span><span class="s2"> so each "</span>
+                    <span class="sa">f</span><span class="s2">"wiggle has room for the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="si">}</span><span class="s2">mm fillet "</span>
+                    <span class="sa">f</span><span class="s2">"(length_perp=</span><span class="si">{</span><span class="n">length_perp</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">mm). The requested "</span>
+                    <span class="s2">"meander.spacing packs more wiggles into this route than "</span>
+                    <span class="s2">"the available length_excess can support without "</span>
+                    <span class="s2">"producing sharp, unfileted kinks. Increase total_length, "</span>
+                    <span class="s2">"increase meander.spacing, or decrease fillet to avoid "</span>
+                    <span class="s2">"this adjustment."</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="n">length_perp</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: even at the minimum meander_number=</span><span class="si">{</span><span class="n">meander_number</span><span class="si">}</span><span class="s2">, &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;length_perp=</span><span class="si">{</span><span class="n">length_perp</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">mm is still smaller than &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;fillet=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="si">}</span><span class="s2">mm -- this route&#39;s meander cannot be &quot;</span>
-                    <span class="s2">&quot;cleanly filleted with the current total_length / spacing / &quot;</span>
-                    <span class="s2">&quot;fillet combination and will still show sharp kinks.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: even at the minimum meander_number=</span><span class="si">{</span><span class="n">meander_number</span><span class="si">}</span><span class="s2">, "</span>
+                    <span class="sa">f</span><span class="s2">"length_perp=</span><span class="si">{</span><span class="n">length_perp</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">mm is still smaller than "</span>
+                    <span class="sa">f</span><span class="s2">"fillet=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="si">}</span><span class="s2">mm -- this route's meander cannot be "</span>
+                    <span class="s2">"cleanly filleted with the current total_length / spacing / "</span>
+                    <span class="s2">"fillet combination and will still show sharp kinks."</span>
                 <span class="p">)</span>
 
         <span class="c1"># USES ROW Vectors</span>
@@ -738,7 +738,7 @@
         <span class="n">scale_bys</span> <span class="o">=</span> <span class="n">spacing</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">meander_number</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))[:,</span> <span class="kc">None</span><span class="p">]</span>
         <span class="c1"># multiply each one in a linear chain fashion fwd</span>
         <span class="n">middle_points</span> <span class="o">=</span> <span class="n">scale_bys</span> <span class="o">*</span> <span class="n">middle_points</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        middle_points = array([</span>
 <span class="sd">            [0. , 0. ],</span>
 <span class="sd">            [0.2, 0. ],</span>
@@ -746,7 +746,7 @@
 <span class="sd">            [0.6, 0. ],</span>
 <span class="sd">            [0.8, 0. ],</span>
 <span class="sd">            [1. , 0. ]])</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1">################################################################</span>
         <span class="c1"># Calculation</span>
@@ -818,7 +818,7 @@
                 <span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">end_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="ow">and</span> <span class="p">(</span><span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">forward</span><span class="p">,</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
             <span class="p">):</span>
-                <span class="c1"># pins are &quot;not&quot; pointing opposite directions and diverging</span>
+                <span class="c1"># pins are "not" pointing opposite directions and diverging</span>
                 <span class="k">if</span> <span class="n">start_meander_direction</span> <span class="o">*</span> <span class="n">asymmetry</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># sideway direction</span>
                     <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
                     <span class="n">pts</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">start_pt</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
@@ -858,7 +858,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">adjust_length</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">delta_length</span><span class="p">,</span> <span class="n">pts</span><span class="p">,</span> <span class="n">start_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span> <span class="n">end_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Edits meander points to redistribute the length slacks accrued with</span>
+<span class="w">        </span><span class="sd">"""Edits meander points to redistribute the length slacks accrued with</span>
 <span class="sd">        the various local adjustments It should be run after</span>
 <span class="sd">        self.pts_intermediate is completely defined Inputs are however specific</span>
 <span class="sd">        to the one meander segment Assumption is that pts is always a sequence</span>
@@ -875,7 +875,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            np.ndarray: Array of points</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># the adjustment length has to be computed in the main or in other method</span>
         <span class="c1"># considering entire route (Could include the corner fillet)</span>
 
@@ -983,14 +983,14 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteMeander.html#qiskit_metal.qlibrary.RouteMeander.get_index_for_side1_meander">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_index_for_side1_meander</span><span class="p">(</span><span class="n">num_root_pts</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the indices.</span>
+<span class="w">        </span><span class="sd">"""Get the indices.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            num_root_pts (list): List of points</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple: Tuple of indices</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">num_2pts</span><span class="p">,</span> <span class="n">odd</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">num_root_pts</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
         <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_2pts</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
@@ -1024,7 +1024,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -1047,6 +1047,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,10 +472,10 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Josephson Junction (Dolan-Style)</span>
 <span class="sd">REFERENCE: G. Dolan, Applied Physics Letters 31, 337 (1977)</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">draw</span><span class="p">,</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
@@ -484,7 +484,7 @@
 <div class="viewcode-block" id="jj_dolan">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.jj_dolan.html#qiskit_metal.qlibrary.jj_dolan">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">jj_dolan</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Dolan-bridge Josephson junction.</span>
 
 <span class="sd">    NOTE TO USER: Please be aware that when designing with this</span>
@@ -492,7 +492,7 @@
 <span class="sd">    qgeometry when exporting to to GDS and/or to a simulator. This</span>
 <span class="sd">    qcomponent should not be rendered for EM simulation.</span>
 
-<span class="sd">    This creates a &quot;Dolan&quot;-style Josephson Junction consisting</span>
+<span class="sd">    This creates a "Dolan"-style Josephson Junction consisting</span>
 <span class="sd">    of two non-overlapping metal rectangles each connected</span>
 <span class="sd">    to a larger rectangular pad. There is also a second,</span>
 <span class="sd">    smaller rectangle drawn on a different metal level</span>
@@ -505,41 +505,41 @@
 <span class="sd">        :description: Josephson Junction Dolan</span>
 
 <span class="sd">    Default Options:</span>
-<span class="sd">        * JJ_pad_lower_width: &#39;25um&#39; -- width of lower JJ metal region</span>
-<span class="sd">        * JJ_pad_lower_height: &#39;10um&#39; -- height of lower JJ metal region</span>
-<span class="sd">        * JJ_pad_lower_pos_x: &#39;0um&#39; -- the initial x-coord of the lower JJ pad</span>
-<span class="sd">        * JJ_pad_lower_pos_y: &#39;0um&#39; -- the initial y-coord of the lower JJ pad</span>
-<span class="sd">        * finger_lower_width: &#39;1um&#39; -- the width of the rectangular finger(s)</span>
-<span class="sd">        * finger_lower_height: &#39;20um&#39; -- the length of the rectangular finger(s)</span>
-<span class="sd">        * extension: &#39;1um&#39; -- the amount of rectangle extending beyond X-point</span>
-<span class="sd">        * offset: &#39;2um&#39; -- the separation between finger and the 2nd metal level</span>
-<span class="sd">        * second_metal_length: &#39;5um&#39; -- the length of the 2nd metal level</span>
-<span class="sd">        * second_metal_width: &#39;1um&#39; -- the width of the 2nd metal level</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        * JJ_pad_lower_width: '25um' -- width of lower JJ metal region</span>
+<span class="sd">        * JJ_pad_lower_height: '10um' -- height of lower JJ metal region</span>
+<span class="sd">        * JJ_pad_lower_pos_x: '0um' -- the initial x-coord of the lower JJ pad</span>
+<span class="sd">        * JJ_pad_lower_pos_y: '0um' -- the initial y-coord of the lower JJ pad</span>
+<span class="sd">        * finger_lower_width: '1um' -- the width of the rectangular finger(s)</span>
+<span class="sd">        * finger_lower_height: '20um' -- the length of the rectangular finger(s)</span>
+<span class="sd">        * extension: '1um' -- the amount of rectangle extending beyond X-point</span>
+<span class="sd">        * offset: '2um' -- the separation between finger and the 2nd metal level</span>
+<span class="sd">        * second_metal_length: '5um' -- the length of the 2nd metal level</span>
+<span class="sd">        * second_metal_width: '1um' -- the width of the 2nd metal level</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Default drawing options</span>
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">JJ_pad_lower_width</span><span class="o">=</span><span class="s2">&quot;25um&quot;</span><span class="p">,</span>
-        <span class="n">JJ_pad_lower_height</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">JJ_pad_lower_pos_x</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="n">JJ_pad_lower_pos_y</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="n">finger_lower_width</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
-        <span class="n">finger_lower_height</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
-        <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
-        <span class="n">offset</span><span class="o">=</span><span class="s2">&quot;2um&quot;</span><span class="p">,</span>
-        <span class="n">second_metal_length</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
-        <span class="n">second_metal_width</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
+        <span class="n">JJ_pad_lower_width</span><span class="o">=</span><span class="s2">"25um"</span><span class="p">,</span>
+        <span class="n">JJ_pad_lower_height</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">JJ_pad_lower_pos_x</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>
+        <span class="n">JJ_pad_lower_pos_y</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>
+        <span class="n">finger_lower_width</span><span class="o">=</span><span class="s2">"1um"</span><span class="p">,</span>
+        <span class="n">finger_lower_height</span><span class="o">=</span><span class="s2">"20um"</span><span class="p">,</span>
+        <span class="n">extension</span><span class="o">=</span><span class="s2">"1um"</span><span class="p">,</span>
+        <span class="n">offset</span><span class="o">=</span><span class="s2">"2um"</span><span class="p">,</span>
+        <span class="n">second_metal_length</span><span class="o">=</span><span class="s2">"5um"</span><span class="p">,</span>
+        <span class="n">second_metal_width</span><span class="o">=</span><span class="s2">"1um"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
-    <span class="c1"># Name prefix of component, if user doesn&#39;t provide name</span>
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+    <span class="c1"># Name prefix of component, if user doesn't provide name</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">"component"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
 <div class="viewcode-block" id="jj_dolan.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.jj_dolan.html#qiskit_metal.qlibrary.jj_dolan.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert self.options into QGeometry.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert self.options into QGeometry."""</span>
 
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>  <span class="c1"># Parse the string options into numbers</span>
 
@@ -605,11 +605,11 @@
         <span class="n">final_design</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">final_design</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
         <span class="n">second_metal</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">second_metal</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
 
-        <span class="n">geom1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;design&quot;</span><span class="p">:</span> <span class="n">final_design</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">geom1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"design"</span><span class="p">:</span> <span class="n">final_design</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="n">geom2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;design&quot;</span><span class="p">:</span> <span class="n">second_metal</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom2</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+        <span class="n">geom2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"design"</span><span class="p">:</span> <span class="n">second_metal</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom2</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
@@ -630,7 +630,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -653,6 +653,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

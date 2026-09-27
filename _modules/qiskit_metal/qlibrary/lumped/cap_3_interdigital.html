@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -481,7 +481,7 @@
 <div class="viewcode-block" id="Cap3Interdigital">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.Cap3Interdigital.html#qiskit_metal.qlibrary.Cap3Interdigital">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Cap3Interdigital</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a three finger planar capacitor with a ground pocket cuttout.</span>
+<span class="w">    </span><span class="sd">"""Create a three finger planar capacitor with a ground pocket cuttout.</span>
 <span class="sd">    The width of the fingers is determined by the trace width.</span>
 
 <span class="sd">    Inherits QComponent class.</span>
@@ -520,29 +520,29 @@
 <span class="sd">        :description: Cap 3 Interdigital</span>
 
 <span class="sd">    Default Options:</span>
-<span class="sd">        * trace_width: &#39;10um&#39;</span>
-<span class="sd">        * finger_length: &#39;65um&#39;</span>
-<span class="sd">        * pocket_buffer_width_x: &#39;10um&#39;</span>
-<span class="sd">        * pocket_buffer_width_y: &#39;30um&#39;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        * trace_width: '10um'</span>
+<span class="sd">        * finger_length: '65um'</span>
+<span class="sd">        * pocket_buffer_width_x: '10um'</span>
+<span class="sd">        * pocket_buffer_width_y: '30um'</span>
+<span class="sd">    """</span>
 
     <span class="c1">#  Define structure functions</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">trace_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">finger_length</span><span class="o">=</span><span class="s2">&quot;65um&quot;</span><span class="p">,</span>
-        <span class="n">pocket_buffer_width_x</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">pocket_buffer_width_y</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span>
+        <span class="n">trace_width</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">finger_length</span><span class="o">=</span><span class="s2">"65um"</span><span class="p">,</span>
+        <span class="n">pocket_buffer_width_x</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">pocket_buffer_width_y</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Create a three finger planar capacitor with a ground pocket cuttout.&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""Create a three finger planar capacitor with a ground pocket cuttout."""</span>
 
 <div class="viewcode-block" id="Cap3Interdigital.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.Cap3Interdigital.html#qiskit_metal.qlibrary.Cap3Interdigital.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is executed by the user to generate the qgeometry for the</span>
-<span class="sd">        component.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This is executed by the user to generate the qgeometry for the</span>
+<span class="sd">        component."""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
         <span class="c1">#########################################################</span>
 
@@ -623,7 +623,7 @@
         <span class="p">]</span>
 
         <span class="c1"># Rotates and translates all the objects as requested. Uses package functions</span>
-        <span class="c1"># in &#39;draw_utility&#39; for easy rotation/translation</span>
+        <span class="c1"># in 'draw_utility' for easy rotation/translation</span>
         <span class="n">polys1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">polys1</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">polys1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">polys1</span><span class="p">,</span> <span class="n">xoff</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">yoff</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
         <span class="p">[</span>
@@ -641,7 +641,7 @@
 
         <span class="c1"># Adds the object to the qgeometry table</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
+            <span class="s2">"poly"</span><span class="p">,</span>
             <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">pad_top</span><span class="o">=</span><span class="n">pad_top</span><span class="p">,</span>
                 <span class="n">pad_bot</span><span class="o">=</span><span class="n">pad_bot</span><span class="p">,</span>
@@ -655,11 +655,11 @@
         <span class="p">)</span>
 
         <span class="c1"># subtracts out ground plane on the layer its on</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pocket</span><span class="o">=</span><span class="n">pocket</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pocket</span><span class="o">=</span><span class="n">pocket</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
 
         <span class="c1"># Generates its own pins</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">top_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">bot_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">"a"</span><span class="p">,</span> <span class="n">top_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">"b"</span><span class="p">,</span> <span class="n">bot_pin_line</span><span class="o">.</span><span class="n">coords</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">trace_width</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
@@ -680,7 +680,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -703,6 +703,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

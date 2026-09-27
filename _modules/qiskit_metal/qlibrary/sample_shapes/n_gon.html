@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -481,7 +481,7 @@
 <div class="viewcode-block" id="NGon">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.NGon.html#qiskit_metal.qlibrary.NGon">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NGon</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A n-gon polygon. Eg. n = 3 : triangle, n = infinity : circle</span>
+<span class="w">    </span><span class="sd">"""A n-gon polygon. Eg. n = 3 : triangle, n = infinity : circle</span>
 
 <span class="sd">    Inherits `QComponent` class.</span>
 
@@ -493,27 +493,27 @@
 
 <span class="sd">    Default Options:</span>
 <span class="sd">        Convention: Values (unless noted) are strings with units included,</span>
-<span class="sd">        (e.g., &#39;30um&#39;)</span>
+<span class="sd">        (e.g., '30um')</span>
 
-<span class="sd">        * n: &#39;3&#39; -- Number of sides of the polygon</span>
-<span class="sd">        * radius: &#39;30um&#39; -- The radius of the circle given n=infinity</span>
-<span class="sd">        * subtract: &#39;False&#39;</span>
-<span class="sd">        * helper: &#39;False&#39;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        * n: '3' -- Number of sides of the polygon</span>
+<span class="sd">        * radius: '30um' -- The radius of the circle given n=infinity</span>
+<span class="sd">        * subtract: 'False'</span>
+<span class="sd">        * helper: 'False'</span>
+<span class="sd">    """</span>
 
-    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="n">helper</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+    <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="s2">"3"</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="s2">"False"</span><span class="p">,</span> <span class="n">helper</span><span class="o">=</span><span class="s2">"False"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A n-gon polygon&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""A n-gon polygon"""</span>
 
 <div class="viewcode-block" id="NGon.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.NGon.html#qiskit_metal.qlibrary.NGon.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The make function implements the logic that creates the geometry</span>
+<span class="w">        </span><span class="sd">"""The make function implements the logic that creates the geometry</span>
 <span class="sd">        (poly, path, etc.) from the qcomponent.options dictionary of</span>
 <span class="sd">        parameters, and the adds them to the design, using</span>
 <span class="sd">        qcomponent.add_qgeometry(...), adding in extra needed information, such</span>
-<span class="sd">        as layer, subtract, etc.&quot;&quot;&quot;</span>
+<span class="sd">        as layer, subtract, etc."""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>  <span class="c1"># p for parsed parameters. Access to the parsed options.</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
         <span class="c1"># Create the geometry</span>
@@ -531,8 +531,8 @@
         <span class="c1">##############################################</span>
         <span class="c1"># add qgeometry</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;n_polygon&quot;</span><span class="p">:</span> <span class="n">n_polygon</span><span class="p">},</span>
+            <span class="s2">"poly"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"n_polygon"</span><span class="p">:</span> <span class="n">n_polygon</span><span class="p">},</span>
             <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
             <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
@@ -558,7 +558,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -581,6 +581,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

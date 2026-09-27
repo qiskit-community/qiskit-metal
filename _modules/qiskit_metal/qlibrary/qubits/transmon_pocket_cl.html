@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,9 +472,9 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;Transmon Pocket CL.</span>
+<span class="sd">"""Transmon Pocket CL.</span>
 
-<span class="sd">Pocket &quot;axis&quot;</span>
+<span class="sd">Pocket "axis"</span>
 <span class="sd">        _________________</span>
 <span class="sd">        |               |</span>
 <span class="sd">        |_______________|       ^</span>
@@ -482,8 +482,8 @@
 <span class="sd">        |               |       |</span>
 <span class="sd">        |_______________|</span>
 
-<span class="sd">Child of &#39;standard&#39; transmon pocket.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Child of 'standard' transmon pocket.</span>
+<span class="sd">"""</span>
 <span class="c1"># Modification of Transmon Pocket Object to include a charge line (would be better to just make as a child)</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -494,7 +494,7 @@
 <div class="viewcode-block" id="TransmonPocketCL">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonPocketCL.html#qiskit_metal.qlibrary.TransmonPocketCL">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TransmonPocketCL</span><span class="p">(</span><span class="n">TransmonPocket</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The base `TransmonPocketCL` class.</span>
+<span class="w">    </span><span class="sd">"""The base `TransmonPocketCL` class.</span>
 
 <span class="sd">    Inherits `TransmonPocket` class.</span>
 
@@ -529,63 +529,63 @@
 <span class="sd">        * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.</span>
 
 <span class="sd">    TransmonPocket Default Options:</span>
-<span class="sd">        * pad_gap: &#39;30um&#39; -- The distance between the two charge islands, which is also the resulting &#39;length&#39; of the pseudo junction</span>
-<span class="sd">        * inductor_width: &#39;20um&#39; -- Width of the pseudo junction between the two charge islands (if in doubt, make the same as pad_gap). Really just for simulating in HFSS / other EM software</span>
-<span class="sd">        * pad_width: &#39;455um&#39; -- The width (x-axis) of the charge island pads</span>
-<span class="sd">        * pad_height: &#39;90um&#39; -- The size (y-axis) of the charge island pads</span>
-<span class="sd">        * pocket_width: &#39;650um&#39; -- Size of the pocket (cut out in ground) along x-axis</span>
-<span class="sd">        * pocket_height: &#39;650um&#39; -- Size of the pocket (cut out in ground) along y-axis</span>
+<span class="sd">        * pad_gap: '30um' -- The distance between the two charge islands, which is also the resulting 'length' of the pseudo junction</span>
+<span class="sd">        * inductor_width: '20um' -- Width of the pseudo junction between the two charge islands (if in doubt, make the same as pad_gap). Really just for simulating in HFSS / other EM software</span>
+<span class="sd">        * pad_width: '455um' -- The width (x-axis) of the charge island pads</span>
+<span class="sd">        * pad_height: '90um' -- The size (y-axis) of the charge island pads</span>
+<span class="sd">        * pocket_width: '650um' -- Size of the pocket (cut out in ground) along x-axis</span>
+<span class="sd">        * pocket_height: '650um' -- Size of the pocket (cut out in ground) along y-axis</span>
 <span class="sd">        * _default_connection_pads: Dict</span>
-<span class="sd">            * pad_gap: &#39;15um&#39; -- Space between the connector pad and the charge island it is nearest to</span>
-<span class="sd">            * pad_width: &#39;125um&#39; -- Width (x-axis) of the connector pad</span>
-<span class="sd">            * pad_height: &#39;30um&#39; -- Height (y-axis) of the connector pad</span>
-<span class="sd">            * pad_cpw_shift: &#39;5um&#39; -- Shift the connector pad cpw line by this much away from qubit</span>
-<span class="sd">            * pad_cpw_extent: &#39;25um&#39; -- Shift the connector pad cpw line by this much away from qubit</span>
-<span class="sd">            * cpw_width: &#39;cpw_width&#39; -- Center trace width of the CPW line</span>
-<span class="sd">            * cpw_gap: &#39;cpw_gap&#39; -- Dielectric gap width of the CPW line</span>
-<span class="sd">            * cpw_extend: &#39;100um&#39; -- Depth the connector line extends into ground (past the pocket edge)</span>
-<span class="sd">            * pocket_extent: &#39;5um&#39; -- How deep into the pocket should we penetrate with the cpw connector (into the fround plane)</span>
-<span class="sd">            * pocket_rise: &#39;65um&#39; -- How far up or downrelative to the center of the transmon should we elevate the cpw connection point on the ground plane</span>
-<span class="sd">            * loc_W: &#39;+1&#39; -- Width location  only +-1</span>
-<span class="sd">            * loc_H: &#39;+1&#39; -- Height location only +-1</span>
+<span class="sd">            * pad_gap: '15um' -- Space between the connector pad and the charge island it is nearest to</span>
+<span class="sd">            * pad_width: '125um' -- Width (x-axis) of the connector pad</span>
+<span class="sd">            * pad_height: '30um' -- Height (y-axis) of the connector pad</span>
+<span class="sd">            * pad_cpw_shift: '5um' -- Shift the connector pad cpw line by this much away from qubit</span>
+<span class="sd">            * pad_cpw_extent: '25um' -- Shift the connector pad cpw line by this much away from qubit</span>
+<span class="sd">            * cpw_width: 'cpw_width' -- Center trace width of the CPW line</span>
+<span class="sd">            * cpw_gap: 'cpw_gap' -- Dielectric gap width of the CPW line</span>
+<span class="sd">            * cpw_extend: '100um' -- Depth the connector line extends into ground (past the pocket edge)</span>
+<span class="sd">            * pocket_extent: '5um' -- How deep into the pocket should we penetrate with the cpw connector (into the fround plane)</span>
+<span class="sd">            * pocket_rise: '65um' -- How far up or downrelative to the center of the transmon should we elevate the cpw connection point on the ground plane</span>
+<span class="sd">            * loc_W: '+1' -- Width location  only +-1</span>
+<span class="sd">            * loc_H: '+1' -- Height location only +-1</span>
 
 <span class="sd">    Default Options:</span>
 <span class="sd">        * make_CL: True -- If a charge line should be included.</span>
-<span class="sd">        * cl_gap: &#39;6um&#39; -- The cpw dielectric gap of the charge line</span>
-<span class="sd">        * cl_width: &#39;10um&#39; -- The cpw trace width of the charge line</span>
-<span class="sd">        * cl_length: &#39;20um&#39; --  The length of the charge line &#39;arm&#39; coupling the the qubit pocket.</span>
+<span class="sd">        * cl_gap: '6um' -- The cpw dielectric gap of the charge line</span>
+<span class="sd">        * cl_width: '10um' -- The cpw trace width of the charge line</span>
+<span class="sd">        * cl_length: '20um' --  The length of the charge line 'arm' coupling the the qubit pocket.</span>
 <span class="sd">          Measured from the base of the 90 degree bend.</span>
-<span class="sd">        * cl_ground_gap: &#39;6um&#39; -- How much ground is present between the charge line and the</span>
+<span class="sd">        * cl_ground_gap: '6um' -- How much ground is present between the charge line and the</span>
 <span class="sd">          qubit pocket.</span>
-<span class="sd">        * cl_pocket_edge: &#39;0&#39; -- What side of the pocket the charge line is.</span>
-<span class="sd">          -180 to +180 from the &#39;west edge&#39;, will round to the nearest 90.</span>
-<span class="sd">        * cl_off_center: &#39;50um&#39; -- Distance from the center axis the qubit pocket is referenced to</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        * cl_pocket_edge: '0' -- What side of the pocket the charge line is.</span>
+<span class="sd">          -180 to +180 from the 'west edge', will round to the nearest 90.</span>
+<span class="sd">        * cl_off_center: '50um' -- Distance from the center axis the qubit pocket is referenced to</span>
+<span class="sd">    """</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">"Q"</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">"True"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="n">make_CL</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">cl_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>  <span class="c1"># the cpw dielectric gap of the charge line</span>
-        <span class="n">cl_width</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>  <span class="c1"># the cpw trace width of the charge line</span>
-        <span class="c1"># the length of the charge line &#39;arm&#39; coupling the the qubit pocket.</span>
-        <span class="n">cl_length</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
+        <span class="n">cl_gap</span><span class="o">=</span><span class="s2">"6um"</span><span class="p">,</span>  <span class="c1"># the cpw dielectric gap of the charge line</span>
+        <span class="n">cl_width</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>  <span class="c1"># the cpw trace width of the charge line</span>
+        <span class="c1"># the length of the charge line 'arm' coupling the the qubit pocket.</span>
+        <span class="n">cl_length</span><span class="o">=</span><span class="s2">"20um"</span><span class="p">,</span>
         <span class="c1"># Measured from the base of the 90 degree bend</span>
-        <span class="n">cl_ground_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>  <span class="c1"># how much ground between the charge line and the qubit pocket</span>
-        <span class="c1"># -180 to +180 from the &#39;left edge&#39;, will round to the nearest 90.</span>
-        <span class="n">cl_pocket_edge</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="n">cl_off_center</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>  <span class="c1"># distance from the center axis the qubit pocket is built on</span>
+        <span class="n">cl_ground_gap</span><span class="o">=</span><span class="s2">"6um"</span><span class="p">,</span>  <span class="c1"># how much ground between the charge line and the qubit pocket</span>
+        <span class="c1"># -180 to +180 from the 'left edge', will round to the nearest 90.</span>
+        <span class="n">cl_pocket_edge</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>
+        <span class="n">cl_off_center</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">,</span>  <span class="c1"># distance from the center axis the qubit pocket is built on</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Create a standard pocket transmon qubit for a ground plane,</span>
-<span class="s2">    with two pads connected by a junction&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""Create a standard pocket transmon qubit for a ground plane,</span>
+<span class="s2">    with two pads connected by a junction"""</span>
 
 <div class="viewcode-block" id="TransmonPocketCL.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonPocketCL.html#qiskit_metal.qlibrary.TransmonPocketCL.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the way the options are turned into QGeometry.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Define the way the options are turned into QGeometry."""</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">make</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">make_CL</span><span class="p">:</span>
@@ -597,11 +597,11 @@
 <div class="viewcode-block" id="TransmonPocketCL.make_charge_line">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonPocketCL.html#qiskit_metal.qlibrary.TransmonPocketCL.make_charge_line">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_charge_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates the charge line if the user has charge line option to</span>
-<span class="sd">        TRUE.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Creates the charge line if the user has charge line option to</span>
+<span class="sd">        TRUE."""</span>
 
         <span class="c1"># Grab option values</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Charge_Line&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">"Charge_Line"</span>
 
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
 
@@ -650,8 +650,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">cl_width</span><span class="p">)</span>
 
         <span class="c1"># Adding to qgeometry table</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cl_metal</span><span class="o">=</span><span class="n">cl_metal</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cl_etcher</span><span class="o">=</span><span class="n">cl_etcher</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cl_metal</span><span class="o">=</span><span class="n">cl_metal</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cl_etcher</span><span class="o">=</span><span class="n">cl_etcher</span><span class="p">),</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
@@ -672,7 +672,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -695,6 +695,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,7 +472,7 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;File contains dictionary for NSquareSpiral and the make().&quot;&quot;&quot;</span>
+<span class="sd">"""File contains dictionary for NSquareSpiral and the make()."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">draw</span><span class="p">,</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
@@ -482,7 +482,7 @@
 <div class="viewcode-block" id="ResonatorCoilRect">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ResonatorCoilRect.html#qiskit_metal.qlibrary.ResonatorCoilRect">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ResonatorCoilRect</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A rectangle spiral resonator based on length input. The X dimension is</span>
+<span class="w">    </span><span class="sd">"""A rectangle spiral resonator based on length input. The X dimension is</span>
 <span class="sd">    modified by the code based on the total length inputed.</span>
 
 <span class="sd">    Inherits `QComponent` class</span>
@@ -508,40 +508,40 @@
 
 <span class="sd">    Default Options:</span>
 <span class="sd">        Convention: Values (unless noted) are strings with units included,</span>
-<span class="sd">        (e.g., &#39;30um&#39;)</span>
+<span class="sd">        (e.g., '30um')</span>
 
-<span class="sd">        * n: &#39;3&#39; -- Number of turns of the spiral</span>
-<span class="sd">        * length: &#39;2000um&#39; -- Total length of the spiral</span>
-<span class="sd">        * line_width: &#39;1um&#39; -- The width of the line of the spiral</span>
-<span class="sd">        * height: &#39;40um&#39; -- The height of the inner portion of the spiral</span>
-<span class="sd">        * gap: &#39;4um&#39; -- The distance between each layer of the spiral</span>
-<span class="sd">        * coupler_distance: &#39;10um&#39; -- The pin position from the grounded termination of the spiral</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        * n: '3' -- Number of turns of the spiral</span>
+<span class="sd">        * length: '2000um' -- Total length of the spiral</span>
+<span class="sd">        * line_width: '1um' -- The width of the line of the spiral</span>
+<span class="sd">        * height: '40um' -- The height of the inner portion of the spiral</span>
+<span class="sd">        * gap: '4um' -- The distance between each layer of the spiral</span>
+<span class="sd">        * coupler_distance: '10um' -- The pin position from the grounded termination of the spiral</span>
+<span class="sd">    """</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;res&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">"res"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">n</span><span class="o">=</span><span class="s2">&quot;3&quot;</span><span class="p">,</span>
-        <span class="n">length</span><span class="o">=</span><span class="s2">&quot;2000um&quot;</span><span class="p">,</span>
-        <span class="n">line_width</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
-        <span class="n">height</span><span class="o">=</span><span class="s2">&quot;40um&quot;</span><span class="p">,</span>
-        <span class="n">gap</span><span class="o">=</span><span class="s2">&quot;4um&quot;</span><span class="p">,</span>
-        <span class="n">coupler_distance</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
+        <span class="n">n</span><span class="o">=</span><span class="s2">"3"</span><span class="p">,</span>
+        <span class="n">length</span><span class="o">=</span><span class="s2">"2000um"</span><span class="p">,</span>
+        <span class="n">line_width</span><span class="o">=</span><span class="s2">"1um"</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="s2">"40um"</span><span class="p">,</span>
+        <span class="n">gap</span><span class="o">=</span><span class="s2">"4um"</span><span class="p">,</span>
+        <span class="n">coupler_distance</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A rectangle spiral resonator based on length input. The X dimension is</span>
-<span class="s2">    modified by the code based on the total length inputed.&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""A rectangle spiral resonator based on length input. The X dimension is</span>
+<span class="s2">    modified by the code based on the total length inputed."""</span>
 
 <div class="viewcode-block" id="ResonatorCoilRect.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ResonatorCoilRect.html#qiskit_metal.qlibrary.ResonatorCoilRect.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The make function implements the logic that creates the geometry</span>
+<span class="w">        </span><span class="sd">"""The make function implements the logic that creates the geometry</span>
 <span class="sd">        (poly, path, etc.) from the qcomponent.options dictionary of</span>
 <span class="sd">        parameters, and the adds them to the design, using</span>
 <span class="sd">        qcomponent.add_qgeometry(...), adding in extra needed information, such</span>
-<span class="sd">        as layer, subtract, etc.&quot;&quot;&quot;</span>
+<span class="sd">        as layer, subtract, etc."""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>  <span class="c1"># p for parsed parameters. Access to the parsed options.</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
         <span class="c1"># Create the geometry</span>
@@ -555,7 +555,7 @@
 
         <span class="k">if</span> <span class="n">x_n</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="o">.</span><span class="n">gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">line_width</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_error_message</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;Inputted values results in the width of the spiral being too small.&quot;</span>
+                <span class="s2">"Inputted values results in the width of the spiral being too small."</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_error_message</span><span class="p">)</span>
             <span class="k">return</span>
@@ -594,12 +594,12 @@
         <span class="p">[</span><span class="n">spiral_list</span><span class="p">,</span> <span class="n">spiral_etch</span><span class="p">,</span> <span class="n">points</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_items</span>
         <span class="c1">##############################################</span>
         <span class="c1"># add elements</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;n_spiral&quot;</span><span class="p">:</span> <span class="n">spiral_list</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">line_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;n_spira_etch&quot;</span><span class="p">:</span> <span class="n">spiral_etch</span><span class="p">},</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"path"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"n_spiral"</span><span class="p">:</span> <span class="n">spiral_list</span><span class="p">},</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">line_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"n_spira_etch"</span><span class="p">:</span> <span class="n">spiral_etch</span><span class="p">},</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># NEW PIN SPOT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;spiralPin&quot;</span><span class="p">,</span>
+            <span class="s2">"spiralPin"</span><span class="p">,</span>
             <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">line_width</span><span class="p">,</span>
             <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -624,7 +624,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -647,6 +647,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

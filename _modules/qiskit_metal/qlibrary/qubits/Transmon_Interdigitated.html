@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,7 +472,7 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;Interdigitated Transmon.&quot;&quot;&quot;</span>
+<span class="sd">"""Interdigitated Transmon."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -487,11 +487,11 @@
 <div class="viewcode-block" id="TransmonInterdigitated">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonInterdigitated.html#qiskit_metal.qlibrary.TransmonInterdigitated">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TransmonInterdigitated</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The base &quot;TransmonInterdigitated&quot; inherits the &quot;QComponent&quot; class.</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    The base "TransmonInterdigitated" inherits the "QComponent" class.</span>
 
 <span class="sd">    This creates a transmon pocket with two large pads connected by a Josephson</span>
-<span class="sd">    junction. Both pads have four interdigitated &quot;fingers&quot; which increase the</span>
+<span class="sd">    junction. Both pads have four interdigitated "fingers" which increase the</span>
 <span class="sd">    capacitance of the structure. There are three coupling capacitor pads with qpins</span>
 <span class="sd">    defined; these can be connected to other structures in a design using CPWs.</span>
 
@@ -502,79 +502,79 @@
 <span class="sd">        :description: Transmon Interdigitated</span>
 
 <span class="sd">    Default Options:</span>
-<span class="sd">        * pad_width: &#39;1000um&#39; -- width of the large rectangular pads on either side</span>
+<span class="sd">        * pad_width: '1000um' -- width of the large rectangular pads on either side</span>
 <span class="sd">          of the junction</span>
-<span class="sd">        * pad_height: &#39;300um&#39; -- height of the large rectangular pads on either side</span>
+<span class="sd">        * pad_height: '300um' -- height of the large rectangular pads on either side</span>
 <span class="sd">          of the junction</span>
-<span class="sd">        * finger_width: &#39;50um&#39; -- width of the &quot;finger&quot; on either side of the junction</span>
-<span class="sd">        * finger_height: &#39;100um&#39; -- height of the &quot;finger&quot; on the side of the junction</span>
-<span class="sd">        * finger_space: &#39;50um&#39; -- height of the Josephson Junction (equivalently; space</span>
+<span class="sd">        * finger_width: '50um' -- width of the "finger" on either side of the junction</span>
+<span class="sd">        * finger_height: '100um' -- height of the "finger" on the side of the junction</span>
+<span class="sd">        * finger_space: '50um' -- height of the Josephson Junction (equivalently; space</span>
 <span class="sd">          between two fingers)</span>
-<span class="sd">        * pad_pos_x: &#39;0um&#39; -- the internal coordinate defining the center of the bottom</span>
+<span class="sd">        * pad_pos_x: '0um' -- the internal coordinate defining the center of the bottom</span>
 <span class="sd">          rectangular pad</span>
-<span class="sd">        * pad_pos_y: &#39;0um&#39; -- the internal coordinate defining the center of the bottom</span>
+<span class="sd">        * pad_pos_y: '0um' -- the internal coordinate defining the center of the bottom</span>
 <span class="sd">          rectangular pad</span>
-<span class="sd">        * comb_width: &#39;50um&#39; -- the width of the four interdigitated combs connected to</span>
+<span class="sd">        * comb_width: '50um' -- the width of the four interdigitated combs connected to</span>
 <span class="sd">          either pad</span>
-<span class="sd">        * comb_space_vert: &#39;50um&#39; -- the space between the edge of a comb and the edge of</span>
+<span class="sd">        * comb_space_vert: '50um' -- the space between the edge of a comb and the edge of</span>
 <span class="sd">          the opposite rectangular pad</span>
-<span class="sd">        * comb_space_hor: &#39;50um&#39; -- the space between adjacent interdigitated comb structures</span>
-<span class="sd">        * jj_width: &#39;20um&#39; -- the width of the Josephson Junction located between the two</span>
+<span class="sd">        * comb_space_hor: '50um' -- the space between adjacent interdigitated comb structures</span>
+<span class="sd">        * jj_width: '20um' -- the width of the Josephson Junction located between the two</span>
 <span class="sd">          fingers of the device</span>
-<span class="sd">        * cc_space: &#39;50um&#39; -- the space between the lower rectangular pad and the coupling</span>
+<span class="sd">        * cc_space: '50um' -- the space between the lower rectangular pad and the coupling</span>
 <span class="sd">          capacitor below it</span>
-<span class="sd">        * cc_width: &#39;100um&#39; -- the width of the coupling capacitor located below the bottom</span>
+<span class="sd">        * cc_width: '100um' -- the width of the coupling capacitor located below the bottom</span>
 <span class="sd">          rectangular pad</span>
-<span class="sd">        * cc_height: &#39;100um&#39; -- the height of the coupling capacitor located below the bottom</span>
+<span class="sd">        * cc_height: '100um' -- the height of the coupling capacitor located below the bottom</span>
 <span class="sd">          rectangular pad</span>
-<span class="sd">        * cc_topleft_space: &#39;50um&#39; -- the space between the upper rectangular pad and the top</span>
+<span class="sd">        * cc_topleft_space: '50um' -- the space between the upper rectangular pad and the top</span>
 <span class="sd">          left coupling capacitor</span>
-<span class="sd">        * cc_topleft_width: &#39;100um&#39; -- the width of the top left coupling capacitor pad</span>
-<span class="sd">        * cc_topleft_height: &#39;100um&#39; -- the height of the top left coupling capacitor pad</span>
-<span class="sd">        * cc_topright_space: &#39;50um&#39; -- the space between the upper rectangular pad and the</span>
+<span class="sd">        * cc_topleft_width: '100um' -- the width of the top left coupling capacitor pad</span>
+<span class="sd">        * cc_topleft_height: '100um' -- the height of the top left coupling capacitor pad</span>
+<span class="sd">        * cc_topright_space: '50um' -- the space between the upper rectangular pad and the</span>
 <span class="sd">          top right coupling capacitor</span>
-<span class="sd">        * cc_topright_width: &#39;100um&#39; -- the width of the top right coupling capacitor pad</span>
-<span class="sd">        * cc_topright_height: &#39;100um&#39; -- the height of the top right coupling capacitor pad</span>
-<span class="sd">        * rotation_top_pad: &#39;180&#39; -- internal coordinate defining the angle of rotation</span>
+<span class="sd">        * cc_topright_width: '100um' -- the width of the top right coupling capacitor pad</span>
+<span class="sd">        * cc_topright_height: '100um' -- the height of the top right coupling capacitor pad</span>
+<span class="sd">        * rotation_top_pad: '180' -- internal coordinate defining the angle of rotation</span>
 <span class="sd">          between top and bottom pads</span>
-<span class="sd">        * inductor_width: &#39;20.0um&#39; -- the width of the Josephson Junction</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        * inductor_width: '20.0um' -- the width of the Josephson Junction</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Default drawing options</span>
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;1000um&quot;</span><span class="p">,</span>
-        <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;300um&quot;</span><span class="p">,</span>
-        <span class="n">finger_width</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
-        <span class="n">finger_height</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
-        <span class="n">finger_space</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
-        <span class="n">pad_pos_x</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
-        <span class="n">pad_pos_y</span><span class="o">=</span><span class="s2">&quot;0um&quot;</span><span class="p">,</span>
-        <span class="n">comb_width</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
-        <span class="n">comb_space_vert</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
-        <span class="n">comb_space_hor</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
-        <span class="n">jj_width</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
-        <span class="n">cc_space</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
-        <span class="n">cc_width</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
-        <span class="n">cc_height</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
-        <span class="n">cc_topleft_space</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
-        <span class="n">cc_topleft_width</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
-        <span class="n">cc_topleft_height</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
-        <span class="n">cc_topright_space</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">,</span>
-        <span class="n">cc_topright_width</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
-        <span class="n">cc_topright_height</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
-        <span class="n">rotation_top_pad</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">,</span>
-        <span class="n">inductor_width</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
+        <span class="n">pad_width</span><span class="o">=</span><span class="s2">"1000um"</span><span class="p">,</span>
+        <span class="n">pad_height</span><span class="o">=</span><span class="s2">"300um"</span><span class="p">,</span>
+        <span class="n">finger_width</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">,</span>
+        <span class="n">finger_height</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>
+        <span class="n">finger_space</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">,</span>
+        <span class="n">pad_pos_x</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">,</span>
+        <span class="n">pad_pos_y</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">,</span>
+        <span class="n">comb_width</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">,</span>
+        <span class="n">comb_space_vert</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">,</span>
+        <span class="n">comb_space_hor</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">,</span>
+        <span class="n">jj_width</span><span class="o">=</span><span class="s2">"20um"</span><span class="p">,</span>
+        <span class="n">cc_space</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">,</span>
+        <span class="n">cc_width</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>
+        <span class="n">cc_height</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>
+        <span class="n">cc_topleft_space</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">,</span>
+        <span class="n">cc_topleft_width</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>
+        <span class="n">cc_topleft_height</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>
+        <span class="n">cc_topright_space</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">,</span>
+        <span class="n">cc_topright_width</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>
+        <span class="n">cc_topright_height</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>
+        <span class="n">rotation_top_pad</span><span class="o">=</span><span class="s2">"180"</span><span class="p">,</span>
+        <span class="n">inductor_width</span><span class="o">=</span><span class="s2">"20um"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
-    <span class="c1"># Name prefix of component, if user doesn&#39;t provide name</span>
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+    <span class="c1"># Name prefix of component, if user doesn't provide name</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">"component"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
 <div class="viewcode-block" id="TransmonInterdigitated.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonInterdigitated.html#qiskit_metal.qlibrary.TransmonInterdigitated.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert self.options into QGeometry.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert self.options into QGeometry."""</span>
 
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>  <span class="c1"># Parse the string options into numbers</span>
 
@@ -662,7 +662,7 @@
         <span class="n">pocket</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_width</span><span class="p">,</span> <span class="mf">5.0</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span><span class="p">)</span>
 
         <span class="c1"># the origin is originally set to the middle of the lower pad.</span>
-        <span class="c1"># Let&#39;s move it to the center of the JJ.</span>
+        <span class="c1"># Let's move it to the center of the JJ.</span>
         <span class="n">bottom</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
             <span class="n">bottom</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_height</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_space</span>
         <span class="p">)</span>
@@ -707,24 +707,24 @@
         <span class="n">pocket</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pocket</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
 
         <span class="c1"># add each shape separately</span>
-        <span class="n">geom1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pad_bot&quot;</span><span class="p">:</span> <span class="n">bottom</span><span class="p">}</span>
-        <span class="n">geom2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pad_top&quot;</span><span class="p">:</span> <span class="n">top</span><span class="p">}</span>
-        <span class="n">geom3</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;readout&quot;</span><span class="p">:</span> <span class="n">coupling_capacitor</span><span class="p">}</span>
-        <span class="n">geom4</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bus1&quot;</span><span class="p">:</span> <span class="n">cc_topleft</span><span class="p">}</span>
-        <span class="n">geom5</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bus2&quot;</span><span class="p">:</span> <span class="n">cc_topright</span><span class="p">}</span>
-        <span class="n">geom_pocket</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pocket&quot;</span><span class="p">:</span> <span class="n">pocket</span><span class="p">}</span>
-        <span class="n">geom_jj</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;design&quot;</span><span class="p">:</span> <span class="n">rect_jj</span><span class="p">}</span>
+        <span class="n">geom1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"pad_bot"</span><span class="p">:</span> <span class="n">bottom</span><span class="p">}</span>
+        <span class="n">geom2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"pad_top"</span><span class="p">:</span> <span class="n">top</span><span class="p">}</span>
+        <span class="n">geom3</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"readout"</span><span class="p">:</span> <span class="n">coupling_capacitor</span><span class="p">}</span>
+        <span class="n">geom4</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"bus1"</span><span class="p">:</span> <span class="n">cc_topleft</span><span class="p">}</span>
+        <span class="n">geom5</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"bus2"</span><span class="p">:</span> <span class="n">cc_topright</span><span class="p">}</span>
+        <span class="n">geom_pocket</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"pocket"</span><span class="p">:</span> <span class="n">pocket</span><span class="p">}</span>
+        <span class="n">geom_jj</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"design"</span><span class="p">:</span> <span class="n">rect_jj</span><span class="p">}</span>
 
         <span class="c1"># add to qgeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom2</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom3</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom4</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom5</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom2</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom3</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom4</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom5</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_pocket</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom_pocket</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;junction&quot;</span><span class="p">,</span> <span class="n">geom_jj</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">inductor_width</span>
+            <span class="s2">"junction"</span><span class="p">,</span> <span class="n">geom_jj</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">inductor_width</span>
         <span class="p">)</span>
 
         <span class="c1">###################################################################</span>
@@ -734,10 +734,10 @@
         <span class="c1"># define a function that both rotates and translates the</span>
         <span class="c1"># qpin coordinates</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">qpin_rotate_translate</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;This function rotates the coordinates of the three qpins</span>
-<span class="sd">            according to the user inputs for &quot;pos_x&quot;, &quot;pos_y&quot;</span>
-<span class="sd">            and &quot;orientation&quot;.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">"""This function rotates the coordinates of the three qpins</span>
+<span class="sd">            according to the user inputs for "pos_x", "pos_y"</span>
+<span class="sd">            and "orientation".</span>
+<span class="sd">            """</span>
             <span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
             <span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
             <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">orientation</span> <span class="o">*</span> <span class="mf">3.14159</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span>
@@ -769,7 +769,7 @@
         <span class="n">qp1b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp1b</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;readout&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp1a</span><span class="p">,</span> <span class="n">qp1b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+            <span class="s2">"readout"</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp1a</span><span class="p">,</span> <span class="n">qp1b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
 
         <span class="c1"># Add Qpin connections for top left coupling capacitor</span>
@@ -803,7 +803,7 @@
         <span class="n">qp2b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp2b</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;bus1&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp2a</span><span class="p">,</span> <span class="n">qp2b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+            <span class="s2">"bus1"</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp2a</span><span class="p">,</span> <span class="n">qp2b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
 
         <span class="c1"># Add Qpin connections for top right coupling capacitor</span>
@@ -837,7 +837,7 @@
         <span class="n">qp3b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp3b</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;bus2&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp3a</span><span class="p">,</span> <span class="n">qp3b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+            <span class="s2">"bus2"</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp3a</span><span class="p">,</span> <span class="n">qp3b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span></div>
 </div>
 
@@ -859,7 +859,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -882,6 +882,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

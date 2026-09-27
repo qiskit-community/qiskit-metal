@@ -1,6 +1,6 @@
 {
   "name": "@jupyterlite/pyodide-kernel-extension",
-  "version": "0.7.2",
+  "version": "0.8.6",
   "description": "JupyterLite - Pyodide Kernel Extension",
   "homepage": "https://github.com/jupyterlite/pyodide-kernel",
   "bugs": {
@@ -33,8 +33,8 @@
   "scripts": {
     "build": "jlpm build:lib && jlpm build:labextension:dev",
     "build:prod": "jlpm build:lib && jlpm build:labextension",
-    "build:labextension": "jupyter labextension build .",
-    "build:labextension:dev": "jupyter labextension build --development True .",
+    "build:labextension": "jupyter builder build .",
+    "build:labextension:dev": "jupyter builder build --development True .",
     "build:lib": "tsc",
     "dist": "cd ../../dist && npm pack ../packages/pyodide-kernel-extension",
     "clean": "jlpm clean:lib",
@@ -47,17 +47,17 @@
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
-    "@jupyterlab/application": "^4.5.7",
-    "@jupyterlab/coreutils": "^6.5.7",
-    "@jupyterlab/logconsole": "^4.5.7",
-    "@jupyterlite/apputils": "^0.7.5",
-    "@jupyterlite/pyodide-kernel": "^0.7.2",
-    "@jupyterlite/services": "^0.7.5"
+    "@jupyterlab/application": "^4.6.3",
+    "@jupyterlab/coreutils": "^6.6.3",
+    "@jupyterlab/logconsole": "^4.6.3",
+    "@jupyterlite/apputils": "^0.8.3",
+    "@jupyterlite/pyodide-kernel": "^0.8.6",
+    "@jupyterlite/services": "^0.8.3"
   },
   "devDependencies": {
-    "@jupyterlab/builder": "^4.5.7",
-    "rimraf": "^6.1.3",
-    "typescript": "~5.5.4"
+    "@jupyter/builder": "^1.2.2",
+    "rimraf": "^6.0.1",
+    "typescript": "~5.9.3"
   },
   "publishConfig": {
     "access": "public"
@@ -73,7 +73,7 @@
       }
     },
     "_build": {
-      "load": "static/remoteEntry.75ddd7589fd94926c419.js",
+      "load": "static/remoteEntry.abcac41d5ca77040.js",
       "extension": "./extension"
     }
   },

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,7 +472,7 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement).</span>
+<span class="sd">"""SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement).</span>
 
 <span class="sd">.. code-block:</span>
 <span class="sd">:</span>
@@ -485,7 +485,7 @@
 <span class="sd">    |--------seg a lower--------|jj|----seg b lower-----|          |</span>
 <span class="sd">    |              (single small junction, lower arm)              |</span>
 <span class="sd">    |                                                              |</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">draw</span><span class="p">,</span> <span class="n">Dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
@@ -494,9 +494,9 @@
 <div class="viewcode-block" id="SNAIL">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.SNAIL.html#qiskit_metal.qlibrary.SNAIL">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SNAIL</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement).</span>
+<span class="w">    </span><span class="sd">"""A SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement).</span>
 
-<span class="sd">    Inherits the &quot;QComponent&quot; class.</span>
+<span class="sd">    Inherits the "QComponent" class.</span>
 
 <span class="sd">    A SNAIL is a superconducting loop interrupted by ``n`` large Josephson</span>
 <span class="sd">    junctions on one arm (here ``n = 3``) and a single smaller junction</span>
@@ -540,19 +540,19 @@
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    * Frattini et al., &quot;3-wave mixing Josephson dipole element&quot;,</span>
+<span class="sd">    * Frattini et al., "3-wave mixing Josephson dipole element",</span>
 <span class="sd">      Appl. Phys. Lett. 110, 222603 (2017), arXiv:1702.00869 -- introduces</span>
 <span class="sd">      the SNAIL; source of ``n = 3``, ``alpha = 0.29``, ``Phi_ext = 0.41</span>
 <span class="sd">      Phi_0``, ``I0 = 7.1 / 2.0 uA``.</span>
-<span class="sd">    * Frattini et al., &quot;Optimizing the Nonlinearity and Dissipation of a</span>
-<span class="sd">      SNAIL Parametric Amplifier for Dynamic Range&quot;, Phys. Rev. Applied 10,</span>
+<span class="sd">    * Frattini et al., "Optimizing the Nonlinearity and Dissipation of a</span>
+<span class="sd">      SNAIL Parametric Amplifier for Dynamic Range", Phys. Rev. Applied 10,</span>
 <span class="sd">      054020 (2018), arXiv:1806.06093 -- arraying (``M = 1, 10, 20``) to</span>
 <span class="sd">      raise saturation power; also uses ``alpha = 0.09``.</span>
-<span class="sd">    * Sivak et al., &quot;Kerr-free three-wave mixing in superconducting quantum</span>
-<span class="sd">      circuits&quot;, Phys. Rev. Applied 11, 054060 (2019), arXiv:1902.10575 --</span>
+<span class="sd">    * Sivak et al., "Kerr-free three-wave mixing in superconducting quantum</span>
+<span class="sd">      circuits", Phys. Rev. Applied 11, 054060 (2019), arXiv:1902.10575 --</span>
 <span class="sd">      Kerr-free operation, ``M = 20`` array, resonator tunable 6.2-7.2 GHz.</span>
-<span class="sd">    * Miano et al., &quot;Frequency-tunable Kerr-free three-wave mixing with a</span>
-<span class="sd">      gradiometric SNAIL&quot;, Appl. Phys. Lett. 120, 184002 (2022),</span>
+<span class="sd">    * Miano et al., "Frequency-tunable Kerr-free three-wave mixing with a</span>
+<span class="sd">      gradiometric SNAIL", Appl. Phys. Lett. 120, 184002 (2022),</span>
 <span class="sd">      arXiv:2112.09785 -- restates the ``alpha &lt; 1/3`` bound; two-loop</span>
 <span class="sd">      gradiometric variant (not drawn here).</span>
 <span class="sd">    * Josephson inductance relation: ``L_J = Phi_0/(2*pi*I0) = hbar/(2*e*I0)``</span>
@@ -629,79 +629,79 @@
 <span class="sd">        :description: SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement)</span>
 
 <span class="sd">    Default Options:</span>
-<span class="sd">        * plate1_width: &#39;5.5um&#39; -- width of plate1 (left)</span>
-<span class="sd">        * plate1_height: &#39;40um&#39; -- height of plate1 (left)</span>
-<span class="sd">        * plate1_pos_x: &#39;0&#39; -- origin of plate1 (left) in x</span>
-<span class="sd">        * plate1_pos_y: &#39;0&#39; -- origin of plate1 (left) in y</span>
-<span class="sd">        * squid_gap: &#39;10um&#39; -- vertical space between the upper and lower arms</span>
-<span class="sd">        * segment_a_length: &#39;10um&#39; -- length of seg a (first upper-arm segment)</span>
-<span class="sd">        * segment_a_width: &#39;1um&#39; -- width of the upper-arm segments</span>
-<span class="sd">        * JJ_gap: &#39;0.5um&#39; -- break for each of the three large junctions (upper arm)</span>
-<span class="sd">        * segment_ab_length: &#39;5um&#39; -- length of the islands between the large junctions</span>
-<span class="sd">        * segment_b_length: &#39;5um&#39; -- length of seg b (last upper-arm segment)</span>
-<span class="sd">        * segment_b_width: &#39;1um&#39; -- width of seg b</span>
-<span class="sd">        * JJ_gap_small: &#39;0.3um&#39; -- break for the single small junction (lower arm)</span>
-<span class="sd">        * segment_lower_width: &#39;0.6um&#39; -- width of the lower (small-junction) arm</span>
-<span class="sd">        * segment_c_width: &#39;1um&#39; -- width of the vertical connector seg c</span>
-<span class="sd">        * segment_d_length: &#39;10um&#39; -- length of seg d</span>
-<span class="sd">        * segment_d_width: &#39;2um&#39; -- width of seg d</span>
-<span class="sd">        * plate2_width: &#39;6um&#39; -- width of plate 2 (right)</span>
-<span class="sd">        * plate2_height: &#39;30um&#39; -- height of plate 2 (right)</span>
-<span class="sd">        * Lj: &#39;0.046nH&#39; -- Josephson inductance of each large junction</span>
+<span class="sd">        * plate1_width: '5.5um' -- width of plate1 (left)</span>
+<span class="sd">        * plate1_height: '40um' -- height of plate1 (left)</span>
+<span class="sd">        * plate1_pos_x: '0' -- origin of plate1 (left) in x</span>
+<span class="sd">        * plate1_pos_y: '0' -- origin of plate1 (left) in y</span>
+<span class="sd">        * squid_gap: '10um' -- vertical space between the upper and lower arms</span>
+<span class="sd">        * segment_a_length: '10um' -- length of seg a (first upper-arm segment)</span>
+<span class="sd">        * segment_a_width: '1um' -- width of the upper-arm segments</span>
+<span class="sd">        * JJ_gap: '0.5um' -- break for each of the three large junctions (upper arm)</span>
+<span class="sd">        * segment_ab_length: '5um' -- length of the islands between the large junctions</span>
+<span class="sd">        * segment_b_length: '5um' -- length of seg b (last upper-arm segment)</span>
+<span class="sd">        * segment_b_width: '1um' -- width of seg b</span>
+<span class="sd">        * JJ_gap_small: '0.3um' -- break for the single small junction (lower arm)</span>
+<span class="sd">        * segment_lower_width: '0.6um' -- width of the lower (small-junction) arm</span>
+<span class="sd">        * segment_c_width: '1um' -- width of the vertical connector seg c</span>
+<span class="sd">        * segment_d_length: '10um' -- length of seg d</span>
+<span class="sd">        * segment_d_width: '2um' -- width of seg d</span>
+<span class="sd">        * plate2_width: '6um' -- width of plate 2 (right)</span>
+<span class="sd">        * plate2_height: '30um' -- height of plate 2 (right)</span>
+<span class="sd">        * Lj: '0.046nH' -- Josephson inductance of each large junction</span>
 <span class="sd">          (~46 pH, from I0 ~ 7.1 uA in Frattini et al. 2017); written to the</span>
 <span class="sd">          ``junction`` qgeometry table for HFSS/pyEPR</span>
-<span class="sd">        * Lj_small: &#39;0.165nH&#39; -- Josephson inductance of the small junction</span>
+<span class="sd">        * Lj_small: '0.165nH' -- Josephson inductance of the small junction</span>
 <span class="sd">          (~165 pH, from I0 ~ 2.0 uA; equals Lj / alpha with alpha ~ 0.29)</span>
-<span class="sd">        * inductor_width: &#39;1um&#39; -- width of the rendered junction strips</span>
+<span class="sd">        * inductor_width: '1um' -- width of the rendered junction strips</span>
 <span class="sd">          (for HFSS/other EM software meshing; not the physical junction size)</span>
-<span class="sd">        * pin_width: &#39;5um&#39; -- width of the connection pins on plate1/plate2</span>
+<span class="sd">        * pin_width: '5um' -- width of the connection pins on plate1/plate2</span>
 
 <span class="sd">    Pins: ``a`` (left, on plate1) and ``b`` (right, on plate2) so the SNAIL</span>
 <span class="sd">    can be wired into a larger design with a route. The four junctions are</span>
 <span class="sd">    emitted to the ``junction`` qgeometry table (three large with ``Lj``,</span>
 <span class="sd">    one small with ``Lj_small``) so the element is HFSS-eigenmode / pyEPR</span>
 <span class="sd">    analyzable; keep ``Cj = Rj = 0`` (the renderer default) for pyEPR.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Default drawing options</span>
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">plate1_width</span><span class="o">=</span><span class="s2">&quot;5.5um&quot;</span><span class="p">,</span>
-        <span class="n">plate1_height</span><span class="o">=</span><span class="s2">&quot;40um&quot;</span><span class="p">,</span>
-        <span class="n">plate1_pos_x</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="n">plate1_pos_y</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="n">squid_gap</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">segment_a_length</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">segment_a_width</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
-        <span class="n">JJ_gap</span><span class="o">=</span><span class="s2">&quot;0.5um&quot;</span><span class="p">,</span>
-        <span class="n">segment_ab_length</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
-        <span class="n">segment_b_length</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
-        <span class="n">segment_b_width</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
-        <span class="n">JJ_gap_small</span><span class="o">=</span><span class="s2">&quot;0.3um&quot;</span><span class="p">,</span>
-        <span class="n">segment_lower_width</span><span class="o">=</span><span class="s2">&quot;0.6um&quot;</span><span class="p">,</span>
-        <span class="n">segment_c_width</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
-        <span class="n">segment_d_length</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">segment_d_width</span><span class="o">=</span><span class="s2">&quot;2um&quot;</span><span class="p">,</span>
-        <span class="n">plate2_width</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
-        <span class="n">plate2_height</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">,</span>
-        <span class="n">Lj</span><span class="o">=</span><span class="s2">&quot;0.046nH&quot;</span><span class="p">,</span>
-        <span class="n">Lj_small</span><span class="o">=</span><span class="s2">&quot;0.165nH&quot;</span><span class="p">,</span>
-        <span class="n">inductor_width</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
-        <span class="n">pin_width</span><span class="o">=</span><span class="s2">&quot;5um&quot;</span><span class="p">,</span>
+        <span class="n">plate1_width</span><span class="o">=</span><span class="s2">"5.5um"</span><span class="p">,</span>
+        <span class="n">plate1_height</span><span class="o">=</span><span class="s2">"40um"</span><span class="p">,</span>
+        <span class="n">plate1_pos_x</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>
+        <span class="n">plate1_pos_y</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>
+        <span class="n">squid_gap</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">segment_a_length</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">segment_a_width</span><span class="o">=</span><span class="s2">"1um"</span><span class="p">,</span>
+        <span class="n">JJ_gap</span><span class="o">=</span><span class="s2">"0.5um"</span><span class="p">,</span>
+        <span class="n">segment_ab_length</span><span class="o">=</span><span class="s2">"5um"</span><span class="p">,</span>
+        <span class="n">segment_b_length</span><span class="o">=</span><span class="s2">"5um"</span><span class="p">,</span>
+        <span class="n">segment_b_width</span><span class="o">=</span><span class="s2">"1um"</span><span class="p">,</span>
+        <span class="n">JJ_gap_small</span><span class="o">=</span><span class="s2">"0.3um"</span><span class="p">,</span>
+        <span class="n">segment_lower_width</span><span class="o">=</span><span class="s2">"0.6um"</span><span class="p">,</span>
+        <span class="n">segment_c_width</span><span class="o">=</span><span class="s2">"1um"</span><span class="p">,</span>
+        <span class="n">segment_d_length</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">segment_d_width</span><span class="o">=</span><span class="s2">"2um"</span><span class="p">,</span>
+        <span class="n">plate2_width</span><span class="o">=</span><span class="s2">"6um"</span><span class="p">,</span>
+        <span class="n">plate2_height</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">,</span>
+        <span class="n">Lj</span><span class="o">=</span><span class="s2">"0.046nH"</span><span class="p">,</span>
+        <span class="n">Lj_small</span><span class="o">=</span><span class="s2">"0.165nH"</span><span class="p">,</span>
+        <span class="n">inductor_width</span><span class="o">=</span><span class="s2">"1um"</span><span class="p">,</span>
+        <span class="n">pin_width</span><span class="o">=</span><span class="s2">"5um"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
-    <span class="c1"># Name prefix of component, if user doesn&#39;t provide name</span>
+    <span class="c1"># Name prefix of component, if user doesn't provide name</span>
     <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">,</span>
-        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
-        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">"component"</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">"True"</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">"True"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
 <div class="viewcode-block" id="SNAIL.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.SNAIL.html#qiskit_metal.qlibrary.SNAIL.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert self.options into QGeometry.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert self.options into QGeometry."""</span>
 
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>  <span class="c1"># Parse the string options into numbers</span>
 
@@ -766,7 +766,7 @@
         <span class="c1"># The single small junction is centred on the arm: this keeps both</span>
         <span class="c1"># lower segments at equal, positive length for any ``JJ_gap_small``</span>
         <span class="c1"># up to the full arm span, avoiding the silent negative-width</span>
-        <span class="c1"># rectangle (and broken loop) that an &quot;extend seg b to fill&quot;</span>
+        <span class="c1"># rectangle (and broken loop) that an "extend seg b to fill"</span>
         <span class="c1"># scheme produces when the small-junction gap is large.</span>
         <span class="n">lower_y</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">squid_gap</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_lower_width</span><span class="p">)</span>
         <span class="n">lower_seg_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">upper_arm_length</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">JJ_gap_small</span><span class="p">))</span>
@@ -830,7 +830,7 @@
         <span class="c1"># representation, as in TransmonPocket). This is not the physical</span>
         <span class="c1"># junction: for a fabrication mask, overlay a jj_dolan / jj_manhattan</span>
         <span class="c1"># p-cell at each location on the e-beam layer. See the class docstring</span>
-        <span class="c1"># (&quot;Junction representation in Quantum Metal&quot;).</span>
+        <span class="c1"># ("Junction representation in Quantum Metal").</span>
         <span class="c1"># Three large junctions on the upper arm, one small on the lower arm.</span>
         <span class="n">jj_large_1</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">LineString</span><span class="p">(</span>
             <span class="p">[(</span><span class="n">half_p1</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">segment_a_length</span><span class="p">,</span> <span class="n">upper_y</span><span class="p">),</span> <span class="p">(</span><span class="n">ab1_start</span><span class="p">,</span> <span class="n">upper_y</span><span class="p">)]</span>
@@ -894,12 +894,12 @@
             <span class="n">pin_b_line</span><span class="p">,</span>
         <span class="p">)</span> <span class="o">=</span> <span class="n">objects</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;design&quot;</span><span class="p">:</span> <span class="n">design1</span><span class="p">},</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"design"</span><span class="p">:</span> <span class="n">design1</span><span class="p">},</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="c1"># three large junctions share Lj; the small junction uses Lj_small.</span>
         <span class="c1"># ``hfss_inductance`` is the column the Ansys renderer reads per row.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;junction&quot;</span><span class="p">,</span>
+            <span class="s2">"junction"</span><span class="p">,</span>
             <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">jj_large_1</span><span class="o">=</span><span class="n">jj_large_1</span><span class="p">,</span>
                 <span class="n">jj_large_2</span><span class="o">=</span><span class="n">jj_large_2</span><span class="p">,</span>
@@ -910,15 +910,15 @@
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;junction&quot;</span><span class="p">,</span>
+            <span class="s2">"junction"</span><span class="p">,</span>
             <span class="nb">dict</span><span class="p">(</span><span class="n">jj_small</span><span class="o">=</span><span class="n">jj_small</span><span class="p">),</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">inductor_width</span><span class="p">,</span>
             <span class="n">hfss_inductance</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">Lj_small</span><span class="p">,</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">pin_a_line</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pin_width</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">pin_b_line</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pin_width</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">"a"</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">pin_a_line</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pin_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">"b"</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">pin_b_line</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">pin_width</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
@@ -939,7 +939,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -962,6 +962,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

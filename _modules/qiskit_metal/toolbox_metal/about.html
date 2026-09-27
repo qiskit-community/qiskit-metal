@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -473,11 +473,11 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 
-<span class="sd">&quot;&quot;&quot;Reports a summary of information on Qiskit Metal and dependencies.</span>
+<span class="sd">"""Reports a summary of information on Qiskit Metal and dependencies.</span>
 
 <span class="sd">Contain functions to report more detailed information to orient a user,</span>
 <span class="sd">used for debug purposes.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -492,17 +492,17 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Color</span><span class="p">,</span> <span class="n">style_colon_list</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;about&quot;</span><span class="p">,</span> <span class="s2">&quot;get_module_doc_page&quot;</span><span class="p">,</span> <span class="s2">&quot;get_platform_info&quot;</span><span class="p">,</span> <span class="s2">&quot;open_docs&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"about"</span><span class="p">,</span> <span class="s2">"get_module_doc_page"</span><span class="p">,</span> <span class="s2">"get_platform_info"</span><span class="p">,</span> <span class="s2">"open_docs"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="about">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.about.html#qiskit_metal.toolbox_metal.about.about">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">about</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reports a summary of information on Qiskit Metal and dependencies.</span>
+<span class="w">    </span><span class="sd">"""Reports a summary of information on Qiskit Metal and dependencies.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        str: About message</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span>
 
     <span class="c1"># PySide6 is an optional extra (``quantum-metal[gui]``) — the lite</span>
@@ -511,19 +511,19 @@
         <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">PYSIDE_VERSION_STR</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">QT_VERSION_STR</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="n">QT_VERSION_STR</span> <span class="o">=</span> <span class="s2">&quot;Not installed&quot;</span>
-        <span class="n">PYSIDE_VERSION_STR</span> <span class="o">=</span> <span class="s2">&quot;Not installed&quot;</span>
+        <span class="n">QT_VERSION_STR</span> <span class="o">=</span> <span class="s2">"Not installed"</span>
+        <span class="n">PYSIDE_VERSION_STR</span> <span class="o">=</span> <span class="s2">"Not installed"</span>
 
     <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">sip</span><span class="w"> </span><span class="kn">import</span> <span class="n">SIP_VERSION_STR</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="n">SIP_VERSION_STR</span> <span class="o">=</span> <span class="s2">&quot;Not installed&quot;</span>
+        <span class="n">SIP_VERSION_STR</span> <span class="o">=</span> <span class="s2">"Not installed"</span>
     <span class="c1"># Riverbank: SIP is a tool for quickly writing Python modules that interface with</span>
     <span class="c1"># C++ and C libraries.</span>
 
-    <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
 <span class="s2">Qiskit Metal        </span><span class="si">{</span><span class="n">qiskit_metal</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span>
 
 <span class="s2">Basic</span>
@@ -547,7 +547,7 @@
 <span class="s2"> Qt version          </span><span class="si">{</span><span class="n">QT_VERSION_STR</span><span class="si">}</span>
 <span class="s2"> SIP version         </span><span class="si">{</span><span class="n">SIP_VERSION_STR</span><span class="si">}</span>
 
-<span class="s2">IBM Quantum Team&quot;&quot;&quot;</span>
+<span class="s2">IBM Quantum Team"""</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">text</span></div>
@@ -560,34 +560,34 @@
 
 <div class="viewcode-block" id="get_module_doc_page">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.about.html#qiskit_metal.toolbox_metal.about.get_module_doc_page">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_module_doc_page</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;../docs/build/html&quot;</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="s2">&quot;index.html&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the file path to a module doc folder assumed to be inside the</span>
-<span class="sd">    package.&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_module_doc_page</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="sa">r</span><span class="s2">"../docs/build/html"</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="s2">"index.html"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get the file path to a module doc folder assumed to be inside the</span>
+<span class="sd">    package."""</span>
     <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">/</span> <span class="n">folder</span> <span class="o">/</span> <span class="n">page</span></div>
 
 
 
 <div class="viewcode-block" id="open_docs">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.about.html#qiskit_metal.toolbox_metal.about.open_docs">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">open_docs</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="s2">&quot;https://qiskit-community.github.io/qiskit-metal/&quot;</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Open the Quantum / Qiskit Metal documentation in a web browser.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">open_docs</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="s2">"https://qiskit-community.github.io/qiskit-metal/"</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Open the Quantum / Qiskit Metal documentation in a web browser.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        page: URL to open. Defaults to the published docs site.</span>
 <span class="sd">        force: If True, always pop the browser, even in headless / CI /</span>
 <span class="sd">            notebook-execute contexts. Defaults to False so that</span>
 <span class="sd">            running this cell during ``tox -e docs``, nbsphinx</span>
-<span class="sd">            notebook execution, &quot;Restart &amp; Run All&quot;, or on a headless</span>
-<span class="sd">            Linux server / Colab kernel won&#39;t repeatedly launch the</span>
-<span class="sd">            user&#39;s browser. In those cases the URL is printed instead.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            notebook execution, "Restart &amp; Run All", or on a headless</span>
+<span class="sd">            Linux server / Colab kernel won't repeatedly launch the</span>
+<span class="sd">            user's browser. In those cases the URL is printed instead.</span>
+<span class="sd">    """</span>
     <span class="n">headless</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;QISKIT_METAL_HEADLESS&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span>
-        <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CI&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span>
-        <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;BINDER_REQUEST&quot;</span><span class="p">)</span>
-        <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;BINDER_SERVICE_HOST&quot;</span><span class="p">)</span>
-        <span class="ow">or</span> <span class="s2">&quot;DISPLAY&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span>
-        <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;linux&quot;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"QISKIT_METAL_HEADLESS"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"1"</span>
+        <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"CI"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"true"</span>
+        <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"BINDER_REQUEST"</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"BINDER_SERVICE_HOST"</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="s2">"DISPLAY"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span>
+        <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"linux"</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">headless</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">force</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
@@ -595,14 +595,14 @@
 
             <span class="n">display</span><span class="p">(</span>
                 <span class="n">HTML</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Quantum Metal docs: &quot;</span>
-                    <span class="sa">f</span><span class="s1">&#39;&lt;a href=&quot;</span><span class="si">{</span><span class="n">page</span><span class="si">}</span><span class="s1">&quot; target=&quot;_blank&quot;&gt;</span><span class="si">{</span><span class="n">page</span><span class="si">}</span><span class="s1">&lt;/a&gt; &#39;</span>
-                    <span class="sa">f</span><span class="s2">&quot;(headless / CI session — browser pop suppressed; &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;call &lt;code&gt;open_docs(force=True)&lt;/code&gt; to override)&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Quantum Metal docs: "</span>
+                    <span class="sa">f</span><span class="s1">'&lt;a href="</span><span class="si">{</span><span class="n">page</span><span class="si">}</span><span class="s1">" target="_blank"&gt;</span><span class="si">{</span><span class="n">page</span><span class="si">}</span><span class="s1">&lt;/a&gt; '</span>
+                    <span class="sa">f</span><span class="s2">"(headless / CI session — browser pop suppressed; "</span>
+                    <span class="sa">f</span><span class="s2">"call &lt;code&gt;open_docs(force=True)&lt;/code&gt; to override)"</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Quantum Metal docs: </span><span class="si">{</span><span class="n">page</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Quantum Metal docs: </span><span class="si">{</span><span class="n">page</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">return</span>
     <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
@@ -612,23 +612,23 @@
     <span class="c1"># Main function: ``orient_me```</span>
 
     <span class="c1"># def orient_me(do_print: bool = True) -&gt; Union[None, str]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Full system, python, user, and environemnt information.</span>
+<span class="w">    </span><span class="sd">"""Full system, python, user, and environemnt information.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        do_print(bool): Return the string if True, else format and print.</span>
-<span class="sd">    &quot;&quot;&quot;</span></div>
+<span class="sd">    """</span></div>
 
 
 
 <span class="c1">#    text = get_platform_info()</span>
 <span class="c1">#    text += \</span>
-<span class="c1">#        f&quot; User and directories:\n\n&quot;\</span>
-<span class="c1">#        f&quot;    User              : {getpass.getuser()}\n&quot;\</span>
-<span class="c1">#        f&quot;    User home dirctry : {Path.home()}\n&quot;\</span>
-<span class="c1">#        f&quot;    Current directory : {Path.cwd()}\n\n&quot;\</span>
-<span class="c1">#        f&quot;    Conda default env : {os.environ.get(&#39;CONDA_DEFAULT_ENV&#39;, &#39;N/A&#39;)}\n&quot;\</span>
-<span class="c1">#        f&quot;    Conda current env : {os.environ.get(&#39;CONDA_PREFIX&#39;, &#39;N/A&#39;)}\n&quot;\</span>
-<span class="c1">#       f&quot;    Python executable : {sys.executable}\n&quot;\</span>
+<span class="c1">#        f" User and directories:\n\n"\</span>
+<span class="c1">#        f"    User              : {getpass.getuser()}\n"\</span>
+<span class="c1">#        f"    User home dirctry : {Path.home()}\n"\</span>
+<span class="c1">#        f"    Current directory : {Path.cwd()}\n\n"\</span>
+<span class="c1">#        f"    Conda default env : {os.environ.get('CONDA_DEFAULT_ENV', 'N/A')}\n"\</span>
+<span class="c1">#        f"    Conda current env : {os.environ.get('CONDA_PREFIX', 'N/A')}\n"\</span>
+<span class="c1">#       f"    Python executable : {sys.executable}\n"\</span>
 
 <span class="c1">#    if do_print:</span>
 <span class="c1">#        text = style_colon_list(text, Color.BOLD, Color.END)</span>
@@ -641,9 +641,9 @@
 <div class="viewcode-block" id="get_platform_info">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.about.html#qiskit_metal.toolbox_metal.about.get_platform_info">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_platform_info</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a string with the platform information.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Returns a string with the platform information."""</span>
 
-    <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s2">"""</span>
 
 <span class="s2"> System platform information:</span>
 
@@ -660,7 +660,7 @@
 <span class="s2">    version  : </span><span class="si">%s</span><span class="s2"> (implem: </span><span class="si">%s</span><span class="s2">)</span>
 <span class="s2">    compiler : </span><span class="si">%s</span>
 
-<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span>
+<span class="s2">"""</span> <span class="o">%</span> <span class="p">(</span>
         <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span>
         <span class="n">platform</span><span class="o">.</span><span class="n">node</span><span class="p">(),</span>
         <span class="n">platform</span><span class="o">.</span><span class="n">release</span><span class="p">(),</span>
@@ -691,7 +691,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -714,6 +714,8 @@
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

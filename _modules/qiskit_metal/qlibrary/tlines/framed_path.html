@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -483,7 +483,7 @@
 <div class="viewcode-block" id="RouteFramed">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteFramed.html#qiskit_metal.qlibrary.RouteFramed">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RouteFramed</span><span class="p">(</span><span class="n">QRoute</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;.. image::</span>
+<span class="w">    </span><span class="sd">""".. image::</span>
 <span class="sd">        RouteFramed.png</span>
 
 <span class="sd">    A non-meandered sample_shapes CPW that is auto-generated between 2 components.</span>
@@ -498,25 +498,25 @@
 <span class="sd">        Assumptions:</span>
 <span class="sd">            1. Components are situated along xy axes in 2 dimensions. No rotation is allowed (yet). Their bounding boxes may</span>
 <span class="sd">               not overlap, though they may be situated at arbitrary x and y provided these conditions are met.</span>
-<span class="sd">            2. Pins point normal to qubits (&quot;directly outward&quot;) and either in the x or y directions. They must not protrude</span>
+<span class="sd">            2. Pins point normal to qubits ("directly outward") and either in the x or y directions. They must not protrude</span>
 <span class="sd">               from the exact corner of a component. [This last assumption has implications for 2-segment connections.]</span>
 <span class="sd">            3. Intersection of CPWs with themselves or the qubits they stem from is prohibited. Intersection with other</span>
 <span class="sd">               components/CPWs has not yet been considered.</span>
 <span class="sd">            4. Components may not share an edge; a nonzero gap must be present between 2 adjacent qubits.</span>
 <span class="sd">            5. CPWs must be attached to protruding leads via terminations head-on, not from the sides.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;cpw&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">"cpw"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="p">(</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A non-meandered basic CPW that is auto-generated between 2 components.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""A non-meandered basic CPW that is auto-generated between 2 components."""</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="RouteFramed.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteFramed.html#qiskit_metal.qlibrary.RouteFramed.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use user-specified parameters and geometric orientation of</span>
+<span class="w">        </span><span class="sd">"""Use user-specified parameters and geometric orientation of</span>
 <span class="sd">        components to determine whether the CPW connecting the pins on either</span>
 <span class="sd">        end requires 1, 2, or 3 segments. Preference given to shorter paths and</span>
 <span class="sd">        paths that flow with the leadin and leadout directions rather than</span>
@@ -525,7 +525,7 @@
 <span class="sd">        Keepout region along x and y directions specified for CPWs that</span>
 <span class="sd">        wrap around outer perimeter of overall bounding box of both</span>
 <span class="sd">        components.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__pts</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># list of 2D numpy arrays containing vertex locations</span>
 
@@ -538,12 +538,12 @@
         <span class="n">keepouty</span> <span class="o">=</span> <span class="mf">0.2</span>
 
         <span class="c1"># Set the CPW pins and add the points/directions to the lead-in/out arrays</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">"start"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_pin</span><span class="p">(</span><span class="s2">"end"</span><span class="p">)</span>
 
         <span class="c1"># Align the lead-in/out to the input options set from the user</span>
-        <span class="n">meander_start_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
-        <span class="n">meander_end_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="n">meander_start_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">"start"</span><span class="p">)</span>
+        <span class="n">meander_end_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">"end"</span><span class="p">)</span>
 
         <span class="n">n1</span> <span class="o">=</span> <span class="n">meander_start_point</span><span class="o">.</span><span class="n">direction</span>
         <span class="n">n2</span> <span class="o">=</span> <span class="n">meander_end_point</span><span class="o">.</span><span class="n">direction</span>
@@ -551,8 +551,8 @@
         <span class="n">m1</span> <span class="o">=</span> <span class="n">meander_start_point</span><span class="o">.</span><span class="n">position</span>
         <span class="n">m2</span> <span class="o">=</span> <span class="n">meander_end_point</span><span class="o">.</span><span class="n">position</span>
 
-        <span class="n">component_start</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">pin_inputs</span><span class="p">[</span><span class="s2">&quot;start_pin&quot;</span><span class="p">][</span><span class="s2">&quot;component&quot;</span><span class="p">]</span>
-        <span class="n">component_end</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">pin_inputs</span><span class="p">[</span><span class="s2">&quot;end_pin&quot;</span><span class="p">][</span><span class="s2">&quot;component&quot;</span><span class="p">]</span>
+        <span class="n">component_start</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">pin_inputs</span><span class="p">[</span><span class="s2">"start_pin"</span><span class="p">][</span><span class="s2">"component"</span><span class="p">]</span>
+        <span class="n">component_end</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">pin_inputs</span><span class="p">[</span><span class="s2">"end_pin"</span><span class="p">][</span><span class="s2">"component"</span><span class="p">]</span>
 
         <span class="c1"># Coordinates of bounding box for each individual component</span>
         <span class="n">minx1</span><span class="p">,</span> <span class="n">miny1</span><span class="p">,</span> <span class="n">maxx1</span><span class="p">,</span> <span class="n">maxy1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span>
@@ -761,7 +761,7 @@
 <div class="viewcode-block" id="RouteFramed.connect_frame">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteFramed.html#qiskit_metal.qlibrary.RouteFramed.connect_frame">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">connect_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segments</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">constaxis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">constval</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the list of 2D coordinates comprising a CPW between</span>
+<span class="w">        </span><span class="sd">"""Generate the list of 2D coordinates comprising a CPW between</span>
 <span class="sd">        startpin and endpin.</span>
 
 <span class="sd">        Args:</span>
@@ -778,7 +778,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            List: [np.array([x0, y0]), np.array([x1, y1]), np.array([x2, y2])] where xi, yi are vertices of CPW.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">get_tip</span><span class="p">()</span>
         <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">get_tip</span><span class="p">()</span>
@@ -787,14 +787,14 @@
             <span class="c1"># Straight across or up and down; no additional points necessary</span>
             <span class="n">midcoords</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">elif</span> <span class="n">segments</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="c1"># Choose between 2 diagonally opposing corners so that CPW doesn&#39;t trace back on itself</span>
+            <span class="c1"># Choose between 2 diagonally opposing corners so that CPW doesn't trace back on itself</span>
             <span class="n">corner1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">start</span><span class="o">.</span><span class="n">position</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">end</span><span class="o">.</span><span class="n">position</span><span class="p">)[</span><span class="mi">1</span><span class="p">]])</span>
             <span class="n">corner2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">end</span><span class="o">.</span><span class="n">position</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">start</span><span class="o">.</span><span class="n">position</span><span class="p">)[</span><span class="mi">1</span><span class="p">]])</span>
             <span class="n">startc1</span> <span class="o">=</span> <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">corner1</span> <span class="o">-</span> <span class="p">(</span><span class="n">start</span><span class="o">.</span><span class="n">position</span><span class="p">),</span> <span class="n">start</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
             <span class="n">endc1</span> <span class="o">=</span> <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">corner1</span> <span class="o">-</span> <span class="p">(</span><span class="n">end</span><span class="o">.</span><span class="n">position</span><span class="p">),</span> <span class="n">end</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
             <span class="n">startc2</span> <span class="o">=</span> <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">corner2</span> <span class="o">-</span> <span class="p">(</span><span class="n">start</span><span class="o">.</span><span class="n">position</span><span class="p">),</span> <span class="n">start</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
             <span class="n">endc2</span> <span class="o">=</span> <span class="n">mao</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">corner2</span> <span class="o">-</span> <span class="p">(</span><span class="n">end</span><span class="o">.</span><span class="n">position</span><span class="p">),</span> <span class="n">end</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
-            <span class="c1"># If both pins&#39; normal vectors point towards one of the corners, pick that corner</span>
+            <span class="c1"># If both pins' normal vectors point towards one of the corners, pick that corner</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">startc1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">endc1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="n">midcoords</span> <span class="o">=</span> <span class="p">[</span><span class="n">corner1</span><span class="p">]</span>
             <span class="k">elif</span> <span class="p">(</span><span class="n">startc2</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">endc2</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
@@ -823,7 +823,7 @@
 <div class="viewcode-block" id="RouteFramed.totlength">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteFramed.html#qiskit_metal.qlibrary.RouteFramed.totlength">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">totlength</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pts</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get total length of all line segments in a given CPW.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get total length of all line segments in a given CPW."""</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">pts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">pts</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)))</span></div>
 </div>
 
@@ -845,7 +845,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -868,6 +868,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -461,7 +461,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for qiskit_metal.analyses.em.kappa_calculation</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;This code calculates the photon loss (kappa) due to the capacitive coupling</span>
+<span></span><span class="sd">"""This code calculates the photon loss (kappa) due to the capacitive coupling</span>
 <span class="sd">between CPWs and input/output transmission lines in a quantum circuit.</span>
 
 <span class="sd">Two cases are treated: In the first case, three arguments are passed to the function kappa_in</span>
@@ -481,19 +481,19 @@
 
 <span class="sd">P. Krantz, et al. Physical Review Applied 6, 021318 (2019)</span>
 <span class="sd">https://aip.scitation.org/doi/10.1063/1.5089550</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">pi</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">ellipk</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;kappa_in&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"kappa_in"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="kappa_in">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.kappa_calculation.html#qiskit_metal.analyses.kappa_calculation.kappa_in">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">kappa_in</span><span class="p">(</span><span class="o">*</span><span class="n">argv</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple calculator for the kappa value of a readout resonator.</span>
+<span class="w">    </span><span class="sd">"""A simple calculator for the kappa value of a readout resonator.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        freq (float): The frequency of interest, in Hz</span>
@@ -506,7 +506,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: Kappa value</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Effective impedance of the CPW transmission line, in Ohms</span>
     <span class="n">Z_tran</span> <span class="o">=</span> <span class="mf">50.0</span>
@@ -551,7 +551,7 @@
 
     <span class="c1"># Only three or six arguments accepted by kappa_in, otherwise the calculation in invalid.</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">kappa</span> <span class="o">=</span> <span class="s2">&quot;Invalid number of arguments passed for kappa_in&quot;</span></div>
+        <span class="n">kappa</span> <span class="o">=</span> <span class="s2">"Invalid number of arguments passed for kappa_in"</span></div>
 
 </pre></div>
         </article>
@@ -571,7 +571,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -594,6 +594,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,13 +472,13 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;Models the transmon qubit in the cooper-pair charge basis, assuming wrapped</span>
+<span class="sd">"""Models the transmon qubit in the cooper-pair charge basis, assuming wrapped</span>
 <span class="sd">junction phase variable. This model is closer to the analytic solution than the</span>
 <span class="sd">Duffing oscillator model. Can work backwards from target qubit parameters to</span>
 <span class="sd">get the Ej, Ec or use input Ej, Ec to find the spectrum of the Cooper Pair Box.</span>
 
 <span class="sd">@author: Christopher Warren (Chalmers University of Technology), updated by Zlatko K. Minev (IBM Quantum)</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">qutip</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qt</span>
@@ -489,7 +489,7 @@
 <div class="viewcode-block" id="Hcpb">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html#qiskit_metal.analyses.Hcpb">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Hcpb</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Hamiltonian-model Cooper pair box (Hcpb) class.</span>
+<span class="w">    </span><span class="sd">"""Hamiltonian-model Cooper pair box (Hcpb) class.</span>
 
 <span class="sd">    Used to model analytically the CPB Hamiltonian quickly</span>
 <span class="sd">    and efficiently. Solves in charge basis tridiagonal eigenvalue</span>
@@ -500,12 +500,12 @@
 <span class="sd">    just recomputes the properties</span>
 
 <span class="sd">    Returns all properties of interest for the CPB.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">nlevels</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Ec</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ng</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a Cooper-pair box (CPB) model.</span>
+<span class="w">        </span><span class="sd">"""Generate a Cooper-pair box (CPB) model.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            nlevels (int): Number of charge states of the CPB [-nlevels, nlevels+1]</span>
@@ -521,22 +521,22 @@
 
 <span class="sd">                H = Hcpb(nlevels=15, Ej=13971.3, Ec=295.2, ng=0.001)</span>
 
-<span class="sd">                print(f&#39;&#39;&#39;</span>
+<span class="sd">                print(f'''</span>
 <span class="sd">                Transmon frequencies</span>
 <span class="sd">                ω01/2π = {H.fij(0,1): 6.0f} MHz</span>
 <span class="sd">                  α/2π = {H.anharm(): 6.0f} MHz</span>
-<span class="sd">                &#39;&#39;&#39;)</span>
+<span class="sd">                ''')</span>
 
 <span class="sd">            .. code-block::</span>
 
 <span class="sd">                import matplotlib.pyplot as plt</span>
 <span class="sd">                for k in range (3):</span>
 <span class="sd">                    ψ, θ = H.psi_k(k)</span>
-<span class="sd">                    plt.plot(θ, ψ.real+ψ.imag, label=f&quot;|{k}&gt;&quot;) # it&#39;s in either quadrature, but not both</span>
-<span class="sd">                plt.xlabel(&quot;Junction phase θ (wrapped in the interval [-π, π])&quot;)</span>
-<span class="sd">                plt.ylabel(&quot;Re(ψ(θ))&quot;)</span>
-<span class="sd">                plt.legend(title=&quot;Level&quot;)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">                    plt.plot(θ, ψ.real+ψ.imag, label=f"|{k}&gt;") # it's in either quadrature, but not both</span>
+<span class="sd">                plt.xlabel("Junction phase θ (wrapped in the interval [-π, π])")</span>
+<span class="sd">                plt.ylabel("Re(ψ(θ))")</span>
+<span class="sd">                plt.legend(title="Level")</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_nlevels</span> <span class="o">=</span> <span class="n">nlevels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_Ej</span> <span class="o">=</span> <span class="n">Ej</span>
@@ -551,16 +551,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_calc_H</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_gen_operators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate at initialization the number of levels and only recompute</span>
-<span class="sd">        the size of the problem if nlevels changes.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Generate at initialization the number of levels and only recompute</span>
+<span class="sd">        the size of the problem if nlevels changes."""</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_nlevels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nlevels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_off</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_diag</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_calc_H</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Only diagonalize the Hamiltonian if the CPB is supplied with the</span>
+<span class="w">        </span><span class="sd">"""Only diagonalize the Hamiltonian if the CPB is supplied with the</span>
 <span class="sd">        three mandatory parameters Ej, Ec, ng, but allow for them to not be set</span>
-<span class="sd">        at initialization.&quot;&quot;&quot;</span>
+<span class="sd">        at initialization."""</span>
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Ej</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Ec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ng</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">evals</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">evecs</span> <span class="o">=</span> <span class="kc">None</span>
@@ -568,8 +568,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_diagonalize_H</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_diagonalize_H</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Diagonalize the CPB Hamiltonian using symmetric tridiagonal</span>
-<span class="sd">        eigensolver for efficient calculation of properties.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Diagonalize the CPB Hamiltonian using symmetric tridiagonal</span>
+<span class="sd">        eigensolver for efficient calculation of properties."""</span>
         <span class="n">ham_diag</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Ec</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_diag</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ng</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
         <span class="n">ham_off</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Ej</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_off</span>
         <span class="n">evals</span><span class="p">,</span> <span class="n">evecs</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eigh_tridiagonal</span><span class="p">(</span><span class="n">ham_diag</span><span class="p">,</span> <span class="n">ham_off</span><span class="p">)</span>
@@ -579,35 +579,35 @@
 <div class="viewcode-block" id="Hcpb.evalue_k">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html#qiskit_metal.analyses.Hcpb.evalue_k">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evalue_k</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the eigenvalue of the Hamiltonian for level k.</span>
+<span class="w">        </span><span class="sd">"""Return the eigenvalue of the Hamiltonian for level k.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            k (int): Index of the eigenvalue</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: eigenvalue of the Hamiltonian</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evals</span><span class="p">[</span><span class="n">k</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="Hcpb.evec_k">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html#qiskit_metal.analyses.Hcpb.evec_k">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evec_k</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return the eigenvector of the CPB Hamiltonian for level k.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Return the eigenvector of the CPB Hamiltonian for level k.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            k (int): Index of eigenvector</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            array: Eigenvector of the \|k&gt; level of the CPB Hamiltonian</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evecs</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="Hcpb.psi_k">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html#qiskit_metal.analyses.Hcpb.psi_k">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">psi_k</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1001</span><span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return the wavevector of the CPB Hamiltonian in the flux basis. Made</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Return the wavevector of the CPB Hamiltonian in the flux basis. Made</span>
 <span class="sd">        compact over the interval of [-pi, pi].</span>
 
 <span class="sd">        Args:</span>
@@ -618,7 +618,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            array: Wavevector corresponding the \|k&gt; eigenstate</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">pts</span><span class="p">)</span>
         <span class="n">evec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evecs</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span>
         <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_nlevels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nlevels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -638,7 +638,7 @@
 <div class="viewcode-block" id="Hcpb.fij">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html#qiskit_metal.analyses.Hcpb.fij">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the transition energy (or frequency) between states.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the transition energy (or frequency) between states.</span>
 
 <span class="sd">        \|i&gt; and \|j&gt;.</span>
 
@@ -648,25 +648,25 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: Eij, the transition energy</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="n">j</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Hcpb.anharm">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html#qiskit_metal.analyses.Hcpb.anharm">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">anharm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the anharmonicity of the CPB.</span>
+<span class="w">        </span><span class="sd">"""Compute the anharmonicity of the CPB.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: Anharmonicty defined as E12-E01</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Hcpb.n_ij">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html#qiskit_metal.analyses.Hcpb.n_ij">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">n_ij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the value of the number operator for coupling elements</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the value of the number operator for coupling elements</span>
 <span class="sd">        together in the energy eigen-basis.</span>
 
 <span class="sd">        Args:</span>
@@ -677,7 +677,7 @@
 <span class="sd">            float: Matrix element corresponding to the</span>
 <span class="sd">            number operator in the transmon basis</span>
 <span class="sd">            `n_ij = |&lt;i|n|j&gt;|`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">n_op</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_nlevels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nlevels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">n_ij</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evec_k</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="o">*</span> <span class="n">n_op</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">evec_k</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
         <span class="n">n_ij</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">n_ij</span><span class="p">))</span>
@@ -687,7 +687,7 @@
 <div class="viewcode-block" id="Hcpb.h0_to_qutip">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html#qiskit_metal.analyses.Hcpb.h0_to_qutip">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">h0_to_qutip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_transmon</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrapper around Qutip to output the diagonalized Hamiltonian</span>
+<span class="w">        </span><span class="sd">"""Wrapper around Qutip to output the diagonalized Hamiltonian</span>
 <span class="sd">        truncated up to n levels of the transmon for modeling.</span>
 
 <span class="sd">        Args:</span>
@@ -697,7 +697,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Qobj: Returns a Qutip Qobj for the diagonalized</span>
 <span class="sd">            transmon</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">ham</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evals</span><span class="p">[:</span><span class="n">n_transmon</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">evals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">qt</span><span class="o">.</span><span class="n">Qobj</span><span class="p">(</span><span class="n">ham</span><span class="p">)</span></div>
 
@@ -705,7 +705,7 @@
 <div class="viewcode-block" id="Hcpb.n_to_qutip">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html#qiskit_metal.analyses.Hcpb.n_to_qutip">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">n_to_qutip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_transmon</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrapper around Qutip to output the number operator (charge) for the</span>
+<span class="w">        </span><span class="sd">"""Wrapper around Qutip to output the number operator (charge) for the</span>
 <span class="sd">        Transmon Hamiltonian in the energy eigen-basis. Used for computing the</span>
 <span class="sd">        coupling between other elements in the system.</span>
 
@@ -720,7 +720,7 @@
 <span class="sd">            Qobj: Returns a Qutip Qobj corresponding to the</span>
 <span class="sd">            number operator for defining couplings in the</span>
 <span class="sd">            energy eigen-basis.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">n_op</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_transmon</span><span class="p">,</span> <span class="n">n_transmon</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_transmon</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_transmon</span><span class="p">):</span>
@@ -738,7 +738,7 @@
 <div class="viewcode-block" id="Hcpb.params_from_spectrum">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html#qiskit_metal.analyses.Hcpb.params_from_spectrum">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">params_from_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f01</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">anharm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Method to work backwards from a desired transmon frequency and</span>
+<span class="w">        </span><span class="sd">"""Method to work backwards from a desired transmon frequency and</span>
 <span class="sd">        anharmonicty to extract the target Ej and Ec for design and</span>
 <span class="sd">        fabrication. Updates the class to include these Ej and Ec as the new</span>
 <span class="sd">        values for extracting properties.</span>
@@ -754,7 +754,7 @@
 <span class="sd">            (float, float): Ej and Ec of the transmon Hamiltonian</span>
 <span class="sd">            corresponding to the f01 and anharmonicty</span>
 <span class="sd">            of the device</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Anharmonicty should be negative for the Transmon</span>
         <span class="k">if</span> <span class="n">anharm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">anharm</span> <span class="o">=</span> <span class="o">-</span><span class="n">anharm</span>
@@ -781,7 +781,7 @@
 <div class="viewcode-block" id="Hcpb.params_from_freq_fixEC">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html#qiskit_metal.analyses.Hcpb.params_from_freq_fixEC">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">params_from_freq_fixEC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f01</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Ec</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find transmon Ej given a fixed EC and frequency.</span>
+<span class="w">        </span><span class="sd">"""Find transmon Ej given a fixed EC and frequency.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            f01 (float): Desired qubit frequency</span>
@@ -789,7 +789,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: Ej in same units</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">fun</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Ej</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -808,46 +808,46 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">nlevels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of levels.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the number of levels."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nlevels</span>
 
     <span class="nd">@nlevels</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">nlevels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the number of levels and recompute the Hamiltonian with the new</span>
-<span class="sd">        size.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Set the number of levels and recompute the Hamiltonian with the new</span>
+<span class="sd">        size."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_nlevels</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">Ej</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns Ej.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Returns Ej."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Ej</span>
 
     <span class="nd">@Ej</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">Ej</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set Ej and recompute properties.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Set Ej and recompute properties."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_Ej</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calc_H</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">Ec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return Ec.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return Ec."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Ec</span>
 
     <span class="nd">@Ec</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">Ec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set Ec and recompute properties.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Set Ec and recompute properties."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_Ec</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calc_H</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">ng</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return ng.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return ng."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ng</span>
 
     <span class="nd">@ng</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">ng</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set ng and recompute properties.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Set ng and recompute properties."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ng</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calc_H</span><span class="p">()</span></div>
 
@@ -869,7 +869,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -892,6 +892,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

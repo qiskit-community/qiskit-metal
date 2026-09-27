@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -542,11 +542,11 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">delete_all_components</span><span class="p">()</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span> <span class="o">=</span> <span class="nb">str</span><span class="p">((</span><span class="n">N_x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;mm&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span> <span class="o">=</span> <span class="nb">str</span><span class="p">((</span><span class="n">N_y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span> <span class="o">=</span> <span class="nb">str</span><span class="p">((</span><span class="n">N_x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"mm"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span> <span class="o">=</span> <span class="nb">str</span><span class="p">((</span><span class="n">N_y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"mm"</span>
 
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">center_x</span> <span class="o">=</span> <span class="nb">str</span><span class="p">((</span><span class="n">N_x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;mm&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">center_y</span> <span class="o">=</span> <span class="nb">str</span><span class="p">((</span><span class="n">N_y</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">center_x</span> <span class="o">=</span> <span class="nb">str</span><span class="p">((</span><span class="n">N_x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"mm"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">center_y</span> <span class="o">=</span> <span class="nb">str</span><span class="p">((</span><span class="n">N_y</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"mm"</span>
 </pre></div>
 </div>
 </div>
@@ -559,18 +559,18 @@
 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_x</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_y</span><span class="p">):</span>
         <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">pos_x</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">3000</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;um&quot;</span><span class="p">,</span>
-            <span class="n">pos_y</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="mi">3000</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1500</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;um&quot;</span><span class="p">,</span>
-            <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;-90&quot;</span><span class="p">,</span>
+            <span class="n">pos_x</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">3000</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"um"</span><span class="p">,</span>
+            <span class="n">pos_y</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="mi">3000</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1500</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"um"</span><span class="p">,</span>
+            <span class="n">orientation</span><span class="o">=</span><span class="s2">"-90"</span><span class="p">,</span>
             <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                <span class="n">B0</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;75um&quot;</span><span class="p">),</span>
-                <span class="n">B1</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;120um&quot;</span><span class="p">),</span>
-                <span class="n">B2</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;120um&quot;</span><span class="p">),</span>
-                <span class="n">B3</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_w</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">),</span>
+                <span class="n">B0</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"75um"</span><span class="p">),</span>
+                <span class="n">B1</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"120um"</span><span class="p">),</span>
+                <span class="n">B2</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"120um"</span><span class="p">),</span>
+                <span class="n">B3</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_w</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"90um"</span><span class="p">),</span>
             <span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="n">obj</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">options</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"Q_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">options</span><span class="p">)</span>
 
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -609,45 +609,45 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_x</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_y</span><span class="p">):</span>
-        <span class="c1"># &quot;upward&quot; connection, avoids drawing connectors for &#39;top&#39; row. Changes connector length by +/-50um to avoid frequency collisions</span>
+        <span class="c1"># "upward" connection, avoids drawing connectors for 'top' row. Changes connector length by +/-50um to avoid frequency collisions</span>
         <span class="k">if</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">N_y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">connectorAD</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span>
                 <span class="n">design</span><span class="p">,</span>
-                <span class="s2">&quot;CU_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
+                <span class="s2">"CU_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
                 <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                    <span class="n">total_length</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="mi">7</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;mm&quot;</span><span class="p">,</span>
-                    <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;99um&quot;</span><span class="p">,</span>
-                    <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0.25mm&quot;</span><span class="p">),</span>
-                    <span class="n">meander</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;-700um&quot;</span><span class="p">),</span>
+                    <span class="n">total_length</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="mi">7</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"mm"</span><span class="p">,</span>
+                    <span class="n">fillet</span><span class="o">=</span><span class="s2">"99um"</span><span class="p">,</span>
+                    <span class="n">lead</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"0.5mm"</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">"0.25mm"</span><span class="p">),</span>
+                    <span class="n">meander</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">asymmetry</span><span class="o">=</span><span class="s2">"-700um"</span><span class="p">),</span>
                     <span class="n">pin_inputs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
                         <span class="n">start_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                            <span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;B0&quot;</span>
+                            <span class="n">component</span><span class="o">=</span><span class="s2">"Q_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"B0"</span>
                         <span class="p">),</span>
                         <span class="n">end_pin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                            <span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;B3&quot;</span>
+                            <span class="n">component</span><span class="o">=</span><span class="s2">"Q_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"B3"</span>
                         <span class="p">),</span>
                     <span class="p">),</span>
                 <span class="p">),</span>
             <span class="p">)</span>
 
-        <span class="c1"># &quot;sideways&quot; connection, avoids drawing for far right col, and for top qubit in odd col. Changes connector length by +/- 25um</span>
+        <span class="c1"># "sideways" connection, avoids drawing for far right col, and for top qubit in odd col. Changes connector length by +/- 25um</span>
         <span class="c1"># to avoid frequency collisions</span>
         <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">N_x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">y</span> <span class="o">==</span> <span class="p">(</span><span class="n">N_y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))):</span>
             <span class="n">connectorBC</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span>
                 <span class="n">design</span><span class="p">,</span>
-                <span class="s2">&quot;CS_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
+                <span class="s2">"CS_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
                 <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                    <span class="n">total_length</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="mi">6</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;mm&quot;</span><span class="p">,</span>
-                    <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;99um&quot;</span><span class="p">,</span>
-                    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;0.3mm&quot;</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">&quot;0.25mm&quot;</span><span class="p">),</span>
-                    <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">asymmetry</span><span class="o">=</span><span class="s2">&quot;-200um&quot;</span><span class="p">),</span>
+                    <span class="n">total_length</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="mi">6</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"mm"</span><span class="p">,</span>
+                    <span class="n">fillet</span><span class="o">=</span><span class="s2">"99um"</span><span class="p">,</span>
+                    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"0.3mm"</span><span class="p">,</span> <span class="n">end_straight</span><span class="o">=</span><span class="s2">"0.25mm"</span><span class="p">),</span>
+                    <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">asymmetry</span><span class="o">=</span><span class="s2">"-200um"</span><span class="p">),</span>
                     <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
                         <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                            <span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;B1&quot;</span>
+                            <span class="n">component</span><span class="o">=</span><span class="s2">"Q_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"B1"</span>
                         <span class="p">),</span>
                         <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                            <span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)),</span>
-                            <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;B2&quot;</span><span class="p">,</span>
+                            <span class="n">component</span><span class="o">=</span><span class="s2">"Q_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)),</span>
+                            <span class="n">pin</span><span class="o">=</span><span class="s2">"B2"</span><span class="p">,</span>
                         <span class="p">),</span>
                     <span class="p">),</span>
                 <span class="p">),</span>
@@ -694,7 +694,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOManalysis</span>
 
-<span class="n">c1</span> <span class="o">=</span> <span class="n">LOManalysis</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;q3d&quot;</span><span class="p">)</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">LOManalysis</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"q3d"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -734,11 +734,11 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c1</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;LOM&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c1</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"LOM"</span>
 <span class="n">c1</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">max_passes</span> <span class="o">=</span> <span class="mi">14</span>
 
 <span class="c1"># To change multiple settings use the following method:</span>
-<span class="c1"># c1.sim.setup_update(name = &#39;LOM&#39;, max_passes = 14)</span>
+<span class="c1"># c1.sim.setup_update(name = 'LOM', max_passes = 14)</span>
 
 <span class="n">c1</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">setup</span>
 </pre></div>
@@ -772,12 +772,12 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c1</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-    <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Q_0_0&quot;</span><span class="p">],</span>
+    <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s2">"Q_0_0"</span><span class="p">],</span>
     <span class="n">open_terminations</span><span class="o">=</span><span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;Q_0_0&quot;</span><span class="p">,</span> <span class="s2">&quot;B0&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;Q_0_0&quot;</span><span class="p">,</span> <span class="s2">&quot;B1&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;Q_0_0&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;Q_0_0&quot;</span><span class="p">,</span> <span class="s2">&quot;B3&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"Q_0_0"</span><span class="p">,</span> <span class="s2">"B0"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"Q_0_0"</span><span class="p">,</span> <span class="s2">"B1"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"Q_0_0"</span><span class="p">,</span> <span class="s2">"B2"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"Q_0_0"</span><span class="p">,</span> <span class="s2">"B3"</span><span class="p">),</span>
     <span class="p">],</span>
 <span class="p">)</span>
 </pre></div>
@@ -870,7 +870,7 @@ Running on macOS or Linux? Use one of these alternatives instead:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">({</span><span class="s2">&quot;Lj&quot;</span><span class="p">:</span> <span class="mf">12.31</span><span class="p">,</span> <span class="s2">&quot;Cj&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">junctions</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">({</span><span class="s2">"Lj"</span><span class="p">:</span> <span class="mf">12.31</span><span class="p">,</span> <span class="s2">"Cj"</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
 <span class="n">c1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">freq_readout</span> <span class="o">=</span> <span class="mf">6.6</span>
 <span class="n">c1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">freq_bus</span> <span class="o">=</span> <span class="p">[</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">6.2</span><span class="p">,</span> <span class="mf">6.4</span><span class="p">]</span>
 
@@ -910,8 +910,8 @@ Running on macOS or Linux? Use one of these alternatives instead:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chip_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;no_cheese&quot;</span><span class="p">][</span><span class="s2">&quot;buffer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;50um&quot;</span>
-<span class="n">chip_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;path_filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;../../resources/Fake_Junctions.GDS&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chip_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">"no_cheese"</span><span class="p">][</span><span class="s2">"buffer"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"50um"</span>
+<span class="n">chip_gds</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">"path_filename"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"../../resources/Fake_Junctions.GDS"</span>
 </pre></div>
 </div>
 </div>
@@ -919,7 +919,7 @@ Running on macOS or Linux? Use one of these alternatives instead:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chip_gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">&quot;NxN_Chip.gds&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chip_gds</span><span class="o">.</span><span class="n">export_to_gds</span><span class="p">(</span><span class="s2">"NxN_Chip.gds"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1016,7 +1016,7 @@ Running on macOS or Linux? Use one of these alternatives instead:
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

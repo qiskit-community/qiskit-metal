@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -486,10 +486,10 @@
 <div class="viewcode-block" id="EigenmodeSim">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.EigenmodeSim.html#qiskit_metal.analyses.EigenmodeSim">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">EigenmodeSim</span><span class="p">(</span><span class="n">QSimulation</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute eigenmode, then derive from it using the epr method.</span>
+<span class="w">    </span><span class="sd">"""Compute eigenmode, then derive from it using the epr method.</span>
 
 <span class="sd">    Default Setup:</span>
-<span class="sd">        * name (str): Name of eigenmode setup. Defaults to &quot;Setup&quot;.</span>
+<span class="sd">        * name (str): Name of eigenmode setup. Defaults to "Setup".</span>
 <span class="sd">        * min_freq_ghz (int): Minimum frequency in GHz. Defaults to 1.</span>
 <span class="sd">        * max_delta_f (float): Absolute value of maximum difference in</span>
 <span class="sd">            frequency. Defaults to 0.5.</span>
@@ -504,7 +504,7 @@
 <span class="sd">        * convergence_f (pd.DataFrame): Convergence of the eigenmode frequency.</span>
 <span class="sd">        * convergence_t (pd.DataFrame): Convergence of the eigenmode frequency.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
         <span class="n">min_freq_ghz</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -515,30 +515,30 @@
         <span class="n">min_converged</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">pct_refinement</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
         <span class="n">basis_order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="nb">vars</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">Lj</span><span class="o">=</span><span class="s2">&quot;10 nH&quot;</span><span class="p">,</span> <span class="n">Cj</span><span class="o">=</span><span class="s2">&quot;0 fF&quot;</span><span class="p">),</span>
+        <span class="nb">vars</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">Lj</span><span class="o">=</span><span class="s2">"10 nH"</span><span class="p">,</span> <span class="n">Cj</span><span class="o">=</span><span class="s2">"0 fF"</span><span class="p">),</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default setup.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default setup."""</span>
 
     <span class="c1"># supported labels for data generated from the simulation</span>
-    <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;convergence_t&quot;</span><span class="p">,</span> <span class="s2">&quot;convergence_f&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default data labels.&quot;&quot;&quot;</span>
+    <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"convergence_t"</span><span class="p">,</span> <span class="s2">"convergence_f"</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""Default data labels."""</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;QDesign&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;hfss&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute eigenmode, then derive from it using the epr method.</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"QDesign"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"hfss"</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Compute eigenmode, then derive from it using the epr method.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            design (QDesign): Pointer to the main qiskit-metal design.</span>
 <span class="sd">                Used to access the QRenderer. Defaults to None.</span>
-<span class="sd">            renderer_name (str, optional): Which renderer to use. Defaults to &#39;hfss&#39;.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">            renderer_name (str, optional): Which renderer to use. Defaults to 'hfss'.</span>
+<span class="sd">        """</span>
         <span class="c1"># set design and renderer</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_analyze</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the analysis step of the Run. First it initializes the renderer setup</span>
+<span class="w">        </span><span class="sd">"""Executes the analysis step of the Run. First it initializes the renderer setup</span>
 <span class="sd">        to prepare for eignemode analysis, then it executes it. Finally it recovers the</span>
 <span class="sd">        output of the analysis and stores it in self.convergence_t and self.convergence_f.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_setup_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">initialize_eigenmode</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">analyze_setup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_setup_name</span><span class="p">)</span>
@@ -556,8 +556,8 @@
         <span class="n">ignored_jjs</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the entire eigenmode analysis and convergence result export.</span>
-<span class="sd">        First it makes sure the tool is running. Then it does what&#39;s necessary to render the design.</span>
+<span class="w">        </span><span class="sd">"""Executes the entire eigenmode analysis and convergence result export.</span>
+<span class="sd">        First it makes sure the tool is running. Then it does what's necessary to render the design.</span>
 <span class="sd">        Finally it runs the setup defined in this class. So you need to modify the setup ahead.</span>
 <span class="sd">        You can modify the setup by using the methods defined in the QAnalysis super-class.</span>
 <span class="sd">        After this method concludes you can inspect the output using this class properties.</span>
@@ -571,20 +571,20 @@
 <span class="sd">                List of tuples of pins that are open. Defaults to None.</span>
 <span class="sd">            port_list (Union[list, None], optional): List of tuples of pins to be rendered as ports.</span>
 <span class="sd">                Defaults to None.</span>
-<span class="sd">            jj_to_port (Union[list, None], optional): List of tuples of jj&#39;s to be rendered as</span>
+<span class="sd">            jj_to_port (Union[list, None], optional): List of tuples of jj's to be rendered as</span>
 <span class="sd">                ports. Defaults to None.</span>
-<span class="sd">            ignored_jjs (Union[list, None], optional): List of tuples of jj&#39;s that shouldn&#39;t be</span>
+<span class="sd">            ignored_jjs (Union[list, None], optional): List of tuples of jj's that shouldn't be</span>
 <span class="sd">                rendered. Defaults to None.</span>
 <span class="sd">            box_plus_buffer (bool, optional): Either calculate a bounding box based on the location</span>
 <span class="sd">                of rendered geometries or use chip size from design class. Defaults to True.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            (str, str): Name of the design and name of the setup.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># save input variables to run(). This line must be the first in the method</span>
         <span class="k">if</span> <span class="n">components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">argm</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
-            <span class="k">del</span> <span class="n">argm</span><span class="p">[</span><span class="s2">&quot;self&quot;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">argm</span><span class="p">[</span><span class="s2">"self"</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save_run_args</span><span class="p">(</span><span class="o">**</span><span class="n">argm</span><span class="p">)</span>
         <span class="c1"># wipe data from the previous run (if any)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_data</span><span class="p">()</span>
@@ -595,7 +595,7 @@
         <span class="n">vars_to_initialize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">vars</span>
         <span class="n">renderer_design_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_render</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">solution_type</span><span class="o">=</span><span class="s2">&quot;eigenmode&quot;</span><span class="p">,</span>
+            <span class="n">solution_type</span><span class="o">=</span><span class="s2">"eigenmode"</span><span class="p">,</span>
             <span class="n">selection</span><span class="o">=</span><span class="n">components</span><span class="p">,</span>
             <span class="n">open_pins</span><span class="o">=</span><span class="n">open_terminations</span><span class="p">,</span>
             <span class="n">port_list</span><span class="o">=</span><span class="n">port_list</span><span class="p">,</span>
@@ -611,62 +611,62 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">convergence_f</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter</span>
+<span class="w">        </span><span class="sd">"""Getter</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pd.DataFrame: Convergence of the eigenmode frequency.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;convergence_f&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">"convergence_f"</span><span class="p">)</span>
 
     <span class="nd">@convergence_f</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">convergence_f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Setter</span>
+<span class="w">        </span><span class="sd">"""Setter</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data (pd.DataFrame): Convergence of the eigenmode frequency.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts pandas dataframes. Please try again.&quot;</span><span class="p">,</span>
+                <span class="s2">"Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts pandas dataframes. Please try again."</span><span class="p">,</span>
                 <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)},</span>
             <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;convergence_f&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">"convergence_f"</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">convergence_t</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter</span>
+<span class="w">        </span><span class="sd">"""Getter</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pd.DataFrame: Convergence of the eigenmode frequency.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;convergence_t&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">"convergence_t"</span><span class="p">)</span>
 
     <span class="nd">@convergence_t</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">convergence_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Setter</span>
+<span class="w">        </span><span class="sd">"""Setter</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data (pd.DataFrame): Convergence of the eigenmode frequency.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts pandas dataframes. Please try again.&quot;</span><span class="p">,</span>
+                <span class="s2">"Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts pandas dataframes. Please try again."</span><span class="p">,</span>
                 <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)},</span>
             <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;convergence_t&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">"convergence_t"</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
 <div class="viewcode-block" id="EigenmodeSim.compute_convergences">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.EigenmodeSim.html#qiskit_metal.analyses.EigenmodeSim.compute_convergences">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_convergences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convergence plots are computed as part of run(). However, in special cases</span>
+<span class="w">        </span><span class="sd">"""Convergence plots are computed as part of run(). However, in special cases</span>
 <span class="sd">        you might need to recalculate them using a different variation.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            variation (str, optional):  Information from pyEPR; variation should be in the form</span>
-<span class="sd">              variation = &quot;scale_factor=&#39;1.2001&#39;&quot;. Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">              variation = "scale_factor='1.2001'". Defaults to None.</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">convergence_t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">convergence_f</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">get_convergences</span><span class="p">(</span>
             <span class="n">variation</span>
         <span class="p">)</span></div>
@@ -681,7 +681,7 @@
         <span class="n">fig</span><span class="p">:</span> <span class="n">mpl</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">Figure</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_display</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates 3 plots, useful to determin the convergence achieved by the renderer:</span>
+<span class="w">        </span><span class="sd">"""Creates 3 plots, useful to determin the convergence achieved by the renderer:</span>
 <span class="sd">        * convergence frequency vs. pass number if fig is None.</span>
 <span class="sd">        * delta frequency and solved elements vs. pass number.</span>
 <span class="sd">        * delta frequency vs. solved elements.</span>
@@ -691,7 +691,7 @@
 <span class="sd">            convergence_f (pd.DataFrame): Convergence vs pass number of the eigenemode freqs.</span>
 <span class="sd">            fig (matplotlib.figure.Figure, optional): A mpl figure. Defaults to None.</span>
 <span class="sd">            _display (bool, optional): Display the plot? Defaults to True.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># Imported lazily (at the use-site) so ``import qiskit_metal`` and the</span>
         <span class="c1"># Qt-free path stay pyEPR-free; see the lite-flip in commit 9b8f502.</span>
@@ -738,7 +738,7 @@
 <div class="viewcode-block" id="EigenmodeSim.plot_fields">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.EigenmodeSim.html#qiskit_metal.analyses.EigenmodeSim.plot_fields">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_name</span><span class="p">,</span> <span class="n">eigenmode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plots electro(magnetic) fields in the renderer.</span>
+<span class="w">        </span><span class="sd">"""Plots electro(magnetic) fields in the renderer.</span>
 <span class="sd">        Accepts as args everything parameter accepted by the homonymous renderer method.</span>
 
 <span class="sd">        Args:</span>
@@ -747,7 +747,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="n">eigenmode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_setup_name</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">plot_fields</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">object_name</span><span class="o">=</span><span class="n">object_name</span><span class="p">)</span></div>
 
@@ -755,12 +755,12 @@
 <div class="viewcode-block" id="EigenmodeSim.clear_fields">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.EigenmodeSim.html#qiskit_metal.analyses.EigenmodeSim.clear_fields">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">clear_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Delete field plots from renderer.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            names (list, optional): Names of field plots to delete. Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">clear_fields</span><span class="p">(</span><span class="n">names</span><span class="p">)</span></div>
 </div>
 
@@ -782,7 +782,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -805,6 +805,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

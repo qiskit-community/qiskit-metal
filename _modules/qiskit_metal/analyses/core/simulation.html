@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -486,44 +486,44 @@
 <div class="viewcode-block" id="QSimulation">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QSimulation.html#qiskit_metal.analyses.QSimulation">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">QSimulation</span><span class="p">(</span><span class="n">QAnalysis</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A subclass of `QAnalysis`, intended to standardize across all Analysis classes</span>
+<span class="w">    </span><span class="sd">"""A subclass of `QAnalysis`, intended to standardize across all Analysis classes</span>
 <span class="sd">    select and name renderers.</span>
 
 <span class="sd">    Default Setup:</span>
-<span class="sd">        * name (str): Name of simulation setup. Defaults to &quot;Setup&quot;.</span>
+<span class="sd">        * name (str): Name of simulation setup. Defaults to "Setup".</span>
 
 <span class="sd">    Data Labels:</span>
 <span class="sd">        * sim_setup_name (str): Name given to the current setup.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Setup&quot;</span><span class="p">,</span> <span class="n">reuse_selected_design</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">reuse_setup</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default setup&quot;&quot;&quot;</span>
+    <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"Setup"</span><span class="p">,</span> <span class="n">reuse_selected_design</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">reuse_setup</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Default setup"""</span>
 
     <span class="c1"># supported labels for data generated from the simulation</span>
-    <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sim_setup_name&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default data labels.&quot;&quot;&quot;</span>
+    <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"sim_setup_name"</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""Default data labels."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">design</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;QDesign&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">design</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"QDesign"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">*</span><span class="n">args</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Variables and method needed from all those Analysis types that need a renderer.</span>
+<span class="w">        </span><span class="sd">"""Variables and method needed from all those Analysis types that need a renderer.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            design (QDesign): The Metal design you are working on. Defaults to None.</span>
 <span class="sd">            renderer_name (str): Name of the renderer you intend to use. Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># pointer to find renderers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="o">=</span> <span class="n">design</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s2">&quot;You did not specify a design, so you will need to provide manual inputs&quot;</span>
-                <span class="s2">&quot; for the analysis.&quot;</span>
+                <span class="s2">"You did not specify a design, so you will need to provide manual inputs"</span>
+                <span class="s2">" for the analysis."</span>
             <span class="p">)</span>
 
         <span class="c1"># verify renderer existence</span>
@@ -531,8 +531,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s2">&quot;You did not specify a renderer, so you are expected to manually provide &quot;</span>
-                <span class="s2">&quot; the analysis input information.&quot;</span>
+                <span class="s2">"You did not specify a renderer, so you are expected to manually provide "</span>
+                <span class="s2">" the analysis input information."</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_renderer</span><span class="p">(</span><span class="n">renderer_name</span><span class="p">)</span>
@@ -540,7 +540,7 @@
 <div class="viewcode-block" id="QSimulation.select_renderer">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QSimulation.html#qiskit_metal.analyses.QSimulation.select_renderer">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">select_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Makes sure the renderer exists in qiskit-metal. If yes it sets the analysis</span>
+<span class="w">        </span><span class="sd">"""Makes sure the renderer exists in qiskit-metal. If yes it sets the analysis</span>
 <span class="sd">        class variables to be able to reach it easily. Else it throws an error.</span>
 
 <span class="sd">        Args:</span>
@@ -548,7 +548,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            (QRenderer): The renderer to be used in the analysis.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># we want to setup a renderer from scratch</span>
@@ -559,9 +559,9 @@
                     <span class="k">raise</span> <span class="ne">KeyError</span>  <span class="c1"># needed because this is a Dict, not a dict</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">path_name</span> <span class="ow">and</span> <span class="n">renderer_ref</span><span class="o">.</span><span class="n">class_name</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;The renderer=</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2"> is not properly configured in&quot;</span>
-                        <span class="s2">&quot; config.renderers_to_load. Please add the missing information&quot;</span>
-                        <span class="s2">&quot; (Tip: needs to have both a path_name and a class_name keys).&quot;</span>
+                        <span class="sa">f</span><span class="s2">"The renderer=</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2"> is not properly configured in"</span>
+                        <span class="s2">" config.renderers_to_load. Please add the missing information"</span>
+                        <span class="s2">" (Tip: needs to have both a path_name and a class_name keys)."</span>
                     <span class="p">)</span>
                     <span class="k">return</span> <span class="kc">None</span>
 
@@ -578,13 +578,13 @@
                         <span class="n">renderer</span> <span class="o">=</span> <span class="n">class_renderer</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Could not find the class=</span><span class="si">{</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">class_name</span><span class="si">}</span><span class="s2"> &quot;</span>
-                            <span class="sa">f</span><span class="s2">&quot;in the renderer=</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="sa">f</span><span class="s2">"Could not find the class=</span><span class="si">{</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">class_name</span><span class="si">}</span><span class="s2"> "</span>
+                            <span class="sa">f</span><span class="s2">"in the renderer=</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2">"</span>
                         <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Could not find the renderer=</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2"> &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;at the path=</span><span class="si">{</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">path_name</span><span class="si">}</span><span class="s2">.&quot;</span>
+                        <span class="sa">f</span><span class="s2">"Could not find the renderer=</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2"> "</span>
+                        <span class="sa">f</span><span class="s2">"at the path=</span><span class="si">{</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">path_name</span><span class="si">}</span><span class="s2">."</span>
                     <span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
@@ -592,12 +592,12 @@
                 <span class="n">renderer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="p">[</span><span class="n">renderer_name</span><span class="p">]</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">renderer</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;Cannot find the renderer &quot;</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s1">&quot; registered with qiskit-metal&#39;</span>
+                        <span class="sa">f</span><span class="s1">'Cannot find the renderer "</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s1">" registered with qiskit-metal'</span>
                     <span class="p">)</span>
                     <span class="k">return</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Cannot find a renderer </span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2"> registered with qiskit-metal&quot;</span>
+                <span class="sa">f</span><span class="s2">"Cannot find a renderer </span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2"> registered with qiskit-metal"</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">renderer</span></div>
@@ -606,16 +606,16 @@
 <div class="viewcode-block" id="QSimulation.start">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QSimulation.html#qiskit_metal.analyses.QSimulation.start">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Starts the renderer by executing the routine of the selected renderer.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Starts the renderer by executing the routine of the selected renderer."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_renderer</span><span class="p">()</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_initialize_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Starts the renderer by executing the routine of the selected renderer.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Starts the renderer by executing the routine of the selected renderer."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">vars_to_initialize</span><span class="p">,</span> <span class="o">**</span><span class="n">design_selection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Renders the design from qiskit metal into the selected renderer.</span>
+<span class="w">        </span><span class="sd">"""Renders the design from qiskit metal into the selected renderer.</span>
 <span class="sd">        First it decides the tentative name of the design. Then it runs the renderer method</span>
 <span class="sd">        that executes the design rendering. It returns the final design name.</span>
 
@@ -626,17 +626,17 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            (str): Final design name that the renderer used.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">get_active_design_name</span><span class="p">()</span>
         <span class="c1"># need a default renderer-design name. Use the name of the metal-design.</span>
         <span class="n">base_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">name</span>
         <span class="c1"># if a renderer-design name was provided as input to run(), use that as a base</span>
-        <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">design_selection</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">design_selection</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">base_name</span> <span class="o">=</span> <span class="n">design_selection</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-            <span class="k">del</span> <span class="n">design_selection</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-        <span class="n">design_name</span> <span class="o">=</span> <span class="n">base_name</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_name</span>
+        <span class="k">if</span> <span class="s2">"name"</span> <span class="ow">in</span> <span class="n">design_selection</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">design_selection</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">base_name</span> <span class="o">=</span> <span class="n">design_selection</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">design_selection</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span>
+        <span class="n">design_name</span> <span class="o">=</span> <span class="n">base_name</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_name</span>
         <span class="n">design_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">execute_design</span><span class="p">(</span>
             <span class="n">design_name</span><span class="p">,</span>
             <span class="n">solution_type</span><span class="o">=</span><span class="n">solution_type</span><span class="p">,</span>
@@ -649,36 +649,36 @@
 <div class="viewcode-block" id="QSimulation.close">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QSimulation.html#qiskit_metal.analyses.QSimulation.close">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stops the renderer by executing the routine of the selected renderer.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Stops the renderer by executing the routine of the selected renderer."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_close_renderer</span><span class="p">()</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_close_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stops the renderer by executing the routine of the selected renderer.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Stops the renderer by executing the routine of the selected renderer."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">renderer_initialized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reports whether the renderer is initialized or stopped.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Reports whether the renderer is initialized or stopped."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">initialized</span>
 
 <div class="viewcode-block" id="QSimulation.save_screenshot">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QSimulation.html#qiskit_metal.analyses.QSimulation.save_screenshot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">save_screenshot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Saves the screenshot.</span>
+<span class="w">        </span><span class="sd">"""Saves the screenshot.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            (pathlib.WindowsPath): Path to png formatted screenshot.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="QSimulation.run">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QSimulation.html#qiskit_metal.analyses.QSimulation.run">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for run_sim() necessary to implement super-class method, while</span>
+<span class="w">        </span><span class="sd">"""Alias for run_sim() necessary to implement super-class method, while</span>
 <span class="sd">        preventing method name collision when sim and non-sim QAnalysis classes are inherited.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
@@ -686,34 +686,34 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QSimulation.html#qiskit_metal.analyses.QSimulation.run_sim">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">run_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract method. Must be implemented by the subclass.</span>
+<span class="w">        </span><span class="sd">"""Abstract method. Must be implemented by the subclass.</span>
 <span class="sd">        Write in here the code to launch the simulations.</span>
 <span class="sd">        You will be able to execute this with the alias run().</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">sim_setup_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter</span>
+<span class="w">        </span><span class="sd">"""Getter</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Name of the setup being executed.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;sim_setup_name&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">"sim_setup_name"</span><span class="p">)</span>
 
     <span class="nd">@sim_setup_name</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">sim_setup_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Setter</span>
+<span class="w">        </span><span class="sd">"""Setter</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data (str): Name of the setup being executed.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts str. Please try again.&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)}</span>
+                <span class="s2">"Unsupported type </span><span class="si">%s</span><span class="s2">. Only accepts str. Please try again."</span><span class="p">,</span> <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)}</span>
             <span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">&quot;sim_setup_name&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="s2">"sim_setup_name"</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
 
 </pre></div>
         </article>
@@ -733,7 +733,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -756,6 +756,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

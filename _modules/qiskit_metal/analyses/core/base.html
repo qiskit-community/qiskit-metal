@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -485,7 +485,7 @@
 <div class="viewcode-block" id="QAnalysis">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QAnalysis.html#qiskit_metal.analyses.QAnalysis">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">QAnalysis</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;`QAnalysis` is the core class from which all Metal analysis classes are derived.</span>
+<span class="w">    </span><span class="sd">"""`QAnalysis` is the core class from which all Metal analysis classes are derived.</span>
 
 <span class="sd">    The class defines the user interface for working with analysis.</span>
 
@@ -501,16 +501,16 @@
 <span class="sd">    Default Setup:</span>
 <span class="sd">        Nested default setup parameters can be overwritten with the setup_update method,</span>
 <span class="sd">        or directly by using the dot operator enabled by the Dict type.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default setup.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default setup."""</span>
 
     <span class="n">data_labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default data labels.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default data labels."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a new Analysis object with a setup derived from the default_setup Dict.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Creates a new Analysis object with a setup derived from the default_setup Dict."""</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_supported_data_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gather_from_all_children</span><span class="p">()</span>
 
@@ -521,19 +521,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_sweeper</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_initialize_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new instance of Sweeper&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create a new instance of Sweeper"""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sweeper</span> <span class="o">=</span> <span class="n">Sweeper</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the logger.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Returns the logger."""</span>
         <span class="k">return</span> <span class="n">logger</span>
 
 <div class="viewcode-block" id="QAnalysis.run">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QAnalysis.html#qiskit_metal.analyses.QAnalysis.run">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Abstract method. Must be implemented by the subclass.</span>
+<span class="w">        </span><span class="sd">"""Abstract method. Must be implemented by the subclass.</span>
 <span class="sd">        Use as an alias for the main analysis method. Call the main analysis method run_***().</span>
 <span class="sd">        Subclass implementation of run() must:</span>
 <span class="sd">        * always call the main analysis method(s) named `run_***()`.</span>
@@ -553,15 +553,15 @@
 
 <span class="sd">        Make sure the name of the method `run_***()` does not conflict with that of another</span>
 <span class="sd">        QAnalysis subclass, in case you expect them to be both inherited from the same subclass.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 <div class="viewcode-block" id="QAnalysis.run_sweep">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QAnalysis.html#qiskit_metal.analyses.QAnalysis.run_sweep">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">run_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;User requests sweeper based on arguments from</span>
+<span class="w">        </span><span class="sd">"""User requests sweeper based on arguments from</span>
 <span class="sd">        Sweeper.run_sweep().</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sweeper</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_sweep</span><span class="p">()</span>
 
@@ -572,9 +572,9 @@
 <div class="viewcode-block" id="QAnalysis.save_run_args">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QAnalysis.html#qiskit_metal.analyses.QAnalysis.save_run_args">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">save_run_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Intended to be used to store the kwargs passed to the run() method,</span>
+<span class="w">        </span><span class="sd">"""Intended to be used to store the kwargs passed to the run() method,</span>
 <span class="sd">        for repeatability and for later identification of the QAnalysis instance.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -582,18 +582,18 @@
 <div class="viewcode-block" id="QAnalysis.set_data">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QAnalysis.html#qiskit_metal.analyses.QAnalysis.set_data">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stores data in a structure for later retrieval.</span>
+<span class="w">        </span><span class="sd">"""Stores data in a structure for later retrieval.</span>
 <span class="sd">        Could be output, intermediate or even input data.</span>
 <span class="sd">        Current implementation uses Dict()</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data_name (str): Label for the data. Used a storage key.</span>
 <span class="sd">            data (Any): Free format</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">data_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_supported_data_labels</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;No </span><span class="si">%s</span><span class="s2"> in the list of supported variables. The variable will still be added. &quot;</span>
-                <span class="s2">&quot;However, make sure this was not a typo&quot;</span><span class="p">,</span>
+                <span class="s2">"No </span><span class="si">%s</span><span class="s2"> in the list of supported variables. The variable will still be added. "</span>
+                <span class="s2">"However, make sure this was not a typo"</span><span class="p">,</span>
                 <span class="p">{</span><span class="n">data_name</span><span class="p">},</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">[</span><span class="n">data_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span></div>
@@ -602,7 +602,7 @@
 <div class="viewcode-block" id="QAnalysis.get_data">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QAnalysis.html#qiskit_metal.analyses.QAnalysis.get_data">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieves the analysis module data.</span>
+<span class="w">        </span><span class="sd">"""Retrieves the analysis module data.</span>
 <span class="sd">        Returns `None` if nothing is found.</span>
 
 <span class="sd">        Args:</span>
@@ -611,7 +611,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Any: The data associated with the label, or the entire list of labels and data.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">data_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">[</span><span class="n">data_name</span><span class="p">]</span></div>
@@ -620,33 +620,33 @@
 <div class="viewcode-block" id="QAnalysis.get_data_labels">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QAnalysis.html#qiskit_metal.analyses.QAnalysis.get_data_labels">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_data_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieves the list of data labels currently set.</span>
+<span class="w">        </span><span class="sd">"""Retrieves the list of data labels currently set.</span>
 <span class="sd">        Returns `None` if nothing is found.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: list of data names</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">supported_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter: Set that contains the names of the variables supported from the analysis.</span>
+<span class="w">        </span><span class="sd">"""Getter: Set that contains the names of the variables supported from the analysis.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            set: list of supported variable names.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_supported_data_labels</span>
 
 <div class="viewcode-block" id="QAnalysis.clear_data">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QAnalysis.html#qiskit_metal.analyses.QAnalysis.clear_data">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">clear_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear data. Can optionally specify one or more labels to delete those labels and data.</span>
+<span class="w">        </span><span class="sd">"""Clear data. Can optionally specify one or more labels to delete those labels and data.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            data_name (Union[str, list], optional): Can list specific labels to clean.</span>
 <span class="sd">                Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">data_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -661,47 +661,47 @@
 <div class="viewcode-block" id="QAnalysis.print_run_args">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QAnalysis.html#qiskit_metal.analyses.QAnalysis.print_run_args">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">print_run_args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prints the args and kwargs that were used in the last run() of this Analysis instance.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Prints the args and kwargs that were used in the last run() of this Analysis instance."""</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;This analysis object run with the following kwargs:</span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="o">.</span><span class="n">run</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"This analysis object run with the following kwargs:</span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="o">.</span><span class="n">run</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
         <span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter: Dictionary intended to be used to modify the analysis behavior.</span>
+<span class="w">        </span><span class="sd">"""Getter: Dictionary intended to be used to modify the analysis behavior.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Dict: Current setup.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span>
 
     <span class="nd">@setup</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup_dict</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Setter: Dictionary intended to be used to modify the analysis behavior. You can only</span>
+<span class="w">        </span><span class="sd">"""Setter: Dictionary intended to be used to modify the analysis behavior. You can only</span>
 <span class="sd">        pass to this method those settings that are already defined in the default_setup list.</span>
 <span class="sd">        Non specified keys, will be assigned the default_setup value.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            setup_dict (Dict): Define the settings to change. The rest will be set to defaults.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">setup_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="c1"># first reset the setup</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gather_from_all_children</span><span class="p">()</span>
             <span class="c1"># then apply specified variables</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setup_update</span><span class="p">(</span><span class="o">**</span><span class="n">setup_dict</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The analysis setup has to be defined as a dictionary&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"The analysis setup has to be defined as a dictionary"</span><span class="p">)</span>
 
 <div class="viewcode-block" id="QAnalysis.setup_update">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QAnalysis.html#qiskit_metal.analyses.QAnalysis.setup_update">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">setup_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Intended to modify multiple setup settings at once, while retaining previous settings.</span>
+<span class="w">        </span><span class="sd">"""Intended to modify multiple setup settings at once, while retaining previous settings.</span>
 <span class="sd">        If you intend to change a single setting, the better way is: `setup.setting1 = value`.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            section (str): Setup section that contains the setup keys to update.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span> <span class="ow">or</span> <span class="n">section</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">unsupported_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -715,22 +715,22 @@
                     <span class="n">unsupported_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">unsupported_keys</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;the parameters </span><span class="si">{</span><span class="n">unsupported_keys</span><span class="si">}</span><span class="s2"> are unsupported, so they have been ignored&quot;</span>
+                    <span class="sa">f</span><span class="s2">"the parameters </span><span class="si">{</span><span class="n">unsupported_keys</span><span class="si">}</span><span class="s2"> are unsupported, so they have been ignored"</span>
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;the section </span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2"> does not exist in this analysis setup&quot;</span><span class="p">)</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"the section </span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2"> does not exist in this analysis setup"</span><span class="p">)</span></div>
 
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_gather_from_all_children</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;From the QAnalysis core class, traverse the child classes to</span>
+<span class="w">        </span><span class="sd">"""From the QAnalysis core class, traverse the child classes to</span>
 <span class="sd">        gather the default_setup and data_labels for each child class.</span>
 
 <span class="sd">        For default_setup: If the same key is found twice, the youngest child will be picked.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            (dict, set): dict = setup, set = supported_data_labels</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">setup_from_children</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
         <span class="n">labels_from_children</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="n">parents</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmro</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
@@ -738,10 +738,10 @@
         <span class="c1"># len-2: base.py is not expected to have default_setup and data_labels.</span>
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="p">::</span> <span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
             <span class="c1"># The template default options are in the attribute `default_setup`.</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s2">&quot;default_setup&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s2">"default_setup"</span><span class="p">):</span>
                 <span class="n">setup_from_children</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">default_setup</span><span class="p">))</span>
             <span class="c1"># The data_labels are in the attribute `data_labels`.</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s2">&quot;data_labels&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s2">"data_labels"</span><span class="p">):</span>
                 <span class="n">labels_from_children</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">data_labels</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">setup_from_children</span><span class="p">,</span> <span class="n">labels_from_children</span></div>
@@ -764,7 +764,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -787,6 +787,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

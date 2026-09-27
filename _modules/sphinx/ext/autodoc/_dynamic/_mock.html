@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -461,7 +461,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for sphinx.ext.autodoc._dynamic._mock</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;mock for autodoc&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""mock for autodoc"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
@@ -484,14 +484,14 @@
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_MockObject</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Used by autodoc_mock_imports.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Used by autodoc_mock_imports."""</span>
 
-    <span class="n">__display_name__</span> <span class="o">=</span> <span class="s1">&#39;_MockObject&#39;</span>
-    <span class="vm">__name__</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">__display_name__</span> <span class="o">=</span> <span class="s1">'_MockObject'</span>
+    <span class="vm">__name__</span> <span class="o">=</span> <span class="s1">''</span>
     <span class="n">__sphinx_mock__</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">__sphinx_decorator_args__</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
     <span class="c1"># Attributes listed here should not be mocked and rather raise an Attribute error:</span>
-    <span class="n">__sphinx_empty_attrs__</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">((</span><span class="s1">&#39;__typing_subst__&#39;</span><span class="p">,))</span>
+    <span class="n">__sphinx_empty_attrs__</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">((</span><span class="s1">'__typing_subst__'</span><span class="p">,))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>  <span class="c1"># NoQA: ARG004</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">):</span>
@@ -547,10 +547,10 @@
     <span class="n">decorator_args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
     <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;__module__&#39;</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span>
-        <span class="s1">&#39;__display_name__&#39;</span><span class="p">:</span> <span class="n">module</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span>
-        <span class="s1">&#39;__name__&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-        <span class="s1">&#39;__sphinx_decorator_args__&#39;</span><span class="p">:</span> <span class="n">decorator_args</span><span class="p">,</span>
+        <span class="s1">'__module__'</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span>
+        <span class="s1">'__display_name__'</span><span class="p">:</span> <span class="n">module</span> <span class="o">+</span> <span class="s1">'.'</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s1">'__name__'</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s1">'__sphinx_decorator_args__'</span><span class="p">:</span> <span class="n">decorator_args</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">attrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attributes</span> <span class="ow">or</span> <span class="p">{})</span>
 
@@ -558,7 +558,7 @@
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_MockModule</span><span class="p">(</span><span class="n">ModuleType</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Used by autodoc_mock_imports.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Used by autodoc_mock_imports."""</span>
 
     <span class="vm">__file__</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">devnull</span>
     <span class="n">__sphinx_mock__</span> <span class="o">=</span> <span class="kc">True</span>
@@ -576,14 +576,14 @@
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">MockLoader</span><span class="p">(</span><span class="n">Loader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A loader for mocking.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A loader for mocking."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">finder</span><span class="p">:</span> <span class="n">MockFinder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">finder</span> <span class="o">=</span> <span class="n">finder</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">create_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">:</span> <span class="n">ModuleSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModuleType</span><span class="p">:</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;[autodoc] adding a mock module as </span><span class="si">%s</span><span class="s1">!&#39;</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">'[autodoc] adding a mock module as </span><span class="si">%s</span><span class="s1">!'</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">finder</span><span class="o">.</span><span class="n">mocked_modules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_MockModule</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
@@ -592,7 +592,7 @@
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">MockFinder</span><span class="p">(</span><span class="n">MetaPathFinder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A finder for mocking.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A finder for mocking."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modnames</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -608,25 +608,25 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModuleSpec</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">modname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">modnames</span><span class="p">:</span>
             <span class="c1"># check if fullname is (or is a descendant of) one of our targets</span>
-            <span class="k">if</span> <span class="n">modname</span> <span class="o">==</span> <span class="n">fullname</span> <span class="ow">or</span> <span class="n">fullname</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">modname</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">modname</span> <span class="o">==</span> <span class="n">fullname</span> <span class="ow">or</span> <span class="n">fullname</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">modname</span> <span class="o">+</span> <span class="s1">'.'</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">ModuleSpec</span><span class="p">(</span><span class="n">fullname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loader</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">invalidate_caches</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Invalidate mocked modules on sys.modules.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Invalidate mocked modules on sys.modules."""</span>
         <span class="k">for</span> <span class="n">modname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mocked_modules</span><span class="p">:</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">modname</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">mock</span><span class="p">(</span><span class="n">modnames</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Insert mock modules during context::</span>
+<span class="w">    </span><span class="sd">"""Insert mock modules during context::</span>
 
-<span class="sd">    with mock([&#39;target.module.name&#39;]):</span>
+<span class="sd">    with mock(['target.module.name']):</span>
 <span class="sd">        # mock modules are enabled here</span>
 <span class="sd">        ...</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">finder</span> <span class="o">=</span> <span class="n">MockFinder</span><span class="p">(</span><span class="n">modnames</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">meta_path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">finder</span><span class="p">)</span>
@@ -637,15 +637,15 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">ismockmodule</span><span class="p">(</span><span class="n">subject</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeIs</span><span class="p">[</span><span class="n">_MockModule</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the object is a mocked module.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Check if the object is a mocked module."""</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">_MockModule</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">ismock</span><span class="p">(</span><span class="n">subject</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the object is mocked.&quot;&quot;&quot;</span>
-    <span class="c1"># check the object has &#39;__sphinx_mock__&#39; attribute</span>
+<span class="w">    </span><span class="sd">"""Check if the object is mocked."""</span>
+    <span class="c1"># check the object has '__sphinx_mock__' attribute</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">safe_getattr</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="s1">&#39;__sphinx_mock__&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">safe_getattr</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="s1">'__sphinx_mock__'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
@@ -662,7 +662,7 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># check the object is mocked object</span>
-        <span class="vm">__mro__</span> <span class="o">=</span> <span class="n">safe_getattr</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">tmp_subject</span><span class="p">),</span> <span class="s1">&#39;__mro__&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="vm">__mro__</span> <span class="o">=</span> <span class="n">safe_getattr</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">tmp_subject</span><span class="p">),</span> <span class="s1">'__mro__'</span><span class="p">,</span> <span class="p">[])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="vm">__mro__</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="vm">__mro__</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="ow">is</span> <span class="n">_MockObject</span><span class="p">:</span>
             <span class="c1"># A mocked object has a MRO that ends with (..., _MockObject, object).</span>
             <span class="k">return</span> <span class="kc">True</span>
@@ -673,10 +673,10 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">undecorate</span><span class="p">(</span><span class="n">subject</span><span class="p">:</span> <span class="n">_MockObject</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Unwrap mock if *subject* is decorated by mocked object.</span>
+<span class="w">    </span><span class="sd">"""Unwrap mock if *subject* is decorated by mocked object.</span>
 
 <span class="sd">    If not decorated, returns given *subject* itself.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">ismock</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span> <span class="ow">and</span> <span class="n">subject</span><span class="o">.</span><span class="n">__sphinx_decorator_args__</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">subject</span><span class="o">.</span><span class="n">__sphinx_decorator_args__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
@@ -699,7 +699,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -722,6 +722,8 @@
     <script src="../../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

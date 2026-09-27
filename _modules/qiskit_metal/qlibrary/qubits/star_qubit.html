@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,7 +472,7 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;This is the StarQubit module.&quot;&quot;&quot;</span>
+<span class="sd">"""This is the StarQubit module."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">CAP_STYLE</span>
 
@@ -483,7 +483,7 @@
 <div class="viewcode-block" id="StarQubit">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html#qiskit_metal.qlibrary.StarQubit">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">StarQubit</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A single configurable circle with multiple pads.</span>
+<span class="w">    </span><span class="sd">"""A single configurable circle with multiple pads.</span>
 
 <span class="sd">    Inherits `BaseQubit` class.</span>
 
@@ -496,64 +496,64 @@
 <span class="sd">        :description: Star Qubit</span>
 
 <span class="sd">    Default Options:</span>
-<span class="sd">        * radius: &#39;300um&#39; -- Radius of the circle defining the star shape</span>
-<span class="sd">        * center_radius: &#39;100um&#39; -- Measure of how thick the central island is</span>
-<span class="sd">        * gap_couplers: &#39;25um&#39; -- Gap between the star and the coupling resonator</span>
-<span class="sd">        * gap_readout: &#39;10um&#39; -- Gap between the star and the readout resonator</span>
-<span class="sd">        * connector_length: &#39;75um&#39; -- Length of the rectangular part of the connector</span>
-<span class="sd">        * trap_offset: &#39;20um&#39; -- Offset between trapezoid coordinates for side wall angle</span>
-<span class="sd">        * junc_h: &#39;30um&#39; -- Junction height</span>
-<span class="sd">        * cpw_width=&#39;0.01&#39;, -- Junction width</span>
-<span class="sd">        * rotation_cpl1: &#39;0.0&#39; -- Rotation for one of the coupling resonators &#39;36.0&#39;, &#39;0.0&#39;,</span>
-<span class="sd">        * rotation_cpl2: &#39;72.0&#39; -- Rotation for the readout resonator &#39;108.0&#39;,&#39;72.0&#39;,</span>
-<span class="sd">        * rotation_rdout: &#39;144.0&#39; -- Rotation for one of the coupling resonators &#39;180.0&#39;,&#39;144.0&#39;,</span>
-<span class="sd">        * rotation_cpl3: &#39;216.0&#39; -- Rotation for one of the coupling resonators&#39;252.0&#39;,&#39;216.0&#39;,</span>
-<span class="sd">        * rotation_cpl4: &#39;288.0&#39; -- Rotation for one of the coupling resonators &#39;324.0&#39;,&#39;288.0&#39;,</span>
-<span class="sd">        * number_of_connectors: &#39;4&#39; -- Total number of coupling resonators</span>
-<span class="sd">        * resolution: &#39;16&#39;</span>
-<span class="sd">        * cap_style: &#39;round&#39; -- round, flat, square</span>
-<span class="sd">        * subtract: &#39;False&#39;</span>
-<span class="sd">        * helper: &#39;False&#39;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        * radius: '300um' -- Radius of the circle defining the star shape</span>
+<span class="sd">        * center_radius: '100um' -- Measure of how thick the central island is</span>
+<span class="sd">        * gap_couplers: '25um' -- Gap between the star and the coupling resonator</span>
+<span class="sd">        * gap_readout: '10um' -- Gap between the star and the readout resonator</span>
+<span class="sd">        * connector_length: '75um' -- Length of the rectangular part of the connector</span>
+<span class="sd">        * trap_offset: '20um' -- Offset between trapezoid coordinates for side wall angle</span>
+<span class="sd">        * junc_h: '30um' -- Junction height</span>
+<span class="sd">        * cpw_width='0.01', -- Junction width</span>
+<span class="sd">        * rotation_cpl1: '0.0' -- Rotation for one of the coupling resonators '36.0', '0.0',</span>
+<span class="sd">        * rotation_cpl2: '72.0' -- Rotation for the readout resonator '108.0','72.0',</span>
+<span class="sd">        * rotation_rdout: '144.0' -- Rotation for one of the coupling resonators '180.0','144.0',</span>
+<span class="sd">        * rotation_cpl3: '216.0' -- Rotation for one of the coupling resonators'252.0','216.0',</span>
+<span class="sd">        * rotation_cpl4: '288.0' -- Rotation for one of the coupling resonators '324.0','288.0',</span>
+<span class="sd">        * number_of_connectors: '4' -- Total number of coupling resonators</span>
+<span class="sd">        * resolution: '16'</span>
+<span class="sd">        * cap_style: 'round' -- round, flat, square</span>
+<span class="sd">        * subtract: 'False'</span>
+<span class="sd">        * helper: 'False'</span>
+<span class="sd">    """</span>
 
     <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;Star&quot;</span><span class="p">,</span>
-        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
-        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">"Star"</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">"True"</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">"True"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">radius</span><span class="o">=</span><span class="s2">&quot;300um&quot;</span><span class="p">,</span>
-        <span class="n">center_radius</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
-        <span class="n">gap_couplers</span><span class="o">=</span><span class="s2">&quot;25um&quot;</span><span class="p">,</span>
-        <span class="n">gap_readout</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span>
-        <span class="n">connector_length</span><span class="o">=</span><span class="s2">&quot;75um&quot;</span><span class="p">,</span>
-        <span class="n">trap_offset</span><span class="o">=</span><span class="s2">&quot;20um&quot;</span><span class="p">,</span>
-        <span class="n">junc_h</span><span class="o">=</span><span class="s2">&quot;100um&quot;</span><span class="p">,</span>
-        <span class="n">cpw_width</span><span class="o">=</span><span class="s2">&quot;0.01&quot;</span><span class="p">,</span>
-        <span class="n">rotation_cpl1</span><span class="o">=</span><span class="s2">&quot;0.0&quot;</span><span class="p">,</span>
-        <span class="n">rotation_cpl2</span><span class="o">=</span><span class="s2">&quot;72.0&quot;</span><span class="p">,</span>
-        <span class="n">rotation_rdout</span><span class="o">=</span><span class="s2">&quot;144.0&quot;</span><span class="p">,</span>
-        <span class="n">rotation_cpl3</span><span class="o">=</span><span class="s2">&quot;216.0&quot;</span><span class="p">,</span>
-        <span class="n">rotation_cpl4</span><span class="o">=</span><span class="s2">&quot;288.0&quot;</span><span class="p">,</span>
-        <span class="n">number_of_connectors</span><span class="o">=</span><span class="s2">&quot;4&quot;</span><span class="p">,</span>
-        <span class="n">resolution</span><span class="o">=</span><span class="s2">&quot;16&quot;</span><span class="p">,</span>
-        <span class="n">cap_style</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">,</span>
-        <span class="n">subtract</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
-        <span class="n">helper</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
+        <span class="n">radius</span><span class="o">=</span><span class="s2">"300um"</span><span class="p">,</span>
+        <span class="n">center_radius</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>
+        <span class="n">gap_couplers</span><span class="o">=</span><span class="s2">"25um"</span><span class="p">,</span>
+        <span class="n">gap_readout</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span>
+        <span class="n">connector_length</span><span class="o">=</span><span class="s2">"75um"</span><span class="p">,</span>
+        <span class="n">trap_offset</span><span class="o">=</span><span class="s2">"20um"</span><span class="p">,</span>
+        <span class="n">junc_h</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>
+        <span class="n">cpw_width</span><span class="o">=</span><span class="s2">"0.01"</span><span class="p">,</span>
+        <span class="n">rotation_cpl1</span><span class="o">=</span><span class="s2">"0.0"</span><span class="p">,</span>
+        <span class="n">rotation_cpl2</span><span class="o">=</span><span class="s2">"72.0"</span><span class="p">,</span>
+        <span class="n">rotation_rdout</span><span class="o">=</span><span class="s2">"144.0"</span><span class="p">,</span>
+        <span class="n">rotation_cpl3</span><span class="o">=</span><span class="s2">"216.0"</span><span class="p">,</span>
+        <span class="n">rotation_cpl4</span><span class="o">=</span><span class="s2">"288.0"</span><span class="p">,</span>
+        <span class="n">number_of_connectors</span><span class="o">=</span><span class="s2">"4"</span><span class="p">,</span>
+        <span class="n">resolution</span><span class="o">=</span><span class="s2">"16"</span><span class="p">,</span>
+        <span class="n">cap_style</span><span class="o">=</span><span class="s2">"round"</span><span class="p">,</span>
+        <span class="n">subtract</span><span class="o">=</span><span class="s2">"False"</span><span class="p">,</span>
+        <span class="n">helper</span><span class="o">=</span><span class="s2">"False"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
 <div class="viewcode-block" id="StarQubit.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html#qiskit_metal.qlibrary.StarQubit.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The make function implements the logic that creates the geometry</span>
+<span class="w">        </span><span class="sd">"""The make function implements the logic that creates the geometry</span>
 <span class="sd">        (poly, path, etc.) from the qcomponent.options dictionary of</span>
 <span class="sd">        parameters, and the adds them to the design, using</span>
 <span class="sd">        qcomponent.add_qgeometry(...), adding in extra needed information, such</span>
 <span class="sd">        as layer, subtract, etc.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">make_inner_star</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">make_coupling_resonators</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">make_readout_resonator</span><span class="p">()</span>
@@ -563,7 +563,7 @@
 <div class="viewcode-block" id="StarQubit.make_circle">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html#qiskit_metal.qlibrary.StarQubit.make_circle">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function creates a circle to be accessed later.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This function creates a circle to be accessed later."""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
         <span class="c1"># create a circle</span>
         <span class="n">circle</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span>
@@ -578,7 +578,7 @@
 <div class="viewcode-block" id="StarQubit.make_pockets">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html#qiskit_metal.qlibrary.StarQubit.make_pockets">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_pockets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function creates the pockets.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This function creates the pockets."""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
 
         <span class="c1"># Connector pocket width/height</span>
@@ -595,7 +595,7 @@
 <div class="viewcode-block" id="StarQubit.make_rotation">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html#qiskit_metal.qlibrary.StarQubit.make_rotation">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function rotates objects.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This function rotates objects."""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
         <span class="k">if</span> <span class="n">num</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">rotation</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">rotation_rdout</span><span class="p">]</span>
@@ -639,7 +639,7 @@
 <div class="viewcode-block" id="StarQubit.make_coordinates_trap">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html#qiskit_metal.qlibrary.StarQubit.make_coordinates_trap">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_coordinates_trap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function creates the coordinates for trapezoid&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This function creates the coordinates for trapezoid"""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
         <span class="c1"># Coordinates of the trapezoid to subtract from circle</span>
         <span class="n">coord_y1</span> <span class="o">=</span> <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">center_radius</span>
@@ -662,7 +662,7 @@
 <div class="viewcode-block" id="StarQubit.make_resonator_coordinates">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html#qiskit_metal.qlibrary.StarQubit.make_resonator_coordinates">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_resonator_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function creates the coordinates for trapezoid&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This function creates the coordinates for trapezoid"""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
 
         <span class="c1"># Coordinates of the polygon defining the coupling resonator (a=x, b=y)</span>
@@ -694,7 +694,7 @@
 <div class="viewcode-block" id="StarQubit.make_readout_coordinates">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html#qiskit_metal.qlibrary.StarQubit.make_readout_coordinates">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_readout_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function creates the coordinates for trapezoid&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This function creates the coordinates for trapezoid"""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
 
         <span class="c1"># Coordinates of the polygon defining the readout resonator (c=x, d=y)</span>
@@ -726,7 +726,7 @@
 <div class="viewcode-block" id="StarQubit.make_pin_coordinates">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html#qiskit_metal.qlibrary.StarQubit.make_pin_coordinates">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_pin_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function creates the coordinates for the pins&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This function creates the coordinates for the pins"""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
         <span class="n">p_in</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
         <span class="n">p_out</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.25</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">radius</span><span class="p">))</span>
@@ -738,7 +738,7 @@
 <div class="viewcode-block" id="StarQubit.make_inner_star">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html#qiskit_metal.qlibrary.StarQubit.make_inner_star">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_inner_star</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function creates the coordinates for the pins&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This function creates the coordinates for the pins"""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
         <span class="c1"># Extracting coordinated from the user input values</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_coordinates_trap</span><span class="p">()</span>
@@ -785,8 +785,8 @@
         <span class="p">[</span><span class="n">total</span><span class="p">,</span> <span class="n">jjunction</span><span class="p">]</span> <span class="o">=</span> <span class="n">objects</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;circle_inner&quot;</span><span class="p">:</span> <span class="n">total</span><span class="p">},</span>
+            <span class="s2">"poly"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"circle_inner"</span><span class="p">:</span> <span class="n">total</span><span class="p">},</span>
             <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
             <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
@@ -794,8 +794,8 @@
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;junction&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;poly&quot;</span><span class="p">:</span> <span class="n">jjunction</span><span class="p">},</span>
+            <span class="s2">"junction"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"poly"</span><span class="p">:</span> <span class="n">jjunction</span><span class="p">},</span>
             <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
             <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
@@ -807,9 +807,9 @@
 <div class="viewcode-block" id="StarQubit.make_coupling_resonators">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html#qiskit_metal.qlibrary.StarQubit.make_coupling_resonators">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_coupling_resonators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function draws the coulping resonators.</span>
+<span class="w">        </span><span class="sd">"""This function draws the coulping resonators.</span>
 <span class="sd">        Adds pins. And adds the drawn geometry to qgeomtery table.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
         <span class="c1"># rotate these trapezoids to form the contacts</span>
 
@@ -844,8 +844,8 @@
 
         <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">number_of_connectors</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-                <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
-                <span class="p">{</span><span class="s2">&quot;contact_cpl1&quot;</span><span class="p">:</span> <span class="n">contacts</span><span class="p">[</span><span class="mi">0</span><span class="p">]},</span>
+                <span class="s2">"poly"</span><span class="p">,</span>
+                <span class="p">{</span><span class="s2">"contact_cpl1"</span><span class="p">:</span> <span class="n">contacts</span><span class="p">[</span><span class="mi">0</span><span class="p">]},</span>
                 <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
                 <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
                 <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
@@ -853,12 +853,12 @@
             <span class="p">)</span>
             <span class="c1"># Add pin connections</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-                <span class="s2">&quot;pin_cpl1&quot;</span><span class="p">,</span> <span class="n">pins_cpl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+                <span class="s2">"pin_cpl1"</span><span class="p">,</span> <span class="n">pins_cpl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">number_of_connectors</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-                <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
-                <span class="p">{</span><span class="s2">&quot;contact_cpl2&quot;</span><span class="p">:</span> <span class="n">contacts</span><span class="p">[</span><span class="mi">1</span><span class="p">]},</span>
+                <span class="s2">"poly"</span><span class="p">,</span>
+                <span class="p">{</span><span class="s2">"contact_cpl2"</span><span class="p">:</span> <span class="n">contacts</span><span class="p">[</span><span class="mi">1</span><span class="p">]},</span>
                 <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
                 <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
                 <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
@@ -866,12 +866,12 @@
             <span class="p">)</span>
             <span class="c1"># Add pin connections</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-                <span class="s2">&quot;pin_cpl2&quot;</span><span class="p">,</span> <span class="n">pins_cpl</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+                <span class="s2">"pin_cpl2"</span><span class="p">,</span> <span class="n">pins_cpl</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">number_of_connectors</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-                <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
-                <span class="p">{</span><span class="s2">&quot;contact_cpl3&quot;</span><span class="p">:</span> <span class="n">contacts</span><span class="p">[</span><span class="mi">2</span><span class="p">]},</span>
+                <span class="s2">"poly"</span><span class="p">,</span>
+                <span class="p">{</span><span class="s2">"contact_cpl3"</span><span class="p">:</span> <span class="n">contacts</span><span class="p">[</span><span class="mi">2</span><span class="p">]},</span>
                 <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
                 <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
                 <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
@@ -879,12 +879,12 @@
             <span class="p">)</span>
             <span class="c1"># Add pin connections</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-                <span class="s2">&quot;pin_cpl3&quot;</span><span class="p">,</span> <span class="n">pins_cpl</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+                <span class="s2">"pin_cpl3"</span><span class="p">,</span> <span class="n">pins_cpl</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">number_of_connectors</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-                <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
-                <span class="p">{</span><span class="s2">&quot;contact_cpl4&quot;</span><span class="p">:</span> <span class="n">contacts</span><span class="p">[</span><span class="mi">3</span><span class="p">]},</span>
+                <span class="s2">"poly"</span><span class="p">,</span>
+                <span class="p">{</span><span class="s2">"contact_cpl4"</span><span class="p">:</span> <span class="n">contacts</span><span class="p">[</span><span class="mi">3</span><span class="p">]},</span>
                 <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
                 <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
                 <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
@@ -892,16 +892,16 @@
             <span class="p">)</span>
             <span class="c1"># Add pin connections</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-                <span class="s2">&quot;pin_cpl4&quot;</span><span class="p">,</span> <span class="n">pins_cpl</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+                <span class="s2">"pin_cpl4"</span><span class="p">,</span> <span class="n">pins_cpl</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StarQubit.make_readout_resonator">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html#qiskit_metal.qlibrary.StarQubit.make_readout_resonator">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_readout_resonator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function draws the readout resonator.</span>
+<span class="w">        </span><span class="sd">"""This function draws the readout resonator.</span>
 <span class="sd">        Adds pins. And adds the drawn geometry to qgeomtery table.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
         <span class="n">coords_readout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_readout_coordinates</span><span class="p">()</span>
@@ -934,22 +934,22 @@
         <span class="c1"># Add geometry and Qpin connections</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;contact_rdout&quot;</span><span class="p">:</span> <span class="n">contact_rdout</span><span class="p">},</span>
+            <span class="s2">"poly"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"contact_rdout"</span><span class="p">:</span> <span class="n">contact_rdout</span><span class="p">},</span>
             <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
             <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
             <span class="n">chip</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">chip</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;pin_rdout&quot;</span><span class="p">,</span> <span class="n">pins_rdout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+            <span class="s2">"pin_rdout"</span><span class="p">,</span> <span class="n">pins_rdout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">cpw_width</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StarQubit.make_outer_circle">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.StarQubit.html#qiskit_metal.qlibrary.StarQubit.make_outer_circle">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_outer_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function draws the outer circle.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This function draws the outer circle."""</span>
 
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
 
@@ -1002,8 +1002,8 @@
         <span class="n">objects</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">pos_y</span><span class="p">)</span>
         <span class="p">[</span><span class="n">circle_outer</span><span class="p">]</span> <span class="o">=</span> <span class="n">objects</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;circle_outer&quot;</span><span class="p">:</span> <span class="n">circle_outer</span><span class="p">},</span>
+            <span class="s2">"poly"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"circle_outer"</span><span class="p">:</span> <span class="n">circle_outer</span><span class="p">},</span>
             <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">helper</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">helper</span><span class="p">,</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
@@ -1029,7 +1029,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -1052,6 +1052,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

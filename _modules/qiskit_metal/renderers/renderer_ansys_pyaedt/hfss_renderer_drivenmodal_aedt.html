@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -484,44 +484,44 @@
 <div class="viewcode-block" id="QHFSSDrivenmodalPyaedt">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html#qiskit_metal.renderers.QHFSSDrivenmodalPyaedt">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">QHFSSDrivenmodalPyaedt</span><span class="p">(</span><span class="n">QHFSSPyaedt</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of pyaedt HFSS renderer for methods unique to driven-modal solutions within HFSS.</span>
+<span class="w">    </span><span class="sd">"""Subclass of pyaedt HFSS renderer for methods unique to driven-modal solutions within HFSS.</span>
 <span class="sd">    QPyaedt Default Options:</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;aedt_hfss_drivenmodal&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">"aedt_hfss_drivenmodal"</span>
 
     <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;QHFSSDrivenmodalPyaedt_setup&quot;</span><span class="p">,</span>
-        <span class="n">SolveType</span><span class="o">=</span><span class="s2">&quot;Single&quot;</span><span class="p">,</span>
-        <span class="n">Frequency</span><span class="o">=</span><span class="s2">&quot;5.0&quot;</span><span class="p">,</span>  <span class="c1"># GHz</span>
-        <span class="n">MaxDeltaE</span><span class="o">=</span><span class="s2">&quot;0.01&quot;</span><span class="p">,</span>
-        <span class="n">MaximumPasses</span><span class="o">=</span><span class="s2">&quot;10&quot;</span><span class="p">,</span>
-        <span class="n">MinimumPasses</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-        <span class="n">MinimumConvergedPasses</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-        <span class="n">PercentRefinement</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">,</span>
-        <span class="n">BasisOrder</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">"QHFSSDrivenmodalPyaedt_setup"</span><span class="p">,</span>
+        <span class="n">SolveType</span><span class="o">=</span><span class="s2">"Single"</span><span class="p">,</span>
+        <span class="n">Frequency</span><span class="o">=</span><span class="s2">"5.0"</span><span class="p">,</span>  <span class="c1"># GHz</span>
+        <span class="n">MaxDeltaE</span><span class="o">=</span><span class="s2">"0.01"</span><span class="p">,</span>
+        <span class="n">MaximumPasses</span><span class="o">=</span><span class="s2">"10"</span><span class="p">,</span>
+        <span class="n">MinimumPasses</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
+        <span class="n">MinimumConvergedPasses</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
+        <span class="n">PercentRefinement</span><span class="o">=</span><span class="s2">"30"</span><span class="p">,</span>
+        <span class="n">BasisOrder</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
         <span class="n">MultipleAdaptiveFreqsSetup</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span>
-            <span class="p">[(</span><span class="s2">&quot;1GHz&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.02</span><span class="p">]),</span> <span class="p">(</span><span class="s2">&quot;2GHz&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.02</span><span class="p">]),</span> <span class="p">(</span><span class="s2">&quot;5GHz&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.02</span><span class="p">])]</span>
+            <span class="p">[(</span><span class="s2">"1GHz"</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.02</span><span class="p">]),</span> <span class="p">(</span><span class="s2">"2GHz"</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.02</span><span class="p">]),</span> <span class="p">(</span><span class="s2">"5GHz"</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.02</span><span class="p">])]</span>
         <span class="p">),</span>
-        <span class="n">BroadbandLowFreq</span><span class="o">=</span><span class="s2">&quot;2&quot;</span><span class="p">,</span>  <span class="c1"># GHz</span>
-        <span class="n">BroadbandHighFreq</span><span class="o">=</span><span class="s2">&quot;8&quot;</span><span class="p">,</span>  <span class="c1"># GHz</span>
+        <span class="n">BroadbandLowFreq</span><span class="o">=</span><span class="s2">"2"</span><span class="p">,</span>  <span class="c1"># GHz</span>
+        <span class="n">BroadbandHighFreq</span><span class="o">=</span><span class="s2">"8"</span><span class="p">,</span>  <span class="c1"># GHz</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;aedt HFSS Options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""aedt HFSS Options"""</span>
     <span class="n">aedt_hfss_drivenmodal_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
 
-    <span class="n">__supported_SolveType__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Single&quot;</span><span class="p">,</span> <span class="s2">&quot;MultiFrequency&quot;</span><span class="p">,</span> <span class="s2">&quot;Broadband&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Supported DrivenModal Solution Types&quot;&quot;&quot;</span>
+    <span class="n">__supported_SolveType__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Single"</span><span class="p">,</span> <span class="s2">"MultiFrequency"</span><span class="p">,</span> <span class="s2">"Broadband"</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""Supported DrivenModal Solution Types"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">multilayer_design</span><span class="p">:</span> <span class="s2">&quot;MultiPlanar&quot;</span><span class="p">,</span>
+        <span class="n">multilayer_design</span><span class="p">:</span> <span class="s2">"MultiPlanar"</span><span class="p">,</span>
         <span class="n">project_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">design_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a QRenderer for HFSS simulations using pyaedt and multiplanar design.</span>
+<span class="w">        </span><span class="sd">"""Create a QRenderer for HFSS simulations using pyaedt and multiplanar design.</span>
 <span class="sd">        QHFSSPyaedt is subclassed from QPyaedt, subclassed from QRendererAnalysis and</span>
 <span class="sd">        subclassed from QRenderer.  The default_setup options are expected to be defined by</span>
 <span class="sd">        child class of QHFSSPyaedt for driven-modal and eigenmode solution types.</span>
@@ -536,11 +536,11 @@
 <span class="sd">                                            Defaults to None.</span>
 <span class="sd">            initiate (bool, optional): True to initiate the renderer. Defaults to False.</span>
 <span class="sd">            options (Dict, optional):  Used to override all options. Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">multilayer_design</span><span class="p">,</span>
-            <span class="n">renderer_type</span><span class="o">=</span><span class="s2">&quot;HFSS_DM&quot;</span><span class="p">,</span>
+            <span class="n">renderer_type</span><span class="o">=</span><span class="s2">"HFSS_DM"</span><span class="p">,</span>
             <span class="n">project_name</span><span class="o">=</span><span class="n">project_name</span><span class="p">,</span>
             <span class="n">design_name</span><span class="o">=</span><span class="n">design_name</span><span class="p">,</span>
             <span class="n">initiate</span><span class="o">=</span><span class="n">initiate</span><span class="p">,</span>
@@ -567,7 +567,7 @@
         <span class="n">BroadbandLowFreq</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># GHz</span>
         <span class="n">BroadbandHighFreq</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># GHz</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a solution setup in Ansys HFSS Driven-Modal solution type. If user does not provide</span>
+<span class="w">        </span><span class="sd">"""Create a solution setup in Ansys HFSS Driven-Modal solution type. If user does not provide</span>
 <span class="sd">        arguments, they will be obtained from QHFSSDrivenmodalPyaedt.default_setup dict.</span>
 
 <span class="sd">        Args:</span>
@@ -592,75 +592,75 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            new_setup (pyaedt.modules.SolveSetup.SetupHFSS): pyAEDT simulation setup object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">activate_user_project_design</span><span class="p">()</span>
 
         <span class="n">dsu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_setup</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">setup_names</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;The setup name already exists within &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;project:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="si">}</span><span class="s2"> design: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="si">}</span><span class="s2">. &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;So a new setup with name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> was NOT added to design.&quot;</span>
+                <span class="sa">f</span><span class="s2">"The setup name already exists within "</span>
+                <span class="sa">f</span><span class="s2">"project:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="si">}</span><span class="s2"> design: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="si">}</span><span class="s2">. "</span>
+                <span class="sa">f</span><span class="s2">"So a new setup with name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> was NOT added to design."</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">Frequency</span><span class="p">:</span>
-            <span class="n">Frequency</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;Frequency&quot;</span><span class="p">]))</span>
+            <span class="n">Frequency</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">"Frequency"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">SolveType</span><span class="p">:</span>
-            <span class="n">SolveType</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;SolveType&quot;</span><span class="p">]))</span>
+            <span class="n">SolveType</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">"SolveType"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MaxDeltaE</span><span class="p">:</span>
-            <span class="n">MaxDeltaE</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;MaxDeltaE&quot;</span><span class="p">]))</span>
+            <span class="n">MaxDeltaE</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">"MaxDeltaE"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MaximumPasses</span><span class="p">:</span>
-            <span class="n">MaximumPasses</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;MaximumPasses&quot;</span><span class="p">]))</span>
+            <span class="n">MaximumPasses</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">"MaximumPasses"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MinimumPasses</span><span class="p">:</span>
-            <span class="n">MinimumPasses</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;MinimumPasses&quot;</span><span class="p">]))</span>
+            <span class="n">MinimumPasses</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">"MinimumPasses"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MinimumConvergedPasses</span><span class="p">:</span>
             <span class="n">MinimumConvergedPasses</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;MinimumConvergedPasses&quot;</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">"MinimumConvergedPasses"</span><span class="p">])</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">PercentRefinement</span><span class="p">:</span>
-            <span class="n">PercentRefinement</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;PercentRefinement&quot;</span><span class="p">]))</span>
+            <span class="n">PercentRefinement</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">"PercentRefinement"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">BasisOrder</span><span class="p">:</span>
-            <span class="n">BasisOrder</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;BasisOrder&quot;</span><span class="p">]))</span>
+            <span class="n">BasisOrder</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">"BasisOrder"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">MultipleAdaptiveFreqsSetup</span><span class="p">:</span>
-            <span class="n">MultipleAdaptiveFreqsSetup</span> <span class="o">=</span> <span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;MultipleAdaptiveFreqsSetup&quot;</span><span class="p">]</span>
+            <span class="n">MultipleAdaptiveFreqsSetup</span> <span class="o">=</span> <span class="n">dsu</span><span class="p">[</span><span class="s2">"MultipleAdaptiveFreqsSetup"</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">BroadbandLowFreq</span><span class="p">:</span>
-            <span class="n">BroadbandLowFreq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;BroadbandLowFreq&quot;</span><span class="p">]))</span>
+            <span class="n">BroadbandLowFreq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">"BroadbandLowFreq"</span><span class="p">]))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">BroadbandHighFreq</span><span class="p">:</span>
-            <span class="n">BroadbandHighFreq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">&quot;BroadbandHighFreq&quot;</span><span class="p">]))</span>
+            <span class="n">BroadbandHighFreq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="s2">"BroadbandHighFreq"</span><span class="p">]))</span>
 
         <span class="n">new_setup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">create_setup</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">SolveType</span> <span class="o">==</span> <span class="s2">&quot;Single&quot;</span><span class="p">:</span>
-            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;SolveType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Single&quot;</span>
-            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;Frequency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Frequency</span><span class="si">}</span><span class="s2">GHz&quot;</span>
-            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;MaximumPasses&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MaximumPasses</span>
-            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;MaxDeltaE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MaxDeltaE</span>
-        <span class="k">elif</span> <span class="n">SolveType</span> <span class="o">==</span> <span class="s2">&quot;MultiFrequency&quot;</span><span class="p">:</span>
-            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;SolveType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;MultiFrequency&quot;</span>
-            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;MultipleAdaptiveFreqsSetup&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MultipleAdaptiveFreqsSetup</span>
-            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;MaximumPasses&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MaximumPasses</span>
-        <span class="k">elif</span> <span class="n">SolveType</span> <span class="o">==</span> <span class="s2">&quot;Broadband&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">SolveType</span> <span class="o">==</span> <span class="s2">"Single"</span><span class="p">:</span>
+            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"SolveType"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Single"</span>
+            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"Frequency"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">Frequency</span><span class="si">}</span><span class="s2">GHz"</span>
+            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"MaximumPasses"</span><span class="p">]</span> <span class="o">=</span> <span class="n">MaximumPasses</span>
+            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"MaxDeltaE"</span><span class="p">]</span> <span class="o">=</span> <span class="n">MaxDeltaE</span>
+        <span class="k">elif</span> <span class="n">SolveType</span> <span class="o">==</span> <span class="s2">"MultiFrequency"</span><span class="p">:</span>
+            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"SolveType"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"MultiFrequency"</span>
+            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"MultipleAdaptiveFreqsSetup"</span><span class="p">]</span> <span class="o">=</span> <span class="n">MultipleAdaptiveFreqsSetup</span>
+            <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"MaximumPasses"</span><span class="p">]</span> <span class="o">=</span> <span class="n">MaximumPasses</span>
+        <span class="k">elif</span> <span class="n">SolveType</span> <span class="o">==</span> <span class="s2">"Broadband"</span><span class="p">:</span>
             <span class="n">new_setup</span><span class="o">.</span><span class="n">enable_adaptive_setup_broadband</span><span class="p">(</span>
-                <span class="n">low_frequency</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BroadbandLowFreq</span><span class="si">}</span><span class="s2">GHz&quot;</span><span class="p">,</span>
-                <span class="n">high_frquency</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BroadbandHighFreq</span><span class="si">}</span><span class="s2">GHz&quot;</span><span class="p">,</span>
+                <span class="n">low_frequency</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">BroadbandLowFreq</span><span class="si">}</span><span class="s2">GHz"</span><span class="p">,</span>
+                <span class="n">high_frquency</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">BroadbandHighFreq</span><span class="si">}</span><span class="s2">GHz"</span><span class="p">,</span>
                 <span class="n">max_passes</span><span class="o">=</span><span class="n">MaximumPasses</span><span class="p">,</span>
                 <span class="n">max_delta_s</span><span class="o">=</span><span class="n">MaxDeltaE</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;SolveType must be one of the following:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__supported_SolveType__</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"SolveType must be one of the following:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__supported_SolveType__</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;MinimumPasses&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MinimumPasses</span>
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;MinimumConvergedPasses&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MinimumConvergedPasses</span>
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;PercentRefinement&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PercentRefinement</span>
-        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;BasisOrder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">BasisOrder</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"MinimumPasses"</span><span class="p">]</span> <span class="o">=</span> <span class="n">MinimumPasses</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"MinimumConvergedPasses"</span><span class="p">]</span> <span class="o">=</span> <span class="n">MinimumConvergedPasses</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"PercentRefinement"</span><span class="p">]</span> <span class="o">=</span> <span class="n">PercentRefinement</span>
+        <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"BasisOrder"</span><span class="p">]</span> <span class="o">=</span> <span class="n">BasisOrder</span>
 
         <span class="n">new_setup</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
@@ -671,23 +671,23 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html#qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.add_sweep">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_sweep</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">setup_name</span><span class="o">=</span><span class="s2">&quot;QHFSSDrivenmodalPyaedt_setup&quot;</span><span class="p">,</span>
-        <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;GHz&quot;</span><span class="p">,</span>
+        <span class="n">setup_name</span><span class="o">=</span><span class="s2">"QHFSSDrivenmodalPyaedt_setup"</span><span class="p">,</span>
+        <span class="n">unit</span><span class="o">=</span><span class="s2">"GHz"</span><span class="p">,</span>
         <span class="n">start_ghz</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
         <span class="n">stop_ghz</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
         <span class="n">count</span><span class="o">=</span><span class="mi">101</span><span class="p">,</span>
         <span class="n">step_ghz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;QHFSSDrivenmodalPyaedt_sweep&quot;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Fast&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">"QHFSSDrivenmodalPyaedt_sweep"</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">"Fast"</span><span class="p">,</span>
         <span class="n">save_fields</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">interpolation_tol</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="n">interpolation_max_solutions</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a frequency sweep to a driven modal setup.</span>
+<span class="w">        </span><span class="sd">"""Add a frequency sweep to a driven modal setup.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            setup_name (str, optional): Name of driven modal simulation setup.</span>
-<span class="sd">                                    Defaults to &quot;QHFSSDrivenmodalPyaedt_setup&quot;.</span>
+<span class="sd">                                    Defaults to "QHFSSDrivenmodalPyaedt_setup".</span>
 <span class="sd">            unit(str, optional): The units of start and stop.</span>
 <span class="sd">            start_ghz (float, optional): Starting frequency of sweep in GHz.</span>
 <span class="sd">                                    Defaults to 2.0.</span>
@@ -697,9 +697,9 @@
 <span class="sd">                                    Defaults to 101.</span>
 <span class="sd">            step_ghz (float, optional): Difference between adjacent</span>
 <span class="sd">                                    frequencies. Defaults to None.</span>
-<span class="sd">            name (str, optional): Name of sweep. Defaults to &quot;QHFSSDrivenmodalPyaedt_sweep&quot;.</span>
-<span class="sd">            type (str, optional): Type of sweep.  Options are &quot;Fast&quot;, &quot;Interpolating&quot;,</span>
-<span class="sd">                                and &quot;Discrete&quot;. Defaults to &quot;Fast&quot;.</span>
+<span class="sd">            name (str, optional): Name of sweep. Defaults to "QHFSSDrivenmodalPyaedt_sweep".</span>
+<span class="sd">            type (str, optional): Type of sweep.  Options are "Fast", "Interpolating",</span>
+<span class="sd">                                and "Discrete". Defaults to "Fast".</span>
 <span class="sd">            save_fields (bool, optional): Whether or not to save fields.</span>
 <span class="sd">                                Defaults to False.</span>
 <span class="sd">            interpolation_tol (float, optional): Error tolerance threshold</span>
@@ -710,7 +710,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            sweep (pyaedt.modules.SolveSweeps.SweepHFSS): pyAEDT frequency sweep object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="n">setup_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">setup_names</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
@@ -728,11 +728,11 @@
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="n">sweep</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; The exception is </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">" The exception is </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Since the setup_name=</span><span class="si">{</span><span class="n">setup_name</span><span class="si">}</span><span class="s2"> is NOT in the project/design which was used to start HFSS DrivenModal, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;a new setup_name=</span><span class="si">{</span><span class="n">setup_name</span><span class="si">}</span><span class="s2"> will be added to design with default settings for HFSS DrivenModal.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Since the setup_name=</span><span class="si">{</span><span class="n">setup_name</span><span class="si">}</span><span class="s2"> is NOT in the project/design which was used to start HFSS DrivenModal, "</span>
+                <span class="sa">f</span><span class="s2">"a new setup_name=</span><span class="si">{</span><span class="n">setup_name</span><span class="si">}</span><span class="s2"> will be added to design with default settings for HFSS DrivenModal."</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_hfss_dm_setup</span><span class="p">(</span><span class="n">setup_name</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
@@ -750,13 +750,13 @@
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="n">sweep</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; The exception is </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">" The exception is </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSDrivenmodalPyaedt.analyze_setup">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html#qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.analyze_setup">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">analyze_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sweep_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run a specific solution setup in Ansys HFSS DrivenModal.</span>
+<span class="w">        </span><span class="sd">"""Run a specific solution setup in Ansys HFSS DrivenModal.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            setup_name (str): Name of setup.</span>
@@ -765,21 +765,21 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Value returned from pyaedt.analyze_setup().</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Activate project_name and design_name before anything else</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activate_user_project_design</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">setup_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">setup_names</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, &quot;</span>
-                <span class="s2">&quot;a new setup will be added to design with default settings for HFSS DrivenModal.&quot;</span>
+                <span class="s2">"Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, "</span>
+                <span class="s2">"a new setup will be added to design with default settings for HFSS DrivenModal."</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_hfss_dm_setup</span><span class="p">(</span><span class="n">setup_name</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">sweep_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">get_sweeps</span><span class="p">(</span><span class="n">setup_name</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Since the sweep_name is not in the setup, &quot;</span>
-                <span class="s2">&quot;a new sweep will be added to setup with default settings for HFSS DrivenModal.&quot;</span>
+                <span class="s2">"Since the sweep_name is not in the setup, "</span>
+                <span class="s2">"a new sweep will be added to setup with default settings for HFSS DrivenModal."</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_sweep</span><span class="p">(</span><span class="n">setup_name</span><span class="o">=</span><span class="n">setup_name</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">sweep_name</span><span class="p">)</span>
 
@@ -790,10 +790,10 @@
 <div class="viewcode-block" id="QHFSSDrivenmodalPyaedt.get_ansys_solution_data">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html#qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.get_ansys_solution_data">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_ansys_solution_data</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">sweep_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expressions</span><span class="o">=</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">sweep_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expressions</span><span class="o">=</span><span class="s2">"S"</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="mi">1</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="c1"># if 0 mag/phase, 1 is real/imag, 2 both</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the solution data based on expressions.  Return output based on output_type.</span>
+<span class="w">        </span><span class="sd">"""Get the solution data based on expressions.  Return output based on output_type.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            sweep_name (str): Name of sweep entry within setup.</span>
@@ -804,7 +804,7 @@
 <span class="sd">                                        So, the user MUST execute render_design() prior to</span>
 <span class="sd">                                        getting solution data.</span>
 
-<span class="sd">                                        Defaults to &#39;S&#39;. S for scattering, Y for admittance, Z for</span>
+<span class="sd">                                        Defaults to 'S'. S for scattering, Y for admittance, Z for</span>
 <span class="sd">                                        impedance.</span>
 <span class="sd">            output_type (int, optional): 1 to return mag/phase,</span>
 <span class="sd">                                        2 to return real/imag,</span>
@@ -814,16 +814,16 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Key is either mag, phase, real or imag based on output_type.</span>
 <span class="sd">                The value is data from get_solution_data.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="n">default_expressions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">]</span>
+        <span class="n">default_expressions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"S"</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"Y"</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">,</span> <span class="s2">"Z"</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">]</span>
         <span class="n">dm_solution_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="n">valid_output_types</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">output_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_output_types</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;The argument output_type=</span><span class="si">{</span><span class="n">output_type</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;is not part of a valid_output_types=</span><span class="si">{</span><span class="n">valid_output_types</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"The argument output_type=</span><span class="si">{</span><span class="n">output_type</span><span class="si">}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"is not part of a valid_output_types=</span><span class="si">{</span><span class="n">valid_output_types</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
 
@@ -837,7 +837,7 @@
 
         <span class="k">if</span> <span class="n">expressions_dm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Do not have valid string to search on for get_solution_data.&quot;</span>
+                <span class="s2">"Do not have valid string to search on for get_solution_data."</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
 
@@ -847,8 +847,8 @@
         <span class="n">dm_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">post</span><span class="o">.</span><span class="n">get_solution_data</span><span class="p">(</span>
             <span class="n">expressions</span><span class="o">=</span><span class="p">(</span><span class="n">expressions_dm</span><span class="p">),</span>
             <span class="n">setup_sweep_name</span><span class="o">=</span><span class="n">sweep_name</span><span class="p">,</span>
-            <span class="n">variations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Freq&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;All&quot;</span><span class="p">]},</span>
-            <span class="n">primary_sweep_variable</span><span class="o">=</span><span class="s2">&quot;Freq&quot;</span><span class="p">,</span>
+            <span class="n">variations</span><span class="o">=</span><span class="p">{</span><span class="s2">"Freq"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"All"</span><span class="p">]},</span>
+            <span class="n">primary_sweep_variable</span><span class="o">=</span><span class="s2">"Freq"</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">output_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">populate_mag_phase</span><span class="p">(</span><span class="n">dm_solution_data</span><span class="p">,</span> <span class="n">dm_data</span><span class="p">)</span>
@@ -864,39 +864,39 @@
 <div class="viewcode-block" id="QHFSSDrivenmodalPyaedt.populate_mag_phase">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html#qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.populate_mag_phase">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">populate_mag_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dm_solution_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">dm_data</span><span class="p">:</span> <span class="n">SolutionData</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update dm_solution_data with magnitude and phase of dm_data.</span>
+<span class="w">        </span><span class="sd">"""Update dm_solution_data with magnitude and phase of dm_data.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            dm_solution_data (dict): This method will add key value</span>
 <span class="sd">                                    of magnitude and phase to this dict.</span>
 <span class="sd">            dm_data (pyaedt.modules.solutions.SolutionData): This holds</span>
 <span class="sd">                        the result of get_solution_data.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># index 0 is magnitude, 1 is phase</span>
-        <span class="n">dm_solution_data</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dm_data</span><span class="o">.</span><span class="n">full_matrix_mag_phase</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">dm_solution_data</span><span class="p">[</span><span class="s2">&quot;phase&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dm_data</span><span class="o">.</span><span class="n">full_matrix_mag_phase</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+        <span class="n">dm_solution_data</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dm_data</span><span class="o">.</span><span class="n">full_matrix_mag_phase</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dm_solution_data</span><span class="p">[</span><span class="s2">"phase"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dm_data</span><span class="o">.</span><span class="n">full_matrix_mag_phase</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="QHFSSDrivenmodalPyaedt.populate_real_imag">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html#qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.populate_real_imag">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">populate_real_imag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dm_solution_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">dm_data</span><span class="p">:</span> <span class="n">SolutionData</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update dm_solution_data with real and imaginary format of dm_data.</span>
+<span class="w">        </span><span class="sd">"""Update dm_solution_data with real and imaginary format of dm_data.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            dm_solution_data (dict): This method will add key value</span>
 <span class="sd">                                of real and imaginary format to this dict.</span>
 <span class="sd">            dm_data (pyaedt.modules.solutions.SolutionData): This holds</span>
 <span class="sd">                        the result of get_solution_data.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># index 0 is real, 1 is imaginary</span>
-        <span class="n">dm_solution_data</span><span class="p">[</span><span class="s2">&quot;real&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dm_data</span><span class="o">.</span><span class="n">full_matrix_real_imag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">dm_solution_data</span><span class="p">[</span><span class="s2">&quot;imag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dm_data</span><span class="o">.</span><span class="n">full_matrix_real_imag</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+        <span class="n">dm_solution_data</span><span class="p">[</span><span class="s2">"real"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dm_data</span><span class="o">.</span><span class="n">full_matrix_real_imag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dm_solution_data</span><span class="p">[</span><span class="s2">"imag"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dm_data</span><span class="o">.</span><span class="n">full_matrix_real_imag</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="QHFSSDrivenmodalPyaedt.generate_expressions">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html#qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.generate_expressions">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">generate_expressions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expressions</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use the information saved within the renderer to obtain the</span>
+<span class="w">        </span><span class="sd">"""Use the information saved within the renderer to obtain the</span>
 <span class="sd">        port_list and jj_to_ports.  Also, confirm that jj_to_port is not</span>
 <span class="sd">        in ignored_jjs.  Then create all permutations and combinations</span>
 <span class="sd">        of the names.  The names will also start with either S, or Y, or Z.</span>
@@ -905,9 +905,9 @@
 <span class="sd">            expressions (str): Either S, Y or Z.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Union[list, None]: List of all combinations of ports prepended with &quot;expressions&quot;.</span>
+<span class="sd">            Union[list, None]: List of all combinations of ports prepended with "expressions".</span>
 <span class="sd">                    None if not port names not in renderer.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">port_names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">combo_names</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -915,7 +915,7 @@
             <span class="c1"># append all names to port_names</span>
             <span class="k">for</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">pin_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">port_list_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="c1"># At this method, Ensure that junction is not in the ignored_jjs</span>
-                <span class="n">port_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Port_</span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">pin_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">port_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Port_</span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">pin_name</span><span class="si">}</span><span class="s2">"</span>
                 <span class="n">port_names</span> <span class="o">+=</span> <span class="p">[</span><span class="n">port_name</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_dict</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_is_valid</span><span class="p">:</span>
@@ -924,14 +924,14 @@
                 <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignored_jjs</span><span class="p">:</span>
                     <span class="n">comp_name</span><span class="p">,</span> <span class="n">pin_name</span> <span class="o">=</span> <span class="n">item</span>
                     <span class="n">comp_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-                    <span class="n">jj_name_port</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;JJ_rect_R_</span><span class="si">{</span><span class="n">comp_id</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">pin_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="n">jj_name_port</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"JJ_rect_R_</span><span class="si">{</span><span class="n">comp_id</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">pin_name</span><span class="si">}</span><span class="s2">"</span>
                     <span class="n">port_names</span> <span class="o">+=</span> <span class="p">[</span><span class="n">jj_name_port</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">port_names</span><span class="p">:</span>
             <span class="n">port_names</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">name_1</span> <span class="ow">in</span> <span class="n">port_names</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">name_2</span> <span class="ow">in</span> <span class="n">port_names</span><span class="p">:</span>
-                    <span class="n">entry</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">expressions</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">name_1</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">name_2</span><span class="si">}</span><span class="s2">)&quot;</span>
+                    <span class="n">entry</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">expressions</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">name_1</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">name_2</span><span class="si">}</span><span class="s2">)"</span>
                     <span class="n">combo_names</span> <span class="o">+=</span> <span class="p">[</span><span class="n">entry</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">combo_names</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">combo_names</span>
@@ -950,11 +950,11 @@
         <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">box_plus_buffer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This render_design will add additional logic for just drivenmodal design within project.</span>
 
 <span class="sd">        Initiate rendering of components in design contained in selection,</span>
-<span class="sd">        assuming they&#39;re valid. Components are rendered before the chips they</span>
+<span class="sd">        assuming they're valid. Components are rendered before the chips they</span>
 <span class="sd">        reside on, and subtraction of negative shapes is performed at the very</span>
 <span class="sd">        end.</span>
 
@@ -966,7 +966,7 @@
 <span class="sd">        Chip_subtract_dict consists of component names (keys) and a set of all elements within each component that</span>
 <span class="sd">        will eventually be subtracted from the ground plane. Add objects that are perfect conductors and/or have</span>
 <span class="sd">        meshing to self.assign_perfE and self.assign_mesh, respectively; both are initialized as empty lists. Note</span>
-<span class="sd">        that these objects are &quot;refreshed&quot; each time render_design is called (as opposed to in the init function)</span>
+<span class="sd">        that these objects are "refreshed" each time render_design is called (as opposed to in the init function)</span>
 <span class="sd">        to clear QAnsysRenderer of any leftover items from the last call to render_design.</span>
 
 <span class="sd">        Among the components selected for export, there may or may not be unused (unconnected) pins.</span>
@@ -988,12 +988,12 @@
 <span class="sd">        lumped ports and/or inductors, or omit them altogether. To do so,</span>
 <span class="sd">        tuples of the form (component_name, element_name, impedance)</span>
 <span class="sd">        are added to the list jj_to_port. For example,</span>
-<span class="sd">        (&#39;Q1&#39;, &#39;rect_jj&#39;, 70) indicates that rect_jj of component Q1 is</span>
+<span class="sd">        ('Q1', 'rect_jj', 70) indicates that rect_jj of component Q1 is</span>
 <span class="sd">        to be rendered as both a lumped port with an impedance of 70 Ohms.</span>
 
 <span class="sd">        Alternatively for driven modal solutions, one may want to disregard</span>
 <span class="sd">        select junctions in the Metal design altogether to simulate the</span>
-<span class="sd">        capacitive effect while keeping the qubit in an &quot;off&quot; state. Such</span>
+<span class="sd">        capacitive effect while keeping the qubit in an "off" state. Such</span>
 <span class="sd">        junctions are specified in the form (component_name, element_name)</span>
 <span class="sd">        in the list ignored_jjs.</span>
 
@@ -1001,9 +1001,9 @@
 <span class="sd">        minimum rectangular bounding box of all rendered components and adds a buffer of x_buffer_width_mm and</span>
 <span class="sd">        y_buffer_width_mm horizontally and vertically, respectively, to the chip size. The center of the chip</span>
 <span class="sd">        lies at the midpoint x/y coordinates of the minimum rectangular bounding box and may change depending</span>
-<span class="sd">        on which components are rendered and how they&#39;re positioned. If box_plus_buffer is False, however, the</span>
+<span class="sd">        on which components are rendered and how they're positioned. If box_plus_buffer is False, however, the</span>
 <span class="sd">        chip position and dimensions are taken from the chip info dictionary found in self.design, irrespective</span>
-<span class="sd">        of what&#39;s being rendered. While this latter option is faster because it doesn&#39;t require calculating a</span>
+<span class="sd">        of what's being rendered. While this latter option is faster because it doesn't require calculating a</span>
 <span class="sd">        bounding box, it runs the risk of rendered components being too close to the edge of the chip or even</span>
 <span class="sd">        falling outside its boundaries.</span>
 
@@ -1012,7 +1012,7 @@
 <span class="sd">            open_pins (Union[list, None], optional): List of tuples of pins that are open. Defaults to None.</span>
 <span class="sd">            box_plus_buffer (bool, optional): Either calculate a bounding box based on the location of rendered geometries</span>
 <span class="sd">                                     or use chip size from design class.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># self.fill_info will hold the name of newly generated box,</span>
         <span class="c1"># along with information from layer stack</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fill_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_layer_datatype_when_fill_is_true</span><span class="p">()</span>
@@ -1023,7 +1023,7 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Unable to proceed with rendering. Please check selection.&quot;</span>
+                <span class="s2">"Unable to proceed with rendering. Please check selection."</span>
             <span class="p">)</span>
             <span class="k">return</span>
 
@@ -1045,7 +1045,7 @@
         <span class="n">jj_to_port</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
         <span class="n">ignored_jjs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Logic just for driven modal.</span>
+<span class="w">        </span><span class="sd">"""Logic just for driven modal.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            qgeom (pd.Series): When rendering the rows of the junction table,</span>
@@ -1057,12 +1057,12 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: If the element in the row of junction table should be rendered.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="n">ignored_jjs</span><span class="p">:</span>
             <span class="n">search_junction</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">qgeom</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">qgeom</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">qgeom</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">search_junction</span> <span class="ow">in</span> <span class="n">ignored_jjs</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
@@ -1075,14 +1075,14 @@
 <div class="viewcode-block" id="QHFSSDrivenmodalPyaedt.jj_to_port_list_dict_populate">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html#qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.jj_to_port_list_dict_populate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">jj_to_port_list_dict_populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jj_to_port</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert jj_to_port to a searchable dict.</span>
+<span class="w">        </span><span class="sd">"""Convert jj_to_port to a searchable dict.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            jj_to_port (list): List of tuples with</span>
 <span class="sd">                        format of (component_name, element_name, impedance)</span>
-<span class="sd">                        For example (&#39;Q1&#39;, &#39;rect_jj&#39;, 70)</span>
+<span class="sd">                        For example ('Q1', 'rect_jj', 70)</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># This should be overwritten by drivenmodal class.</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_dict</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
@@ -1096,11 +1096,11 @@
 <div class="viewcode-block" id="QHFSSDrivenmodalPyaedt.port_list_dict_populate">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html#qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.port_list_dict_populate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">port_list_dict_populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the port_list to a searchable dict.</span>
+<span class="w">        </span><span class="sd">"""Convert the port_list to a searchable dict.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            port_list (list): Use definition from render_design.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">port_list_dict</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">qcomp</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">impedance</span> <span class="ow">in</span> <span class="n">port_list</span><span class="p">:</span>
             <span class="n">search_junction</span> <span class="o">=</span> <span class="p">(</span><span class="n">qcomp</span><span class="p">,</span> <span class="n">pin</span><span class="p">)</span>
@@ -1110,7 +1110,7 @@
 <div class="viewcode-block" id="QHFSSDrivenmodalPyaedt.add_ports">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html#qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.add_ports">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_ports</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">port_list_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;_summary_</span>
+<span class="w">        </span><span class="sd">"""_summary_</span>
 <span class="sd">        Reuse the code for add_endcaps to remove small portion of dielectric.</span>
 
 <span class="sd">        Args:</span>
@@ -1118,33 +1118,33 @@
 <span class="sd">            port_list_dict (dict): Reformat the port_list to search for impedance.</span>
 <span class="sd">            layer_num (int): The layer number used in geometry table which</span>
 <span class="sd">                        corresponds to a z coordinate in layer stack.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">port_pins</span> <span class="o">=</span> <span class="n">port_list_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_endcaps</span><span class="p">(</span><span class="n">port_pins</span><span class="p">,</span> <span class="n">layer_num</span><span class="o">=</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">endcap_str</span><span class="o">=</span><span class="s2">&quot;port_endcap&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_endcaps</span><span class="p">(</span><span class="n">port_pins</span><span class="p">,</span> <span class="n">layer_num</span><span class="o">=</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">endcap_str</span><span class="o">=</span><span class="s2">"port_endcap"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_ports</span><span class="p">(</span><span class="n">port_list</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSDrivenmodalPyaedt.create_ports">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html#qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.create_ports">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">create_ports</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">layer_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;_summary_</span>
+<span class="w">        </span><span class="sd">"""_summary_</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            port_list (list): Use definition from render_design.</span>
 <span class="sd">            layer_num (int): The layer number used in geometry table which</span>
 <span class="sd">                        corresponds to a z coordinate in layer stack.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">pin_name</span><span class="p">,</span> <span class="n">impedance</span> <span class="ow">in</span> <span class="n">port_list</span><span class="p">:</span>
-            <span class="n">port_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Port_</span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">pin_name</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="c1"># self.design.logger.debug(f&#39;Drawing a rectangle: {port_name}&#39;)</span>
+            <span class="n">port_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Port_</span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">pin_name</span><span class="si">}</span><span class="s2">"</span>
+            <span class="c1"># self.design.logger.debug(f'Drawing a rectangle: {port_name}')</span>
 
             <span class="n">pin_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="n">pin_name</span><span class="p">]</span>
-            <span class="n">width</span><span class="p">,</span> <span class="n">gap</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">([</span><span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">],</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;gap&quot;</span><span class="p">]])</span>
-            <span class="n">mid</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;middle&quot;</span><span class="p">]),</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">&quot;normal&quot;</span><span class="p">]</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">gap</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">([</span><span class="n">pin_dict</span><span class="p">[</span><span class="s2">"width"</span><span class="p">],</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">"gap"</span><span class="p">]])</span>
+            <span class="n">mid</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">pin_dict</span><span class="p">[</span><span class="s2">"middle"</span><span class="p">]),</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">"normal"</span><span class="p">]</span>
             <span class="n">chip_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">chip</span>  <span class="c1"># noqa: F841</span>
             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_properties_for_layer_datatype</span><span class="p">(</span>
-                <span class="p">[</span><span class="s2">&quot;thickness&quot;</span><span class="p">,</span> <span class="s2">&quot;z_coord&quot;</span><span class="p">,</span> <span class="s2">&quot;material&quot;</span><span class="p">,</span> <span class="s2">&quot;fill&quot;</span><span class="p">],</span> <span class="n">layer_num</span>
+                <span class="p">[</span><span class="s2">"thickness"</span><span class="p">,</span> <span class="s2">"z_coord"</span><span class="p">,</span> <span class="s2">"material"</span><span class="p">,</span> <span class="s2">"fill"</span><span class="p">],</span> <span class="n">layer_num</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
                 <span class="n">thickness</span><span class="p">,</span> <span class="n">z_coord</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">result</span>
@@ -1163,7 +1163,7 @@
                 <span class="n">name</span><span class="o">=</span><span class="n">port_name</span><span class="p">,</span>
                 <span class="n">cover_surface</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">close_surface</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="n">xsection_type</span><span class="o">=</span><span class="s2">&quot;Line&quot;</span><span class="p">,</span>
+                <span class="n">xsection_type</span><span class="o">=</span><span class="s2">"Line"</span><span class="p">,</span>
                 <span class="n">xsection_width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">poly_port</span><span class="o">.</span><span class="n">show_arrow</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1202,7 +1202,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -1225,6 +1225,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

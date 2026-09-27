@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -504,15 +504,15 @@
 <section id="1.-load-transmon-cell-Q3d-simulation-results">
 <h3>1. load transmon cell Q3d simulation results<a class="headerlink" href="#1.-load-transmon-cell-Q3d-simulation-results" title="Link to this heading">¶</a></h3>
 <p>Loading the Maxwell capacitance matrices for the design as shown in the screenshot below:</p>
-<p><img alt="43d33d75f16045eeb124433d2454311f" class="no-scaled-link" height="600" src="../../_images/two_transmons_direct_coupler.png" width="600" /></p>
+<p><img alt="804ffdc0e89140758620785d3e3c2719" class="no-scaled-link" height="600" src="../../_images/two_transmons_direct_coupler.png" width="600" /></p>
 <p>where we have two transmons (alice and bob) coupled to each other through a direct coupler. Each transmon is also coupled to its own readout reasonator.</p>
 <p>For a simple introduction on Maxwell capacitance matrix, check out the following resources: <a class="reference external" href="https://www.fastfieldsolvers.com/Papers/The_Maxwell_Capacitance_Matrix_WP110301_R02.pdf">https://www.fastfieldsolvers.com/Papers/The_Maxwell_Capacitance_Matrix_WP110301_R02.pdf</a></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># loading alice&#39;s simulation results</span>
-<span class="n">path1</span> <span class="o">=</span> <span class="s2">&quot;./Q1_TwoTransmon_CapMatrix.txt&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># loading alice's simulation results</span>
+<span class="n">path1</span> <span class="o">=</span> <span class="s2">"./Q1_TwoTransmon_CapMatrix.txt"</span>
 <span class="n">ta_mat</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">load_q3d_capacitance_matrix</span><span class="p">(</span><span class="n">path1</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -665,8 +665,8 @@ Imported capacitance matrix with UNITS: [fF] now converted to USER UNITS:[fF]   
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># loading bob&#39;s simulation results</span>
-<span class="n">path2</span> <span class="o">=</span> <span class="s2">&quot;./Q2_TwoTransmon_CapMatrix.txt&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># loading bob's simulation results</span>
+<span class="n">path2</span> <span class="o">=</span> <span class="s2">"./Q2_TwoTransmon_CapMatrix.txt"</span>
 <span class="n">tb_mat</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">load_q3d_capacitance_matrix</span><span class="p">(</span><span class="n">path2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -816,13 +816,13 @@ junction capacitance in fF.</p>
 
 <span class="n">opt1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">node_rename</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;coupler_connector_pad_Q1&quot;</span><span class="p">:</span> <span class="s2">&quot;coupling&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;readout_connector_pad_Q1&quot;</span><span class="p">:</span> <span class="s2">&quot;readout_alice&quot;</span><span class="p">,</span>
+        <span class="s2">"coupler_connector_pad_Q1"</span><span class="p">:</span> <span class="s2">"coupling"</span><span class="p">,</span>
+        <span class="s2">"readout_connector_pad_Q1"</span><span class="p">:</span> <span class="s2">"readout_alice"</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="n">cap_mat</span><span class="o">=</span><span class="n">ta_mat</span><span class="p">,</span>
-    <span class="n">ind_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">&quot;pad_top_Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;pad_bot_Q1&quot;</span><span class="p">):</span> <span class="mi">10</span><span class="p">},</span>  <span class="c1"># junction inductance in nH</span>
-    <span class="n">jj_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">&quot;pad_top_Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;pad_bot_Q1&quot;</span><span class="p">):</span> <span class="s2">&quot;j1&quot;</span><span class="p">},</span>
-    <span class="n">cj_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">&quot;pad_top_Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;pad_bot_Q1&quot;</span><span class="p">):</span> <span class="mi">2</span><span class="p">},</span>  <span class="c1"># junction capacitance in fF</span>
+    <span class="n">ind_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">"pad_top_Q1"</span><span class="p">,</span> <span class="s2">"pad_bot_Q1"</span><span class="p">):</span> <span class="mi">10</span><span class="p">},</span>  <span class="c1"># junction inductance in nH</span>
+    <span class="n">jj_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">"pad_top_Q1"</span><span class="p">,</span> <span class="s2">"pad_bot_Q1"</span><span class="p">):</span> <span class="s2">"j1"</span><span class="p">},</span>
+    <span class="n">cj_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">"pad_top_Q1"</span><span class="p">,</span> <span class="s2">"pad_bot_Q1"</span><span class="p">):</span> <span class="mi">2</span><span class="p">},</span>  <span class="c1"># junction capacitance in fF</span>
 <span class="p">)</span>
 <span class="n">cell_1</span> <span class="o">=</span> <span class="n">Cell</span><span class="p">(</span><span class="n">opt1</span><span class="p">)</span>
 
@@ -830,13 +830,13 @@ junction capacitance in fF.</p>
 <span class="c1"># cell 2: transmon Bob cell</span>
 <span class="n">opt2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">node_rename</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;coupler_connector_pad_Q2&quot;</span><span class="p">:</span> <span class="s2">&quot;coupling&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;readout_connector_pad_Q2&quot;</span><span class="p">:</span> <span class="s2">&quot;readout_bob&quot;</span><span class="p">,</span>
+        <span class="s2">"coupler_connector_pad_Q2"</span><span class="p">:</span> <span class="s2">"coupling"</span><span class="p">,</span>
+        <span class="s2">"readout_connector_pad_Q2"</span><span class="p">:</span> <span class="s2">"readout_bob"</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="n">cap_mat</span><span class="o">=</span><span class="n">tb_mat</span><span class="p">,</span>
-    <span class="n">ind_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">&quot;pad_top_Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;pad_bot_Q2&quot;</span><span class="p">):</span> <span class="mi">12</span><span class="p">},</span>  <span class="c1"># junction inductance in nH</span>
-    <span class="n">jj_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">&quot;pad_top_Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;pad_bot_Q2&quot;</span><span class="p">):</span> <span class="s2">&quot;j2&quot;</span><span class="p">},</span>
-    <span class="n">cj_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">&quot;pad_top_Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;pad_bot_Q2&quot;</span><span class="p">):</span> <span class="mi">2</span><span class="p">},</span>  <span class="c1"># junction capacitance in fF</span>
+    <span class="n">ind_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">"pad_top_Q2"</span><span class="p">,</span> <span class="s2">"pad_bot_Q2"</span><span class="p">):</span> <span class="mi">12</span><span class="p">},</span>  <span class="c1"># junction inductance in nH</span>
+    <span class="n">jj_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">"pad_top_Q2"</span><span class="p">,</span> <span class="s2">"pad_bot_Q2"</span><span class="p">):</span> <span class="s2">"j2"</span><span class="p">},</span>
+    <span class="n">cj_dict</span><span class="o">=</span><span class="p">{(</span><span class="s2">"pad_top_Q2"</span><span class="p">,</span> <span class="s2">"pad_bot_Q2"</span><span class="p">):</span> <span class="mi">2</span><span class="p">},</span>  <span class="c1"># junction capacitance in fF</span>
 <span class="p">)</span>
 <span class="n">cell_2</span> <span class="o">=</span> <span class="n">Cell</span><span class="p">(</span><span class="n">opt2</span><span class="p">)</span>
 </pre></div>
@@ -855,11 +855,11 @@ junction capacitance in fF.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># subsystem 1: transmon Alice</span>
-<span class="n">transmon_alice</span> <span class="o">=</span> <span class="n">Subsystem</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;transmon_alice&quot;</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">&quot;TRANSMON&quot;</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;j1&quot;</span><span class="p">])</span>
+<span class="n">transmon_alice</span> <span class="o">=</span> <span class="n">Subsystem</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"transmon_alice"</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">"TRANSMON"</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">"j1"</span><span class="p">])</span>
 
 
 <span class="c1"># subsystem 2: transmon Bob</span>
-<span class="n">transmon_bob</span> <span class="o">=</span> <span class="n">Subsystem</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;transmon_bob&quot;</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">&quot;TRANSMON&quot;</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;j2&quot;</span><span class="p">])</span>
+<span class="n">transmon_bob</span> <span class="o">=</span> <span class="n">Subsystem</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"transmon_bob"</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">"TRANSMON"</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">"j2"</span><span class="p">])</span>
 
 
 <span class="c1"># subsystem 3: Alice readout resonator</span>
@@ -869,9 +869,9 @@ junction capacitance in fF.</p>
     <span class="n">vp</span><span class="o">=</span><span class="mf">0.404314</span> <span class="o">*</span> <span class="n">c_light</span><span class="p">,</span>  <span class="c1"># phase velocity</span>
 <span class="p">)</span>
 <span class="n">res_alice</span> <span class="o">=</span> <span class="n">Subsystem</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;readout_alice&quot;</span><span class="p">,</span>
-    <span class="n">sys_type</span><span class="o">=</span><span class="s2">&quot;TL_RESONATOR&quot;</span><span class="p">,</span>
-    <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;readout_alice&quot;</span><span class="p">],</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"readout_alice"</span><span class="p">,</span>
+    <span class="n">sys_type</span><span class="o">=</span><span class="s2">"TL_RESONATOR"</span><span class="p">,</span>
+    <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">"readout_alice"</span><span class="p">],</span>
     <span class="n">q_opts</span><span class="o">=</span><span class="n">q_opts</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -883,7 +883,7 @@ junction capacitance in fF.</p>
     <span class="n">vp</span><span class="o">=</span><span class="mf">0.404314</span> <span class="o">*</span> <span class="n">c_light</span><span class="p">,</span>  <span class="c1"># phase velocity</span>
 <span class="p">)</span>
 <span class="n">res_bob</span> <span class="o">=</span> <span class="n">Subsystem</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;readout_bob&quot;</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">&quot;TL_RESONATOR&quot;</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;readout_bob&quot;</span><span class="p">],</span> <span class="n">q_opts</span><span class="o">=</span><span class="n">q_opts</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"readout_bob"</span><span class="p">,</span> <span class="n">sys_type</span><span class="o">=</span><span class="s2">"TL_RESONATOR"</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">"readout_bob"</span><span class="p">],</span> <span class="n">q_opts</span><span class="o">=</span><span class="n">q_opts</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -901,8 +901,8 @@ junction capacitance in fF.</p>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">composite_sys</span> <span class="o">=</span> <span class="n">CompositeSystem</span><span class="p">(</span>
     <span class="n">subsystems</span><span class="o">=</span><span class="p">[</span><span class="n">transmon_alice</span><span class="p">,</span> <span class="n">transmon_bob</span><span class="p">,</span> <span class="n">res_alice</span><span class="p">,</span> <span class="n">res_bob</span><span class="p">],</span>
     <span class="n">cells</span><span class="o">=</span><span class="p">[</span><span class="n">cell_1</span><span class="p">,</span> <span class="n">cell_2</span><span class="p">],</span>
-    <span class="n">grd_node</span><span class="o">=</span><span class="s2">&quot;ground_main_plane&quot;</span><span class="p">,</span>
-    <span class="n">nodes_force_keep</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;readout_alice&quot;</span><span class="p">,</span> <span class="s2">&quot;readout_bob&quot;</span><span class="p">],</span>
+    <span class="n">grd_node</span><span class="o">=</span><span class="s2">"ground_main_plane"</span><span class="p">,</span>
+    <span class="n">nodes_force_keep</span><span class="o">=</span><span class="p">[</span><span class="s2">"readout_alice"</span><span class="p">,</span> <span class="s2">"readout_bob"</span><span class="p">],</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -1070,7 +1070,7 @@ readout_bob          -0.003120     -1.460416      -0.000017     3.829744
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hamiltonian_results</span><span class="p">[</span><span class="s2">&quot;chi_in_MHz&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hamiltonian_results</span><span class="p">[</span><span class="s2">"chi_in_MHz"</span><span class="p">]</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1355,7 +1355,7 @@ readout_bob           3.275638   -111.508230       0.436190     0.000000
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

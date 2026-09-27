@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -473,20 +473,20 @@
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
 
-<span class="sd">&quot;&quot;&quot;Saving and load metal data.&quot;&quot;&quot;</span>
+<span class="sd">"""Saving and load metal data."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
 
 <span class="c1"># from ..designs.base</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python.utility_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_error_easy</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;load_metal_design&quot;</span><span class="p">,</span> <span class="s2">&quot;save_metal&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"load_metal_design"</span><span class="p">,</span> <span class="s2">"save_metal"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="save_metal">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.import_export.html#qiskit_metal.toolbox_metal.import_export.save_metal">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">save_metal</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">design</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save metal0.</span>
+<span class="w">    </span><span class="sd">"""Save metal0.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filename (str): File path</span>
@@ -497,7 +497,7 @@
 
 <span class="sd">    Raises:</span>
 <span class="sd">        Exception: Save error</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">result</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="c1"># Do not pickle the following -- THis is issue with picking</span>
@@ -509,12 +509,12 @@
     <span class="c1"># TODO: Right now just does pickle. Need to serialize object into JSON</span>
     <span class="c1"># or similar. Then recreate components.</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">))</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="c1"># handle errors here? such as PermissionError</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ERROR WHILE SAVING: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"ERROR WHILE SAVING: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
         <span class="n">log_error_easy</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">post_text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
         <span class="c1"># print(text)</span>
         <span class="c1"># logger.error(text)</span>
@@ -529,15 +529,15 @@
 <div class="viewcode-block" id="load_metal_design">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.import_export.html#qiskit_metal.toolbox_metal.import_export.load_metal_design">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_metal_design</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load metal design.</span>
+<span class="w">    </span><span class="sd">"""Load metal design.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filename (str): File path</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        picked QDesign: The pickled design object and updates if asked the param dicts for defaults</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">design</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+<span class="sd">    """</span>
+    <span class="n">design</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">))</span>
     <span class="n">design</span><span class="o">.</span><span class="n">save_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>  <span class="c1"># Set the place from where we loaded the design</span>
 
     <span class="c1"># Restore</span>
@@ -565,7 +565,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -588,6 +588,8 @@
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -501,8 +501,8 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">({},</span> <span class="kc">True</span><span class="p">)</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
-<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;size_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2mm&quot;</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">"size_x"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"2mm"</span>
+<span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="s2">"size_y"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"2mm"</span>
 
 <span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
 
@@ -533,23 +533,23 @@
 <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="c1"># Some options we want to modify from the deafults</span>
     <span class="c1"># (see below for defaults)</span>
-    <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425 um&quot;</span><span class="p">,</span>
-    <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
+    <span class="n">pad_width</span><span class="o">=</span><span class="s2">"425 um"</span><span class="p">,</span>
+    <span class="n">pocket_height</span><span class="o">=</span><span class="s2">"650um"</span><span class="p">,</span>
     <span class="c1"># Adding 4 connectors (see below for defaults)</span>
     <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
         <span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
-        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">),</span>
-        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">),</span>
-        <span class="n">d</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">),</span>
+        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">),</span>
+        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"200um"</span><span class="p">),</span>
+        <span class="n">d</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
 
 <span class="c1">## Create 2 transmons</span>
 <span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+1.4mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"+1.4mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0mm"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"90"</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">q2</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-0.6mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;90&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"Q2"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-0.6mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0mm"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"90"</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
 <span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -564,16 +564,16 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add 2 hangers consisting of capacitively coupled transmission lines.</span>
 <span class="n">TQ1</span> <span class="o">=</span> <span class="n">CoupledLineTee</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;TQ1&quot;</span><span class="p">,</span>
+    <span class="s2">"TQ1"</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;1mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;3mm&quot;</span><span class="p">,</span> <span class="n">coupling_length</span><span class="o">=</span><span class="s2">&quot;500um&quot;</span><span class="p">,</span> <span class="n">coupling_space</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">"1mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"3mm"</span><span class="p">,</span> <span class="n">coupling_length</span><span class="o">=</span><span class="s2">"500um"</span><span class="p">,</span> <span class="n">coupling_space</span><span class="o">=</span><span class="s2">"1um"</span>
     <span class="p">),</span>
 <span class="p">)</span>
 <span class="n">TQ2</span> <span class="o">=</span> <span class="n">CoupledLineTee</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;TQ2&quot;</span><span class="p">,</span>
+    <span class="s2">"TQ2"</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-1mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;3mm&quot;</span><span class="p">,</span> <span class="n">coupling_length</span><span class="o">=</span><span class="s2">&quot;500um&quot;</span><span class="p">,</span> <span class="n">coupling_space</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">"-1mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"3mm"</span><span class="p">,</span> <span class="n">coupling_length</span><span class="o">=</span><span class="s2">"500um"</span><span class="p">,</span> <span class="n">coupling_space</span><span class="o">=</span><span class="s2">"1um"</span>
     <span class="p">),</span>
 <span class="p">)</span>
 
@@ -587,33 +587,33 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add 2 meandered CPWs connecting the transmons to the hangers.</span>
-<span class="n">ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">)</span>
+<span class="n">ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fillet</span><span class="o">=</span><span class="s2">"90um"</span><span class="p">)</span>
 <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
 
 <span class="n">options1</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-    <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;8mm&quot;</span><span class="p">,</span>
+    <span class="n">total_length</span><span class="o">=</span><span class="s2">"8mm"</span><span class="p">,</span>
     <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;TQ1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;second_end&quot;</span><span class="p">),</span>
-        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">),</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"TQ1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"second_end"</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"a"</span><span class="p">),</span>
     <span class="p">),</span>
-    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">),</span>
+    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">),</span>
     <span class="o">**</span><span class="n">ops</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">options2</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-    <span class="n">total_length</span><span class="o">=</span><span class="s2">&quot;9mm&quot;</span><span class="p">,</span>
+    <span class="n">total_length</span><span class="o">=</span><span class="s2">"9mm"</span><span class="p">,</span>
     <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;TQ2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;second_end&quot;</span><span class="p">),</span>
-        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">),</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"TQ2"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"second_end"</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q2"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"a"</span><span class="p">),</span>
     <span class="p">),</span>
-    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">),</span>
+    <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">start_straight</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">),</span>
     <span class="o">**</span><span class="n">ops</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">meanderQ1</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;meanderQ1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options1</span><span class="p">)</span>
-<span class="n">meanderQ2</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;meanderQ2&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options2</span><span class="p">)</span>
+<span class="n">meanderQ1</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"meanderQ1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options1</span><span class="p">)</span>
+<span class="n">meanderQ2</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"meanderQ2"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options2</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -625,9 +625,9 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add 2 open to grounds at the ends of the horizontal CPW.</span>
-<span class="n">otg1</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;otg1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;3mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;3mm&quot;</span><span class="p">))</span>
+<span class="n">otg1</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"otg1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"3mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"3mm"</span><span class="p">))</span>
 <span class="n">otg2</span> <span class="o">=</span> <span class="n">OpenToGround</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;otg2&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;-3mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;3mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"otg2"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-3mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"3mm"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"180"</span><span class="p">)</span>
 <span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -638,28 +638,28 @@
 <span class="n">ops_oR</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
     <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;TQ1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;prime_end&quot;</span><span class="p">),</span>
-        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;otg1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"TQ1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"prime_end"</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"otg1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"open"</span><span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
 <span class="n">ops_mid</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
     <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;TQ1&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;prime_start&quot;</span><span class="p">),</span>
-        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;TQ2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;prime_end&quot;</span><span class="p">),</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"TQ1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"prime_start"</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"TQ2"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"prime_end"</span><span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
 <span class="n">ops_oL</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
     <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;TQ2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;prime_start&quot;</span><span class="p">),</span>
-        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;otg2&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+        <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"TQ2"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"prime_start"</span><span class="p">),</span>
+        <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"otg2"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"open"</span><span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
 
-<span class="n">cpw_openRight</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_openRight&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">ops_oR</span><span class="p">)</span>
-<span class="n">cpw_middle</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_middle&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">ops_mid</span><span class="p">)</span>
-<span class="n">cpw_openLeft</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cpw_openLeft&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">ops_oL</span><span class="p">)</span>
+<span class="n">cpw_openRight</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"cpw_openRight"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">ops_oR</span><span class="p">)</span>
+<span class="n">cpw_middle</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"cpw_middle"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">ops_mid</span><span class="p">)</span>
+<span class="n">cpw_openLeft</span> <span class="o">=</span> <span class="n">RouteStraight</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"cpw_openLeft"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">ops_oL</span><span class="p">)</span>
 
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
@@ -689,13 +689,13 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span> <span class="o">=</span> <span class="n">ScatteringImpedanceSim</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;hfss&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span> <span class="o">=</span> <span class="n">ScatteringImpedanceSim</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"hfss"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <p>Customizable parameters and default values for HFSS (driven modal):</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>freq_ghz=5 (simulation frequency)
-name=&quot;Setup&quot; (setup name)
+name="Setup" (setup name)
 max_delta_s=0.1 (absolute value of maximum difference in scattering parameter S)
 max_passes=10 (maximum number of passes)
 min_passes=1 (minimum number of passes)
@@ -704,12 +704,12 @@ pct_refinement=30 (percent refinement)
 basis_order=1 (basis order)
 vars (global variables to set in the renderer)
 sweep_setup (all the parameters of the sweep)
-name=&quot;Sweep&quot; (name of sweep)
+name="Sweep" (name of sweep)
 start_ghz=2.0 (starting frequency)
 stop_ghz=8.0 (stopping frequency)
 count=101 (total number of frequencies)
 step_ghz=None (frequency step size)
-type=&quot;Fast&quot; (type of sweep)
+type="Fast" (type of sweep)
 save_fields=False (whether or not to save fields)
 </pre></div>
 </div>
@@ -752,7 +752,7 @@ save_fields=False (whether or not to save fields)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Sweep_DrivenModal_setup&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"Sweep_DrivenModal_setup"</span>
 <span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">freq_ghz</span> <span class="o">=</span> <span class="mf">6.0</span>
 <span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">max_delta_s</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">max_passes</span> <span class="o">=</span> <span class="mi">12</span>
@@ -795,11 +795,11 @@ sweep. Defaults to “Fast”. save_fields (bool, optional): Whether or not to s
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">sweep_setup</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Sweep_options__dm_sweep&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">sweep_setup</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"Sweep_options__dm_sweep"</span>
 <span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">sweep_setup</span><span class="o">.</span><span class="n">start_ghz</span> <span class="o">=</span> <span class="mf">4.0</span>
 <span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">sweep_setup</span><span class="o">.</span><span class="n">stop_ghz</span> <span class="o">=</span> <span class="mf">9.0</span>
 <span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">sweep_setup</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">5001</span>
-<span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">sweep_setup</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Interpolating&quot;</span>
+<span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">sweep_setup</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">"Interpolating"</span>
 
 
 <span class="n">em1</span><span class="o">.</span><span class="n">setup</span>
@@ -838,8 +838,8 @@ sweep. Defaults to “Fast”. save_fields (bool, optional): Whether or not to s
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the buffer width at the edge of the design to be 0.5 mm</span>
 <span class="c1"># in both directions.</span>
-<span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;x_buffer_width_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
-<span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;y_buffer_width_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">"x_buffer_width_mm"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">em1</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">"y_buffer_width_mm"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
 </pre></div>
 </div>
 </div>
@@ -855,7 +855,7 @@ sweep. Defaults to “Fast”. save_fields (bool, optional): Whether or not to s
 <span class="c1">#     open_terminations (list): Identify which kind of pins. Follow the</span>
 <span class="c1">#                 details from renderer QQ3DRenderer.render_design, or</span>
 <span class="c1">#                 QHFSSRenderer.render_design.</span>
-<span class="c1">#     port_list (list): List of tuples of jj&#39;s that shouldn&#39;t</span>
+<span class="c1">#     port_list (list): List of tuples of jj's that shouldn't</span>
 <span class="c1">#                     be rendered.  Follow details from</span>
 <span class="c1">#                     renderer in QHFSSRenderer.render_design.</span>
 <span class="c1">#     jj_to_port (list): List of junctions (qcomp, qgeometry_name,</span>
@@ -875,16 +875,16 @@ sweep. Defaults to “Fast”. save_fields (bool, optional): Whether or not to s
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design_name</span> <span class="o">=</span> <span class="s2">&quot;Sweep_DrivenModal&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design_name</span> <span class="o">=</span> <span class="s2">"Sweep_DrivenModal"</span>
 <span class="n">qcomp_render</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Means to render everything in qgeometry table.</span>
 <span class="n">open_terminations</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="c1"># Here, pin cpw_openRight_end and cpw_openLeft_end are converted into lumped ports,</span>
 <span class="c1">#           each with an impedance of 50 Ohms. &lt;br&gt;</span>
-<span class="n">port_list</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;cpw_openRight&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;cpw_openLeft&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)]</span>
-<span class="n">jj_to_port</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;rect_jj&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span>
+<span class="n">port_list</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"cpw_openRight"</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="s2">"cpw_openLeft"</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">,</span> <span class="mi">50</span><span class="p">)]</span>
+<span class="n">jj_to_port</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="s2">"rect_jj"</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span>
 <span class="c1"># Neither of the junctions in Q1 or Q2 are rendered.</span>
-<span class="n">ignored_jjs</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;Q2&quot;</span><span class="p">,</span> <span class="s2">&quot;rect_jj&quot;</span><span class="p">)]</span>
+<span class="n">ignored_jjs</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"Q2"</span><span class="p">,</span> <span class="s2">"rect_jj"</span><span class="p">)]</span>
 <span class="n">box_plus_buffer</span> <span class="o">=</span> <span class="kc">True</span>
 </pre></div>
 </div>
@@ -897,8 +897,8 @@ sweep. Defaults to “Fast”. save_fields (bool, optional): Whether or not to s
 
 <span class="n">all_sweeps</span><span class="p">,</span> <span class="n">return_code</span> <span class="o">=</span> <span class="n">em1</span><span class="o">.</span><span class="n">run_sweep</span><span class="p">(</span>
     <span class="n">meanderQ1</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-    <span class="s2">&quot;total_length&quot;</span><span class="p">,</span>
-    <span class="p">[</span><span class="s2">&quot;9mm&quot;</span><span class="p">,</span> <span class="s2">&quot;10mm&quot;</span><span class="p">,</span> <span class="s2">&quot;11mm&quot;</span><span class="p">],</span>
+    <span class="s2">"total_length"</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">"9mm"</span><span class="p">,</span> <span class="s2">"10mm"</span><span class="p">,</span> <span class="s2">"11mm"</span><span class="p">],</span>
     <span class="n">qcomp_render</span><span class="p">,</span>
     <span class="n">open_terminations</span><span class="p">,</span>
     <span class="n">design_name</span><span class="o">=</span><span class="n">design_name</span><span class="p">,</span>
@@ -945,8 +945,8 @@ INFO 09:07AM [analyze]: Analyzing setup Sweep_DrivenModal_setup : Sweep_options_
 </div>
 <p>#Note: Sweep again using the arguments from previous run.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>all_sweeps_6_7_8, return_code = em1.run_sweep(meanderQ1.name,
-                                        &#39;total_length&#39;,
-                                        [&#39;6.5mm&#39;, &#39;7.5mm&#39;, &#39;8.5mm&#39;]
+                                        'total_length',
+                                        ['6.5mm', '7.5mm', '8.5mm']
                                        )
 </pre></div>
 </div>
@@ -955,13 +955,13 @@ INFO 09:07AM [analyze]: Analyzing setup Sweep_DrivenModal_setup : Sweep_options_
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">return_code</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="c1"># Each key corresponds to list passed to [&#39;9mm&#39;, &#39;8mm&#39;, &#39;7mm&#39;]</span>
+    <span class="c1"># Each key corresponds to list passed to ['9mm', '8mm', '7mm']</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">all_sweeps</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-    <span class="c1"># Each key corresponds to list passed to [&#39;6mm&#39;, &#39;5mm&#39;, &#39;4mm&#39;]</span>
+    <span class="c1"># Each key corresponds to list passed to ['6mm', '5mm', '4mm']</span>
     <span class="c1"># print(all_sweeps_6_7_8.keys())</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Check warning messages to see why all_sweeps is non-zero.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Check warning messages to see why all_sweeps is non-zero."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -977,7 +977,7 @@ dict_keys([&#39;9mm&#39;, &#39;10mm&#39;, &#39;11mm&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s2">&quot;9mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s2">"9mm"</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -994,7 +994,7 @@ dict_keys([&#39;option_name&#39;, &#39;variables&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s2">&quot;9mm&quot;</span><span class="p">][</span><span class="s2">&quot;variables&quot;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s2">"9mm"</span><span class="p">][</span><span class="s2">"variables"</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1012,7 +1012,7 @@ dict_keys([&#39;option_name&#39;, &#39;variables&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s2">&quot;9mm&quot;</span><span class="p">][</span><span class="s2">&quot;option_name&quot;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_sweeps</span><span class="p">[</span><span class="s2">"9mm"</span><span class="p">][</span><span class="s2">"option_name"</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1029,11 +1029,11 @@ dict_keys([&#39;option_name&#39;, &#39;variables&#39;])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"""</span>
 <span class="s2">project_name = </span><span class="si">{</span><span class="n">em1</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">project_name</span><span class="si">}</span>
 <span class="s2">design_name  = </span><span class="si">{</span><span class="n">em1</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">design_name</span><span class="si">}</span>
 <span class="s2">setup_name   = </span><span class="si">{</span><span class="n">em1</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">setup_name</span><span class="si">}</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">"""</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1054,7 +1054,7 @@ setup_name   = Sweep_DrivenModal_setup
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span><span class="o">.</span><span class="n">get_impedance</span><span class="p">()</span>  <span class="c1"># default: [&#39;Z11&#39;, &#39;Z21&#39;]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span><span class="o">.</span><span class="n">get_impedance</span><span class="p">()</span>  <span class="c1"># default: ['Z11', 'Z21']</span>
 </pre></div>
 </div>
 </div>
@@ -1085,7 +1085,7 @@ setup_name   = Sweep_DrivenModal_setup
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span><span class="o">.</span><span class="n">get_admittance</span><span class="p">()</span>  <span class="c1"># default: [&#39;Y11&#39;, &#39;Y21&#39;]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span><span class="o">.</span><span class="n">get_admittance</span><span class="p">()</span>  <span class="c1"># default: ['Y11', 'Y21']</span>
 </pre></div>
 </div>
 </div>
@@ -1116,7 +1116,7 @@ setup_name   = Sweep_DrivenModal_setup
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span><span class="o">.</span><span class="n">get_scattering</span><span class="p">([</span><span class="s2">&quot;S11&quot;</span><span class="p">,</span> <span class="s2">&quot;S21&quot;</span><span class="p">,</span> <span class="s2">&quot;S31&quot;</span><span class="p">])</span>  <span class="c1">## default: [&#39;S11&#39;, &#39;S21&#39;, &#39;S22&#39;]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">em1</span><span class="o">.</span><span class="n">get_scattering</span><span class="p">([</span><span class="s2">"S11"</span><span class="p">,</span> <span class="s2">"S21"</span><span class="p">,</span> <span class="s2">"S31"</span><span class="p">])</span>  <span class="c1">## default: ['S11', 'S21', 'S22']</span>
 </pre></div>
 </div>
 </div>
@@ -1147,7 +1147,7 @@ setup_name   = Sweep_DrivenModal_setup
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataframe_scattering</span> <span class="o">=</span> <span class="n">em1</span><span class="o">.</span><span class="n">get_scattering</span><span class="p">([</span><span class="s2">&quot;S11&quot;</span><span class="p">,</span> <span class="s2">&quot;S21&quot;</span><span class="p">,</span> <span class="s2">&quot;S31&quot;</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataframe_scattering</span> <span class="o">=</span> <span class="n">em1</span><span class="o">.</span><span class="n">get_scattering</span><span class="p">([</span><span class="s2">"S11"</span><span class="p">,</span> <span class="s2">"S21"</span><span class="p">,</span> <span class="s2">"S31"</span><span class="p">])</span>
 <span class="n">df_s</span> <span class="o">=</span> <span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1156,13 +1156,13 @@ setup_name   = Sweep_DrivenModal_setup
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s11</span> <span class="o">=</span> <span class="n">df_s</span><span class="p">[</span><span class="s2">&quot;S11&quot;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s11</span> <span class="o">=</span> <span class="n">df_s</span><span class="p">[</span><span class="s2">"S11"</span><span class="p">]</span>
 <span class="n">s11</span>
 
-<span class="n">s21</span> <span class="o">=</span> <span class="n">df_s</span><span class="p">[</span><span class="s2">&quot;S21&quot;</span><span class="p">]</span>
+<span class="n">s21</span> <span class="o">=</span> <span class="n">df_s</span><span class="p">[</span><span class="s2">"S21"</span><span class="p">]</span>
 <span class="n">s21</span>
 
-<span class="n">s31</span> <span class="o">=</span> <span class="n">df_s</span><span class="p">[</span><span class="s2">&quot;S31&quot;</span><span class="p">]</span>
+<span class="n">s31</span> <span class="o">=</span> <span class="n">df_s</span><span class="p">[</span><span class="s2">"S31"</span><span class="p">]</span>
 <span class="n">s31</span>
 </pre></div>
 </div>
@@ -1191,9 +1191,9 @@ Name: S31, Length: 5001, dtype: complex128
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;20_log_of_mag_S11&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">s11</span><span class="p">))</span>
-<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;20_log_of_mag_S21&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">s21</span><span class="p">))</span>
-<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;20_log_of_mag_S31&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">s31</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"20_log_of_mag_S11"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">s11</span><span class="p">))</span>
+<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"20_log_of_mag_S21"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">s21</span><span class="p">))</span>
+<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"20_log_of_mag_S31"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">s31</span><span class="p">))</span>
 <span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1339,15 +1339,15 @@ Name: S31, Length: 5001, dtype: complex128
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reference to current axis.</span>
-<span class="n">magnitude</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s2">&quot;Magnitude S11, S21, and S31&quot;</span><span class="p">)</span>
+<span class="n">magnitude</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s2">"Magnitude S11, S21, and S31"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
 <span class="n">axis</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>  <span class="c1"># Get current axis.</span>
-<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;20_log_of_mag_S11&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;20_log_of_mag_S21&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;20_log_of_mag_S31&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;S-Parameter Magnitude&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;frequency [GHZ]&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;|S11|,|S21|,|S31| [dB]&quot;</span><span class="p">)</span>
+<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">"line"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"20_log_of_mag_S11"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"green"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">"line"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"20_log_of_mag_S21"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">"line"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"20_log_of_mag_S31"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"S-Parameter Magnitude"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"frequency [GHZ]"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"|S11|,|S21|,|S31| [dB]"</span><span class="p">)</span>
 <span class="n">magnitude</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1358,9 +1358,9 @@ Name: S31, Length: 5001, dtype: complex128
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data is shown as degrees.</span>
 <span class="c1"># However, if you want radians, change value of deg to false, deg=False.</span>
-<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;degrees_S11&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">s11</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;degrees_S21&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">s21</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;degrees_S31&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">s31</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"degrees_S11"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">s11</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"degrees_S21"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">s21</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"degrees_S31"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">s31</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1542,15 +1542,15 @@ Name: S31, Length: 5001, dtype: complex128
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reference to current axis.</span>
-<span class="n">phase</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s2">&quot;Phase of S11 and S21&quot;</span><span class="p">)</span>
+<span class="n">phase</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s2">"Phase of S11 and S21"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
 <span class="n">axis</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>  <span class="c1"># Get current axis.</span>
-<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;degrees_S11&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;degrees_S21&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;degrees_S31&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;S-Parameter Phase&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;frequency [GHZ]&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;&lt;S11, &lt;S21, &lt;S31 [degrees]&quot;</span><span class="p">)</span>
+<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">"line"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"degrees_S11"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"green"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">"line"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"degrees_S21"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+<span class="n">dataframe_scattering</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">"line"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"degrees_S31"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"S-Parameter Phase"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"frequency [GHZ]"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"&lt;S11, &lt;S21, &lt;S31 [degrees]"</span><span class="p">)</span>
 <span class="n">phase</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1638,7 +1638,7 @@ Name: S31, Length: 5001, dtype: complex128
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

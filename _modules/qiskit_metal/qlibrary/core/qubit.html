@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -483,7 +483,7 @@
 <div class="viewcode-block" id="BaseQubit">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.BaseQubit.html#qiskit_metal.qlibrary.BaseQubit">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BaseQubit</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;.. image::</span>
+<span class="w">    </span><span class="sd">""".. image::</span>
 <span class="sd">        base_qubit.png</span>
 
 <span class="sd">    Qubit base class. Use to subscript, not to generate directly.</span>
@@ -493,19 +493,19 @@
 <span class="sd">        Inherits components.QComponent class</span>
 
 <span class="sd">        Default Options:</span>
-<span class="sd">            * pos_x: &#39;0um&#39;</span>
-<span class="sd">            * pos_y: &#39;0um&#39;</span>
+<span class="sd">            * pos_x: '0um'</span>
+<span class="sd">            * pos_y: '0um'</span>
 <span class="sd">            * connection_pads: empty Dict -- The dictionary which contains all active connection lines for the qubit.</span>
 <span class="sd">            * _default_connection_pads: empty Dict -- The default values for the (if any) connection lines of the qubit.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">(),</span> <span class="n">_default_connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">())</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default options.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default options."""</span>
 
-    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Component metadata&quot;&quot;&quot;</span>
+    <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="n">short_name</span><span class="o">=</span><span class="s2">"Q"</span><span class="p">,</span> <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">"True"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Component metadata"""</span>
 
-    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Qubit&quot;&quot;&quot;</span>
+    <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""Qubit"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -516,7 +516,7 @@
         <span class="n">make</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            design (QDesign): The parent design.</span>
 <span class="sd">            name (str): Name of the component.</span>
@@ -524,14 +524,14 @@
 <span class="sd">            options_connection_pads(dict): User options for connection pads on qubit</span>
 <span class="sd">            make (bool): True if the make function should be called at the end of the init.</span>
 <span class="sd">                    Options be used in the make function to create the geometry.  Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span> <span class="n">make</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;Not Built&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">"Not Built"</span><span class="p">:</span>
             <span class="c1"># Component is not registered in design.</span>
             <span class="c1"># This qubit was not added to design.</span>
             <span class="c1"># self.logger.warning(</span>
-            <span class="c1"># &#39;In BaseQubit.__init(), the qubit has not been added to design. The component is exiting with None.&#39;)</span>
+            <span class="c1"># 'In BaseQubit.__init(), the qubit has not been added to design. The component is exiting with None.')</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="n">options_connection_pads</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">options_connection_pads</span><span class="p">)</span>
@@ -540,20 +540,20 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_options_connection_pads</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Unable to create connection pads using given parameters: </span><span class="si">{</span><span class="n">options_connection_pads</span><span class="si">}</span><span class="s2">.</span><span class="se">\n\n</span><span class="s2"> If given parameters is None, check to make sure you don&#39;t have any invalid child parameters in your connection_pads parameter.</span><span class="se">\n\n</span><span class="s2"> If you don&#39;t want any pads, ensure neither options_connection_pads nor options[connection_pads] are parameters</span><span class="se">\n\n</span><span class="s2"> Exception is: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">"Unable to create connection pads using given parameters: </span><span class="si">{</span><span class="n">options_connection_pads</span><span class="si">}</span><span class="s2">.</span><span class="se">\n\n</span><span class="s2"> If given parameters is None, check to make sure you don't have any invalid child parameters in your connection_pads parameter.</span><span class="se">\n\n</span><span class="s2"> If you don't want any pads, ensure neither options_connection_pads nor options[connection_pads] are parameters</span><span class="se">\n\n</span><span class="s2"> Exception is: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2"> "</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">make</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_options_connection_pads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Applies the default options.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Applies the default options."""</span>
         <span class="c1"># class_name = type(self).__name__</span>
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="s2">&quot;_default_connection_pads&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="p">]</span>
-        <span class="p">),</span> <span class="s2">&quot;&quot;&quot;When</span>
+            <span class="s2">"_default_connection_pads"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="p">]</span>
+        <span class="p">),</span> <span class="s2">"""When</span>
 <span class="s2">        you define your custom qubit class please add a _default_connection_pads</span>
-<span class="s2">        dictionary name as default_options[&#39;_default_connection_pads&#39;]. This should specify the default</span>
-<span class="s2">        creation options for the connection. &quot;&quot;&quot;</span>
+<span class="s2">        dictionary name as default_options['_default_connection_pads']. This should specify the default</span>
+<span class="s2">        creation options for the connection. """</span>
 
         <span class="c1"># Not sure if it best to remove it from options to keep</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">_default_connection_pads</span>
@@ -563,7 +563,7 @@
             <span class="n">my_options_connection_pads</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="p">][</span>
-                    <span class="s2">&quot;_default_connection_pads&quot;</span>
+                    <span class="s2">"_default_connection_pads"</span>
                 <span class="p">]</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">my_options_connection_pads</span><span class="p">)</span></div>
@@ -586,7 +586,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -609,6 +609,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

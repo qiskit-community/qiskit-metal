@@ -17,7 +17,7 @@ const disabled = [
   "@jupyterlab/application-extension:layout",
   "@jupyterlab/application-extension:logo",
   "@jupyterlab/application-extension:main",
-  "@jupyterlab/application-extension:mode-switch",
+  "@jupyterlab/application-extension:move-widget",
   "@jupyterlab/application-extension:notfound",
   "@jupyterlab/application-extension:paths",
   "@jupyterlab/application-extension:property-inspector",
@@ -184,17 +184,6 @@ export async function main() {
     try {
       let ext = require('@jupyterlab/vega5-extension');
       ext.__scope__ = '@jupyterlab/vega5-extension';
-      for (let plugin of activePlugins(ext)) {
-        mimeExtensions.push(plugin);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
-  if (!federatedExtensionNames.has('@jupyterlite/iframe-extension')) {
-    try {
-      let ext = require('@jupyterlite/iframe-extension');
-      ext.__scope__ = '@jupyterlite/iframe-extension';
       for (let plugin of activePlugins(ext)) {
         mimeExtensions.push(plugin);
       }

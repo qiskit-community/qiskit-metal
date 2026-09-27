@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,7 +472,7 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;Concentric Transmon, as shown in Phys. Rev. Appl. 10, 034050 (2018).&quot;&quot;&quot;</span>
+<span class="sd">"""Concentric Transmon, as shown in Phys. Rev. Appl. 10, 034050 (2018)."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -483,7 +483,7 @@
 <div class="viewcode-block" id="TransmonConcentricType2">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonConcentricType2.html#qiskit_metal.qlibrary.TransmonConcentricType2">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TransmonConcentricType2</span><span class="p">(</span><span class="n">BaseQubit</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;.. image::</span>
+<span class="w">    </span><span class="sd">""".. image::</span>
 <span class="sd">        TransmonConcentricType2.png</span>
 
 <span class="sd">    The base `TrasmonConcentric` class</span>
@@ -503,65 +503,65 @@
 <span class="sd">            * _default_connection_pads: empty Dict -- the default values for the</span>
 <span class="sd">              (if any) connection lines of the qubit.</span>
 <span class="sd">        Default Options:</span>
-<span class="sd">            * width: &#39;1000um&#39; -- Width of transmon pocket</span>
-<span class="sd">            * height: &#39;1000um&#39; -- Height of transmon pocket</span>
-<span class="sd">            * rad_o: &#39;170um&#39; -- Outer radius</span>
-<span class="sd">            * rad_i: &#39;115um&#39; -- Inner radius</span>
-<span class="sd">            * gap: &#39;35um&#39; -- Radius of gap between two pads</span>
-<span class="sd">            * jj_w: &#39;10um&#39; -- Josephson Junction width</span>
-<span class="sd">            * res_s: &#39;100um&#39; -- Space between top electrode and readout resonator</span>
-<span class="sd">            * res_ext: &#39;100um&#39; -- Extension of readout resonator in x-direction</span>
+<span class="sd">            * width: '1000um' -- Width of transmon pocket</span>
+<span class="sd">            * height: '1000um' -- Height of transmon pocket</span>
+<span class="sd">            * rad_o: '170um' -- Outer radius</span>
+<span class="sd">            * rad_i: '115um' -- Inner radius</span>
+<span class="sd">            * gap: '35um' -- Radius of gap between two pads</span>
+<span class="sd">            * jj_w: '10um' -- Josephson Junction width</span>
+<span class="sd">            * res_s: '100um' -- Space between top electrode and readout resonator</span>
+<span class="sd">            * res_ext: '100um' -- Extension of readout resonator in x-direction</span>
 <span class="sd">              beyond midpoint of transmon</span>
-<span class="sd">            * fbl_rad: &#39;100um&#39; -- Radius of the flux bias line loop</span>
-<span class="sd">            * fbl_sp: &#39;100um&#39; -- Spacing between metal pad and flux bias loop</span>
-<span class="sd">            * fbl_gap: &#39;80um&#39; -- Space between parallel lines of the flux bias loop</span>
-<span class="sd">            * fbl_ext: &#39;300um&#39; -- Run length of flux bias line between circular</span>
+<span class="sd">            * fbl_rad: '100um' -- Radius of the flux bias line loop</span>
+<span class="sd">            * fbl_sp: '100um' -- Spacing between metal pad and flux bias loop</span>
+<span class="sd">            * fbl_gap: '80um' -- Space between parallel lines of the flux bias loop</span>
+<span class="sd">            * fbl_ext: '300um' -- Run length of flux bias line between circular</span>
 <span class="sd">              loop and edge of pocket</span>
-<span class="sd">            * pocket_w: &#39;1500um&#39; -- Transmon pocket width</span>
-<span class="sd">            * pocket_h: &#39;1000um&#39; -- Transmon pocket height</span>
-<span class="sd">            * cpw_width: &#39;10.0um&#39; -- Width of the readout resonator and flux bias line</span>
-<span class="sd">            * layer: &#39;1&#39; -- default layer</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            * pocket_w: '1500um' -- Transmon pocket width</span>
+<span class="sd">            * pocket_h: '1000um' -- Transmon pocket height</span>
+<span class="sd">            * cpw_width: '10.0um' -- Width of the readout resonator and flux bias line</span>
+<span class="sd">            * layer: '1' -- default layer</span>
+<span class="sd">    """</span>
 
     <span class="c1"># default drawing options</span>
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span>
-        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span>
-        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="n">rad_outer</span><span class="o">=</span><span class="s2">&quot;2mm&quot;</span><span class="p">,</span>
-        <span class="n">rad_inner</span><span class="o">=</span><span class="s2">&quot;1mm&quot;</span><span class="p">,</span>
-        <span class="n">gap</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span>
-        <span class="n">jj_w</span><span class="o">=</span><span class="s2">&quot;0.2mm&quot;</span><span class="p">,</span>
-        <span class="n">finger_NE_width</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
-        <span class="n">finger_NE_length</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span>
-        <span class="n">coupler_NE_width</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
-        <span class="n">coupler_NE_gap</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
-        <span class="n">finger_NW_width</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
-        <span class="n">finger_NW_length</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span>
-        <span class="n">coupler_NW_width</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
-        <span class="n">coupler_NW_gap</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
-        <span class="n">finger_SW_width</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
-        <span class="n">finger_SW_length</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span>
-        <span class="n">coupler_SW_width</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
-        <span class="n">coupler_SW_gap</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
-        <span class="n">finger_E_width</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
-        <span class="n">finger_E_length</span><span class="o">=</span><span class="s2">&quot;0.5mm&quot;</span><span class="p">,</span>
-        <span class="n">box_E_width</span><span class="o">=</span><span class="s2">&quot;0.7mm&quot;</span><span class="p">,</span>
-        <span class="n">box_E_length</span><span class="o">=</span><span class="s2">&quot;0.7mm&quot;</span><span class="p">,</span>
-        <span class="n">finger_N_width</span><span class="o">=</span><span class="s2">&quot;0.1mm&quot;</span><span class="p">,</span>
-        <span class="n">finger_N_length</span><span class="o">=</span><span class="s2">&quot;2mm&quot;</span><span class="p">,</span>
-        <span class="n">triangle_base</span><span class="o">=</span><span class="s2">&quot;2mm&quot;</span><span class="p">,</span>
-        <span class="n">triangle_height</span><span class="o">=</span><span class="s2">&quot;1mm&quot;</span><span class="p">,</span>
-        <span class="n">pocket_w</span><span class="o">=</span><span class="s2">&quot;10mm&quot;</span><span class="p">,</span>
-        <span class="n">pocket_h</span><span class="o">=</span><span class="s2">&quot;10mm&quot;</span><span class="p">,</span>
-        <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">"0mm"</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0mm"</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>
+        <span class="n">rad_outer</span><span class="o">=</span><span class="s2">"2mm"</span><span class="p">,</span>
+        <span class="n">rad_inner</span><span class="o">=</span><span class="s2">"1mm"</span><span class="p">,</span>
+        <span class="n">gap</span><span class="o">=</span><span class="s2">"0.5mm"</span><span class="p">,</span>
+        <span class="n">jj_w</span><span class="o">=</span><span class="s2">"0.2mm"</span><span class="p">,</span>
+        <span class="n">finger_NE_width</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">,</span>
+        <span class="n">finger_NE_length</span><span class="o">=</span><span class="s2">"0.5mm"</span><span class="p">,</span>
+        <span class="n">coupler_NE_width</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">,</span>
+        <span class="n">coupler_NE_gap</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">,</span>
+        <span class="n">finger_NW_width</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">,</span>
+        <span class="n">finger_NW_length</span><span class="o">=</span><span class="s2">"0.5mm"</span><span class="p">,</span>
+        <span class="n">coupler_NW_width</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">,</span>
+        <span class="n">coupler_NW_gap</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">,</span>
+        <span class="n">finger_SW_width</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">,</span>
+        <span class="n">finger_SW_length</span><span class="o">=</span><span class="s2">"0.5mm"</span><span class="p">,</span>
+        <span class="n">coupler_SW_width</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">,</span>
+        <span class="n">coupler_SW_gap</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">,</span>
+        <span class="n">finger_E_width</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">,</span>
+        <span class="n">finger_E_length</span><span class="o">=</span><span class="s2">"0.5mm"</span><span class="p">,</span>
+        <span class="n">box_E_width</span><span class="o">=</span><span class="s2">"0.7mm"</span><span class="p">,</span>
+        <span class="n">box_E_length</span><span class="o">=</span><span class="s2">"0.7mm"</span><span class="p">,</span>
+        <span class="n">finger_N_width</span><span class="o">=</span><span class="s2">"0.1mm"</span><span class="p">,</span>
+        <span class="n">finger_N_length</span><span class="o">=</span><span class="s2">"2mm"</span><span class="p">,</span>
+        <span class="n">triangle_base</span><span class="o">=</span><span class="s2">"2mm"</span><span class="p">,</span>
+        <span class="n">triangle_height</span><span class="o">=</span><span class="s2">"1mm"</span><span class="p">,</span>
+        <span class="n">pocket_w</span><span class="o">=</span><span class="s2">"10mm"</span><span class="p">,</span>
+        <span class="n">pocket_h</span><span class="o">=</span><span class="s2">"10mm"</span><span class="p">,</span>
+        <span class="n">layer</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default drawing options&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default drawing options"""</span>
 
 <div class="viewcode-block" id="TransmonConcentricType2.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.TransmonConcentricType2.html#qiskit_metal.qlibrary.TransmonConcentricType2.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert self.options into QGeometry.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert self.options into QGeometry."""</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_options</span><span class="p">()</span>  <span class="c1"># Parse the string options into numbers</span>
         <span class="c1"># draw the concentric pad regions</span>
         <span class="n">outer_pad</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">rad_outer</span><span class="p">)</span>
@@ -818,56 +818,56 @@
         <span class="p">]</span> <span class="o">=</span> <span class="n">objects</span>
         <span class="c1">##############################################################</span>
         <span class="c1"># Use the geometry to create Metal QGeometry</span>
-        <span class="n">geom_outer</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly1&quot;</span><span class="p">:</span> <span class="n">outer_pad</span><span class="p">}</span>
-        <span class="n">geom_inner</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly2&quot;</span><span class="p">:</span> <span class="n">inner_pad</span><span class="p">}</span>
-        <span class="n">geom_jj</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;poly3&quot;</span><span class="p">:</span> <span class="n">JJ</span><span class="p">}</span>
-        <span class="n">geom_finger_NE</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;finger_NE&quot;</span><span class="p">:</span> <span class="n">finger_NE</span><span class="p">}</span>
-        <span class="n">geom_finger_NW</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;finger_NW&quot;</span><span class="p">:</span> <span class="n">finger_NW</span><span class="p">}</span>
-        <span class="n">geom_finger_SW</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;finger_SW&quot;</span><span class="p">:</span> <span class="n">finger_SW</span><span class="p">}</span>
-        <span class="n">geom_finger_E</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;finger_E&quot;</span><span class="p">:</span> <span class="n">finger_E</span><span class="p">}</span>
-        <span class="n">geom_box_E</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;box_E&quot;</span><span class="p">:</span> <span class="n">box</span><span class="p">}</span>
-        <span class="n">geom_finger_N</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;finger_N&quot;</span><span class="p">:</span> <span class="n">finger_N</span><span class="p">}</span>
-        <span class="n">geom_pad_top</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pad_top&quot;</span><span class="p">:</span> <span class="n">padtop</span><span class="p">}</span>
-        <span class="n">geom_coupler_NE</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;coupler_NE&quot;</span><span class="p">:</span> <span class="n">coupler_NE</span><span class="p">}</span>
-        <span class="n">geom_coupler_NW</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;coupler_NW&quot;</span><span class="p">:</span> <span class="n">coupler_NW</span><span class="p">}</span>
-        <span class="n">geom_coupler_SW</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;coupler_SW&quot;</span><span class="p">:</span> <span class="n">coupler_SW</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_outer</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_inner</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">geom_outer</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"poly1"</span><span class="p">:</span> <span class="n">outer_pad</span><span class="p">}</span>
+        <span class="n">geom_inner</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"poly2"</span><span class="p">:</span> <span class="n">inner_pad</span><span class="p">}</span>
+        <span class="n">geom_jj</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"poly3"</span><span class="p">:</span> <span class="n">JJ</span><span class="p">}</span>
+        <span class="n">geom_finger_NE</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"finger_NE"</span><span class="p">:</span> <span class="n">finger_NE</span><span class="p">}</span>
+        <span class="n">geom_finger_NW</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"finger_NW"</span><span class="p">:</span> <span class="n">finger_NW</span><span class="p">}</span>
+        <span class="n">geom_finger_SW</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"finger_SW"</span><span class="p">:</span> <span class="n">finger_SW</span><span class="p">}</span>
+        <span class="n">geom_finger_E</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"finger_E"</span><span class="p">:</span> <span class="n">finger_E</span><span class="p">}</span>
+        <span class="n">geom_box_E</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"box_E"</span><span class="p">:</span> <span class="n">box</span><span class="p">}</span>
+        <span class="n">geom_finger_N</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"finger_N"</span><span class="p">:</span> <span class="n">finger_N</span><span class="p">}</span>
+        <span class="n">geom_pad_top</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"pad_top"</span><span class="p">:</span> <span class="n">padtop</span><span class="p">}</span>
+        <span class="n">geom_coupler_NE</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"coupler_NE"</span><span class="p">:</span> <span class="n">coupler_NE</span><span class="p">}</span>
+        <span class="n">geom_coupler_NW</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"coupler_NW"</span><span class="p">:</span> <span class="n">coupler_NW</span><span class="p">}</span>
+        <span class="n">geom_coupler_SW</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"coupler_SW"</span><span class="p">:</span> <span class="n">coupler_SW</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom_outer</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom_inner</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;junction&quot;</span><span class="p">,</span> <span class="n">geom_jj</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">jj_w</span>
+            <span class="s2">"junction"</span><span class="p">,</span> <span class="n">geom_jj</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">jj_w</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+            <span class="s2">"path"</span><span class="p">,</span>
             <span class="n">geom_finger_NE</span><span class="p">,</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
             <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">finger_NE_width</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+            <span class="s2">"path"</span><span class="p">,</span>
             <span class="n">geom_finger_NW</span><span class="p">,</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
             <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">finger_NW_width</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+            <span class="s2">"path"</span><span class="p">,</span>
             <span class="n">geom_finger_SW</span><span class="p">,</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
             <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">finger_SW_width</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_finger_E</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">finger_E_width</span>
+            <span class="s2">"path"</span><span class="p">,</span> <span class="n">geom_finger_E</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">finger_E_width</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_box_E</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom_box_E</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">geom_finger_N</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">finger_N_width</span>
+            <span class="s2">"path"</span><span class="p">,</span> <span class="n">geom_finger_N</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">finger_N_width</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_pad_top</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_coupler_NE</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_coupler_NW</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">geom_coupler_SW</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom_pad_top</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom_coupler_NE</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom_coupler_NW</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="n">geom_coupler_SW</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">subtract</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="c1">###########################################################################</span>
         <span class="c1"># Add Qpin connections</span>
@@ -896,7 +896,7 @@
         <span class="n">qp1a</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp1a</span><span class="p">)</span>
         <span class="n">qp1b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp1b</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;pin1&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp1a</span><span class="p">,</span> <span class="n">qp1b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+            <span class="s2">"pin1"</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp1a</span><span class="p">,</span> <span class="n">qp1b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
         <span class="c1"># Northwest coupler</span>
         <span class="n">qp2a_r</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">rad_outer</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_NW_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">coupler_NW_gap</span>
@@ -914,7 +914,7 @@
         <span class="n">qp2a</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp2a</span><span class="p">)</span>
         <span class="n">qp2b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp2b</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;pin2&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp2a</span><span class="p">,</span> <span class="n">qp2b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+            <span class="s2">"pin2"</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp2a</span><span class="p">,</span> <span class="n">qp2b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
         <span class="c1"># Southwest coupler</span>
         <span class="n">qp3a_r</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">rad_outer</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">finger_SW_length</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">coupler_SW_gap</span>
@@ -932,7 +932,7 @@
         <span class="n">qp3a</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp3a</span><span class="p">)</span>
         <span class="n">qp3b</span> <span class="o">=</span> <span class="n">qpin_rotate_translate</span><span class="p">(</span><span class="n">qp3b</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span>
-            <span class="s2">&quot;pin3&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp3a</span><span class="p">,</span> <span class="n">qp3b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
+            <span class="s2">"pin3"</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">qp3a</span><span class="p">,</span> <span class="n">qp3b</span><span class="p">]),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">input_as_norm</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span></div>
 </div>
 
@@ -954,7 +954,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -977,6 +977,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

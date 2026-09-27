@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -470,7 +470,7 @@
 <div class="viewcode-block" id="ReadoutResFC">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ReadoutResFC.html#qiskit_metal.qlibrary.ReadoutResFC">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ReadoutResFC</span><span class="p">(</span><span class="n">QComponent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;.. image::</span>
+<span class="w">    </span><span class="sd">""".. image::</span>
 <span class="sd">        ReadoutResFC.png</span>
 
 <span class="sd">    Flip-chip readout resonator used in the flipchip tutorial.</span>
@@ -494,41 +494,41 @@
 <span class="sd">        - Change coupling to the qubit by varying ``readout_radius``.</span>
 <span class="sd">        - Couple to the feedthrough line via the horizontal section of length ``readout_l3``.</span>
 <span class="sd">        - Adjust resonator frequency by varying ``readout_l5``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0 um&quot;</span><span class="p">,</span>
-        <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0 um&quot;</span><span class="p">,</span>
-        <span class="n">readout_radius</span><span class="o">=</span><span class="s2">&quot;50 um&quot;</span><span class="p">,</span>
-        <span class="n">readout_cpw_width</span><span class="o">=</span><span class="s2">&quot;5 um&quot;</span><span class="p">,</span>
-        <span class="n">readout_cpw_gap</span><span class="o">=</span><span class="s2">&quot;5 um&quot;</span><span class="p">,</span>
-        <span class="n">readout_cpw_turnradius</span><span class="o">=</span><span class="s2">&quot;50 um&quot;</span><span class="p">,</span>
-        <span class="n">readout_l1</span><span class="o">=</span><span class="s2">&quot;400 um&quot;</span><span class="p">,</span>
-        <span class="n">readout_l2</span><span class="o">=</span><span class="s2">&quot;400 um&quot;</span><span class="p">,</span>
-        <span class="n">readout_l3</span><span class="o">=</span><span class="s2">&quot;400 um&quot;</span><span class="p">,</span>
-        <span class="n">readout_l4</span><span class="o">=</span><span class="s2">&quot;250 um&quot;</span><span class="p">,</span>
-        <span class="n">readout_l5</span><span class="o">=</span><span class="s2">&quot;400 um&quot;</span><span class="p">,</span>
-        <span class="n">arc_step</span><span class="o">=</span><span class="s2">&quot;1 um&quot;</span><span class="p">,</span>
-        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-        <span class="n">layer_subtract</span><span class="o">=</span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+        <span class="n">pos_x</span><span class="o">=</span><span class="s2">"0 um"</span><span class="p">,</span>
+        <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0 um"</span><span class="p">,</span>
+        <span class="n">readout_radius</span><span class="o">=</span><span class="s2">"50 um"</span><span class="p">,</span>
+        <span class="n">readout_cpw_width</span><span class="o">=</span><span class="s2">"5 um"</span><span class="p">,</span>
+        <span class="n">readout_cpw_gap</span><span class="o">=</span><span class="s2">"5 um"</span><span class="p">,</span>
+        <span class="n">readout_cpw_turnradius</span><span class="o">=</span><span class="s2">"50 um"</span><span class="p">,</span>
+        <span class="n">readout_l1</span><span class="o">=</span><span class="s2">"400 um"</span><span class="p">,</span>
+        <span class="n">readout_l2</span><span class="o">=</span><span class="s2">"400 um"</span><span class="p">,</span>
+        <span class="n">readout_l3</span><span class="o">=</span><span class="s2">"400 um"</span><span class="p">,</span>
+        <span class="n">readout_l4</span><span class="o">=</span><span class="s2">"250 um"</span><span class="p">,</span>
+        <span class="n">readout_l5</span><span class="o">=</span><span class="s2">"400 um"</span><span class="p">,</span>
+        <span class="n">arc_step</span><span class="o">=</span><span class="s2">"1 um"</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>
+        <span class="n">layer</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
+        <span class="n">layer_subtract</span><span class="o">=</span><span class="s2">"2"</span><span class="p">,</span>
         <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">chip</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
+        <span class="n">chip</span><span class="o">=</span><span class="s2">"main"</span><span class="p">,</span>
         <span class="n">_default_connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">(),</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Default drawing options ?? &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">""" Default drawing options ?? """</span>
     <span class="n">component_metadata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;readoutresfc&quot;</span><span class="p">,</span>
-        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span>
-        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="s2">"readoutresfc"</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_poly</span><span class="o">=</span><span class="s2">"True"</span><span class="p">,</span>
+        <span class="n">_qgeometry_table_junction</span><span class="o">=</span><span class="s2">"False"</span><span class="p">,</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Component metadata &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">""" Component metadata """</span>
 
     <span class="c1">##########################</span>
 <div class="viewcode-block" id="ReadoutResFC.make">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ReadoutResFC.html#qiskit_metal.qlibrary.ReadoutResFC.make">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make the head for readout res&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Make the head for readout res"""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">make_ro</span><span class="p">()</span></div>
 
 
@@ -537,11 +537,11 @@
 <div class="viewcode-block" id="ReadoutResFC.make_ro">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ReadoutResFC.html#qiskit_metal.qlibrary.ReadoutResFC.make_ro">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">make_ro</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the head of the readout resonator.</span>
+<span class="w">        </span><span class="sd">"""Create the head of the readout resonator.</span>
 
 <span class="sd">        Contains the circular coupling patch, 45 deg line, 45 deg arc, and a short</span>
 <span class="sd">        straight segment (of length w) for smooth subtraction.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># access to parsed values from the user option</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
 
@@ -645,9 +645,9 @@
         <span class="p">[</span><span class="n">ro</span><span class="p">,</span> <span class="n">ro_etch</span><span class="p">,</span> <span class="n">port_line</span><span class="p">]</span> <span class="o">=</span> <span class="n">polys</span>
 
         <span class="c1"># generate QGeometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ro</span><span class="o">=</span><span class="n">ro</span><span class="p">),</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ro</span><span class="o">=</span><span class="n">ro</span><span class="p">),</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
-            <span class="s2">&quot;poly&quot;</span><span class="p">,</span>
+            <span class="s2">"poly"</span><span class="p">,</span>
             <span class="nb">dict</span><span class="p">(</span><span class="n">ro_etch</span><span class="o">=</span><span class="n">ro_etch</span><span class="p">),</span>
             <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">,</span>
             <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer_subtract</span><span class="p">,</span>
@@ -655,19 +655,19 @@
         <span class="p">)</span>
 
         <span class="c1"># generate pins</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">&quot;readout&quot;</span><span class="p">,</span> <span class="n">port_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pin</span><span class="p">(</span><span class="s2">"readout"</span><span class="p">,</span> <span class="n">port_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ReadoutResFC.arc">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.ReadoutResFC.html#qiskit_metal.qlibrary.ReadoutResFC.arc">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">arc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord_init</span><span class="p">,</span> <span class="n">coord_center</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Generate x,y coordinates (in terms of shapely.geometry.Point()) of an arc with:</span>
 <span class="sd">        a specified initial point, rotation center, and</span>
 <span class="sd">        rotation direction (specified by angle in radian (float or integer), positive is ccw).</span>
 
 <span class="sd">        coord_init, and coord_center should be shapely.geometry.Point object</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># access to parse values from the user option</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
 
@@ -716,7 +716,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -739,6 +739,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 

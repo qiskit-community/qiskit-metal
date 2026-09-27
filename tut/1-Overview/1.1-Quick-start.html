@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -484,7 +484,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Colab / Binder, uncomment to install Quantum Metal (lite, no Qt).</span>
 <span class="c1"># Locally you should already have it via `pip install quantum-metal` or</span>
-<span class="c1"># `pip install &#39;quantum-metal[gui]&#39;` for the desktop GUI.</span>
+<span class="c1"># `pip install 'quantum-metal[gui]'` for the desktop GUI.</span>
 <span class="c1"># !pip install -q quantum-metal</span>
 </pre></div>
 </div>
@@ -539,8 +539,8 @@
 
 <span class="c1"># Dark theme for the desktop GUI screenshots below. Guarded because the</span>
 <span class="c1"># inline headless viewer used on Colab/Binder has no stylesheet concept.</span>
-<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">gui</span><span class="p">,</span> <span class="s2">&quot;load_stylesheet&quot;</span><span class="p">):</span>
-    <span class="n">gui</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span><span class="s2">&quot;metal_dark&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">gui</span><span class="p">,</span> <span class="s2">"load_stylesheet"</span><span class="p">):</span>
+    <span class="n">gui</span><span class="o">.</span><span class="n">load_stylesheet</span><span class="p">(</span><span class="s2">"metal_dark"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -594,8 +594,8 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select a QComponent to create (The QComponent is a python class named `TransmonPocket`)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.qubits.transmon_pocket</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransmonPocket</span>
 
-<span class="c1"># Create a new qcomponent object with name &#39;Q1&#39;</span>
-<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
+<span class="c1"># Create a new qcomponent object with name 'Q1'</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>  <span class="c1"># rebuild the design and plot</span>
 </pre></div>
 </div>
@@ -605,7 +605,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save screenshot</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">"Q1"</span><span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
@@ -705,11 +705,11 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change options</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">&quot;0.5 mm&quot;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s2">&quot;0.25 mm&quot;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">=</span> <span class="s2">&quot;225 um&quot;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;250 um&quot;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_gap</span> <span class="o">=</span> <span class="s2">&quot;50 um&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">"0.5 mm"</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s2">"0.25 mm"</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">=</span> <span class="s2">"225 um"</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">"250 um"</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_gap</span> <span class="o">=</span> <span class="s2">"50 um"</span>
 
 <span class="c1"># Update the geometry, since we changed the options</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -748,29 +748,29 @@
 <span class="n">_orig_pad_width</span> <span class="o">=</span> <span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span>
 
 <span class="c1"># Make a change</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">&quot;550 um&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="s2">"550 um"</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 
 <span class="c1"># Side-by-side comparison rendered to a PNG so it displays inline in</span>
 <span class="c1"># Jupyter regardless of which matplotlib backend the GUI activated</span>
-<span class="c1"># (the desktop MetalGUI sets `QtAgg`, which doesn&#39;t render Figures</span>
+<span class="c1"># (the desktop MetalGUI sets `QtAgg`, which doesn't render Figures</span>
 <span class="c1"># directly into notebook cells; ``display(fig)`` falls back to a</span>
 <span class="c1"># text repr otherwise).</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">qm</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">],</span>
-    <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Original  pad_width=</span><span class="si">{</span><span class="n">_orig_pad_width</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s2">"Q1"</span><span class="p">],</span>
+    <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Original  pad_width=</span><span class="si">{</span><span class="n">_orig_pad_width</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
     <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="n">qm</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Modified  pad_width=550 um&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">qm</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="s2">"Q1"</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Modified  pad_width=550 um"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
 
 <span class="n">buf</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"png"</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()))</span>
 </pre></div>
@@ -783,7 +783,7 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Restore the original value before continuing</span>
 <span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span> <span class="o">=</span> <span class="n">_orig_pad_width</span>
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Restored pad_width to </span><span class="si">{</span><span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Restored pad_width to </span><span class="si">{</span><span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pad_width</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -802,7 +802,7 @@ Restored pad_width to 250 um
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;Q1&quot;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"Q1"</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -810,7 +810,7 @@ Restored pad_width to 250 um
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">metal_print</span> &quot;Where are the default options?&quot;
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">metal_print</span> "Where are the default options?"
 </pre></div>
 </div>
 </div>
@@ -926,12 +926,12 @@ Restored pad_width to 250 um
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Two different &quot;change the options&quot; patterns:</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Two different "change the options" patterns:</span>
 
 <span class="c1"># 1. Change THIS instance only — what the tutorial has been doing so far.</span>
 <span class="c1">#    Affects q1, not any future TransmonPocket you create.</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">&quot;0.5 mm&quot;</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s2">&quot;250 um&quot;</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">"0.5 mm"</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s2">"250 um"</span>
 
 <span class="c1"># 2. Change the CLASS-LEVEL DEFAULTS — affects every TransmonPocket</span>
 <span class="c1">#    you instantiate after this point. The base ``QComponent.default_options``</span>
@@ -940,15 +940,15 @@ Restored pad_width to 250 um
 <span class="c1">#    edit ``TransmonPocket.default_options.pad_width`` instead.)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComponent</span>
 
-<span class="n">QComponent</span><span class="o">.</span><span class="n">default_options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">&quot;0.5 mm&quot;</span>
-<span class="n">QComponent</span><span class="o">.</span><span class="n">default_options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s2">&quot;250 um&quot;</span>
+<span class="n">QComponent</span><span class="o">.</span><span class="n">default_options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">"0.5 mm"</span>
+<span class="n">QComponent</span><span class="o">.</span><span class="n">default_options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s2">"250 um"</span>
 
 <span class="c1"># Rebuild for changes to propagate</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 
-<span class="c1"># Reset class defaults so the rest of the notebook doesn&#39;t see them.</span>
-<span class="n">QComponent</span><span class="o">.</span><span class="n">default_options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">&quot;0.0um&quot;</span>
-<span class="n">QComponent</span><span class="o">.</span><span class="n">default_options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s2">&quot;0.0um&quot;</span>
+<span class="c1"># Reset class defaults so the rest of the notebook doesn't see them.</span>
+<span class="n">QComponent</span><span class="o">.</span><span class="n">default_options</span><span class="o">.</span><span class="n">pos_x</span> <span class="o">=</span> <span class="s2">"0.0um"</span>
+<span class="n">QComponent</span><span class="o">.</span><span class="n">default_options</span><span class="o">.</span><span class="n">pos_y</span> <span class="o">=</span> <span class="s2">"0.0um"</span>
 </pre></div>
 </div>
 </div>
@@ -986,18 +986,18 @@ Restored pad_width to 250 um
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Design default units for length: &quot;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">get_units</span><span class="p">())</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"Design default units for length: "</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">get_units</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Example 250 micron parsed to design units:&quot;</span><span class="p">,</span>
-    <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s2">&quot;250 um&quot;</span><span class="p">),</span>
+    <span class="s2">"</span><span class="se">\n</span><span class="s2">Example 250 micron parsed to design units:"</span><span class="p">,</span>
+    <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s2">"250 um"</span><span class="p">),</span>
     <span class="n">design</span><span class="o">.</span><span class="n">get_units</span><span class="p">(),</span>
 <span class="p">)</span>
 
-<span class="n">dictionary</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;key_in_cm&quot;</span><span class="p">:</span> <span class="s2">&quot;1.2 cm&quot;</span><span class="p">,</span> <span class="s2">&quot;key_in_microns&quot;</span><span class="p">:</span> <span class="s2">&quot;50 um&quot;</span><span class="p">}</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Example parse dict:&quot;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dictionary</span><span class="p">))</span>
+<span class="n">dictionary</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"key_in_cm"</span><span class="p">:</span> <span class="s2">"1.2 cm"</span><span class="p">,</span> <span class="s2">"key_in_microns"</span><span class="p">:</span> <span class="s2">"50 um"</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Example parse dict:"</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">dictionary</span><span class="p">))</span>
 
-<span class="n">a_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;1m&quot;</span><span class="p">,</span> <span class="s2">&quot;1mm&quot;</span><span class="p">,</span> <span class="s2">&quot;1um&quot;</span><span class="p">,</span> <span class="s2">&quot;1 nm&quot;</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Example parse list:&quot;</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">a_list</span><span class="p">))</span>
+<span class="n">a_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"1m"</span><span class="p">,</span> <span class="s2">"1mm"</span><span class="p">,</span> <span class="s2">"1um"</span><span class="p">,</span> <span class="s2">"1 nm"</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Example parse list:"</span><span class="p">,</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">a_list</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1022,7 +1022,7 @@ Example parse list: [1000.0, 1, 0.001, 1.0000000000000002e-06]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s2">&quot;2 * 2um&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s2">"2 * 2um"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1039,7 +1039,7 @@ Example parse list: [1000.0, 1, 0.001, 1.0000000000000002e-06]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s2">&quot;2um + 5um&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="s2">"2um + 5um"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1056,7 +1056,7 @@ Example parse list: [1000.0, 1, 0.001, 1.0000000000000002e-06]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s2">&quot;junction&quot;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s2">"junction"</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1169,7 +1169,7 @@ Example parse list: [1000.0, 1, 0.001, 1.0000000000000002e-06]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">qcomponent</span> <span class="ow">in</span> <span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">10s</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">qcomponent</span><span class="o">.</span><span class="n">qgeometry_bounds</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">10s</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">qcomponent</span><span class="o">.</span><span class="n">qgeometry_bounds</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1203,7 +1203,7 @@ RectangleHollow : [-2.55  1.85 -2.05  2.15]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1327,7 +1327,7 @@ RectangleHollow : [-2.55  1.85 -2.05  2.15]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">"path"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1507,7 +1507,7 @@ RectangleHollow : [-2.55  1.85 -2.05  2.15]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">&quot;junction&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">qgeometry_table</span><span class="p">(</span><span class="s2">"junction"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1596,21 +1596,21 @@ RectangleHollow : [-2.55  1.85 -2.05  2.15]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#### List</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;* &quot;</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="s2">&quot; LIST &quot;</span> <span class="o">+</span> <span class="s2">&quot;* &quot;</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">str_in</span> <span class="o">=</span> <span class="s2">&quot;[1,2,3,&#39;10um&#39;]&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"* "</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="s2">" LIST "</span> <span class="o">+</span> <span class="s2">"* "</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">str_in</span> <span class="o">=</span> <span class="s2">"[1,2,3,'10um']"</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">str_in</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsed output:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">str_in</span><span class="si">}</span><span class="s2">  -&gt;  </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Out type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parsed output:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">str_in</span><span class="si">}</span><span class="s2">  -&gt;  </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Out type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="n">str_in</span> <span class="o">=</span> <span class="s2">&quot;[&#39;2*2um&#39;, &#39;2um + 5um&#39;]&quot;</span>
+<span class="n">str_in</span> <span class="o">=</span> <span class="s2">"['2*2um', '2um + 5um']"</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">str_in</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsed output:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">str_in</span><span class="si">}</span><span class="s2">  -&gt;  </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Out type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parsed output:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">str_in</span><span class="si">}</span><span class="s2">  -&gt;  </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Out type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1">#### Dict</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;* &quot;</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="s2">&quot; DICT &quot;</span> <span class="o">+</span> <span class="s2">&quot;* &quot;</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"* "</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="s2">" DICT "</span> <span class="o">+</span> <span class="s2">"* "</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="n">str_in</span> <span class="o">=</span> <span class="s2">&quot;{&#39;key1&#39;: &#39;100um&#39;, &#39;key2&#39;: &#39;1m&#39;}&quot;</span>
+<span class="n">str_in</span> <span class="o">=</span> <span class="s2">"{'key1': '100um', 'key2': '1m'}"</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="n">str_in</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsed output:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">str_in</span><span class="si">}</span><span class="s2">  -&gt;  </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Out type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parsed output:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">str_in</span><span class="si">}</span><span class="s2">  -&gt;  </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Out type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1686,18 +1686,18 @@ Parsed output:
 <span class="n">design</span><span class="o">.</span><span class="n">delete_all_components</span><span class="p">()</span>
 
 <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;425 um&quot;</span><span class="p">,</span>
-    <span class="n">pocket_height</span><span class="o">=</span><span class="s2">&quot;650um&quot;</span><span class="p">,</span>
+    <span class="n">pad_width</span><span class="o">=</span><span class="s2">"425 um"</span><span class="p">,</span>
+    <span class="n">pocket_height</span><span class="o">=</span><span class="s2">"650um"</span><span class="p">,</span>
     <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>  <span class="c1"># pin connectors</span>
         <span class="n">a</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">),</span>
-        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;30um&quot;</span><span class="p">),</span>
-        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">&quot;200um&quot;</span><span class="p">),</span>
-        <span class="n">d</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">&quot;50um&quot;</span><span class="p">),</span>
+        <span class="n">b</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">),</span>
+        <span class="n">c</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"200um"</span><span class="p">),</span>
+        <span class="n">d</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_height</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
 
 <span class="n">q1</span> <span class="o">=</span> <span class="n">TransmonPocket</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;+0.5mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;+0.5mm&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"+0.5mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"+0.5mm"</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -1709,9 +1709,9 @@ Parsed output:
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Take a screenshot with the component highlighted and the pins shown</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">&quot;Q1&quot;</span><span class="p">])</span>
-<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s2">&quot;Q1&quot;</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">"Q1"</span><span class="p">)</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">zoom_on_components</span><span class="p">([</span><span class="s2">"Q1"</span><span class="p">])</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">highlight_components</span><span class="p">([</span><span class="s2">"Q1"</span><span class="p">])</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">screenshot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1729,7 +1729,7 @@ Parsed output:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q1</span><span class="o">.</span><span class="n">pins</span><span class="o">.</span><span class="n">a</span>
-<span class="n">q1</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="s2">"a"</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1759,7 +1759,7 @@ Parsed output:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gui</span><span class="o">.</span><span class="n">edit_component</span><span class="p">(</span><span class="s2">"Q1"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1841,7 +1841,7 @@ Parsed output:
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

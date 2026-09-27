@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -559,21 +559,21 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">new_design</span><span class="p">():</span>
     <span class="n">design</span> <span class="o">=</span> <span class="n">designs</span><span class="o">.</span><span class="n">DesignPlanar</span><span class="p">()</span>
     <span class="n">design</span><span class="o">.</span><span class="n">overwrite_enabled</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span> <span class="o">=</span> <span class="s2">&quot;6mm&quot;</span>
-    <span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span> <span class="o">=</span> <span class="s2">&quot;6mm&quot;</span>
+    <span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_x</span> <span class="o">=</span> <span class="s2">"6mm"</span>
+    <span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span> <span class="o">=</span> <span class="s2">"6mm"</span>
     <span class="k">return</span> <span class="n">design</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">ori_start</span><span class="p">,</span> <span class="n">ori_end</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">RouteStraight</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A CPW between two fresh open terminations -- shorthand for this notebook.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A CPW between two fresh open terminations -- shorthand for this notebook."""</span>
     <span class="n">OpenToGround</span><span class="p">(</span>
         <span class="n">design</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_a&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_a"</span><span class="p">,</span>
         <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos_y</span><span class="o">=</span><span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">orientation</span><span class="o">=</span><span class="n">ori_start</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="n">OpenToGround</span><span class="p">(</span>
         <span class="n">design</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_b&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_b"</span><span class="p">,</span>
         <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos_y</span><span class="o">=</span><span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">orientation</span><span class="o">=</span><span class="n">ori_end</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
@@ -581,8 +581,8 @@
         <span class="n">name</span><span class="p">,</span>
         <span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
             <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-                <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_a&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
-                <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_b&quot;</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">&quot;open&quot;</span><span class="p">),</span>
+                <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_a"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"open"</span><span class="p">),</span>
+                <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_b"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"open"</span><span class="p">),</span>
             <span class="p">),</span>
             <span class="o">**</span><span class="n">options</span><span class="p">,</span>
         <span class="p">),</span>
@@ -599,50 +599,50 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">new_design</span><span class="p">()</span>
 
-<span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">))</span>
+<span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"0mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0mm"</span><span class="p">))</span>
 
 <span class="c1"># 1. metal-overlap: two CPWs cross. On one layer, that is a short.</span>
-<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cross_h&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;-2.6mm&quot;</span><span class="p">,</span> <span class="s2">&quot;2mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;-1.2mm&quot;</span><span class="p">,</span> <span class="s2">&quot;2mm&quot;</span><span class="p">),</span> <span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
-<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cross_v&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;-1.9mm&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;-1.9mm&quot;</span><span class="p">,</span> <span class="s2">&quot;2.6mm&quot;</span><span class="p">),</span> <span class="s2">&quot;270&quot;</span><span class="p">,</span> <span class="s2">&quot;90&quot;</span><span class="p">)</span>
+<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"cross_h"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"-2.6mm"</span><span class="p">,</span> <span class="s2">"2mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"-1.2mm"</span><span class="p">,</span> <span class="s2">"2mm"</span><span class="p">),</span> <span class="s2">"180"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">)</span>
+<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"cross_v"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"-1.9mm"</span><span class="p">,</span> <span class="s2">"1.4mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"-1.9mm"</span><span class="p">,</span> <span class="s2">"2.6mm"</span><span class="p">),</span> <span class="s2">"270"</span><span class="p">,</span> <span class="s2">"90"</span><span class="p">)</span>
 
 <span class="c1"># 2. metal-spacing: parallel CPWs 1 um apart. Not a short in the CAD, but</span>
 <span class="c1">#    incomplete etching leaves residue that bridges gaps this narrow.</span>
-<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;near_a&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;0.6mm&quot;</span><span class="p">,</span> <span class="s2">&quot;2.0055mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;2.4mm&quot;</span><span class="p">,</span> <span class="s2">&quot;2.0055mm&quot;</span><span class="p">),</span> <span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
-<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;near_b&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;0.6mm&quot;</span><span class="p">,</span> <span class="s2">&quot;1.9945mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;2.4mm&quot;</span><span class="p">,</span> <span class="s2">&quot;1.9945mm&quot;</span><span class="p">),</span> <span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"near_a"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"0.6mm"</span><span class="p">,</span> <span class="s2">"2.0055mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"2.4mm"</span><span class="p">,</span> <span class="s2">"2.0055mm"</span><span class="p">),</span> <span class="s2">"180"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">)</span>
+<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"near_b"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"0.6mm"</span><span class="p">,</span> <span class="s2">"1.9945mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"2.4mm"</span><span class="p">,</span> <span class="s2">"1.9945mm"</span><span class="p">),</span> <span class="s2">"180"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">)</span>
 
 <span class="c1"># 3. cpw-gap: a 1 um gap concentrates field in the lossy substrate interface.</span>
 <span class="n">link</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;thin&quot;</span><span class="p">,</span>
-    <span class="p">(</span><span class="s2">&quot;-2.6mm&quot;</span><span class="p">,</span> <span class="s2">&quot;-2.4mm&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;-0.6mm&quot;</span><span class="p">,</span> <span class="s2">&quot;-2.4mm&quot;</span><span class="p">),</span>
-    <span class="s2">&quot;180&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-    <span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;1um&quot;</span><span class="p">,</span>
+    <span class="s2">"thin"</span><span class="p">,</span>
+    <span class="p">(</span><span class="s2">"-2.6mm"</span><span class="p">,</span> <span class="s2">"-2.4mm"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"-0.6mm"</span><span class="p">,</span> <span class="s2">"-2.4mm"</span><span class="p">),</span>
+    <span class="s2">"180"</span><span class="p">,</span>
+    <span class="s2">"0"</span><span class="p">,</span>
+    <span class="n">trace_gap</span><span class="o">=</span><span class="s2">"1um"</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># 4. chip-bounds: the launchpad hangs off the die.</span>
 <span class="n">LaunchpadWirebond</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;LP&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;3.4mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"LP"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"3.4mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0mm"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"180"</span><span class="p">)</span>
 <span class="p">)</span>
 
 <span class="c1"># 5. short-segment: 100 um legs cannot host a 150 um fillet radius.</span>
 <span class="n">link</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;kink&quot;</span><span class="p">,</span>
-    <span class="p">(</span><span class="s2">&quot;1.2mm&quot;</span><span class="p">,</span> <span class="s2">&quot;-2.6mm&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;1.3mm&quot;</span><span class="p">,</span> <span class="s2">&quot;-2.5mm&quot;</span><span class="p">),</span>
-    <span class="s2">&quot;180&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;90&quot;</span><span class="p">,</span>
+    <span class="s2">"kink"</span><span class="p">,</span>
+    <span class="p">(</span><span class="s2">"1.2mm"</span><span class="p">,</span> <span class="s2">"-2.6mm"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"1.3mm"</span><span class="p">,</span> <span class="s2">"-2.5mm"</span><span class="p">),</span>
+    <span class="s2">"180"</span><span class="p">,</span>
+    <span class="s2">"90"</span><span class="p">,</span>
     <span class="bp">cls</span><span class="o">=</span><span class="n">RoutePathfinder</span><span class="p">,</span>
-    <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;150um&quot;</span><span class="p">,</span>
+    <span class="n">fillet</span><span class="o">=</span><span class="s2">"150um"</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="c1"># 6. qubit-clearance: a CPW skimming Q1&#39;s pocket couples to the qubit.</span>
-<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;hug&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;-1.5mm&quot;</span><span class="p">,</span> <span class="s2">&quot;0.35mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;1.5mm&quot;</span><span class="p">,</span> <span class="s2">&quot;0.35mm&quot;</span><span class="p">),</span> <span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+<span class="c1"># 6. qubit-clearance: a CPW skimming Q1's pocket couples to the qubit.</span>
+<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"hug"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"-1.5mm"</span><span class="p">,</span> <span class="s2">"0.35mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"1.5mm"</span><span class="p">,</span> <span class="s2">"0.35mm"</span><span class="p">),</span> <span class="s2">"180"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">)</span>
 
 <span class="c1"># 7. ground-continuity: a CPW reaching both die edges cuts the ground in two.</span>
-<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;split&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;-2.994mm&quot;</span><span class="p">,</span> <span class="s2">&quot;-1.2mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;2.994mm&quot;</span><span class="p">,</span> <span class="s2">&quot;-1.2mm&quot;</span><span class="p">),</span> <span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"split"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"-2.994mm"</span><span class="p">,</span> <span class="s2">"-1.2mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"2.994mm"</span><span class="p">,</span> <span class="s2">"-1.2mm"</span><span class="p">),</span> <span class="s2">"180"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">)</span>
 
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 <span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
@@ -750,16 +750,16 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;passes:&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;errors:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">errors</span><span class="p">),</span> <span class="s2">&quot; warnings:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">warnings</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"passes:"</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"errors:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">errors</span><span class="p">),</span> <span class="s2">" warnings:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">warnings</span><span class="p">))</span>
 
 <span class="n">worst</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">errors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;rule:      &quot;</span><span class="p">,</span> <span class="n">worst</span><span class="o">.</span><span class="n">rule</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;severity:  &quot;</span><span class="p">,</span> <span class="n">worst</span><span class="o">.</span><span class="n">severity</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;components:&quot;</span><span class="p">,</span> <span class="n">worst</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;location:  &quot;</span><span class="p">,</span> <span class="n">worst</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;value/limit:&quot;</span><span class="p">,</span> <span class="n">worst</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">worst</span><span class="o">.</span><span class="n">limit</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"rule:      "</span><span class="p">,</span> <span class="n">worst</span><span class="o">.</span><span class="n">rule</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"severity:  "</span><span class="p">,</span> <span class="n">worst</span><span class="o">.</span><span class="n">severity</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"components:"</span><span class="p">,</span> <span class="n">worst</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"location:  "</span><span class="p">,</span> <span class="n">worst</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"value/limit:"</span><span class="p">,</span> <span class="n">worst</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">"/"</span><span class="p">,</span> <span class="n">worst</span><span class="o">.</span><span class="n">limit</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -823,36 +823,36 @@ Counter({&#39;short-segment&#39;: 4,
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">design</span> <span class="o">=</span> <span class="n">new_design</span><span class="p">()</span>
 
-<span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">))</span>
+<span class="n">TransmonPocket</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"0mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0mm"</span><span class="p">))</span>
 
-<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cross_h&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;-2.6mm&quot;</span><span class="p">,</span> <span class="s2">&quot;2mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;-1.2mm&quot;</span><span class="p">,</span> <span class="s2">&quot;2mm&quot;</span><span class="p">),</span> <span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
-<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;cross_v&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;-1.9mm&quot;</span><span class="p">,</span> <span class="s2">&quot;1.2mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;-1.9mm&quot;</span><span class="p">,</span> <span class="s2">&quot;1.7mm&quot;</span><span class="p">),</span> <span class="s2">&quot;270&quot;</span><span class="p">,</span> <span class="s2">&quot;90&quot;</span><span class="p">)</span>
-<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;near_a&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;0.6mm&quot;</span><span class="p">,</span> <span class="s2">&quot;2.1mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;2.4mm&quot;</span><span class="p">,</span> <span class="s2">&quot;2.1mm&quot;</span><span class="p">),</span> <span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
-<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;near_b&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;0.6mm&quot;</span><span class="p">,</span> <span class="s2">&quot;1.9mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;2.4mm&quot;</span><span class="p">,</span> <span class="s2">&quot;1.9mm&quot;</span><span class="p">),</span> <span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"cross_h"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"-2.6mm"</span><span class="p">,</span> <span class="s2">"2mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"-1.2mm"</span><span class="p">,</span> <span class="s2">"2mm"</span><span class="p">),</span> <span class="s2">"180"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">)</span>
+<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"cross_v"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"-1.9mm"</span><span class="p">,</span> <span class="s2">"1.2mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"-1.9mm"</span><span class="p">,</span> <span class="s2">"1.7mm"</span><span class="p">),</span> <span class="s2">"270"</span><span class="p">,</span> <span class="s2">"90"</span><span class="p">)</span>
+<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"near_a"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"0.6mm"</span><span class="p">,</span> <span class="s2">"2.1mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"2.4mm"</span><span class="p">,</span> <span class="s2">"2.1mm"</span><span class="p">),</span> <span class="s2">"180"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">)</span>
+<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"near_b"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"0.6mm"</span><span class="p">,</span> <span class="s2">"1.9mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"2.4mm"</span><span class="p">,</span> <span class="s2">"1.9mm"</span><span class="p">),</span> <span class="s2">"180"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">)</span>
 <span class="n">link</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;thin&quot;</span><span class="p">,</span>
-    <span class="p">(</span><span class="s2">&quot;-2.6mm&quot;</span><span class="p">,</span> <span class="s2">&quot;-2.4mm&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;-0.6mm&quot;</span><span class="p">,</span> <span class="s2">&quot;-2.4mm&quot;</span><span class="p">),</span>
-    <span class="s2">&quot;180&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-    <span class="n">trace_gap</span><span class="o">=</span><span class="s2">&quot;6um&quot;</span><span class="p">,</span>
+    <span class="s2">"thin"</span><span class="p">,</span>
+    <span class="p">(</span><span class="s2">"-2.6mm"</span><span class="p">,</span> <span class="s2">"-2.4mm"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"-0.6mm"</span><span class="p">,</span> <span class="s2">"-2.4mm"</span><span class="p">),</span>
+    <span class="s2">"180"</span><span class="p">,</span>
+    <span class="s2">"0"</span><span class="p">,</span>
+    <span class="n">trace_gap</span><span class="o">=</span><span class="s2">"6um"</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">LaunchpadWirebond</span><span class="p">(</span>
-    <span class="n">design</span><span class="p">,</span> <span class="s2">&quot;LP&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">&quot;2.5mm&quot;</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">&quot;0mm&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;180&quot;</span><span class="p">)</span>
+    <span class="n">design</span><span class="p">,</span> <span class="s2">"LP"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"2.5mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"0mm"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"180"</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">link</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
-    <span class="s2">&quot;kink&quot;</span><span class="p">,</span>
-    <span class="p">(</span><span class="s2">&quot;0.9mm&quot;</span><span class="p">,</span> <span class="s2">&quot;-2.6mm&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;1.6mm&quot;</span><span class="p">,</span> <span class="s2">&quot;-2.0mm&quot;</span><span class="p">),</span>
-    <span class="s2">&quot;180&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;90&quot;</span><span class="p">,</span>
+    <span class="s2">"kink"</span><span class="p">,</span>
+    <span class="p">(</span><span class="s2">"0.9mm"</span><span class="p">,</span> <span class="s2">"-2.6mm"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"1.6mm"</span><span class="p">,</span> <span class="s2">"-2.0mm"</span><span class="p">),</span>
+    <span class="s2">"180"</span><span class="p">,</span>
+    <span class="s2">"90"</span><span class="p">,</span>
     <span class="bp">cls</span><span class="o">=</span><span class="n">RoutePathfinder</span><span class="p">,</span>
-    <span class="n">fillet</span><span class="o">=</span><span class="s2">&quot;90um&quot;</span><span class="p">,</span>
+    <span class="n">fillet</span><span class="o">=</span><span class="s2">"90um"</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;hug&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;-1.5mm&quot;</span><span class="p">,</span> <span class="s2">&quot;0.7mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;1.5mm&quot;</span><span class="p">,</span> <span class="s2">&quot;0.7mm&quot;</span><span class="p">),</span> <span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
-<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">&quot;split&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;-2.4mm&quot;</span><span class="p">,</span> <span class="s2">&quot;-1.2mm&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;2.4mm&quot;</span><span class="p">,</span> <span class="s2">&quot;-1.2mm&quot;</span><span class="p">),</span> <span class="s2">&quot;180&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"hug"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"-1.5mm"</span><span class="p">,</span> <span class="s2">"0.7mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"1.5mm"</span><span class="p">,</span> <span class="s2">"0.7mm"</span><span class="p">),</span> <span class="s2">"180"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">)</span>
+<span class="n">link</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="s2">"split"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"-2.4mm"</span><span class="p">,</span> <span class="s2">"-1.2mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"2.4mm"</span><span class="p">,</span> <span class="s2">"-1.2mm"</span><span class="p">),</span> <span class="s2">"180"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">)</span>
 
 <span class="n">design</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 
@@ -896,7 +896,7 @@ Design rules passed (7 rules ran, no findings).
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_RULES</span><span class="p">,</span> <span class="n">CPWGapRule</span><span class="p">,</span> <span class="n">MetalSpacingRule</span>
 
 <span class="c1"># Just one rule, at a tighter limit than the default.</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">validate</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="p">[</span><span class="n">CPWGapRule</span><span class="p">(</span><span class="n">min_gap</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">)])</span><span class="o">.</span><span class="n">report</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">validate</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="p">[</span><span class="n">CPWGapRule</span><span class="p">(</span><span class="n">min_gap</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">)])</span><span class="o">.</span><span class="n">report</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -924,8 +924,8 @@ Design rules passed (7 rules ran, no findings).
 <span class="c1"># much looser constraint -- unconnected CPWs kept 250 um apart. Replacing the</span>
 <span class="c1"># rule rather than adding one matters: both copies would run, and the design</span>
 <span class="c1"># would be reported twice.</span>
-<span class="n">house_rules</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">DEFAULT_RULES</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;metal-spacing&quot;</span><span class="p">]</span>
-<span class="n">house_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MetalSpacingRule</span><span class="p">(</span><span class="n">min_spacing</span><span class="o">=</span><span class="s2">&quot;250um&quot;</span><span class="p">))</span>
+<span class="n">house_rules</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">DEFAULT_RULES</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s2">"metal-spacing"</span><span class="p">]</span>
+<span class="n">house_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MetalSpacingRule</span><span class="p">(</span><span class="n">min_spacing</span><span class="o">=</span><span class="s2">"250um"</span><span class="p">))</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">validate</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="n">house_rules</span><span class="p">)</span><span class="o">.</span><span class="n">report</span><span class="p">())</span>
 </pre></div>
@@ -947,7 +947,7 @@ Design rules passed (7 rules ran, no findings).
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Severity</span>
 
-<span class="n">strict_gap</span> <span class="o">=</span> <span class="n">CPWGapRule</span><span class="p">(</span><span class="n">min_gap</span><span class="o">=</span><span class="s2">&quot;10um&quot;</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">Severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+<span class="n">strict_gap</span> <span class="o">=</span> <span class="n">CPWGapRule</span><span class="p">(</span><span class="n">min_gap</span><span class="o">=</span><span class="s2">"10um"</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">Severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">validate</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="p">[</span><span class="n">strict_gap</span><span class="p">])))</span>
 </pre></div>
 </div>
@@ -973,7 +973,7 @@ False
 <span class="k">try</span><span class="p">:</span>
     <span class="n">validate</span><span class="p">(</span><span class="n">design</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="p">[</span><span class="n">strict_gap</span><span class="p">],</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">except</span> <span class="n">DesignRuleViolation</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;build stopped:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"build stopped:"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -1016,12 +1016,12 @@ build stopped:
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">KeepOutBorderRule</span><span class="p">(</span><span class="n">DesignRule</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Metal must stay clear of the dicing street at the chip edge.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Metal must stay clear of the dicing street at the chip edge."""</span>
 
-    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;keep-out-border&quot;</span>
-    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Metal reaches into the dicing street.&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">"keep-out-border"</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s2">"Metal reaches into the dicing street."</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="s2">&quot;400um&quot;</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">Severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="s2">"400um"</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">Severity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="n">margin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">severity</span> <span class="o">=</span> <span class="n">severity</span>
 
@@ -1038,7 +1038,7 @@ build stopped:
                 <span class="n">rule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                 <span class="n">severity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">severity</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> reaches </span><span class="si">{</span><span class="n">margin</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> um into the dicing street&quot;</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> reaches </span><span class="si">{</span><span class="n">margin</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> um into the dicing street"</span>
                 <span class="p">),</span>
                 <span class="n">components</span><span class="o">=</span><span class="p">(</span><span class="n">name</span><span class="p">,),</span>
                 <span class="n">location</span><span class="o">=</span><span class="n">representative_point</span><span class="p">(</span><span class="n">outside</span><span class="p">),</span>
@@ -1146,7 +1146,7 @@ build stopped:
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             

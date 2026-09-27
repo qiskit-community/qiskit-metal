@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "https://jupyterlite.readthedocs.org/en/latest/reference/schema-v0.html#",
+  "$id": "https://jupyterlite.readthedocs.io/en/latest/reference/schema-v0.html#",
   "title": "JupyterLite Schema v0",
   "description": "a schema for user-serviceable customizaton of a JupyterLite",
   "$ref": "#/definitions/top",
@@ -110,6 +110,14 @@
           "type": "string",
           "default": "JupyterLite Storage"
         },
+        "contentsAllJsonFile": {
+          "description": "name of the index file, relative to `api/contents/{dir}/`, listing the contents served from `files/`. Written by `jupyter lite build` when `files/` exists; set it (usually to `all.json`) when contents are added after the build, or no index is read",
+          "type": "string"
+        },
+        "workspacesAllJsonFile": {
+          "description": "name of the index file under `api/workspaces/` listing the workspaces served from the site. Written by `jupyter lite build` when workspaces exist; set it when workspaces are added after the build",
+          "type": "string"
+        },
         "workspacesStorageDrivers": {
           "description": "names of the localforage driver for workspaces, or `null` for the best available",
           "$ref": "#/definitions/localforage-driver-set"
@@ -192,6 +200,24 @@
           "description": "Whether to enable the service worker cache",
           "type": "boolean",
           "default": false
+        },
+        "versionInfo": {
+          "description": "A map of identifiers to metadata shown in the About dialog. Each entry must define a display label; versions may be populated during the build.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["label"],
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "The display name shown in the About dialog"
+              },
+              "version": {
+                "type": "string",
+                "description": "The version shown in the About dialog"
+              }
+            }
+          }
         }
       }
     },

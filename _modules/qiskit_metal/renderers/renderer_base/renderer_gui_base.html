@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=8ee2c72c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
@@ -472,36 +472,36 @@
 <span class="c1"># Any modifications or derivative works of this code must retain this</span>
 <span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
 <span class="c1"># that they have been altered from the originals.</span>
-<span class="sd">&quot;&quot;&quot;QRendererGui Base.&quot;&quot;&quot;</span>
+<span class="sd">"""QRendererGui Base."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesign</span><span class="p">,</span> <span class="n">is_design</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qgeometries</span><span class="w"> </span><span class="kn">import</span> <span class="n">QGeometryTables</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">QRenderer</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;QRendererGui&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"QRendererGui"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="QRendererGui">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html#qiskit_metal.renderers.QRendererGui">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">QRendererGui</span><span class="p">(</span><span class="n">QRenderer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for the GUI rendering.</span>
+<span class="w">    </span><span class="sd">"""Abstract base class for the GUI rendering.</span>
 
 <span class="sd">    Extends `QRenderer`. An interface class.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;guibase&quot;</span>  <span class="c1"># overwrite this!</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Name&quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">"guibase"</span>  <span class="c1"># overwrite this!</span>
+<span class="w">    </span><span class="sd">"""Name"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gui</span><span class="p">,</span> <span class="n">design</span><span class="p">:</span> <span class="n">QDesign</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            gui (MetalGUI): the GUI.</span>
 <span class="sd">            design (QDesign): The design.</span>
 <span class="sd">            initiate (bool): True to initiate the renderer.  Defaults to True.</span>
 <span class="sd">            fig (matplotlib.figure.Figure): current figure.  Defaults to None.</span>
 <span class="sd">            ax (ax): current ax.  Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">design</span><span class="o">=</span><span class="n">design</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="n">initiate</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">gui</span> <span class="o">=</span> <span class="n">gui</span>
@@ -511,61 +511,61 @@
 <div class="viewcode-block" id="QRendererGui.set_fig">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html#qiskit_metal.renderers.QRendererGui.set_fig">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_fig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fig</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the given figure.</span>
+<span class="w">        </span><span class="sd">"""Set the given figure.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            fig (matplotlib.figure.Figure): Figure to set</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">fig</span></div>
 
 
 <div class="viewcode-block" id="QRendererGui.set_ax">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html#qiskit_metal.renderers.QRendererGui.set_ax">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_ax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the given ax.</span>
+<span class="w">        </span><span class="sd">"""Set the given ax.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            ax (ax): ax to set</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span></div>
 
 
 <div class="viewcode-block" id="QRendererGui.setup_fig">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html#qiskit_metal.renderers.QRendererGui.setup_fig">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">setup_fig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fig</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Setup the given figure.</span>
+<span class="w">        </span><span class="sd">"""Setup the given figure.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            fig (matplotlib.figure.Figure): figure to setup</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            NotImplementedError: Function not written yet</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="QRendererGui.style_axis">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html#qiskit_metal.renderers.QRendererGui.style_axis">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">style_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Style the axis.</span>
+<span class="w">        </span><span class="sd">"""Style the axis.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            ax (ax): ax to style</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            NotImplementedError: Function not written yet</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="QRendererGui.render_design">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html#qiskit_metal.renderers.QRendererGui.render_design">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render the design.</span>
+<span class="w">        </span><span class="sd">"""Render the design.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            selection (selection): Not used</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># TOOD: handle selection</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">render_component</span><span class="p">(</span><span class="n">component</span><span class="p">)</span></div>
@@ -574,58 +574,58 @@
 <div class="viewcode-block" id="QRendererGui.render_component">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html#qiskit_metal.renderers.QRendererGui.render_component">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render the given component.</span>
+<span class="w">        </span><span class="sd">"""Render the given component.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            component (QComponent): the component</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            NotImplementedError: Function not written yet</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="QRendererGui.render_shapely">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html#qiskit_metal.renderers.QRendererGui.render_shapely">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_shapely</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render shapely.</span>
+<span class="w">        </span><span class="sd">"""Render shapely.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            NotImplementedError: Function not written yet</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="QRendererGui.render_connectors">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html#qiskit_metal.renderers.QRendererGui.render_connectors">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">render_connectors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render connectors.</span>
+<span class="w">        </span><span class="sd">"""Render connectors.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            NotImplementedError: Function not written yet</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="QRendererGui.clear_axis">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html#qiskit_metal.renderers.QRendererGui.clear_axis">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">clear_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the axis.</span>
+<span class="w">        </span><span class="sd">"""Clear the axis.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            NotImplementedError: Function not written yet</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="QRendererGui.clear_figure">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QRendererGui.html#qiskit_metal.renderers.QRendererGui.clear_figure">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">clear_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear  the figure.</span>
+<span class="w">        </span><span class="sd">"""Clear  the figure.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            NotImplementedError: Function not written yet</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 </div>
 
@@ -647,7 +647,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/08/11</div>
+              Last updated on 2026/09/27</div>
           </div>
           <div class="right-details">
             
@@ -670,6 +670,8 @@
     <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
 
 
 
