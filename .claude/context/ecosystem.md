@@ -87,8 +87,9 @@ versa.
 ### pyaedt (upstream)
 
 Ansys's official Python interface to AEDT. New track at
-`renderer_ansys_pyaedt/` uses it. Currently pinned `<0.24` due to
-bugs in 0.24 (noted Jan 2026).
+`renderer_ansys_pyaedt/` uses it. Pinned `>=0.21,<0.24` on Python < 3.14
+(bugs in 0.24, noted Jan 2026) and `>=1.0.1` on 3.14, where the 0.2x
+line cannot install. 1.x is not yet validated against real AEDT.
 
 ### Ansys AEDT (the proprietary backend)
 

@@ -2,7 +2,7 @@
 
 The core tension: every new dependency is a new failure mode for users on
 cloud environments where you can't `pip install` freely, and a new thing to
-pin, test, and maintain across Python 3.10–3.12.
+pin, test, and maintain across Python 3.10–3.14.
 
 ---
 
