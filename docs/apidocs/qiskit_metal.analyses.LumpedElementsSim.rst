@@ -23,6 +23,7 @@ LumpedElementsSim
    .. autoattribute:: LumpedElementsSim.renderer_initialized
    .. autoattribute:: LumpedElementsSim.setup
    .. autoattribute:: LumpedElementsSim.sim_setup_name
+   .. autoattribute:: LumpedElementsSim.study_kind
    .. autoattribute:: LumpedElementsSim.supported_data
    .. autoattribute:: LumpedElementsSim.units
    

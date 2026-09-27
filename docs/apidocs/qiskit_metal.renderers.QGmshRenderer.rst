@@ -19,6 +19,7 @@ QGmshRenderer
    .. autoattribute:: QGmshRenderer.element_extensions
    .. autoattribute:: QGmshRenderer.element_table_data
    .. autoattribute:: QGmshRenderer.element_table_docs
+   .. autoattribute:: QGmshRenderer.group_map
    .. autoattribute:: QGmshRenderer.initialized
    .. autoattribute:: QGmshRenderer.logger
    .. autoattribute:: QGmshRenderer.model
@@ -72,6 +73,7 @@ QGmshRenderer
    .. automethod:: QGmshRenderer.render_element_poly
    .. automethod:: QGmshRenderer.render_layer
    .. automethod:: QGmshRenderer.render_layers
+   .. automethod:: QGmshRenderer.render_ports
    .. automethod:: QGmshRenderer.render_tables
    .. automethod:: QGmshRenderer.save_screenshot
    .. automethod:: QGmshRenderer.start

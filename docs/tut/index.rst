@@ -14,6 +14,21 @@ Overview
     1-Overview/*
 
 
+Featured: package modes and qubit couplings
+===========================================
+
+Five notebooks reproduce R. Molavi *et al.*, `arXiv:2609.22442
+<https://arxiv.org/abs/2609.22442>`_: the couplings of a 10 × 10 transmon array
+to the modes of its metal package. They go from an analytic estimate (4.41) to
+a full-wave model of the whole package (4.45), with gmsh and a scikit-fem
+Maxwell solver in place of HFSS (``pip install "quantum-metal[skfem]"``).
+
+.. nbgallery::
+    :glob:
+
+    4-Analysis/4.4*
+
+
 Components
 ==========
 
@@ -121,21 +136,6 @@ Hamiltonian models
     4-Analysis/4.3*
     4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate
     4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model
-
-
----------------------------------
-Package modes and qubit couplings
----------------------------------
-
-Reproduces R. Molavi *et al.*, `arXiv:2609.22442
-<https://arxiv.org/abs/2609.22442>`_: the couplings of a 10 × 10 transmon array
-to the modes of its metal package, with gmsh and a scikit-fem Maxwell solver in
-place of HFSS.
-
-.. nbgallery::
-    :glob:
-
-    4-Analysis/4.4*
 
 
 Full-Chip Design Examples
