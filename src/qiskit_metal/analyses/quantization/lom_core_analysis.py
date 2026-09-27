@@ -840,8 +840,7 @@ class Subsystem:
         - ``truncated_dim`` — retained levels (default ``10``).
         - ``nodes`` — a single junction node.
 
-    ``"TL_RESONATOR"`` — distributed transmission-line resonator, maps to
-    ``scqubits.Oscillator``.
+    ``"TL_RESONATOR"`` — distributed transmission-line resonator, maps to ``scqubits.Oscillator``.
         - ``f_res`` — resonator frequency in GHz **(required)**.
         - ``Z0`` — characteristic impedance in ohms (default ``50``).
         - ``vp`` — phase velocity in m/s, or the string ``"use_design"``
@@ -856,8 +855,7 @@ class Subsystem:
           single node.
         - ``nodes`` — one node (open- or shorted-end) or two nodes.
 
-    ``"LUMPED_RESONATOR"`` — lumped LC resonator, maps to
-    ``scqubits.Oscillator``.
+    ``"LUMPED_RESONATOR"`` — lumped LC resonator, maps to ``scqubits.Oscillator``.
         - ``f_res`` — *(computed)* from the extracted L and C matrices.
         - ``truncated_dim`` — retained levels (default ``3``).
         - ``nodes`` — a single node.
@@ -1258,27 +1256,28 @@ class Cell:
         """Initialize the cell object
 
         Args:
-            options (Dict): options can contain the following keys
-                node_rename (dict): a dict mapping from original node names to
-                    new node names, {old_name: new_name}
-                cap_mat (pd.DataFrame): Maxwell capacitance of the cell in
-                    pandas dataframe
-                ind_dict (dict): the keys are tuples of specifying the two nodes
-                    between which the inductors lie. For example,
-                    {('n1', 'n2'): 10} specifies that there is an inductor of 10
-                    nH between node 'n1' and 'n2' for one cell and an inductor of
-                    13 nH between node 'n5' and 'n7' for another cell
-                jj_dict (dict): dict mapping original circuit nodes to custom-named
-                    junction nodes. This is the parameter informing the LOM analysis between
-                    which nodes the Josephson junctions are located. For example,
-                    {('n1', 'n2'): 'j1'} specifies that there is a junction between
-                    nodes 'n1' and 'n2' and named as 'j1' cf_dict (dict):
-                cj_dict (dict): if provided, specifies the junction capacitances in each
-                    cell. Structure is the same as ind_dict. For the dict, the keys are
-                    tuples of specifying the two nodes between which the junctions lie.
-                    For example, {('n1', 'n2'): 2} specifies that there is an
-                    junction capacitance of 2 fF between node 'n1' and 'n2' for the first
-                    provided cell and None for the second provided cell.
+            options (Dict): options can contain the following keys:
+
+                * ``node_rename`` (dict): a dict mapping from original node names to
+                  new node names, {old_name: new_name}
+                * ``cap_mat`` (pd.DataFrame): Maxwell capacitance of the cell in
+                  pandas dataframe
+                * ``ind_dict`` (dict): the keys are tuples of specifying the two nodes
+                  between which the inductors lie. For example,
+                  {('n1', 'n2'): 10} specifies that there is an inductor of 10
+                  nH between node 'n1' and 'n2' for one cell and an inductor of
+                  13 nH between node 'n5' and 'n7' for another cell
+                * ``jj_dict`` (dict): dict mapping original circuit nodes to custom-named
+                  junction nodes. This is the parameter informing the LOM analysis between
+                  which nodes the Josephson junctions are located. For example,
+                  {('n1', 'n2'): 'j1'} specifies that there is a junction between
+                  nodes 'n1' and 'n2' and named as 'j1'
+                * ``cj_dict`` (dict): if provided, specifies the junction capacitances in each
+                  cell. Structure is the same as ind_dict. For the dict, the keys are
+                  tuples of specifying the two nodes between which the junctions lie.
+                  For example, {('n1', 'n2'): 2} specifies that there is an
+                  junction capacitance of 2 fF between node 'n1' and 'n2' for the first
+                  provided cell and None for the second provided cell.
 
         """
         self._node_rename = options.get("node_rename", {})

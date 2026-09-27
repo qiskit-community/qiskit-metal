@@ -263,6 +263,11 @@ exclude_patterns = [
     "_archive",  # archived configs / configs kept for revival
     "stubs/**",  # autosummary stub files are generated but not included in any toctree
     "**/resources/**",  # data and helper files that notebooks load, not pages
+    # Developer notes, read on GitHub (not in any toctree):
+    "NEW_DEVELOPER_SETUP.md",
+    "dev_notes.md",
+    "docstring_cheat_sheet.md",
+    "architecture/**",
 ]
 
 nbsphinx_execute_arguments = [
