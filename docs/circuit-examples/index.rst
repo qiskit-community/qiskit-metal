@@ -17,6 +17,7 @@ of) a real or representative device.
     Wallraff group (ETH Zurich) — 17-Qubit Distance-3 Surface Code <F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode>
     Two-Qubit Cell of the 17-Qubit Chip — Mesh for Simulation (gmsh) <F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh>
     IBM-era Qiskit Metal example — Four-Qubit Chip <F.Small-quantum-chips/51-Four_qubit_chip>
+    Three Published iSWAP Gates — Full Chips <F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates>
     100-Qubit Mockup (algorithmic design, no routing) <../tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically>
     Full Chip Design <full-design-flow-examples/A.4-Full-chip-design>
 

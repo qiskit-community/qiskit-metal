@@ -45,6 +45,7 @@ My first full quantum chip design
     :glob:
 
     2-From-components-to-chip/2.2*
+    2-From-components-to-chip/FlipChip-design-tutorial
 
 
 ----------------------------------
@@ -98,6 +99,16 @@ Parametric sweeps
     :glob:
 
     4-Analysis/4.2*
+
+
+-----------------------------------------
+MultiPlanar designs in Ansys with pyaedt
+-----------------------------------------
+
+.. nbgallery::
+    :glob:
+
+    4-Analysis/pyaedt-multiplanar/*
 
 
 ------------------

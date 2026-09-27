@@ -29,6 +29,7 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 - **DRC waivers:** `validate(..., waivers=[Waiver(...)])` accepts named exceptions with a reason and an optional bound; waived findings are reported separately.
 - **Example designs:** a 17-qubit distance-3 surface-code chip (Wallraff group, ETH Zurich; Krinner *et al.*, Nature 2022) built stage by stage with a design-rule check after each stage, GUI or headless; and a 5-qubit Xmon processor (Barends *et al.*, Nature 2014), adapted from a Quantum Device Workshop 2026 project by Murat Can Sarihan.
 - **Docs:** keycap-badge GIFs on the GUI shortcuts page; QDesignOptimizer (202Q-lab, Chalmers) on the ecosystem and videos pages.
+- **Six more notebooks on the docs site**, modernized and re-run: the three published iSWAP full chips, the flip-chip tutorial, the A.7 IMS 2022 workshop, and the three pyaedt `MultiPlanar` notebooks (driven modal, Q3D, eigenmode). Cells that need Ansys carry the `requires-ansys` tag and are shown without outputs; everything else has stored outputs.
 
 ### Fixed
 

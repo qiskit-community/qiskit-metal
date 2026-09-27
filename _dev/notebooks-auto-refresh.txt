@@ -72,6 +72,10 @@ docs/tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling.ipynb
 #   docs/tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.ipynb
 #   docs/tut/4-Analysis/4.11..4.18 (all Analyze-* notebooks)
 #   docs/tut/4-Analysis/4.21..4.23 (all matrix sweeps)
+#   docs/tut/4-Analysis/pyaedt-multiplanar/*.ipynb (layout cells run anywhere;
+#     cells tagged requires-ansys are kept without outputs)
+#   docs/circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop.ipynb
+#     (same: layout and GDS run anywhere, Ansys cells tagged)
 #
 # gmsh + Linux X libs:
 #   docs/tut/3-Renderers/3.4-How-do-I-make-my-custom-QRenderer.ipynb

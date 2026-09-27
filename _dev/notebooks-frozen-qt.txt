@@ -75,3 +75,5 @@ docs/tut/1-Overview/1.3-Build-a-4-qubit-chip.ipynb
 # --- Section 2: lifecycle + the full-chip showpiece ---
 docs/tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.ipynb
 docs/tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.ipynb
+docs/tut/2-From-components-to-chip/FlipChip-design-tutorial.ipynb
+docs/circuit-examples/F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates.ipynb

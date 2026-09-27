@@ -270,13 +270,6 @@ exclude_patterns = [
     "dev_notes.md",
     "docstring_cheat_sheet.md",
     "architecture/**",
-    # Notebooks kept with the tutorials but not on the site: the pyaedt ones
-    # and the two workshop / chip notebooks have no stored outputs, and the
-    # flip-chip notebook stores errors. Remove an entry once it is re-run.
-    "tut/4-Analysis/pyaedt-multiplanar/**",
-    "tut/2-From-components-to-chip/FlipChip-design-tutorial.ipynb",
-    "circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop.ipynb",
-    "circuit-examples/F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates.ipynb",
 ]
 
 nbsphinx_execute_arguments = [
