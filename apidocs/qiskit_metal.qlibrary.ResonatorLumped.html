@@ -476,33 +476,49 @@
 <dd><img alt="../_images/ResonatorLumped.png" src="../_images/ResonatorLumped.png" />
 <p>The base ResonatorLumped class
 Inherits the QComponent class</p>
+<p>A meandered resonator inside a rectangular metal perimeter. The trace
+starts at the middle of the bottom side (shorted to the perimeter),
+runs up <code class="docutils literal notranslate"><span class="pre">initial</span></code>, meanders across the box with <code class="docutils literal notranslate"><span class="pre">n_turns</span></code> U-turns,
+and leaves through the break in the middle of the top side as the
+straight <code class="docutils literal notranslate"><span class="pre">final</span></code> segment.</p>
 <dl class="simple">
 <dt>Pins:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">pin_east</span></code>, <code class="docutils literal notranslate"><span class="pre">pin_west</span></code>, <code class="docutils literal notranslate"><span class="pre">pin_s</span></code> – midpoints of the east, west
 and south sides of the rectangular perimeter</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pin_ne</span></code>, <code class="docutils literal notranslate"><span class="pre">pin_nw</span></code>, <code class="docutils literal notranslate"><span class="pre">pin_se</span></code>, <code class="docutils literal notranslate"><span class="pre">pin_sw</span></code> – the four corners</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pin_n</span></code> – end of the upper straight segment (<code class="docutils literal notranslate"><span class="pre">final</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pin_n</span></code> – open end of the <code class="docutils literal notranslate"><span class="pre">final</span></code> segment, outside the box when
+<code class="docutils literal notranslate"><span class="pre">final</span></code> is long enough to pass through the break</p></li>
 </ul>
 </dd>
 <dt>Default Options:</dt><dd><ul class="simple">
-<li><p>pos_x: ‘0um’ – x-coordinate of the bottom center of the resonator</p></li>
-<li><p>pos_y: ‘0um’ – y-coordinate of the bottom center of the resonator</p></li>
+<li><p>pos_x: ‘0um’ – x-coordinate of the center of the box</p></li>
+<li><p>pos_y: ‘0um’ – y-coordinate of the center of the box</p></li>
 <li><p>orientation: ‘0’ – angle of rotation of the resonator</p></li>
-<li><p>box_width: ‘5mm’ – the width of the rectangular resonator structure</p></li>
-<li><p>box_height: ‘5mm’ – the height of the rectangular resonator structure</p></li>
-<li><p>perimeter_thicknes: ‘0.01mm’ – the width of the resonator along the perimeter</p></li>
-<li><p>res_width: ‘0.01m’ – the width of the resonator</p></li>
-<li><p>initial: ‘0.1m’ – the length of the lower straight resonator segment</p></li>
-<li><p>n_turns: ‘10’ – the number of turns in the curved resonator segment</p></li>
-<li><p>turn_radius: ‘0.1mm’ - the radius of the turns in the curved resonator segment</p></li>
-<li><p>inner_space: ‘0.1mm’ - the space between the curved resonator</p></li>
-<li><p>outer_space: ‘0.1mm’ – the space between rectangular and curved resonator turns</p></li>
-<li><p>final: ‘2.5mm’ – the length of the upper straight segment of the resonator</p></li>
-<li><p>break_width: ‘0.2mm’ – the width of the “break” in the top of the rectangular resonator</p></li>
+<li><p>box_width: ‘5mm’ – the width of the rectangular perimeter</p></li>
+<li><p>box_height: ‘5mm’ – the height of the rectangular perimeter</p></li>
+<li><p>perimeter_thickness: ‘0.01mm’ – the width of the perimeter metal</p></li>
+<li><p>res_width: ‘0.01mm’ – the width of the resonator trace</p></li>
+<li><p>initial: ‘0.1mm’ – the length of the first straight segment, from
+the bottom of the perimeter</p></li>
+<li><p>n_turns: ‘14’ – the number of U-turns in the meander</p></li>
+<li><p>turn_radius: ‘0.1mm’ – the radius of the meander’s bends</p></li>
+<li><p>inner_space: ‘0.19mm’ – the gap between adjacent meander lines,
+edge to edge. The line pitch is <code class="docutils literal notranslate"><span class="pre">inner_space</span> <span class="pre">+</span> <span class="pre">res_width</span></code>, at
+least <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">turn_radius</span></code>; above that, each U-turn gets a straight
+section between its two bends</p></li>
+<li><p>outer_space: ‘0.1mm’ – the gap between the perimeter and the outer
+edge of the U-turns</p></li>
+<li><p>final: ‘2.5mm’ – the length of the last straight segment, from the
+top of the meander up through the break</p></li>
+<li><p>break_width: ‘0.2mm’ – the width of the break in the top of the
+perimeter</p></li>
 <li><p>layer: ‘1’ – the layer of the component</p></li>
 </ul>
 </dd>
 </dl>
+<p>Previously the meander was fixed at 14 U-turns, and <code class="docutils literal notranslate"><span class="pre">n_turns</span></code> (then
+defaulting to 10) and <code class="docutils literal notranslate"><span class="pre">inner_space</span></code> had no effect. The current defaults
+reproduce that geometry.</p>
 <p>Create a new Metal component and adds it’s default_options to the
 design.</p>
 <dl class="field-list simple">
@@ -571,7 +587,7 @@ class name. e.g., qiskit_metal.qlibrary.qubits.TransmonPocket.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.qlibrary.ResonatorLumped.default_options">
-<span class="sig-name descname"><span class="pre">default_options</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'box_height':</span> <span class="pre">'5mm',</span> <span class="pre">'box_width':</span> <span class="pre">'5mm',</span> <span class="pre">'break_width':</span> <span class="pre">'0.2mm',</span> <span class="pre">'final':</span> <span class="pre">'2.5mm',</span> <span class="pre">'initial':</span> <span class="pre">'0.1mm',</span> <span class="pre">'inner_space':</span> <span class="pre">'0.1mm',</span> <span class="pre">'layer':</span> <span class="pre">'1',</span> <span class="pre">'n_turns':</span> <span class="pre">'10',</span> <span class="pre">'orientation':</span> <span class="pre">'0',</span> <span class="pre">'outer_space':</span> <span class="pre">'0.1mm',</span> <span class="pre">'perimeter_thickness':</span> <span class="pre">'0.01mm',</span> <span class="pre">'pos_x':</span> <span class="pre">'0</span> <span class="pre">um',</span> <span class="pre">'pos_y':</span> <span class="pre">'0</span> <span class="pre">um',</span> <span class="pre">'res_width':</span> <span class="pre">'0.01mm',</span> <span class="pre">'turn_radius':</span> <span class="pre">'0.1mm'}</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.ResonatorLumped.default_options" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">default_options</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'box_height':</span> <span class="pre">'5mm',</span> <span class="pre">'box_width':</span> <span class="pre">'5mm',</span> <span class="pre">'break_width':</span> <span class="pre">'0.2mm',</span> <span class="pre">'final':</span> <span class="pre">'2.5mm',</span> <span class="pre">'initial':</span> <span class="pre">'0.1mm',</span> <span class="pre">'inner_space':</span> <span class="pre">'0.19mm',</span> <span class="pre">'layer':</span> <span class="pre">'1',</span> <span class="pre">'n_turns':</span> <span class="pre">'14',</span> <span class="pre">'orientation':</span> <span class="pre">'0',</span> <span class="pre">'outer_space':</span> <span class="pre">'0.1mm',</span> <span class="pre">'perimeter_thickness':</span> <span class="pre">'0.01mm',</span> <span class="pre">'pos_x':</span> <span class="pre">'0</span> <span class="pre">um',</span> <span class="pre">'pos_y':</span> <span class="pre">'0</span> <span class="pre">um',</span> <span class="pre">'res_width':</span> <span class="pre">'0.01mm',</span> <span class="pre">'turn_radius':</span> <span class="pre">'0.1mm'}</span></span><a class="headerlink" href="#qiskit_metal.qlibrary.ResonatorLumped.default_options" title="Link to this definition">¶</a></dt>
 <dd><p>Default drawing options</p>
 </dd></dl>
 
