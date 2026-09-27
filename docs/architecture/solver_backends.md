@@ -1,7 +1,7 @@
 # Solver backends: shared abstractions (stage 1 design)
 
 Status: design, with decisions D1 and D3–D6 taken and D2 (Palace packaging)
-open (section 8). Steps 1.0–1.2 are done; the later steps are not
+open (section 8). Steps 1.0–1.3 are done; the later steps are not
 implemented yet. This note covers
 stage 1 of `ROADMAP.md`, "Solver backends: shared abstractions, then
 scikit-fem, ElmerFEM, Palace and Ansys". It has four parts: a gap analysis
@@ -572,22 +572,30 @@ The tuple arguments map one to one:
 
 ### 3.5 Nets and physical groups
 
-**Nets.** `galvanic_nets(design, selection, open_pins, metal_layers)` returns
-a `NetMap`:
+**Nets.** `nets_for_design(design, components, open_pins, metal_layers)`
+returns a `NetMap`: the ground net first, then nets 0, 1, ...
 
 ```python
 @dataclass(frozen=True)
 class Net:
-    id: int
-    members: tuple[GeomRef, ...]   # (component, qgeometry name, table)
-    is_ground: bool
+    key: int | str                 # "gnd" or 0, 1, ...
+    members: tuple[GeomRef, ...]   # (component, qgeometry name)
     chip: str
 ```
 
-It is `QElmerRenderer.assign_nets` and `get_gnd_qgeoms` moved into
-`toolbox_metal/nets.py`: shapely contact plus pin-based grounding. It needs
-no gmsh, so the gmsh renderer, ElmerFEM, scikit-fem and Palace all read the
-same nets. `QElmerRenderer` calls it and keeps its current output.
+- **Where it came from.** It is `QElmerRenderer.get_qgeometry_table`,
+  `assign_nets` and `get_gnd_qgeoms` moved into `toolbox_metal/nets.py`
+  (`metal_geometry_table`, `galvanic_nets`, `grounded_geometries`): shapely
+  contact plus pin-based grounding.
+- **No gmsh.** The gmsh renderer, ElmerFEM, scikit-fem and Palace all read
+  the same nets.
+- **Elmer unchanged.** `QElmerRenderer` calls these functions. Its nets and
+  the Elmer input file it writes are unchanged, checked against the
+  previous code on the 4.19 transmon and on two routed qubits.
+- **Id bug fixed.** The old code found a component's name from its id by
+  position in `design.components`. After a component was deleted, shapes
+  were named after the wrong component and the Elmer setup failed with a
+  `KeyError`.
 
 **Labels.** `NetMap.label(net, style)` gives one deterministic label per
 style.
@@ -599,7 +607,7 @@ style.
   style this gives the positional order `extract_transmon_coupled_Noscillator`
   expects, and the names LOM 2.0 cells already use (`grd_node=
   "ground_main_plane"`).
-- Which style is canonical is decision D3.
+- The `q3d` style is canonical (decision D3).
 
 **Physical groups.** `QGmshRenderer.group_map` is a `PhysicalGroupMap` built
 from the same tags as `physical_groups`. The existing dict and its names do
@@ -1048,7 +1056,7 @@ None changes a stored notebook output.
 | 1.0 (done) | Fix the junction size field in `QGmshRenderer.define_mesh_size_fields`. | `tests/test_gmsh_mesh_size_fields.py`: the junction field lists the junction curves and uses `max_size_jj`. With `skip_junctions=True` (tutorial 4.19's Elmer path) the mesh is node-for-node the same as before. |
 | 1.1 (done) | `problem.py`: ports, junctions, pins, boxes, boundaries, `MeshSpec`, studies; `from_run_args` / `to_run_args`; `validate()`; SI values. No caller yet. | `tests/test_simulation_problem.py`: round trips of the argument lists of the analysis tutorials (4.02, 4.03, 4.14, 4.16–4.18, 4.22, 4.23, A.4, A.7, pyaedt multiplanar); every error reported by `validate()`; studies from the three default setups. |
 | 1.2 (done) | `capabilities.py` with entries for every registered renderer (`hfss`, `q3d`, `aedt_hfss`, `aedt_q3d`, `elmer`, `gmsh`, `gds`); `Capabilities.check`, `requirements_from_problem`; the study-type check in the three simulation classes; `capability_table()`. | `tests/test_simulation_capabilities.py`: unsupported pairs fail before rendering with the alternatives named; supported pairs and undeclared renderers pass; missing features and ignored changed settings are all reported. |
-| 1.3 | `toolbox_metal/nets.py` (moved from `QElmerRenderer`); `QElmerRenderer` calls it; label styles. | The same `nets` dictionary as today on the 4.19 design and the two-qubit cell. |
+| 1.3 (done) | `toolbox_metal/nets.py` (moved from `QElmerRenderer`); `QElmerRenderer` calls it; `q3d` and `elmer` label styles. | `tests/test_nets.py`: the nets `QElmerRenderer` produced before the move on the 4.19 transmon and two routed qubits (the Elmer input file was also compared, byte for byte); grounding of pins that are not open; names after a deleted component; labels. |
 | 1.4 | `renderer_gmsh/groups.py` and `QGmshRenderer.group_map`; opt-in per-side outer faces. | Every tag in `physical_groups` appears once in the map; the Elmer `.sif` and `.msh` are unchanged with defaults. |
 | 1.5 | `MeshSpec` compiled by `QGmshRenderer`; today's options become the default spec. | Identical field list and parameters for the default spec; role-selected refinements tested on the fixture. |
 | 1.6 | Port and junction geometry (sheet, line, CPW pair, wave-port face) in `QGmshRenderer`, registered as `PORT` / `JUNCTION` groups; endcaps at any pin angle. | Sheet geometry against pin `middle`/`normal`/`width`/`gap` at 0°, 90° and 45°. |
