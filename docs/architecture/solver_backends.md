@@ -1,7 +1,7 @@
 # Solver backends: shared abstractions (stage 1 design)
 
 Status: design, with decisions D1 and D3–D6 taken and D2 (Palace packaging)
-open (section 8). Steps 1.0–1.4 are done; the later steps are not
+open (section 8). Steps 1.0–1.5 are done; the later steps are not
 implemented yet. This note covers
 stage 1 of `ROADMAP.md`, "Solver backends: shared abstractions, then
 scikit-fem, ElmerFEM, Palace and Ansys". It has four parts: a gap analysis
@@ -742,10 +742,22 @@ The mesh spec says only where elements must be small. Element order and
 adaptive refinement belong to the study (3.9), which is where both HFSS and
 Palace keep them.
 
-- `QGmshRenderer` compiles a `MeshSpec` to Distance+Threshold(+Ball)+Min
-  fields, resolved through the group map.
-- The spec equivalent to today's `options.mesh` is the default, and it must
-  reproduce today's fields exactly.
+- **How gmsh reads it.** `QGmshRenderer.mesh_spec` holds a `MeshSpec`, and
+  the renderer compiles it into gmsh size fields:
+  - a target selected by role, net or component becomes a Distance field on
+    the edges of the matching surfaces, plus a Threshold;
+  - `shape="ball"` becomes a Ball field around the target;
+  - `Select(box=...)` becomes a Box field.
+
+  These are added to the fields `options.mesh` defines, and the minimum over
+  all of them sets the element size. The targets are found through
+  `group_map`.
+- **No spec, no change.** With no spec (or an empty one), the fields and the
+  exported mesh are exactly those of before.
+- **The global lower bound.** gmsh's `Mesh.MeshSizeMin` (set from `min_size`)
+  clamps every field. When refinements exist, the bound drops to the
+  smallest size they ask for; otherwise a refinement below `min_size` would
+  have no effect.
 - The junction field works since step 1.0 (section 6).
 - Ansys maps only what its options express: `max_mesh_length_jj` and
   `max_mesh_length_port`, plus the adaptive settings in `setup`. Anything
@@ -1065,7 +1077,7 @@ None changes a stored notebook output.
 | 1.2 (done) | `capabilities.py` with entries for every registered renderer (`hfss`, `q3d`, `aedt_hfss`, `aedt_q3d`, `elmer`, `gmsh`, `gds`); `Capabilities.check`, `requirements_from_problem`; the study-type check in the three simulation classes; `capability_table()`. | `tests/test_simulation_capabilities.py`: unsupported pairs fail before rendering with the alternatives named; supported pairs and undeclared renderers pass; missing features and ignored changed settings are all reported. |
 | 1.3 (done) | `toolbox_metal/nets.py` (moved from `QElmerRenderer`); `QElmerRenderer` calls it; `q3d` and `elmer` label styles. | `tests/test_nets.py`: the nets `QElmerRenderer` produced before the move on the 4.19 transmon and two routed qubits (the Elmer input file was also compared, byte for byte); grounding of pins that are not open; names after a deleted component; labels. |
 | 1.4 (done) | `renderer_gmsh/groups.py` and `QGmshRenderer.group_map`; opt-in per-side outer faces (`outer_face_groups`). | `tests/test_gmsh_groups.py`: every physical group once, with a dimension gmsh confirms; roles, nets and materials on the 4.19 transmon; the six walls cover `vacuum_box_sfs`. With default options the exported `.msh` (1.4 MB) and the Elmer `.sif` are byte-identical to before. |
-| 1.5 | `MeshSpec` compiled by `QGmshRenderer`; today's options become the default spec. | Identical field list and parameters for the default spec; role-selected refinements tested on the fixture. |
+| 1.5 (done) | `QGmshRenderer.mesh_spec`: `MeshSpec` refinements (role, net, component, junction ball, box) on top of the `mesh` options; `max_size` / `min_size` overrides. | `tests/test_gmsh_mesh_spec.py`: no spec and an empty spec give the same fields; each refinement adds the expected field on the expected entities; unmatched targets raise; a refined mesh has more nodes. With no spec, the exported `.msh` and Elmer `.sif` are byte-identical to before. |
 | 1.6 | Port and junction geometry (sheet, line, CPW pair, wave-port face) in `QGmshRenderer`, registered as `PORT` / `JUNCTION` groups; endcaps at any pin angle. | Sheet geometry against pin `middle`/`normal`/`width`/`gap` at 0°, 90° and 45°. |
 | 1.7 | `materials.py`: material options and their resolution; `QElmerRenderer` reads the options instead of its hard-coded list. | The Elmer `.sif` is unchanged for default options; setting `sim.model.materials.silicon.eps_r` or a sapphire layer changes εr; an unresolved material name raises. |
 | 1.8a | In pyEPR: a public array entry to `QuantumAnalysis` (frequencies, Q, L_j, C_j, signed p_mj), with its own tests there. | pyEPR's tests: an analytic single-junction case gives the known anharmonicity; an existing HFSS data file reproduces the same results through the new entry. |

@@ -67,6 +67,13 @@ class QGmshRenderer(QRenderer):
           vacuum box (``outer_x-`` ... ``outer_z+``), for solvers that set a
           condition per wall. Off by default: the extra groups change what
           the exported mesh contains.
+
+    Attributes:
+        mesh_spec (MeshSpec, optional): refinement by role, net, component,
+            junction or box, on top of the fields ``mesh`` options define
+            (:class:`~qiskit_metal.analyses.simulation.problem.MeshSpec`); its
+            ``max_size`` / ``min_size`` override those options. None: the
+            options alone.
     """
 
     default_options = Dict(
@@ -122,6 +129,8 @@ class QGmshRenderer(QRenderer):
         self.layer_types = default_layer_types if layer_types is None else layer_types
 
         self.bounds_handler = BoundsForPathAndPolyTables(self.design)
+
+        self.mesh_spec = None
 
         # Filled by render_design; read by group_map.
         self._shape_sources = dict()
@@ -290,6 +299,9 @@ class QGmshRenderer(QRenderer):
         self.paths_dict = defaultdict(dict)
         self.juncs_dict = defaultdict(dict)
         self.physical_groups = defaultdict(dict)
+
+        # Set by render_layers when the sample holder is drawn.
+        self.vacuum_box = None
 
         # For group_map: which component shape each named group comes from.
         self._shape_sources = dict()
@@ -1281,10 +1293,18 @@ class QGmshRenderer(QRenderer):
         gmsh.option.setNumber("General.RotationY", 0)
         gmsh.option.setNumber("General.RotationZ", -45)
 
+    def _mesh_size(self, key: str):
+        """``min_size`` or ``max_size``: from ``mesh_spec`` when it sets one,
+        else from the ``mesh`` options."""
+        value = getattr(self.mesh_spec, key, None) if self.mesh_spec else None
+        if value is None:
+            value = self._options["mesh"][key]
+        return self.parse_units_gmsh(value)
+
     def define_mesh_size_fields(self):
         """Define size fields for mesh varying the mesh density across the design."""
-        min_mesh_size = self.parse_units_gmsh(self._options["mesh"]["min_size"])
-        max_mesh_size = self.parse_units_gmsh(self._options["mesh"]["max_size"])
+        min_mesh_size = self._mesh_size("min_size")
+        max_mesh_size = self._mesh_size("max_size")
         min_mesh_size_jj = self.parse_units_gmsh(self._options["mesh"]["max_size_jj"])
         grad_delta = self.parse_units_gmsh(
             self._options["mesh"]["mesh_size_fields"]["gradient_delta"]
@@ -1373,6 +1393,7 @@ class QGmshRenderer(QRenderer):
         gmsh.model.mesh.field.setNumber(jj_tf, "SizeMin", min_mesh_size_jj)
         gmsh.model.mesh.field.setNumber(jj_tf, "SizeMax", max_mesh_size)
         thresh_fields += [jj_tf]
+        thresh_fields += self._refinement_fields(max_mesh_size)
 
         min_field = gmsh.model.mesh.field.add("Min")
         gmsh.model.mesh.field.setNumbers(min_field, "FieldsList", thresh_fields)
@@ -1381,10 +1402,123 @@ class QGmshRenderer(QRenderer):
 
         gmsh.option.setNumber("Mesh.MeshSizeExtendFromBoundary", 0)
 
+    def _refine_surfaces(self, select) -> list[int]:
+        """The surfaces a ``Select`` picks, through ``group_map``."""
+        from qiskit_metal.renderers.renderer_gmsh.groups import Role
+
+        if select.port is not None:
+            raise ValueError(
+                f"Mesh refinement on port {select.port!r}: ports are not rendered "
+                "as physical groups yet."
+            )
+        attrs = {}
+        if select.role is not None:
+            attrs["role"] = Role(select.role)
+        if select.net is not None:
+            attrs["net"] = select.net
+        if select.component is not None:
+            attrs["component"] = select.component
+        if select.junction is not None:
+            attrs.update(
+                role=Role.JUNCTION,
+                component=select.junction.component,
+                qgeometry=select.junction.name,
+            )
+        groups = [g for g in self.group_map.select(**attrs) if g.dim == 2]
+        if not groups:
+            raise ValueError(f"Mesh refinement {select}: no surfaces match.")
+        return sorted(
+            {
+                int(s)
+                for g in groups
+                for s in gmsh.model.getEntitiesForPhysicalGroup(2, g.tag)
+            }
+        )
+
+    def _refinement_fields(self, max_mesh_size: float) -> list[int]:
+        """Size fields for ``mesh_spec.refine``; the caller takes their minimum
+        with the default fields."""
+        if not self.mesh_spec or not self.mesh_spec.refine:
+            return []
+        field = gmsh.model.mesh.field
+        fields = []
+        for refine in self.mesh_spec.refine:
+            size = self.parse_units_gmsh(refine.size)
+            grow = self.parse_units_gmsh(refine.grow)
+            if refine.select.box is not None:
+                x0, y0, x1, y1 = self.parse_units_gmsh(list(refine.select.box))
+                zlo, zhi = self._model_z_range()
+                f = field.add("Box")
+                for key, value in (
+                    ("XMin", min(x0, x1)),
+                    ("XMax", max(x0, x1)),
+                    ("YMin", min(y0, y1)),
+                    ("YMax", max(y0, y1)),
+                    ("ZMin", zlo),
+                    ("ZMax", zhi),
+                    ("VIn", size),
+                    ("VOut", max_mesh_size),
+                    ("Thickness", grow),
+                ):
+                    field.setNumber(f, key, value)
+                fields.append(f)
+                continue
+            surfaces = self._refine_surfaces(refine.select)
+            if refine.shape == "ball":
+                boxes = [gmsh.model.occ.getBoundingBox(2, s) for s in surfaces]
+                lo = [min(b[i] for b in boxes) for i in range(3)]
+                hi = [max(b[i + 3] for b in boxes) for i in range(3)]
+                f = field.add("Ball")
+                for key, value in (
+                    ("XCenter", (lo[0] + hi[0]) / 2),
+                    ("YCenter", (lo[1] + hi[1]) / 2),
+                    ("ZCenter", (lo[2] + hi[2]) / 2),
+                    ("Radius", grow),
+                    ("VIn", size),
+                    ("VOut", max_mesh_size),
+                ):
+                    field.setNumber(f, key, value)
+                fields.append(f)
+                continue
+            curves = sorted(
+                {
+                    int(c)
+                    for s in surfaces
+                    for loop in gmsh.model.occ.getCurveLoops(s)[1]
+                    for c in loop
+                }
+            )
+            distance = field.add("Distance")
+            field.setNumbers(distance, "CurvesList", curves)
+            field.setNumber(distance, "NumPointsPerCurve", 100)
+            f = field.add("Threshold")
+            field.setNumber(f, "InField", distance)
+            field.setNumber(f, "SizeMin", size)
+            field.setNumber(f, "SizeMax", max_mesh_size)
+            field.setNumber(f, "DistMin", 0.0)
+            field.setNumber(f, "DistMax", grow)
+            fields.append(f)
+        return fields
+
+    def _model_z_range(self) -> tuple[float, float]:
+        """The z extent of the model: the vacuum box if drawn, else all volumes."""
+        if getattr(self, "vacuum_box", None) is not None:
+            bb = gmsh.model.occ.getBoundingBox(3, self.vacuum_box)
+        else:
+            bb = gmsh.model.getBoundingBox(-1, -1)
+        return bb[2], bb[5]
+
     def define_mesh_properties(self):
         """Define properties for mesh depending on renderer options."""
-        min_mesh_size = self.parse_units_gmsh(self._options["mesh"]["min_size"])
-        max_mesh_size = self.parse_units_gmsh(self._options["mesh"]["max_size"])
+        min_mesh_size = self._mesh_size("min_size")
+        max_mesh_size = self._mesh_size("max_size")
+        if self.mesh_spec and self.mesh_spec.refine:
+            # Mesh.MeshSizeMin clamps every size field: let a refinement go
+            # below the global lower bound it asks for.
+            min_mesh_size = min(
+                [min_mesh_size]
+                + [self.parse_units_gmsh(r.size) for r in self.mesh_spec.refine]
+            )
         gmsh.option.setNumber(
             "Mesh.MeshSizeFromCurvature", self._options["mesh"]["nodes_per_2pi_curve"]
         )
