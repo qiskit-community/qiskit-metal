@@ -11,9 +11,13 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 ### Added
 
 - **Python 3.13 and 3.14 support.** `requires-python` is now `>=3.10,<3.15`. Until now every release since 0.5.2.post4 declared `<3.13`, so `pip install quantum-metal` on 3.13/3.14 silently resolved to 0.5.1. CI tests 3.10–3.14 on Linux and 3.10 + 3.14 on macOS/Windows. Based on #1182 by @PositroniumJS. (closes #1029)
+- **`LumpedElementsSim.save_capacitance_matrix(path)`** saves the capacitance matrix to a CSV of your choice, with the units in the header cell. (#1017)
 
 ### Fixed
 
+- **`LOManalysis.run_lom()` with a user-supplied matrix.** Setting only `sim.capacitance_matrix` (as the method's own warning suggests) raised `KeyError: 0`: an inverted type check never filled the per-pass data. It now uses the matrix as the single pass, converted from `sim.units` (default fF) to farads.
+- **Lite installs: `load_q3d_capacitance_matrix()` no longer needs IPython/jinja2** to print the matrix; it falls back to plain text.
+- **Docs:** `Subsystem` energies (`EJ`, `EL`, `EC`) are in MHz, not GHz (#920); `TransmonPocketCL` documents its `Charge_Line` pin (#989).
 - **Tutorials that failed on a fresh kernel.** Fifteen notebooks (3.5, 4.02–4.05, 4.11–4.14, 4.19, two Hamiltonian-model notebooks, and two Appendix B topics) lost their import cells when `%autoreload` was stripped in 6512e0d, and raised `NameError` at the first cell that used `designs`, `MetalGUI`, etc. The import cells are restored; stored outputs are unchanged.
 - **Tutorial 4.02: junction now follows `sim.setup.vars.Lj`.** Section I links the qubit's `hfss_inductance`/`hfss_capacitance` to the `Lj`/`Cj` design variables, so HFSS and the EPR step use the same junction inductance. (#1019)
 - **`TransmonCross` `connector_location='270'`** placed the connector on the east arm instead of the south arm. The rotation chain had no branch above 225 degrees, so 270 matched the `> 135` test. (#1173, closes #1052)
@@ -24,6 +28,9 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 - **numpy 2 supported; `numpy<2` cap removed.** The cap dated from a `pandas==1.5.3` pin: wheels built against numpy 1.x fail to import under numpy 2. Floors now sit at the first numpy-2-compatible releases: pandas 2.2.2, scipy 1.13.0, matplotlib 3.8.4, shapely 2.0.4 and pint 0.24.4 (older pint calls `np.cumproduct`; 0.24.0–0.24.3 also break with flexparser 0.4). numpy 1.x remains supported. pyyaml floor 6.0.1 (first with Python 3.12 wheels). Verified by running the suite at the lowest allowed versions under both numpy 1.24.2 and 2.0.0.
 - **pyaedt pin is Python-version dependent.** `>=0.21,<0.24` on Python < 3.14 (unchanged), `>=1.0.1` on 3.14 only, because pyaedt 0.2x requires `numpy<2.3`, which has no 3.14 wheels. The pyaedt renderer has not been validated against AEDT with pyaedt 1.x.
 - `math_and_overrides.cross` computes the 2D z-component directly; `np.cross` on 2-element vectors is deprecated in numpy 2. (@PositroniumJS, #1182)
+- **Clearer legacy-LOM size error.** `extract_transmon_coupled_Noscillator` now reports the actual and expected matrix size, the required net order, and that only floating two-pad transmons are supported, pointing grounded qubits to the Cell/Subsystem/CompositeSystem API. (#1015)
+- **`EigenmodeSim` warns when `setup.vars.Lj` can't reach the junction:** a rendered junction whose `hfss_inductance` is a fixed value different from `Lj` is simulated at that value while the EPR step reads `Lj`. Silent with defaults and when the junction is linked to the variable. (#1019)
+- **`EPRanalysis` warns before a very large spectrum diagonalisation** (`fock_trunc**n_modes` > 20,000 states) with the estimated memory. (#1018)
 - **`TransmonCrossFL` warns when a connection pad resolves to the south arm** while `make_fl` is True. That arm carries the flux line, and the claw polygon overlaps it. The south arm also carries the junction on the base `TransmonCross`; at default options the claw clears it by ~11um, with the etch region within ~5um. Both constraints are now documented on the class docstrings.
 
 ## Quantum Metal v0.8.0 (airbridges + design-rule checking; no breaking changes)

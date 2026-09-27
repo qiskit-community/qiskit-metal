@@ -125,6 +125,7 @@ class EigenmodeSim(QSimulation):
         if not self.renderer_initialized:
             self._initialize_renderer()
 
+        self._warn_unlinked_junction_inductance(components)
         vars_to_initialize = self.setup.vars
         renderer_design_name = self._render(
             name=name,
@@ -140,6 +141,67 @@ class EigenmodeSim(QSimulation):
 
         self._analyze()
         return renderer_design_name, self.sim_setup_name
+
+    def _warn_unlinked_junction_inductance(self, components: list | None = None):
+        """Warn when ``setup.vars.Lj`` disagrees with the junctions that will
+        actually be rendered.
+
+        ``setup.vars`` only defines renderer design variables. A junction's
+        lumped boundary takes its inductance from the component option
+        ``<renderer>_inductance`` (e.g. ``hfss_inductance``, default
+        ``"10nH"``). If that option is a literal value that differs from
+        ``setup.vars.Lj``, the field simulation ignores ``Lj`` while the EPR
+        step reads it (#1019). Junctions set to a variable name are left
+        alone, as are literal values equal to ``Lj``.
+        """
+        lj = self.setup.vars.get("Lj") if self.setup.vars else None
+        if lj is None or self.design is None or not self.renderer_name:
+            return
+        col = f"{self.renderer_name}_inductance"
+        table = self.design.qgeometry.tables.get("junction")
+        if table is None or table.empty or col not in table.columns:
+            return
+        if components:
+            ids = {
+                self.design.components[name].id
+                for name in components
+                if name in self.design.components
+            }
+            table = table[table["component"].isin(ids)]
+
+        try:
+            from pint import UnitRegistry
+
+            ureg = UnitRegistry()
+            lj_h = ureg(str(lj)).to("henry").magnitude
+        except Exception:  # unparseable Lj: nothing reliable to compare
+            return
+
+        mismatched = []
+        for _, row in table.iterrows():
+            value = row[col]
+            if isinstance(value, str) and value.strip() in self.setup.vars:
+                continue  # linked to a design variable
+            try:
+                val_h = ureg(str(value)).to("henry").magnitude
+            except Exception:
+                continue
+            if abs(val_h - lj_h) > 1e-6 * max(abs(lj_h), 1e-30):
+                comp = self.design._components[row["component"]].name
+                mismatched.append(f"{comp}.{row['name']} ({col}={value!r})")
+
+        if mismatched:
+            self.logger.warning(
+                "setup.vars.Lj = %r, but these junctions are rendered with a "
+                "fixed inductance, so the simulation will not use Lj: %s. "
+                "To link them, set e.g. "
+                "design.components['<name>'].options.%s = 'Lj' (and %s = 'Cj') "
+                "and rebuild. See tutorial 4.02.",
+                lj,
+                ", ".join(mismatched),
+                col,
+                col.replace("_inductance", "_capacitance"),
+            )
 
     @property
     def convergence_f(self) -> pd.DataFrame:

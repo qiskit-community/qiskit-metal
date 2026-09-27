@@ -148,17 +148,23 @@ class LOManalysis(QAnalysis):
 
         s = self.setup
 
-        if not isinstance(self.sim.capacitance_matrix, pd.DataFrame):
-            if self.sim.capacitance_matrix == {}:
-                self.logger.warning(
-                    "Please initialize the capacitance_matrix before executing this method."
-                    "`self.sim.capacitance_matrix = pd.DataFrame(...)`"
-                )
-                return None
-            if self.sim.capacitance_all_passes == {}:
-                self.sim.capacitance_all_passes[1] = self.sim.capacitance_matrix.values
-
         ureg = UnitRegistry()
+
+        cmat = self.sim.capacitance_matrix
+        if not isinstance(cmat, pd.DataFrame) or cmat.empty:
+            self.logger.warning(
+                "Please initialize the capacitance_matrix before executing this method. "
+                "`self.sim.capacitance_matrix = pd.DataFrame(...)`"
+            )
+            return None
+        if not self.sim.capacitance_all_passes:
+            # A matrix set directly (not produced by a simulation run) has no
+            # per-pass history: use it as the only pass. Per-pass matrices are
+            # stored in farads (see QQ3DRenderer.get_capacitance_all_passes),
+            # while capacitance_matrix is in ``sim.units`` (default fF).
+            to_farad = ureg(self.sim.units or "fF").to("farad").magnitude
+            self.sim.capacitance_all_passes = {1: cmat.values * to_farad}
+
         ic_amps = Ic_from_Lj(s.junctions.Lj, "nH", "A")
         cj = ureg(f"{s.junctions.Cj} fF").to("farad").magnitude
         fread = ureg(f"{s.freq_readout} GHz").to("GHz").magnitude

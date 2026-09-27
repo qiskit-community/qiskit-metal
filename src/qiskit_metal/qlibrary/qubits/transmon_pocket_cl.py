@@ -43,6 +43,12 @@ class TransmonPocketCL(TransmonPocket):
     This is a child of TransmonPocket, see TransmonPocket for the variables and
     description of that class.
 
+    Pins:
+        In addition to one pin per entry in ``connection_pads``, the charge
+        line adds a pin named ``Charge_Line`` when ``make_CL=True`` (the
+        default). Its width and gap follow ``cl_width`` and ``cl_gap``.
+        ``list(qubit.pins)`` lists the pin names of any component.
+
     ::
 
         _________________

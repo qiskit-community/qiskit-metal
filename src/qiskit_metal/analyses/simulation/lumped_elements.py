@@ -11,6 +11,8 @@
 # that they have been altered from the originals.
 
 from typing import Optional, Tuple
+from pathlib import Path
+
 import pandas as pd
 from qiskit_metal.designs import QDesign
 from qiskit_metal import Dict
@@ -170,6 +172,40 @@ class LumpedElementsSim(QSimulation):
             )
             return
         self.set_data("cap_matrix", data)
+
+    def save_capacitance_matrix(self, path) -> Path:
+        """Save the capacitance matrix to a CSV file you choose.
+
+        The values are in ``self.units`` (typically fF); the units are written
+        into the header cell, e.g. ``C [fF]``. Reload the matrix with
+        ``pd.read_csv(path, index_col=0)``.
+
+        Args:
+            path (str or Path): Destination file. Missing parent directories
+                are created.
+
+        Returns:
+            Path: The file written.
+
+        Raises:
+            ValueError: If there is no capacitance matrix yet.
+        """
+        cmat = self.capacitance_matrix
+        if not isinstance(cmat, pd.DataFrame) or cmat.empty:
+            raise ValueError(
+                "No capacitance matrix to save. Run run_sim() or set "
+                "capacitance_matrix first."
+            )
+        path = Path(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        units = (
+            self.units
+            if isinstance(self.units, str) and self.units
+            else "unknown units"
+        )
+        cmat.rename_axis(f"C [{units}]").to_csv(path)
+        self.logger.info("Saved capacitance matrix to %s", path)
+        return path
 
     @property
     def capacitance_all_passes(self) -> dict:
