@@ -31,7 +31,7 @@ from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
 
 # Path to the sample junction GDS shipped with the repo.
-_RESOURCES = pathlib.Path(__file__).parent.parent / "tutorials" / "resources"
+_RESOURCES = pathlib.Path(__file__).parent.parent / "docs" / "tut" / "resources"
 _JUNCTION_GDS = str(_RESOURCES / "Fake_Junctions.GDS")
 
 

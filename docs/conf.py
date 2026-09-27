@@ -207,12 +207,14 @@ mermaid_init_js = "mermaid.initialize({startOnLoad:true, theme:'default'});"
 # install (no Qt / Ansys / gmsh) works in Pyodide; the GUI / Ansys / FEM
 # extras don't, so we only surface the lite-compatible tutorials by
 # default (Section 1 + most of Section 2).
+# NOTE: this path is relative to docs/ and matches nothing (there is no
+# docs/tutorials/), so no notebooks are bundled today; choosing the
+# lite-compatible set is still open.
 jupyterlite_contents = ["tutorials/"]
 jupyterlite_dir = "."
 jupyterlite_silence = True  # quiet build-time chatter
-# Each tutorial notebook gets a "Launch in JupyterLite" link in its header
-# (default behavior — no extra config needed since contents include
-# the ``tutorials/`` tree).
+# Each bundled notebook gets a "Launch in JupyterLite" link in its header
+# (default behavior once the contents above include it).
 
 # Intersphinx — resolve cross-references to external project docs so that
 # type annotations like ``logging.Logger`` and ``matplotlib.figure.Figure``
@@ -268,6 +270,13 @@ exclude_patterns = [
     "dev_notes.md",
     "docstring_cheat_sheet.md",
     "architecture/**",
+    # Notebooks kept with the tutorials but not on the site: the pyaedt ones
+    # and the two workshop / chip notebooks have no stored outputs, and the
+    # flip-chip notebook stores errors. Remove an entry once it is re-run.
+    "tut/4-Analysis/pyaedt-multiplanar/**",
+    "tut/2-From-components-to-chip/FlipChip-design-tutorial.ipynb",
+    "circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop.ipynb",
+    "circuit-examples/F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates.ipynb",
 ]
 
 nbsphinx_execute_arguments = [

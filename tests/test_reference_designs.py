@@ -24,15 +24,13 @@ from pathlib import Path
 from qiskit_metal.validation import Severity, validate
 
 REFERENCE_DIR = (
-    Path(__file__).resolve().parents[1]
-    / "tutorials"
-    / "Appendix A Full design flow examples"
+    Path(__file__).resolve().parents[1] / "docs" / "tut" / "full-design-examples"
 )
 
 NOTEBOOKS = (
-    "A.1 Transmon with readout resonator.ipynb",
-    "A.2 Two coupled transmons.ipynb",
-    "A.3 Four-qubit multiplexed readout.ipynb",
+    "A.1-Transmon-with-readout-resonator.ipynb",
+    "A.2-Two-coupled-transmons.ipynb",
+    "A.3-Four-qubit-multiplexed-readout.ipynb",
 )
 
 #: Lines that draw rather than build, plus comments and magics. Drawing
@@ -51,8 +49,8 @@ _DRAWING = re.compile(
 #: pathfinder jogs shorter than the 180 um a corner arc needs. Cosmetic in
 #: the mpl view, but the GDS and gmsh renderers drop the fillet there.
 KNOWN_WARNINGS = {
-    "A.2 Two coupled transmons": {"short-segment": 2},
-    "A.3 Four-qubit multiplexed readout": {"short-segment": 2},
+    "A.2-Two-coupled-transmons": {"short-segment": 2},
+    "A.3-Four-qubit-multiplexed-readout": {"short-segment": 2},
 }
 
 
