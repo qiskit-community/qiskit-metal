@@ -11,6 +11,7 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 ### Upgrade notes
 
 - **`validate()` runs four more rules by default** (the shape rules above), so its report says "11 rules ran" instead of 7, and designs with a self-crossing line, a hairpin, a starved fillet or a line leaving a pin askew get new findings.
+- **Tutorial notebooks moved to `docs/`.** The copies in `tutorials/` (names with spaces) are gone; every notebook now lives once, under `docs/tut/` or `docs/circuit-examples/`, with the hyphenated names the docs site already used. `tutorials/README.md` maps each old path to its new one. Input files the notebooks load (e.g. `Fake_Junctions.GDS`) are in `docs/tut/resources/`; a local `renderers_to_load` entry for the skeleton renderer becomes `docs.tut.resources.skeleton_renderer`.
 
 ### Added
 
