@@ -1,0 +1,80 @@
+"""subtract_in_strips: the chip-sized boolean used for ground and cheesing.
+
+A single gdstk "not" over a whole chip can fail to link a hole ("Unable to
+link hole in boolean operation") and silently drop it; on a 17-qubit chip
+three whole flux-line gaps came out as solid ground. The helper slices the
+base into strips first. These tests check that the result is the same
+region the plain boolean should give.
+"""
+
+import unittest
+
+import gdstk
+
+from qiskit_metal.renderers.renderer_gds.gds_boolean import subtract_in_strips
+
+PRECISION = 1e-9
+
+
+def _area(polys):
+    return sum(p.area() for p in polys)
+
+
+def _chip(size=10.0):
+    h = size / 2
+    return gdstk.rectangle((-h, -h), (h, h), layer=1)
+
+
+class TestSubtractInStrips(unittest.TestCase):
+    def test_long_cut_across_many_strips(self):
+        # A long, bent "line gap" crossing most of the chip.
+        cut = gdstk.FlexPath([(-4.5, -4), (4, -4), (4, 4), (-4, 4)], 0.02)
+        out = subtract_in_strips(
+            [_chip()], [cut], layer=1, datatype=0, precision=PRECISION
+        )
+        expected = _chip().area() - _area(cut.to_polygons())
+        self.assertAlmostEqual(_area(out), expected, places=6)
+
+    def test_enclosed_cut_network(self):
+        # A closed ring of cut encloses a ground island; a line inside it.
+        ring = gdstk.FlexPath([(-3, -3), (3, -3), (3, 3), (-3, 3), (-3, -3)], 0.02)
+        inner = gdstk.FlexPath([(-2, 0), (2, 0)], 0.02)
+        out = subtract_in_strips(
+            [_chip()], [ring, inner], layer=1, datatype=0, precision=PRECISION
+        )
+        cut_area = _area(gdstk.boolean(ring.to_polygons(), inner.to_polygons(), "or"))
+        self.assertAlmostEqual(_area(out), _chip().area() - cut_area, places=6)
+
+    def test_strip_count_does_not_change_the_region(self):
+        cuts = [
+            gdstk.rectangle((x, -4), (x + 0.1, 4))
+            for x in (-3.95, -1.0, 0.3, 2.2)  # some straddle strip edges
+        ]
+        one = subtract_in_strips(
+            [_chip()], cuts, layer=1, datatype=0, precision=PRECISION, strips=1
+        )
+        many = subtract_in_strips(
+            [_chip()], cuts, layer=1, datatype=0, precision=PRECISION, strips=16
+        )
+        self.assertAlmostEqual(_area(one), _area(many), places=6)
+        self.assertAlmostEqual(_area(many), _chip().area() - 4 * 0.1 * 8, places=6)
+
+    def test_layer_and_datatype(self):
+        out = subtract_in_strips(
+            [_chip()],
+            [gdstk.rectangle((0, 0), (1, 1))],
+            layer=3,
+            datatype=7,
+            precision=PRECISION,
+        )
+        self.assertTrue(out)
+        self.assertTrue(all(p.layer == 3 and p.datatype == 7 for p in out))
+
+    def test_empty_base(self):
+        self.assertEqual(
+            subtract_in_strips([], [], layer=1, datatype=0, precision=PRECISION), []
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()

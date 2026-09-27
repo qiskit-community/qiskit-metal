@@ -29,6 +29,7 @@ from shapely.geometry import LineString
 
 from qiskit_metal import Dict, config, draw
 from qiskit_metal.renderers.renderer_base import QRenderer
+from qiskit_metal.renderers.renderer_gds.gds_boolean import subtract_in_strips
 from qiskit_metal.renderers.renderer_gds.make_cheese import Cheesing
 from qiskit_metal.toolbox_metal.parsing import is_true
 
@@ -1657,11 +1658,11 @@ class QGDSRenderer(QRenderer):
         """
         if len(self.chip_info[chip_name][chip_layer]["q_subtract_true"]) != 0:
             # Difference for True-False.
-            diff_geometry = gdstk.boolean(
+            diff_geometry = subtract_in_strips(
                 list(self.chip_info[chip_name][chip_layer]["q_subtract_true"]),
                 list(self.chip_info[chip_name][chip_layer]["q_subtract_false"]),
-                "not",
                 layer=chip_layer,
+                datatype=0,
                 precision=precision,
             )
 
@@ -1694,10 +1695,9 @@ class QGDSRenderer(QRenderer):
             precision (float): GDS geometry precision.
         """
         if len(self.chip_info[chip_name][chip_layer]["q_subtract_true"]) != 0:
-            diff_geometry = gdstk.boolean(
+            diff_geometry = subtract_in_strips(
                 [self.chip_info[chip_name]["subtract_poly"]],
                 list(self.chip_info[chip_name][chip_layer]["q_subtract_true"]),
-                "not",
                 layer=chip_layer,
                 datatype=0,
                 precision=precision,
