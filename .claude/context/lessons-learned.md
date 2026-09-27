@@ -338,38 +338,16 @@ templates so users know to expect it.
 
 ## Tutorials / docs
 
-### Tutorials live in TWO folders that must stay in sync
+### Tutorials lived in two folders until September 2026
 
-**Symptom**: edits to one of `tutorials/X.YY ...ipynb` or
-`docs/tut/X.YY-...ipynb` silently don't show up in the other; the docs site
-ends up out of date relative to what users open in JupyterLab (or vice versa).
-
-**Cause**: every numbered notebook is mirrored into both folders for
-distinct reasons — `tutorials/` is the conventional GitHub-browse + JupyterLab
-file-tree location (with space-separated names that don't work in nbsphinx
-URLs), and `docs/tut/` is the Sphinx source tree (hyphenated names that do).
-**This is the permanent design, not a stopgap** — the naming constraints are
-mutually exclusive (Sphinx/nbsphinx need hyphenated filenames for clean URL
-resolution; JupyterLab/GitHub-browse/external citations need the human
-space-separated form). No single naming scheme satisfies both, so both
-folders must coexist and be edited together. Do not propose "simplifying"
-by deleting one of them.
-
-**Fix** (after editing one folder): re-sync from a script with per-notebook
-canonical-choice baked in:
-
-```bash
-python3 _dev/sync_two_folders.py --write
-uv run scripts/check_tutorials_sync.py   # must exit 0
-```
-
-CI runs the check on every push/PR (`tutorials-sync` job in
-`.github/workflows/main.yml`). Drift fails the PR loudly with a
-file-by-file list and the re-sync command in the error message.
-
-If you genuinely want a different canonical-folder choice for a notebook
-(e.g. "this one tutorials/ should win"), update the `CANONICAL` dict in
-`_dev/sync_two_folders.py` and re-run with `--write`.
+Every notebook used to exist twice, `tutorials/` (names with spaces) and
+`docs/tut/` / `docs/circuit-examples/` (hyphenated, for Sphinx), kept identical
+by `_dev/sync_two_folders.py` and a CI check. Drift was the constant failure
+mode, and the sync script itself once copied a stale notebook over a rewritten
+one (its tiebreaker picked the wrong side after a rename in both trees). The
+second tree was removed: `docs/` is the only copy and `tutorials/README.md`
+maps old paths to new. Hyphenated names browse fine on GitHub and open fine in
+JupyterLab and Colab, so the naming argument for two trees did not hold up.
 
 ### Notebook heading-level skips trip nbsphinx
 
@@ -955,16 +933,6 @@ GUI edits — and the partner pin kept a stale `net_id`. On the 17-qubit chip on
 `make()` did not reconnect (`tests/test_rebuild_connections.py`). When a design
 is DRC-clean after building but not after a rebuild, check `design.net_info`
 first.
-
-### Renaming a mirrored tutorial: the sync tiebreaker can restore the old copy
-
-`git mv` of a notebook in both trees, then rewriting only the docs copy, left
-the two with different content and new mtimes on both. `_dev/sync_two_folders.py
---write` reported a "conflict", applied its tiebreaker, and copied the stale
-tutorials copy over the new docs notebook. Nothing flagged it except the cell
-count. After rewriting one side, copy it to the other side yourself, then run
-the sync (dry run first) and `scripts/check_tutorials_sync.py`; read any
-"conflicts" line before trusting `--write`.
 
 ## LOM 2.0 and scqubits: the lockfile hides what a fresh install gets
 

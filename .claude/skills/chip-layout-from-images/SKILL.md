@@ -148,9 +148,7 @@ geometry, rebuild stability -- and add:
 ## 5. Where the rest lives
 
 - Worked example: `docs/circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode.ipynb`
-  (mirrored under `tutorials/Appendix C .../F. Small-quantum-chips/`), with its
-  builder and measured data in `resources/wallraff_17q/` beside it. Keep both
-  trees' `resources/` identical.
+  with its builder and measured data in `resources/wallraff_17q/` beside it.
 - `.claude/skills/chip-design/SKILL.md` — designing new chips; the general
   build and verification rules.
 - `.claude/context/lessons-learned.md` — "Component-authoring traps":

@@ -245,14 +245,15 @@ You can resolve other warnings by deleting the following directories and rebuild
 
 **Q: How do I download a tutorial?**
 
-**A:** All tutorial notebooks live in the
-`tutorials/ folder on GitHub <https://github.com/qiskit-community/qiskit-metal/tree/main/tutorials>`_.
+**A:** All tutorial notebooks live under
+`docs/tut/ <https://github.com/qiskit-community/qiskit-metal/tree/main/docs/tut>`_ and
+`docs/circuit-examples/ <https://github.com/qiskit-community/qiskit-metal/tree/main/docs/circuit-examples>`_ on GitHub.
 To download a single notebook, navigate to it on GitHub and click the **Download raw file** button (the download icon in the top-right of the file view). To get them all, clone the repository:
 
 .. code-block:: bash
 
    git clone https://github.com/qiskit-community/qiskit-metal.git
-   cd qiskit-metal/tutorials
+   cd qiskit-metal/docs/tut
 
 --------------------------------
 Connecting to 3rd party software

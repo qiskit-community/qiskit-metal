@@ -349,3 +349,30 @@ with the outline, autoscaling framed small new components as specks.
 docstring's summary paragraph; it previously prepended it, which left
 `.. image::` as the first docstring line, the line autosummary uses as the
 summary.
+
+### One notebook tree under `docs/`
+
+Notebooks were kept twice, in `tutorials/` (names with spaces) and under
+`docs/` (hyphenated names, which Sphinx needs), with a sync script and a CI
+check. The copies drifted repeatedly, and the sync once restored a stale
+notebook over a rewritten one. `docs/` is now the only copy: hyphenated names
+also work for GitHub browsing, JupyterLab and Colab, and the Colab/Binder
+badges point at the `docs/` paths. `tutorials/README.md` maps each old path
+to its new one so old links still lead somewhere. Six notebooks that were
+only in `tutorials/` moved to `docs/` and stay out of the site build
+(`exclude_patterns`) until they are re-run: they have no stored outputs, or
+store errors. Not changed: `jupyterlite_contents` still names `tutorials/`,
+a path that has never existed under `docs/`, so JupyterLite bundles no
+notebooks; which notebooks to bundle is a separate choice.
+
+### scqubits compatibility shims instead of dependency caps
+
+`analyses/quantization/_scqubits_compat.py` restores `np.float_` /
+`np.complex_` (used by scqubits 4.1, which macOS resolves because scqubits
+4.2+ caps scipy at 1.13.1 on darwin) and makes scqubits' Qobj converter
+return a `csc_matrix` (qutip 5.3 returns sparse arrays, which scqubits 4.3.1
+rejects). The alternative, `qutip<5.3` plus a newer scqubits floor, would
+hold every user back and still break on macOS. Each shim applies only when
+its condition is detected, and `tests/test_lom_core_hamiltonian.py` runs the
+failing scqubits call directly, so the shims can go once scqubits handles
+both.

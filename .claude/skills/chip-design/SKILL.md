@@ -133,7 +133,7 @@ waivers and their reasons, and the spec file that produced it.
 - Worked full-chip build with a stage-by-stage DRC:
   `docs/circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode.ipynb`
   (builder and data in `resources/wallraff_17q/`).
-- New-design examples: `tutorials/1 Overview/1.3 Build a 4-qubit chip.ipynb`,
-  `tutorials/Appendix A Full design flow examples/`.
+- New-design examples: `docs/tut/1-Overview/1.3-Build-a-4-qubit-chip.ipynb`,
+  `docs/tut/full-design-examples/`, `docs/circuit-examples/full-design-flow-examples/`.
 - `qiskit_metal.validation` -- `validate`, `Waiver`, `SHAPE_RULES`.
 - `.claude/context/lessons-learned.md` -- component-authoring traps.

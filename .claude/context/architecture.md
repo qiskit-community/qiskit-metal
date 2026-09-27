@@ -289,4 +289,4 @@ this job means a Qt import sneaked into a non-GUI module.
 | A user-facing helper | `src/qiskit_metal/<topic>/__init__.py` (e.g. `viewer/`) |
 | A CI gate | `.github/workflows/main.yml` step + `scripts/<gate>.py` if non-trivial |
 | Docs page | `docs/<topic>.rst`, add to `docs/index.rst` toctree |
-| Tutorial notebook | `tutorials/<folder>/X.Y Name.ipynb` with the standard "no-Qt callout" at top |
+| Tutorial notebook | `docs/tut/<section>/X.Y-Name.ipynb` (circuit examples: `docs/circuit-examples/`) with the standard "no-Qt callout" at top |

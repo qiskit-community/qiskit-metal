@@ -28,19 +28,10 @@ A single markdown cell inserted as the second cell of the notebook
 > walkthrough and `docs/headless-usage.rst` for the full reference.
 ```
 
-The relative link path to `1.4` depends on which folder the
-tutorial lives in. For `2 From components to chip/A/.../*.ipynb`
-the path is:
-
-```
-../../1%20Overview/1.1%20Quick%20start.ipynb
-```
-
-For a tutorial directly under `tutorials/3 Renderers/*.ipynb`:
-
-```
-../1%20Overview/1.1%20Quick%20start.ipynb
-```
+Link to the Quick start and the headless guide by their docs-site URLs
+(`https://qiskit-community.github.io/qiskit-metal/tut/1-Overview/1.1-Quick-start.html`,
+`https://qiskit-community.github.io/qiskit-metal/headless-usage.html`): they
+work from every notebook folder, on the docs site, and in Colab.
 
 ## Procedure
 
@@ -52,15 +43,15 @@ One folder per PR is the sweet spot.
 
 Current state of callouts (as of v0.6.1):
 
-| Folder | Callout applied? |
+| Folder (under `docs/`) | Callout applied? |
 |--------|------------------|
-| `1 Overview/` | ✅ 1.1, 1.2 (1.3 skipped — empty; 1.4 is the canonical headless) |
-| `2 From components to chip/` (all of A, B, C, D) | ✅ |
-| `3 Renderers/` | ❌ |
-| `4 Analysis/` | ❌ |
-| `Appendix A Full design flow examples/` | ❌ |
-| `Appendix B Quick topics/` | ❌ |
-| `Appendix C Circuit examples/` | ❌ |
+| `tut/1-Overview/` | ✅ 1.1, 1.2 (1.3 skipped — empty; 1.4 is the canonical headless) |
+| `tut/2-From-components-to-chip/` | ✅ |
+| `tut/3-Renderers/` | ❌ |
+| `tut/4-Analysis/` | ❌ |
+| Appendix A (`tut/full-design-examples/`, `circuit-examples/full-design-flow-examples/`) | ❌ |
+| Appendix B (`tut/`) | ❌ |
+| Appendix C (`circuit-examples/`) | ❌ |
 
 ### 2. Write the injection script
 
@@ -68,9 +59,8 @@ Current state of callouts (as of v0.6.1):
 import json
 from pathlib import Path
 
-# Adjust the relative path based on folder depth!
-RELATIVE_LINK = ("../../1%20Overview/"
-                 "1.1%20Quick%20start.ipynb")
+QUICK_START = ("https://qiskit-community.github.io/qiskit-metal/"
+               "tut/1-Overview/1.1-Quick-start.html")
 
 CALLOUT = {
     "cell_type": "markdown",
@@ -85,15 +75,15 @@ CALLOUT = {
         "renders the design to a matplotlib `Figure` you can "
         "display inline or save with `fig.savefig(...)`.\n",
         "> \n",
-        f"> See [1.4 Headless quick view]({RELATIVE_LINK}) for a "
+        f"> See [1.1 Quick start]({QUICK_START}) for a "
         "complete runnable walkthrough and "
-        "[`docs/headless-usage.rst`](../../../docs/headless-usage.rst) "
+        "[`docs/headless-usage.rst`](https://qiskit-community.github.io/qiskit-metal/headless-usage.html) "
         "for the full reference."
     ]
 }
 
 # Adjust target folder
-TARGET = Path("tutorials/3 Renderers")
+TARGET = Path("docs/tut/3-Renderers")
 notebooks = sorted(TARGET.rglob("*.ipynb"))
 
 for nb_path in notebooks:
@@ -118,7 +108,7 @@ for nb_path in notebooks:
 
 ```bash
 python3 your_injection_script.py
-git diff --stat tutorials/
+git diff --stat docs/
 ```
 
 Expect: N files, ~11 insertions each (the callout is 11 lines),
@@ -129,7 +119,7 @@ Expect: N files, ~11 insertions each (the callout is 11 lines),
 ```bash
 python3 -c "
 import json, glob
-for p in sorted(glob.glob('tutorials/3 Renderers/**/*.ipynb', recursive=True)):
+for p in sorted(glob.glob('docs/tut/3-Renderers/**/*.ipynb', recursive=True)):
     with open(p) as f:
         nb = json.load(f)
     has = any('Using this tutorial without the Qt GUI' in ''.join(c['source'])
@@ -141,7 +131,7 @@ for p in sorted(glob.glob('tutorials/3 Renderers/**/*.ipynb', recursive=True)):
 ### 5. Commit, push, open PR
 
 ```bash
-git add tutorials/
+git add docs/
 git commit -m "tutorials: add no-Qt callouts to <folder> (N notebooks)"
 git push -u origin claude/tutorial-refresh-<folder>
 ```
@@ -162,13 +152,6 @@ hundreds of bogus lines. See `lessons-learned.md`.
 The original GUI screenshots are part of the documentation value.
 Re-executing would discard them. Inject the callout in place; leave
 all outputs alone.
-
-### Relative link depth
-
-`../../` for tutorials inside `2 From components to chip/X/...`
-(two levels deep), but `../` for tutorials directly under
-`tutorials/3 Renderers/`. Get the depth wrong and the link
-404s.
 
 ### Idempotency
 

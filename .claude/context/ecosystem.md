@@ -131,7 +131,7 @@ new-user adoption each year.
 
 - **Sphinx**: the canonical reference site at
   https://qiskit-community.github.io/qiskit-metal/
-- **Tutorials**: 40+ Jupyter notebooks in `tutorials/`,
+- **Tutorials**: 80+ Jupyter notebooks in `docs/tut/` and `docs/circuit-examples/`,
   hand-authored, organised by topic. Each gets a "no-Qt callout"
   at the top pointing at `qm.view(design)` for users without Qt.
 - **API reference**: auto-generated from docstrings via Sphinx

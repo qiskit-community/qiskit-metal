@@ -34,56 +34,36 @@ the optional desktop GUI · `pyEPR-quantum` / `pyaedt` / `gmsh` /
 | `src/qiskit_metal/_gui/` | The Qt desktop GUI (`MetalGUI`). Hard-touch zone unless you have a Qt session to test in. |
 | `src/qiskit_metal/analyses/` | Pure-Python analyses (Hamiltonian, capacitance, EPR). qutip 5+. |
 | `tests/` | unittest-style suite. `pytest tests/` to run; gated in CI on every PR. |
-| `tutorials/` | 40+ Jupyter notebooks. Numbered (1-Overview / 2-Components / 3-Renderers / 4-Analysis). **Mirrored 1:1 in `docs/tut/`** — see "Dual-folder tutorials" below. |
-| `docs/tut/` | Sphinx-rendered copy of `tutorials/` with hyphenated filenames (so nbsphinx URLs work). Must stay content-identical to `tutorials/` — CI enforces. |
+| `docs/tut/` | The tutorial notebooks (1-Overview / 2-From-components-to-chip / 3-Renderers / 4-Analysis, Appendix B, Appendix A reference designs). Hyphenated names; Sphinx renders them. See "Tutorial notebooks" below. |
+| `docs/circuit-examples/` | Appendix C circuit examples and the Appendix A full-design-flow notebooks. |
+| `tutorials/` | Only a README mapping the old notebook paths to their `docs/` homes (the notebooks moved in September 2026). |
 | `docs/` | Sphinx. `tox -e docs` to build. |
 | `scripts/check_env_consistency.py` | CI gate that asserts `environment.yml` and `pyproject.toml` agree. |
-| `scripts/check_tutorials_sync.py` | CI gate that asserts `tutorials/` and `docs/tut/` notebook cell content is byte-identical. |
 
-## Dual-folder tutorials — read before editing notebooks
+## Tutorial notebooks — read before editing them
 
-Every published notebook lives in **two places** that must stay
-content-identical:
+Every notebook has exactly one copy, under `docs/`:
 
-| Path                                     | Why                                                    |
-|------------------------------------------|--------------------------------------------------------|
-| `tutorials/`                             | User-facing: GitHub browse, JupyterLab file tree open  |
-| `docs/tut/` (hyphenated names)           | Sphinx + nbsphinx source — numbered notebooks (1.x, 2.xx, 3.x, 4.xx), Appendix B, and the Appendix A reference designs |
-| `docs/circuit-examples/` (hyphenated)    | Sphinx + nbsphinx source — Appendix C, plus the remaining Appendix A full-design-flow examples |
+| Path                        | What lives there                                                      |
+|-----------------------------|-----------------------------------------------------------------------|
+| `docs/tut/`                 | Numbered tutorials (1.x, 2.xx, 3.x, 4.xx), Appendix B, and the Appendix A reference designs |
+| `docs/circuit-examples/`    | Appendix C, plus the remaining Appendix A full-design-flow examples   |
+| `docs/tut/resources/`       | Input files notebooks load (junction GDS, layer stacks, helper modules) |
 
-**Editing one without the other silently breaks the docs site or the
-notebook the user opens.** CI fails the PR if drift is detected
-(`scripts/check_tutorials_sync.py` runs on every push/PR; 80 pairs).
+Until September 2026 each notebook also lived in `tutorials/` (names with
+spaces) and a sync script plus CI check kept the copies identical; the
+second copy was removed and `tutorials/README.md` maps old paths to new.
+Don't reintroduce a second tree.
 
-Note that stored cell **outputs** are part of the comparison — the docs
-build does not execute notebooks (`nbsphinx_execute = "never"` unless
-`QISKIT_DOCS_BUILD_TUTORIALS` is set), so the committed outputs are what
-the docs site renders. Do not strip outputs from one side only.
+Stored cell **outputs** are what the docs site shows: the docs build does not
+execute notebooks (`nbsphinx_execute = "never"` unless
+`QISKIT_DOCS_BUILD_TUTORIALS` is set). Keep outputs when you edit a notebook,
+and re-execute it when the code changes what it prints or draws (in a scratch
+copy, so files the notebook writes stay out of the repo).
 
-If you intentionally edit one folder, re-sync the other with:
-
-```bash
-python3 _dev/sync_two_folders.py --write
-```
-
-The sync script auto-detects which side has the uncommitted edit (vs
-HEAD) and copies *that* side to the other. Editing `tutorials/` → propagates
-to the docs mirror; editing the docs mirror → propagates to `tutorials/`. No
-config required for the common case. The `CANONICAL` dict in that script
-is **only** a tiebreaker for the rare case where both sides were edited
-locally before sync — the default tiebreaker is `tut` (the user-facing
-root). Re-run the CI gate to verify:
-
-```bash
-uv run scripts/check_tutorials_sync.py
-```
-
-**Why two folders, not one:** the naming constraints are mutually exclusive
-— Sphinx + nbsphinx need hyphenated filenames for clean URLs and link
-resolution, JupyterLab + GitHub-browse + external citations need the
-human-readable space-separated form. There is no single naming scheme
-that satisfies both. Drift is the failure mode; CI prevents it. Do not
-"simplify" by deleting one folder.
+Notebooks that are kept but not on the site are listed in `exclude_patterns`
+in `docs/conf.py`. Colab/Binder badges and raw-download URLs point at the
+notebook's own `docs/` path.
 
 ## Hard constraints — do not touch without explicit human approval
 

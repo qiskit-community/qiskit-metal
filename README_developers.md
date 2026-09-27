@@ -3,7 +3,7 @@
 > Companion to [`README.md`](./README.md) (user-facing) and
 > [`docs/contributor-guide.rst`](./docs/contributor-guide.rst) (rendered into
 > the docs site). This file collects the practical recipes — env setup,
-> tests, docs build, tutorials sync, common gotchas — for working on
+> tests, docs build, tutorial notebooks, common gotchas — for working on
 > Quantum Metal itself.
 
 ## Development Setup
@@ -95,48 +95,18 @@ If autodoc emits stale or duplicated stubs, blow them away and rebuild clean:
 rm -rf docs/_build docs/stubs && uvx --with tox-uv tox -e docs
 ```
 
-### Tutorials sync — dual-folder workflow
+### Tutorial notebooks
 
-Every numbered tutorial notebook lives in **two places** that must stay
-content-identical:
+Every tutorial notebook has one copy, under `docs/`: `docs/tut/` (numbered
+tutorials, Appendix B, Appendix A reference designs) and
+`docs/circuit-examples/` (Appendix C and the other Appendix A examples).
+Names are hyphenated because they are the docs-site URLs. Input files the
+notebooks load live in `docs/tut/resources/`. `tutorials/` holds only a README
+that maps the old paths (from before September 2026, when every notebook was
+kept twice) to the new ones.
 
-| Path                | Why                                                            |
-|---------------------|----------------------------------------------------------------|
-| `tutorials/`        | User-facing — spaces in filenames, browsable on GitHub         |
-| `docs/tut/`         | Sphinx + nbsphinx source — hyphenated filenames for clean URLs |
-
-**CI fails any PR where the two folders drift** (`scripts/check_tutorials_sync.py`
-runs on every push). The check compares **cell source content** only, so
-metadata churn (kernel ids, execution counts) doesn't cause false drift.
-
-Recipes:
-
-```bash
-# 1. Authoritative drift check — use this as the source of truth
-uv run scripts/check_tutorials_sync.py
-#    → "✓ All 54 notebook pairs in sync."  = you're done.
-
-# 2. If drift IS detected: dry-run the sync to see what will change
-python3 _dev/sync_two_folders.py
-#    Reports per-pair: in-sync vs. would-copy, with the chosen direction.
-
-# 3. Apply the sync (overwrites the non-canonical side)
-python3 _dev/sync_two_folders.py --write
-
-# 4. Re-run the check to confirm
-uv run scripts/check_tutorials_sync.py
-```
-
-Per-notebook canonical choices ("which folder wins on conflict") live in the
-`CANONICAL` dict in `_dev/sync_two_folders.py`. Update it there if you
-intentionally want the other folder to be authoritative for a specific
-notebook, then re-sync.
-
-> **Gotcha:** `_dev/sync_two_folders.py`'s "src→dst" column shows the
-> *direction it would copy if there's drift*. The actual decision of whether
-> to copy is in the `status` column (`in-sync` vs. `would copy`). Don't be
-> alarmed if every row prints — what matters is the summary line at the
-> bottom and the `status` column per row.
+The docs build shows the **stored outputs** (`nbsphinx_execute = "never"`), so
+keep them when you edit a notebook and re-execute it when its output changes.
 
 
 ## Old Instructions
@@ -283,7 +253,7 @@ You may also want to also use these instructions to [setup user environment](/do
 | Hook | Runs | When |
 |---|---|---|
 | **pre-commit** | `ruff check` + `ruff format --check` on **staged** Python files | every `git commit` (fast — ~2s) |
-| **pre-push** | full-repo `ruff check` + `ruff format --check` + `check_env_consistency.py` + `check_tutorials_sync.py` (notebook touches only) | every `git push` (~15s) |
+| **pre-push** | full-repo `ruff check` + `ruff format --check` + `check_env_consistency.py` + `check_qlibrary_images.py` (+ on-screen GUI tests when the push touches the GUI) | every `git push` (~15s) |
 
 Install once:
 
@@ -311,7 +281,7 @@ uvx ruff@0.15.14 check .              # lint
 uvx ruff@0.15.14 format --check .     # format check
 uvx ruff@0.15.14 format .             # auto-fix formatting
 uv run scripts/check_env_consistency.py
-uv run scripts/check_tutorials_sync.py
+uv run scripts/check_qlibrary_images.py
 ```
 
 ## Uninstall git hooks

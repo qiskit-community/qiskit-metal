@@ -16,7 +16,7 @@
 RUFF_VERSION="0.15.14"
 
 # Get staged Python files (added/copied/modified — no deletions). Read into
-# an array so paths with spaces ("tutorials/Appendix C ...") stay whole.
+# an array so paths with spaces (e.g. a notebook named "My design.ipynb") stay whole.
 staged_py=()
 while IFS= read -r f; do
     staged_py+=("$f")

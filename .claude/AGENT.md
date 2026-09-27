@@ -105,8 +105,7 @@ exit.**
 | `src/qiskit_metal/_gui/**` | Requires interactive Qt session to validate. |
 | `src/qiskit_metal/renderers/renderer_ansys/parse.py` | pyEPR integration bridge — cross-repo coordination. |
 | `src/qiskit_metal/renderers/renderer_ansys/solution_types.py` | Same; HFSS version-rename handling. |
-| `tutorials/**` | Authored by humans, deliberately curated. No bot edits. |
-| `docs/tut/**` | Same — generated/mirrored from `tutorials/`. |
+| `docs/tut/**`, `docs/circuit-examples/**` (notebooks) | Authored by humans, deliberately curated. No bot edits. |
 | `.github/workflows/**` | CI changes need broad-impact judgement. |
 | `pyproject.toml` (anything beyond changelog notes) | Affects every install. |
 | `.claude/**` | Bot governance files. |
@@ -283,7 +282,7 @@ Fixes #<issue-number>
 
 The bot ran the automated checks. The reviewer must verify:
 
-1. <concrete step 1 — e.g., "Open `tutorials/X.ipynb`, run cell N, confirm the figure renders without warnings">
+1. <concrete step 1 — e.g., "Open `docs/tut/<section>/X.ipynb`, run cell N, confirm the figure renders without warnings">
 2. <step 2>
 3. <step 3>
 
