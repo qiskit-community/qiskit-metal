@@ -156,6 +156,25 @@ class TestCPWGapRule(unittest.TestCase):
         self.assertEqual(len(findings), 1, msg=f"got {findings}")
         self.assertAlmostEqual(findings[0].value, 0.001, places=6)
 
+    def test_gap_equal_to_the_minimum_passes(self):
+        """(11um - 5um) / 2 is 2.9999999999999996 um in floating point."""
+        design = _design()
+        _route(
+            design,
+            "edge",
+            ("-1mm", "0mm"),
+            ("1mm", "0mm"),
+            "180",
+            "0",
+            trace_width="5um",
+            trace_gap="3um",
+        )
+        design.rebuild()
+        findings = [
+            f for f in CPWGapRule(min_gap="3um").check(design) if "edge" in f.components
+        ]
+        self.assertEqual(findings, [])
+
     def test_standard_gap_passes(self):
         design = _design()
         _route(

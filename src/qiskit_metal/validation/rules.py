@@ -222,7 +222,9 @@ class CPWGapRule(DesignRule):
             conductor_w = float(drawn["width"].max())
             etched_w = float(etched["width"].max())
             gap = (etched_w - conductor_w) / 2.0
-            if gap <= 0 or gap >= limit:
+            # Tolerance: a gap equal to the limit can come out a hair under it
+            # in floating point, e.g. (0.016 - 0.010) / 2 = 0.0029999999999999996.
+            if gap <= 0 or gap >= limit - 1e-9:
                 continue
             geom = drawn.iloc[0]["geometry"]
             yield Finding(
