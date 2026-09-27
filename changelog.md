@@ -8,8 +8,15 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ## Unreleased
 
+### Added
+
+- **`LumpedElementsSim.save_capacitance_matrix(path)`** saves the capacitance matrix to a CSV of your choice, with the units in the header cell. (#1017)
+
 ### Fixed
 
+- **`LOManalysis.run_lom()` with a user-supplied matrix.** Setting only `sim.capacitance_matrix` (as the method's own warning suggests) raised `KeyError: 0`: an inverted type check never filled the per-pass data. It now uses the matrix as the single pass, converted from `sim.units` (default fF) to farads.
+- **Lite installs: `load_q3d_capacitance_matrix()` no longer needs IPython/jinja2** to print the matrix; it falls back to plain text.
+- **Docs:** `Subsystem` energies (`EJ`, `EL`, `EC`) are in MHz, not GHz (#920); `TransmonPocketCL` documents its `Charge_Line` pin (#989).
 - **Tutorials that failed on a fresh kernel.** Fifteen notebooks (3.5, 4.02–4.05, 4.11–4.14, 4.19, two Hamiltonian-model notebooks, and two Appendix B topics) lost their import cells when `%autoreload` was stripped in 6512e0d, and raised `NameError` at the first cell that used `designs`, `MetalGUI`, etc. The import cells are restored; stored outputs are unchanged.
 - **Tutorial 4.02: junction now follows `sim.setup.vars.Lj`.** Section I links the qubit's `hfss_inductance`/`hfss_capacitance` to the `Lj`/`Cj` design variables, so HFSS and the EPR step use the same junction inductance. (#1019)
 - **`TransmonCross` `connector_location='270'`** placed the connector on the east arm instead of the south arm. The rotation chain had no branch above 225 degrees, so 270 matched the `> 135` test. (#1173, closes #1052)
@@ -17,6 +24,9 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ### Changed
 
+- **Clearer legacy-LOM size error.** `extract_transmon_coupled_Noscillator` now reports the actual and expected matrix size, the required net order, and that only floating two-pad transmons are supported, pointing grounded qubits to the Cell/Subsystem/CompositeSystem API. (#1015)
+- **`EigenmodeSim` warns when `setup.vars.Lj` can't reach the junction:** a rendered junction whose `hfss_inductance` is a fixed value different from `Lj` is simulated at that value while the EPR step reads `Lj`. Silent with defaults and when the junction is linked to the variable. (#1019)
+- **`EPRanalysis` warns before a very large spectrum diagonalisation** (`fock_trunc**n_modes` > 20,000 states) with the estimated memory. (#1018)
 - **`TransmonCrossFL` warns when a connection pad resolves to the south arm** while `make_fl` is True. That arm carries the flux line, and the claw polygon overlaps it. The south arm also carries the junction on the base `TransmonCross`; at default options the claw clears it by ~11um, with the etch region within ~5um. Both constraints are now documented on the class docstrings.
 
 ## Quantum Metal v0.8.0 (airbridges + design-rule checking; no breaking changes)
