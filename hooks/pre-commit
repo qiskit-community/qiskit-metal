@@ -15,34 +15,38 @@
 
 RUFF_VERSION="0.15.14"
 
-# Get staged Python files (added/copied/modified — no deletions).
-staged_py=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.py$')
+# Get staged Python files (added/copied/modified — no deletions). Read into
+# an array so paths with spaces ("tutorials/Appendix C ...") stay whole.
+staged_py=()
+while IFS= read -r f; do
+    staged_py+=("$f")
+done < <(git diff --cached --name-only --diff-filter=ACM | grep -E '\.py$')
 
-if [[ -z "$staged_py" ]]; then
+if [[ ${#staged_py[@]} -eq 0 ]]; then
     # No Python files staged — nothing to do.
     exit 0
 fi
 
-n_files=$(echo "$staged_py" | wc -l | tr -d ' ')
+n_files=${#staged_py[@]}
 echo "Pre-commit: checking $n_files staged Python file(s) with ruff $RUFF_VERSION"
 
 fail=0
 
 # 1. Lint
 echo "  → ruff check"
-if ! uvx ruff@$RUFF_VERSION check $staged_py; then
+if ! uvx ruff@$RUFF_VERSION check "${staged_py[@]}"; then
     echo
-    echo "  ✗ ruff check failed. Try: uvx ruff@$RUFF_VERSION check --fix $staged_py"
+    echo "  ✗ ruff check failed. Try: uvx ruff@$RUFF_VERSION check --fix <file(s) above>"
     fail=1
 fi
 
 # 2. Format-check (does NOT auto-rewrite — we don't silently re-stage
 # files behind the user's back).
 echo "  → ruff format --check"
-if ! uvx ruff@$RUFF_VERSION format --check $staged_py; then
+if ! uvx ruff@$RUFF_VERSION format --check "${staged_py[@]}"; then
     echo
     echo "  ✗ ruff format would reformat the above file(s)."
-    echo "    Run: uvx ruff@$RUFF_VERSION format $staged_py"
+    echo "    Run: uvx ruff@$RUFF_VERSION format <file(s) above>"
     echo "    Then re-stage and commit."
     fail=1
 fi
