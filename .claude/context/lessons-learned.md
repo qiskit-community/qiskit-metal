@@ -894,6 +894,18 @@ specks) and to prepend the `.. image::` directive (making it the docstring's
 summary line). Both are fixed in `_dev/generate_qlibrary_thumbnails.py`;
 still look at the PNG and the class docstring it produced.
 
+### GDS export silently dropped whole line gaps ("Unable to link hole")
+
+The ground plane was one `gdstk.boolean(chip, all_cuts, "not")`. The result
+is a polygon with every enclosed cut as a hole; when gdstk cannot link a hole
+to the outline it prints `[GDSTK] Unable to link hole in boolean operation`
+to stderr and *drops the hole*. On the 17-qubit chip three whole flux-line
+gaps came out as solid ground -- DRC was clean, the file was wrong, and a
+harmless-looking 40 um change elsewhere was enough to trigger it. Fixed by
+`renderer_gds/gds_boolean.subtract_in_strips` (ground and cheesing).
+If you see that message, check the GDS, not the design. Side effect worth
+knowing: cheesing against strip-sliced ground went from ~40 s to ~1 s.
+
 ### `rebuild()` used to drop connections made with `design.connect_pins`
 
 `QComponent.rebuild` deletes the component's nets before `make()`. Routes

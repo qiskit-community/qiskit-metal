@@ -261,6 +261,15 @@ Suggested order if picked up: `W605` → `B006` → the pure-style groups → an
 
 ## 2026-09-26 — Single-path shape rules, crossover airbridges, PolylineCPW taps
 
+### Chip-sized GDS booleans run in vertical strips
+
+`QGDSRenderer` (positive and negative mask) and `Cheesing` subtract through
+`gds_boolean.subtract_in_strips`: the base is sliced into 16 vertical strips
+and each strip is subtracted against only the cuts that overlap it. A single
+boolean can fail to link a hole and drop it without an error. The cost is
+that output polygons meet along strip edges (fabrication tools merge them);
+the gain is correctness and, for cheesing, a large speed-up.
+
 ### `QComponent.rebuild` restores connections that `make()` does not
 
 A rebuild deletes the component's nets and calls `make()`. Routes re-add
