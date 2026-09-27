@@ -112,6 +112,21 @@ Hamiltonian models
     4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model
 
 
+---------------------------------
+Package modes and qubit couplings
+---------------------------------
+
+Reproduces R. Molavi *et al.*, `arXiv:2609.22442
+<https://arxiv.org/abs/2609.22442>`_: the couplings of a 10 × 10 transmon array
+to the modes of its metal package, with gmsh and a scikit-fem Maxwell solver in
+place of HFSS.
+
+.. nbgallery::
+    :glob:
+
+    4-Analysis/4.4*
+
+
 Full-Chip Design Examples
 =========================
 

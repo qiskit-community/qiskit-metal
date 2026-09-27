@@ -54,6 +54,8 @@ docs/tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.ipynb
 docs/tut/4-Analysis/4.32-Transmon-analytics-HCPB.ipynb
 docs/tut/4-Analysis/4.33-Transmon-analytics.ipynb
 docs/tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.ipynb
+docs/tut/4-Analysis/4.41-The-package-mode-on-paper.ipynb
+docs/tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling.ipynb
 
 # ============================================================================
 # External-gated (🟡) — NEVER auto-run. Reference list only. Maintainer
@@ -76,6 +78,11 @@ docs/tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.ipynb
 #   docs/tut/3-Renderers/3.5-Render-your-design-to-Gmsh.ipynb
 #   docs/tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM.ipynb
 #   docs/circuit-examples/F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh.ipynb
+#
+# gmsh + scikit-fem (+ pymetis), up to 10 GB of memory:
+#   docs/tut/4-Analysis/4.43-Mesh-and-solve-the-10x10-processor.ipynb
+#   docs/tut/4-Analysis/4.44-Every-coupling-from-one-eigenmode.ipynb
+#   docs/tut/4-Analysis/4.45-Four-methods-one-full-wave-model.ipynb
 #
 # Cross-Resonance + cQED — depend on Ansys exports:
 #   docs/tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.ipynb
