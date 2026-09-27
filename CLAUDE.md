@@ -146,6 +146,8 @@ Don't reach for `_dev/` as a halfway house — it's still public.
 | `docs/architecture/renderer_protocol.md` | When adding or modifying a renderer. The full inheritance map and override matrix. |
 | `docs/architecture/gui_crash_defenses.md` | **Before touching GUI startup, teardown, stylesheet handling, or persisted window state.** The four distinct failure modes behind issue #1048, every defense and what it guards, the ordering constraints (notably: the startup journal must stay open across `show()`, and all deferred callbacks go through `single_shot()` — an "Internal C++ object already deleted" anywhere in output is a use-after-free report, never noise), and the changes that look safe but reintroduce segfaults. |
 | `docs/headless-usage.rst` | When working on the Qt-free path or onboarding flow. |
+| `.claude/skills/chip-design/SKILL.md` | When designing a new chip or a variant from a specification. Spec and frequency plan, floorplan, staged build with DRC per stage, cell simulation, and the build rules that fail silently (unterminated ends, unwired airbridges, starved fillets, rotation vs pin angle). |
+| `.claude/skills/chip-layout-from-images/SKILL.md` | When reproducing a published device from its images, as a benchmark or for teaching. Measurement from pixels and conformance to the source; credit and scope rules. |
 
 ## Adding a new QComponent
 
@@ -159,8 +161,10 @@ QISKIT_METAL_HEADLESS=1 uv run python _dev/generate_qlibrary_thumbnails.py \
 ```
 
 Outputs PNGs to `src/qiskit_metal/_gui/_imgs/components/<ClassName>.png`
-and inserts a `.. image:: <ClassName>.png` directive at the top of the
-class docstring if missing. Both are checked in.
+and inserts a `.. image:: <ClassName>.png` directive after the class
+docstring's summary line if missing. Both are checked in. Only missing PNGs
+are rendered (`--force` redraws all); look at the new PNG and the docstring
+before committing.
 
 If your component needs pins / anchors / non-default options to render
 meaningfully (e.g. a Route), add a recipe to `SPECIAL_RECIPES` near the

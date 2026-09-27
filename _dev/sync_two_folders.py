@@ -360,9 +360,9 @@ PAIRS = {
         "docs/circuit-examples/F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.ipynb",
         "tutorials/Appendix C Circuit examples/F. Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.ipynb",
     ),
-    "53-Walraff_17Qubit_SurfaceCode": (
-        "docs/circuit-examples/F.Small-quantum-chips/53-Walraff_17Qubit_SurfaceCode.ipynb",
-        "tutorials/Appendix C Circuit examples/F. Small-quantum-chips/53-Walraff_17Qubit_SurfaceCode.ipynb",
+    "53-Wallraff_17Qubit_SurfaceCode": (
+        "docs/circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode.ipynb",
+        "tutorials/Appendix C Circuit examples/F. Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode.ipynb",
     ),
     "Example-full-chip-design": (
         "docs/circuit-examples/full-design-flow-examples/Example-full-chip-design.ipynb",

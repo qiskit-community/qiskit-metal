@@ -256,3 +256,62 @@ Counts are per-rule and reproducible with
 
 Suggested order if picked up: `W605` → `B006` → the pure-style groups → and
 `I001` on its own, gated on `tests-lite` passing.
+
+---
+
+## 2026-09-26 — Single-path shape rules, crossover airbridges, PolylineCPW taps
+
+### `QComponent.rebuild` restores connections that `make()` does not
+
+A rebuild deletes the component's nets and calls `make()`. Routes re-add
+theirs from `pin_inputs`; connections made with `design.connect_pins` were
+lost. `rebuild` now records `(pin, partner, partner_pin)` beforehand and, after
+`make()`, reconnects each pair where both pins still exist and neither is in
+the net table. A partner that cannot be reconnected (pin gone, or a route
+retargeted elsewhere) has its `net_id` reset to 0 instead of left stale.
+Restoring rather than keeping the nets lets `make()` stay authoritative for
+components that manage their own connections.
+
+### Shape rules ship as `SHAPE_RULES`, not in `DEFAULT_RULES`
+
+`SelfIntersectionRule` (ERROR), `SharpTurnRule`, `FilletStarvationRule`
+and `DanglingEndRule` (WARNING) check the shape of a single path, which no
+pairwise rule can see. They are exported as `qiskit_metal.validation.SHAPE_RULES` and run
+with `validate(design, rules=[*DEFAULT_RULES, *SHAPE_RULES])`.
+
+They are not in `DEFAULT_RULES` because four published notebooks call
+`validate()` and commit its printed report as output (1.3, 2.24, the
+overlap quick-topic, and the 17-qubit example). Any change to the default
+set changes that output ("N rules ran", and possibly new warnings). Promote
+them together with a refresh of those notebooks through the dual-folder
+sync, not separately.
+
+`DanglingEndRule` rests on path metal and its ground cut ending flush:
+flat caps in `QMplRenderer` and in `validation.core`, and gdstk
+`FlexPath`'s default `ends="flush"` in GDS export. An unconnected CPW end
+therefore meets the ground plane and fabricates as a short, not an open.
+
+### `Airbridge` gains pins `a` and `b`
+
+At the inner edge of each landing pad, facing out along the span, so the
+component can carry a signal over another line when the cut ends of the
+upper line are connected to them. As a ground strap the pins are left
+unconnected; no renderer adds geometry for an unconnected pin unless it is
+passed in `open_pins`. Existing behaviour and geometry are unchanged.
+
+### `PolylineCPW` taps
+
+`taps={name: [x, y]}` adds a pin on the line at the point nearest
+`[x, y]`, normal toward it. A branch connected to a tap shares its net, so
+`MetalOverlapRule` treats the overlap at the joint as intended. The
+alternative, a DRC `Waiver` per joint, works but records an exception for
+what is ordinary connectivity.
+
+### Thumbnail generator: `chip_outline=False`, directive after the summary
+
+`_render_to_png` passes `chip_outline=False` (see "Die outline" above):
+with the outline, autoscaling framed small new components as specks.
+`_inject_image_directive` inserts the `.. image::` block after the
+docstring's summary paragraph; it previously prepended it, which left
+`.. image::` as the first docstring line, the line autosummary uses as the
+summary.

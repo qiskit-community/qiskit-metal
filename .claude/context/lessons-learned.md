@@ -799,6 +799,124 @@ slow CI jobs sample every push. The pre-push hook now runs
 whenever a push touches `_gui/` or `renderer_mpl/` (~40s) — the local
 gate that would have caught the PR #1180 matrix failures before push.
 
+## Component-authoring traps (silent, geometric, no traceback)
+
+These bit while building a real chip from published images. What they
+share is that nothing raises — the geometry is simply wrong, and it
+looks plausible until you measure it.
+
+**`add_pin`'s two input forms fail quietly.** With the default
+`input_as_norm=False`, `points` is the line **across** the conductor
+(the pin's face): `middle` is that line's midpoint and `normal` comes
+out perpendicular. With `input_as_norm=True`, `points` is a line
+**along** the connection: `middle` is `points[1]` and `normal` runs
+toward it. Hand a route's first segment to the default form and the pin
+lands at the *midpoint of the segment* with a normal rotated 90°, and
+nothing complains. `LaunchpadWirebond`'s `tie` pin is the reference for
+an end-of-trace pin. Assert on `pins[name]['middle']` and `['normal']`
+in a test — don't trust the call.
+
+**A component's rotation option is not necessarily its pin's angle.**
+`StarQubit.rotation_*` sits 90° ahead of where the corresponding pin
+ends up: `rotation_rdout='45'` puts `pin_rdout` at 315. This silently
+rotated every readout arm on a 17-qubit reproduction for several
+passes, because the four *coupler* arms at 0/90/180/270 map onto the
+same set when shifted by −90 and so looked fine. Any component taking
+an angle should state in its docstring where the resulting **pin**
+lands; several still don't.
+
+**Verify the built geometry, never the options you passed.** Both of
+the above are invisible to a check that reads back `component.options`
+— that only confirms you passed what you meant to pass. Read the pin
+normals (or the qgeometry) back out of the design and assert on those.
+That is the only check that catches this whole class.
+
+**`QRoute.connect_simple()` cannot express non-Manhattan paths.** It
+tries four fixed shapes (`^|_`, `^^|`, `__|`, `_|^`) between
+consecutive waypoints and raises `QiskitMetalDesignError` when none
+fits. On a real device's octilinear control lines (measured: 55%
+axis-aligned, 41% at 45°) it failed outright on 7 of 17 routes and
+turned the rest into staircases. When the path is already known,
+`PolylineCPW` (`qlibrary/tlines/polyline_cpw.py`) draws it as given —
+that is a different job from routing, which is why it is a plain
+`QComponent` and not a `QRoute`.
+
+**The DRC needs no per-component configuration — but it does need you
+to model two things.** The rules read qgeometry generically, so any
+component you write is covered automatically. What it cannot infer:
+
+* *Intent to connect.* A component wired up without going through the
+  `pin_inputs` machinery reports its intended junctions as metal-overlap
+  shorts. `MetalOverlapRule` skips pairs sharing a net, so call
+  `design.connect_pins(...)` — six spurious findings vanished at once.
+  For a joint in the middle of a line, add a `PolylineCPW` tap and
+  connect to that.
+* *Out-of-plane structure.* Overlap and spacing are grouped **per
+  layer**, so a crossover modelled properly — base trace interrupted,
+  span on `Airbridge`'s bridge layer — simply is not an overlap. Drawing
+  both conductors on layer 1 and then arguing the finding is expected is
+  the wrong fix; putting the span on its own layer is the right one, and
+  it drops the report to zero errors without touching a rule.
+
+`validate(design, rules=...)` lets you swap or retune rules, but there is
+no waiver mechanism for "expected" findings — if you need one, say so
+rather than quietly widening a threshold.
+
+**An unconnected CPW end is a short, not an open.** Path metal and its
+ground cut end flush (flat caps in the renderers and the DRC; gdstk
+`FlexPath` defaults to flush ends in GDS), so a bare line end butts the
+ground plane. On a 17-qubit reproduction all 17 capacitively coupled drive
+lines were drawn this way and would have fabricated shorted. Terminate every
+end explicitly (`OpenToGround` / `ShortToGround`) or connect it;
+`DanglingEndRule` (in `SHAPE_RULES`) reports the ones you missed.
+
+**A line cut for an `Airbridge` is broken unless the bridge is wired.**
+Splitting a line at a crossing and placing an `Airbridge` over the gap
+leaves two unconnected ends — each a short, per the entry above — unless
+the cut ends are connected to the bridge's pins `a`/`b`. Sixty such ends
+passed every default rule on the same chip.
+
+**Mid-line branches: use `PolylineCPW` taps, not waivers.** A stub joined
+to the middle of a line has no pin to connect, so the DRC reports the joint
+as a metal-overlap short. A `taps={name: [x, y]}` pin on the line makes the
+joint a real net; a per-joint `Waiver` works but records an exception for
+ordinary connectivity.
+
+**Editing a CRLF file can rewrite every line.** Some files here are CRLF
+(`qlibrary/__init__.py`); an editor or tool that writes LF turns a two-line
+change into a whole-file diff, and `git diff --stat` shows only a large
+count. Check `git diff --ignore-cr-at-eol --stat` against the plain stat
+before committing, and write CRLF files back as bytes.
+
+**Check the thumbnail and the docstring after adding a component.** The
+generator used to frame against the die outline (small parts rendered as
+specks) and to prepend the `.. image::` directive (making it the docstring's
+summary line). Both are fixed in `_dev/generate_qlibrary_thumbnails.py`;
+still look at the PNG and the class docstring it produced.
+
+### `rebuild()` used to drop connections made with `design.connect_pins`
+
+`QComponent.rebuild` deletes the component's nets before `make()`. Routes
+reconnect inside `make()`, so nobody noticed; anything wired with
+`design.connect_pins` (terminations, capacitors, airbridges, `PolylineCPW`)
+silently lost its connection on any rebuild — including `design.rebuild()` and
+GUI edits — and the partner pin kept a stale `net_id`. On the 17-qubit chip one
+`design.rebuild()` took the net table from 656 rows to 0 and DRC from clean to
+126 overlap errors. Fixed: `rebuild` records the partners and restores those
+`make()` did not reconnect (`tests/test_rebuild_connections.py`). When a design
+is DRC-clean after building but not after a rebuild, check `design.net_info`
+first.
+
+### Renaming a mirrored tutorial: the sync tiebreaker can restore the old copy
+
+`git mv` of a notebook in both trees, then rewriting only the docs copy, left
+the two with different content and new mtimes on both. `_dev/sync_two_folders.py
+--write` reported a "conflict", applied its tiebreaker, and copied the stale
+tutorials copy over the new docs notebook. Nothing flagged it except the cell
+count. After rewriting one side, copy it to the other side yourself, then run
+the sync (dry run first) and `scripts/check_tutorials_sync.py`; read any
+"conflicts" line before trusting `--write`.
+
 ## What this list doesn't include
 
 Stuff that's NOT a "lesson learned" — those go in
