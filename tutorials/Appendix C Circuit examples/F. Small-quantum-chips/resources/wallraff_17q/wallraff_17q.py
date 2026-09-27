@@ -117,6 +117,15 @@ TRACE_STEP = 0.045
 TRACE_MIN_SEG = "30um"
 TRACE_FILLET = "15um"
 
+# Where a line meets a pin it leaves straight along the pin's normal for LEAD
+# before following the trace, so the CPW meets the pad square-on and its end
+# is flush with it.
+LEAD = 0.04
+# A trace that leaves a pin nearly sideways (a coupler making room for a flux
+# line that ends on the same arm) has no room for a lead; it keeps its traced
+# departure.
+SIDE_EXIT_DEG = 65
+
 # StarQubit's connector pins sit 0.20 mm from the qubit center.
 PIN_R = 0.21
 # Where the control lines stop, from the qubit center: the flux short sits right
@@ -302,6 +311,42 @@ def split_at_crossings(design, pts, name, over, tag, clear=0.055):
     return items
 
 
+def pin_at(design, p, tol=1e-6):
+    """``(middle, normal)`` of the component pin at point ``p``, if any.
+
+    Lines and bridges are skipped: only pins a line is drawn *to* count.
+    """
+    for comp in design.components.values():
+        if isinstance(comp, (PolylineCPW, Airbridge)):
+            continue
+        for pin in comp.pins.values():
+            if np.linalg.norm(np.asarray(pin["middle"]) - p) < tol:
+                return np.asarray(pin["middle"], float), np.asarray(
+                    pin["normal"], float
+                )
+    return None
+
+
+def with_lead(P, pin, normal, at="start"):
+    """Start (or end) resampled points ``P`` with a straight lead off a pin.
+
+    The lead runs LEAD along the pin's outward normal; points within reach of
+    its tip are dropped (by distance, so a sideways jog near the pin is kept),
+    and the line then carries on along the trace.
+    """
+    seq = [np.asarray(q, float) for q in (P if at == "start" else list(P)[::-1])]
+    tip = pin + normal * LEAD
+    rest = seq[1:]
+    while len(rest) > 1 and np.linalg.norm(rest[0] - pin) < LEAD + TRACE_STEP / 2:
+        rest.pop(0)
+    away = (rest[0] - pin) / np.linalg.norm(rest[0] - pin)
+    if math.degrees(math.acos(np.clip(away @ normal, -1, 1))) > SIDE_EXIT_DEG:
+        return list(P)
+    seq = rest
+    seq = [pin, tip] + seq
+    return seq if at == "start" else seq[::-1]
+
+
 def draw_traced(design, name, pts, over, tag, taps=None):
     """Draw a traced line as PolylineCPW pieces, bridged and fully wired.
 
@@ -321,11 +366,22 @@ def draw_traced(design, name, pts, over, tag, taps=None):
         for tn, tgt in (taps or {}).items()
     }
     names, chain, i = [], [], 0
-    for kind, v in items:
+    for k, (kind, v) in enumerate(items):
         if kind == "bridge":
             chain.append(("bridge", v))
             continue
         n = name + (f"_{i}" if i else "")
+        v = resample(v, TRACE_STEP)
+        if k > 0:  # after a bridge: leave its pin b along the bridge axis
+            b = design.components[items[k - 1][1]].pins["b"]
+            v = with_lead(v, np.asarray(b["middle"]), np.asarray(b["normal"]), "start")
+        elif (hit := pin_at(design, v[0])) is not None:
+            v = with_lead(v, *hit, "start")
+        if k < len(items) - 1:  # before a bridge: arrive at its pin a
+            a = design.components[items[k + 1][1]].pins["a"]
+            v = with_lead(v, np.asarray(a["middle"]), np.asarray(a["normal"]), "end")
+        elif (hit := pin_at(design, v[-1])) is not None:
+            v = with_lead(v, *hit, "end")
         PolylineCPW(
             design,
             n,
@@ -337,7 +393,7 @@ def draw_traced(design, name, pts, over, tag, taps=None):
                         if j == i
                     }
                 ),
-                points=[list(map(float, p)) for p in resample(v, TRACE_STEP)],
+                points=[list(map(float, p)) for p in v],
                 trace_width=CPW["width"],
                 trace_gap=CPW["gap"],
                 fillet=TRACE_FILLET,
