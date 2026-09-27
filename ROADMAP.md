@@ -820,7 +820,7 @@ roadmap items above, but tracked so they don't get lost.
 
 ---
 
-## Solver backends: scikit-fem, ElmerFEM and Palace `[research]`
+## Solver backends: shared abstractions, then scikit-fem, ElmerFEM, Palace and Ansys `[research]`
 
 Tutorials 4.41–4.45 (`docs/tut/4-Analysis/4.4*`) run eigenmode, driven
 (impedance) and electrostatic calculations with gmsh + scikit-fem + SciPy,
@@ -838,42 +838,81 @@ follows the Ansys renderers (`initialize_eigenmode`, `analyze_setup`,
 `get_capacitance_matrix`). `QElmerRenderer` covers electrostatics through a
 different API (`add_solution_setup`, `run`, `capacitance_matrix`).
 
-**Palace design (RFC).** The Palace integration is coordinated with SQDLab in
+A Palace design exists as an RFC in
 [sqdlab/SQDMetal#67](https://github.com/sqdlab/SQDMetal/issues/67): a
-`QPalaceRenderer` on the `QRendererAnalysis` seam that composes
-`QGmshRenderer` (as `QElmerRenderer` does), shipped as a downstream
-`quantum-metal-palace` plugin with a one-directional dependency on
-Quantum Metal, adapting SQDMetal's Palace pipeline (port vocabulary, gmsh
-wrappers, parsers). Quantum Metal core gains small additive seams: a
-structured physical-group map returned by `QGmshRenderer`, first-class
-ports, per-region mesh fields, and net naming for capacitance matrices.
-First slice: a transmon + launchpad + CPW → gmsh → Palace eigenmode with one
-lumped port, checked against an HFSS / SQDMetal reference.
+`QPalaceRenderer` on the `QRendererAnalysis` seam composing `QGmshRenderer`,
+adapting SQDMetal's Palace pipeline (port vocabulary, gmsh wrappers,
+parsers), with small additive seams in Quantum Metal core. First slice: a
+transmon + launchpad + CPW → gmsh → Palace eigenmode with one lumped port,
+checked against an HFSS / SQDMetal reference.
 
-**The same seams serve all open backends.** The physical-group map, ports and
-mesh fields are the solver-neutral problem description that ElmerFEM and the
-scikit-fem solver need too, so they are built once in core and consumed by
-three renderers:
+### Stage 1 — shared abstractions in core (lands first)
 
-1. **Core seams** in `QGmshRenderer`: structured physical-group map, ports
-   (lumped / junction lines, later wave ports), per-region mesh fields
-   (fine at junctions and metal edges, coarse bulk), symmetry faces, net
-   names. Shared with the Palace RFC; land them first.
-2. **scikit-fem** (pip-only, runs in CI): move `MaxwellFEM`, `PortROM`,
+Backends differ in what they can do; the aim is to make those differences
+explicit and small, not to hide them. Everything below lives in Quantum Metal
+core, is solver-neutral, and is what each backend reads:
+
+- **Ports**: one vocabulary for lumped ports (sheet or line), junctions
+  (open, lumped inductor, lumped port) and wave ports, attached to pins or
+  explicit geometry.
+- **Mesh-size control**: named refinement regions and per-region size fields
+  (metal edges, a sphere around each junction, the bulk), a global maximum,
+  in physical units.
+- **Named physical groups**: a structured map from roles (metal nets,
+  dielectrics, ports, boundaries, symmetry faces) to mesh entities, returned
+  by `QGmshRenderer`, replacing string matching.
+- **Boundary conditions**: perfect conductor, symmetry planes (PEC / PMC),
+  absorbing / radiation, surface impedance (e.g. kinetic inductance).
+- **Materials** from the layer stack (permittivity, loss tangent).
+- **Net naming and sign convention** for capacitance matrices, so
+  `LOManalysis` reads every backend the same way.
+- **Solve setups**: backend-neutral descriptions of eigenmode, driven and
+  electrostatic studies.
+- **Capabilities**: each backend declares which solve types, ports,
+  boundary conditions and outputs (EPR, convergence history, field plots) it
+  supports; the simulation classes check before running and fail with a
+  message naming the backends that can do it. The same table feeds
+  `docs/simulation-pathways.rst`.
+
+Before building these, a **gap analysis**: SQDMetal's Palace pipeline,
+pypalace, the Ansys renderers and `QGmshRenderer` / `QElmerRenderer` side by
+side — which of the abstractions above Quantum Metal already has, which it
+lacks, and which the others rely on.
+
+### Stage 2 — backends on the shared abstractions
+
+1. **scikit-fem** (pip-only, runs in CI): move `MaxwellFEM`, `PortROM`,
    `Electrostatics` and the field evaluator from the tutorial module into
-   `src/qiskit_metal/analyses/` behind an optional extra, reading the core
-   seams; expose them through a renderer (`renderer_name="skfem"`) for the
-   eigenmode and capacitance flows, keeping `package_modes.py` as a thin
-   wrapper so 4.41–4.45 run unchanged.
-3. **ElmerFEM beyond electrostatics**: eigenmodes with lumped junctions from
-   Elmer's electromagnetic-wave solvers, on the same seams; cross-check
-   against scikit-fem (the 4.19 cell, the 4.43 package).
-4. **Palace**: the RFC above, developed with SQDLab and tested locally first
-   (MPI binary); part of the larger local simulation plan.
-5. **The informal renderer contract**, written down: which calls each
-   solve type needs (eigenmode, capacitance, driven), and how "convergence"
-   maps onto single-pass solvers — needed by all three renderers and an
-   open question in the RFC.
+   `src/qiskit_metal/analyses/` behind an optional extra; a
+   `renderer_name="skfem"` renderer for the eigenmode and capacitance flows;
+   `package_modes.py` stays a thin wrapper so 4.41–4.45 run unchanged.
+2. **ElmerFEM beyond electrostatics**: eigenmodes with lumped junctions from
+   Elmer's electromagnetic-wave solvers; cross-check against scikit-fem (the
+   4.19 cell, the 4.43 package).
+3. **Palace**: tested locally first (MPI binary). Packaging is an open
+   decision: a native renderer in Quantum Metal core, or a downstream
+   `quantum-metal-palace` plugin as in the RFC. Either way it reads the
+   stage-1 abstractions.
+4. **Ansys HFSS / Q3D**: stays fully supported. In principle the Ansys
+   renderers read the same abstractions too, but any change to
+   `renderer_ansys*` is gated on validation in AEDT (see "Hard constraints"
+   in `CLAUDE.md`) and belongs to the Ansys track below.
+
+### Stage 3 — the renderer contract, written down
+
+Which calls each solve type needs (eigenmode, capacitance, driven), how
+"convergence" maps onto single-pass solvers, and how capabilities are
+reported — for all backends, Ansys included.
+
+### Ansys track (separate)
+
+Moving from the COM renderer (`renderer_ansys`) to current pyaedt
+(`renderer_ansys_pyaedt`; pinned `>=0.21,<0.24` below Python 3.14, `>=1.0.1`
+on 3.14) is its own project. It needs an AEDT test environment for every
+step, so it runs on its own track, with the stored HFSS / Q3D tutorial outputs
+as the reference answers until such an environment exists. Related: the
+Ansys 2025R1 issues (#1041, #1046) and the runtime spot-check request (#1079)
+under "Known bug-triage queue".
 
 ### Testing solvers without losing the stored answers
 
@@ -897,6 +936,8 @@ notebooks in place. Solver runs are expensive and, on shared runners, risky
   behind a pytest marker that is not collected by default.
 - **Tier 2 — local only (external binaries, MPI, licenses, gigabytes).**
   ElmerFEM, Palace, Ansys, and full-size tutorial runs; enabled per solver by
-  an environment variable; never on shared CI runners.
+  an environment variable; never on shared CI runners. Ansys tests need an
+  AEDT installation and license; until one is available, compare against the
+  stored HFSS / Q3D outputs only.
 - **Guardrails for every solver test**: a time and memory budget, a skip when
   the binary or extra is missing, and no writes under `docs/`.

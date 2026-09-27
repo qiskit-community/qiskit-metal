@@ -27,8 +27,10 @@ metal, no ground-plane cutouts or CPWs in the mesher yet, single process.
 Details: `docs/architecture/open_fem_scikit_fem.md`. The user-facing
 summary of all paths (what each computes, how to install it, which
 tutorials use it) is `docs/simulation-pathways.rst`. AWS Palace is reachable
-through SQDMetal today; a native `renderer_name="palace"` plugin is being
-designed with SQDLab (sqdlab/SQDMetal#67).
+through SQDMetal today; a native `renderer_name="palace"` path is being
+designed (RFC: sqdlab/SQDMetal#67). Backends differ in what they support:
+check a backend's capabilities before assuming a solve type, port or
+boundary condition carries over (ROADMAP "Solver backends", stage 1).
 
 ## 2. Validate the solver before the device
 

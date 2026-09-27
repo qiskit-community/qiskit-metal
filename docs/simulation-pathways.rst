@@ -51,9 +51,8 @@ result from one path can be checked against another.
        container). `pypalace <https://pypalace.readthedocs.io/>`_ is another
        Palace toolkit with a Quantum Metal gmsh export.
      - SQDMetal takes a ``QDesign`` directly today. A native path —
-       ``renderer_name="palace"`` in the simulation classes, through a
-       ``quantum-metal-palace`` plugin that builds on ``QGmshRenderer`` — is
-       being designed with SQDLab in
+       ``renderer_name="palace"`` in the simulation classes, built on
+       ``QGmshRenderer`` — is being designed; see the RFC in
        `sqdlab/SQDMetal#67 <https://github.com/sqdlab/SQDMetal/issues/67>`_
      - none in Quantum Metal yet; an end-to-end tutorial is part of the
        integration plan
@@ -88,10 +87,12 @@ Plans
 =====
 
 The roadmap sections "Open FEM stack" and "Solver backends" describe how these
-paths are meant to meet in Quantum Metal: shared gmsh-level seams (named
-physical groups, ports, per-region mesh control) that ElmerFEM, the
-scikit-fem solver and the Palace plugin all build on, reached from the same
-simulation classes by renderer name — and how solver results are tested. The
+paths are meant to meet in Quantum Metal: shared, solver-neutral abstractions
+in core (ports, mesh-size control, named physical groups, boundary
+conditions, net naming, and a declared list of what each backend supports)
+that ElmerFEM, the scikit-fem solver, Palace and — in principle — Ansys all
+read, reached from the same simulation classes by renderer name; and how
+solver results are tested. The
 Palace design is discussed in
 `sqdlab/SQDMetal#67 <https://github.com/sqdlab/SQDMetal/issues/67>`_. Design
 notes for the scikit-fem solver: ``docs/architecture/open_fem_scikit_fem.md``

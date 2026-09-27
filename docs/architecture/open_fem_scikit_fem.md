@@ -110,15 +110,17 @@ empty fragment maps) are in `.claude/context/lessons-learned.md`, section
 ## Extension path (reusable backend)
 
 The staged plan and the testing policy are in `ROADMAP.md`, "Solver
-backends: scikit-fem, ElmerFEM and Palace". The Palace design it builds on is
-the RFC in [sqdlab/SQDMetal#67](https://github.com/sqdlab/SQDMetal/issues/67)
-(a `QPalaceRenderer` composing `QGmshRenderer`, plus additive core seams).
-For this solver:
+backends: shared abstractions, then scikit-fem, ElmerFEM, Palace and Ansys".
+Stage 1 there (ports, mesh-size control, named physical groups, boundary
+conditions, net naming, capability declarations in core) lands before this
+solver moves. The Palace RFC in
+[sqdlab/SQDMetal#67](https://github.com/sqdlab/SQDMetal/issues/67) proposes
+the same kind of seams. For this solver:
 
-1. **Geometry through the core seams**: take the tagged mesh from
+1. **Geometry through the core abstractions**: take the tagged mesh from
    `QGmshRenderer` once it returns a structured physical-group map, ports,
-   per-region mesh fields and symmetry faces (the seams the Palace RFC adds),
-   instead of the tutorial's own mesher; this also brings ground planes with
+   per-region mesh fields and symmetry faces (stage 1), instead of the
+   tutorial's own mesher; this also brings ground planes with
    cutouts and CPW paths. `mesh_package` shows what the tags must carry:
    metal surfaces, junction lines as edge chains, probe lines, cut faces.
 2. **Solver code**: move `MaxwellFEM`, `PortROM`, `Electrostatics` and

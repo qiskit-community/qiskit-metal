@@ -398,3 +398,14 @@ the same seams and the same front door, so the analysis tutorials can switch
 solver by renderer name. This supersedes the earlier ROADMAP draft that
 proposed a separate backend interface instead of a renderer.
 
+## 2026-09-27 — shared abstractions land before any new backend; Palace packaging open
+
+Stage 1 of the ROADMAP "Solver backends" plan — solver-neutral ports,
+mesh-size control, named physical groups, boundary conditions, net naming,
+solve setups and per-backend capability declarations in Quantum Metal core —
+comes before the scikit-fem, ElmerFEM or Palace renderers, preceded by a gap
+analysis against SQDMetal, pypalace and the Ansys renderers. Whether Palace
+ships as a native renderer in core or as a downstream plugin is not decided.
+Ansys HFSS / Q3D stays fully supported; changes to the Ansys renderers stay
+on a separate track gated on AEDT validation.
+
