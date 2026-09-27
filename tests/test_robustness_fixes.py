@@ -18,7 +18,7 @@ import tempfile
 import textwrap
 import unittest
 from pathlib import Path
-from unittest import mock
+import unittest.mock
 
 import numpy as np
 import pandas as pd
@@ -164,10 +164,10 @@ class TestElmerSolverExitCode(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             with (
-                mock.patch.object(
+                unittest.mock.patch.object(
                     elmer_runner, "_resolve_elmer_binary", return_value="ElmerSolver"
                 ),
-                mock.patch.object(elmer_runner.subprocess, "run", fake_run),
+                unittest.mock.patch.object(elmer_runner.subprocess, "run", fake_run),
             ):
                 runner.run_elmersolver(tmp, "case.sif")
 
