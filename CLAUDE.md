@@ -129,6 +129,8 @@ Don't reach for `_dev/` as a halfway house — it's still public.
 | `docs/headless-usage.rst` | When working on the Qt-free path or onboarding flow. |
 | `.claude/skills/chip-design/SKILL.md` | When designing a new chip or a variant from a specification. Spec and frequency plan, floorplan, staged build with DRC per stage, cell simulation, and the build rules that fail silently (unterminated ends, unwired airbridges, starved fillets, rotation vs pin angle). |
 | `.claude/skills/chip-layout-from-images/SKILL.md` | When reproducing a published device from its images, as a benchmark or for teaching. Measurement from pixels and conformance to the source; credit and scope rules. |
+| `.claude/skills/chip-simulation/SKILL.md` | When simulating a cell, an array or a package and extracting frequencies, capacitances or couplings (Ansys, ElmerFEM, or the gmsh + scikit-fem solver). Solver choice, validation against analytic cases, mesh seeding and convergence, symmetry, junctions as lumped elements, and what each coupling-extraction method can and cannot give. |
+| `.claude/skills/tutorial-notebook/SKILL.md` | When writing or re-running tutorial notebooks. Structure, shared resource modules, builder scripts, reliable execution (kernel, working folder, dead-kernel check), reviewing every figure, and keeping stored outputs free of local paths and log noise. |
 
 ## Adding a new QComponent
 

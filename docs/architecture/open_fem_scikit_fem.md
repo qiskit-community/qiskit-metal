@@ -55,7 +55,7 @@ more fill). No MPI, no external binaries.
 | PortROM vs direct solves | frequencies to 1e-6 GHz, Z to 5 digits | — |
 | field evaluator vs `skfem` interpolator | 1e-16 relative | — |
 
-Costs on an Apple M2, 24 GB: quarter box, 0.1 mm paddle edges: ~110k
+Costs, measured on a laptop: quarter box, 0.1 mm paddle edges: ~110k
 unknowns, ~7 s; full 10×10 box, 0.1 mm: ~450k unknowns, ~40 s, ~8 GB peak;
 full box port ROM, 26 ports × 4 moments: ~35–70 s.
 

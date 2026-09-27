@@ -114,9 +114,13 @@ confirm.
 - Cut out a representative cell (a qubit with its readout, or two coupled
   qubits) rather than meshing the chip.
 - **Capacitance / LOM**: Ansys Q3D, or the open-source ElmerFEM path
-  (`renderer_elmer`, tutorial `4 Analysis/B.../4.19 Analyze a transmon using
-  ElmerFEM`); LOM analysis turns the matrix into frequencies and couplings
-  (`4 Analysis/A...`). **Eigenmode / EPR**: Ansys HFSS.
+  (`renderer_elmer`, tutorial `docs/tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM.ipynb`);
+  LOM analysis turns the matrix into frequencies and couplings
+  (`docs/tut/4-Analysis/4.0*`). **Eigenmode / EPR / couplings**: Ansys HFSS,
+  or the open-source gmsh + scikit-fem solver of tutorials 4.43–4.45
+  (`docs/tut/resources/package_modes/`).
+- Validation, mesh convergence, symmetry, junctions as lumped elements and
+  the choice of coupling-extraction method: `.claude/skills/chip-simulation/SKILL.md`.
 - Sweep the few dimensions that set each target
   (`analyses.sweep_and_optimize`), update the spec, rebuild, re-check.
 - Say which numbers were simulated and which are analytic estimates.
@@ -136,4 +140,5 @@ waivers and their reasons, and the spec file that produced it.
 - New-design examples: `docs/tut/1-Overview/1.3-Build-a-4-qubit-chip.ipynb`,
   `docs/tut/full-design-examples/`, `docs/circuit-examples/full-design-flow-examples/`.
 - `qiskit_metal.validation` -- `validate`, `Waiver`, `SHAPE_RULES`.
+- `.claude/skills/chip-simulation/SKILL.md` -- simulating a cell or array and extracting parameters.
 - `.claude/context/lessons-learned.md` -- component-authoring traps.
