@@ -185,6 +185,11 @@ def extract_transmon_coupled_Noscillator(
     Calculate the χ The full dispersive splitting using analytical
     approximations, i.e., return the `|0> --> |1>` splitting.
 
+    Only floating two-pad transmons are supported (two islands, ``pad1`` and
+    ``pad2``, joined by the junction). For grounded or single-island qubits
+    such as ``TransmonCross``, use ``Cell`` / ``Subsystem`` /
+    ``CompositeSystem`` from ``lom_core_analysis`` instead.
+
     Args:
         capMatrix (np.ndarray): Order of the capacitance matrix must be
           bus1...busN-1, ground, Qubit_pad1, Qubit_pad2, readout. (in F)
@@ -216,7 +221,16 @@ def extract_transmon_coupled_Noscillator(
     if N < 0:
         raise ValueError("N must positive")
     if len(capMatrix) != (N + 3):
-        raise ValueError("Capacitance matrix is not the right size")
+        raise ValueError(
+            f"Capacitance matrix is not the right size: got "
+            f"{len(capMatrix)}x{len(capMatrix)}, expected {N + 3}x{N + 3} for "
+            f"N={N} coupling pads (in LOManalysis, N = 1 + len(setup.freq_bus)). "
+            f"Expected net order: bus1...busN-1, ground, pad1, pad2, readout. "
+            f"This extraction only supports floating two-pad transmons; for a "
+            f"grounded or single-island qubit (e.g. TransmonCross) use Cell / "
+            f"Subsystem / CompositeSystem from lom_core_analysis "
+            f"(tutorials 4.04 and 4.05)."
+        )
 
     # make list of angular frequencies of resonators
     wr = np.zeros(N)  # angular freq of resonators (GHz-rad)
@@ -830,9 +844,13 @@ def df_cmat_style_print(df_cmat: pd.DataFrame):
     Args:
         df_cmat (dataframe): Dataframe to display
     """
-    from IPython.display import display
+    try:
+        from IPython.display import display
 
-    display(df_cmat.style.format("{:.2f}").bar(color="#5fba7d", width=100))
+        display(df_cmat.style.format("{:.2f}").bar(color="#5fba7d", width=100))
+    except ImportError:
+        # Lite installs may lack IPython or jinja2 (needed by DataFrame.style).
+        print(df_cmat.round(2).to_string())
 
 
 ########################################################################

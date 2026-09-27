@@ -227,7 +227,32 @@ class EPRanalysis(QAnalysis):
         """Short-cut to the same-name method found in renderers.ansys_renderer.py.
         Eventually, the analysis code needs to be only here, and the renderer method deprecated.
         """
+        self._warn_large_hilbert_space(fock_trunc)
         self.sim.renderer.epr_spectrum_analysis(cos_trunc, fock_trunc)
+
+    # Dense Hilbert spaces above this size need several GB for the full
+    # diagonalisation in pyEPR (16 bytes per complex entry).
+    _LARGE_HILBERT_SPACE = 20_000
+
+    def _warn_large_hilbert_space(self, fock_trunc: int):
+        """Warn before a numerical diagonalisation that will need a lot of
+        memory. pyEPR builds a ``fock_trunc ** n_modes`` Hilbert space (#1018).
+        """
+        n_modes = getattr(getattr(self.sim, "setup", None), "n_modes", None)
+        if not isinstance(n_modes, int) or not isinstance(fock_trunc, int):
+            return
+        states = fock_trunc**n_modes
+        if states > self._LARGE_HILBERT_SPACE:
+            gb = states**2 * 16 / 1e9
+            self.logger.warning(
+                "Spectrum analysis: fock_trunc**n_modes = %d**%d = %d states; a "
+                "dense matrix of that size needs about %.0f GB. If you run out of "
+                "memory, lower setup.fock_trunc or analyse a subset of modes.",
+                fock_trunc,
+                n_modes,
+                states,
+                gb,
+            )
 
     def report_hamiltonian(self, sweep_variable, numeric=True):
         """Short-cut to the same-name method found in renderers.ansys_renderer.py.
