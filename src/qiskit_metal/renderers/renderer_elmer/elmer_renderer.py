@@ -438,7 +438,10 @@ class QElmerRenderer(QRendererAnalysis):
         self._require_nets()
         setup = self.default_setup[sim_type]
         sim_dir = self._options["simulation_dir"]
-        meshfile = self._options["mesh_file"]
+        meshfile = self._mesh_path()
+        if not os.path.exists(meshfile):
+            self.logger.info("Mesh not exported yet; exporting it now.")
+            self.export_mesh()
         sif_name = self._options["simulation_input_file"]
         if sim_type == "capacitance":
             cap_matrix_file = os.path.join(
@@ -792,9 +795,19 @@ class QElmerRenderer(QRendererAnalysis):
         """Launch Gmsh GUI for viewing the model."""
         self.gmsh.launch_gui()
 
+    def _mesh_path(self) -> str:
+        """Where the Gmsh mesh is written: ``mesh_file`` if absolute, else
+        inside ``simulation_dir`` (so nothing lands in the working directory)."""
+        mesh_file = self._options["mesh_file"]
+        if os.path.isabs(mesh_file):
+            return mesh_file
+        return os.path.join(self._options["simulation_dir"], mesh_file)
+
     def export_mesh(self):
-        """Export Gmsh mesh"""
-        self.gmsh.export_mesh(self._options["mesh_file"])
+        """Export the Gmsh mesh to ``mesh_file`` (inside ``simulation_dir``)."""
+        path = self._mesh_path()
+        os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+        self.gmsh.export_mesh(path)
 
     def display_post_processing_data(self):
         """Import data given by ElmerFEM for Post-Processing in Gmsh"""

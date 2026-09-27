@@ -37,6 +37,7 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 - **GUI: the left dock could not be narrower than ~430 px on macOS**, because the native style disables tab-bar scroll arrows; they are now enabled.
 - **gmsh renderer: "Could not create circle arc"** on paths through nearly straight corners (as resampled or traced lines have): the path angle came from an unclipped `arccos`, and a corner bent by ~1e-6 rad got a fillet arc shorter than the rounding of its control points. Such corners are now drawn straight.
 - **`cpw-gap` rule flagged gaps equal to the minimum** (a 3 um gap computed as 2.9999999999999996 um); it now compares with a 1e-9 mm tolerance.
+- **Elmer capacitance solve failed unless `simulation_dir` sat directly below the working directory.** `run_elmergrid()` handed ElmerGrid `../<mesh_file>` and found its output with `meshfile.split(".")`; with a temporary `simulation_dir` (as the airbridge Elmer test uses) the solve stopped with `FileNotFoundError: 'out'`. ElmerGrid now gets absolute paths, a relative `mesh_file` lives inside `simulation_dir` (nothing is written to the working directory), and `run()` exports the mesh if `export_mesh()` was not called.
 - **Pre-commit hook** split staged paths containing spaces (e.g. `tutorials/Appendix C ...`) into nonexistent files.
 
 ## Quantum Metal v0.9.0 (Python 3.13/3.14, numpy 2; raised dependency minimums)
