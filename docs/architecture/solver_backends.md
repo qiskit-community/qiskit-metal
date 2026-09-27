@@ -1,7 +1,7 @@
 # Solver backends: shared abstractions (stage 1 design)
 
 Status: design, with decisions D1 and D3–D6 taken and D2 (Palace packaging)
-open (section 8). Step 1.0 is done; the other abstractions are not
+open (section 8). Steps 1.0 and 1.1 are done; the later steps are not
 implemented yet. This note covers
 stage 1 of `ROADMAP.md`, "Solver backends: shared abstractions, then
 scikit-fem, ElmerFEM, Palace and Ansys". It has four parts: a gap analysis
@@ -474,30 +474,45 @@ forwarded to the Ansys renderers as keyword arguments (2.8).
 @dataclass
 class SimulationProblem:
     design: QDesign
-    selection: list[str] | None          # components; None = all
-    box: Box                             # box_plus_buffer, xy buffers, holder heights
-    pins: dict[PinRef, PinEnd]           # OPEN (endcap cut) or SHORT (default)
-    junctions: dict[JunctionRef, Junction]
+    components: list[str] | None         # None = all
+    box: Box                             # box_plus_buffer
+    pins: dict[PinRef, PinEnd]           # OPEN (endcap cut); others SHORT
+    junctions: dict[JunctionRef, Junction]  # others: the default inductor
     ports: list[LumpedPort | WavePort]
     boundaries: Boundaries
-    materials: MaterialMap
+    materials: dict                      # material options (3.7)
     mesh: MeshSpec
 ```
 
-`SimulationProblem.from_run_args(...)` covers every tuple pattern the
-tutorials use. `to_run_args()` goes the other way for the Ansys path. It
-raises when the problem contains something the tuples cannot express, such
-as a surface impedance or a wave port, and the capability check (3.11)
-reports that before rendering starts.
+- **`from_run_args(design, components, open_terminations, port_list,
+  jj_to_port, ignored_jjs, box_plus_buffer)`** covers every tuple pattern
+  the tutorials use, including the pyaedt renderers' three-element
+  `jj_to_port`. It only converts; `validate()` checks the names against the
+  design and reports every problem at once.
+- **`to_run_args(jj_to_port_arity=4)`** goes the other way, for the Ansys
+  path. It raises `NotExpressibleError`, listing every offending part, when
+  the problem holds something the tuples cannot express: a wave port, a port
+  that is not on a pin, a junction with its own L, C or R, or non-default
+  boundary conditions. Mesh refinement and material options have no tuple
+  form either, but they are settings, reported as ignored by the capability
+  check (3.11).
+- **Values follow Metal's conventions.** Lengths are strings with units,
+  design variables, or numbers in design units. R, L and C are strings with
+  units, variables, or SI numbers. `length_m()` and `circuit_value()` return
+  SI floats.
 
 ### 3.4 Ports and junctions
 
 A port is where a lumped circuit element or a transmission line meets the
 field. It has three things:
 
-- a place: a pin, a junction, or explicit geometry;
+- a place: a pin, or explicit geometry;
 - a shape: a sheet, a line, or two sheets across a CPW's gaps;
-- a circuit: R, L, C, and whether it is excited.
+- a circuit: R, L and C in parallel.
+
+A junction is described by `Junction`, never by a port. Its mode says whether
+it is an inductor, a port, or left open, so there is one way to say each
+thing. Which ports are driven belongs to the driven study (3.9).
 
 ```python
 @dataclass(frozen=True)
@@ -509,28 +524,27 @@ class Segment:      p0: tuple; p1: tuple; width: float; layer: int
 
 @dataclass(frozen=True)
 class LumpedPort:
-    name: str
-    at: PinRef | JunctionRef | Segment
+    at: PinRef | Segment
+    R: Value | None = 50.0                             # ohm; L in H, C in F
+    L: Value | None = None
+    C: Value | None = None
     shape: Literal["sheet", "line", "cpw"] = "sheet"   # cpw: two sheets across the gaps
-    R: float | None = 50.0                             # ohm; L in H, C in F
-    L: float | None = None
-    C: float | None = None
-    excite: bool = False
+    name: str | None = None                            # default Port_<component>_<pin>
 
 @dataclass(frozen=True)
 class Junction:
-    mode: Literal["inductor", "open", "port", "omit"] = "inductor"
-    L: float | str | None = None   # None: <renderer>_inductance column, else setup.vars
-    C: float | str | None = None
-    R: float | None = None         # port impedance when mode == "port"
+    mode: Literal["inductor", "port", "open"] = "inductor"
+    L: Value | None = None      # None: <renderer>_inductance column (may name a setup.vars entry)
+    C: Value | None = None
+    R: Value | None = None      # port impedance ("port"; default 50 ohm) or parallel R
+    shunt_inductor: bool = False  # "port": keep the inductor beside it (draw_ind)
 
 @dataclass(frozen=True)
 class WavePort:
-    name: str
     face: Literal["x-", "x+", "y-", "y+", "z-", "z+"]
     center: tuple; size: tuple
     n_modes: int = 1
-    excite: bool = False
+    name: str | None = None                            # default WavePort_<face>
 ```
 
 Geometry is computed once, in core, with shapely.
@@ -552,8 +566,8 @@ The tuple arguments map one to one:
 |---|---|
 | `open_terminations=[(c, p)]` | `pins[PinRef(c, p)] = OPEN` |
 | `port_list=[(c, p, Z)]` | `LumpedPort(at=PinRef(c, p), R=Z)` |
-| `jj_to_port=[(c, j, Z, draw_ind)]` | `junctions[JunctionRef(c, j)] = Junction("port", R=Z, L=Lj if draw_ind else None)` |
-| `ignored_jjs=[(c, j)]` | `Junction("omit")` |
+| `jj_to_port=[(c, j, Z, draw_ind)]` | `junctions[JunctionRef(c, j)] = Junction("port", R=Z, shunt_inductor=draw_ind)` |
+| `ignored_jjs=[(c, j)]` | `Junction("open")` |
 | any other junction | `Junction("inductor")`, with values from `<renderer>_inductance` / `_capacitance` or `setup.vars` |
 
 ### 3.5 Nets and physical groups
@@ -695,21 +709,23 @@ sim.model.interfaces = Dict(                           # no defaults: set to use
 ### 3.8 Mesh-size control
 
 ```python
-@dataclass
+@dataclass(frozen=True)
 class Refine:
     select: Select                 # role / net / component / port / junction / box
-    size: float                    # m, element size on the target
-    grow: float                    # m, distance over which size grows to max_size
+    size: Value                    # element size on the target
+    grow: Value                    # distance over which size grows to max_size
     shape: Literal["distance", "ball"] = "distance"
 
 @dataclass
 class MeshSpec:
-    max_size: float
-    min_size: float | None = None
+    max_size: Value | None = None  # None: the renderer's own option
+    min_size: Value | None = None
     refine: list[Refine] = field(default_factory=list)
-    order: int | None = None               # element order, if the backend lets you choose
-    adaptive: Adaptive | None = None       # passes / tolerance, if the backend refines itself
 ```
+
+The mesh spec says only where elements must be small. Element order and
+adaptive refinement belong to the study (3.9), which is where both HFSS and
+Palace keep them.
 
 - `QGmshRenderer` compiles a `MeshSpec` to Distance+Threshold(+Ball)+Min
   fields, resolved through the group map.
@@ -726,18 +742,35 @@ class MeshSpec:
 
 ```python
 @dataclass
-class EigenmodeStudy:     n_modes: int; target_ghz: float; tol: float | None = None
+class EigenmodeStudy:     n_modes: int; min_freq_ghz: float; order; adaptive; backend_settings; set_keys
 @dataclass
-class ElectrostaticStudy: tol: float | None = None
+class ElectrostaticStudy: order; adaptive; backend_settings; set_keys
 @dataclass
-class DrivenStudy:        freqs_ghz: Sweep; excite: list[str]
+class DrivenStudy:        sweep: Sweep; adapt_freq_ghz; excite: list[str]; order; adaptive; backend_settings; set_keys
+
+@dataclass(frozen=True)
+class Adaptive:  max_passes; min_passes; min_converged; tolerance; criterion; refine_pct
 ```
 
-Each is built from the existing `setup` dict. `min_freq_ghz` maps to
-`target_ghz`; `basis_order` and `solution_order` map to `MeshSpec.order`; the
-pass and delta keys map to `MeshSpec.adaptive`. A backend that does not honor
-a key reports it, and the key is recorded in the result's provenance. It is
-never silently dropped.
+`study_from_setup(solution_type, setup, defaults)` builds a study from the
+existing `setup` dict and the class's `default_setup`.
+
+- **Neutral meaning.** Only keys with one are mapped: `n_modes`,
+  `min_freq_ghz`, the sweep, and the adaptive-pass keys. The adaptive
+  criterion is `delta_f_pct` (HFSS eigenmode), `delta_c_pct` (Q3D) or
+  `delta_s` (driven).
+- **Everything else** goes to `backend_settings` for the backend that knows
+  it: `basis_order`, `solution_order`, Q3D's `freq_ghz`, `vars`, and so on.
+  `basis_order` is not translated to an element order, because its numbering
+  is AEDT's own.
+- **Changed keys.** `set_keys` lists the keys that differ from the class
+  defaults. The capability check warns about an ignored setting only when
+  the user changed it, so a single-pass backend does not warn about the
+  default `max_passes=10` on every run.
+- **Excitation.** `DrivenStudy.excite` names the driven ports; empty means
+  every port.
+- Metal's bookkeeping keys (`name`, `reuse_selected_design`, `reuse_setup`)
+  are not part of a study.
 
 ### 3.10 Results and provenance
 
@@ -804,7 +837,7 @@ class Convergence:     table: pd.DataFrame   # one row per pass or per mesh: siz
 class Capabilities:
     studies: frozenset[str]        # eigenmode, electrostatic, driven, magnetostatic
     ports: frozenset[str]          # lumped_sheet, lumped_line, lumped_cpw, wave
-    junctions: frozenset[str]      # inductor, open, port, omit
+    junctions: frozenset[str]      # inductor, port, open
     boundaries: frozenset[str]     # pec, surface_impedance, conductivity, absorbing,
                                    # open_electrostatic, pmc_symmetry, pec_symmetry
     outputs: frozenset[str]        # frequencies, q, junction_epr, surface_epr,
@@ -837,8 +870,9 @@ Backends that can: hfss (registered; needs Ansys AEDT license), skfem (not insta
 
 - A missing study, port kind, boundary condition or output is an error.
 - A setting the backend ignores, such as `max_passes` on a single-pass
-  solver, is a warning and is recorded in provenance. Strictness is decision
-  D5.
+  solver, is recorded in provenance. It is also a warning when the user
+  changed it from the class default (`set_keys`, 3.9). Strictness is
+  decision D5.
 - On the legacy Ansys path only the study type is checked, so nothing that
   runs today starts failing.
 
@@ -983,7 +1017,7 @@ None changes a stored notebook output.
 | Step | Change | Evidence it is right |
 |---|---|---|
 | 1.0 (done) | Fix the junction size field in `QGmshRenderer.define_mesh_size_fields`. | `tests/test_gmsh_mesh_size_fields.py`: the junction field lists the junction curves and uses `max_size_jj`. With `skip_junctions=True` (tutorial 4.19's Elmer path) the mesh is node-for-node the same as before. |
-| 1.1 | `problem.py`: ports, junctions, pins, boxes, boundaries, `MeshSpec`, studies; `from_run_args` / `to_run_args`. No caller yet. | Round-trip tests over the argument lists of the analysis tutorials (4.02, 4.03, 4.11–4.18, 4.21–4.23). |
+| 1.1 (done) | `problem.py`: ports, junctions, pins, boxes, boundaries, `MeshSpec`, studies; `from_run_args` / `to_run_args`; `validate()`; SI values. No caller yet. | `tests/test_simulation_problem.py`: round trips of the argument lists of the analysis tutorials (4.02, 4.03, 4.14, 4.16–4.18, 4.22, 4.23, A.4, A.7, pyaedt multiplanar); every error reported by `validate()`; studies from the three default setups. |
 | 1.2 | `capabilities.py` with entries for `hfss`, `q3d`, `aedt_hfss`, `aedt_q3d`, `elmer`, `gmsh`; the study-type check in the three simulation classes; `capability_table()`. | `EigenmodeSim(design, "elmer")` gives the new message; every existing Ansys call path is unchanged (tests with a stub renderer). |
 | 1.3 | `toolbox_metal/nets.py` (moved from `QElmerRenderer`); `QElmerRenderer` calls it; label styles. | The same `nets` dictionary as today on the 4.19 design and the two-qubit cell. |
 | 1.4 | `renderer_gmsh/groups.py` and `QGmshRenderer.group_map`; opt-in per-side outer faces. | Every tag in `physical_groups` appears once in the map; the Elmer `.sif` and `.msh` are unchanged with defaults. |
