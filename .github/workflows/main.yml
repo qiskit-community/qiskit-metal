@@ -292,8 +292,10 @@ jobs:
     # (lite-by-default), ``[gui]`` / ``[ansys]`` / ``[mesh]`` are the
     # three install pathways most users actually take after the lite
     # path. ``[fem]`` is included to validate it still works as the
-    # backward-compatible alias of ``[mesh]``. Without this matrix, a
-    # regression on (say) ``[gui]`` would only surface after release.
+    # backward-compatible alias of ``[mesh]``. ``[skfem]`` (gmsh +
+    # scikit-fem) also runs the FEM solver tests, which skip elsewhere.
+    # Without this matrix, a regression on (say) ``[gui]`` would only
+    # surface after release.
     name: tests-extras-${{ matrix.extra }}
     runs-on: ubuntu-24.04
     env:
@@ -302,7 +304,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        extra: [gui, ansys, mesh, fem]
+        extra: [gui, ansys, mesh, fem, skfem]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -312,7 +314,7 @@ jobs:
           version: "0.9.24"
           enable-cache: true
       - name: Install Gmsh OS deps (only needed for mesher extras)
-        if: matrix.extra == 'mesh' || matrix.extra == 'fem'
+        if: matrix.extra == 'mesh' || matrix.extra == 'fem' || matrix.extra == 'skfem'
         run: |
           # Harden apt against flaky GitHub-runner third-party sources
           # (azure-cli/microsoft, chrome) that intermittently 403 or break
@@ -360,6 +362,11 @@ jobs:
             tests/test_qlibrary_pin_sanity.py \
             tests/test_solution_types.py \
             -v
+      - name: Run the scikit-fem solver tests
+        # The FEM tests skip without scikit-fem, so they only mean something
+        # where the [skfem] extra is installed.
+        if: matrix.extra == 'skfem'
+        run: .venv/bin/python -m pytest tests/test_fem_solver.py -v
 
   tests-dependency-bounds:
     # The main matrix installs from uv.lock, which pins pandas 2.x and the

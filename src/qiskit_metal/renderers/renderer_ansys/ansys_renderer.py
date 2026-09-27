@@ -345,7 +345,7 @@ class QAnsysRenderer(QRendererAnalysis):
                 "  2. Ansys Electronics Desktop (HFSS) installed and licensed\n"
                 "  3. pywin32 installed:  pip install pywin32\n\n"
                 "Running on macOS or Linux? Use one of these alternatives instead:\n"
-                "  • ElmerFEM open-source FEM:  see tutorial 4.19 (tutorials/4-Analysis/)\n"
+                "  • ElmerFEM open-source FEM:  see tutorial 4.19 (docs/tut/4-Analysis/)\n"
                 "  • Export to GDS and simulate externally:  see tutorial 3.2\n"
                 "  • pyaedt-based renderer (Windows + Ansys 2022+):  QAnsysPyaedtRenderer\n"
             ) from None
