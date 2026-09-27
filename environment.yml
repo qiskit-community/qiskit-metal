@@ -24,5 +24,6 @@ dependencies:
       - pyaedt>=0.21,<0.24; python_version < '3.14' # Synced with pyproject.toml (0.24 had bugs).
       - pyaedt>=1.0.1; python_version >= '3.14' # 0.2x needs numpy<2.3, which has no cp314 wheels.
       - gmsh>=4.15.0,<5
+      - scikit-fem>=12
       - gdstk~=0.9 # Used to be gdspy>=1.6.12
       - pyside6~=6.8 # Critical to building gui, can causes lots of problems, careful.

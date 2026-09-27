@@ -140,9 +140,8 @@ the same kind of seams. For this solver:
    metal surfaces, junction lines as edge chains, probe lines, cut faces.
 2. **Solver code** (done, September 2026): in `qiskit_metal.analyses.fem`
    and `qiskit_metal.analyses.em.package_modes`; `package_modes.py` is a
-   thin wrapper. The dependencies are still installed by hand
-   (`pip install "quantum-metal[mesh]" scikit-fem`, optional `pymetis`); an
-   install extra is still to come.
+   thin wrapper. Install with `pip install "quantum-metal[skfem]"` (gmsh and
+   scikit-fem; `pymetis` is optional).
 3. **Renderer front door**: a `renderer_name="skfem"` renderer on the same
    seam as Elmer and Palace, implementing the eigenmode and capacitance
    flows of the simulation classes; the port reduced-order model and the

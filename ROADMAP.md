@@ -887,8 +887,8 @@ decisions taken and the step-by-step sequence are in
    - Done (September 2026): the solver moved from the tutorial module into
      `qiskit_metal.analyses.fem` and `qiskit_metal.analyses.em.package_modes`,
      and `package_modes.py` is a thin wrapper, so 4.41–4.45 run unchanged.
+     Install: `pip install "quantum-metal[skfem]"`.
    - To do:
-     - an install extra;
      - reading the geometry from `QGmshRenderer.group_map` and `mesh_spec`
        instead of the tutorial mesher;
      - a `renderer_name="skfem"` backend for the eigenmode and capacitance

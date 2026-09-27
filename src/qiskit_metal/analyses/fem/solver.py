@@ -36,7 +36,7 @@ edge-element mode is first-order (P1) electrostatics on the same mesh: use
 ``Electrostatics(mesh, order=1)`` when combining a capacitance with a mode.
 Design notes, validation and limitations: ``docs/architecture/open_fem_scikit_fem.md``.
 
-Needs ``gmsh`` and ``scikit-fem`` (``pip install "quantum-metal[mesh]" scikit-fem``);
+Needs ``gmsh`` and ``scikit-fem`` (``pip install "quantum-metal[skfem]"``);
 ``pymetis`` is optional and makes the sparse factorizations faster. They are
 imported when used, so importing this module needs neither.
 """

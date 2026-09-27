@@ -39,6 +39,7 @@
     #   pip install "quantum-metal[gui]"    # MetalGUI + PySide6
     #   pip install "quantum-metal[ansys]"  # HFSS/Q3D + pyEPR
     #   pip install "quantum-metal[mesh]"   # gmsh mesher (for Elmer/Palace/etc.)
+    #   pip install "quantum-metal[skfem]"  # [mesh] + the scikit-fem solver
     #   pip install "quantum-metal[fem]"    # alias for [mesh] (v0.7.x compat)
     #   pip install "quantum-metal[full]"   # v0.6.x batteries-included
     #
@@ -89,6 +90,15 @@
         # the rename. Prefer [mesh] in new docs and error messages.
         fem = [
             "gmsh>=4.15.0,<5",
+        ]
+        # One extra per open solver pathway that needs Python packages.
+        # ElmerFEM and AWS Palace need only [mesh] plus their own solver
+        # binaries; the pure-Python solver of qiskit_metal.analyses.fem
+        # (tutorials 4.41-4.45) needs scikit-fem. pymetis (faster sparse
+        # factorizations) is optional and not included.
+        skfem = [
+            "gmsh>=4.15.0,<5",
+            "scikit-fem>=12",
         ]
         full = [
             "pyside6>=6.8",
@@ -155,6 +165,8 @@
         "pytest>=8.4.1",
         "pytest-cov>=7.0.0",
         "pytest-rich>=0.2.0",
+        # The analyses.fem solver tests (tier 0); users get it from [skfem].
+        "scikit-fem>=12",
     ]
 
 

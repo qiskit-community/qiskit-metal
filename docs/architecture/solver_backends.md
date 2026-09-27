@@ -1032,7 +1032,8 @@ Notes:
   - Next: read the geometry from `group_map` instead of `mesh_package`, which
     brings ground planes with cutouts and CPWs. Junction lines need gmsh to
     embed 1D entities, which the port step (1.6) provides.
-  - Then: an install extra, and the `SolverBackend` front door.
+  - Then: the `SolverBackend` front door. The install extra is done:
+    `pip install "quantum-metal[skfem]"`.
 - **Palace.**
   - The config is plain JSON, validated against the schema Palace ships
     (`scripts/schema/config-schema.json`). pyPalace's `Config.load_config`

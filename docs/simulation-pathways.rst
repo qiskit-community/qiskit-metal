@@ -38,7 +38,7 @@ result from one path can be checked against another.
      - eigenmodes with lumped junction inductors; EPR, avoided-crossing,
        induced-EMF and impedance-matrix couplings; port impedance matrices;
        capacitance matrices
-     - ``pip install "quantum-metal[mesh]" scikit-fem pymetis``
+     - ``pip install "quantum-metal[skfem]" pymetis``
        (``pymetis`` optional)
      - ``qiskit_metal.analyses.fem`` (the solver) and
        ``qiskit_metal.analyses.em.package_modes`` (the analytic models);

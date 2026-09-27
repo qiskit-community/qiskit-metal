@@ -12,7 +12,7 @@ meshes it, and a finite-element Maxwell solver assembled with
 does the rest:
 
 ```bash
-pip install "quantum-metal[mesh]" scikit-fem pymetis   # pymetis is optional
+pip install "quantum-metal[skfem]" pymetis   # [skfem] = gmsh + scikit-fem; pymetis is optional
 ```
 
 The solver lives in Quantum Metal; the notebooks reach it through
