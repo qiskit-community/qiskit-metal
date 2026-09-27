@@ -13,7 +13,7 @@ import numpy as np
 # catches that and logs.
 try:
     import gmsh
-except ImportError:  # pragma: no cover — exercised on lite installs
+except (ImportError, OSError):  # lite install, or gmsh's system libs missing
     gmsh = None
 
 from qiskit_metal.renderers.renderer_gmsh.gmsh_utils import _require_gmsh
@@ -192,11 +192,10 @@ class QGmshRenderer(QRenderer):
             float: returns the thickness value
         """
         props = ["thickness"]
-        result = self.parse_units_gmsh(
-            self.design.ls.get_properties_for_layer_datatype(
-                properties=props, layer_number=layer_num, datatype=datatype
-            )
+        ls_result = self.design.ls.get_properties_for_layer_datatype(
+            properties=props, layer_number=layer_num, datatype=datatype
         )
+        result = self.parse_units_gmsh(ls_result) if ls_result else None
         if result:
             return result[0]  # thickness is result[0]
         else:
@@ -219,11 +218,10 @@ class QGmshRenderer(QRenderer):
             tuple[float, float]: returns the tuple (thickness, z_coord)
         """
         props = ["thickness", "z_coord"]
-        result = self.parse_units_gmsh(
-            self.design.ls.get_properties_for_layer_datatype(
-                properties=props, layer_number=layer_num, datatype=datatype
-            )
+        ls_result = self.design.ls.get_properties_for_layer_datatype(
+            properties=props, layer_number=layer_num, datatype=datatype
         )
+        result = self.parse_units_gmsh(ls_result) if ls_result else None
         if result:
             return result
         else:

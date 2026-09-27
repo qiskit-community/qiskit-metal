@@ -685,10 +685,20 @@ class ElmerRunner:
         elmersolver = _resolve_elmer_binary("ElmerSolver", elmersolver)
 
         args = [elmersolver, sif_file] + options
-        with open(
-            os.path.join(sim_dir, "elmersolver.log"), "w+", encoding="utf-8"
-        ) as f:
-            subprocess.run(args, cwd=sim_dir, stdout=f, stderr=f)
+        log_path = os.path.join(sim_dir, "elmersolver.log")
+        with open(log_path, "w+", encoding="utf-8") as f:
+            proc = subprocess.run(args, cwd=sim_dir, stdout=f, stderr=f)
+
+        # A crash (e.g. a segfault in a solver module) used to surface only
+        # later, as a missing capacitance-matrix file (#1005).
+        if proc.returncode != 0:
+            with open(log_path, encoding="utf-8", errors="replace") as f:
+                tail = "".join(f.readlines()[-20:])
+            raise RuntimeError(
+                f"ElmerSolver exited with code {proc.returncode}. "
+                f"Full log: {os.path.abspath(log_path)}\n"
+                f"Last lines:\n{tail}"
+            )
 
             # for f in out_files:
             #     out_file = os.path.join(sim_dir, f)

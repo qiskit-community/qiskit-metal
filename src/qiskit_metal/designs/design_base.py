@@ -999,7 +999,7 @@ class QDesign:
 
             try:
                 module = importlib.import_module(path_name)
-            except ImportError as e:
+            except (ImportError, OSError) as e:  # OSError: native lib failed to load
                 self.logger.info(
                     f"Renderer={renderer_key} skipped: "
                     f"an optional dependency for {path_name} is not "

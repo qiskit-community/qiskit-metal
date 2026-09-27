@@ -9,15 +9,29 @@ import numpy as np
 # the lite install — the free functions below that call into
 # ``gmsh.model`` raise via ``_require_gmsh()`` at use time rather
 # than at ``import qiskit_metal`` time.
+_GMSH_LOAD_ERROR = None
 try:
     import gmsh
 except ImportError:  # pragma: no cover — exercised on lite installs
     gmsh = None
+except OSError as _exc:
+    # gmsh is installed but its shared library could not load, typically
+    # because a system library (libGLU, libXft, ...) is missing on a
+    # headless Linux machine. Treat it like a missing optional dependency so
+    # ``QDesign`` still constructs, and keep the reason for the error message.
+    gmsh = None
+    _GMSH_LOAD_ERROR = _exc
 
 
 def _require_gmsh() -> None:
-    """Raise a clear error if gmsh isn't installed."""
+    """Raise a clear error if gmsh isn't installed or can't load."""
     if gmsh is None:
+        if _GMSH_LOAD_ERROR is not None:
+            raise ImportError(
+                f"gmsh is installed but failed to load: {_GMSH_LOAD_ERROR}. "
+                "Install the missing system library; on Debian/Ubuntu, e.g. "
+                "`apt-get install libglu1-mesa libxft2 libxinerama1 libxcursor1`."
+            )
         raise ImportError(
             "renderer_gmsh requires gmsh. Install with: "
             "pip install 'quantum-metal[mesh]' "

@@ -10,6 +10,10 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ### Fixed
 
+- **Elmer capacitance matrix was wrong under pandas 3.** Two chained assignments in `QElmerRenderer._get_capacitance_matrix` are no-ops under Copy-on-Write (pandas 3's default, which pip installs on Python 3.11+), leaving the diagonal unconverted and the ground entry NaN with only a warning. Now `.iloc`/`.loc`.
+- **`DesignPlanar()` crashed when gmsh was installed but could not load** (e.g. `libGLU.so.1` missing on headless Linux): the import guards only caught `ImportError`. The gmsh renderer is now skipped, and using it explains which system library failed to load.
+- **Clear errors instead of cryptic ones:** `QElmerRenderer.add_solution_setup()`/`run()` without `render_design()` on the same renderer (was `AttributeError: nets`, #1008); ElmerSolver crashes (was a later missing-file error; now raises with the log tail, #1005); a layer/datatype missing from the layer stack (was `TypeError: Dict / int` in the pyaedt renderer, #992).
+- **Non-string geometry names.** `add_qgeometry` coerces dictionary keys to `str`, so e.g. `{0: jj_line}` no longer breaks the HFSS renderer's name sanitiser or MultiPolygon splitting. (#995)
 - **`TransmonCross` `connector_location='270'`** placed the connector on the east arm instead of the south arm. The rotation chain had no branch above 225 degrees, so 270 matched the `> 135` test. (#1173, closes #1052)
 - **`connector_location` now wraps mod 360.** The chain saturated at its top branch, so out-of-range angles landed arbitrarily — `'360'` resolved to south rather than west, `'-90'` to west rather than south. In-range angles, including the half-way values 45/135/225, keep their existing arm.
 

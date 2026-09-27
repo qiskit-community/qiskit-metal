@@ -647,6 +647,11 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
                 thickness, z_coord, material, fill = result
             else:
                 self.design.ls.layer_stack_handler_pilot_error()
+                raise ValueError(
+                    "Layer stack has no usable entry for this geometry's layer and "
+                    "datatype; add a row for it to the layer-stack CSV (see the "
+                    "warning above)."
+                )
 
             start_vec_xyz = mid.tolist()
             start_vec_xyz.append(z_coord + (thickness / 2))
