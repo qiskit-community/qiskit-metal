@@ -121,7 +121,11 @@ def validate(design, rules=None, strict=False, waivers=None) -> ValidationResult
                        rule="metal-overlap", component_pattern="FLUX_D5"),
             ])
     """
-    chosen = tuple(DEFAULT_RULES if rules is None else rules)
+    # The same rule object listed twice (DEFAULT_RULES and SHAPE_RULES share
+    # instances) runs once; a separately configured instance still runs.
+    chosen = tuple(
+        {id(r): r for r in (DEFAULT_RULES if rules is None else rules)}.values()
+    )
     findings = []
     for rule in chosen:
         findings.extend(rule.check(design))

@@ -852,14 +852,25 @@ class PinAlignmentRule(DesignRule):
             )
 
 
-#: Single-path shape checks. Not in ``DEFAULT_RULES`` yet -- opt in with
-#: ``validate(design, rules=[*DEFAULT_RULES, *SHAPE_RULES])``.
+# One instance each, shared by both tuples, so that
+# ``validate(design, rules=[*DEFAULT_RULES, *SHAPE_RULES])`` runs each once:
+# validate() skips a rule object it has already run.
+_SELF_INTERSECTION = SelfIntersectionRule()
+_SHARP_TURN = SharpTurnRule()
+_FILLET_STARVATION = FilletStarvationRule()
+_DANGLING_END = DanglingEndRule()
+_PIN_ALIGNMENT = PinAlignmentRule()
+
+#: Single-path shape checks. All but ``DanglingEndRule`` are also in
+#: ``DEFAULT_RULES``; it stays opt-in because it also reports the unused pad
+#: stubs of many qubits. ``validate(design, rules=[*DEFAULT_RULES,
+#: *SHAPE_RULES])`` runs all of them, each once.
 SHAPE_RULES: tuple[DesignRule, ...] = (
-    SelfIntersectionRule(),
-    SharpTurnRule(),
-    FilletStarvationRule(),
-    DanglingEndRule(),
-    PinAlignmentRule(),
+    _SELF_INTERSECTION,
+    _SHARP_TURN,
+    _FILLET_STARVATION,
+    _DANGLING_END,
+    _PIN_ALIGNMENT,
 )
 
 
@@ -872,4 +883,8 @@ DEFAULT_RULES: tuple[DesignRule, ...] = (
     ShortSegmentRule(),
     QubitClearanceRule(),
     GroundContinuityRule(),
+    _SELF_INTERSECTION,
+    _SHARP_TURN,
+    _FILLET_STARVATION,
+    _PIN_ALIGNMENT,
 )

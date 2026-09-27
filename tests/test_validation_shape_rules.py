@@ -157,13 +157,38 @@ class TestShapeRules(unittest.TestCase):
         self.assertTrue(_run(self.design, PinAlignmentRule()))
 
     # --- packaging -------------------------------------------------------------
-    def test_shape_rules_are_opt_in(self):
-        """SHAPE_RULES run alongside, not inside, the defaults."""
+    def test_defaults_include_shape_rules_but_dangling_end(self):
+        """Four shape rules are defaults; dangling-end stays opt-in."""
         default_names = {r.name for r in DEFAULT_RULES}
-        self.assertFalse(default_names & {r.name for r in SHAPE_RULES})
+        self.assertTrue(
+            {"self-intersection", "sharp-turn", "fillet-starved", "pin-alignment"}
+            <= default_names
+        )
+        self.assertNotIn("dangling-end", default_names)
+        self.line("spur", [[0, 0], [0, 0.3], [0, 0.08], [0.2, -0.1]])
+        self.assertIn(
+            "self-intersection", {f.rule for f in validate(self.design).errors}
+        )
+
+    def test_defaults_plus_shape_rules_run_each_rule_once(self):
         self.line("spur", [[0, 0], [0, 0.3], [0, 0.08], [0.2, -0.1]])
         r = validate(self.design, rules=[*DEFAULT_RULES, *SHAPE_RULES])
-        self.assertIn("self-intersection", {f.rule for f in r.errors})
+        hits = [f for f in r.errors if f.rule == "self-intersection"]
+        self.assertEqual(len(hits), 1)
+        self.assertIn("rule(s)", r.report())
+        names = [
+            rule.name
+            for rule in {id(x): x for x in [*DEFAULT_RULES, *SHAPE_RULES]}.values()
+        ]
+        self.assertEqual(len(names), len(set(names)))
+
+    def test_a_separately_configured_rule_still_runs(self):
+        """Listing a second, differently configured instance is honored."""
+        self.line("zig", [[0, 0], [0.3, 0], [0.1, 0.02]])  # a hairpin
+        r = validate(self.design, rules=[*DEFAULT_RULES, SharpTurnRule(max_turn=10)])
+        self.assertGreaterEqual(
+            len([f for f in r.findings if f.rule == "sharp-turn"]), 1
+        )
 
 
 if __name__ == "__main__":
