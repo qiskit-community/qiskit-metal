@@ -48,7 +48,7 @@ class CapFingerInFrame(QComponent):
           +-----------------------+        -> x
             frame (ring, slot on +x)
 
-    ``(0, 0)`` is the centre of the frame. At orientation 0 the frame pin
+    ``(0, 0)`` is the center of the frame. At orientation 0 the frame pin
     faces -x and the finger pin +x; both sit on the frame's outer metal edge.
     The finger's length and width are derived -- the opening inside the frame
     less ``cap_gap`` on every side -- so the geometry cannot be made
@@ -56,7 +56,7 @@ class CapFingerInFrame(QComponent):
 
     Default Options (the input-capacitor cell of the device above, measured
     from its micrograph; gap widths there are unresolved, ``cap_gap`` and
-    ``ground_gap`` of 10 um fit every measured centreline spacing):
+    ``ground_gap`` of 10 um fit every measured centerline spacing):
         * frame_length: '245um' -- Outer metal length of the frame, along y
         * frame_width: '72um' -- Outer metal width of the frame, along x
         * frame_trace: '16um' -- Width of the frame conductor

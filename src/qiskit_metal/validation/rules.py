@@ -689,7 +689,7 @@ class DanglingEndRule(DesignRule):
 
     Path metal and its ground cut end flush (flat caps in every renderer; gdstk
     ``FlexPath`` defaults to flush ends in GDS export), so an unconnected CPW
-    end has its centre conductor butting the ground plane: it is fabricated as
+    end has its center conductor butting the ground plane: it is fabricated as
     a SHORT to ground, not an open. If an open is meant, place
     ``OpenToGround``; if a short, ``ShortToGround`` makes it explicit. Mid-line
     pins (e.g. ``PolylineCPW`` taps) are ignored -- only pins at a path's ends

@@ -34,9 +34,9 @@ class PolylineCPW(QComponent):
     :class:`~qiskit_metal.toolbox_metal.exceptions.QiskitMetalDesignError` when
     none of them fits.
 
-    That is the right behaviour when you know the endpoints and want a path
-    found. It is the wrong behaviour when you already *have* the path -- a
-    geometry traced off a micrograph, a centreline exported from another tool,
+    That is the right behavior when you know the endpoints and want a path
+    found. It is the wrong behavior when you already *have* the path -- a
+    geometry traced off a micrograph, a centerline exported from another tool,
     or any non-Manhattan (45 degree, curved, octilinear) run that the four
     shapes cannot express. This component does no routing and no collision
     avoidance. It draws the points you give it, in order.
@@ -64,8 +64,9 @@ class PolylineCPW(QComponent):
     end into the middle of the line.
 
     Default Options:
-        * points: '[]' -- Ordered list of (x, y) vertices; at least two
-        * trace_width: 'cpw_width' -- Width of the centre conductor
+        * points: '[[0, 0], [0.5, 0]]' -- Ordered list of (x, y) vertices;
+          at least two
+        * trace_width: 'cpw_width' -- Width of the center conductor
         * trace_gap: 'cpw_gap' -- Width of the gap either side
         * fillet: '0' -- Corner radius; '0' keeps corners sharp
         * min_segment: '0' -- Drop vertices closer than this to their
@@ -77,7 +78,7 @@ class PolylineCPW(QComponent):
     """
 
     default_options = Dict(
-        points=[],
+        points=[[0, 0], [0.5, 0]],
         trace_width="cpw_width",
         trace_gap="cpw_gap",
         fillet="0",

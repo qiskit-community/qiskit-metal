@@ -28,10 +28,10 @@ class BridgeFreeJunction(QComponent):
     default_options = Dict(
         JJ_width="4. um",
         JJ_height="4. um",
-        teta_1="30",  #
-        teta_2="30",  #
-        wire_length="30um",  #
-        wire_width="0.5 um",  #
+        teta_1="30",
+        teta_2="30",
+        wire_length="30um",
+        wire_width="0.5 um",
         resist_t1=".3um",  # Thickness of the first (lower) resist layer. Option is 200 nm.
         resist_t2=".2um",
         orientation="0",

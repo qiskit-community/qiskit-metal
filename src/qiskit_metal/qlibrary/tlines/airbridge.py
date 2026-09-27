@@ -37,7 +37,7 @@ class Airbridge(QComponent):
 
     Pins ``a`` (at ``-x`` before rotation) and ``b`` (at ``+x``) sit at the
     inner edge of each landing pad, i.e. ``crossover_length / 2`` from the
-    centre, facing outward along the span.
+    center, facing outward along the span.
 
     Unlike a GDS-export-only helper, this is a first-class ``QComponent`` — its
     geometry lives in the design's QGeometry, so it renders in ``qm.view`` and
