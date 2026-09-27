@@ -264,16 +264,16 @@ PAIRS = {
     # scripts/check_tutorials_sync.py; both tables must list the same pairs
     # or the CI gate fails on notebooks this script never syncs.
     "ref_1": (
-        "docs/tut/full-design-examples/Reference-design-1-Transmon-with-readout-resonator.ipynb",
-        "tutorials/Appendix A Full design flow examples/Reference design 1 - Transmon with readout resonator.ipynb",
+        "docs/tut/full-design-examples/A.1-Transmon-with-readout-resonator.ipynb",
+        "tutorials/Appendix A Full design flow examples/A.1 Transmon with readout resonator.ipynb",
     ),
     "ref_2": (
-        "docs/tut/full-design-examples/Reference-design-2-Two-coupled-transmons.ipynb",
-        "tutorials/Appendix A Full design flow examples/Reference design 2 - Two coupled transmons.ipynb",
+        "docs/tut/full-design-examples/A.2-Two-coupled-transmons.ipynb",
+        "tutorials/Appendix A Full design flow examples/A.2 Two coupled transmons.ipynb",
     ),
     "ref_3": (
-        "docs/tut/full-design-examples/Reference-design-3-Four-qubit-multiplexed-readout.ipynb",
-        "tutorials/Appendix A Full design flow examples/Reference design 3 - Four-qubit multiplexed readout.ipynb",
+        "docs/tut/full-design-examples/A.3-Four-qubit-multiplexed-readout.ipynb",
+        "tutorials/Appendix A Full design flow examples/A.3 Four-qubit multiplexed readout.ipynb",
     ),
     # --- circuit-examples / Appendix C + Appendix A ---
     "01-Transmon_cross": (
@@ -368,17 +368,17 @@ PAIRS = {
         "docs/circuit-examples/F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh.ipynb",
         "tutorials/Appendix C Circuit examples/F. Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh.ipynb",
     ),
-    "Example-full-chip-design": (
-        "docs/circuit-examples/full-design-flow-examples/Example-full-chip-design.ipynb",
-        "tutorials/Appendix A Full design flow examples/Example full chip design.ipynb",
+    "A.4-Full-chip-design": (
+        "docs/circuit-examples/full-design-flow-examples/A.4-Full-chip-design.ipynb",
+        "tutorials/Appendix A Full design flow examples/A.4 Full chip design.ipynb",
     ),
-    "Example-used-in-the-launch-video": (
-        "docs/circuit-examples/full-design-flow-examples/Example-used-in-the-launch-video.ipynb",
-        "tutorials/Appendix A Full design flow examples/Example used in the launch video.ipynb",
+    "A.5-Launch-video-example": (
+        "docs/circuit-examples/full-design-flow-examples/A.5-Launch-video-example.ipynb",
+        "tutorials/Appendix A Full design flow examples/A.5 Launch video example.ipynb",
     ),
-    "Exercise-for-the-South-Korea-Hackathon'20": (
-        "docs/circuit-examples/full-design-flow-examples/Exercise-for-the-South-Korea-Hackathon'20.ipynb",
-        "tutorials/Appendix A Full design flow examples/Exercise for the South Korea Hackathon'20.ipynb",
+    "A.6-Hackathon-exercise-South-Korea-2020": (
+        "docs/circuit-examples/full-design-flow-examples/A.6-Hackathon-exercise-South-Korea-2020.ipynb",
+        "tutorials/Appendix A Full design flow examples/A.6 Hackathon exercise - South Korea 2020.ipynb",
     ),
 }
 

@@ -30,9 +30,9 @@ REFERENCE_DIR = (
 )
 
 NOTEBOOKS = (
-    "Reference design 1 - Transmon with readout resonator.ipynb",
-    "Reference design 2 - Two coupled transmons.ipynb",
-    "Reference design 3 - Four-qubit multiplexed readout.ipynb",
+    "A.1 Transmon with readout resonator.ipynb",
+    "A.2 Two coupled transmons.ipynb",
+    "A.3 Four-qubit multiplexed readout.ipynb",
 )
 
 #: Lines that draw rather than build, plus comments and magics. Drawing
@@ -51,8 +51,8 @@ _DRAWING = re.compile(
 #: pathfinder jogs shorter than the 180 um a corner arc needs. Cosmetic in
 #: the mpl view, but the GDS and gmsh renderers drop the fillet there.
 KNOWN_WARNINGS = {
-    "Reference design 2 - Two coupled transmons": {"short-segment": 2},
-    "Reference design 3 - Four-qubit multiplexed readout": {"short-segment": 2},
+    "A.2 Two coupled transmons": {"short-segment": 2},
+    "A.3 Four-qubit multiplexed readout": {"short-segment": 2},
 }
 
 

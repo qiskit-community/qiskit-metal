@@ -267,16 +267,16 @@ PAIRS = [
     ),
     # full-design-examples / Appendix A
     (
-        "docs/tut/full-design-examples/Reference-design-1-Transmon-with-readout-resonator.ipynb",
-        "tutorials/Appendix A Full design flow examples/Reference design 1 - Transmon with readout resonator.ipynb",
+        "docs/tut/full-design-examples/A.1-Transmon-with-readout-resonator.ipynb",
+        "tutorials/Appendix A Full design flow examples/A.1 Transmon with readout resonator.ipynb",
     ),
     (
-        "docs/tut/full-design-examples/Reference-design-2-Two-coupled-transmons.ipynb",
-        "tutorials/Appendix A Full design flow examples/Reference design 2 - Two coupled transmons.ipynb",
+        "docs/tut/full-design-examples/A.2-Two-coupled-transmons.ipynb",
+        "tutorials/Appendix A Full design flow examples/A.2 Two coupled transmons.ipynb",
     ),
     (
-        "docs/tut/full-design-examples/Reference-design-3-Four-qubit-multiplexed-readout.ipynb",
-        "tutorials/Appendix A Full design flow examples/Reference design 3 - Four-qubit multiplexed readout.ipynb",
+        "docs/tut/full-design-examples/A.3-Four-qubit-multiplexed-readout.ipynb",
+        "tutorials/Appendix A Full design flow examples/A.3 Four-qubit multiplexed readout.ipynb",
     ),
     # circuit-examples / Appendix C + Appendix A
     (
@@ -372,16 +372,16 @@ PAIRS = [
         "tutorials/Appendix C Circuit examples/F. Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh.ipynb",
     ),
     (
-        "docs/circuit-examples/full-design-flow-examples/Example-full-chip-design.ipynb",
-        "tutorials/Appendix A Full design flow examples/Example full chip design.ipynb",
+        "docs/circuit-examples/full-design-flow-examples/A.4-Full-chip-design.ipynb",
+        "tutorials/Appendix A Full design flow examples/A.4 Full chip design.ipynb",
     ),
     (
-        "docs/circuit-examples/full-design-flow-examples/Example-used-in-the-launch-video.ipynb",
-        "tutorials/Appendix A Full design flow examples/Example used in the launch video.ipynb",
+        "docs/circuit-examples/full-design-flow-examples/A.5-Launch-video-example.ipynb",
+        "tutorials/Appendix A Full design flow examples/A.5 Launch video example.ipynb",
     ),
     (
-        "docs/circuit-examples/full-design-flow-examples/Exercise-for-the-South-Korea-Hackathon'20.ipynb",
-        "tutorials/Appendix A Full design flow examples/Exercise for the South Korea Hackathon'20.ipynb",
+        "docs/circuit-examples/full-design-flow-examples/A.6-Hackathon-exercise-South-Korea-2020.ipynb",
+        "tutorials/Appendix A Full design flow examples/A.6 Hackathon exercise - South Korea 2020.ipynb",
     ),
 ]
 

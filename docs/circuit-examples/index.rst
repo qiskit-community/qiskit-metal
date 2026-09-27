@@ -18,7 +18,7 @@ of) a real or representative device.
     Two-Qubit Cell of the 17-Qubit Chip — Mesh for Simulation (gmsh) <F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh>
     IBM-era Qiskit Metal example — Four-Qubit Chip <F.Small-quantum-chips/51-Four_qubit_chip>
     100-Qubit Mockup (algorithmic design, no routing) <../tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically>
-    Example Full Chip Design <full-design-flow-examples/Example-full-chip-design>
+    Full Chip Design <full-design-flow-examples/A.4-Full-chip-design>
 
 Qubits
 ======

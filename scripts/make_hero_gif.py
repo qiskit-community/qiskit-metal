@@ -175,7 +175,7 @@ RING_CPWS = [
 # Readout architecture: each qubit's quarter-wave resonator taps a
 # CoupledLineTee — capacitively coupled to a short local feedline stub with
 # its own input/output ports, NOT wired directly to a port. This is the
-# coupling building block that "Reference design 3 - Four-qubit multiplexed
+# coupling building block that "A.3 Four-qubit multiplexed
 # readout" (tutorials/Appendix A) chains multiple qubits onto for real
 # frequency-multiplexed readout; kept as one tee per qubit here (rather
 # than sharing one line across the ring) to avoid the routing/collision
