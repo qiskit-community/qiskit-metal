@@ -11,21 +11,6 @@
 # that they have been altered from the originals.
 """LOM analysis based on https://arxiv.org/pdf/2103.10344.pdf"""
 
-# monkey patch to temporarily mock h5py dependency required by scqubits, which conflicts with
-# geopandas
-import sys
-
-from scipy.fftpack import hilbert
-
-
-class DummyH5py:
-    @property
-    def Group(self):
-        pass
-
-
-sys.modules["h5py"] = DummyH5py
-
 from collections import defaultdict, namedtuple
 from typing import (
     Any,
@@ -62,6 +47,9 @@ from qiskit_metal.analyses.quantization.constants import (
 )
 
 from qiskit_metal import logger
+from qiskit_metal.analyses.quantization import _scqubits_compat
+
+_scqubits_compat.apply()
 
 BasisTransform = namedtuple(
     "BasisTransform", ["orig_node_basis", "node_jj_basis", "num_negative_nodes"]
