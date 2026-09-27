@@ -250,8 +250,6 @@ def main() -> int:
             "_dev/auto-runnable-notebooks.txt.\n"
         )
         return 1
-    print("After this run, sync the tutorials/ mirror:")
-    print("    uv run python _dev/sync_two_folders.py --write")
     return 0
 
 

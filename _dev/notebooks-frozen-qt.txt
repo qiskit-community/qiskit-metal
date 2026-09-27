@@ -33,8 +33,7 @@
 #      paints into a real Qt window; ``gui.screenshot()`` grabs it.
 #   3. Visually inspect; the maintainer-arranged dock layout produces
 #      noticeably nicer screenshots than a default Qt session.
-#   4. Sync: ``uv run python _dev/sync_two_folders.py --write``.
-#   5. Commit.
+#   4. Commit.
 #
 # Future option (Option E in the PR thread)
 # -----------------------------------------

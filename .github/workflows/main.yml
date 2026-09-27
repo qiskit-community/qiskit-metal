@@ -135,8 +135,8 @@ jobs:
       - name: Assert uv.lock is in sync with pyproject.toml
         run: uv lock --check
 
-  tutorials-sync:
-    name: docs/tut/ ↔ tutorials/ sync
+  qlibrary-images:
+    name: qlibrary thumbnails
     runs-on: ubuntu-24.04
     env:
       FORCE_COLOR: "1"
@@ -148,10 +148,6 @@ jobs:
         with:
           version: "0.9.24"
           enable-cache: true
-      - name: Check docs/tut/ and tutorials/ contain identical cell content
-        # The two folders carry every numbered notebook twice — see the
-        # script docstring for why and how to fix drift.
-        run: uv run --quiet scripts/check_tutorials_sync.py
       - name: Check qlibrary thumbnails resolve (case-sensitive)
         # Every QComponent docstring ``.. image::`` directive must point
         # at a file that actually exists under ``_gui/_imgs/components/``

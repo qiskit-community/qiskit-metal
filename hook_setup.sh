@@ -5,9 +5,9 @@
 # Hooks installed:
 #   - pre-commit: ruff check + format-check on staged Python files
 #                 (matches CI ``lint`` / ``format`` jobs)
-#   - pre-push:   full-repo ruff + env-consistency + tutorials-sync
+#   - pre-push:   full-repo ruff + env-consistency + thumbnail check
 #                 (matches CI ``lint``, ``format``, ``env.yml drift``,
-#                 ``tutorials sync`` jobs)
+#                 ``qlibrary thumbnails`` jobs)
 #
 # Run from the repo root: ``./hook_setup.sh``
 #
