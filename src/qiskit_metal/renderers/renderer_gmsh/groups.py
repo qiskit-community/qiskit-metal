@@ -43,9 +43,9 @@ class Role(str, Enum):
     VACUUM = "vacuum"
     """The vacuum around the chip."""
     JUNCTION = "junction"
-    """A Josephson junction's sheet."""
+    """A Josephson junction's sheet, or (dim 1) its line."""
     PORT = "port"
-    """A port's sheet."""
+    """A port: a lumped port's sheet or line, or a wave port's face."""
     OUTER_FACE = "outer_face"
     """Outer walls of the model; ``side`` is set for one wall."""
     SYMMETRY_FACE = "symmetry_face"
@@ -69,9 +69,13 @@ class PhysicalGroup:
         net (str, optional): the net label of a conductor or ground
             (``<shape>_<component>`` or ``ground_<chip>_plane``).
         material (str, optional): the layer stack's material name.
-        side (str, optional): ``"x-"`` ... ``"z+"`` for one outer wall.
+        side (str, optional): ``"x-"`` ... ``"z+"`` for one outer wall (or
+            the wall a wave port sits on).
         surfaces_of (str, optional): for a group of surfaces, the name of the
             volume group they bound.
+        port (str, optional): the port's name, for a port group.
+        direction (tuple, optional): unit vector (x, y) along which a lumped
+            port's voltage is taken, from the first node to the second.
     """
 
     name: str
@@ -85,6 +89,8 @@ class PhysicalGroup:
     material: str | None = None
     side: str | None = None
     surfaces_of: str | None = None
+    port: str | None = None
+    direction: tuple | None = None
 
 
 _FIELDS = {f.name for f in fields(PhysicalGroup)}

@@ -71,6 +71,7 @@ __all__ = [
     "NotExpressibleError",
     "PinEnd",
     "PinRef",
+    "PortSheet",
     "Refine",
     "Segment",
     "Select",
@@ -81,6 +82,7 @@ __all__ = [
     "WavePort",
     "circuit_value",
     "length_m",
+    "port_sheets",
     "study_from_setup",
 ]
 
@@ -241,6 +243,9 @@ class LumpedPort:
             side gaps, driven with opposite signs). Defaults to ``"sheet"``.
         name (str, optional): defaults to ``Port_<component>_<pin>`` on a
             pin. Required on a :class:`Segment`.
+        length (Value, optional): for ``"cpw"``, how far the two sheets
+            reach back along the trace from the pin. Defaults to the pin's
+            gap.
     """
 
     at: Anchor
@@ -249,6 +254,7 @@ class LumpedPort:
     C: Value | None = None
     shape: PortShape = "sheet"
     name: str | None = None
+    length: Value | None = None
 
     @property
     def label(self) -> str | None:
@@ -283,6 +289,125 @@ class WavePort:
     def label(self) -> str:
         """The port's name, given or derived from the face."""
         return self.name or f"WavePort_{self.face}"
+
+
+@dataclass(frozen=True)
+class PortSheet:
+    """One sheet of a lumped port, in the design's units.
+
+    Attributes:
+        polygon (shapely.Polygon): the sheet's outline in the xy plane; None
+            for a ``"line"`` port, which has no sheet.
+        direction (tuple): unit vector (x, y) along which the port voltage is
+            taken.
+        line (tuple): ``((x0, y0), (x1, y1))``, the segment that carries the
+            voltage, along ``direction``.
+        layer (int): the metal layer the sheet sits on.
+        suffix (str): ``"_a"`` / ``"_b"`` for the two sheets of a ``"cpw"``
+            port, else ``""``.
+    """
+
+    polygon: object
+    direction: tuple
+    line: tuple
+    layer: int
+    suffix: str = ""
+
+
+def _rectangle(corner, along, across, length, width):
+    """The rectangle from ``corner``, ``length`` along ``along`` and
+    ``width`` along ``across`` (unit vectors)."""
+    from shapely.geometry import Polygon
+
+    c = np.asarray(corner, dtype=float)
+    a = np.asarray(along, dtype=float) * length
+    b = np.asarray(across, dtype=float) * width
+    return Polygon([c, c + a, c + a + b, c + b])
+
+
+def port_sheets(design: "QDesign", port: "LumpedPort") -> list[PortSheet]:
+    """Where a lumped port sits, in the design's units.
+
+    On a pin (``middle`` m, outward ``normal`` n, ``tangent`` t, trace
+    ``width`` w, ``gap`` g):
+
+    - ``"sheet"``: the rectangle across the pin's end gap, from m to m + g n,
+      w wide; the voltage runs along n, from the trace end to the ground.
+    - ``"line"``: no sheet; the segment from m to m + g n.
+    - ``"cpw"``: two sheets filling the side gaps where the trace ends, each
+      g wide and ``length`` long (default g), the voltage running from the
+      trace to the ground on each side (``_a`` along t, ``_b`` along -t).
+
+    On a :class:`Segment`: the rectangle ``width`` wide along ``p0`` -> ``p1``.
+
+    Args:
+        design (QDesign): the design.
+        port (LumpedPort): the port.
+
+    Returns:
+        list[PortSheet]: one sheet, or two for ``"cpw"``.
+    """
+
+    def value(v):
+        return float(design.parse_value(v)) if isinstance(v, str) else float(v)
+
+    if isinstance(port.at, Segment):
+        p0 = np.array([value(v) for v in port.at.p0])
+        p1 = np.array([value(v) for v in port.at.p1])
+        width = value(port.at.width)
+        span = p1 - p0
+        length = float(np.hypot(*span))
+        along = span / length
+        across = np.array([-along[1], along[0]])
+        polygon = (
+            None
+            if port.shape == "line"
+            else _rectangle(p0 - across * width / 2, along, across, length, width)
+        )
+        return [
+            PortSheet(
+                polygon,
+                tuple(along),
+                (tuple(p0), tuple(p1)),
+                int(port.at.layer),
+            )
+        ]
+
+    comp = design.components[port.at.component]
+    pin = comp.pins[port.at.pin]
+    middle = np.asarray(pin["middle"], dtype=float)
+    normal = np.asarray(pin["normal"], dtype=float)
+    normal = normal / np.hypot(*normal)
+    tangent = np.array([-normal[1], normal[0]])
+    width, gap = value(pin["width"]), value(pin["gap"])
+    layer = int(comp.options.layer)
+    end = middle + gap * normal
+
+    if port.shape == "cpw":
+        length = gap if port.length is None else value(port.length)
+        sheets = []
+        for sign, suffix in ((1.0, "_a"), (-1.0, "_b")):
+            side = sign * tangent
+            inner = middle + side * width / 2
+            polygon = _rectangle(inner, side, -normal, gap, length)
+            midline = inner - normal * length / 2
+            sheets.append(
+                PortSheet(
+                    polygon,
+                    tuple(side),
+                    (tuple(midline), tuple(midline + side * gap)),
+                    layer,
+                    suffix,
+                )
+            )
+        return sheets
+
+    polygon = (
+        None
+        if port.shape == "line"
+        else _rectangle(middle - tangent * width / 2, normal, tangent, gap, width)
+    )
+    return [PortSheet(polygon, tuple(normal), (tuple(middle), tuple(end)), layer)]
 
 
 JunctionMode = Literal["inductor", "port", "open"]
