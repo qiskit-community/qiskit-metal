@@ -15,7 +15,7 @@ import os
 import sys
 import tempfile
 import unittest
-from unittest import mock
+import unittest.mock
 
 import numpy as np
 import pandas as pd
@@ -101,8 +101,8 @@ class TestLomSizeError(unittest.TestCase):
 
 class TestCmatPrintWithoutIPython(unittest.TestCase):
     def test_falls_back_to_plain_print(self):
-        with mock.patch.dict(sys.modules, {"IPython.display": None}):
-            with mock.patch("builtins.print") as fake_print:
+        with unittest.mock.patch.dict(sys.modules, {"IPython.display": None}):
+            with unittest.mock.patch("builtins.print") as fake_print:
                 df_cmat_style_print(_cmat_df())
         fake_print.assert_called_once()
         self.assertIn("pad_top_Q1", fake_print.call_args[0][0])
@@ -147,7 +147,7 @@ class TestUnlinkedJunctionWarning(unittest.TestCase):
         self.assertIn("hfss_inductance", text)
 
     def _assert_silent(self):
-        with mock.patch.object(self.sim.logger, "warning") as warn:
+        with unittest.mock.patch.object(self.sim.logger, "warning") as warn:
             self.sim._warn_unlinked_junction_inductance(["Q1"])
         warn.assert_not_called()
 
@@ -166,7 +166,7 @@ class TestUnlinkedJunctionWarning(unittest.TestCase):
         TransmonPocket(self.design, "Q2", options=dict(pos_x="2mm"))
         self.q1.options.hfss_inductance = "Lj"
         self.q1.rebuild()
-        with mock.patch.object(self.sim.logger, "warning") as warn:
+        with unittest.mock.patch.object(self.sim.logger, "warning") as warn:
             self.sim._warn_unlinked_junction_inductance(["Q1"])
         warn.assert_not_called()
 
@@ -183,7 +183,7 @@ class TestLargeHilbertSpaceWarning(unittest.TestCase):
 
     def test_silent_for_small_spaces(self):
         self.epr.sim.setup.n_modes = 4
-        with mock.patch.object(self.epr.logger, "warning") as warn:
+        with unittest.mock.patch.object(self.epr.logger, "warning") as warn:
             self.epr._warn_large_hilbert_space(7)
         warn.assert_not_called()
 
