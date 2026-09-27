@@ -630,7 +630,7 @@ def stage_launchpads(design):
         )
 
 
-def stage_qubits(design):
+def stage_qubits(design, only=None):
     """17 star transmons laid out like the device qubit (see ``pad_angles``).
 
     Five pads about 72 degrees apart and the junction on the island arm
@@ -638,6 +638,8 @@ def stage_qubits(design):
     without a neighbor, unconnected, as on the device.
     """
     for name, (col, row) in QUBITS.items():
+        if only is not None and name not in only:
+            continue
         pads = pad_angles(name)
         StarQubit(
             design,
@@ -656,9 +658,11 @@ def stage_qubits(design):
         )
 
 
-def stage_couplers(design):
+def stage_couplers(design, only=None):
     """24 lattice couplers, one per nearest-neighbor pair."""
     for a, b, arm in bonds():
+        if only is not None and not (a in only and b in only):
+            continue
         key = f"{a}_{b}"
         pin_a, pin_b = ARM_PIN[arm], ARM_PIN[(arm + 4) % 8]
         mid = [np.array(p) for p in LINES["coupling"][key]]
@@ -969,6 +973,25 @@ def build():
     design = new_design()
     for _, stage in STAGES:
         stage(design)
+    return design
+
+
+def build_cell(qubits=("D5", "Z3"), margin=0.35):
+    """A small design with just ``qubits`` and the couplers between them.
+
+    For simulation: a ``MultiPlanar`` design (the layer stack the gmsh and
+    Elmer renderers need) whose chip is cropped to the qubits plus
+    ``margin`` mm, so the mesh covers only the cell.
+    """
+    design = designs.MultiPlanar({}, True)
+    design.overwrite_enabled = True
+    xy = np.array([QUBIT_POS[q] for q in qubits])
+    lo, hi = xy.min(axis=0) - margin, xy.max(axis=0) + margin
+    size = design.chips.main.size
+    size.center_x, size.center_y = [f"{v}mm" for v in (lo + hi) / 2]
+    size.size_x, size.size_y = [f"{v}mm" for v in hi - lo]
+    stage_qubits(design, only=qubits)
+    stage_couplers(design, only=qubits)
     return design
 
 
