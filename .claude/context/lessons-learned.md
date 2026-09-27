@@ -953,6 +953,92 @@ dependency combination the lock does not produce, build a scratch venv
 `tests/test_lom_core_hamiltonian.py` there; the repo's pytest config needs
 `-p no:rich -o addopts=""` without the dev extras.
 
+## Open FEM: gmsh + scikit-fem
+
+From the solver behind tutorials 4.41–4.45
+(`docs/tut/resources/package_modes/`). Design and physics notes:
+`docs/architecture/open_fem_scikit_fem.md`.
+
+### gmsh 1D meshing takes minutes with a `Min` of two size fields
+
+**Symptom**: meshing a 30 mm box with 200 paddles goes from ~3 s to
+~400 s after adding a second `Threshold` field (junction seeding)
+combined with `Min`; almost all of it in "Meshing 1D".
+
+**Cause**: with a background field, gmsh integrates 1/size along each
+curve to place nodes, to `Mesh.LcIntegrationPrecision` (default 1e-9).
+The `Min` of two distance fields makes that integration crawl.
+
+**Fix**: `gmsh.option.setNumber("Mesh.LcIntegrationPrecision", 1e-3)`
+— same mesh, 1D in ~1 s. Merge curves into one `Distance` field when
+they share a size.
+
+### `basis.interpolator` / `basis.probes` stall on large tetrahedral meshes
+
+**Symptom**: evaluating a scikit-fem field at 100 points on a
+~100k-element mesh runs for minutes; a notebook kernel doing a 200×200
+field map appears to die.
+
+**Cause**: the generic element finder is not built for many queries on
+big meshes.
+
+**Fix**: locate points with a `scipy.spatial.cKDTree` over element
+centroids plus barycentric coordinates, and evaluate the shape
+functions directly (Whitney functions for `ElementTetN0`, Lagrange for
+P2). 40k points in ~0.4 s, identical to the interpolator to 1e-16.
+`package_modes._Locator`.
+
+### ARPACK shift-invert on a curl-curl problem is 100× slower than it should be
+
+**Symptom**: `eigsh(K, M=M, sigma=s, k=3)` on 27k unknowns takes
+~100 s; the two extra eigenvalues come back as 0.
+
+**Cause**: the curl-curl operator has a huge null space (gradients,
+including static charge states of floating conductors). Asking for
+more eigenvalues than lie near the shift makes ARPACK resolve that
+degenerate cluster.
+
+**Fix**: request only the modes near the shift (`k=1`/`2`), and pass
+your own `OPinv` from one factorization.
+
+### SuperLU fill on 3D edge-element matrices
+
+**Symptom**: `splu` with the default `COLAMD` needs 100M+ nonzeros and
+tens of seconds at 70k unknowns.
+
+**Fix**: symmetric permutation from `pymetis.nested_dissection`, then
+`splu(..., permc_spec="NATURAL", options=dict(SymmetricMode=True),
+diag_pivot_thresh=0)`: ~4× less fill and time. Without pymetis,
+`permc_spec="MMD_AT_PLUS_A"` is the next best.
+
+### gmsh `fragment` with no tool entities returns an empty map
+
+**Symptom**: meshing an empty box (no paddles) gives no tetrahedra
+material tags → `np.vstack` of an empty list.
+
+**Fix**: classify volumes after `fragment` by bounding box (below the
+slab top = substrate), not through the fragment output map.
+
+### A mesh slice through mesh nodes has holes
+
+**Symptom**: cutting tetrahedra with a plane that passes exactly
+through nodes (e.g. along a junction line) leaves white gaps.
+
+**Fix**: offset the plane slightly (1.51 mm instead of 1.5 mm).
+
+### The impedance fit finds one pole where there are two
+
+**Symptom**: `fit_impedance` raises "found 1 of 2 poles" for a weakly
+coupled qubit, or for a port shunted by 1 pH.
+
+**Cause**: the pole and the zero next to it fall inside one frequency
+step, so `det X` shows no sign change.
+
+**Fix**: sample adaptively around the poles (a reduced model gives
+them), never exactly on a pole; keep the residual vector a fixed length
+when samples near a trial pole are excluded (least squares
+finite-differences it).
+
 ## What this list doesn't include
 
 Stuff that's NOT a "lesson learned" — those go in

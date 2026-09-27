@@ -376,3 +376,14 @@ hold every user back and still break on macOS. Each shim applies only when
 its condition is detected, and `tests/test_lom_core_hamiltonian.py` runs the
 failing scqubits call directly, so the shims can go once scqubits handles
 both.
+
+## 2026-09-27 — scikit-fem Maxwell solver lives with the tutorials, not in `src/`
+
+The gmsh + scikit-fem solver for tutorials 4.41–4.45 is a resource module,
+`docs/tut/resources/package_modes/package_modes.py`, not a `QRenderer`.
+The simulation classes' renderer contract (`initialize_eigenmode`,
+`analyze_setup`, passes and convergence) does not fit a direct solver, and
+the mesher does not yet handle ground planes or CPWs. The path to a reusable
+backend is recorded in `ROADMAP.md` ("Solver backends") and
+`docs/architecture/open_fem_scikit_fem.md` ("Extension path").
+

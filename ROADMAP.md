@@ -816,3 +816,50 @@ roadmap items above, but tracked so they don't get lost.
 - **Join the conversation.** Discord:
   https://discord.gg/FPNybyfpxd. QDC governance page:
   https://qdc-qcsa.vercel.app.
+
+---
+
+## Solver backends: a scikit-fem renderer, or swappable backends? `[research]`
+
+Tutorials 4.41–4.45 (`docs/tut/4-Analysis/4.4*`) run eigenmode, driven
+(impedance) and electrostatic calculations with gmsh + scikit-fem + SciPy,
+from code in `docs/tut/resources/package_modes/`. That raises the question of
+how an open-source solver should plug into Quantum Metal so that a user can
+switch between Ansys, Elmer, scikit-fem or Palace without rewriting the
+analysis.
+
+Today the switch point is `renderer_name` in the simulation classes
+(`analyses/simulation/`). Their contract with a renderer is informal and
+follows the Ansys renderers: `initialize_eigenmode`, `analyze_setup`,
+`get_convergences`, `set_mode` / `plot_fields`, `initialize_cap_extract`,
+`get_capacitance_matrix`. `QElmerRenderer` exposes a different API
+(`add_solution_setup`, `run`, `capacitance_matrix`).
+
+Options:
+
+1. **Keep the scikit-fem solver as tutorial code.** No API commitment; the
+   code stays short and readable. Not callable from `EigenmodeSim` /
+   `LumpedElementsSim`, and its meshing is separate from `QGmshRenderer`.
+2. **A `QSkfemRenderer`** registered like the others and implementing the
+   existing informal contract. Works with `EigenmodeSim(design, "skfem")`
+   unchanged. Carries the Ansys-shaped setup/pass/convergence vocabulary
+   into a backend that has no adaptive passes, and still needs port and
+   symmetry-plane tags that `QGmshRenderer` does not produce yet.
+3. **A backend interface below the simulation classes.** A
+   solver-neutral problem description (a gmsh mesh with tagged metal,
+   dielectrics, symmetry planes and lumped ports / junctions) and small typed
+   calls: eigenmodes with optional junction inductances, a port impedance
+   matrix over frequency, a capacitance matrix. Ansys renderers are wrapped,
+   not modified; scikit-fem, Elmer and Palace implement the same calls. Allows
+   running one problem on several solvers, which is also the basis for
+   license-free CI checks. More design work, and it depends on the
+   gmsh-tag → port contract listed under "Open FEM stack".
+
+Design notes, validation numbers and a concrete extension path for the
+scikit-fem solver: `docs/architecture/open_fem_scikit_fem.md`.
+
+Proposed order: keep (1) for now; take (3) incrementally — define the tagged
+problem description, implement scikit-fem first (pure Python, runs in CI in
+minutes), then Elmer and Palace, then let the simulation classes accept a
+backend alongside `renderer_name`. Option (2) is not proposed: it would fix the
+current informal contract in place.
