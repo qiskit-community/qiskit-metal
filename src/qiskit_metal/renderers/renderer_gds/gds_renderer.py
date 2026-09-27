@@ -1934,7 +1934,7 @@ class QGDSRenderer(QRenderer):
         scale = imported_lib.unit / lib.unit
 
         if not math.isclose(scale, 1.0, rel_tol=1e-12, abs_tol=0.0):
-            self.logger.info(
+            self.logger.debug(
                 "Rescaling imported junction library from unit=%g to unit=%g "
                 "(scale factor=%g).",
                 imported_lib.unit,
