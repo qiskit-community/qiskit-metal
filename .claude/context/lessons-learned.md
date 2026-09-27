@@ -966,6 +966,25 @@ count. After rewriting one side, copy it to the other side yourself, then run
 the sync (dry run first) and `scripts/check_tutorials_sync.py`; read any
 "conflicts" line before trusting `--write`.
 
+## LOM 2.0 and scqubits: the lockfile hides what a fresh install gets
+
+`CompositeSystem.hamiltonian_results` had no test, and it broke in two
+different ways depending on the resolver:
+
+- **macOS:** scqubits 4.2+ pins `scipy<=1.13.1` on darwin/py>=3.10, so a
+  resolver that keeps a newer scipy picks scqubits 4.1.0, which uses
+  `np.float_` (gone in numpy 2).
+- **Linux / fresh pip:** scqubits 4.3.1 with qutip 5.3 fails inside scqubits
+  itself (`Unsupported operator type: csc_array`), because qutip 5.3 returns
+  scipy sparse arrays. `uv.lock` pinned qutip 5.2.2, so the repo venv never
+  saw it.
+
+`analyses/quantization/_scqubits_compat.py` handles both. To check a
+dependency combination the lock does not produce, build a scratch venv
+(`uv venv` + `uv pip install -e . "scqubits==X" "qutip==Y"`) and run
+`tests/test_lom_core_hamiltonian.py` there; the repo's pytest config needs
+`-p no:rich -o addopts=""` without the dev extras.
+
 ## What this list doesn't include
 
 Stuff that's NOT a "lesson learned" — those go in
