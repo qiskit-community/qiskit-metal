@@ -228,9 +228,12 @@ class QHFSSRenderer(QAnsysRenderer):
                 pdict["normal"],
                 pdict["width"],
             )
+            # On the component's chip, like its endcap (add_endcaps)
+            chip_name = self.design.components[qcomp].options.chip
+            qc_chip_z = parse_units(self.design.get_chip_z(chip_name))
             width = parse_units(width)
             endpoints = parse_units([midpt, midpt + gap_size * norm_vec])
-            endpoints_3d = to_vec3D(endpoints, 0)  # Set z height to 0
+            endpoints_3d = to_vec3D(endpoints, qc_chip_z)
             x0, y0 = endpoints_3d[0][:2]
             x1, y1 = endpoints_3d[1][:2]
             if abs(y1 - y0) > abs(x1 - x0):
@@ -245,7 +248,7 @@ class QHFSSRenderer(QAnsysRenderer):
             # Draw rectangle
             self.logger.debug(f"Drawing a rectangle: {port_name}")
             poly_ansys = self.modeler.draw_rect_corner(
-                [x_min, y_min, 0],
+                [x_min, y_min, qc_chip_z],
                 x_max - x_min,
                 y_max - y_min,
                 0,

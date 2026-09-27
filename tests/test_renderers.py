@@ -851,6 +851,60 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(units, "farad")
         self.assertAlmostEqual(passes[1][0, 0], 2.0e-15)
 
+    def test_hfss_ports_drawn_on_their_chip(self):
+        """create_ports drew the port sheet and its voltage line at z = 0; on a
+        chip whose center_z is not 0 (flip-chip) they missed the metal. They
+        now sit at the chip's z, like the component's endcaps."""
+        from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
+
+        design = designs.DesignPlanar()
+        design.chips.main.size.center_z = "0.1mm"
+        OpenToGround(design, "open1", options=dict(pos_x="1mm", orientation="0"))
+        design.rebuild()
+        renderer = QHFSSRenderer(design, initiate=False)
+        renderer._pinfo = MagicMock()
+        renderer._pinfo.design.solution_type = "DrivenModal"
+        renderer.create_ports([("open1", "open", 50)])
+
+        modeler = renderer._pinfo.design.modeler
+        corner = modeler.draw_rect_corner.call_args.args[0]
+        line = modeler.draw_polyline.call_args.args[0]
+        self.assertAlmostEqual(corner[2], 1e-4)  # 0.1 mm, in meters
+        self.assertAlmostEqual(line[0][2], 1e-4)
+        self.assertAlmostEqual(line[1][2], 1e-4)
+
+    def test_pyaedt_autosave_restored_as_found(self):
+        """Autosave is an AEDT user setting that persists. The renderer read a
+        misspelled option (begin_enable_autosave), so it never turned autosave
+        off, and on close it turned autosave on even for users who had it off.
+        It now records the setting, turns it off, and restores it on close."""
+        from qiskit_metal import Dict
+        from qiskit_metal.renderers.renderer_ansys_pyaedt import pyaedt_base
+
+        def run(autosave_on, begin_disable=True):
+            renderer = object.__new__(pyaedt_base.QPyaedt)
+            renderer._options = Dict(
+                begin_disable_autosave=begin_disable, close_enable_autosave=True
+            )
+            desktop = MagicMock()
+            desktop.odesktop.GetAutoSaveEnabled.return_value = int(autosave_on)
+            with patch.object(pyaedt_base, "Desktop", return_value=desktop):
+                renderer._initiate_renderer()
+                renderer._close_renderer()
+            return desktop
+
+        desktop = run(autosave_on=True)
+        desktop.disable_autosave.assert_called_once()
+        desktop.enable_autosave.assert_called_once()
+
+        desktop = run(autosave_on=False)
+        desktop.disable_autosave.assert_called_once()
+        desktop.enable_autosave.assert_not_called()
+
+        desktop = run(autosave_on=False, begin_disable=False)
+        desktop.disable_autosave.assert_not_called()
+        desktop.enable_autosave.assert_not_called()
+
     def test_pyaedt_hfss_default_setup_is_a_dict(self):
         """A trailing comma made QHFSSPyaedt.default_setup a 1-tuple."""
         from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import (

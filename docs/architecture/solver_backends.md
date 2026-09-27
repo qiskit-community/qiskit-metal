@@ -954,10 +954,17 @@ A backend may implement both shapes. Shape N does not rule out an
 
 Notes:
 
-- **Ansys.** It stays fully supported and nothing in `renderer_ansys*`
-  changes. The pyaedt track cannot be driven by the simulation classes
-  today, so its registry entry says so. Moving it to current pyaedt is the
-  separate Ansys track (ROADMAP), gated on AEDT testing.
+- **Ansys.** It stays fully supported, and stage 1 adds nothing to
+  `renderer_ansys*`.
+  - The pyaedt track cannot be driven by the simulation classes today, so its
+    registry entry says so.
+  - Moving from the Windows-only COM renderers to current pyaedt is the
+    separate Ansys track (ROADMAP), gated on AEDT testing.
+  - A pyaedt-based renderer can implement the neutral protocol (3.12)
+    directly, reading ports, junctions and studies from `SimulationProblem`.
+    EPR then goes through pyEPR's pyaedt analysis (`PyaedtDistributedAnalysis`,
+    `pyEPR/ansys_pyaedt.py`). Neither needs the COM track's informal
+    contract.
 - **ElmerFEM.** It migrates in steps (section 6):
   - nets from `toolbox_metal/nets.py`;
   - bodies and boundaries from `group_map`;
