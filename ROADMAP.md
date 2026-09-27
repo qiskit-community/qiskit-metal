@@ -120,8 +120,9 @@ below.
 4. **AI-orchestration docs** — `docs/orchestration.rst` + the
    "Built for AI agents" page; the lite flip already removed the
    dependency blockers, so this is mostly writing.
-5. **`renderer_palace/` eigenmode PoC** — the strategic unlock for
-   HFSS-free CI validation. Larger effort; external help wanted.
+5. **Palace plugin, eigenmode first** — a downstream package on the
+   solver-backend abstractions, after v0.9.0 (see "Solver backends").
+   Larger effort; external help wanted.
 6. **Design-rule-check (DRC) validation stage** (#1169, shipped v0.8.0) —
    more rules and per-PDK rule sets remain. See the dedicated section
    below.
@@ -296,8 +297,9 @@ The open FEM stack is the long-term answer. Three pieces:
   / analyses it does and doesn't handle today).
 - **AWS Palace** — open-source Maxwell solver from AWS.
   Native MPI, modern CMake build, eigenmode + driven +
-  electrostatic. A `renderer_palace/` module following
-  the `QRendererAnalysis` protocol would unblock
+  electrostatic. A Palace renderer following the
+  `QRendererAnalysis` protocol, shipped as a downstream
+  plugin (see "Solver backends"), would unblock
   HFSS-free CI validation of the entire qlibrary, plus
   give academic users a free path to full-field
   analysis.
@@ -311,7 +313,7 @@ The open FEM stack is the long-term answer. Three pieces:
 
 Initial proof-of-concept order:
 1. Validate `renderer_gmsh/` outputs against current gmsh
-2. Build a minimal `renderer_palace/` for eigenmode only
+2. Build a minimal Palace renderer (the plugin) for eigenmode only
 3. Cross-validate one canonical design (e.g.
    `TransmonPocket`) against a known HFSS result
 4. Document the gmsh-tag → Palace-port boundary contract
@@ -600,9 +602,12 @@ trial viable).
   canonical route for support requests so nothing gets lost in chat
   scrollback. `.github/ISSUE_TEMPLATE/config.yml` surfaces Docs / Roadmap
   / PyPI links plus Discord as a community-chat link (NOT a support route).
-- ✅ **JupyterLite tutorials on the docs site** — every notebook runnable
-  in-browser via the Pyodide kernel, zero install. Lives under `/lite/`
-  on the published docs site.
+- ✅ **JupyterLite on the docs site** — an in-browser Jupyter (Pyodide
+  kernel, zero install) under `/lite/` on the published docs site. No
+  notebooks are bundled yet: `jupyterlite_contents` in `docs/conf.py`
+  names `tutorials/`, which does not exist under `docs/`. Bundling the
+  notebooks that need no external solver or desktop GUI is `[planned]`,
+  after checking that the package installs in the Pyodide kernel.
 
 ### Quick wins (≤2 hours each)
 
@@ -665,6 +670,43 @@ trial viable).
   Metal 202X" with downloads, contributors, papers citing, new features.
   Community visibility artefact, useful for grant proposals and
   external reporting.
+
+---
+
+## Tutorials: structure, backend-swappable analysis, execution harness `[planned]`
+
+The tutorials and examples are 94 notebooks under `docs/tut/` and
+`docs/circuit-examples/`. CI executes 27 of them under the lite install
+(`_dev/rerun_auto.py` with `_dev/notebooks-auto-refresh.txt` and
+`_dev/notebooks-frozen-qt.txt`); the rest need Ansys, gmsh, ElmerFEM or
+the GUI and run only by hand.
+
+1. **Structure.** Categories with one suggested learning path; the
+   full-chip examples in order; links into the component gallery; later
+   notebooks reusing designs built in earlier ones instead of rebuilding
+   them; a thumbnail per notebook on the index pages and short feature
+   animations on the landing page.
+2. **Backend-swappable analysis tutorials.** Once `renderer_name` selects
+   the solver (see "Solver backends"), an analysis tutorial runs on the
+   pip-installable scikit-fem path first and on ElmerFEM where it needs
+   more, with the Ansys run and its stored outputs kept as a subsection.
+   Stored outputs remain the reference answers.
+3. **Execution harness.** Extend `_dev/rerun_auto.py` to every runnable
+   notebook, grouped by the extras it needs (lite, `[skfem]`, `[mesh]`,
+   external solvers). Each notebook executes in a scratch copy with a time
+   budget; the report lists errors, cells without outputs and run times.
+   Cells that need an external solver are skipped unless enabled, and
+   stored outputs under `docs/` are never rewritten by a check run. Run
+   locally before each release; the `[skfem]` group can join CI.
+   Refreshing a notebook's stored outputs stays a separate, reviewed
+   change, made when its code changes what it prints or draws or when an
+   output is known to be stale. Solver results are refreshed only by
+   running that solver; the curated GUI screenshots only through the
+   manual `notebooks-qt-refresh` workflow.
+4. **End-to-end renderer checks.** Each registered renderer runs a small
+   design end to end at its test tier (see "Testing solvers without losing
+   the stored answers" under "Solver backends"): scikit-fem in CI,
+   ElmerFEM, Palace and Ansys locally.
 
 ---
 
@@ -896,10 +938,9 @@ decisions taken and the step-by-step sequence are in
 2. **ElmerFEM beyond electrostatics**: eigenmodes with lumped junctions from
    Elmer's electromagnetic-wave solvers; cross-check against scikit-fem (the
    4.19 cell, the 4.43 package).
-3. **Palace**: tested locally first (MPI binary). Packaging is an open
-   decision: a native renderer in Quantum Metal core, or a downstream
-   `quantum-metal-palace` plugin as in the RFC. Either way it reads the
-   stage-1 abstractions.
+3. **Palace**: a downstream `quantum-metal-palace` plugin as in the RFC,
+   after v0.9.0; tested locally first (MPI binary). It reads the stage-1
+   abstractions.
 4. **Ansys HFSS / Q3D**: stays fully supported. In principle the Ansys
    renderers read the same abstractions too, but any change to
    `renderer_ansys*` is gated on validation in AEDT (see "Hard constraints"

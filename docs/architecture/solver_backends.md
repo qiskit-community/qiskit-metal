@@ -1,8 +1,7 @@
 # Solver backends: shared abstractions (stage 1 design)
 
-Status: design, with decisions D1 and D3–D6 taken and D2 (Palace packaging)
-open (section 8). Steps 1.0–1.6 are done; the later steps are not
-implemented yet. This note covers
+Status: design, with decisions D1–D6 taken (section 8). Steps 1.0–1.6 are
+done; the later steps are not implemented yet. This note covers
 stage 1 of `ROADMAP.md`, "Solver backends: shared abstractions, then
 scikit-fem, ElmerFEM, Palace and Ansys". It has four parts: a gap analysis
 (section 2), the proposed abstractions (section 3), how each backend would
@@ -1053,7 +1052,7 @@ Notes:
 
 ## 5. Palace packaging: native renderer or downstream plugin
 
-This is the maintainer's decision. Both options need the stage-1
+Decided under D2 (section 8): a downstream plugin. Both options need the stage-1
 abstractions, the same runtime (gmsh through `[mesh]`, plus the Palace binary
 and MPI installed outside pip), and the same tests. They differ in where the
 Palace-specific code lives and who versions it.
@@ -1101,7 +1100,7 @@ Stage 2, on these abstractions:
    with junctions as lumped elements; the mechanism in Elmer is to be
    confirmed. Cross-check against scikit-fem on the 4.19 cell and the 4.43
    package.
-3. **Palace**, packaged as decided under D2. The first slice is eigenmode
+3. **Palace**, as a downstream plugin (D2). The first slice is eigenmode
    with one lumped port on a transmon, a launch pad and a CPW, compared with
    stored HFSS output. Tier 2, local only.
 4. **Ansys.** Only its registry entry changes. Code changes stay on the
@@ -1128,6 +1127,10 @@ Taken (September 2026):
 
 - **D1. How simulation classes reach a new backend:** the neutral protocol N,
   next to the untouched legacy path (3.12).
+- **D2. Palace packaging:** a downstream plugin (section 5), after the 0.9
+  release. The stage-1 modules it imports then need a deprecation policy.
+  How it registers, on import (i) or through entry points (ii), is decided
+  when the plugin is built.
 - **D3. Net labels for capacitance results:** the `q3d` style
   (`{geom}_{component}`, `ground_{chip}_plane`, alphabetical order). Elmer's
   labels stay available as a style.
@@ -1144,6 +1147,3 @@ Taken (September 2026):
   - pyEPR imports without Ansys. It becomes a dependency of the open
     backends' extras, or of a small `[epr]` extra.
 
-Open:
-
-- **D2. Palace packaging:** native renderer or downstream plugin (section 5).

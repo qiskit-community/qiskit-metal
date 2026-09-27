@@ -435,3 +435,13 @@ Design and gap analysis: `docs/architecture/solver_backends.md`.
   junction inductances and signed participations to it through an
   array-based entry to `QuantumAnalysis`, with no Ansys project involved.
 - Palace packaging (native renderer or downstream plugin) is not decided.
+
+## 2026-09-27 — Palace ships as a downstream plugin, after v0.9.0
+
+Decision D2 of `docs/architecture/solver_backends.md`: the Palace renderer is
+a separate package on the stage-1 abstractions, not a module in core, and
+comes after the v0.9.0 release. The stage-1 modules it imports
+(`analyses/simulation/problem.py`, `capabilities.py`,
+`toolbox_metal/nets.py`, `renderer_gmsh/groups.py`) then need a deprecation
+policy. How the plugin registers (on import, or through entry points) is
+decided when it is built.
