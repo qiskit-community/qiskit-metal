@@ -518,11 +518,15 @@ class QMplRenderer:
         sc_uvec = sc_vec / sc_norm
         ec_uvec = ec_vec / ec_norm
 
-        # Angle between previous unit vectors
-        end_angle = np.arccos(np.dot(sc_uvec, ec_uvec))
+        # Angle between previous unit vectors. Clip: on a straight run the dot
+        # product can round just past -1; arccos then returned NaN, NaN passed
+        # every check below, and the fillet points came out NaN (drawn as a
+        # sawtooth of spikes along the line).
+        end_angle = np.arccos(np.clip(np.dot(sc_uvec, ec_uvec), -1.0, 1.0))
 
-        # Start, corner, and end vertices can't be collinear
-        if (end_angle == 0) or (end_angle == np.pi):
+        # Start, corner, and end vertices can't be collinear (to within
+        # rounding: the bisector below would have no direction).
+        if end_angle < 1e-6 or np.pi - end_angle < 1e-6:
             return False
 
         # Fillet circle must be small enough to fit inside corner
