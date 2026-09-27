@@ -1299,12 +1299,14 @@ name='{strname}'{other_args}
         docs: bool = True,
         parsed: bool = True,
         pins: bool = True,
-        image: bool = False,
-    ) -> str:
-        """HTML table of this component's options and pins, for notebooks.
+        image: bool = True,
+        display: bool = False,
+    ) -> str | None:
+        """HTML card of this component: options, pins, and a picture.
 
         Jupyter shows it automatically when a component is the last thing in
-        a cell. Reads correctly in light and dark themes.
+        a cell. Options changed from the class defaults are highlighted.
+        Reads correctly in light and dark themes.
 
         Args:
             docs (bool): Add each option's description, parsed from the
@@ -1315,15 +1317,25 @@ name='{strname}'{other_args}
                 Defaults to True.
             pins (bool): Add a table of the pins: position, normal direction,
                 width, and what each connects to. Defaults to True.
-            image (bool): Add a picture of the component, framed to its
-                bounds. Defaults to False.
+            image (bool): Add a picture of the component, drawn alone on an
+                off-screen figure (safe headless and next to the GUI).
+                Defaults to True.
+            display (bool): Show the card in the notebook now instead of
+                returning the HTML. Defaults to False.
 
         Returns:
-            str: The HTML.
+            str | None: The HTML, or None when ``display`` is True.
         """
         from ._html_repr import component_html
 
-        return component_html(self, docs=docs, parsed=parsed, pins=pins, image=image)
+        page = component_html(self, docs=docs, parsed=parsed, pins=pins, image=image)
+        if not display:
+            return page
+        from IPython.display import HTML
+        from IPython.display import display as show
+
+        show(HTML(page))
+        return None
 
     def _repr_html_(self):
         return self.to_html()

@@ -89,9 +89,37 @@ class TestToHtml(unittest.TestCase):
         self.assertIn("Segments per quarter circle", page)  # StarQubit.resolution
         self.assertIn("cuts in the ground plane", page)  # common option: subtract
 
-    def test_image_option(self):
-        self.assertNotIn("data:image/png;base64", self.q1.to_html())
-        self.assertIn("data:image/png;base64", self.q1.to_html(image=True))
+    def test_image_is_on_by_default(self):
+        self.assertIn("data:image/png;base64", self.q1.to_html())
+        self.assertNotIn("data:image/png;base64", self.q1.to_html(image=False))
+
+    def test_image_does_not_touch_pyplot(self):
+        import matplotlib.pyplot as plt
+
+        before = plt.get_fignums()
+        self.q1.to_html()
+        self.assertEqual(plt.get_fignums(), before)
+
+    def test_display_option_shows_and_returns_none(self):
+        from unittest import mock
+
+        with mock.patch("IPython.display.display") as show:
+            self.assertIsNone(self.q1.to_html(display=True))
+        show.assert_called_once()
+
+    def test_changed_options_are_marked(self):
+        import re
+
+        page = self.q1.to_html(image=False)
+        changed = re.findall(
+            r'<tr class="qm-changed"><td class="qm-key"[^>]*>([^<]+)<', page
+        )
+        # pos_x and the pad location were set; the pad's other options keep
+        # their _default_connection_pads values and are not marked.
+        self.assertIn("pos_x", changed)
+        self.assertIn("loc_W", changed)
+        self.assertNotIn("pad_width", changed)
+        self.assertNotIn("pocket_width", changed)
 
     def test_pins_show_connections(self):
         page = self.q1.to_html()
@@ -126,6 +154,7 @@ class TestDesignViews(unittest.TestCase):
 
     def test_components_html(self):
         page = self.design.components._repr_html_()
+        self.assertIn('class="qm-card"', page)
         self.assertIn("Q1", page)
         self.assertIn("TransmonPocket", page)
 
@@ -154,8 +183,8 @@ class TestEveryComponentRenders(unittest.TestCase):
                 seen.add(cls)
                 with self.subTest(component=name):
                     component = cls(designs.DesignPlanar(), "c")
-                    page = component.to_html(parsed=True)
-                    self.assertIn('class="qm-comp"', page)
+                    page = component.to_html()
+                    self.assertIn('class="qm-card"', page)
         self.assertGreater(len(seen), 20)
 
 

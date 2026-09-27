@@ -249,11 +249,10 @@ class Components:
 
     def _repr_html_(self) -> str:
         from qiskit_metal.qlibrary.core._html_repr import (  # noqa: PLC0415
-            _STYLE,
-            components_html,
+            components_card,
         )
 
-        return f'{_STYLE}<div class="qm-comp">{components_html(self._design)}</div>'
+        return components_card(self._design)
 
     def __repr__(self) -> str:
         """Print the design._component dict.

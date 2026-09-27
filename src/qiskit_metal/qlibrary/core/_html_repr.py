@@ -144,24 +144,48 @@ def _renderer_docs(design) -> dict[str, dict[str, str]]:
 
 _STYLE = """
 <style>
-.qm-comp { font-family: var(--jp-ui-font-family, sans-serif); font-size: 13px;
-  color: inherit; background: transparent; text-align: left; }
-.qm-comp h4 { margin: 0.2em 0 0.4em 0; font-weight: 600; color: inherit; }
-.qm-comp .qm-sub { opacity: 0.7; font-weight: 400; }
-.qm-comp table { border-collapse: collapse; margin: 0 0 0.8em 0; color: inherit;
+.qm-card { font-family: var(--jp-ui-font-family, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif); font-size: 13px; line-height: 1.4; color: inherit;
+  background: transparent; text-align: left; border: 1px solid rgba(128,128,128,.3);
+  border-radius: 10px; padding: 10px 14px 6px 14px; margin: 4px 0 10px 0;
+  max-width: 1100px; }
+.qm-card .qm-title { display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 8px; margin: 0 0 8px 0; }
+.qm-card .qm-name { font-size: 16px; font-weight: 650; }
+.qm-card .qm-badge { font-size: 11px; font-weight: 600; padding: 1px 8px;
+  border-radius: 999px; background: rgba(59,130,246,.16); color: inherit;
+  border: 1px solid rgba(59,130,246,.35); }
+.qm-card .qm-meta { font-size: 12px; opacity: .7; }
+.qm-card details { margin: 4px 0 8px 0; }
+.qm-card summary { cursor: pointer; font-weight: 600; padding: 3px 0;
+  list-style-position: inside; }
+.qm-card summary .qm-meta { font-weight: 400; margin-left: 6px; }
+.qm-card table { border-collapse: separate; border-spacing: 0; margin: 4px 0 6px 0;
+  color: inherit; background: transparent; width: auto; }
+.qm-card table th, .qm-card table td { text-align: left !important;
+  vertical-align: top; padding: 3px 10px; border: 0 !important; color: inherit;
   background: transparent; }
-.qm-comp table th, .qm-comp table td { border: 1px solid rgba(128, 128, 128, 0.35);
-  padding: 2px 8px; text-align: left !important; vertical-align: top;
-  background: transparent; color: inherit; }
-.qm-comp table th { background: rgba(128, 128, 128, 0.14); font-weight: 600; }
-.qm-comp td.qm-key { font-family: var(--jp-code-font-family, monospace);
+.qm-card table th { font-size: 11px; font-weight: 650; text-transform: uppercase;
+  letter-spacing: .04em; opacity: .75; border-bottom: 1px solid rgba(128,128,128,.35) !important; }
+.qm-card table tbody tr:nth-child(even) td { background: rgba(128,128,128,.06); }
+.qm-card table tbody tr:hover td { background: rgba(59,130,246,.08); }
+.qm-card td.qm-key { font-family: var(--jp-code-font-family, ui-monospace, monospace);
   white-space: nowrap; }
-.qm-comp td.qm-val { font-family: var(--jp-code-font-family, monospace); }
-.qm-comp td.qm-doc { opacity: 0.8; max-width: 38em; }
-.qm-comp tr.qm-group td { font-weight: 600; background: rgba(128, 128, 128, 0.07); }
-.qm-comp img { max-width: 100%; display: block; margin: 0 0 0.8em 0; }
+.qm-card td.qm-val { font-family: var(--jp-code-font-family, ui-monospace, monospace);
+  white-space: nowrap; }
+.qm-card td.qm-doc { opacity: .78; max-width: 40em; white-space: normal; }
+.qm-card tr.qm-group td { font-weight: 650; opacity: .9; }
+.qm-card tr.qm-changed td { background: rgba(245,158,11,.14) !important; }
+.qm-card tr.qm-changed td.qm-key { box-shadow: inset 3px 0 0 rgba(245,158,11,.9); }
+.qm-card .qm-dot { display: inline-block; width: .6em; height: .6em;
+  border-radius: 50%; background: rgba(245,158,11,.9); margin-right: 4px; }
+.qm-card .qm-legend { font-size: 11px; opacity: .75; margin: 0 0 4px 0; }
+.qm-card img { max-width: 320px; height: auto; display: block; margin: 2px 0 8px 0;
+  border-radius: 6px; }
 </style>
 """
+
+_MISSING = object()
 
 
 def component_html(
@@ -169,28 +193,32 @@ def component_html(
     docs: bool = True,
     parsed: bool = True,
     pins: bool = True,
-    image: bool = False,
+    image: bool = True,
 ) -> str:
-    """HTML for a component: header, options table, pins, and optionally a picture.
+    """HTML card for a component: options, pins, and a picture.
+
+    Options changed from the class's defaults are highlighted.
 
     Args:
         component: The component.
         docs: Add a column with each option's description from the docstrings.
         parsed: Add a column with each option's parsed value (design units).
         pins: Add a table of the component's pins and what they connect to.
-        image: Add a picture of the component (drawn with ``qm.view``).
+        image: Add a picture of the component.
     """
     esc = html.escape
     descriptions = option_docs(type(component)) if docs else {}
     renderers = _renderer_docs(component.design) if docs else {}
+    defaults = _defaults(component)
     head = ["option", "value"] + (["parsed"] if parsed else [])
     head += ["description"] if docs else []
     rows: list[str] = []
+    counts = {"options": 0, "changed": 0}
 
     def walk(options, path, depth):
         for key, value in options.items():
             here = path + (str(key),)
-            pad = f"padding-left:{8 + 16 * depth}px"
+            pad = f"padding-left:{10 + 16 * depth}px"
             doc = _doc_for(here, descriptions, renderers) if docs else ""
             if isinstance(value, dict):
                 blanks = len(head) - 1 - (1 if docs else 0)
@@ -201,35 +229,86 @@ def component_html(
                 rows.append('<tr class="qm-group">' + "".join(cells) + "</tr>")
                 walk(value, here, depth + 1)
                 continue
+            counts["options"] += 1
+            default = _default_at(defaults, here)
+            # Only an option with a known class default can be "changed";
+            # some are added at build time (a route's trace_gap) or computed.
+            changed = default is not _MISSING and str(default) != str(value)
+            counts["changed"] += changed
+            title = f' title="default: {esc(repr(default))}"' if changed else ""
             cells = [
-                f'<td class="qm-key" style="{pad}">{esc(str(key))}</td>',
+                f'<td class="qm-key" style="{pad}"{title}>{esc(str(key))}</td>',
                 f'<td class="qm-val">{esc(repr(value))}</td>',
             ]
             if parsed:
                 cells.append(f'<td class="qm-val">{esc(_parsed(component, here))}</td>')
             if docs:
                 cells.append(f'<td class="qm-doc">{esc(doc)}</td>')
-            rows.append("<tr>" + "".join(cells) + "</tr>")
+            css = ' class="qm-changed"' if changed else ""
+            rows.append(f"<tr{css}>" + "".join(cells) + "</tr>")
 
     walk(component.options, (), 0)
+    n_pins = len(component.pins)
+    n_connected = sum(1 for pin in component.pins.values() if pin.get("net_id"))
     parts = [
         _STYLE,
-        '<div class="qm-comp">',
-        f"<h4>{esc(component.name)} "
-        f'<span class="qm-sub">{esc(type(component).__name__)} &middot; '
-        f"id {esc(str(component.id))}</span></h4>",
+        '<div class="qm-card">',
+        '<div class="qm-title">'
+        f'<span class="qm-name">{esc(component.name)}</span>'
+        f'<span class="qm-badge">{esc(type(component).__name__)}</span>'
+        f'<span class="qm-meta">id {esc(str(component.id))} &middot; '
+        f"{counts['options']} options, {counts['changed']} changed &middot; "
+        f"{n_pins} pins, {n_connected} connected</span></div>",
     ]
     if image:
         parts.append(_image_html(component))
     parts += [
-        "<table><tr>" + "".join(f"<th>{h}</th>" for h in head) + "</tr>",
+        "<details open><summary>Options"
+        f'<span class="qm-meta">{counts["changed"]} changed from the defaults</span>'
+        "</summary>",
+        '<div class="qm-legend"><span class="qm-dot"></span>changed from the '
+        "class default (hover the name for the default)</div>"
+        if counts["changed"]
+        else "",
+        "<table><thead><tr>"
+        + "".join(f"<th>{h}</th>" for h in head)
+        + "</tr></thead><tbody>",
         *rows,
-        "</table>",
+        "</tbody></table></details>",
     ]
     if pins and component.pins:
-        parts.append(_pins_html(component))
+        parts.append(
+            f'<details open><summary>Pins<span class="qm-meta">{n_pins} pins, '
+            f"{n_connected} connected</span></summary>{_pins_html(component)}</details>"
+        )
     parts.append("</div>")
     return "\n".join(parts)
+
+
+def _defaults(component: QComponent):
+    try:
+        return type(component).get_template_options(component.design)
+    except Exception:  # noqa: BLE001 -- display only; never raise from a repr
+        return {}
+
+
+def _default_at(defaults, path: tuple[str, ...]):
+    """The class default for an option path, or _MISSING if it has none."""
+
+    def lookup(node, keys):
+        # Membership, not indexing: Metal's Dict returns an empty Dict for a
+        # missing key instead of raising.
+        for key in keys:
+            if not isinstance(node, dict) or key not in node:
+                return _MISSING
+            node = node[key]
+        return node
+
+    found = lookup(defaults, path)
+    if found is _MISSING and len(path) >= 3 and path[0] == "connection_pads":
+        # A pad takes its defaults from _default_connection_pads.
+        found = lookup(defaults, ("_default_connection_pads",) + path[2:])
+    return found
 
 
 def _parsed(component: QComponent, path: tuple[str, ...]) -> str:
@@ -243,30 +322,35 @@ def _parsed(component: QComponent, path: tuple[str, ...]) -> str:
 
 
 def _image_html(component: QComponent) -> str:
-    """The component drawn on its design, framed to its bounds, as an <img>."""
+    """The component drawn alone, framed to its bounds, as an <img>.
+
+    Drawn on a standalone Agg figure -- no pyplot, no GUI event loop -- so it
+    is safe headless, in a notebook, and next to the desktop GUI.
+    """
     import base64
     import io
 
-    import matplotlib.pyplot as plt
+    from matplotlib.backends.backend_agg import FigureCanvasAgg
+    from matplotlib.figure import Figure
 
     from qiskit_metal.viewer.view import view
 
     try:
         x0, y0, x1, y1 = component.qgeometry_bounds()
-    except Exception:  # noqa: BLE001 -- no geometry: nothing to draw
-        return ""
-    pad = 0.15 * max(x1 - x0, y1 - y0, 1e-3)
-    fig = view(component.design)
-    try:
-        ax = fig.axes[0]
+        pad = 0.08 * max(x1 - x0, y1 - y0, 1e-3)
+        fig = Figure(figsize=(3.6, 3.6))
+        FigureCanvasAgg(fig)
+        ax = fig.add_subplot()
+        view(component.design, ax=ax, components=[component.name], chip_outline=False)
         ax.set_xlim(x0 - pad, x1 + pad)
         ax.set_ylim(y0 - pad, y1 + pad)
         ax.set_aspect("equal")
-        fig.set_size_inches(4.5, 4.5)
+        ax.tick_params(labelsize=7)
+        ax.set_title("")
         buffer = io.BytesIO()
-        fig.savefig(buffer, format="png", dpi=90, bbox_inches="tight")
-    finally:
-        plt.close(fig)
+        fig.savefig(buffer, format="png", dpi=110, bbox_inches="tight")
+    except Exception:  # noqa: BLE001 -- display only; never raise from a repr
+        return ""
     data = base64.b64encode(buffer.getvalue()).decode()
     return (
         f'<img alt="{html.escape(component.name)}" src="data:image/png;base64,{data}">'
@@ -296,11 +380,13 @@ def _pins_html(component: QComponent) -> str:
             f'<td class="qm-val">({esc(middle)})</td>'
             f'<td class="qm-val">{angle:.1f}&deg;</td>'
             f'<td class="qm-val">{float(pin.get("width", 0)):.4g}</td>'
-            f"<td>{esc(target)}</td></tr>"
+            f"<td>{esc(target) or '&mdash;'}</td></tr>"
         )
     return (
-        "<table><tr><th>pin</th><th>middle (mm)</th><th>normal</th>"
-        "<th>width (mm)</th><th>connected to</th></tr>" + "".join(rows) + "</table>"
+        "<table><thead><tr><th>pin</th><th>middle (mm)</th><th>normal</th>"
+        "<th>width (mm)</th><th>connected to</th></tr></thead><tbody>"
+        + "".join(rows)
+        + "</tbody></table>"
     )
 
 
@@ -308,7 +394,7 @@ def components_html(design, limit: int = 200) -> str:
     """HTML table of a design's components: name, class, id, pins, connections."""
     esc = html.escape
     net = getattr(design, "net_info", None)
-    connected = {}
+    connected: dict = {}
     if net is not None and len(net):
         for cid in net["component_id"]:
             connected[cid] = connected.get(cid, 0) + 1
@@ -317,64 +403,113 @@ def components_html(design, limit: int = 200) -> str:
     for name, comp in items[:limit]:
         rows.append(
             f'<tr><td class="qm-key">{esc(name)}</td>'
-            f"<td>{esc(type(comp).__name__)}</td>"
+            f'<td><span class="qm-badge">{esc(type(comp).__name__)}</span></td>'
             f'<td class="qm-val">{esc(str(comp.id))}</td>'
             f'<td class="qm-val">{len(comp.pins)}</td>'
             f'<td class="qm-val">{connected.get(comp.id, 0)}</td></tr>'
         )
     more = (
-        f'<p class="qm-sub">&hellip; and {len(items) - limit} more</p>'
+        f'<div class="qm-meta">&hellip; and {len(items) - limit} more</div>'
         if len(items) > limit
         else ""
     )
     return (
-        "<table><tr><th>component</th><th>class</th><th>id</th><th>pins</th>"
-        "<th>connected</th></tr>" + "".join(rows) + "</table>" + more
+        "<table><thead><tr><th>component</th><th>class</th><th>id</th><th>pins</th>"
+        "<th>connected</th></tr></thead><tbody>"
+        + "".join(rows)
+        + "</tbody></table>"
+        + more
+    )
+
+
+def components_card(design, limit: int = 200) -> str:
+    """``design.components`` as a card."""
+    return (
+        f'{_STYLE}<div class="qm-card"><div class="qm-title">'
+        f'<span class="qm-name">Components</span>'
+        f'<span class="qm-meta">{len(design.components)} in '
+        f"{html.escape(type(design).__name__)}</span></div>"
+        f"{components_html(design, limit)}</div>"
     )
 
 
 def design_html(design, limit: int = 200) -> str:
-    """HTML summary of a design: chips, counts by class, variables, components."""
+    """HTML card for a design: chips, counts by class, variables, components."""
     esc = html.escape
     counts: dict[str, int] = {}
     for comp in design.components.values():
         counts[type(comp).__name__] = counts.get(type(comp).__name__, 0) + 1
-    chips = "".join(
-        f'<tr><td class="qm-key">{esc(str(name))}</td>'
-        f'<td class="qm-val">{esc(str(chip.get("size", {}).get("size_x", "")))} x '
-        f"{esc(str(chip.get('size', {}).get('size_y', '')))}</td>"
-        f'<td class="qm-val">({esc(str(chip.get("size", {}).get("center_x", "")))}, '
-        f"{esc(str(chip.get('size', {}).get('center_y', '')))})</td></tr>"
-        for name, chip in design.chips.items()
-    )
+
+    def chip_row(name, chip):
+        size = chip.get("size", {})
+        return (
+            f'<tr><td class="qm-key">{esc(str(name))}</td>'
+            f'<td class="qm-val">{esc(str(size.get("size_x", "")))} &times; '
+            f"{esc(str(size.get('size_y', '')))}</td>"
+            f'<td class="qm-val">({esc(str(size.get("center_x", "")))}, '
+            f"{esc(str(size.get('center_y', '')))})</td></tr>"
+        )
+
+    chips = "".join(chip_row(n, c) for n, c in design.chips.items())
     classes = "".join(
-        f"<tr><td>{esc(k)}</td><td class='qm-val'>{v}</td></tr>"
+        f'<tr><td><span class="qm-badge">{esc(k)}</span></td>'
+        f'<td class="qm-val">{v}</td></tr>'
         for k, v in sorted(counts.items(), key=lambda kv: -kv[1])
     )
     variables = "".join(
-        f'<tr><td class="qm-key">{esc(str(k))}</td><td class="qm-val">{esc(repr(v))}</td></tr>'
+        f'<tr><td class="qm-key">{esc(str(k))}</td>'
+        f'<td class="qm-val">{esc(repr(v))}</td></tr>'
         for k, v in design.variables.items()
     )
     net = getattr(design, "net_info", None)
     n_nets = len(set(net["net_id"])) if net is not None and len(net) else 0
+
+    def section(title, meta, body, open_=True):
+        return (
+            f"<details{' open' if open_ else ''}><summary>{title}"
+            f'<span class="qm-meta">{meta}</span></summary>{body}</details>'
+        )
+
     return "\n".join(
         [
             _STYLE,
-            '<div class="qm-comp">',
-            f"<h4>{esc(getattr(design, 'name', '') or 'design')} "
-            f'<span class="qm-sub">{esc(type(design).__name__)} &middot; '
-            f"{len(design.components)} components &middot; {n_nets} connections"
-            "</span></h4>",
-            "<table><tr><th>chip</th><th>size</th><th>center</th></tr>"
-            + chips
-            + "</table>",
-            "<table><tr><th>class</th><th>count</th></tr>" + classes + "</table>"
+            '<div class="qm-card"><div class="qm-title">'
+            f'<span class="qm-name">{esc(getattr(design, "name", "") or "design")}</span>'
+            f'<span class="qm-badge">{esc(type(design).__name__)}</span>'
+            f'<span class="qm-meta">{len(design.components)} components &middot; '
+            f"{n_nets} connections</span></div>",
+            section(
+                "Chips",
+                f"{len(design.chips)}",
+                "<table><thead><tr><th>chip</th><th>size</th><th>center</th></tr>"
+                "</thead><tbody>" + chips + "</tbody></table>",
+            ),
+            section(
+                "Components by class",
+                f"{len(counts)} classes",
+                "<table><thead><tr><th>class</th><th>count</th></tr></thead><tbody>"
+                + classes
+                + "</tbody></table>",
+            )
             if classes
             else "",
-            "<table><tr><th>variable</th><th>value</th></tr>" + variables + "</table>"
+            section(
+                "Variables",
+                f"{len(design.variables)}",
+                "<table><thead><tr><th>variable</th><th>value</th></tr></thead><tbody>"
+                + variables
+                + "</tbody></table>",
+            )
             if variables
             else "",
-            components_html(design, limit) if design.components else "",
+            section(
+                "Components",
+                f"{len(design.components)}",
+                components_html(design, limit),
+                open_=len(design.components) <= 30,
+            )
+            if design.components
+            else "",
             "</div>",
         ]
     )
