@@ -15,6 +15,7 @@ of) a real or representative device.
 
     Google style — 5-Qubit Xmon Processor (Barends et al.) <F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor>
     Wallraff group (ETH Zurich) — 17-Qubit Distance-3 Surface Code <F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode>
+    Two-Qubit Cell of the 17-Qubit Chip — Mesh for Simulation (gmsh) <F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh>
     IBM-era Qiskit Metal example — Four-Qubit Chip <F.Small-quantum-chips/51-Four_qubit_chip>
     100-Qubit Mockup (algorithmic design, no routing) <../tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically>
     Example Full Chip Design <full-design-flow-examples/Example-full-chip-design>
