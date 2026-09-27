@@ -25,7 +25,7 @@
     license = "Apache-2.0"
     license-files = [ "LICENSE.txt" ]
     readme = { file = "README.md", content-type = "text/markdown" }
-    requires-python = ">=3.10,<3.13"
+    requires-python = ">=3.10,<3.15"
     urls = { bugtracker = "https://github.com/qiskit-community/qiskit-metal/issues", documentation = "https://qiskit-community.github.io/qiskit-metal/", source = "https://github.com/qiskit-community/qiskit-metal" }
     version = "0.8.1"
     # ────────────────────────────────────────────────────────────────
@@ -49,16 +49,16 @@
         "addict>=2.4.0",
         "gdstk>=0.9",
         "geopandas>=1.0",
-        "matplotlib>=3.7.0",
-        "numpy>=2.1.0",
-        "pandas>=2.1.1",
-        "pint>=0.21.0",
+        "matplotlib>=3.8.4",  # first release built against numpy 2
+        "numpy>=1.24.2",
+        "pandas>=2.2.2",   # first release built against numpy 2 (older ones crash on import under numpy 2)
+        "pint>=0.24.4",    # <0.24: np.cumproduct (gone in numpy 2); <0.24.4: breaks with flexparser 0.4
         "pygments>=2.14.0", # Used by docs builders + some GUI widgets.
         "qutip>=5.1.0",
-        "scipy>=1.10.0",
-        "shapely>=2.0.1",
+        "scipy>=1.13.0",   # first release built against numpy 2
+        "shapely>=2.0.4",  # first release built against numpy 2
         "scqubits>=4.1.0",
-        "pyyaml>=6.0", # Used for the Elmer runner config (pure-Python).
+        "pyyaml>=6.0.1", # Used for the Elmer runner config. 6.0.1 = first with cp312 wheels.
     ]
 
     # Opt-in extras. As of v0.7.0 these are NO LONGER duplicated in the
@@ -72,7 +72,8 @@
             "qdarkstyle>=3.1",
         ]
         ansys = [
-            "pyaedt>=1.0.1",
+            "pyaedt>=0.21,<0.24; python_version < '3.14'",  # vetted range; 0.24 had bugs
+            "pyaedt>=1.0.1; python_version >= '3.14'",  # 0.2x needs numpy<2.3, which has no cp314 wheels
             "pyEPR-quantum>=1.0.1",
         ]
         # gmsh — the universal mesher. Used by Elmer (today), Palace
@@ -92,7 +93,8 @@
         full = [
             "pyside6>=6.8",
             "qdarkstyle>=3.1",
-            "pyaedt>=1.0.1",
+            "pyaedt>=0.21,<0.24; python_version < '3.14'",  # vetted range; 0.24 had bugs
+            "pyaedt>=1.0.1; python_version >= '3.14'",  # 0.2x needs numpy<2.3, which has no cp314 wheels
             "pyEPR-quantum>=1.0.1",
             "gmsh>=4.15.0,<5",
         ]
@@ -199,7 +201,7 @@
         "RET501", "SIM114", "FURB105",
         "PYI016",
         # Second tier (#1163 follow-up): also safely auto-fixable, no runtime
-        # behaviour change on the supported Python range (3.10-3.12).
+        # behaviour change on the supported Python range (3.10-3.14).
         "UP009",                           # redundant utf-8 coding declaration
         "UP006", "UP045",                  # PEP 585/604 annotations
         "RET502",                          # bare return in a value-returning fn

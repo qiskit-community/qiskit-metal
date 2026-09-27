@@ -35,6 +35,16 @@ jobs:
           - "3.12"
           - "3.13"
           - "3.14"
+        # All versions on Linux; oldest + newest on macOS/Windows keeps
+        # platform coverage at both ends with the same 9-job count as
+        # the old 3x3 matrix.
+        exclude:
+          - { os: macos-15, python-version: "3.11" }
+          - { os: macos-15, python-version: "3.12" }
+          - { os: macos-15, python-version: "3.13" }
+          - { os: windows-2025, python-version: "3.11" }
+          - { os: windows-2025, python-version: "3.12" }
+          - { os: windows-2025, python-version: "3.13" }
     steps:
       - uses: actions/checkout@v6
         with:
@@ -182,16 +192,16 @@ jobs:
             'addict>=2.4.0' \
             'gdstk>=0.9' \
             'geopandas>=1.0' \
-            'matplotlib>=3.7.0' \
-            'numpy>=1.24.2,<2' \
-            'pandas>=2.1.1' \
-            'pint>=0.21.0' \
+            'matplotlib>=3.8.4' \
+            'numpy>=1.24.2' \
+            'pandas>=2.2.2' \
+            'pint>=0.24.4' \
             'pygments>=2.14.0' \
             'qutip>=5.1.0' \
-            'scipy>=1.10.0' \
-            'shapely>=2.0.1' \
+            'scipy>=1.13.0' \
+            'shapely>=2.0.4' \
             'scqubits>=4.1.0' \
-            'pyyaml>=6.0' \
+            'pyyaml>=6.0.1' \
             'pytest>=8.4.1' \
             'pytest-rich>=0.2.0'
           uv pip install --no-deps -e .

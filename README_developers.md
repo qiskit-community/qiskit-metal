@@ -29,7 +29,7 @@ Development dependencies are specified in the `[dependency-groups]` table.There 
 
 ### Running tests
 
-Tox is configured to run tests (using pytest) for Python 3.10-3.12. Use the following command to run tests for all three versions:
+Tox is configured to run tests (using pytest) for Python 3.10-3.14. Use the following command to run tests for all supported versions:
 
 ```
 tox -m test

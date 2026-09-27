@@ -41,17 +41,17 @@ uv pip install --quiet \
     'addict>=2.4.0' \
     'gdstk>=0.9' \
     'geopandas>=1.0' \
-    'matplotlib>=3.7.0' \
-    'numpy>=2.1.0' \
-    'pandas>=2.1.1' \
-    'pint>=0.21.0' \
+    'matplotlib>=3.8.4' \
+    'numpy>=1.24.2' \
+    'pandas>=2.2.2' \
+    'pint>=0.24.4' \
     'pyEPR-quantum>=0.9.5' \
     'pygments>=2.14.0' \
     'qutip>=5.1.0' \
-    'scipy>=1.10.0' \
-    'shapely>=2.0.1' \
+    'scipy>=1.13.0' \
+    'shapely>=2.0.4' \
     'scqubits>=4.1.0' \
-    'pyyaml>=6.0' \
+    'pyyaml>=6.0.1' \
     'pytest>=8.4.1' \
     'pytest-rich>=0.2.0'
 

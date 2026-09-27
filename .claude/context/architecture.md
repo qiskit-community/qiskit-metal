@@ -269,7 +269,7 @@ integration, etc. ~475 tests total as of v0.6.1.
 
 | Job | Run on | Time |
 |-----|--------|------|
-| `tests-pythonX.Y-OS` (9 jobs) | py3.10/3.11/3.12 × ubuntu/macos/windows | ~2-3 min each |
+| `tests-pythonX.Y-OS` (9 jobs) | py3.10–3.14 × ubuntu; py3.10, 3.14 × macos/windows | ~2-3 min each |
 | `lint` | ubuntu-py3.12, ruff | <1 min |
 | `env-consistency` | ubuntu, runs `scripts/check_env_consistency.py` | <30s |
 | `coverage` | ubuntu-py3.12, pytest --cov | ~3 min |

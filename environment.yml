@@ -7,21 +7,22 @@ dependencies:
   - addict~=2.4
   - geopandas>=1.0 # Synced with pyproject.toml floor.
   - ipython>=8.10.0
-  - matplotlib~=3.7
-  - numpy>=2.1.0
-  - pandas>=2.1.1 # Synced with pyproject.toml floor.
-  - pint>=0.21.0 # Synced with pyproject.toml floor.
+  - matplotlib>=3.8.4 # Synced with pyproject.toml floor (first numpy-2 build).
+  - numpy>=1.24.2 # Synced with pyproject.toml floor. numpy 1.x and 2.x both supported.
+  - pandas>=2.2.2 # Synced with pyproject.toml floor (first numpy-2 build).
+  - pint>=0.24.4 # Synced with pyproject.toml floor.
   - pyEPR-quantum>=1.0.1 # Synced with pyproject.toml floor.
   - pygments~=2.14
   - qdarkstyle~=3.1
   - qutip>=5.1.0 # Synced with pyproject.toml floor.
-  - scipy~=1.10
-  - shapely>=2.0.1 # Synced with pyproject.toml floor.
+  - scipy>=1.13.0 # Synced with pyproject.toml floor (first numpy-2 build).
+  - shapely>=2.0.4 # Synced with pyproject.toml floor (first numpy-2 build).
   - jupyter
   - cython<3.0.0
   - pip
   - pip:
-      - pyaedt>=1.0.1 # Synced with pyproject.toml ceiling (pyaedt 0.24 has bugs).
+      - pyaedt>=0.21,<0.24; python_version < '3.14' # Synced with pyproject.toml (0.24 had bugs).
+      - pyaedt>=1.0.1; python_version >= '3.14' # 0.2x needs numpy<2.3, which has no cp314 wheels.
       - gmsh>=4.15.0,<5
       - gdstk~=0.9 # Used to be gdspy>=1.6.12
       - pyside6~=6.8 # Critical to building gui, can causes lots of problems, careful.

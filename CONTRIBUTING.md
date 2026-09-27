@@ -79,7 +79,7 @@ Once you've made a code change, it is important to verify that your change does 
 
 The easiest way to do this is `tox` (which builds an isolated environment and runs the full suite the same way CI does):
 
-- `tox` — run the test suite on every supported Python (3.10, 3.11, 3.12)
+- `tox` — run the test suite on every supported Python (3.10–3.14)
 - `tox -e py3.12` — run on a specific Python only
 - `pytest tests/` — run tests in your current environment (faster iteration; use this once you've confirmed the env is set up)
 - `pytest tests/test_<file>.py` — run a single test file
