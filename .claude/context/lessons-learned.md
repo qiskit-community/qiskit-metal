@@ -173,25 +173,39 @@ etc.).
 - `tests/test_solution_types.py`
 - pyEPR PRs #172, #176
 
-### `numpy<2` pin is real
+### `numpy<2` pin: root cause and removal
 
-**Symptom**: `pip install quantum-metal` followed by `pip install
-numpy>=2` downgrades or breaks something.
+**Symptom**: pairing numpy 2 with older compiled dependencies fails on
+import. pandas < 2.2.2 raises `ValueError: numpy.dtype size changed,
+may indicate binary incompatibility`, and pint < 0.24 raises
+`AttributeError: module 'numpy' has no attribute 'cumproduct'`.
 
-**Cause**: Some transitive dep (suspected: pyaedt or qutip 5
-intermediate) requires `numpy<2`. Hasn't been root-caused.
+**Cause**: the `<2` cap came in with `pandas==1.5.3` (127656d4, May
+2025). Wheels built against numpy 1.x are not ABI-compatible with
+numpy 2. The cap survived after pandas moved to `>=2.1.1`, but 2.1.x
+still predates numpy-2 wheels, so dropping the cap alone would have
+let a resolver pair numpy 2 with an incompatible pandas.
 
-**Fix**: Until identified and upstream-resolved, the pin stays.
-Don't relax it casually.
+**Fix** (Python 3.13/3.14 support): cap removed and floors raised to
+the first numpy-2 builds: pandas 2.2.2, scipy 1.13.0, matplotlib
+3.8.4, shapely 2.0.4, pint 0.24.4. pint 0.24.0–0.24.3 also break with
+flexparser 0.4. Verified with `uv pip install --resolution
+lowest-direct` under numpy 2.0.0 (py3.12) and numpy 1.24.2 (py3.11):
+the failures match a newest-version run exactly (only missing
+extras). If a floor is lowered, re-run that check.
 
-### `pyaedt<0.24` is a temporary pin
+### `pyaedt<0.24` stays on Python < 3.14
 
 **Symptom**: pyaedt 0.24 was buggy as of Jan 2026.
 
-**Cause**: noted in `pyproject.toml` comment.
+**Cause**: noted in `pyproject.toml` comment. pyaedt 0.2x also
+requires `numpy<2.3`, and numpy's first cp314 wheels are 2.3.2, so
+the vetted range cannot install on 3.14.
 
-**Fix**: Retest periodically. As of v0.6.1 the pin is still in
-place; AWS Palace integration is the intended unblock for the
+**Fix**: environment markers. `>=0.21,<0.24` on Python < 3.14 and
+`>=1.0.1` on 3.14. The pyaedt renderer is not validated against real
+AEDT on 1.x; treat 3.14 + `[ansys]` as untested until someone runs it
+with AEDT. AWS Palace integration is the intended unblock for the
 broader pyaedt situation.
 
 ## Qt / GUI / lazy-import

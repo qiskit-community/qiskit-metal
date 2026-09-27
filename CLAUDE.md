@@ -12,7 +12,7 @@ is `quantum-metal`; the import path is still `qiskit_metal` for backward
 compatibility. The community-maintained successor to IBM's original
 Qiskit Metal — the rebrand is in progress through the v0.6.x line.
 
-Stack: Python 3.10–3.12 · `shapely` for geometry · `geopandas` /
+Stack: Python 3.10–3.14 · `shapely` for geometry · `geopandas` /
 `pandas` for storage · `matplotlib` for headless viewing · `PySide6` for
 the optional desktop GUI · `pyEPR-quantum` / `pyaedt` / `gmsh` /
 `Elmer` for analysis backends.
@@ -218,8 +218,8 @@ component, which is too slow for a hot docs-build path).
 - Docs build: `tox -e docs`
 - Env-drift check: `uv run scripts/check_env_consistency.py`
 
-CI matrix on every PR: 9 test combos (py3.10/3.11/3.12 ×
-ubuntu/macos/windows) + `lint` + `env-consistency` + `coverage` +
+CI matrix on every PR: 9 test combos (py3.10–3.14 on ubuntu;
+py3.10 and 3.14 on macos/windows) + `lint` + `env-consistency` + `coverage` +
 `tests-lite` (including notebook-execute).
 
 ## Status snapshot (as of v0.8.0, August 2026)

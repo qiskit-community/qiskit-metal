@@ -78,7 +78,7 @@ Source install, conda, troubleshooting, and per-persona migration recipes:
 [`docs/installation.rst`](./docs/installation.rst) ·
 [`docs/migration-to-v0.7.0.rst`](./docs/migration-to-v0.7.0.rst).
 
-CI runs on **Python 3.10 / 3.11 / 3.12** across Linux, macOS, and Windows.
+CI runs on **Python 3.10 / 3.11 / 3.12 / 3.13 / 3.14** across Linux, macOS, and Windows.
 
 ---
 
