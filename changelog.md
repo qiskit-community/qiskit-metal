@@ -6,6 +6,30 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Unreleased
+
+### Added
+
+- **`PolylineCPW`** (`qlibrary.tlines`): a CPW drawn along an explicit list of points, with no routing -- for paths you already have (traced, exported, octilinear). `taps={name: [x, y]}` adds pins partway along the line for branches, so a mid-line joint is a registered connection instead of a DRC waiver.
+- **`CapFingerInFrame`** (`qlibrary.lumped`): a single-finger gap capacitor, a frame electrode around a finger, tuned per instance by its length.
+- **`TransmonStar`** (`qlibrary.qubits`): `TransmonCross` generalized to `num_points` radial arms; arms without a connection pad stay bare stubs.
+- **`Airbridge` pins `a`/`b`** for signal crossovers: cut the upper line and connect the cut ends to the bridge.
+- **`StarQubit.rotation_jj`** places the junction independently of the couplers (same convention as the connector rotations). The default `'auto'` keeps the old placement.
+- **Shape rules (`validation.SHAPE_RULES`, opt-in):** `SelfIntersectionRule`, `SharpTurnRule`, `FilletStarvationRule`, `DanglingEndRule` (an unconnected CPW end fabricates as a short), and `PinAlignmentRule` (a line must leave the pin it connects to square-on). Run with `validate(design, rules=[*DEFAULT_RULES, *SHAPE_RULES])`.
+- **DRC waivers:** `validate(..., waivers=[Waiver(...)])` accepts named exceptions with a reason and an optional bound; waived findings are reported separately.
+- **Example designs:** a 17-qubit distance-3 surface-code chip (Wallraff group, ETH Zurich; Krinner *et al.*, Nature 2022) built stage by stage with a design-rule check after each stage, GUI or headless; and a 5-qubit Xmon processor (Barends *et al.*, Nature 2014), adapted from a Quantum Device Workshop 2026 project by Murat Can Sarihan.
+- **Docs:** keycap-badge GIFs on the GUI shortcuts page; QDesignOptimizer (202Q-lab, Chalmers) on the ecosystem and videos pages.
+
+### Fixed
+
+- **GDS export silently dropped cuts.** The ground plane was one chip-sized `gdstk` boolean; when gdstk could not link a hole it printed "Unable to link hole in boolean operation" and wrote that cut as solid ground (on a 17-qubit chip, three whole flux-line gaps). The ground and cheesing booleans now run in vertical strips, each checked against shapely and rebuilt when gdstk's result is wrong. Cheesing is also much faster.
+- **Rebuilding a component dropped its connections.** `QComponent.rebuild()` (and `design.rebuild()`, and GUI edits) deleted the component's nets; only routes reconnected. Connections made with `design.connect_pins` are now restored, and a partner pin that cannot be reconnected is reset to net 0 instead of keeping a stale id.
+- **Spikes along straight CPWs in the GUI and `qm.view`.** On a straight run the fillet's dot product could round past -1, `arccos` returned NaN, and the fillet was drawn as a sawtooth of spikes. The stored geometry was unaffected.
+- **`StarQubit` left floating slivers of island metal** when two arms are close together (e.g. a readout arm 45 degrees from a coupler); only the island part at the center is kept.
+- **Ground-continuity rule fooled by nanometer slivers.** Floating-point booleans leave ground strips a nanometer wide where two etched edges almost coincide, joining regions no metal joins. `GroundContinuityRule(min_link_width=1e-4)` ignores links narrower than 0.1 um (`0` restores the exact check).
+- **GUI: the left dock could not be narrower than ~430 px on macOS**, because the native style disables tab-bar scroll arrows; they are now enabled.
+- **Pre-commit hook** split staged paths containing spaces (e.g. `tutorials/Appendix C ...`) into nonexistent files.
+
 ## Quantum Metal v0.9.0 (Python 3.13/3.14, numpy 2; raised dependency minimums)
 
 Minor release: new Python versions, numpy 2 support, and a batch of analysis,
