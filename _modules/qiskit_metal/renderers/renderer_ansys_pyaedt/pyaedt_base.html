@@ -836,6 +836,11 @@
             <span class="n">thickness</span><span class="p">,</span> <span class="n">z_coord</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">fill_value</span> <span class="o">=</span> <span class="n">result</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">layer_stack_handler_pilot_error</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"Layer stack has no usable entry for this geometry's layer and "</span>
+                <span class="s2">"datatype; add a row for it to the layer-stack CSV (see the "</span>
+                <span class="s2">"warning above)."</span>
+            <span class="p">)</span>
 
         <span class="c1"># LINESTRING does not have interior and exterior coords.</span>
         <span class="n">points_2d</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">qc_shapely</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
@@ -930,6 +935,11 @@
             <span class="n">thickness</span><span class="p">,</span> <span class="n">z_coord</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">fill_value</span> <span class="o">=</span> <span class="n">result</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">layer_stack_handler_pilot_error</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"Layer stack has no usable entry for this geometry's layer and "</span>
+                <span class="s2">"datatype; add a row for it to the layer-stack CSV (see the "</span>
+                <span class="s2">"warning above)."</span>
+            <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">subtract</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">fill_value</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
@@ -1253,6 +1263,11 @@
             <span class="n">thickness</span><span class="p">,</span> <span class="n">z_coord</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">result</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">layer_stack_handler_pilot_error</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"Layer stack has no usable entry for this geometry's layer and "</span>
+                <span class="s2">"datatype; add a row for it to the layer-stack CSV (see the "</span>
+                <span class="s2">"warning above)."</span>
+            <span class="p">)</span>
 
         <span class="n">endcap_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">endcap_str</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">comp_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">pin_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">"</span>
 

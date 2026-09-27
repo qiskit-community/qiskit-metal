@@ -968,16 +968,19 @@
         <span class="n">rounding_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="p">[</span><span class="s2">"PRECISION"</span><span class="p">]</span>
         <span class="n">new_dict</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">geometry</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geometry</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">MultiPolygon</span><span class="p">):</span>
-                <span class="n">temp_multi</span> <span class="o">=</span> <span class="n">geometry</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="c1"># Keys become the ``name`` column, which renderers treat as a</span>
+            <span class="c1"># string (e.g. the HFSS name sanitiser uses re.sub). Coerce</span>
+            <span class="c1"># non-string keys such as ``{0: jj_line}`` (#995).</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">MultiPolygon</span><span class="p">):</span>
                 <span class="n">shape_count</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="k">for</span> <span class="n">shape_temp</span> <span class="ow">in</span> <span class="n">temp_multi</span><span class="o">.</span><span class="n">geoms</span><span class="p">:</span>
-                    <span class="n">new_dict</span><span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">shape_count</span><span class="p">)]</span> <span class="o">=</span> <span class="n">round_coordinate_sequence</span><span class="p">(</span>
+                <span class="k">for</span> <span class="n">shape_temp</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">geoms</span><span class="p">:</span>
+                    <span class="n">new_dict</span><span class="p">[</span><span class="n">name</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">shape_count</span><span class="p">)]</span> <span class="o">=</span> <span class="n">round_coordinate_sequence</span><span class="p">(</span>
                         <span class="n">shape_temp</span><span class="p">,</span> <span class="n">rounding_val</span>
                     <span class="p">)</span>
                     <span class="n">shape_count</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">new_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">round_coordinate_sequence</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">rounding_val</span><span class="p">)</span>
+                <span class="n">new_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">round_coordinate_sequence</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">rounding_val</span><span class="p">)</span>
 
         <span class="n">geometry</span> <span class="o">=</span> <span class="n">new_dict</span>
 

@@ -682,10 +682,18 @@
                 <span class="n">props</span><span class="p">[</span><span class="s2">"chip_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">chip_name</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_warning_search_minus_chip</span><span class="p">(</span><span class="n">layer_number</span><span class="p">,</span> <span class="n">datatype</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">:</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">props</span><span class="p">[</span><span class="n">item</span><span class="p">])</span>
-        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">props</span><span class="p">):</span>
+            <span class="c1"># No row for this layer/datatype, or the row could not be parsed.</span>
+            <span class="c1"># Return None so callers' ``if result:`` checks see the miss;</span>
+            <span class="c1"># previously this returned empty ``Dict`` objects, which are</span>
+            <span class="c1"># truthy as a tuple and failed later (e.g. ``Dict / int``, #992).</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Layer stack has no usable entry for layer=</span><span class="si">{</span><span class="n">layer_number</span><span class="si">}</span><span class="s2">, "</span>
+                <span class="sa">f</span><span class="s2">"datatype=</span><span class="si">{</span><span class="n">datatype</span><span class="si">}</span><span class="s2"> (file: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">filename_csv_df</span><span class="si">}</span><span class="s2">). "</span>
+                <span class="s2">"Add a row for it to the layer-stack CSV."</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">props</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="LayerStackHandler.is_layer_data_unique">

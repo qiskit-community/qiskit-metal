@@ -1536,7 +1536,7 @@
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">path_name</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># OSError: native lib failed to load</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"Renderer=</span><span class="si">{</span><span class="n">renderer_key</span><span class="si">}</span><span class="s2"> skipped: "</span>
                     <span class="sa">f</span><span class="s2">"an optional dependency for </span><span class="si">{</span><span class="n">path_name</span><span class="si">}</span><span class="s2"> is not "</span>

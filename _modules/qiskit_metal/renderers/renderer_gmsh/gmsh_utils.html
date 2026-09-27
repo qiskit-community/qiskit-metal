@@ -472,15 +472,29 @@
 <span class="c1"># the lite install — the free functions below that call into</span>
 <span class="c1"># ``gmsh.model`` raise via ``_require_gmsh()`` at use time rather</span>
 <span class="c1"># than at ``import qiskit_metal`` time.</span>
+<span class="n">_GMSH_LOAD_ERROR</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover — exercised on lite installs</span>
     <span class="n">gmsh</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">_exc</span><span class="p">:</span>
+    <span class="c1"># gmsh is installed but its shared library could not load, typically</span>
+    <span class="c1"># because a system library (libGLU, libXft, ...) is missing on a</span>
+    <span class="c1"># headless Linux machine. Treat it like a missing optional dependency so</span>
+    <span class="c1"># ``QDesign`` still constructs, and keep the reason for the error message.</span>
+    <span class="n">gmsh</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_GMSH_LOAD_ERROR</span> <span class="o">=</span> <span class="n">_exc</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_require_gmsh</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""Raise a clear error if gmsh isn't installed."""</span>
+<span class="w">    </span><span class="sd">"""Raise a clear error if gmsh isn't installed or can't load."""</span>
     <span class="k">if</span> <span class="n">gmsh</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_GMSH_LOAD_ERROR</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"gmsh is installed but failed to load: </span><span class="si">{</span><span class="n">_GMSH_LOAD_ERROR</span><span class="si">}</span><span class="s2">. "</span>
+                <span class="s2">"Install the missing system library; on Debian/Ubuntu, e.g. "</span>
+                <span class="s2">"`apt-get install libglu1-mesa libxft2 libxinerama1 libxcursor1`."</span>
+            <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
             <span class="s2">"renderer_gmsh requires gmsh. Install with: "</span>
             <span class="s2">"pip install 'quantum-metal[mesh]' "</span>

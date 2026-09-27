@@ -476,7 +476,7 @@
 <span class="c1"># catches that and logs.</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover — exercised on lite installs</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">):</span>  <span class="c1"># lite install, or gmsh's system libs missing</span>
     <span class="n">gmsh</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_gmsh.gmsh_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_require_gmsh</span>
@@ -668,11 +668,10 @@
 <span class="sd">            float: returns the thickness value</span>
 <span class="sd">        """</span>
         <span class="n">props</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"thickness"</span><span class="p">]</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_properties_for_layer_datatype</span><span class="p">(</span>
-                <span class="n">properties</span><span class="o">=</span><span class="n">props</span><span class="p">,</span> <span class="n">layer_number</span><span class="o">=</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">datatype</span>
-            <span class="p">)</span>
+        <span class="n">ls_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_properties_for_layer_datatype</span><span class="p">(</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">props</span><span class="p">,</span> <span class="n">layer_number</span><span class="o">=</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">datatype</span>
         <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="n">ls_result</span><span class="p">)</span> <span class="k">if</span> <span class="n">ls_result</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># thickness is result[0]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -698,11 +697,10 @@
 <span class="sd">            tuple[float, float]: returns the tuple (thickness, z_coord)</span>
 <span class="sd">        """</span>
         <span class="n">props</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"thickness"</span><span class="p">,</span> <span class="s2">"z_coord"</span><span class="p">]</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_properties_for_layer_datatype</span><span class="p">(</span>
-                <span class="n">properties</span><span class="o">=</span><span class="n">props</span><span class="p">,</span> <span class="n">layer_number</span><span class="o">=</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">datatype</span>
-            <span class="p">)</span>
+        <span class="n">ls_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">get_properties_for_layer_datatype</span><span class="p">(</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">props</span><span class="p">,</span> <span class="n">layer_number</span><span class="o">=</span><span class="n">layer_num</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">datatype</span>
         <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_units_gmsh</span><span class="p">(</span><span class="n">ls_result</span><span class="p">)</span> <span class="k">if</span> <span class="n">ls_result</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">result</span>
         <span class="k">else</span><span class="p">:</span>

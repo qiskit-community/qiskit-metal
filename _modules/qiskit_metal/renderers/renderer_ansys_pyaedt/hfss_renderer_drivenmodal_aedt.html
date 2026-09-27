@@ -1150,6 +1150,11 @@
                 <span class="n">thickness</span><span class="p">,</span> <span class="n">z_coord</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">result</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">ls</span><span class="o">.</span><span class="n">layer_stack_handler_pilot_error</span><span class="p">()</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"Layer stack has no usable entry for this geometry's layer and "</span>
+                    <span class="s2">"datatype; add a row for it to the layer-stack CSV (see the "</span>
+                    <span class="s2">"warning above)."</span>
+                <span class="p">)</span>
 
             <span class="n">start_vec_xyz</span> <span class="o">=</span> <span class="n">mid</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
             <span class="n">start_vec_xyz</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z_coord</span> <span class="o">+</span> <span class="p">(</span><span class="n">thickness</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
