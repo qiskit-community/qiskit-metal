@@ -39,7 +39,7 @@ _CMAT_FF = np.array(
 _LJ_NH = 12.0
 
 
-def _system():
+def _system(readout_opts=None):
     cell = Cell(
         dict(
             node_rename={"readout_pad": "readout"},
@@ -54,7 +54,9 @@ def _system():
         name="readout",
         sys_type="TL_RESONATOR",
         nodes=["readout"],
-        q_opts=dict(f_res=7.0, Z0=50, vp=0.404314 * speed_of_light),
+        q_opts=dict(
+            f_res=7.0, Z0=50, vp=0.404314 * speed_of_light, **(readout_opts or {})
+        ),
     )
     system = CompositeSystem(
         subsystems=[qubit, readout],
@@ -89,6 +91,69 @@ class TestHamiltonianResults(unittest.TestCase):
         g = self.system.compute_gs().to_dataframe()
         self.assertAlmostEqual(g.loc["j1", "readout"], g.loc["readout", "j1"])
         self.assertGreater(abs(g.loc["j1", "readout"]), 1.0)  # MHz
+
+
+class TestResonatorLevels(unittest.TestCase):
+    """A resonator's self-Kerr needs more than three levels to converge."""
+
+    def _self_kerr(self, readout_opts=None):
+        system, _ = _system(readout_opts)
+        space = system.add_interaction()
+        results = system.hamiltonian_results(space, print_info=False)
+        dims = [s.truncated_dim for s in system.quantum_subsystems]
+        return results["chi_in_MHz"].to_dataframe().loc["readout", "readout"], dims
+
+    def test_small_system_gets_five_levels_and_a_converged_self_kerr(self):
+        kerr, dims = self._self_kerr()
+        self.assertEqual(dims[1], 5)
+        # K ~ alpha (g/Delta)^4 ~ 1e-4 MHz here; three levels gave +0.57 MHz.
+        self.assertLess(abs(kerr), 0.01)
+
+    def test_explicit_truncated_dim_is_kept(self):
+        _, dims = self._self_kerr(dict(truncated_dim=3))
+        self.assertEqual(dims[1], 3)
+
+    def test_large_system_keeps_three_levels_and_warns(self):
+        names = ["pad_top", "pad_bot"] + [f"r{k}" for k in range(6)] + ["ground_plane"]
+        n = len(names)
+        cmat = np.zeros((n, n))
+        for k in range(2, n - 1):
+            cmat[k, k], cmat[k, 1], cmat[1, k], cmat[k, -1] = 50.0, -5.0, -5.0, -45.0
+        cmat[0, 0], cmat[1, 1], cmat[0, 1], cmat[1, 0] = 100.0, 130.0, -30.0, -30.0
+        cmat[0, -1] = cmat[-1, 0] = -70.0
+        cmat[1, -1] = cmat[-1, 1] = -70.0
+        cmat[-1, -1] = 300.0
+        cell = Cell(
+            dict(
+                node_rename={},
+                cap_mat=pd.DataFrame(cmat, index=names, columns=names),
+                ind_dict={("pad_top", "pad_bot"): _LJ_NH},
+                jj_dict={("pad_top", "pad_bot"): "j1"},
+                cj_dict={("pad_top", "pad_bot"): 2},
+            )
+        )
+        lines = [
+            Subsystem(
+                name=f"r{k}",
+                sys_type="TL_RESONATOR",
+                nodes=[f"r{k}"],
+                q_opts=dict(f_res=6.0 + 0.1 * k, Z0=50, vp=0.404314 * speed_of_light),
+            )
+            for k in range(6)
+        ]
+        qubit = Subsystem(name="qubit", sys_type="TRANSMON", nodes=["j1"])
+        system = CompositeSystem(
+            subsystems=[qubit, *lines],
+            cells=[cell],
+            grd_node="ground_plane",
+            nodes_force_keep=[f"r{k}" for k in range(6)],
+        )
+        with self.assertLogs("metal", level="WARNING") as logs:
+            system.create_hilbertspace()
+        self.assertEqual(
+            [s.truncated_dim for s in system.quantum_subsystems][1:], [3] * 6
+        )
+        self.assertIn("not converged", "\n".join(logs.output))
 
 
 class TestScqubitsCompat(unittest.TestCase):
