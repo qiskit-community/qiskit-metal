@@ -94,6 +94,9 @@ confirm.
 
 - Assert on drawn qgeometry (`design.qgeometry.tables['path']`) and on built
   pin positions and normals, not on `options`.
+- `SHAPE_RULES` includes `pin-alignment`: every line must leave the pin it
+  connects to square-on. Start lines with a short straight lead along the pin
+  (40 um worked) rather than aiming straight at the next waypoint.
 - Write each check as the property you need. "Open end touches the feedline"
   passed *because* every end had run onto the feedline -- the defect it was
   meant to catch. The property was "open end is >= 15 um away".

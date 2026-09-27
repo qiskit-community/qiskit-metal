@@ -274,6 +274,14 @@ rebuilt from the shapely result, cut into hole-free polygons. gdstk's own
 result is verified. Output polygons meet along strip edges (fabrication tools
 merge them). Cheesing becomes much faster as a side effect.
 
+### `PinAlignmentRule` joins `SHAPE_RULES`
+
+Checks that every connected path end leaves the partner pin along its
+normal (1 degree) and starts on it (0.1 um). Connected pins face each other,
+so one test covers qubit pads, launchpads, capacitors, airbridges,
+terminations and branches off `PolylineCPW` taps. Opt-in like the other
+shape rules until the tutorial notebooks are checked against it.
+
 ### Ground-continuity ignores links narrower than 0.1 um
 
 `GroundContinuityRule(min_link_width=1e-4)` opens the ground sheet before

@@ -894,6 +894,18 @@ specks) and to prepend the `.. image::` directive (making it the docstring's
 summary line). Both are fixed in `_dev/generate_qlibrary_thumbnails.py`;
 still look at the PNG and the class docstring it produced.
 
+### A sawtooth of spikes along a straight CPW is the drawing, not the design
+
+`QMplRenderer._calc_fillet` computed the corner angle with
+`arccos(dot(u1, u2))`. On a resampled straight run the dot product rounds to
+-1.0000000000000002, arccos returns NaN, NaN passes every "can this corner be
+filleted" check, and the fillet points come out NaN -- drawn (GUI and
+`qm.view`) as regular V-shaped spikes along the line. 43 of 164 lines on the
+17-qubit chip were affected; the stored geometry was fine. Clip the dot
+product and treat near-straight corners as straight
+(`tests/test_mpl_fillet.py`). When a drawn line looks wrong, compare the
+drawn polyline with the stored one before touching the design.
+
 ### Match a component's internal layout to a close-up before placing it
 
 The 17-qubit rebuild put every StarQubit's four coupler arms on the compass

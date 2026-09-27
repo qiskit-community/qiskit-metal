@@ -107,7 +107,20 @@ EDGE_LETTER = {"top": "N", "bot": "S", "left": "W", "right": "E"}
 INWARD = {"top": "270", "bot": "90", "left": "0", "right": "180"}
 ARM_PIN = {0: "pin_cpl1", 2: "pin_cpl2", 4: "pin_cpl3", 6: "pin_cpl4"}
 
-LINES = DATA["lines"]
+# Traced lines, simplified (Douglas-Peucker) to SIMPLIFY: removes sub-pixel
+# bumps (the images resolve ~7.5 um) before anything is built from them.
+SIMPLIFY = 0.005
+
+
+def _simplified(tree):
+    if isinstance(tree, dict):
+        return {k: _simplified(v) for k, v in tree.items()}
+    if tree and isinstance(tree[0], list) and len(tree) > 2 and len(tree[0]) == 2:
+        return [list(p) for p in LineString(tree).simplify(SIMPLIFY).coords]
+    return tree
+
+
+LINES = _simplified(DATA["lines"])
 FLUX_QUBIT = {v: k for k, v in LINES["flux"]["pad"].items()}  # pad slot -> qubit
 DRIVE_QUBIT = {v: k for k, v in LINES["drive"]["pad"].items()}
 
@@ -124,6 +137,12 @@ TRACE_FILLET = "15um"
 # before following the trace, so the CPW meets the pad square-on and its end
 # is flush with it.
 LEAD = 0.04
+# Past the lead, the traced stretch that still runs along the pin's axis
+# (within SNAP_DEG) is put on the axis, up to SNAP_MAX off it: the first
+# stretch off a pad is straight on the device, and a few pixels of tracing
+# offset there would otherwise show as a kink after the lead.
+SNAP_DEG = 5.0
+SNAP_MAX = 0.03
 
 # StarQubit's connector pins sit 0.20 mm from the qubit center.
 PIN_R = 0.21
@@ -365,7 +384,7 @@ def pin_at(design, p, tol=1e-6):
     return None
 
 
-def with_lead(P, pin, normal, at="start"):
+def with_lead(P, pin, normal, at="start", snap=True):
     """Start (or end) resampled points ``P`` with a straight lead off a pin.
 
     The lead runs LEAD along the pin's outward normal; points within reach of
@@ -377,6 +396,30 @@ def with_lead(P, pin, normal, at="start"):
     rest = seq[1:]
     while len(rest) > 1 and np.linalg.norm(rest[0] - pin) < LEAD + TRACE_STEP / 2:
         rest.pop(0)
+    axis = np.array([-normal[1], normal[0]])
+    cos_max = math.cos(math.radians(SNAP_DEG))
+    snapped = 0
+    for i in range(len(rest) - 1 if snap else 0):
+        step = rest[i + 1] - rest[i]
+        along = (step @ normal) / max(np.linalg.norm(step), 1e-12)
+        if along < cos_max or abs((rest[i] - pin) @ axis) > SNAP_MAX:
+            break
+        rest[i] = pin + ((rest[i] - pin) @ normal) * normal
+        snapped = i + 1
+    if snapped:
+        # Where the line leaves the axis, the tracing offset can put the next
+        # points on the far side of it -- a dip before the turn. Drop those.
+        ahead = [(p - pin) @ axis for p in rest[snapped : snapped + 6]]
+        side = next((np.sign(o) for o in ahead if abs(o) > SNAP_MAX), 0.0)
+        end = snapped
+        while (
+            side
+            and end < len(rest) - 1
+            and np.linalg.norm(rest[end] - rest[snapped - 1]) < 0.1
+            and np.sign((rest[end] - pin) @ axis) == -side
+        ):
+            end += 1
+        rest = rest[:snapped] + rest[end:]
     seq = [pin, tip] + rest
     return seq if at == "start" else seq[::-1]
 
@@ -408,12 +451,16 @@ def draw_traced(design, name, pts, over, tag, taps=None):
         v = resample(v, TRACE_STEP)
         if k > 0:  # after a bridge: leave its pin b along the bridge axis
             b = design.components[items[k - 1][1]].pins["b"]
-            v = with_lead(v, np.asarray(b["middle"]), np.asarray(b["normal"]), "start")
+            v = with_lead(
+                v, np.asarray(b["middle"]), np.asarray(b["normal"]), "start", snap=False
+            )
         elif (hit := pin_at(design, v[0])) is not None:
             v = with_lead(v, *hit, "start")
         if k < len(items) - 1:  # before a bridge: arrive at its pin a
             a = design.components[items[k + 1][1]].pins["a"]
-            v = with_lead(v, np.asarray(a["middle"]), np.asarray(a["normal"]), "end")
+            v = with_lead(
+                v, np.asarray(a["middle"]), np.asarray(a["normal"]), "end", snap=False
+            )
         elif (hit := pin_at(design, v[-1])) is not None:
             v = with_lead(v, *hit, "end")
         PolylineCPW(
@@ -447,13 +494,18 @@ def draw_traced(design, name, pts, over, tag, taps=None):
     return names
 
 
-def terminate(design, name, cls, pts, seg, at):
-    """Open or short one end of a line and register the net.
+def terminate(design, name, cls, seg, at):
+    """Open or short one end of line piece ``seg`` and register the net.
 
-    ``orientation`` is the line's outgoing direction at that end; the
+    ``orientation`` is the line's outgoing direction at that end, taken from
+    the drawn geometry (not the traced points, which resampling moves); the
     termination's pin then faces back into the line.
     """
-    a, b = (pts[0], pts[1]) if at == "start" else (pts[-1], pts[-2])
+    tbl = design.qgeometry.tables["path"]
+    comp_id = design.components[seg].id
+    rows = tbl[(tbl["component"] == comp_id) & ~tbl["subtract"].astype(bool)]
+    drawn = np.asarray(rows.geometry.iloc[0].coords, dtype=float)
+    a, b = (drawn[0], drawn[1]) if at == "start" else (drawn[-1], drawn[-2])
     out = a - b
     t = cls(
         design,
@@ -470,6 +522,61 @@ def terminate(design, name, cls, pts, seg, at):
         design.components[seg].id, at, t.id, "short" if cls is ShortToGround else "open"
     )
     return t
+
+
+def coupler_axis(q, reach=0.12):
+    """Common direction of qubit ``q``'s readout and Purcell lines at their coupler.
+
+    On the device the two lines run parallel there. Traced, each line's local
+    direction is only good to a few degrees (7.5 um pixels), so the direction
+    is fitted to both lines together over ``reach`` around the measured
+    coupler center.
+    """
+    center = np.array(DATA["readout_purcell_coupler"][q]["center"])
+    rows = []
+    for kind in ("readout", "purcell"):
+        pts = resample([np.array(p) for p in LINES[kind][q]], 0.005)
+        near = pts[np.linalg.norm(pts - center, axis=1) <= reach]
+        rows.append(near - near.mean(axis=0))
+    _, _, vt = np.linalg.svd(np.vstack(rows))
+    return center, vt[0] / np.linalg.norm(vt[0])
+
+
+def straighten_near(pts, center, axis, core=0.055):
+    """Make a traced line straight along ``axis`` within ``core`` of a coupler.
+
+    The points (densified first) within ``core`` of the line's foot opposite
+    ``center`` are projected onto the line through that foot along ``axis``;
+    the rest are untouched. Both coupled lines treated this way are parallel
+    at the coupler, and the feet of ``center`` on them lie on one normal.
+    """
+    normal = np.array([-axis[1], axis[0]])
+    line = LineString([tuple(p) for p in pts])
+    cross = LineString([tuple(center - normal * 0.5), tuple(center + normal * 0.5)])
+    hit = line.intersection(cross)
+    if hit.is_empty:
+        return list(pts)
+    hits = [np.array(g.coords[0]) for g in getattr(hit, "geoms", [hit])]
+    foot = min(hits, key=lambda h: np.linalg.norm(h - center))
+    out = []
+    for p in resample(pts, 0.005):
+        if np.linalg.norm(p - foot) <= core:
+            p = foot + ((p - foot) @ axis) * axis
+        out.append(p)
+    return out
+
+
+def rejoin_end(design, piece, at, pin):
+    """Re-seat a drawn line's end (and its lead) on ``pin`` after the pin moved."""
+    pts = [np.asarray(p, float) for p in design.components[piece].options.points]
+    middle = np.asarray(pin["middle"], float)
+    tip = middle + np.asarray(pin["normal"], float) * LEAD
+    if at == "end":
+        pts[-1], pts[-2] = middle, tip
+    else:
+        pts[0], pts[1] = middle, tip
+    design.components[piece].options.points = [list(map(float, p)) for p in pts]
+    design.components[piece].rebuild()
 
 
 # --- stages -------------------------------------------------------------------
@@ -589,14 +696,14 @@ def stage_control_lines(design):
         pts = join_pad([np.array(p) for p in path], lp, at="start")
         pts = trim_to_standoff(pts, QUBIT_POS[q], FLUX_STANDOFF)
         segs = draw_traced(design, f"FLUX_{q}", pts, over=("CPL_",), tag="AB")
-        terminate(design, f"FLUXSHORT_{q}", ShortToGround, pts, segs[-1], at="end")
+        terminate(design, f"FLUXSHORT_{q}", ShortToGround, segs[-1], at="end")
         design.connect_pins(lp.id, "tie", design.components[segs[0]].id, "start")
     for q, path in sorted(LINES["drive"]["path"].items()):
         lp = design.components[f"LP_drive_{q}"]
         pts = join_pad([np.array(p) for p in path], lp, at="start")
         pts = trim_to_standoff(pts, QUBIT_POS[q], DRIVE_STANDOFF)
         segs = draw_traced(design, f"DRIVE_{q}", pts, over=("CPL_", "FLUX_"), tag="ABD")
-        terminate(design, f"DRIVEOPEN_{q}", OpenToGround, pts, segs[-1], at="end")
+        terminate(design, f"DRIVEOPEN_{q}", OpenToGround, segs[-1], at="end")
         design.connect_pins(lp.id, "tie", design.components[segs[0]].id, "start")
 
 
@@ -654,6 +761,8 @@ def stage_readout(design):
         while len(pts) > 2 and (pts[0] - pin) @ normal < TRACE_STEP / 2:
             pts.pop(0)
         pts = [pin] + pts
+        center, axis = coupler_axis(q)
+        pts = straighten_near(pts, center, axis)
         segs = draw_traced(
             design,
             f"RO_{q}",
@@ -665,10 +774,12 @@ def stage_readout(design):
         design.connect_pins(
             design.components[q].id, "pin_rdout", design.components[segs[0]].id, "start"
         )
-        terminate(design, f"ROSHORT_{q}", ShortToGround, pts, segs[-1], at="end")
+        terminate(design, f"ROSHORT_{q}", ShortToGround, segs[-1], at="end")
 
     for q, path in sorted(LINES["purcell"].items()):
         pts = [np.array(p) for p in path]  # shorted end -> open end
+        center, axis = coupler_axis(q)
+        pts = straighten_near(pts, center, axis)
         cap = place_purcell_coupler(design, q, pts[-1])
         pts = join_pin(
             pts, cap.pins["frame"]["middle"], cap.pins["frame"]["normal"], at="end"
@@ -681,7 +792,7 @@ def stage_readout(design):
             tag="ABP",
             taps={"rp": rp[q]["center"]},
         )
-        terminate(design, f"PUSHORT_{q}", ShortToGround, pts, segs[0], at="start")
+        terminate(design, f"PUSHORT_{q}", ShortToGround, segs[0], at="start")
         design.connect_pins(design.components[segs[-1]].id, "end", cap.id, "frame")
 
     for q in sorted(rp):
@@ -802,6 +913,31 @@ def stage_feedlines(design):
                 owner_of_pin(design, f"FEED_{grp}", f"pu_{q}")
                 or owner_of_pin(design, f"FEEDIN_{grp}", f"pu_{q}")
             ]
+            # Seat the coupler on the drawn feedline's normal at the tap (it was
+            # placed from the traced line, which resampling moves slightly),
+            # then re-join the Purcell filter's end to its moved frame pin.
+            tap = host.pins[f"pu_{q}"]
+            m_t = np.asarray(tap["middle"], float)
+            n_t = np.asarray(tap["normal"], float)
+            finger = np.asarray(c.pins["finger"]["middle"], float)
+            center = np.array([float(c.p.pos_x), float(c.p.pos_y)])
+            reach = np.linalg.norm(finger - m_t) + np.linalg.norm(finger - center)
+            new_center = m_t + n_t * reach
+            c.options.pos_x = f"{new_center[0]}mm"
+            c.options.pos_y = f"{new_center[1]}mm"
+            c.options.orientation = f"{math.degrees(math.atan2(-n_t[1], -n_t[0]))}"
+            c.rebuild()
+            net = design.net_info
+            frame_net = net[(net.component_id == c.id) & (net.pin_name == "frame")]
+            partner = net[
+                (net.net_id == frame_net.net_id.iloc[0]) & (net.component_id != c.id)
+            ]
+            rejoin_end(
+                design,
+                design._components[partner.component_id.iloc[0]].name,
+                partner.pin_name.iloc[0],
+                c.pins["frame"],
+            )
             stub = PolylineCPW(
                 design,
                 f"PUSTUB_{q}",

@@ -92,6 +92,15 @@ skill (section 5). Specific to a traced build:
   17-qubit chip's pads onto the compass points gave sideways line exits, a
   junction on a pad and floating slivers; the device close-up showed five
   pads about 72 degrees apart, and the fix removed every workaround.
+- **Clean tracing noise before building, in this order:** simplify the
+  traced lines (Douglas-Peucker, below a pixel) once, up front; then any
+  local straightening (e.g. two coupled lines made parallel at their
+  coupler); then resample. Simplifying after straightening undoes it.
+- **Off a pad, the line runs along the pad's axis.** Snap the traced stretch
+  that still runs along the pin normal onto it (by direction, capped at a few
+  pixels), and drop the points that dip to the far side before the turn --
+  otherwise a pixel of tracing offset shows as a kink right after the lead.
+  Not at airbridge ends: there the trace runs straight through.
 - **Measure distances from where a component is drawn**, not from its
   traced center: traced centers scattered ~50 um about the lattice here.
 
