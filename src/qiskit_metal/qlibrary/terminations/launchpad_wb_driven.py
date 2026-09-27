@@ -62,6 +62,10 @@ class LaunchpadWirebondDriven(QComponent):
     .. meta::
         :description: Launchpad Wirebond Driven
 
+    Pins:
+        * ``tie`` -- end of the lead; connect a route here
+        * ``in`` -- back of the pad, for DrivenModal port excitation
+
     Default Options:
         * trace_width: 'cpw_width' -- Width of the transmission line attached to the launch pad
         * trace_gap: 'cpw_gap' -- Gap of the transmission line

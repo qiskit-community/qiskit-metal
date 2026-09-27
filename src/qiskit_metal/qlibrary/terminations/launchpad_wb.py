@@ -66,6 +66,9 @@ class LaunchpadWirebond(QComponent):
     .. image::
         LaunchpadWirebond.png
 
+    Pins:
+        * ``tie`` -- end of the lead; connect a route here
+
     Default Options:
         * trace_width: 'cpw_width' -- Width of the transmission line attached to the launch pad
         * trace_gap: 'cpw_gap' -- Gap of the transmission line

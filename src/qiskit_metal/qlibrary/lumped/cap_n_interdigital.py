@@ -49,6 +49,10 @@ class CapNInterdigital(QComponent):
     .. meta::
         :description: Cap N Interdigital
 
+    Pins:
+        * ``north_end`` -- lead on the north side (at orientation 0)
+        * ``south_end`` -- lead on the south side, past the fingers
+
     Options:
         * north_width: '10um' -- The width of the 'north' portion of the CPW transmission line
         * north_gap: '6um' -- The dielectric gap of the 'north' portion of the CPW transmission line

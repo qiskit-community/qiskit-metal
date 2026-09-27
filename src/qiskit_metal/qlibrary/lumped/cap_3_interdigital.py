@@ -29,7 +29,8 @@ class Cap3Interdigital(QComponent):
           pocket is a negative shape that is cut out of the ground plane
 
     Pins:
-        There are two pins on the capacitor at either end
+        There are two pins on the capacitor at either end: ``a`` (north lead)
+        and ``b`` (south lead), at orientation 0
         The pins attach directly to the built in lead length and only needs a width defined
         * trace_width - center trace width of the trace lead line and cap fingers
 

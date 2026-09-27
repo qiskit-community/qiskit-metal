@@ -41,6 +41,11 @@ class TransmonCrossFL(TransmonCross):
         Flux line is added by default to the 'south' arm where the DC SQUID is located,
         default is a symmetric T style
 
+        Pins:
+            In addition to one pin per entry in ``connection_pads``, adds
+            ``flux_line`` at the end of the flux line when ``make_fl=True`` (the
+            default).
+
         Default Options:
         Convention: Values (unless noted) are strings with units included, (e.g., '30um')
 

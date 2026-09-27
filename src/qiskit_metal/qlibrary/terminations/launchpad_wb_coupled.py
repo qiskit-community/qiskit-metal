@@ -67,6 +67,9 @@ class LaunchpadWirebondCoupled(QComponent):
     .. image::
         LaunchpadWirebondCoupled.png
 
+    Pins:
+        * ``tie`` -- end of the coupling section; connect a route here
+
     Default Options:
         * trace_width: 'cpw_width' -- center trace width of the terminating transmission line
         * trace_gap: 'cpw_gap' -- gap of the transmission line

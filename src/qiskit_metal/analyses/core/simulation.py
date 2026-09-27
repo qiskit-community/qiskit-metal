@@ -106,19 +106,23 @@ class QSimulation(QAnalysis):
                         None,
                     )
 
-                    # if the class_name exists, then create the renderer object
+                    # if the class_name exists, then create the renderer object.
+                    # initiate=False, as for renderers registered with a design:
+                    # the connection is made by start() / run_sim(), not here.
                     if class_renderer is not None:
-                        renderer = class_renderer(None)
+                        renderer = class_renderer(None, initiate=False)
                     else:
                         self.logger.warning(
                             f"Could not find the class={renderer_ref.class_name} "
                             f"in the renderer={renderer_name}"
                         )
+                        return None
                 else:
                     self.logger.warning(
                         f"Could not find the renderer={renderer_name} "
                         f"at the path={renderer_ref.path_name}."
                     )
+                    return None
 
             else:
                 # the renderer would have been already registered within the design object
@@ -129,7 +133,7 @@ class QSimulation(QAnalysis):
                     )
                     return None
         except KeyError:
-            self.design.logger.error(
+            self.logger.error(
                 f"Cannot find a renderer {renderer_name} registered with qiskit-metal"
             )
             return None

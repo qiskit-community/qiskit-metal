@@ -30,6 +30,12 @@ class StarQubit(QComponent):
     .. meta::
         :description: Star Qubit
 
+    Pins:
+        * ``pin_cpl1``, ``pin_cpl2``, ``pin_cpl3``, ``pin_cpl4`` -- coupling
+          connectors, one per connector (``number_of_connectors``), placed by
+          ``rotation_cpl1`` ... ``rotation_cpl4``
+        * ``pin_rdout`` -- readout connector, placed by ``rotation_rdout``
+
     Default Options:
         * radius: '300um' -- Radius of the circle defining the star shape
         * center_radius: '100um' -- Measure of how thick the central island is

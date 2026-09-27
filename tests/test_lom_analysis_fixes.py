@@ -128,6 +128,28 @@ class TestSaveCapacitanceMatrix(unittest.TestCase):
             )
 
 
+class TestSimWithoutDesign(unittest.TestCase):
+    """A simulation built without a design must not connect to a simulator."""
+
+    def test_construction_does_not_start_the_renderer(self):
+        from qiskit_metal.renderers.renderer_base.renderer_base import QRenderer
+
+        with unittest.mock.patch.object(
+            QRenderer, "start", side_effect=AssertionError("start() called")
+        ):
+            for cls in (LumpedElementsSim, EigenmodeSim):
+                try:
+                    sim = cls()
+                except ImportError as exc:  # lite install: no pyEPR
+                    self.skipTest(str(exc))
+                self.assertIsNotNone(sim.renderer)
+                self.assertFalse(sim.renderer_initialized)
+
+    def test_unknown_renderer_returns_none(self):
+        sim = LumpedElementsSim(renderer_name="no_such_renderer")
+        self.assertIsNone(sim.renderer)
+
+
 class TestUnlinkedJunctionWarning(unittest.TestCase):
     """EigenmodeSim warns when setup.vars.Lj cannot reach the junction."""
 
