@@ -365,7 +365,8 @@ class TestRenderers(unittest.TestCase):
         renderer = QGmshRenderer(design)
         options = renderer.default_options
 
-        self.assertEqual(len(options), 4)
+        self.assertEqual(len(options), 5)
+        self.assertIs(options["outer_face_groups"], False)
         self.assertEqual(len(options["mesh"]), 8)
         self.assertEqual(len(options["mesh"]["mesh_size_fields"]), 4)
         self.assertEqual(len(options["colors"]), 3)

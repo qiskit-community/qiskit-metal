@@ -15,6 +15,7 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ### Added
 
+- **`QGmshRenderer.group_map`**: every physical group of the rendered model with what it is (conductor, ground, dielectric, vacuum, junction, outer wall), its component and shape, its net label and its layer's material, so solvers select groups by role instead of by name. `options.outer_face_groups=True` adds one group per outer wall. Default output is unchanged.
 - **Simulation classes check the renderer before running.** `EigenmodeSim`, `LumpedElementsSim` and `ScatteringImpedanceSim` raise `BackendCapabilityError`, naming the renderers that can run the study, when the chosen renderer cannot (e.g. `EigenmodeSim(design, "q3d")`, `LumpedElementsSim(design, "elmer")`); these failed with an `AttributeError` inside the renderer before. What each renderer can do is declared in `analyses/simulation/capabilities.py` (`capability_table()` prints it).
 - **`PolylineCPW`** (`qlibrary.tlines`): a CPW drawn along an explicit list of points, with no routing -- for paths you already have (traced, exported, octilinear). `taps={name: [x, y]}` adds pins partway along the line for branches, so a mid-line joint is a registered connection instead of a DRC waiver.
 - **`CapFingerInFrame`** (`qlibrary.lumped`): a single-finger gap capacitor, a frame electrode around a finger, tuned per instance by its length.

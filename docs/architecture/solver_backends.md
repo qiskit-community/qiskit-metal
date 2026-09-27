@@ -1,7 +1,7 @@
 # Solver backends: shared abstractions (stage 1 design)
 
 Status: design, with decisions D1 and D3–D6 taken and D2 (Palace packaging)
-open (section 8). Steps 1.0–1.3 are done; the later steps are not
+open (section 8). Steps 1.0–1.4 are done; the later steps are not
 implemented yet. This note covers
 stage 1 of `ROADMAP.md`, "Solver backends: shared abstractions, then
 scikit-fem, ElmerFEM, Palace and Ansys". It has four parts: a gap analysis
@@ -636,6 +636,13 @@ class PhysicalGroup:
 Consumers query by role and attribute (`group_map.tags(role=Role.CONDUCTOR,
 net="pad_top_Q1")`), never by substring.
 
+- **How it is built.** `QGmshRenderer` records which component and shape each
+  named group comes from as it renders. `group_map` is built on first use
+  from those records, the layer stack and the net labels, so it needs no
+  running gmsh session.
+- **Opt-in walls.** `options.outer_face_groups=True` adds one group per outer
+  wall (`outer_x-` … `outer_z+`, role `OUTER_FACE` with `side`).
+
 Extra groups are opt-in, requested by the backend. These are the port
 sheets, per-side outer faces, junction lines and interface layers. The
 default model stays what ElmerFEM reads today. An entity in two physical
@@ -1057,7 +1064,7 @@ None changes a stored notebook output.
 | 1.1 (done) | `problem.py`: ports, junctions, pins, boxes, boundaries, `MeshSpec`, studies; `from_run_args` / `to_run_args`; `validate()`; SI values. No caller yet. | `tests/test_simulation_problem.py`: round trips of the argument lists of the analysis tutorials (4.02, 4.03, 4.14, 4.16–4.18, 4.22, 4.23, A.4, A.7, pyaedt multiplanar); every error reported by `validate()`; studies from the three default setups. |
 | 1.2 (done) | `capabilities.py` with entries for every registered renderer (`hfss`, `q3d`, `aedt_hfss`, `aedt_q3d`, `elmer`, `gmsh`, `gds`); `Capabilities.check`, `requirements_from_problem`; the study-type check in the three simulation classes; `capability_table()`. | `tests/test_simulation_capabilities.py`: unsupported pairs fail before rendering with the alternatives named; supported pairs and undeclared renderers pass; missing features and ignored changed settings are all reported. |
 | 1.3 (done) | `toolbox_metal/nets.py` (moved from `QElmerRenderer`); `QElmerRenderer` calls it; `q3d` and `elmer` label styles. | `tests/test_nets.py`: the nets `QElmerRenderer` produced before the move on the 4.19 transmon and two routed qubits (the Elmer input file was also compared, byte for byte); grounding of pins that are not open; names after a deleted component; labels. |
-| 1.4 | `renderer_gmsh/groups.py` and `QGmshRenderer.group_map`; opt-in per-side outer faces. | Every tag in `physical_groups` appears once in the map; the Elmer `.sif` and `.msh` are unchanged with defaults. |
+| 1.4 (done) | `renderer_gmsh/groups.py` and `QGmshRenderer.group_map`; opt-in per-side outer faces (`outer_face_groups`). | `tests/test_gmsh_groups.py`: every physical group once, with a dimension gmsh confirms; roles, nets and materials on the 4.19 transmon; the six walls cover `vacuum_box_sfs`. With default options the exported `.msh` (1.4 MB) and the Elmer `.sif` are byte-identical to before. |
 | 1.5 | `MeshSpec` compiled by `QGmshRenderer`; today's options become the default spec. | Identical field list and parameters for the default spec; role-selected refinements tested on the fixture. |
 | 1.6 | Port and junction geometry (sheet, line, CPW pair, wave-port face) in `QGmshRenderer`, registered as `PORT` / `JUNCTION` groups; endcaps at any pin angle. | Sheet geometry against pin `middle`/`normal`/`width`/`gap` at 0°, 90° and 45°. |
 | 1.7 | `materials.py`: material options and their resolution; `QElmerRenderer` reads the options instead of its hard-coded list. | The Elmer `.sif` is unchanged for default options; setting `sim.model.materials.silicon.eps_r` or a sapphire layer changes εr; an unresolved material name raises. |

@@ -63,6 +63,10 @@ class QGmshRenderer(QRenderer):
             * metal -- color for metallized entities
             * jj -- color for JJs
             * dielectric -- color for dielectric entity
+        * outer_face_groups -- add one physical group per outer wall of the
+          vacuum box (``outer_x-`` ... ``outer_z+``), for solvers that set a
+          condition per wall. Off by default: the extra groups change what
+          the exported mesh contains.
     """
 
     default_options = Dict(
@@ -88,6 +92,7 @@ class QGmshRenderer(QRenderer):
             jj=(84, 140, 168, 150),
             dielectric=(180, 180, 180, 255),
         ),
+        outer_face_groups=False,
     )
 
     name = "gmsh"
@@ -117,6 +122,12 @@ class QGmshRenderer(QRenderer):
         self.layer_types = default_layer_types if layer_types is None else layer_types
 
         self.bounds_handler = BoundsForPathAndPolyTables(self.design)
+
+        # Filled by render_design; read by group_map.
+        self._shape_sources = dict()
+        self._render_selection = None
+        self._render_open_pins = None
+        self._group_map = None
 
     @property
     def initialized(self):
@@ -279,6 +290,12 @@ class QGmshRenderer(QRenderer):
         self.paths_dict = defaultdict(dict)
         self.juncs_dict = defaultdict(dict)
         self.physical_groups = defaultdict(dict)
+
+        # For group_map: which component shape each named group comes from.
+        self._shape_sources = dict()
+        self._render_selection = selection
+        self._render_open_pins = open_pins
+        self._group_map = None
 
         self.clear_design()
 
@@ -483,6 +500,10 @@ class QGmshRenderer(QRenderer):
             + "_"
             + clean_name(junc["name"])
         )
+        self._shape_sources[qc_name] = (
+            self.design._components[junc["component"]].name,
+            junc["name"],
+        )
 
         # Considering JJ will always be a rectangle
         v1, v2 = line_width_offset_pts(
@@ -538,6 +559,10 @@ class QGmshRenderer(QRenderer):
             self.design._components[path["component"]].name
             + "_"
             + clean_name(path["name"])
+        )
+        self._shape_sources[qc_name] = (
+            self.design._components[path["component"]].name,
+            path["name"],
         )
         bad_fillets = bad_fillet_idxs(coords, qc_fillet)
         curves = render_path_curves(vecs, qc_z, qc_fillet, qc_width, bad_fillets)
@@ -612,6 +637,10 @@ class QGmshRenderer(QRenderer):
             self.design._components[poly["component"]].name
             + "_"
             + clean_name(poly["name"])
+        )
+        self._shape_sources[qc_name] = (
+            self.design._components[poly["component"]].name,
+            poly["name"],
         )
 
         surface = self.make_poly_surface(vecs.points, qc_z)
@@ -1082,6 +1111,166 @@ class QGmshRenderer(QRenderer):
                 dim=2, tags=vb_sfs, name=(vb_name + "_sfs")
             )
             self.physical_groups["global"][vb_name + "_sfs"] = ph_vb_sfs_tag
+
+            if self._options.get("outer_face_groups"):
+                for side, surfaces in self._outer_faces(vb_sfs).items():
+                    name = f"outer_{side}"
+                    ph_tag = gmsh.model.addPhysicalGroup(
+                        dim=2, tags=surfaces, name=name
+                    )
+                    self.physical_groups["global"][name] = ph_tag
+
+    def _outer_faces(self, surfaces: list[int]) -> dict[str, list[int]]:
+        """Sort the vacuum box's outer surfaces by wall: ``x-`` ... ``z+``."""
+        box = gmsh.model.occ.getBoundingBox(3, self.vacuum_box)
+        lo, hi = box[:3], box[3:]
+        tol = 1e-6 * max(h - l for l, h in zip(lo, hi))
+        sides = {}
+        for surface in surfaces:
+            bb = gmsh.model.occ.getBoundingBox(2, surface)
+            for axis, name in enumerate("xyz"):
+                if abs(bb[axis + 3] - bb[axis]) > tol:
+                    continue  # not flat along this axis
+                if abs(bb[axis] - lo[axis]) <= tol:
+                    sides.setdefault(f"{name}-", []).append(surface)
+                elif abs(bb[axis] - hi[axis]) <= tol:
+                    sides.setdefault(f"{name}+", []).append(surface)
+        return {side: sides[side] for side in sorted(sides)}
+
+    @property
+    def group_map(self) -> "PhysicalGroupMap":
+        """The physical groups of the last ``render_design``, with their roles.
+
+        Every group in ``physical_groups`` appears once, as a
+        :class:`~qiskit_metal.renderers.renderer_gmsh.groups.PhysicalGroup`
+        that says what it is (conductor, ground, dielectric, vacuum,
+        junction, outer wall), its component and shape, its net label
+        (``<shape>_<component>`` or ``ground_<chip>_plane``, from
+        :mod:`qiskit_metal.toolbox_metal.nets`) and its layer's material.
+        Built on first use; it needs no running gmsh session.
+        """
+        if self._group_map is None:
+            self._group_map = self._build_group_map()
+        return self._group_map
+
+    def _layer_materials(self) -> dict:
+        """Layer number -> the layer stack's material name (datatype 0)."""
+        ls = self.design.ls.ls_df
+        rows = ls[ls["datatype"].astype(int) == 0]
+        return {
+            int(layer): str(material).strip("'\" ")
+            for layer, material in zip(rows["layer"], rows["material"])
+        }
+
+    def _layer_chips(self) -> dict:
+        """Layer number -> the layer stack's chip name (datatype 0)."""
+        ls = self.design.ls.ls_df
+        rows = ls[ls["datatype"].astype(int) == 0]
+        return {
+            int(layer): str(chip).strip("'\" ")
+            for layer, chip in zip(rows["layer"], rows["chip_name"])
+        }
+
+    def _build_group_map(self) -> "PhysicalGroupMap":
+        from qiskit_metal.renderers.renderer_gmsh.groups import (
+            PhysicalGroup,
+            PhysicalGroupMap,
+            Role,
+        )
+        from qiskit_metal.toolbox_metal.nets import nets_for_design
+
+        metal_layers = list(self.layer_types["metal"])
+        netmap = nets_for_design(
+            self.design,
+            self._render_selection,
+            self._render_open_pins,
+            metal_layers,
+        )
+        net_of = {}
+        for net in netmap.nets:
+            label = netmap.label(net, "q3d")
+            for member in net.members:
+                net_of[(member.component, member.name)] = label
+
+        materials = self._layer_materials()
+        chips = self._layer_chips()
+        groups = []
+        for layer, entries in self.physical_groups.items():
+            if layer == "global":
+                for name, tag in entries.items():
+                    if name == "vacuum_box":
+                        groups.append(
+                            PhysicalGroup(name, 3, tag, Role.VACUUM, material="vacuum")
+                        )
+                    elif name == "vacuum_box_sfs":
+                        groups.append(
+                            PhysicalGroup(
+                                name, 2, tag, Role.OUTER_FACE, surfaces_of="vacuum_box"
+                            )
+                        )
+                    elif name.startswith("outer_"):
+                        groups.append(
+                            PhysicalGroup(
+                                name,
+                                2,
+                                tag,
+                                Role.OUTER_FACE,
+                                side=name[len("outer_") :],
+                            )
+                        )
+                continue
+
+            thickness = self.get_thickness_for_layer_datatype(layer_num=layer)
+            layer_dim = 3 if np.abs(thickness) > 0 else 2
+            is_metal = layer in metal_layers
+            material = materials.get(int(layer))
+            for name, tag in entries.items():
+                surfaces = name.endswith("_sfs")
+                base = name[: -len("_sfs")] if surfaces else name
+                dim = 2 if surfaces else layer_dim
+                surfaces_of = base if surfaces else None
+                if base in self.juncs_dict.get(layer, {}):
+                    comp, shape = self._shape_sources.get(base, (None, None))
+                    group = PhysicalGroup(
+                        name, 2, tag, Role.JUNCTION, layer, comp, shape
+                    )
+                elif base.startswith("ground_plane_(layer "):
+                    group = PhysicalGroup(
+                        name,
+                        dim,
+                        tag,
+                        Role.GROUND,
+                        layer,
+                        net=f"ground_{chips.get(int(layer), 'main')}_plane",
+                        material=material,
+                        surfaces_of=surfaces_of,
+                    )
+                elif base.startswith("dielectric_(layer "):
+                    group = PhysicalGroup(
+                        name,
+                        dim,
+                        tag,
+                        Role.DIELECTRIC,
+                        layer,
+                        material=material,
+                        surfaces_of=surfaces_of,
+                    )
+                else:
+                    comp, shape = self._shape_sources.get(base, (None, None))
+                    group = PhysicalGroup(
+                        name,
+                        dim,
+                        tag,
+                        Role.CONDUCTOR if is_metal else Role.DIELECTRIC,
+                        layer,
+                        comp,
+                        shape,
+                        net=net_of.get((comp, shape)) if is_metal else None,
+                        material=material,
+                        surfaces_of=surfaces_of,
+                    )
+                groups.append(group)
+        return PhysicalGroupMap(groups)
 
     def isometric_projection(self):
         """Set the view in Gmsh to isometric view manually."""
