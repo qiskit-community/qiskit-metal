@@ -877,7 +877,9 @@ core, is solver-neutral, and is what each backend reads:
 Before building these, a **gap analysis**: SQDMetal's Palace pipeline,
 pypalace, the Ansys renderers and `QGmshRenderer` / `QElmerRenderer` side by
 side — which of the abstractions above Quantum Metal already has, which it
-lacks, and which the others rely on.
+lacks, and which the others rely on. Done: the gap tables, the design, the
+decisions taken and the step-by-step sequence are in
+`docs/architecture/solver_backends.md`.
 
 ### Stage 2 — backends on the shared abstractions
 

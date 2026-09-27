@@ -409,3 +409,29 @@ ships as a native renderer in core or as a downstream plugin is not decided.
 Ansys HFSS / Q3D stays fully supported; changes to the Ansys renderers stay
 on a separate track gated on AEDT validation.
 
+
+## 2026-09-27 — solver backends: stage-1 design choices
+
+Design and gap analysis: `docs/architecture/solver_backends.md`.
+
+- Non-Ansys backends are `QRendererAnalysis` subclasses registered by name
+  that also implement a small protocol (`prepare(problem)`, `solve(study)`).
+  The simulation classes use it when present. Otherwise they keep today's
+  calls and arguments, so the Ansys renderers are unchanged.
+- Capacitance results use Q3D-style net labels (`{geometry}_{component}`,
+  `ground_{chip}_plane`) in alphabetical order. This is the order
+  `extract_transmon_coupled_Noscillator` reads by position, and the naming
+  the LOM 2.0 cells use.
+- Material properties are options with one set of documented defaults; no
+  backend holds a material constant. Loss tangents, conductivities and
+  interface layers have no defaults. Silicon's default εr is 11.45, the value
+  `QElmerRenderer` used.
+- Before rendering:
+  - a missing study, port kind, boundary condition or output is an error
+    that names the backends supporting it;
+  - an ignored setting is a warning, recorded with the result;
+  - on the Ansys path only the study type is checked.
+- EPR numerics stay in pyEPR. Non-Ansys backends pass mode frequencies, Q,
+  junction inductances and signed participations to it through an
+  array-based entry to `QuantumAnalysis`, with no Ansys project involved.
+- Palace packaging (native renderer or downstream plugin) is not decided.
