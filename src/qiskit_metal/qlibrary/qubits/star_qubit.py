@@ -53,8 +53,10 @@ class StarQubit(QComponent):
         * rotation_jj: 'auto' -- Rotation for the junction and its leads, same
           convention as the connectors; 'auto' puts it opposite coupler 1
         * number_of_connectors: '4' -- Total number of coupling resonators
-        * resolution: '16'
-        * cap_style: 'round' -- round, flat, square
+        * resolution: '16' -- Segments per quarter circle for the round
+          outlines (island, pocket)
+        * cap_style: 'round' -- End-cap style of the round outlines: round,
+          flat, or square
         * subtract: 'False'
         * helper: 'False'
 

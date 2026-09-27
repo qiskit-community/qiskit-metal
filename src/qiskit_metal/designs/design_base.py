@@ -507,6 +507,27 @@ class QDesign:
 
         return self._qcomponent_latest_name_id[prefix]
 
+    def __getitem__(self, name: str) -> "QComponent":
+        """The component called ``name``: ``design["Q1"]`` is
+        ``design.components["Q1"]``.
+
+        Raises:
+            KeyError: No component has that name.
+        """
+        if name not in self.name_to_id:
+            raise KeyError(name)
+        return self.components[name]
+
+    def __contains__(self, name: str) -> bool:
+        """True if a component called ``name`` is in the design."""
+        return name in self.name_to_id
+
+    def _repr_html_(self) -> str:
+        """HTML summary for notebooks: chips, components by class, variables."""
+        from qiskit_metal.qlibrary.core._html_repr import design_html  # noqa: PLC0415
+
+        return design_html(self)
+
     def rebuild(self) -> None:  # remake_all_components
         """Remakes all components with their current parameters."""
         for _, obj in self._components.items():

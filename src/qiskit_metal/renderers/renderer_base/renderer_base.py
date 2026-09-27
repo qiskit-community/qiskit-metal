@@ -67,6 +67,19 @@ class QRenderer(ABC):
     element_table_data = dict()
     """Element table data."""
 
+    element_table_docs = dict(
+        inductance="Junction inductance used when the junction is rendered to {renderer}.",
+        capacitance="Junction capacitance used by {renderer} (0: none).",
+        resistance="Junction resistance used by {renderer} (0: none).",
+        mesh_kw_jj="Largest mesh element on the junction in {renderer}, in meters.",
+        cell_name="Cell of the junction GDS file (the GDS renderer's path_filename) "
+        "that replaces this component's junction on export.",
+        wire_bonds="Add wire bonds over this path when rendered to {renderer}.",
+    )
+    """Descriptions of the ``element_table_data`` columns, which components
+    carry as ``<renderer name>_<column>`` options. ``{renderer}`` is replaced by
+    the renderer's name. A renderer that adds columns documents them here."""
+
     @classmethod
     def load(cls):
         """Load the renderer and register all its extensions. Only performed

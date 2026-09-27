@@ -91,6 +91,12 @@ class QComponent:
             * chip: 'main' -- Chip holding the QComponent.
             * layer: '1' -- Manufacturing layer used for the QComponent.
 
+        Common Options:
+            * subtract: 'False' -- Draw the shapes as cuts in the ground plane
+              (True) rather than as metal (False).
+            * helper: 'False' -- Helper shapes are drawn for reference only;
+              renderers do not export them.
+
             Nested default options can be overwritten with the update function.
             The following code demonstrates how the update works.
 
@@ -1289,7 +1295,11 @@ name='{strname}'{other_args}
     ######################################
 
     def to_html(
-        self, docs: bool = True, parsed: bool = False, pins: bool = True
+        self,
+        docs: bool = True,
+        parsed: bool = True,
+        pins: bool = True,
+        image: bool = False,
     ) -> str:
         """HTML table of this component's options and pins, for notebooks.
 
@@ -1298,19 +1308,22 @@ name='{strname}'{other_args}
 
         Args:
             docs (bool): Add each option's description, parsed from the
-                ``Default Options:`` sections of the class docstrings. Defaults
-                to True.
+                ``Default Options:`` sections of the class docstrings (and,
+                for renderer options such as ``hfss_inductance``, from the
+                renderer). Defaults to True.
             parsed (bool): Add each option's parsed value (design units).
-                Defaults to False.
+                Defaults to True.
             pins (bool): Add a table of the pins: position, normal direction,
                 width, and what each connects to. Defaults to True.
+            image (bool): Add a picture of the component, framed to its
+                bounds. Defaults to False.
 
         Returns:
             str: The HTML.
         """
         from ._html_repr import component_html
 
-        return component_html(self, docs=docs, parsed=parsed, pins=pins)
+        return component_html(self, docs=docs, parsed=parsed, pins=pins, image=image)
 
     def _repr_html_(self):
         return self.to_html()

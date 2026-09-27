@@ -71,10 +71,27 @@ class TestToHtml(unittest.TestCase):
         self.assertNotIn("<th>description</th>", page)
         self.assertNotIn("distance between the two charge islands", page)
 
-    def test_parsed_column(self):
-        page = self.q1.to_html(parsed=True)
+    def test_parsed_column_is_on_by_default(self):
+        page = self.q1.to_html()
         self.assertIn("<th>parsed</th>", page)
         self.assertIn("-1", page)  # pos_x '-1mm' parsed to -1 (mm)
+        self.assertNotIn("<th>parsed</th>", self.q1.to_html(parsed=False))
+
+    def test_renderer_options_are_documented(self):
+        """hfss_inductance etc. come from the renderers' element_table_docs."""
+        from qiskit_metal.qlibrary.qubits.star_qubit import StarQubit
+
+        star = StarQubit(self.design, "S")
+        page = star.to_html()
+        self.assertIn(
+            "Junction inductance used when the junction is rendered to hfss", page
+        )
+        self.assertIn("Segments per quarter circle", page)  # StarQubit.resolution
+        self.assertIn("cuts in the ground plane", page)  # common option: subtract
+
+    def test_image_option(self):
+        self.assertNotIn("data:image/png;base64", self.q1.to_html())
+        self.assertIn("data:image/png;base64", self.q1.to_html(image=True))
 
     def test_pins_show_connections(self):
         page = self.q1.to_html()
@@ -87,6 +104,30 @@ class TestToHtml(unittest.TestCase):
         page = self.q1.to_html()
         self.assertNotIn("<b>x</b>", page)
         self.assertIn("&lt;b&gt;x&lt;/b&gt;", page)
+
+
+class TestDesignViews(unittest.TestCase):
+    def setUp(self):
+        self.design = designs.DesignPlanar()
+        TransmonPocket(self.design, "Q1")
+
+    def test_design_is_subscriptable(self):
+        self.assertIs(self.design["Q1"], self.design.components["Q1"])
+        self.assertIn("Q1", self.design)
+        self.assertNotIn("nope", self.design)
+        with self.assertRaises(KeyError):
+            self.design["nope"]
+
+    def test_design_html(self):
+        page = self.design._repr_html_()
+        self.assertIn("DesignPlanar", page)
+        self.assertIn("TransmonPocket", page)
+        self.assertIn("cpw_width", page)  # design variables
+
+    def test_components_html(self):
+        page = self.design.components._repr_html_()
+        self.assertIn("Q1", page)
+        self.assertIn("TransmonPocket", page)
 
 
 class TestEveryComponentRenders(unittest.TestCase):

@@ -247,6 +247,14 @@ class Components:
     #     component_id = self.is_name_used(name)
     #     self._design.delete_component(component_id)
 
+    def _repr_html_(self) -> str:
+        from qiskit_metal.qlibrary.core._html_repr import (  # noqa: PLC0415
+            _STYLE,
+            components_html,
+        )
+
+        return f'{_STYLE}<div class="qm-comp">{components_html(self._design)}</div>'
+
     def __repr__(self) -> str:
         """Print the design._component dict.
 
