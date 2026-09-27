@@ -198,7 +198,9 @@ class QHFSSRenderer(QAnsysRenderer):
 
         self.render_tables()
         if port_list:
-            self.add_endcaps(open_pins + [(qcomp, pin) for qcomp, pin, _ in port_list])
+            self.add_endcaps(
+                (open_pins or []) + [(qcomp, pin) for qcomp, pin, _ in port_list]
+            )
         else:
             self.add_endcaps(open_pins)
 

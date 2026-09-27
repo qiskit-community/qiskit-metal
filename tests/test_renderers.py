@@ -742,6 +742,124 @@ class TestRenderers(unittest.TestCase):
                 )
         self.assertIsNone(result)
 
+    def test_pyaedt_hfss_valid_input_arguments_accepts_omitted_lists(self):
+        """QHFSSPyaedt.valid_input_arguments must accept None or empty
+        port_list / jj_to_port. Commit cc3165fb8 turned the assignments
+        ``x_is_valid == True`` in those branches into bare expressions, so
+        the flags stayed None and ``not None`` rejected every call that
+        omitted them: render_design() then drew nothing. Called on a stub,
+        so neither pyaedt nor AEDT is needed."""
+        from types import SimpleNamespace
+
+        from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import (
+            QHFSSPyaedt,
+        )
+
+        def stub(names_valid=True):
+            # Flags start as None, as after reset_hfss_arguments().
+            return SimpleNamespace(
+                open_pins_is_valid=None,
+                port_list_is_valid=None,
+                jj_to_port_is_valid=None,
+                ignored_jjs_is_valid=None,
+                logger=MagicMock(),
+                confirm_open_pins_are_valid_names=lambda *a: names_valid,
+                confirm_port_list_have_valid_request=lambda *a: names_valid,
+                confirm_jj_to_port_has_valid_request=lambda *a: names_valid,
+                confirm_ignored_jjs_has_valid_request=lambda *a: names_valid,
+            )
+
+        validate = QHFSSPyaedt.valid_input_arguments
+        self.assertTrue(validate(stub(), None, None, None, None))
+        self.assertTrue(validate(stub(), [], [], [], []))
+        self.assertTrue(validate(stub(), [("Q1", "a")], None, None, None))
+        self.assertTrue(validate(stub(), None, [("Q1", "a", 50)], None, None))
+        self.assertFalse(validate(stub(False), None, [("Q1", "a", 50)], None, None))
+        self.assertFalse(validate(stub(False), None, None, [("Q1", "jj", 50)], None))
+
+    def test_hfss_render_design_ports_without_open_pins(self):
+        """QHFSSRenderer.render_design(port_list=...) with open_pins=None
+        (ScatteringImpedanceSim.run_sim without open_terminations) raised
+        TypeError on ``None + list``; the port pins alone get endcaps."""
+        from unittest.mock import DEFAULT
+
+        design = designs.DesignPlanar()
+        renderer = QHFSSRenderer(design, initiate=False)
+        steps = dict.fromkeys(
+            [
+                "render_tables",
+                "add_endcaps",
+                "render_chips",
+                "subtract_from_ground",
+                "create_ports",
+                "add_mesh",
+                "metallize",
+            ],
+            DEFAULT,
+        )
+        with (
+            patch.object(renderer, "get_unique_component_ids", return_value=([], 1)),
+            patch.multiple(renderer, **steps) as mocks,
+        ):
+            renderer.render_design(port_list=[("Q1", "a", 50)])
+        mocks["add_endcaps"].assert_called_once_with([("Q1", "a")])
+
+    def test_pyaedt_q3d_render_design_without_open_pins(self):
+        """QQ3DPyaedt.render_design() with the default open_pins=None raised
+        TypeError while validating the pin names. Built without __init__, so
+        neither pyaedt nor AEDT is needed."""
+        from qiskit_metal.renderers.renderer_ansys_pyaedt.pyaedt_base import QPyaedt
+
+        renderer = object.__new__(QQ3DPyaedt)
+        renderer._design = MagicMock()
+        renderer.case = 1
+        renderer.activate_user_project_design = MagicMock()
+        renderer.aedt_render_by_layer_then_tables = MagicMock()
+        with patch.object(QPyaedt, "render_design"):
+            renderer.render_design()
+        renderer.aedt_render_by_layer_then_tables.assert_called_once_with(
+            open_pins=None
+        )
+
+    def test_pyaedt_eigenmode_analyze_setup_adds_missing_setup(self):
+        """QHFSSEigenmodePyaedt.analyze_setup() added a missing setup with
+        add_hfss_dm_setup, which only the driven-modal class has
+        (AttributeError); it now adds an eigenmode setup."""
+        renderer = object.__new__(QHFSSEigenmodePyaedt)
+        renderer._design = MagicMock()
+        renderer.activate_user_project_design = MagicMock()
+        renderer.current_app = MagicMock(setup_names=[])
+        renderer.add_hfss_em_setup = MagicMock()
+        renderer.analyze_setup("Setup")
+        renderer.add_hfss_em_setup.assert_called_once_with("Setup")
+        renderer.current_app.analyze_setup.assert_called_once_with("Setup")
+
+    def test_q3d_capacitance_all_passes_units_are_farads(self):
+        """get_capacitance_all_passes converts every pass to farads; the units
+        it returns must say so (it used to return the matrix's own "fF")."""
+        import pandas as pd
+
+        design = designs.DesignPlanar()
+        renderer = QQ3DRenderer(design, initiate=False)
+        cmat = pd.DataFrame([[2.0, -1.0], [-1.0, 3.0]])
+        with patch.object(
+            renderer,
+            "get_capacitance_matrix",
+            side_effect=[(cmat, "fF"), pd.errors.EmptyDataError()],
+        ):
+            passes, units = renderer.get_capacitance_all_passes()
+        self.assertEqual(units, "farad")
+        self.assertAlmostEqual(passes[1][0, 0], 2.0e-15)
+
+    def test_pyaedt_hfss_default_setup_is_a_dict(self):
+        """A trailing comma made QHFSSPyaedt.default_setup a 1-tuple."""
+        from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import (
+            QHFSSPyaedt,
+        )
+
+        self.assertIn("eigenmode", QHFSSPyaedt.default_setup)
+        self.assertIn("drivenmodal", QHFSSPyaedt.default_setup)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -1165,7 +1165,7 @@ class QGmshRenderer(QRenderer):
         for _, geoms in self.juncs_dict.items():
             jj_surfs += [tag[0] for tag in geoms.values()]
 
-        jj_curve_loops = [gmsh.model.occ.getCurveLoops(surf) for surf in all_surfs]
+        jj_curve_loops = [gmsh.model.occ.getCurveLoops(surf) for surf in jj_surfs]
         jj_curves = []
         for cl in jj_curve_loops:
             for curve_tag_list in cl[1]:  # extract curves
@@ -1173,8 +1173,8 @@ class QGmshRenderer(QRenderer):
                     jj_curves += [curve]
 
         jj_df = gmsh.model.mesh.field.add("Distance")
-        gmsh.model.mesh.field.setNumbers(df, "CurvesList", jj_curves)
-        gmsh.model.mesh.field.setNumber(df, "NumPointsPerCurve", 100)
+        gmsh.model.mesh.field.setNumbers(jj_df, "CurvesList", jj_curves)
+        gmsh.model.mesh.field.setNumber(jj_df, "NumPointsPerCurve", 100)
 
         jj_tf = gmsh.model.mesh.field.add("Threshold")
         gmsh.model.mesh.field.setNumber(jj_tf, "DistMin", dist_min)

@@ -273,7 +273,9 @@ class QQ3DPyaedt(QPyaedt):
             )
             return
 
-        self.open_pins_is_valid = self.confirm_open_pins_are_valid_names(open_pins, [])
+        self.open_pins_is_valid = self.confirm_open_pins_are_valid_names(
+            open_pins or [], []
+        )
         if not self.open_pins_is_valid:
             self.logger.error(
                 "Check the arguments to render_design, invalid name was probably used."

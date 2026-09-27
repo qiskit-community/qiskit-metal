@@ -167,7 +167,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         return new_setup
 
     def analyze_setup(self, setup_name: str) -> bool:
-        """Run a specific solution setup in Ansys HFSS DrivenModal.
+        """Run a specific solution setup in Ansys HFSS Eigenmode.
 
         Args:
             setup_name (str): Name of setup.
@@ -181,10 +181,10 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
         if setup_name not in self.current_app.setup_names:
             self.logger.warning(
-                "Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, "
-                "a new setup will be added to design with default settings for HFSS DrivenModal."
+                "Since the setup_name is not in the project/design which was used to start HFSS Eigenmode, "
+                "a new setup will be added to design with default settings for HFSS Eigenmode."
             )
-            self.add_hfss_dm_setup(setup_name)
+            self.add_hfss_em_setup(setup_name)
 
         return self.current_app.analyze_setup(setup_name)
 

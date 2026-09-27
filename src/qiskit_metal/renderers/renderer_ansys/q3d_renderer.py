@@ -447,8 +447,8 @@ class QQ3DRenderer(QAnsysRenderer):
                 Otherwise need the list. Defaults to ''.
 
         Returns:
-            dict, str: dict of pd.DataFrames containing the capacitance matrix
-                for each simulation pass, and units.
+            dict, str: dict of numpy arrays holding the capacitance matrix of
+                each simulation pass, in farads, and the units ("farad").
         """
         # TODO: is there a way to get all of the matrices in one query?
         #  If yes, change get_capacitance_matrix() to get all the matrices and delete this.
@@ -462,7 +462,7 @@ class QQ3DRenderer(QAnsysRenderer):
                 all_mtx[i] = df_cmat.values * c_units
             except pd.errors.EmptyDataError:
                 break
-        return all_mtx, user_units
+        return all_mtx, "farad"
 
     def lumped_oscillator_vs_passes(self, *args, **kwargs):
         """
