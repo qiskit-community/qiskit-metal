@@ -26,6 +26,7 @@ from PySide6.QtWidgets import (
     QMainWindow,
     QMessageBox,
     QDockWidget,
+    QTabBar,
 )
 
 from qiskit_metal import config
@@ -133,6 +134,24 @@ class QMainWindowExtensionBase(QMainWindow):
         # it and it would otherwise hang forever. Interactive sessions
         # should never set this; the modal is the correct behavior there.
         self.force_close = bool(os.environ.get("QISKIT_METAL_GUI_FORCE_CLOSE"))
+
+    def childEvent(self, event: QtCore.QChildEvent):
+        """Let the tab bars of tabified docks scroll instead of pinning width.
+
+        QMainWindow creates a QTabBar lazily for each group of tabified docks
+        (at startup, on layout restore, and whenever the user re-tabs a dock).
+        On macOS the native style prefers no scroll arrows
+        (``SH_TabBar_PreferNoArrows``), so such a tab bar's minimum width is
+        the sum of all its tabs -- 432 px for the six left-hand docks -- and
+        the splitter could not make the left panel any narrower. Turning on
+        scroll buttons drops that floor to roughly one tab plus the arrows.
+        ``ChildPolished`` fires once the tab bar is fully constructed.
+        """
+        if event.type() == QtCore.QEvent.ChildPolished:
+            child = event.child()
+            if isinstance(child, QTabBar):
+                child.setUsesScrollButtons(True)
+        super().childEvent(event)
 
     @property
     def logger(self) -> logging.Logger:
