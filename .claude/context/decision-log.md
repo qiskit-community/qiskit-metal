@@ -387,3 +387,14 @@ the mesher does not yet handle ground planes or CPWs. The path to a reusable
 backend is recorded in `ROADMAP.md` ("Solver backends") and
 `docs/architecture/open_fem_scikit_fem.md` ("Extension path").
 
+## 2026-09-27 — open solver backends share the Palace RFC's seams
+
+The Palace integration proposed in
+[sqdlab/SQDMetal#67](https://github.com/sqdlab/SQDMetal/issues/67) reaches the
+simulation classes through the renderer seam (`renderer_name="palace"`) and
+adds core seams to `QGmshRenderer` (structured physical-group map, ports,
+per-region mesh fields, net naming). The ElmerFEM and scikit-fem backends use
+the same seams and the same front door, so the analysis tutorials can switch
+solver by renderer name. This supersedes the earlier ROADMAP draft that
+proposed a separate backend interface instead of a renderer.
+

@@ -198,10 +198,11 @@ Known downstream packages:
   (LFL-Lab @ USC) — design-discovery database, consumes
   Metal `QDesign` objects. **`[planned]`** — issue to file.
 - **[SQDMetal](https://github.com/sqdlab/SQDMetal)**
-  (SQDLab @ UQ) — Palace simulation wrapper. **`[planned]`**
-  — issue to file; same migration plus the
-  `MetalGUI` → `qm.view()` story for headless Docker /
-  Brev contexts.
+  (SQDLab @ UQ) — Palace simulation wrapper. **`[in progress]`**
+  — Palace integration coordinated in
+  [sqdlab/SQDMetal#67](https://github.com/sqdlab/SQDMetal/issues/67);
+  same migration plus the `MetalGUI` → `qm.view()` story for
+  headless Docker / Brev contexts.
 - **[pypalace](https://pypalace.readthedocs.io/)**
   (Northwestern) — Palace wrapper. **`[planned]`** —
   issue to file.
@@ -819,57 +820,60 @@ roadmap items above, but tracked so they don't get lost.
 
 ---
 
-## Solver backends: scikit-fem, ElmerFEM, then Palace `[research]`
+## Solver backends: scikit-fem, ElmerFEM and Palace `[research]`
 
 Tutorials 4.41–4.45 (`docs/tut/4-Analysis/4.4*`) run eigenmode, driven
 (impedance) and electrostatic calculations with gmsh + scikit-fem + SciPy,
 from `docs/tut/resources/package_modes/`, and reproduce a published HFSS study
-to within a few percent. The goal is to let a user switch between Ansys,
-ElmerFEM, scikit-fem and AWS Palace without rewriting the analysis, and to
-check each solver against the others. User-facing summary of the paths today:
-`docs/simulation-pathways.rst`. Design notes for the scikit-fem solver:
-`docs/architecture/open_fem_scikit_fem.md`.
+to within a few percent. The goal is for the analysis tutorials to run on
+Ansys, ElmerFEM, scikit-fem or AWS Palace by changing the renderer name, and
+for each solver to be checked against the others. User-facing summary of the
+paths today: `docs/simulation-pathways.rst`. Design notes for the scikit-fem
+solver: `docs/architecture/open_fem_scikit_fem.md`.
 
 Today the switch point is `renderer_name` in the simulation classes
-(`analyses/simulation/`). Their contract with a renderer is informal and
-follows the Ansys renderers: `initialize_eigenmode`, `analyze_setup`,
+(`analyses/simulation/`), whose contract with a renderer is informal and
+follows the Ansys renderers (`initialize_eigenmode`, `analyze_setup`,
 `get_convergences`, `set_mode` / `plot_fields`, `initialize_cap_extract`,
-`get_capacitance_matrix`. `QElmerRenderer` exposes a different API
-(`add_solution_setup`, `run`, `capacitance_matrix`) and covers electrostatics
-only.
+`get_capacitance_matrix`). `QElmerRenderer` covers electrostatics through a
+different API (`add_solution_setup`, `run`, `capacitance_matrix`).
 
-Options considered:
+**Palace design (RFC).** The Palace integration is coordinated with SQDLab in
+[sqdlab/SQDMetal#67](https://github.com/sqdlab/SQDMetal/issues/67): a
+`QPalaceRenderer` on the `QRendererAnalysis` seam that composes
+`QGmshRenderer` (as `QElmerRenderer` does), shipped as a downstream
+`quantum-metal-palace` plugin with a one-directional dependency on
+Quantum Metal, adapting SQDMetal's Palace pipeline (port vocabulary, gmsh
+wrappers, parsers). Quantum Metal core gains small additive seams: a
+structured physical-group map returned by `QGmshRenderer`, first-class
+ports, per-region mesh fields, and net naming for capacitance matrices.
+First slice: a transmon + launchpad + CPW → gmsh → Palace eigenmode with one
+lumped port, checked against an HFSS / SQDMetal reference.
 
-1. **Keep the scikit-fem solver as tutorial code.** No API commitment; not
-   callable from the simulation classes.
-2. **A `QSkfemRenderer`** implementing the existing informal contract. Carries
-   the Ansys setup/pass/convergence vocabulary into direct solvers, and still
-   needs port and symmetry-plane tags that `QGmshRenderer` does not produce.
-3. **A backend interface below the simulation classes**: a solver-neutral
-   problem description (a gmsh mesh with tagged metal, dielectrics, symmetry
-   planes and lumped ports / junctions) and small typed calls — eigenmodes
-   with optional junction inductances, a port impedance matrix over
-   frequency, a capacitance matrix. Ansys renderers are wrapped, not
-   modified.
+**The same seams serve all open backends.** The physical-group map, ports and
+mesh fields are the solver-neutral problem description that ElmerFEM and the
+scikit-fem solver need too, so they are built once in core and consumed by
+three renderers:
 
-Option 3, in stages. Option 2 is not proposed: it would fix the informal
-contract in place.
-
-1. **scikit-fem backend.** Move `MaxwellFEM`, `PortROM`, `Electrostatics`,
-   the mesher and the field evaluator into `src/qiskit_metal/analyses/`
-   behind an optional extra; keep the tutorial module as a thin wrapper.
-   Extend the mesher to ground planes with cutouts and CPW paths.
-2. **ElmerFEM beyond electrostatics.** Put the existing capacitance path
-   behind the same calls, then add eigenmodes with lumped junctions from
-   Elmer's electromagnetic-wave solvers (parallel, higher-order elements).
-   Cross-check against scikit-fem on the same tagged problem (the 4.19 cell,
-   the 4.43 package).
-3. **AWS Palace.** Build and test locally first (CMake, MPI); the tagged
-   problem maps onto its configuration file. Eigenmodes and EPR with lumped
-   junctions, then driven and electrostatic solves. Part of the larger local
-   simulation plan.
-4. **Integration.** The simulation classes accept a backend next to
-   `renderer_name`.
+1. **Core seams** in `QGmshRenderer`: structured physical-group map, ports
+   (lumped / junction lines, later wave ports), per-region mesh fields
+   (fine at junctions and metal edges, coarse bulk), symmetry faces, net
+   names. Shared with the Palace RFC; land them first.
+2. **scikit-fem** (pip-only, runs in CI): move `MaxwellFEM`, `PortROM`,
+   `Electrostatics` and the field evaluator from the tutorial module into
+   `src/qiskit_metal/analyses/` behind an optional extra, reading the core
+   seams; expose them through a renderer (`renderer_name="skfem"`) for the
+   eigenmode and capacitance flows, keeping `package_modes.py` as a thin
+   wrapper so 4.41–4.45 run unchanged.
+3. **ElmerFEM beyond electrostatics**: eigenmodes with lumped junctions from
+   Elmer's electromagnetic-wave solvers, on the same seams; cross-check
+   against scikit-fem (the 4.19 cell, the 4.43 package).
+4. **Palace**: the RFC above, developed with SQDLab and tested locally first
+   (MPI binary); part of the larger local simulation plan.
+5. **The informal renderer contract**, written down: which calls each
+   solve type needs (eigenmode, capacitance, driven), and how "convergence"
+   maps onto single-pass solvers — needed by all three renderers and an
+   open question in the RFC.
 
 ### Testing solvers without losing the stored answers
 

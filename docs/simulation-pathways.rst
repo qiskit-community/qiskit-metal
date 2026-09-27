@@ -43,11 +43,20 @@ result from one path can be checked against another.
      - a tutorial resource module, ``docs/tut/resources/package_modes``
        (not yet a renderer)
      - 4.41–4.45
-   * - **AWS Palace** (open source, planned)
-     - eigenmodes, driven and electrostatic solves, EPR, on MPI clusters
-     - builds from source (CMake, MPI)
-     - planned; see the roadmap
-     - —
+   * - **AWS Palace via SQDMetal** (open source)
+     - eigenmodes, capacitance, driven and inductance studies on MPI;
+       lumped and wave ports, EPR
+     - `SQDMetal <https://github.com/sqdlab/SQDMetal>`_ (install from
+       GitHub) and the Palace solver (MPI binary: build from source or a
+       container). `pypalace <https://pypalace.readthedocs.io/>`_ is another
+       Palace toolkit with a Quantum Metal gmsh export.
+     - SQDMetal takes a ``QDesign`` directly today. A native path —
+       ``renderer_name="palace"`` in the simulation classes, through a
+       ``quantum-metal-palace`` plugin that builds on ``QGmshRenderer`` — is
+       being designed with SQDLab in
+       `sqdlab/SQDMetal#67 <https://github.com/sqdlab/SQDMetal/issues/67>`_
+     - none in Quantum Metal yet; an end-to-end tutorial is part of the
+       integration plan
 
 Choosing a path
 ===============
@@ -60,24 +69,30 @@ Choosing a path
 - **Eigenmodes and couplings without a license**: the scikit-fem solver, for
   cells and arrays of simple qubits. Tutorials 4.43–4.45 reproduce a published
   HFSS study of a 10 × 10 transmon array to within a few percent.
+- **Large full-wave models, wave ports, losses, clusters**: Palace, through
+  SQDMetal today; natively once the integration above lands.
 - **Teaching, Colab, continuous integration**: the scikit-fem solver needs
   only ``pip``.
 
 What the open-source paths do not do yet
 ========================================
 
-- ElmerFEM is connected for electrostatics only; its electromagnetic-wave
-  solvers are not wired into Quantum Metal.
+- ElmerFEM is connected for electrostatics only; its eigenmode and
+  electromagnetic-wave solvers are not wired into Quantum Metal yet.
 - The scikit-fem solver uses lowest-order elements and zero-thickness metal,
   handles metal islands and junction lines but not ground planes with
   cutouts or CPWs, and runs in one process (up to about a million unknowns).
-- Neither has wave ports or losses.
+- Neither has wave ports or losses (Palace does).
 
 Plans
 =====
 
 The roadmap sections "Open FEM stack" and "Solver backends" describe how these
-paths are meant to converge on one interface — scikit-fem and ElmerFEM
-first, then Palace — and how solver results are tested. Design notes for the
-scikit-fem solver: ``docs/architecture/open_fem_scikit_fem.md`` in the
-repository.
+paths are meant to meet in Quantum Metal: shared gmsh-level seams (named
+physical groups, ports, per-region mesh control) that ElmerFEM, the
+scikit-fem solver and the Palace plugin all build on, reached from the same
+simulation classes by renderer name — and how solver results are tested. The
+Palace design is discussed in
+`sqdlab/SQDMetal#67 <https://github.com/sqdlab/SQDMetal/issues/67>`_. Design
+notes for the scikit-fem solver: ``docs/architecture/open_fem_scikit_fem.md``
+in the repository.

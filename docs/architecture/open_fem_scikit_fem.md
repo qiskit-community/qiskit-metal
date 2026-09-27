@@ -110,21 +110,25 @@ empty fragment maps) are in `.claude/context/lessons-learned.md`, section
 ## Extension path (reusable backend)
 
 The staged plan and the testing policy are in `ROADMAP.md`, "Solver
-backends: scikit-fem, ElmerFEM, then Palace". For this solver:
+backends: scikit-fem, ElmerFEM and Palace". The Palace design it builds on is
+the RFC in [sqdlab/SQDMetal#67](https://github.com/sqdlab/SQDMetal/issues/67)
+(a `QPalaceRenderer` composing `QGmshRenderer`, plus additive core seams).
+For this solver:
 
-1. **Geometry**: add ground-plane metal with subtracted cutouts (Metal
-   `subtract=True` polys) and CPW paths to `mesh_package`, or feed
-   `QGmshRenderer` output through the same tagging (metal surfaces, junction
-   lines, ports, symmetry faces). The same tagged mesh is the input the
-   ElmerFEM and Palace backends need.
-2. **Problem description**: a solver-neutral dataclass — tagged gmsh mesh,
-   materials, symmetry planes, lumped ports.
-3. **Backend calls**: `eigenmodes(problem, inductors)`,
-   `impedance(problem, ports, freqs, shunts)`, `capacitance(problem)`; move
-   `MaxwellFEM`, `PortROM`, `Electrostatics` and `_Locator` into
-   `src/qiskit_metal/analyses/` behind an optional extra (`scikit-fem`,
-   optional `pymetis`). Keep `package_modes.py` as a thin wrapper so the
-   tutorials keep running unchanged.
+1. **Geometry through the core seams**: take the tagged mesh from
+   `QGmshRenderer` once it returns a structured physical-group map, ports,
+   per-region mesh fields and symmetry faces (the seams the Palace RFC adds),
+   instead of the tutorial's own mesher; this also brings ground planes with
+   cutouts and CPW paths. `mesh_package` shows what the tags must carry:
+   metal surfaces, junction lines as edge chains, probe lines, cut faces.
+2. **Solver code**: move `MaxwellFEM`, `PortROM`, `Electrostatics` and
+   `_Locator` into `src/qiskit_metal/analyses/` behind an optional extra
+   (`scikit-fem`, optional `pymetis`). Keep `package_modes.py` as a thin
+   wrapper so the tutorials keep running unchanged.
+3. **Renderer front door**: a `renderer_name="skfem"` renderer on the same
+   seam as Elmer and Palace, implementing the eigenmode and capacitance
+   flows of the simulation classes; the port reduced-order model and the
+   four coupling methods stay available as direct calls.
 4. **Tests**, tiered as in the ROADMAP: tier 0 (CI) — analytic box and LSM
    modes, the two-mode circuit and Appendix D fit, an empty box on a coarse
    mesh; tier 1 (opt-in) — small-mesh versions of the 4.4x problems against
