@@ -50,6 +50,8 @@ class StarQubit(QComponent):
         * rotation_rdout: '144.0' -- Rotation for the readout resonator '180.0','144.0',
         * rotation_cpl3: '216.0' -- Rotation for one of the coupling resonators'252.0','216.0',
         * rotation_cpl4: '288.0' -- Rotation for one of the coupling resonators '324.0','288.0',
+        * rotation_jj: 'auto' -- Rotation for the junction and its leads, same
+          convention as the connectors; 'auto' puts it opposite coupler 1
         * number_of_connectors: '4' -- Total number of coupling resonators
         * resolution: '16'
         * cap_style: 'round' -- round, flat, square
@@ -62,6 +64,8 @@ class StarQubit(QComponent):
         ``rotation_rdout='45'`` produces ``pin_rdout`` with an outward normal
         pointing at 315 degrees. To place an arm at a chosen compass angle
         ``theta`` (0 = +x, counter-clockwise), pass ``theta + 90``.
+        ``rotation_jj`` follows the same rule. The junction's leads must land
+        on island metal, so put it between arms, not on one.
     """
 
     component_metadata = Dict(
@@ -85,6 +89,7 @@ class StarQubit(QComponent):
         rotation_rdout="144.0",
         rotation_cpl3="216.0",
         rotation_cpl4="288.0",
+        rotation_jj="auto",
         number_of_connectors="4",
         resolution="16",
         cap_style="round",
@@ -290,19 +295,26 @@ class StarQubit(QComponent):
             center = draw.Point(0, 0)
             total1 = next(g for g in total1.geoms if g.contains(center))
 
+        # The junction and its leads are drawn at +y and rotated into place;
+        # 'auto' keeps them opposite coupler 1.
+        if str(self.options.rotation_jj).strip().lower() == "auto":
+            jj_rotation = p.rotation_cpl1
+        else:
+            jj_rotation = p.rotation_jj + 180
+
         # create rectangular connectors to junction
         pockets = self.make_pockets()
         rect1 = draw.rectangle(pockets[2], pockets[3])
         rect1 = draw.translate(rect1, xoff=coords1[0][0] * 1.1, yoff=p.radius)
-        rect1 = draw.rotate(rect1, p.rotation_cpl1, origin=(0, 0))
+        rect1 = draw.rotate(rect1, jj_rotation, origin=(0, 0))
         rect2 = draw.rectangle(pockets[2], pockets[3])
         rect2 = draw.translate(rect2, xoff=coords1[1][0] * 1.1, yoff=p.radius)
-        rect2 = draw.rotate(rect2, p.rotation_cpl1, origin=(0, 0))
+        rect2 = draw.rotate(rect2, jj_rotation, origin=(0, 0))
 
         # junction
         jjunction = draw.LineString([[0, 0], [0, coords[1][0]]])
         jjunction = draw.translate(jjunction, yoff=(1.15 * (p.radius)))
-        jjunction = draw.rotate(jjunction, p.rotation_cpl1, origin=(0, 0))
+        jjunction = draw.rotate(jjunction, jj_rotation, origin=(0, 0))
 
         # Add connection to the junction
         total = draw.union(total1, rect1, rect2)

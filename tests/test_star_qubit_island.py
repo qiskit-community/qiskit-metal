@@ -6,6 +6,7 @@ thin gap near the rim, and the subtraction used to leave two detached
 triangles of island metal beside the readout pad.
 """
 
+import math
 import unittest
 
 from shapely.geometry import Point
@@ -59,6 +60,37 @@ class TestStarQubitIsland(unittest.TestCase):
         parts = _island_parts(design, q)
         self.assertEqual(len(parts), 1)
         self.assertTrue(parts[0].contains(Point(0, 0)))
+
+
+def _junction(design, qubit):
+    tbl = design.qgeometry.tables["junction"]
+    return tbl[tbl.component == qubit.id].geometry.iloc[0]
+
+
+class TestStarQubitJunctionRotation(unittest.TestCase):
+    def test_auto_matches_previous_placement(self):
+        design = designs.DesignPlanar()
+        auto = StarQubit(design, "A")
+        explicit = StarQubit(design, "B", options=dict(rotation_jj="180"))
+        # Default rotation_cpl1 is 0: 'auto' is the old "opposite coupler 1".
+        self.assertTrue(
+            _junction(design, auto).equals_exact(_junction(design, explicit), 1e-12)
+        )
+
+    def test_junction_lands_at_theta_for_theta_plus_90(self):
+        for theta in (45, 135, 225, 315):
+            design = designs.DesignPlanar()
+            q = StarQubit(design, "Q", options=dict(rotation_jj=str(theta + 90)))
+            c = _junction(design, q).centroid
+            angle = math.degrees(math.atan2(c.y, c.x)) % 360
+            self.assertAlmostEqual(angle, theta, delta=1.0, msg=f"theta={theta}")
+
+    def test_leads_touch_the_island_between_arms(self):
+        # On the scaled chip qubit the free diagonal is 225 degrees.
+        design = designs.DesignPlanar()
+        q = StarQubit(design, "Q", options=dict(SCALED, rotation_jj="315"))
+        parts = _island_parts(design, q)
+        self.assertEqual(len(parts), 1, "junction leads float off the island")
 
 
 if __name__ == "__main__":
