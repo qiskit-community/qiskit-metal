@@ -479,6 +479,27 @@
 <p>This tutorial uses the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>. To follow along on Colab, Binder, JupyterHub, or any environment where Qt isn’t available, <strong>replace any ``gui.rebuild()`` / ``gui.screenshot()`` call with ``qm.view(design)``</strong> — it renders the design to a matplotlib <code class="docutils literal notranslate"><span class="pre">Figure</span></code> you can display inline or save with <code class="docutils literal notranslate"><span class="pre">fig.savefig(...)</span></code>.</p>
 <p>See <a class="reference internal" href="../1-Overview/1.1-Quick-start.html"><span class="doc">1.1 Quick start</span></a> for a complete runnable walkthrough and <code class="docutils literal notranslate"><span class="pre">`docs/headless-usage.rst</span></code> &lt;../../../docs/headless-usage.rst&gt;`__ for the full reference.</p>
 </div></blockquote>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization.lumped_capacitive</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">load_q3d_capacitance_matrix</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization.lom_core_analysis</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CompositeSystem</span><span class="p">,</span>
+    <span class="n">Cell</span><span class="p">,</span>
+    <span class="n">Subsystem</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">speed_of_light</span> <span class="k">as</span> <span class="n">c_light</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
 <section id="Example:-two-transmons-coupled-by-a-direct-coupler">
 <h2>Example: two transmons coupled by a direct coupler<a class="headerlink" href="#Example:-two-transmons-coupled-by-a-direct-coupler" title="Link to this heading">¶</a></h2>
 <p>this part is identical to tutorial 4.05; please reference it for more detailed comments</p>
@@ -1231,7 +1252,7 @@ Cavity(name=&#39;readout_alice&#39;, cls=&#39;sequencing.modes.Cavity&#39;, leve
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_30_1.svg" src="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_30_1.svg" />
+<img alt="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_31_1.svg" src="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_31_1.svg" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1305,7 +1326,7 @@ Initial states: 100%|██████████| 4/4 [00:00&lt;00:00,  5.31i
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_35_0.svg" src="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_35_0.svg" />
+<img alt="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_36_0.svg" src="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_36_0.svg" />
 </div>
 </div>
 </section>
@@ -1387,7 +1408,7 @@ Disp. amp. (measure n=3): 100%|██████████| 21/21 [00:07&lt;0
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_40_0.svg" src="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_40_0.svg" />
+<img alt="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_41_0.svg" src="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_41_0.svg" />
 </div>
 </div>
 </section>

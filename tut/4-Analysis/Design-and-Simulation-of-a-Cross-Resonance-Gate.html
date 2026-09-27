@@ -522,6 +522,19 @@
 <section id="Constructing-the-CR-Gate-Hamiltonian-Using-QuTiP-&amp;-Qiskit-Metal">
 <h2>Constructing the CR Gate Hamiltonian Using QuTiP &amp; Qiskit Metal<a class="headerlink" href="#Constructing-the-CR-Gate-Hamiltonian-Using-QuTiP-&-Qiskit-Metal" title="Link to this heading">¶</a></h2>
 <p>Let’s start by loading the required modules:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.hamiltonian.transmon_charge_basis</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hcpb</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qutip</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
 <p>The CR gate uses fixed-frequency qubits, so we’ll define the two qubit frequencies as well as the coupling strength between them. We’ll use similar values to those published in the original CR gate paper from Rigetti &amp; Devoret:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:

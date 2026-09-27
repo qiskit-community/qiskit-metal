@@ -479,10 +479,33 @@
 <p>This tutorial uses the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>. To follow along on Colab, Binder, JupyterHub, or any environment where Qt isn’t available, <strong>replace any ``gui.rebuild()`` / ``gui.screenshot()`` call with ``qm.view(design)``</strong> — it renders the design to a matplotlib <code class="docutils literal notranslate"><span class="pre">Figure</span></code> you can display inline or save with <code class="docutils literal notranslate"><span class="pre">fig.savefig(...)</span></code>.</p>
 <p>See <a class="reference internal" href="../1-Overview/1.1-Quick-start.html"><span class="doc">1.1 Quick start</span></a> for a complete runnable walkthrough and <code class="docutils literal notranslate"><span class="pre">`docs/headless-usage.rst</span></code> &lt;../../docs/headless-usage.rst&gt;`__ for the full reference.</p>
 </div></blockquote>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scqubits</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">scq</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization.lumped_capacitive</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">load_q3d_capacitance_matrix</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization.lom_core_analysis</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CompositeSystem</span><span class="p">,</span>
+    <span class="n">Cell</span><span class="p">,</span>
+    <span class="n">Subsystem</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">speed_of_light</span> <span class="k">as</span> <span class="n">c_light</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
 <section id="1.-load-fluxonium-cell-Q3d-simulation-results">
 <h2>1. load fluxonium cell Q3d simulation results<a class="headerlink" href="#1.-load-fluxonium-cell-Q3d-simulation-results" title="Link to this heading">¶</a></h2>
 <p>Loading the Maxwell capacitance matrices for the design as shown in the screenshot below:</p>
-<p><img alt="178b1d558bff448ba9349ed9dadea527" class="no-scaled-link" height="600" src="../../_images/fluxonium_transmon_coupled.png" width="600" /></p>
+<p><img alt="2a2ebdf089f44727953fe3c414c5ba24" class="no-scaled-link" height="600" src="../../_images/fluxonium_transmon_coupled.png" width="600" /></p>
 <p>where we have a transmon coupled to a fluxonium through a direct coupler.</p>
 <p>For a simple introduction on Maxwell capacitance matrix, check out the following resources: <a class="reference external" href="https://www.fastfieldsolvers.com/Papers/The_Maxwell_Capacitance_Matrix_WP110301_R02.pdf">https://www.fastfieldsolvers.com/Papers/The_Maxwell_Capacitance_Matrix_WP110301_R02.pdf</a></p>
 <div class="nbinput docutils container">

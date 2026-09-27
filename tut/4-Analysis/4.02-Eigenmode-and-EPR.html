@@ -525,6 +525,17 @@
 <li><p>Find the electric and magnetic energy stored in the substrate and the system as a whole.</p></li>
 <li><p>Perform EPR analysis for all modes and variations.</p></li>
 </ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">metal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span><span class="p">,</span> <span class="n">draw</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetalGUI</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Headings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyEPR</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">epr</span>
+</pre></div>
+</div>
+</div>
 </section>
 </section>
 <section id="1.-Analyze-the-transmon-qubit-by-itself">
@@ -653,6 +664,25 @@
 </pre></div></div>
 </div>
 </section>
+<section id="Link-the-junction-to-the-Lj-and-Cj-variables">
+<h4>Link the junction to the <code class="docutils literal notranslate"><span class="pre">Lj</span></code> and <code class="docutils literal notranslate"><span class="pre">Cj</span></code> variables<a class="headerlink" href="#Link-the-junction-to-the-Lj-and-Cj-variables" title="Link to this heading">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">sim.setup.vars</span></code> defines Ansys <em>design variables</em> named <code class="docutils literal notranslate"><span class="pre">Lj</span></code> and <code class="docutils literal notranslate"><span class="pre">Cj</span></code>. The EPR step later reads the junction inductance from the <code class="docutils literal notranslate"><span class="pre">Lj</span></code> variable. The junction itself, however, is drawn in HFSS as a lumped RLC boundary whose inductance comes from the qubit’s own <code class="docutils literal notranslate"><span class="pre">hfss_inductance</span></code> option, which defaults to a fixed <code class="docutils literal notranslate"><span class="pre">&quot;10nH&quot;</span></code>.</p>
+<p>To make the field simulation and the EPR Hamiltonian use the same junction, point the qubit at the variables. Now changing <code class="docutils literal notranslate"><span class="pre">eig_qb.sim.setup.vars.Lj</span></code> (as above) changes the junction that HFSS simulates too.</p>
+<blockquote>
+<div><p>Without this step HFSS would simulate a 10 nH junction while the EPR analysis assumes 11 nH. See <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1019">issue #1019</a>. The outputs stored further down in this notebook were generated before this step was added.</p>
+</div></blockquote>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the Ansys design variables for the junction's lumped inductance/capacitance</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">hfss_inductance</span> <span class="o">=</span> <span class="s2">"Lj"</span>
+<span class="n">q1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">hfss_capacitance</span> <span class="o">=</span> <span class="s2">"Cj"</span>
+<span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
 <section id="Execute-simulation-and-verify-convergence-and-EM-field">
 <h4>Execute simulation and verify convergence and EM field<a class="headerlink" href="#Execute-simulation-and-verify-convergence-and-EM-field" title="Link to this heading">¶</a></h4>
 <p>Analyze a single qubit with shorted terminations. Then observe the frequency convergence plot. If not converging, you might want to increase the min_passes value to force the renderer to increase accuracy.</p>
@@ -724,7 +754,7 @@ This analysis object run with the following kwargs:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_17_0.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_17_0.png" />
+<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_20_0.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_20_0.png" />
 </div>
 </div>
 <p>(optional) Work directly with the convergence numbers</p>
@@ -899,7 +929,7 @@ INFO 10:36PM [get_setup]:       Opened setup `Setup2`  (&lt;class &#39;pyEPR.ans
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_23_1.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_23_1.png" />
+<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_26_1.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_26_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1314,7 +1344,7 @@ INFO 10:36PM [analyze]: Analyzing setup Setup1
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_38_0.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_38_0.png" />
+<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_41_0.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_41_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1415,7 +1445,7 @@ INFO 10:38PM [get_setup]:       Opened setup `Setup1`  (&lt;class &#39;pyEPR.ans
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_42_1.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_42_1.png" />
+<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_45_1.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_45_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1473,7 +1503,7 @@ INFO 10:40PM [get_setup]:       Opened setup `Setup2`  (&lt;class &#39;pyEPR.ans
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_46_1.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_46_1.png" />
+<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_49_1.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_49_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1609,7 +1639,7 @@ INFO 10:40PM [analyze]: Analyzing setup Setup1
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_55_0.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_55_0.png" />
+<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_58_0.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_58_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1643,7 +1673,7 @@ INFO 10:43PM [get_setup]:       Opened setup `Setup1`  (&lt;class &#39;pyEPR.ans
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_57_1.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_57_1.png" />
+<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_60_1.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_60_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2306,7 +2336,7 @@ INFO 10:44PM [analyze]: Analyzing setup Setup1
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_84_0.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_84_0.png" />
+<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_87_0.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_87_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2340,7 +2370,7 @@ INFO 10:52PM [get_setup]:       Opened setup `Setup1`  (&lt;class &#39;pyEPR.ans
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_86_1.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_86_1.png" />
+<img alt="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_89_1.png" src="../../_images/tut_4-Analysis_4.02-Eigenmode-and-EPR_89_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2799,6 +2829,7 @@ INFO 10:53PM [__del__]: Disconnected from Ansys HFSS
 <li><a class="reference internal" href="#Create-the-Qbit-design">Create the Qbit design</a></li>
 <li><a class="reference internal" href="#Finite-Element-Eigenmode-Analysis">Finite Element Eigenmode Analysis</a><ul>
 <li><a class="reference internal" href="#Setup">Setup</a></li>
+<li><a class="reference internal" href="#Link-the-junction-to-the-Lj-and-Cj-variables">Link the junction to the <code class="docutils literal notranslate"><span class="pre">Lj</span></code> and <code class="docutils literal notranslate"><span class="pre">Cj</span></code> variables</a></li>
 <li><a class="reference internal" href="#Execute-simulation-and-verify-convergence-and-EM-field">Execute simulation and verify convergence and EM field</a></li>
 </ul>
 </li>
