@@ -489,16 +489,19 @@ class QGeometryTables:
         rounding_val = self.design.template_options["PRECISION"]
         new_dict = Dict()
         for key, item in geometry.items():
-            if isinstance(geometry[key], MultiPolygon):
-                temp_multi = geometry[key]
+            # Keys become the ``name`` column, which renderers treat as a
+            # string (e.g. the HFSS name sanitiser uses re.sub). Coerce
+            # non-string keys such as ``{0: jj_line}`` (#995).
+            name = str(key)
+            if isinstance(item, MultiPolygon):
                 shape_count = 0
-                for shape_temp in temp_multi.geoms:
-                    new_dict[key + "_" + str(shape_count)] = round_coordinate_sequence(
+                for shape_temp in item.geoms:
+                    new_dict[name + "_" + str(shape_count)] = round_coordinate_sequence(
                         shape_temp, rounding_val
                     )
                     shape_count += 1
             else:
-                new_dict[key] = round_coordinate_sequence(item, rounding_val)
+                new_dict[name] = round_coordinate_sequence(item, rounding_val)
 
         geometry = new_dict
 

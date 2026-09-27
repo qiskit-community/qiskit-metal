@@ -351,6 +351,11 @@ class QPyaedt(QRendererAnalysis):
             thickness, z_coord, material, fill_value = result
         else:
             self.design.ls.layer_stack_handler_pilot_error()
+            raise ValueError(
+                "Layer stack has no usable entry for this geometry's layer and "
+                "datatype; add a row for it to the layer-stack CSV (see the "
+                "warning above)."
+            )
 
         # LINESTRING does not have interior and exterior coords.
         points_2d = list(qc_shapely.coords)
@@ -442,6 +447,11 @@ class QPyaedt(QRendererAnalysis):
             thickness, z_coord, material, fill_value = result
         else:
             self.design.ls.layer_stack_handler_pilot_error()
+            raise ValueError(
+                "Layer stack has no usable entry for this geometry's layer and "
+                "datatype; add a row for it to the layer-stack CSV (see the "
+                "warning above)."
+            )
 
         if subtract and not fill_value:
             self.logger.warning(
@@ -738,6 +748,11 @@ class QPyaedt(QRendererAnalysis):
             thickness, z_coord, material, fill = result
         else:
             self.design.ls.layer_stack_handler_pilot_error()
+            raise ValueError(
+                "Layer stack has no usable entry for this geometry's layer and "
+                "datatype; add a row for it to the layer-stack CSV (see the "
+                "warning above)."
+            )
 
         endcap_name = f"{endcap_str}_{comp_name}_{pin_name}_{layer}"
 

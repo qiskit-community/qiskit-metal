@@ -212,10 +212,18 @@ class LayerStackHandler:
                 props["chip_name"] = chip_name
             except Exception as ex:
                 self._warning_search_minus_chip(layer_number, datatype, ex)
-        result = list()
-        for item in properties:
-            result.append(props[item])
-        return tuple(result)
+        if not set(properties).issubset(props):
+            # No row for this layer/datatype, or the row could not be parsed.
+            # Return None so callers' ``if result:`` checks see the miss;
+            # previously this returned empty ``Dict`` objects, which are
+            # truthy as a tuple and failed later (e.g. ``Dict / int``, #992).
+            self.logger.warning(
+                f"Layer stack has no usable entry for layer={layer_number}, "
+                f"datatype={datatype} (file: {self.filename_csv_df}). "
+                "Add a row for it to the layer-stack CSV."
+            )
+            return None
+        return tuple(props[item] for item in properties)
 
     def is_layer_data_unique(self) -> bool:
         """For each layer number make sure the datatypes are unique.  A layers can

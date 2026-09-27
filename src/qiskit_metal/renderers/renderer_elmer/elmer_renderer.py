@@ -435,6 +435,7 @@ class QElmerRenderer(QRendererAnalysis):
                             display_cap_matrix = True.
         """
 
+        self._require_nets()
         setup = self.default_setup[sim_type]
         sim_dir = self._options["simulation_dir"]
         meshfile = self._options["mesh_file"]
@@ -452,6 +453,21 @@ class QElmerRenderer(QRendererAnalysis):
         self.capacitance_matrix = self._get_capacitance_matrix(cap_matrix_file)
         if display_cap_matrix:
             return self.capacitance_matrix
+
+    def _require_nets(self):
+        """Raise a clear error if ``render_design()`` has not assigned nets.
+
+        ``nets`` is only set by :meth:`render_design` on this renderer.
+        Rendering through ``self.gmsh.render_design(...)`` or a separate
+        ``QGmshRenderer`` builds the geometry but not the Elmer nets (#1008).
+        """
+        if getattr(self, "nets", None) is None:
+            raise RuntimeError(
+                "QElmerRenderer.render_design(...) must be called on this "
+                "renderer before add_solution_setup() or run(). Rendering "
+                "through .gmsh.render_design(...) or a separate QGmshRenderer "
+                "does not assign the Elmer nets."
+            )
 
     def save_capacitance_matrix(self, path: str):
         """Saves capacitance matrix to file.
@@ -487,7 +503,7 @@ class QElmerRenderer(QRendererAnalysis):
         df2 = df.multiply(-1e15)
         row_sum = df2.sum(axis=0)
         for i, s in enumerate(row_sum):
-            df2[i][i] = -s
+            df2.iloc[i, i] = -s
 
         name_cap = {k: v[-1] for k, v in self.nets.items() if k != "gnd"}
         df2 = df2.rename(index=name_cap, columns=name_cap)
@@ -498,7 +514,7 @@ class QElmerRenderer(QRendererAnalysis):
         df2 = df2.multiply(self.default_setup["constants"]["Permittivity_of_Vacuum"])
 
         # dummy value set to high as it's shorted to ground
-        df2["ground_plane"]["ground_plane"] = 300
+        df2.loc["ground_plane", "ground_plane"] = 300
         return df2
 
     def add_solution_setup(
@@ -517,6 +533,7 @@ class QElmerRenderer(QRendererAnalysis):
                                                     to ["capacitance", "postprocessing_gmsh"].
             equation_name (str, optional): Type of equation for solver. Defaults to "poisson".
         """
+        self._require_nets()
         setup = self.default_setup
         cap_setup = {
             k.replace("_", " "): v for k, v in self.default_setup[sim_name].items()

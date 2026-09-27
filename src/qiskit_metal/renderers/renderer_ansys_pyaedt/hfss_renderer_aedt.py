@@ -555,6 +555,11 @@ class QHFSSPyaedt(QPyaedt):
             thickness, z_coord, material, fill_value = result
         else:
             self.design.ls.layer_stack_handler_pilot_error()
+            raise ValueError(
+                "Layer stack has no usable entry for this geometry's layer and "
+                "datatype; add a row for it to the layer-stack CSV (see the "
+                "warning above)."
+            )
 
         qc_width = parse_entry(qgeom.width)
 

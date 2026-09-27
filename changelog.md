@@ -15,6 +15,10 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ### Fixed
 
+- **Elmer capacitance matrix was wrong under pandas 3.** Two chained assignments in `QElmerRenderer._get_capacitance_matrix` are no-ops under Copy-on-Write (pandas 3's default, which pip installs on Python 3.11+), leaving the diagonal unconverted and the ground entry NaN with only a warning. Now `.iloc`/`.loc`.
+- **`DesignPlanar()` crashed when gmsh was installed but could not load** (e.g. `libGLU.so.1` missing on headless Linux): the import guards only caught `ImportError`. The gmsh renderer is now skipped, and using it explains which system library failed to load.
+- **Clear errors instead of cryptic ones:** `QElmerRenderer.add_solution_setup()`/`run()` without `render_design()` on the same renderer (was `AttributeError: nets`, #1008); ElmerSolver crashes (was a later missing-file error; now raises with the log tail, #1005); a layer/datatype missing from the layer stack (was `TypeError: Dict / int` in the pyaedt renderer, #992).
+- **Non-string geometry names.** `add_qgeometry` coerces dictionary keys to `str`, so e.g. `{0: jj_line}` no longer breaks the HFSS renderer's name sanitiser or MultiPolygon splitting. (#995)
 - **`LOManalysis.run_lom()` with a user-supplied matrix.** Setting only `sim.capacitance_matrix` (as the method's own warning suggests) raised `KeyError: 0`: an inverted type check never filled the per-pass data. It now uses the matrix as the single pass, converted from `sim.units` (default fF) to farads.
 - **Lite installs: `load_q3d_capacitance_matrix()` no longer needs IPython/jinja2** to print the matrix; it falls back to plain text.
 - **Docs:** `Subsystem` energies (`EJ`, `EL`, `EC`) are in MHz, not GHz (#920); `TransmonPocketCL` documents its `Charge_Line` pin (#989).
