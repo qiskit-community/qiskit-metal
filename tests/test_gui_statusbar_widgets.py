@@ -33,6 +33,8 @@ import sys
 
 import pytest
 
+from ._crash_output import crash_excerpt
+
 pytest.importorskip("PySide6")
 
 
@@ -83,7 +85,7 @@ def probe_output_fixture():
     if "MARKER_OK" not in completed.stdout:
         pytest.skip(
             "GUI could not be constructed in this environment:\n"
-            f"{completed.stdout}\n{completed.stderr[-2000:]}"
+            f"{completed.stdout}\n{crash_excerpt(completed.stderr)}"
         )
     return completed.stdout
 

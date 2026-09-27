@@ -36,6 +36,9 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 - **`EigenmodeSim` warns when `setup.vars.Lj` can't reach the junction:** a rendered junction whose `hfss_inductance` is a fixed value different from `Lj` is simulated at that value while the EPR step reads `Lj`. Silent with defaults and when the junction is linked to the variable. (#1019)
 - **`EPRanalysis` warns before a very large spectrum diagonalisation** (`fock_trunc**n_modes` > 20,000 states) with the estimated memory. (#1018)
 - **`TransmonCrossFL` warns when a connection pad resolves to the south arm** while `make_fl` is True. That arm carries the flux line, and the claw polygon overlaps it. The south arm also carries the junction on the base `TransmonCross`; at default options the claw clears it by ~11um, with the etch region within ~5um. Both constraints are now documented on the class docstrings.
+- **Locked dependencies with known advisories updated:** anyio 4.14.2, click 8.5.0, jupyter-server 2.21.1, mistune 3.3.4, soupsieve 2.10 (all dev/docs/transitive; no runtime floor changes).
+- **CI: two dependency-bound jobs.** `tests-deps-pandas3` runs the suite with pandas 3 (Copy-on-Write default), and `tests-deps-lowest` with every direct dependency at its declared minimum. Both install outside `uv.lock`, as pip users do.
+- **GUI subprocess tests report the crash stack.** On a native crash in the child, failures showed only the last 2,000 characters of stderr, which faulthandler fills with its extension-module list. `tests/_crash_output.py` drops that list and keeps the fatal error and thread stacks. (#1048)
 
 ## Quantum Metal v0.8.0 (airbridges + design-rule checking; no breaking changes)
 

@@ -16,6 +16,14 @@ The bot acts within the scope and limits defined in
 [`.claude/AGENT.md`](../.claude/AGENT.md) (the governance file,
 checked into this repo and version-controlled like any other code).
 
+## Scope
+
+This policy covers the autonomous bot described above. It does not
+cover maintainers who use an AI coding assistant under their own
+GitHub account: that work is the maintainer's, reviewed and merged
+by them like any of their other changes, with the assistant credited
+in a `Co-Authored-By:` commit trailer.
+
 ## What the bot does
 
 For incoming **issues**:

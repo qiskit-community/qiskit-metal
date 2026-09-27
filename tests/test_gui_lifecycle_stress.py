@@ -48,6 +48,8 @@ import sys
 
 import pytest
 
+from ._crash_output import crash_excerpt
+
 pytest.importorskip("PySide6")
 
 # Build -> pump -> close -> gc -> pump-past-every-timer-deadline, cycled.
@@ -123,6 +125,6 @@ def test_repeated_build_teardown_leaves_no_dead_timer_callbacks():
             f"{cycles_done}/3 cycles without an 'already deleted' report "
             "-- the known-open native mode-4 teardown race (see "
             "gui_crash_defenses.md 'Still open'), not an attributable "
-            f"timer leak. stderr tail:\n{proc.stderr[-800:]}",
+            f"timer leak. stderr tail:\n{crash_excerpt(proc.stderr)}",
             file=sys.stderr,
         )

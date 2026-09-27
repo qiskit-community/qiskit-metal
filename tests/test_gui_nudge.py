@@ -26,6 +26,8 @@ accumulating over a few presses would leave a design subtly moved.
 import matplotlib
 import pytest
 
+from ._crash_output import crash_excerpt
+
 matplotlib.use("Agg")
 
 pytest.importorskip("PySide6")
@@ -270,7 +272,7 @@ sys.exit(0)
             assert marker in proc.stdout, (
                 f"focus/nudge contract not proven: {marker} missing.\n"
                 f"stdout:\n{proc.stdout}\n"
-                f"stderr tail:\n{proc.stderr[-2000:]}"
+                f"stderr tail:\n{crash_excerpt(proc.stderr)}"
             )
         if proc.returncode != 0:
             print(
@@ -278,6 +280,6 @@ sys.exit(0)
                 f"(all markers) but exited {proc.returncode} during "
                 "teardown -- known-open at-exit issue (#1048), see "
                 "gui_crash_defenses.md 'Still open'. stderr tail:\n"
-                f"{proc.stderr[-800:]}",
+                f"{crash_excerpt(proc.stderr)}",
                 file=_sys.stderr,
             )
