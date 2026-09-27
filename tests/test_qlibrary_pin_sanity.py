@@ -28,6 +28,10 @@ because their pin layout depends on pin_inputs that aren't available
 in default options.
 """
 
+import importlib
+import inspect
+import pkgutil
+import re
 import unittest
 
 import numpy as np
@@ -264,6 +268,43 @@ class TestQComponentPinSanity(unittest.TestCase):
             np.allclose(actual_middle, expected_middle, atol=1e-6),
             f"{ref}: middle {actual_middle} != mean(points) {expected_middle}",
         )
+
+
+class TestPinNamesDocumented(unittest.TestCase):
+    """Every pin a component creates at default options is named in its
+    class docstring, so users can find the names to pass to a route."""
+
+    def test_default_pins_are_named_in_docstring(self):
+        from qiskit_metal import qlibrary
+        from qiskit_metal.qlibrary.core import QComponent, QRoute
+
+        seen = set()
+        for info in pkgutil.walk_packages(qlibrary.__path__, "qiskit_metal.qlibrary."):
+            if ".core" in info.name:
+                continue
+            module = importlib.import_module(info.name)
+            for name, cls in inspect.getmembers(module, inspect.isclass):
+                if (
+                    cls.__module__ != module.__name__
+                    or not issubclass(cls, QComponent)
+                    or issubclass(cls, QRoute)
+                    or inspect.isabstract(cls)
+                    or cls in seen
+                ):
+                    continue
+                seen.add(cls)
+                with self.subTest(component=name):
+                    component = cls(designs.DesignPlanar(), "c")
+                    doc = cls.__doc__ or ""
+                    missing = [
+                        pin
+                        for pin in component.pins
+                        if not re.search(rf"\b{re.escape(pin)}\b", doc)
+                    ]
+                    self.assertFalse(
+                        missing, f"{name} docstring does not name pins {missing}"
+                    )
+        self.assertGreater(len(seen), 20)
 
 
 if __name__ == "__main__":

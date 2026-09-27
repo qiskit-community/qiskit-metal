@@ -45,6 +45,12 @@ class CapNInterdigitalTee(QComponent):
     .. meta::
         :description: Cap N Interdigital Tee
 
+    Pins:
+        * ``prime_start`` -- one end of the primary line (west at orientation 0)
+        * ``prime_end`` -- the other end of the primary line (east)
+        * ``second_end`` -- end of the secondary, coupled line (south); route
+          a resonator from here
+
     Options:
         * prime_width: '10um' -- The width of the trace of the two pin CPW transmission line
         * prime_gap: '6um' -- The dielectric gap of the two pin CPW transmission line

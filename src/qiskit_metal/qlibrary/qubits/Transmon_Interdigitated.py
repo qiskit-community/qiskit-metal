@@ -36,6 +36,10 @@ class TransmonInterdigitated(QComponent):
     .. meta::
         :description: Transmon Interdigitated
 
+    Pins:
+        * ``readout`` -- readout line
+        * ``bus1``, ``bus2`` -- the two bus (coupler) lines
+
     Default Options:
         * pad_width: '1000um' -- width of the large rectangular pads on either side
           of the junction

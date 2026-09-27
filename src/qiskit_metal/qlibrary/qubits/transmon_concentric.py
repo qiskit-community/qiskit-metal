@@ -32,6 +32,10 @@ class TransmonConcentric(BaseQubit):
     .. meta::
         :description: Transmon Concentric
 
+    Pins:
+        * ``pin1`` -- end of the readout resonator line
+        * ``pin2``, ``pin3`` -- the two ends of the flux bias line loop
+
     BaseQubit Default Options:
         * connection_pads: empty Dict -- the dictionary which contains all active
           connection lines for the qubit.

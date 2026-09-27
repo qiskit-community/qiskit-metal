@@ -41,6 +41,10 @@ class ResonatorCoilRect(QComponent):
     .. meta::
         :description: Resonator Coil Rectangle
 
+    Pins:
+        * ``spiralPin`` -- on the outer turn of the spiral, ``coupler_distance``
+          from its end
+
     Default Options:
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')

@@ -32,6 +32,11 @@ class TransmonConcentricType2(BaseQubit):
         .. meta::
             :description: Transmon Concentric Type 2
 
+        Pins:
+            * ``pin1`` -- northeast coupler
+            * ``pin2`` -- northwest coupler
+            * ``pin3`` -- southwest coupler
+
         BaseQubit Default Options:
             * connection_pads: empty Dict -- the dictionary which contains all active
               connection lines for the qubit.

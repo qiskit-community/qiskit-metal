@@ -38,6 +38,9 @@ class NSquareSpiral(QComponent):
     .. meta::
         :description: N Square Spiral
 
+    Pins:
+        * ``spiralPin`` -- at the outer end of the spiral trace
+
     Default Options:
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')

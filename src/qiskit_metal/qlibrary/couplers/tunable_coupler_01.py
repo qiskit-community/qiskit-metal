@@ -43,6 +43,10 @@ class TunableCoupler01(BaseQubit):
     .. meta::
         :description: Tunable Coupler 01
 
+    Pins:
+        * ``Control`` -- end of the connection claw (coupler arm)
+        * ``Flux`` -- end of the flux line next to the SQUID
+
     Options:
         Convention: Values (unless noted) are strings with units included,
         (e.g., '30um')

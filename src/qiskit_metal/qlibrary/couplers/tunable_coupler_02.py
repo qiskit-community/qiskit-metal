@@ -28,6 +28,11 @@ class TunableCoupler02(BaseQubit):
         .. meta::
             :description: Tunable Coupler 2
 
+        Pins:
+            * ``pin1`` -- east end of the coupler's CPW line (in/out)
+            * ``pin2`` -- west end of the coupler's CPW line (in/out)
+            * ``fbl`` -- end of the flux bias line next to the JJ
+
         BaseQubit Default Options:
             * connection_pads: empty Dict -- Currently not used, connection count is static. (WIP)
         Default Options:

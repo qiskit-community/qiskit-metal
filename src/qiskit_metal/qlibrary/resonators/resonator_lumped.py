@@ -30,6 +30,12 @@ class ResonatorLumped(QComponent):
     .. meta::
         :description: Lumped Resonator
 
+    Pins:
+        * ``pin_east``, ``pin_west``, ``pin_s`` -- midpoints of the east, west
+          and south sides of the rectangular perimeter
+        * ``pin_ne``, ``pin_nw``, ``pin_se``, ``pin_sw`` -- the four corners
+        * ``pin_n`` -- end of the upper straight segment (``final``)
+
     Default Options:
         * pos_x: '0um' -- x-coordinate of the bottom center of the resonator
         * pos_y: '0um' -- y-coordinate of the bottom center of the resonator
