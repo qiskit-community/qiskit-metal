@@ -54,9 +54,11 @@ class CapFingerInFrame(QComponent):
     less ``cap_gap`` on every side -- so the geometry cannot be made
     inconsistent.
 
-    Default Options (the input-capacitor cell of the device above, measured
-    from its micrograph; gap widths there are unresolved, ``cap_gap`` and
-    ``ground_gap`` of 10 um fit every measured centerline spacing):
+    The defaults are the input-capacitor cell of the device above, measured
+    from its micrograph; the gap widths there are unresolved, and ``cap_gap``
+    and ``ground_gap`` of 10 um fit every measured centerline spacing.
+
+    Default Options:
         * frame_length: '245um' -- Outer metal length of the frame, along y
         * frame_width: '72um' -- Outer metal width of the frame, along x
         * frame_trace: '16um' -- Width of the frame conductor
