@@ -573,19 +573,23 @@
                         <span class="kc">None</span><span class="p">,</span>
                     <span class="p">)</span>
 
-                    <span class="c1"># if the class_name exists, then create the renderer object</span>
+                    <span class="c1"># if the class_name exists, then create the renderer object.</span>
+                    <span class="c1"># initiate=False, as for renderers registered with a design:</span>
+                    <span class="c1"># the connection is made by start() / run_sim(), not here.</span>
                     <span class="k">if</span> <span class="n">class_renderer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="n">renderer</span> <span class="o">=</span> <span class="n">class_renderer</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                        <span class="n">renderer</span> <span class="o">=</span> <span class="n">class_renderer</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                             <span class="sa">f</span><span class="s2">"Could not find the class=</span><span class="si">{</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">class_name</span><span class="si">}</span><span class="s2"> "</span>
                             <span class="sa">f</span><span class="s2">"in the renderer=</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2">"</span>
                         <span class="p">)</span>
+                        <span class="k">return</span> <span class="kc">None</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">"Could not find the renderer=</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2"> "</span>
                         <span class="sa">f</span><span class="s2">"at the path=</span><span class="si">{</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">path_name</span><span class="si">}</span><span class="s2">."</span>
                     <span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># the renderer would have been already registered within the design object</span>
@@ -596,7 +600,7 @@
                     <span class="p">)</span>
                     <span class="k">return</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Cannot find a renderer </span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2"> registered with qiskit-metal"</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
