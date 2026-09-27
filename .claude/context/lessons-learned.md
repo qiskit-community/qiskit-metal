@@ -1039,6 +1039,25 @@ them), never exactly on a pole; keep the residual vector a fixed length
 when samples near a trial pole are excluded (least squares
 finite-differences it).
 
+## Executing notebooks that open MetalGUI: the kernel can hang
+
+`metal.gui(design)` in a Jupyter kernel switches the kernel's event loop to
+ipykernel's `loop_qt` during that cell (`get_ipython().kernel.eventloop` is
+`None` before, `loop_qt` after). When a runner (nbclient, the
+`notebooks-qt-refresh` job) sends the next execute request immediately, the
+request can arrive before ipykernel's Qt socket notifier is armed; the kernel
+then idles in `QEventLoop.exec()` and never runs the cell. Seen in about 1 of
+3 runs of a notebook with a GUI (ipykernel 7.1, PySide6 6.10, macOS,
+`QT_QPA_PLATFORM=offscreen`); never when cells are run by hand. A native
+stack (`sample <pid>` on macOS) shows the main thread in
+`QEventLoop::exec` / `qt_safe_poll` at 0% CPU. Use a per-cell timeout
+(a few minutes) and retry the notebook; the outputs of the run that
+completes are fine. At kernel shutdown ipykernel's Qt hook can also print
+`OSError: Stream is closed`; that is ipykernel tearing down, not Metal.
+
+`gui.screenshot()` also writes `shot.png` and `shot750.png` into the working
+folder; clean them up after executing a notebook.
+
 ## What this list doesn't include
 
 Stuff that's NOT a "lesson learned" — those go in
