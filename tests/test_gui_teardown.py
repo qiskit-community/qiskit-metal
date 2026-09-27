@@ -33,6 +33,8 @@ import unittest
 
 import pytest
 
+from ._crash_output import crash_excerpt
+
 pytest.importorskip("PySide6")
 
 # Minimal reproducer from the issue: build the GUI, then exit.
@@ -69,7 +71,7 @@ class TestGUITeardown(unittest.TestCase):
         self.assertIn(
             "MARKER_BUILT",
             proc.stdout,
-            msg=f"GUI failed to build.\nstdout:\n{proc.stdout}\nstderr:\n{proc.stderr[-2000:]}",
+            msg=f"GUI failed to build.\nstdout:\n{proc.stdout}\nstderr:\n{crash_excerpt(proc.stderr)}",
         )
         self.assertEqual(
             proc.returncode,
@@ -77,7 +79,7 @@ class TestGUITeardown(unittest.TestCase):
             msg=(
                 f"MetalGUI subprocess exited with {proc.returncode} "
                 f"(negative / 139 == segfault, i.e. issue #1048 regression).\n"
-                f"stderr tail:\n{proc.stderr[-2000:]}"
+                f"stderr tail:\n{crash_excerpt(proc.stderr)}"
             ),
         )
 

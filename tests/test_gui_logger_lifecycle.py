@@ -41,6 +41,8 @@ import logging
 import os
 import unittest
 
+from ._crash_output import crash_excerpt
+
 
 def _qt_available():
     """Whether a Qt GUI can actually be constructed in this environment."""
@@ -376,7 +378,7 @@ class TestGUIGarbageCollectionCrash(unittest.TestCase):
             msg=(
                 f"process died during teardown (rc={proc.returncode}; "
                 f"-11/139 == SIGSEGV) — issue #1048, known unfixed.\n"
-                f"stderr tail:\n{proc.stderr[-800:]}"
+                f"stderr tail:\n{crash_excerpt(proc.stderr)}"
             ),
         )
 

@@ -220,17 +220,22 @@ component, which is too slow for a hot docs-build path).
 
 CI matrix on every PR: 9 test combos (py3.10–3.14 on ubuntu;
 py3.10 and 3.14 on macos/windows) + `lint` + `env-consistency` + `coverage` +
-`tests-lite` (including notebook-execute).
+`tests-lite` (including notebook-execute) + `tests-deps-pandas3` /
+`tests-deps-lowest` (dependency bounds outside `uv.lock`).
 
-## Status snapshot (as of v0.8.0, August 2026)
+## Status snapshot (as of v0.8.1, September 2026)
 
-- Latest release: **v0.8.0** on PyPI — design-rule checking
-  (`qiskit_metal.validation`, #1169), the `QMplRenderer` die outline,
-  and a hero-gif refresh, no breaking changes. (**Note:** a `v0.7.7`
+- Latest release: **v0.8.1** on PyPI (August 2026) — GUI stability and
+  keyboard-nudge fixes on top of v0.8.0. v0.8.0 added design-rule
+  checking (`qiskit_metal.validation`, #1169) and the `QMplRenderer` die
+  outline, no breaking changes. (**Note:** a `v0.7.7`
   tag/GitHub Release exist on `a7efeeb1` but were never published to
   PyPI — see `changelog.md`. PyPI went 0.7.6 → 0.8.0 directly.)
-- Test count: **~496 collected** (lite local run; the `_gui` suite
-  adds more under the Qt/Xvfb CI jobs), 0 failing, 0 flaky in CI
+- Test count: **~840 collected** with all extras installed (GUI
+  display tests skip without a display). macOS GUI subprocess tests
+  (`test_gui_init`, `test_gui_nudge`) occasionally hit a native crash
+  in the child (#1048); their failure output now shows the crash stack
+  via `tests/_crash_output.py`
 - Lite-by-default (shipped in v0.7.0): `qm.view(design)` and headless
   use work with the default `pip install quantum-metal`; the desktop
   GUI moved to the `[gui]` extra

@@ -365,6 +365,57 @@ jobs:
             tests/test_solution_types.py \
             -v
 
+  tests-dependency-bounds:
+    # The main matrix installs from uv.lock, which pins pandas 2.x and the
+    # newest allowed versions. pip users get neither: pandas 3 (Copy-on-Write
+    # by default) on Python >= 3.11, or old versions that still satisfy our
+    # floors. `pandas3` catches CoW regressions (chained assignment silently
+    # doing nothing); `lowest` installs every direct dependency at its
+    # declared minimum so a floor that's too low fails here, not for a user.
+    name: tests-deps-${{ matrix.bound }}
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_COLOR: "1"
+      QISKIT_METAL_HEADLESS: "1"
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - bound: pandas3
+            python: "3.12"
+            install: "uv pip install -e '.[full]' 'pandas>=3'"
+          - bound: lowest
+            python: "3.10"
+            install: "uv pip install --resolution lowest-direct -e '.[full]'"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.24"
+          enable-cache: true
+      - name: Install Gmsh dependencies
+        run: |
+          # Harden apt against flaky GitHub-runner third-party sources
+          # (azure-cli/microsoft, chrome) that intermittently 403 or break
+          # signing and fail the whole update, plus a bounded retry so a
+          # stalled mirror can't hang the job. See PRs #1108 and #1111.
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list \
+            /etc/apt/sources.list.d/azure-cli.list \
+            /etc/apt/sources.list.d/google-chrome.list || true
+          for i in 1 2 3; do
+            sudo timeout 180 apt-get update && break || { echo "apt-get update attempt $i failed"; sleep 5; }
+          done
+          sudo apt-get install -y libglu1-mesa libglu1-mesa-dev libegl1-mesa-dev
+      - name: Install
+        run: |
+          uv venv --python ${{ matrix.python }}
+          ${{ matrix.install }} 'pytest>=8.4.1' 'pytest-rich>=0.2.0'
+          uv pip list | grep -iE '^(numpy|pandas|scipy|shapely|pint|qutip|pyaedt|pyside6) '
+      - name: Run Tests
+        run: .venv/bin/python -m pytest tests/
+
   tests-gui-display:
     # The ONLY job that launches the real Qt MetalGUI on a (virtual) display.
     # Every other job runs headless (QISKIT_METAL_HEADLESS=1 / qm.view), so the

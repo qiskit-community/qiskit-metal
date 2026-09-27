@@ -60,6 +60,8 @@ import unittest
 
 import pytest
 
+from ._crash_output import crash_excerpt
+
 pytest.importorskip("PySide6")
 
 from PySide6.QtCore import QSettings  # noqa: E402
@@ -200,7 +202,7 @@ class TestGUIInitOnScreen(unittest.TestCase):
                 f"MetalGUI.__init__ did not reach {marker} "
                 "(wedged or silently abandoned -- issue #1109 / #1048).\n"
                 f"stdout:\n{proc.stdout}\n"
-                f"stderr tail:\n{proc.stderr[-2000:]}"
+                f"stderr tail:\n{crash_excerpt(proc.stderr)}"
             ),
         )
         if proc.returncode != 0:
@@ -220,7 +222,7 @@ class TestGUIInitOnScreen(unittest.TestCase):
                 f"printed) but exited {proc.returncode} during teardown "
                 "-- known-open at-exit issue (#1048), see "
                 "gui_crash_defenses.md 'Still open'. stderr tail:\n"
-                f"{proc.stderr[-800:]}",
+                f"{crash_excerpt(proc.stderr)}",
                 file=sys.stderr,
             )
         return proc
@@ -315,7 +317,7 @@ class TestGUIInitOnScreen(unittest.TestCase):
                         "the startup journal behind -- a future launch "
                         "would repeat the same native crash instead of "
                         "self-healing.\n"
-                        f"stderr tail:\n{proc_c.stderr[-2000:]}",
+                        f"stderr tail:\n{crash_excerpt(proc_c.stderr)}",
                     )
                 elif proc_c.returncode != 0:
                     # Marker printed, then the process died: startup
@@ -333,7 +335,7 @@ class TestGUIInitOnScreen(unittest.TestCase):
                         f"teardown (exit {proc_c.returncode}) -- known-open "
                         "teardown-after-restore issue, not a startup "
                         "self-heal failure. stderr tail:\n"
-                        f"{proc_c.stderr[-800:]}",
+                        f"{crash_excerpt(proc_c.stderr)}",
                         file=sys.stderr,
                     )
         finally:
