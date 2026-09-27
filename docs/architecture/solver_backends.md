@@ -1,7 +1,7 @@
 # Solver backends: shared abstractions (stage 1 design)
 
 Status: design, with decisions D1 and D3–D6 taken and D2 (Palace packaging)
-open (section 8). Steps 1.0 and 1.1 are done; the later steps are not
+open (section 8). Steps 1.0–1.2 are done; the later steps are not
 implemented yet. This note covers
 stage 1 of `ROADMAP.md`, "Solver backends: shared abstractions, then
 scikit-fem, ElmerFEM, Palace and Ansys". It has four parts: a gap analysis
@@ -835,21 +835,31 @@ class Convergence:     table: pd.DataFrame   # one row per pass or per mesh: siz
 ```python
 @dataclass(frozen=True)
 class Capabilities:
+    label: str                     # e.g. "Ansys HFSS (COM)"
     studies: frozenset[str]        # eigenmode, electrostatic, driven, magnetostatic
+    simulation_classes: bool       # driven by EigenmodeSim & co., or used directly
+    direct_use: str                # where to look when used directly
     ports: frozenset[str]          # lumped_sheet, lumped_line, lumped_cpw, wave
     junctions: frozenset[str]      # inductor, port, open
-    boundaries: frozenset[str]     # pec, surface_impedance, conductivity, absorbing,
-                                   # open_electrostatic, pmc_symmetry, pec_symmetry
+    boundaries: frozenset[str]     # pec, pmc_wall, absorbing, open_electrostatic,
+                                   # surface_impedance, conductivity, pmc_symmetry, pec_symmetry
     outputs: frozenset[str]        # frequencies, q, junction_epr, surface_epr,
                                    # capacitance, network, convergence_history, fields
     geometry: frozenset[str]       # ground_cutouts, sheet_metal, thick_metal,
                                    # multi_layer, flip_chip, any_pin_angle
-    materials: frozenset[str]      # from_layer_stack, loss_tangent, anisotropic
+    materials: frozenset[str]      # options, from_layer_stack, loss_tangent, anisotropic
     element_orders: tuple[int, ...]
     adaptive_refinement: bool
     parallel: Literal["none", "threads", "mpi"]
     requires: tuple[str, ...]      # e.g. "Ansys AEDT license", "ElmerSolver on PATH"
+    notes: str
 ```
+
+`Capabilities.check(requirements, study)` returns what is missing (an error)
+and which of the settings the user changed the backend ignores (a warning).
+`requirements_from_problem(problem, study, outputs)` derives the requirements
+from a `SimulationProblem`. A junction the problem leaves at its default
+counts as an inductor, and an electrostatic study leaves every junction open.
 
 **Registration.**
 
@@ -860,13 +870,25 @@ class Capabilities:
 - Some Ansys entries are narrower than AEDT itself. HFSS can model a
   surface impedance, for example, but Metal's HFSS renderer does not expose
   one, so the entry says `surface_impedance` is unsupported.
+- `simulation_classes` separates the backends the simulation classes can
+  drive (`hfss`, `q3d`) from those used through their own API (`elmer`,
+  `aedt_hfss`, `aedt_q3d`). `gmsh` and `gds` solve nothing.
+- A test checks that every name in `config.renderers_to_load` is declared.
 
-**The check.** It runs at the start of `run_sim`, before rendering:
+**The check.** It runs at the start of `run_sim`, before rendering. Since
+step 1.2 it checks the study type:
 
 ```
-BackendCapabilityError: renderer 'elmer' cannot run: study 'eigenmode', output 'junction_epr'.
-Backends that can: hfss (registered; needs Ansys AEDT license), skfem (not installed: pip install ...).
+BackendCapabilityError: LumpedElementsSim(renderer_name='elmer'): 'elmer' (gmsh + ElmerFEM)
+runs electrostatic studies through its own API, not through LumpedElementsSim:
+render_design, add_solution_setup('capacitance'), run('capacitance'); tutorial 4.19.
+Renderers that run electrostatic studies through LumpedElementsSim: 'q3d' (Ansys Q3D (COM);
+needs Ansys AEDT with a license, on Windows (COM), quantum-metal[ansys]).
 ```
+
+These combinations used to fail with an `AttributeError` deep inside the
+renderer. The ports, boundary conditions and outputs join the check with the
+neutral path (step 1.8).
 
 - A missing study, port kind, boundary condition or output is an error.
 - A setting the backend ignores, such as `max_passes` on a single-pass
@@ -1025,7 +1047,7 @@ None changes a stored notebook output.
 |---|---|---|
 | 1.0 (done) | Fix the junction size field in `QGmshRenderer.define_mesh_size_fields`. | `tests/test_gmsh_mesh_size_fields.py`: the junction field lists the junction curves and uses `max_size_jj`. With `skip_junctions=True` (tutorial 4.19's Elmer path) the mesh is node-for-node the same as before. |
 | 1.1 (done) | `problem.py`: ports, junctions, pins, boxes, boundaries, `MeshSpec`, studies; `from_run_args` / `to_run_args`; `validate()`; SI values. No caller yet. | `tests/test_simulation_problem.py`: round trips of the argument lists of the analysis tutorials (4.02, 4.03, 4.14, 4.16–4.18, 4.22, 4.23, A.4, A.7, pyaedt multiplanar); every error reported by `validate()`; studies from the three default setups. |
-| 1.2 | `capabilities.py` with entries for `hfss`, `q3d`, `aedt_hfss`, `aedt_q3d`, `elmer`, `gmsh`; the study-type check in the three simulation classes; `capability_table()`. | `EigenmodeSim(design, "elmer")` gives the new message; every existing Ansys call path is unchanged (tests with a stub renderer). |
+| 1.2 (done) | `capabilities.py` with entries for every registered renderer (`hfss`, `q3d`, `aedt_hfss`, `aedt_q3d`, `elmer`, `gmsh`, `gds`); `Capabilities.check`, `requirements_from_problem`; the study-type check in the three simulation classes; `capability_table()`. | `tests/test_simulation_capabilities.py`: unsupported pairs fail before rendering with the alternatives named; supported pairs and undeclared renderers pass; missing features and ignored changed settings are all reported. |
 | 1.3 | `toolbox_metal/nets.py` (moved from `QElmerRenderer`); `QElmerRenderer` calls it; label styles. | The same `nets` dictionary as today on the 4.19 design and the two-qubit cell. |
 | 1.4 | `renderer_gmsh/groups.py` and `QGmshRenderer.group_map`; opt-in per-side outer faces. | Every tag in `physical_groups` appears once in the map; the Elmer `.sif` and `.msh` are unchanged with defaults. |
 | 1.5 | `MeshSpec` compiled by `QGmshRenderer`; today's options become the default spec. | Identical field list and parameters for the default spec; role-selected refinements tested on the fixture. |

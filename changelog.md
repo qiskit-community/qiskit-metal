@@ -15,6 +15,7 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ### Added
 
+- **Simulation classes check the renderer before running.** `EigenmodeSim`, `LumpedElementsSim` and `ScatteringImpedanceSim` raise `BackendCapabilityError`, naming the renderers that can run the study, when the chosen renderer cannot (e.g. `EigenmodeSim(design, "q3d")`, `LumpedElementsSim(design, "elmer")`); these failed with an `AttributeError` inside the renderer before. What each renderer can do is declared in `analyses/simulation/capabilities.py` (`capability_table()` prints it).
 - **`PolylineCPW`** (`qlibrary.tlines`): a CPW drawn along an explicit list of points, with no routing -- for paths you already have (traced, exported, octilinear). `taps={name: [x, y]}` adds pins partway along the line for branches, so a mid-line joint is a registered connection instead of a DRC waiver.
 - **`CapFingerInFrame`** (`qlibrary.lumped`): a single-finger gap capacitor, a frame electrode around a finger, tuned per instance by its length.
 - **`TransmonStar`** (`qlibrary.qubits`): `TransmonCross` generalized to `num_points` radial arms; arms without a connection pad stay bare stubs.

@@ -75,6 +75,8 @@ class ScatteringImpedanceSim(QSimulation):
     data_labels = ["sweep_name", "params_z", "params_y", "params_s"]
     """Default data labels."""
 
+    study_kind = "driven"
+
     def __init__(self, design: Optional["QDesign"] = None, renderer_name: str = "hfss"):
         """Compute drivenmodal and then extracts impedance, admittance and scattering paramters.
 
@@ -170,6 +172,8 @@ class ScatteringImpedanceSim(QSimulation):
             argm = locals()
             del argm["self"]
             self.save_run_args(**argm)
+        self._check_backend()
+
         # wipe data from the previous run (if any)
         self.clear_data()
 

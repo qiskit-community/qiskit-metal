@@ -38,6 +38,11 @@ class QSimulation(QAnalysis):
     data_labels = ["sim_setup_name"]
     """Default data labels."""
 
+    study_kind: str | None = None
+    """The study this class runs: ``"eigenmode"``, ``"electrostatic"`` or
+    ``"driven"``. Checked against the renderer's declared capabilities before a
+    run (see ``analyses/simulation/capabilities.py``)."""
+
     def __init__(
         self,
         design: Optional["QDesign"] = None,
@@ -138,6 +143,27 @@ class QSimulation(QAnalysis):
             )
             return None
         return renderer
+
+    def _check_backend(self):
+        """Raise a clear error, before anything is rendered, when the renderer
+        cannot run this class's study (e.g. an eigenmode study on ``"q3d"``).
+        Renderers that declare no capabilities are not checked.
+
+        Raises:
+            BackendCapabilityError: naming the renderers that can run it.
+        """
+        if self.renderer_name is None or self.study_kind is None:
+            return
+        from qiskit_metal.analyses.simulation.capabilities import check_study
+
+        registered = self.design.renderers.keys() if self.design is not None else ()
+        check_study(
+            self.renderer_name,
+            self.study_kind,
+            type(self).__name__,
+            registered=registered,
+            renderer=self.renderer,
+        )
 
     def start(self):
         """Starts the renderer by executing the routine of the selected renderer."""
