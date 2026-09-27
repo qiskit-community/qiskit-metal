@@ -36,35 +36,49 @@ from .core import (
     Finding,
     Severity,
     ValidationResult,
+    WaivedFinding,
+    Waiver,
     chip_bounds,
     component_geometry,
     representative_point,
 )
 from .rules import (
     DEFAULT_RULES,
+    SHAPE_RULES,
     ChipBoundsRule,
     CPWGapRule,
+    DanglingEndRule,
+    FilletStarvationRule,
     GroundContinuityRule,
     MetalOverlapRule,
     MetalSpacingRule,
     QubitClearanceRule,
+    SelfIntersectionRule,
+    SharpTurnRule,
     ShortSegmentRule,
 )
 
 __all__ = [
     "DEFAULT_RULES",
+    "SHAPE_RULES",
     "CPWGapRule",
     "ChipBoundsRule",
+    "DanglingEndRule",
     "DesignRule",
     "DesignRuleViolation",
+    "FilletStarvationRule",
     "Finding",
     "GroundContinuityRule",
     "MetalOverlapRule",
     "MetalSpacingRule",
     "QubitClearanceRule",
+    "SelfIntersectionRule",
     "Severity",
+    "SharpTurnRule",
     "ShortSegmentRule",
     "ValidationResult",
+    "WaivedFinding",
+    "Waiver",
     "chip_bounds",
     "component_geometry",
     "representative_point",
@@ -72,7 +86,7 @@ __all__ = [
 ]
 
 
-def validate(design, rules=None, strict=False) -> ValidationResult:
+def validate(design, rules=None, strict=False, waivers=None) -> ValidationResult:
     """Run design rules over ``design``.
 
     Args:
@@ -84,19 +98,47 @@ def validate(design, rules=None, strict=False) -> ValidationResult:
         strict (bool): raise :class:`DesignRuleViolation` if any
             ERROR-severity finding is produced. Equivalent to calling
             :meth:`ValidationResult.raise_if_errors` on the result.
+        waivers (Iterable[Waiver]): documented exemptions. A finding matched by
+            a waiver moves to :attr:`ValidationResult.waived` and stops
+            counting toward ``ok`` / ``strict``, but is still listed in the
+            report together with its reason. Waivers that match nothing are
+            reported as stale. See :class:`Waiver`.
 
     Returns:
         ValidationResult: findings, in the order the rules ran.
 
     Raises:
-        DesignRuleViolation: if ``strict`` and any ERROR was found.
+        DesignRuleViolation: if ``strict`` and any un-waived ERROR was found.
+
+    Example:
+        Run per build step and keep a real gate, while acknowledging the two
+        crossings that are carried on airbridges::
+
+            validate(design, strict=True, waivers=[
+                Waiver("airbridged crossover, see fab notes",
+                       rule="metal-overlap", component_pattern="FLUX_D5"),
+            ])
     """
     chosen = tuple(DEFAULT_RULES if rules is None else rules)
     findings = []
     for rule in chosen:
         findings.extend(rule.check(design))
+
+    waiver_list = tuple(waivers or ())
+    kept, waived, used = [], [], set()
+    for finding in findings:
+        match = next((w for w in waiver_list if w.matches(finding)), None)
+        if match is None:
+            kept.append(finding)
+        else:
+            waived.append(WaivedFinding(finding=finding, waiver=match))
+            used.add(id(match))
+
     result = ValidationResult(
-        findings=findings, rules_run=tuple(r.name for r in chosen)
+        findings=kept,
+        rules_run=tuple(r.name for r in chosen),
+        waived=waived,
+        unused_waivers=tuple(w for w in waiver_list if id(w) not in used),
     )
     if strict:
         result.raise_if_errors()

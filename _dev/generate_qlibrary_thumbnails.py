@@ -135,6 +135,32 @@ def _coupler_with_pads_recipe(ComponentCls, opts=None):
 SPECIAL_RECIPES = {}
 
 
+def _polyline_cpw_recipe(_design_unused=None):
+    """PolylineCPW takes points, not pins -- show an octilinear run."""
+    from qiskit_metal import designs
+    from qiskit_metal.qlibrary.tlines.polyline_cpw import PolylineCPW
+
+    design = designs.DesignPlanar()
+    design.overwrite_enabled = True
+    comp = PolylineCPW(
+        design,
+        "Poly",
+        options=dict(
+            points=[
+                [-1.0, -0.5],
+                [-0.3, -0.5],
+                [0.2, 0.0],
+                [0.2, 0.5],
+                [0.7, 0.9],
+                [1.2, 0.9],
+            ],
+            fillet="80um",
+            min_segment="200um",
+        ),
+    )
+    return design, comp
+
+
 def _anchored_route_recipe(RouteCls):
     """Recipe for routes that require an explicit ``anchors`` dict."""
 
@@ -191,8 +217,9 @@ def _airbridge_recipe(_design_unused=None):
         ),
     )
     design.rebuild()
-    route_airbridges(design, cpw, pitch="0.35mm", min_spacing="30um",
-                     bridge_at_corners=True)
+    route_airbridges(
+        design, cpw, pitch="0.35mm", min_spacing="30um", bridge_at_corners=True
+    )
     design.rebuild()
     return design, cpw
 
@@ -214,6 +241,7 @@ def _populate_special_recipes():
         SPECIAL_RECIPES["RouteAnchors"] = _anchored_route_recipe(RouteAnchors)
         SPECIAL_RECIPES["RouteMixed"] = _anchored_route_recipe(RouteMixed)
         SPECIAL_RECIPES["Airbridge"] = _airbridge_recipe
+        SPECIAL_RECIPES["PolylineCPW"] = _polyline_cpw_recipe
     except ImportError as exc:
         print(f"  ! could not register route recipes: {exc}")
 
@@ -263,7 +291,11 @@ def _render_to_png(design, out_path, size_px=256):
     import matplotlib.pyplot as plt
     import qiskit_metal as qm
 
-    fig = qm.view(design)
+    # chip_outline=False: the die outline (drawn since v0.8.0) takes part in
+    # autoscaling, so a small component -- a 0.25 mm capacitor -- otherwise
+    # renders as a speck in an empty box. Existing thumbnails predate the
+    # outline, so this also keeps new ones consistent with them.
+    fig = qm.view(design, chip_outline=False)
     if fig is None:
         return False
     # Square, tight crop, no axes — pure thumbnail.
@@ -318,7 +350,23 @@ def _inject_image_directive(source_file, class_name, img_filename):
     # which requires the filename on a separate line from the directive
     # marker. ``.. image:: foo.png`` on one line *parses* in Sphinx but
     # is invisible to the GUI scanner. Always emit two lines.
-    new_doc = f".. image::\n    {img_filename}\n\n" + docstring
+    # Insert AFTER the summary paragraph, at the docstring's own indentation.
+    # Prepending it (as this used to) pushed the summary line to column 0
+    # behind the directive, so Sphinx autosummary -- which takes the first
+    # docstring line as the summary -- showed ".. image::" as the component's
+    # one-line description.
+    indent = " " * (first.col_offset)
+    doc_lines = docstring.split("\n")
+    try:
+        cut = next(i for i, ln in enumerate(doc_lines) if i > 0 and not ln.strip())
+    except StopIteration:
+        cut = len(doc_lines)
+    block_lines = ["", f"{indent}.. image::", f"{indent}    {img_filename}"]
+    if cut < len(doc_lines):
+        new_lines = doc_lines[:cut] + block_lines + doc_lines[cut:]
+    else:
+        new_lines = doc_lines + block_lines + [indent]
+    new_doc = "\n".join(new_lines)
     # Find the actual source span of the docstring literal and replace
     # in-place to preserve everything else (quoting, indentation).
     lineno = first.value.lineno - 1

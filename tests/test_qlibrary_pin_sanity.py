@@ -41,6 +41,7 @@ from qiskit_metal.qlibrary.couplers.cap_n_interdigital_tee import CapNInterdigit
 from qiskit_metal.qlibrary.couplers.coupled_line_tee import CoupledLineTee
 from qiskit_metal.qlibrary.couplers.line_tee import LineTee
 from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
+from qiskit_metal.qlibrary.lumped.cap_finger_in_frame import CapFingerInFrame
 from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CapNInterdigital
 from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
 from qiskit_metal.qlibrary.qubits.star_qubit import StarQubit
@@ -52,6 +53,7 @@ from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
 from qiskit_metal.qlibrary.qubits.transmon_pocket_cl import TransmonPocketCL
 from qiskit_metal.qlibrary.sample_shapes.n_square_spiral import NSquareSpiral
 from qiskit_metal.qlibrary.terminations.launchpad_wb import LaunchpadWirebond
+from qiskit_metal.qlibrary.tlines.polyline_cpw import PolylineCPW
 from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import (
     LaunchpadWirebondCoupled,
 )
@@ -91,6 +93,12 @@ COMPONENTS_WITH_PINS = [
     (LineTee, _NONE),
     (CapNInterdigitalTee, _NONE),
     (CoupledLineTee, _NONE),
+    (CapFingerInFrame, _NONE),
+    # PolylineCPW needs points; the tap exercises its mid-line pins too.
+    (
+        PolylineCPW,
+        Dict(points=[[0, 0], [0.5, 0], [0.5, 0.5]], taps=Dict(branch=[0.25, 0.2])),
+    ),
 ]
 
 

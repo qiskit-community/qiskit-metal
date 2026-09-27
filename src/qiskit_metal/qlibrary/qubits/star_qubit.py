@@ -46,8 +46,8 @@ class StarQubit(QComponent):
         * junc_h: '30um' -- Junction height
         * cpw_width='0.01', -- Junction width
         * rotation_cpl1: '0.0' -- Rotation for one of the coupling resonators '36.0', '0.0',
-        * rotation_cpl2: '72.0' -- Rotation for the readout resonator '108.0','72.0',
-        * rotation_rdout: '144.0' -- Rotation for one of the coupling resonators '180.0','144.0',
+        * rotation_cpl2: '72.0' -- Rotation for one of the coupling resonators '108.0','72.0',
+        * rotation_rdout: '144.0' -- Rotation for the readout resonator '180.0','144.0',
         * rotation_cpl3: '216.0' -- Rotation for one of the coupling resonators'252.0','216.0',
         * rotation_cpl4: '288.0' -- Rotation for one of the coupling resonators '324.0','288.0',
         * number_of_connectors: '4' -- Total number of coupling resonators
@@ -55,6 +55,13 @@ class StarQubit(QComponent):
         * cap_style: 'round' -- round, flat, square
         * subtract: 'False'
         * helper: 'False'
+
+    Note:
+        The ``rotation_*`` options are measured 90 degrees ahead of the
+        direction the corresponding pin ends up facing: a connector built with
+        ``rotation_rdout='45'`` produces ``pin_rdout`` with an outward normal
+        pointing at 315 degrees. To place an arm at a chosen compass angle
+        ``theta`` (0 = +x, counter-clockwise), pass ``theta + 90``.
     """
 
     component_metadata = Dict(

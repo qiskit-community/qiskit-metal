@@ -529,6 +529,221 @@ class GroundContinuityRule(DesignRule):
             )
 
 
+def _trace_rows(design: "QDesign"):
+    """Metal (non-subtract) rows of the path table."""
+    tables = design.qgeometry.tables
+    if "path" not in tables or len(tables["path"]) == 0:
+        return _EMPTY_FRAME
+    t = tables["path"]
+    return t[~t["subtract"].astype(bool)]
+
+
+class SelfIntersectionRule(DesignRule):
+    """A single path must not cross or retrace itself.
+
+    Pairwise rules cannot see this: the overlap is within one component. It is
+    what a line that doubles back looks like -- on a traced 17-qubit layout, a
+    feedline ran ~220 um past its launchpad joint and back over itself, and
+    every pairwise check passed. Reported at the first crossing found.
+    """
+
+    name = "self-intersection"
+    description = "A path crosses or retraces itself."
+
+    def __init__(self, severity: Severity = Severity.ERROR):
+        self.severity = severity
+
+    def check(self, design: "QDesign") -> Iterable[Finding]:
+        from shapely.geometry import LineString
+
+        names = component_names_by_id(design)
+        for _, row in _trace_rows(design).iterrows():
+            line = row["geometry"]
+            if line.geom_type != "LineString" or line.is_simple:
+                continue
+            coords = np.asarray(line.coords, dtype=float)
+            segs = [LineString(coords[i : i + 2]) for i in range(len(coords) - 1)]
+            tree = STRtree(segs)
+            where = None
+            for i, seg in enumerate(segs):
+                for j in tree.query(seg):
+                    if abs(int(j) - i) <= 1:
+                        continue
+                    hit = seg.intersection(segs[int(j)])
+                    if not hit.is_empty:
+                        where = representative_point(hit)
+                        break
+                if where is not None:
+                    break
+            comp = names[row["component"]]
+            yield Finding(
+                rule=self.name,
+                severity=self.severity,
+                message=f"{comp}.{row['name']} crosses or doubles back over itself",
+                components=(comp,),
+                location=where,
+            )
+
+
+class SharpTurnRule(DesignRule):
+    """Interior turns sharper than ``max_turn`` degrees.
+
+    A CPW corner of more than ~135 degrees is almost never intended: it is a
+    hook or a spike, usually from a traced or generated path that turns back
+    on itself for a few microns -- e.g. a 15 um hook where a traced line was
+    joined to a pin. ``value`` and ``limit`` are in degrees.
+    """
+
+    name = "sharp-turn"
+    description = "Path turns back on itself sharply."
+
+    def __init__(self, max_turn: float = 135.0, severity: Severity = Severity.WARNING):
+        self.max_turn = max_turn
+        self.severity = severity
+
+    def check(self, design: "QDesign") -> Iterable[Finding]:
+        names = component_names_by_id(design)
+        for _, row in _trace_rows(design).iterrows():
+            coords = np.asarray(row["geometry"].coords, dtype=float)
+            if len(coords) < 3:
+                continue
+            d = np.diff(coords, axis=0)
+            n = np.linalg.norm(d, axis=1)
+            keep = n > 1e-12
+            d, idx = d[keep] / n[keep, None], np.flatnonzero(keep)
+            for k in range(len(d) - 1):
+                turn = float(np.degrees(np.arccos(np.clip(d[k] @ d[k + 1], -1.0, 1.0))))
+                if turn <= self.max_turn:
+                    continue
+                v = coords[idx[k + 1]]
+                comp = names[row["component"]]
+                yield Finding(
+                    rule=self.name,
+                    severity=self.severity,
+                    message=f"{comp}.{row['name']} turns {turn:.0f} deg (limit {self.max_turn:.0f})",
+                    components=(comp,),
+                    location=(float(v[0]), float(v[1])),
+                    value=turn,
+                    limit=self.max_turn,
+                )
+
+
+class FilletStarvationRule(DesignRule):
+    """The drawn fillet is smaller than the component asked for.
+
+    A path's fillet is one number, and a component that clamps it to half its
+    shortest segment (as ``PolylineCPW`` must, to avoid self-intersecting
+    geometry) quietly shrinks every corner because of one short segment. The
+    geometry is legal, so nothing else reports it; the corners are just sharper
+    than designed. Compares the component's ``fillet`` option with the fillet
+    recorded in the path table.
+    """
+
+    name = "fillet-starved"
+    description = "Effective fillet is below the requested one."
+
+    def __init__(
+        self, min_fraction: float = 0.99, severity: Severity = Severity.WARNING
+    ):
+        self.min_fraction = min_fraction
+        self.severity = severity
+
+    def check(self, design: "QDesign") -> Iterable[Finding]:
+        names = component_names_by_id(design)
+        seen = set()
+        for _, row in _trace_rows(design).iterrows():
+            comp_name = names[row["component"]]
+            if comp_name in seen:
+                continue
+            seen.add(comp_name)
+            comp = design.components[comp_name]
+            requested = comp.options.get("fillet", None)
+            if requested is None:
+                continue
+            try:
+                requested = _parse(design, requested)
+            except Exception:  # noqa: BLE001 - unparsable option: not our finding
+                continue
+            drawn = row.get("fillet", None)
+            if requested <= 0 or drawn is None or not np.isfinite(drawn):
+                continue
+            if drawn >= requested * self.min_fraction:
+                continue
+            yield Finding(
+                rule=self.name,
+                severity=self.severity,
+                message=(
+                    f"{comp_name} asked for a {requested * 1000:.1f} um fillet but is "
+                    f"drawn with {float(drawn) * 1000:.1f} um -- a short segment "
+                    "clamped it for the whole path"
+                ),
+                components=(comp_name,),
+                location=representative_point(row["geometry"]),
+                value=float(drawn),
+                limit=requested,
+            )
+
+
+class DanglingEndRule(DesignRule):
+    """A path end that is neither connected nor terminated.
+
+    Path metal and its ground cut end flush (flat caps in every renderer; gdstk
+    ``FlexPath`` defaults to flush ends in GDS export), so an unconnected CPW
+    end has its centre conductor butting the ground plane: it is fabricated as
+    a SHORT to ground, not an open. If an open is meant, place
+    ``OpenToGround``; if a short, ``ShortToGround`` makes it explicit. Mid-line
+    pins (e.g. ``PolylineCPW`` taps) are ignored -- only pins at a path's ends
+    count.
+    """
+
+    name = "dangling-end"
+    description = "Path end is unconnected -- renders as a short to ground."
+
+    def __init__(self, tol: float = 1e-6, severity: Severity = Severity.WARNING):
+        self.tol = tol
+        self.severity = severity
+
+    def check(self, design: "QDesign") -> Iterable[Finding]:
+        names = component_names_by_id(design)
+        net = getattr(design, "net_info", None)
+        connected = set()
+        if net is not None and len(net):
+            connected = set(zip(net["component_id"], net["pin_name"]))
+        ends = {}
+        for _, row in _trace_rows(design).iterrows():
+            c = np.asarray(row["geometry"].coords, dtype=float)
+            ends.setdefault(row["component"], []).extend([c[0], c[-1]])
+        for cid, pts in ends.items():
+            comp = design.components[names[cid]]
+            for pin_name, pin in comp.pins.items():
+                if (cid, pin_name) in connected:
+                    continue
+                m = np.asarray(pin["middle"], dtype=float)
+                if not any(np.linalg.norm(m - p) <= self.tol for p in pts):
+                    continue
+                yield Finding(
+                    rule=self.name,
+                    severity=self.severity,
+                    message=(
+                        f"{names[cid]}.{pin_name} is an unconnected path end: it "
+                        "butts the ground plane and fabricates as a short -- "
+                        "connect it, or terminate it with OpenToGround/ShortToGround"
+                    ),
+                    components=(names[cid],),
+                    location=(float(m[0]), float(m[1])),
+                )
+
+
+#: Single-path shape checks. Not in ``DEFAULT_RULES`` yet -- opt in with
+#: ``validate(design, rules=[*DEFAULT_RULES, *SHAPE_RULES])``.
+SHAPE_RULES: tuple[DesignRule, ...] = (
+    SelfIntersectionRule(),
+    SharpTurnRule(),
+    FilletStarvationRule(),
+    DanglingEndRule(),
+)
+
+
 #: Rules run by :func:`~qiskit_metal.validation.validate` when none are given.
 DEFAULT_RULES: tuple[DesignRule, ...] = (
     MetalOverlapRule(),

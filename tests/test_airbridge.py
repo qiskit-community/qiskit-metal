@@ -122,6 +122,53 @@ class TestAirbridge(unittest.TestCase):
         self.assertGreater(sum(g.area for g in posts["geometry"]), 0.0)
 
 
+class TestAirbridgeCrossoverPins(unittest.TestCase):
+    """Pins that let an Airbridge carry a signal over another line."""
+
+    def setUp(self):
+        self.design = designs.DesignPlanar()
+        self.design.overwrite_enabled = True
+
+    def test_pins_at_the_feet_facing_out(self):
+        """a/b sit crossover_length/2 either side of centre, normals outward."""
+        import numpy as np
+
+        ab = Airbridge(self.design, "ab", options=dict(crossover_length="0.1"))
+        np.testing.assert_allclose(ab.pins["a"]["middle"], [-0.05, 0], atol=1e-9)
+        np.testing.assert_allclose(ab.pins["b"]["middle"], [0.05, 0], atol=1e-9)
+        np.testing.assert_allclose(ab.pins["a"]["normal"], [-1, 0], atol=1e-9)
+        np.testing.assert_allclose(ab.pins["b"]["normal"], [1, 0], atol=1e-9)
+
+    def test_pins_follow_orientation(self):
+        """Rotating the bridge rotates its pins."""
+        import numpy as np
+
+        ab = Airbridge(
+            self.design, "ab", options=dict(crossover_length="0.1", orientation="90")
+        )
+        np.testing.assert_allclose(ab.pins["b"]["middle"], [0, 0.05], atol=1e-9)
+        np.testing.assert_allclose(ab.pins["b"]["normal"], [0, 1], atol=1e-9)
+
+    def test_wired_crossover_leaves_no_dangling_ends(self):
+        """A line cut for a crossover is whole again once wired through a/b.
+
+        Unwired, the two cut ends are unconnected CPW ends -- each butts the
+        ground plane and fabricates as a short.
+        """
+        from qiskit_metal.qlibrary.tlines.polyline_cpw import PolylineCPW
+        from qiskit_metal.validation import DanglingEndRule
+
+        left = PolylineCPW(self.design, "l", options=dict(points=[[-1, 0], [-0.05, 0]]))
+        right = PolylineCPW(self.design, "r", options=dict(points=[[0.05, 0], [1, 0]]))
+        ab = Airbridge(self.design, "ab", options=dict(crossover_length="0.1"))
+        before = {f.location for f in DanglingEndRule().check(self.design)}
+        self.assertIn((-0.05, 0.0), before)
+        self.design.connect_pins(left.id, "end", ab.id, "a")
+        self.design.connect_pins(ab.id, "b", right.id, "start")
+        after = {f.location for f in DanglingEndRule().check(self.design)}
+        self.assertEqual(after, {(-1.0, 0.0), (1.0, 0.0)})
+
+
 class TestRouteAirbridges(unittest.TestCase):
     """Auto-placement of airbridges along a route (route_airbridges)."""
 
