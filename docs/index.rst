@@ -199,6 +199,7 @@ in a simple, open, community-driven framework.
 
     Quantum Metal Workflow<workflow>
     Quantization Methods<quantization>
+    Simulation Pathways<simulation-pathways>
     GUI Navigation & Shortcuts<gui-shortcuts>
 
 .. toctree::

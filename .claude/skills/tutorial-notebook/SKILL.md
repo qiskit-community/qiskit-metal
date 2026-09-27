@@ -84,6 +84,12 @@ the run time) in its first notebook, and a module README.
   the final run, with rounding that survives run-to-run variation (parallel
   meshers are not bit-reproducible).
 - Report disagreements with a reference plainly, with both numbers.
+- **Stored outputs of external-gated notebooks (Ansys, ElmerFEM, heavy
+  runs) are reference answers.** Edit their markdown without re-executing
+  (insert or change cells as JSON, keep outputs byte-identical, check the
+  diff is insert-only); never regenerate them to "refresh".
+- Notebooks that run a solver carry the "Other simulation pathways" callout
+  pointing to `docs/simulation-pathways.rst`; add it to a new one.
 
 ## 6. Before handing over
 

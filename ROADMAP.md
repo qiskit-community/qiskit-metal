@@ -819,47 +819,80 @@ roadmap items above, but tracked so they don't get lost.
 
 ---
 
-## Solver backends: a scikit-fem renderer, or swappable backends? `[research]`
+## Solver backends: scikit-fem, ElmerFEM, then Palace `[research]`
 
 Tutorials 4.41–4.45 (`docs/tut/4-Analysis/4.4*`) run eigenmode, driven
 (impedance) and electrostatic calculations with gmsh + scikit-fem + SciPy,
-from code in `docs/tut/resources/package_modes/`. That raises the question of
-how an open-source solver should plug into Quantum Metal so that a user can
-switch between Ansys, Elmer, scikit-fem or Palace without rewriting the
-analysis.
+from `docs/tut/resources/package_modes/`, and reproduce a published HFSS study
+to within a few percent. The goal is to let a user switch between Ansys,
+ElmerFEM, scikit-fem and AWS Palace without rewriting the analysis, and to
+check each solver against the others. User-facing summary of the paths today:
+`docs/simulation-pathways.rst`. Design notes for the scikit-fem solver:
+`docs/architecture/open_fem_scikit_fem.md`.
 
 Today the switch point is `renderer_name` in the simulation classes
 (`analyses/simulation/`). Their contract with a renderer is informal and
 follows the Ansys renderers: `initialize_eigenmode`, `analyze_setup`,
 `get_convergences`, `set_mode` / `plot_fields`, `initialize_cap_extract`,
 `get_capacitance_matrix`. `QElmerRenderer` exposes a different API
-(`add_solution_setup`, `run`, `capacitance_matrix`).
+(`add_solution_setup`, `run`, `capacitance_matrix`) and covers electrostatics
+only.
 
-Options:
+Options considered:
 
-1. **Keep the scikit-fem solver as tutorial code.** No API commitment; the
-   code stays short and readable. Not callable from `EigenmodeSim` /
-   `LumpedElementsSim`, and its meshing is separate from `QGmshRenderer`.
-2. **A `QSkfemRenderer`** registered like the others and implementing the
-   existing informal contract. Works with `EigenmodeSim(design, "skfem")`
-   unchanged. Carries the Ansys-shaped setup/pass/convergence vocabulary
-   into a backend that has no adaptive passes, and still needs port and
-   symmetry-plane tags that `QGmshRenderer` does not produce yet.
-3. **A backend interface below the simulation classes.** A
-   solver-neutral problem description (a gmsh mesh with tagged metal,
-   dielectrics, symmetry planes and lumped ports / junctions) and small typed
-   calls: eigenmodes with optional junction inductances, a port impedance
-   matrix over frequency, a capacitance matrix. Ansys renderers are wrapped,
-   not modified; scikit-fem, Elmer and Palace implement the same calls. Allows
-   running one problem on several solvers, which is also the basis for
-   license-free CI checks. More design work, and it depends on the
-   gmsh-tag → port contract listed under "Open FEM stack".
+1. **Keep the scikit-fem solver as tutorial code.** No API commitment; not
+   callable from the simulation classes.
+2. **A `QSkfemRenderer`** implementing the existing informal contract. Carries
+   the Ansys setup/pass/convergence vocabulary into direct solvers, and still
+   needs port and symmetry-plane tags that `QGmshRenderer` does not produce.
+3. **A backend interface below the simulation classes**: a solver-neutral
+   problem description (a gmsh mesh with tagged metal, dielectrics, symmetry
+   planes and lumped ports / junctions) and small typed calls — eigenmodes
+   with optional junction inductances, a port impedance matrix over
+   frequency, a capacitance matrix. Ansys renderers are wrapped, not
+   modified.
 
-Design notes, validation numbers and a concrete extension path for the
-scikit-fem solver: `docs/architecture/open_fem_scikit_fem.md`.
+Option 3, in stages. Option 2 is not proposed: it would fix the informal
+contract in place.
 
-Proposed order: keep (1) for now; take (3) incrementally — define the tagged
-problem description, implement scikit-fem first (pure Python, runs in CI in
-minutes), then Elmer and Palace, then let the simulation classes accept a
-backend alongside `renderer_name`. Option (2) is not proposed: it would fix the
-current informal contract in place.
+1. **scikit-fem backend.** Move `MaxwellFEM`, `PortROM`, `Electrostatics`,
+   the mesher and the field evaluator into `src/qiskit_metal/analyses/`
+   behind an optional extra; keep the tutorial module as a thin wrapper.
+   Extend the mesher to ground planes with cutouts and CPW paths.
+2. **ElmerFEM beyond electrostatics.** Put the existing capacitance path
+   behind the same calls, then add eigenmodes with lumped junctions from
+   Elmer's electromagnetic-wave solvers (parallel, higher-order elements).
+   Cross-check against scikit-fem on the same tagged problem (the 4.19 cell,
+   the 4.43 package).
+3. **AWS Palace.** Build and test locally first (CMake, MPI); the tagged
+   problem maps onto its configuration file. Eigenmodes and EPR with lumped
+   junctions, then driven and electrostatic solves. Part of the larger local
+   simulation plan.
+4. **Integration.** The simulation classes accept a backend next to
+   `renderer_name`.
+
+### Testing solvers without losing the stored answers
+
+The tutorials hold the reference answers: the committed outputs of the
+external-gated notebooks (Ansys, ElmerFEM, the heavier scikit-fem runs) are
+the only record of many of these results, and CI never re-executes those
+notebooks in place. Solver runs are expensive and, on shared runners, risky
+(time, memory, licenses, external binaries). So:
+
+- **Reference files.** Extract the key numbers once from the stored notebook
+  outputs into version-controlled data (e.g. `tests/solver_references/*.json`:
+  value, tolerance, source notebook, solver, mesh settings). Tests compare
+  against these; notebooks are never overwritten by a test run (execute into
+  a scratch copy). Updating a reference is a reviewed change of its own.
+- **Tier 0 — CI, every PR (seconds, no external binaries).** Analytic
+  references (box and LSM modes, circuit couplings, the Appendix D fit) and a
+  tiny scikit-fem model (an empty box on a coarse mesh) when scikit-fem is
+  installed; skipped otherwise.
+- **Tier 1 — local or opt-in scheduled (minutes, pip-installable solvers).**
+  Small-mesh versions of the tutorial problems against the reference files;
+  behind a pytest marker that is not collected by default.
+- **Tier 2 — local only (external binaries, MPI, licenses, gigabytes).**
+  ElmerFEM, Palace, Ansys, and full-size tutorial runs; enabled per solver by
+  an environment variable; never on shared CI runners.
+- **Guardrails for every solver test**: a time and memory budget, a skip when
+  the binary or extra is missing, and no writes under `docs/`.

@@ -109,23 +109,33 @@ empty fragment maps) are in `.claude/context/lessons-learned.md`, section
 
 ## Extension path (reusable backend)
 
-Matches option 3 of the ROADMAP item "Solver backends":
+The staged plan and the testing policy are in `ROADMAP.md`, "Solver
+backends: scikit-fem, ElmerFEM, then Palace". For this solver:
 
 1. **Geometry**: add ground-plane metal with subtracted cutouts (Metal
    `subtract=True` polys) and CPW paths to `mesh_package`, or feed
    `QGmshRenderer` output through the same tagging (metal surfaces, junction
-   lines, ports, symmetry faces).
+   lines, ports, symmetry faces). The same tagged mesh is the input the
+   ElmerFEM and Palace backends need.
 2. **Problem description**: a solver-neutral dataclass — tagged gmsh mesh,
    materials, symmetry planes, lumped ports.
 3. **Backend calls**: `eigenmodes(problem, inductors)`,
-   `impedance(problem, ports, freqs, shunts)`,
-   `capacitance(problem)`; move `MaxwellFEM`, `PortROM`, `Electrostatics`
-   into `src/qiskit_metal/analyses/` behind an optional extra
-   (`scikit-fem`, optional `pymetis`).
-4. **Tests**: analytic box modes, the two-mode circuit and Appendix D fit,
-   and the 4.4x numbers above as regression values (small meshes, CI-sized).
-5. **Integration**: let `EigenmodeSim` / `LumpedElementsSim` accept the
-   backend next to `renderer_name`; cross-check capacitance against the
-   ElmerFEM notebooks (4.19, A.4) and existing HFSS reference outputs.
-6. **Accuracy**: second-order edge elements (custom element in scikit-fem or
-   another assembler) would remove most of the paddle-edge capacitance error.
+   `impedance(problem, ports, freqs, shunts)`, `capacitance(problem)`; move
+   `MaxwellFEM`, `PortROM`, `Electrostatics` and `_Locator` into
+   `src/qiskit_metal/analyses/` behind an optional extra (`scikit-fem`,
+   optional `pymetis`). Keep `package_modes.py` as a thin wrapper so the
+   tutorials keep running unchanged.
+4. **Tests**, tiered as in the ROADMAP: tier 0 (CI) — analytic box and LSM
+   modes, the two-mode circuit and Appendix D fit, an empty box on a coarse
+   mesh; tier 1 (opt-in) — small-mesh versions of the 4.4x problems against
+   reference values extracted from the stored notebook outputs
+   (`tests/solver_references/`); tier 2 (local only) — full-size runs.
+   Never regenerate the stored notebook outputs from a test.
+5. **Cross-checks**: capacitance against the ElmerFEM notebooks (4.19, A.4)
+   and the stored Q3D outputs; eigenmodes against stored HFSS outputs and,
+   once available, Elmer and Palace on the same tagged problem.
+6. **Integration**: let `EigenmodeSim` / `LumpedElementsSim` accept the
+   backend next to `renderer_name`.
+7. **Accuracy**: second-order edge elements (a custom element in scikit-fem
+   or another assembler) would remove most of the paddle-edge capacitance
+   error.

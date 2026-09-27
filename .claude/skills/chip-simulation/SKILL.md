@@ -24,7 +24,9 @@ The scikit-fem path runs anywhere `pip` does, in minutes for ~10^5–10^6
 unknowns, and every matrix is in your hands (rank-one junctions, reduced
 models, custom ports). Its limits: lowest-order elements, zero-thickness
 metal, no ground-plane cutouts or CPWs in the mesher yet, single process.
-Details: `docs/architecture/open_fem_scikit_fem.md`.
+Details: `docs/architecture/open_fem_scikit_fem.md`. The user-facing
+summary of all paths (what each computes, how to install it, which
+tutorials use it) is `docs/simulation-pathways.rst`; AWS Palace is planned.
 
 ## 2. Validate the solver before the device
 
@@ -124,7 +126,19 @@ Build up the model and check each step against something known:
   not "fix" the paper. Tell the authors, if they are in the loop.
 - Credit the paper in every notebook and in the data module.
 
-## 8. Report
+## 8. Testing solvers
+
+- **The stored outputs of solver notebooks are reference answers** — often
+  the only record of an Ansys, ElmerFEM or long run. Never re-execute them in
+  place to "refresh"; run into a scratch copy and compare. Extract the key
+  numbers into reference files with a tolerance and their provenance.
+- **Tier the tests by cost**: seconds and no external binaries on every CI
+  run (analytic cases, a tiny mesh); minutes behind an opt-in marker;
+  external binaries, MPI, licenses and large meshes local only. Give every
+  solver test a time and memory budget and a skip when the solver is absent.
+  Policy: `ROADMAP.md`, "Solver backends", "Testing solvers".
+
+## 9. Report
 
 Say for each number which mesh, which method and which capacitance it came
 from, and whether it is converged or a consistency check. Keep the
