@@ -49,7 +49,6 @@ with open(os.path.join(HERE, "geometry.json")) as _f:
     DATA = json.load(_f)
 
 # --- measured and derived constants ------------------------------------------
-QUBIT_XY = {q: np.array(p) for q, p in DATA["qubits"].items()}
 AX, AY = DATA["lattice_mm"]["x"], DATA["lattice_mm"]["y"]
 DIE = DATA["die_mm"]
 RING = DATA["pad_necking_mm"]  # launchpads are positioned by their necking point
@@ -96,6 +95,10 @@ QUBITS = {
     "Z4": (1, -2),
 }
 CELL = {v: k for k, v in QUBITS.items()}
+# Qubit centers on the regular lattice. The traced centers (DATA["qubits"])
+# scatter about these by up to ~50 um -- a few pixels of tracing noise -- so
+# every distance from a qubit is measured from where the qubit is drawn.
+QUBIT_POS = {q: np.array([col * AX, row * AY]) for q, (col, row) in QUBITS.items()}
 GROUPS = DATA["readout_groups"]
 GROUP = {q: g for g, v in GROUPS.items() for q in v["qubits"]}
 RO_ARM = {q: v["arm"] for v in GROUPS.values() for q in v["qubits"]}  # x 45 deg
@@ -121,17 +124,14 @@ TRACE_FILLET = "15um"
 # before following the trace, so the CPW meets the pad square-on and its end
 # is flush with it.
 LEAD = 0.04
-# A trace that leaves a pin nearly sideways (a coupler making room for a flux
-# line that ends on the same arm) has no room for a lead; it keeps its traced
-# departure.
-SIDE_EXIT_DEG = 65
 
 # StarQubit's connector pins sit 0.20 mm from the qubit center.
 PIN_R = 0.21
-# Where the control lines stop, from the qubit center: the flux short sits right
-# at the pocket (measured 0.165-0.21 mm) but must clear the 0.20 mm connectors;
+# Where the control lines stop, from the qubit center: the flux short sits at
+# the pocket edge beside the SQUID (measured 0.165-0.21 mm; the pocket is
+# 0.20 mm and StarQubit's junction reaches 0.2105 mm, so 0.215 clears it);
 # the drive line stops further out (measured 0.23-0.29 mm).
-FLUX_STANDOFF = 0.25
+FLUX_STANDOFF = 0.215
 DRIVE_STANDOFF = 0.28
 
 CAPS = DATA["capacitors"]
@@ -153,6 +153,44 @@ def arm_rotation(deg):
     (rotation R puts the pin at R - 90).
     """
     return f"{(deg + 90) % 360}"
+
+
+def qubit_frame(q):
+    """``(flux_axis_deg, side)`` for qubit ``q``, from the traced lines.
+
+    The flux line ends on one of the lattice axes, beside the SQUID; the
+    readout arm is on a diagonal 45 degrees to one side of it. ``side`` is +1
+    when the readout is counter-clockwise from the flux axis, -1 otherwise.
+    """
+    path = [np.array(p) for p in LINES["flux"]["path"][q]]
+    end = trim_to_standoff(path, QUBIT_POS[q], FLUX_STANDOFF)[-1] - QUBIT_POS[q]
+    axis = round(math.degrees(math.atan2(end[1], end[0])) / 90) * 90 % 360
+    side = {45: 1, 315: -1}[(RO_ARM[q] * 45 - axis) % 360]
+    return axis, side
+
+
+# The device qubit (Krinner et al. 2022; close-up in the Wallraff slides) has
+# five pads spaced about 72 degrees -- the readout and four couplers -- and the
+# SQUID on the island arm between the readout pad and a coupler pad. Measured
+# with the SQUID at 0: readout 42, couplers 112, 180, 252, 325. Taken here as
+# the regular pattern: readout at +36, couplers at -36, +108, 180, -108 (times
+# ``side``). The coupler at -36 serves the neighbor on the flux axis; the pad
+# angle differs from the neighbor's direction, which is why its line jogs.
+READOUT_PAD = 36
+COUPLER_PAD = {0: -36, 90: 108, 180: 180, 270: 252}  # neighbor direction -> pad
+
+
+def pad_angles(q):
+    """Compass angles of qubit ``q``'s pads and junction.
+
+    Returns ``{"cpl": {cardinal_arm_deg: pad_deg}, "rdout": deg, "jj": deg}``.
+    """
+    axis, side = qubit_frame(q)
+    cpl = {}
+    for arm in (0, 90, 180, 270):
+        rel = (side * (arm - axis)) % 360
+        cpl[arm] = (axis + side * COUPLER_PAD[rel]) % 360
+    return {"cpl": cpl, "rdout": (axis + side * READOUT_PAD) % 360, "jj": axis}
 
 
 def slot_tag(v):
@@ -339,11 +377,7 @@ def with_lead(P, pin, normal, at="start"):
     rest = seq[1:]
     while len(rest) > 1 and np.linalg.norm(rest[0] - pin) < LEAD + TRACE_STEP / 2:
         rest.pop(0)
-    away = (rest[0] - pin) / np.linalg.norm(rest[0] - pin)
-    if math.degrees(math.acos(np.clip(away @ normal, -1, 1))) > SIDE_EXIT_DEG:
-        return list(P)
-    seq = rest
-    seq = [pin, tip] + seq
+    seq = [pin, tip] + rest
     return seq if at == "start" else seq[::-1]
 
 
@@ -490,23 +524,26 @@ def stage_launchpads(design):
 
 
 def stage_qubits(design):
-    """17 star transmons: four coupler arms on the cardinals, readout on a diagonal.
+    """17 star transmons laid out like the device qubit (see ``pad_angles``).
 
-    Qubits on the edge of the lattice leave the arms without a neighbor
-    unconnected, as on the device.
+    Five pads about 72 degrees apart and the junction on the island arm
+    facing the flux line. Qubits on the edge of the lattice keep the pads
+    without a neighbor, unconnected, as on the device.
     """
     for name, (col, row) in QUBITS.items():
+        pads = pad_angles(name)
         StarQubit(
             design,
             name,
             options=dict(
                 pos_x=f"{col * AX}mm",
                 pos_y=f"{row * AY}mm",
-                rotation_cpl1=arm_rotation(0),
-                rotation_cpl2=arm_rotation(90),
-                rotation_cpl3=arm_rotation(180),
-                rotation_cpl4=arm_rotation(270),
-                rotation_rdout=arm_rotation(RO_ARM[name] * 45),
+                rotation_cpl1=arm_rotation(pads["cpl"][0]),
+                rotation_cpl2=arm_rotation(pads["cpl"][90]),
+                rotation_cpl3=arm_rotation(pads["cpl"][180]),
+                rotation_cpl4=arm_rotation(pads["cpl"][270]),
+                rotation_rdout=arm_rotation(pads["rdout"]),
+                rotation_jj=arm_rotation(pads["jj"]),
                 **STAR,
             ),
         )
@@ -521,8 +558,8 @@ def stage_couplers(design):
         mid = [
             p
             for p in mid
-            if np.linalg.norm(p - QUBIT_XY[a]) > PIN_R
-            and np.linalg.norm(p - QUBIT_XY[b]) > PIN_R
+            if np.linalg.norm(p - QUBIT_POS[a]) > PIN_R
+            and np.linalg.norm(p - QUBIT_POS[b]) > PIN_R
         ]
         pa, pb = design.components[a].pins[pin_a], design.components[b].pins[pin_b]
         pts = join_pin(
@@ -550,14 +587,14 @@ def stage_control_lines(design):
     for q, path in sorted(LINES["flux"]["path"].items()):
         lp = design.components[f"LP_flux_{q}"]
         pts = join_pad([np.array(p) for p in path], lp, at="start")
-        pts = trim_to_standoff(pts, QUBIT_XY[q], FLUX_STANDOFF)
+        pts = trim_to_standoff(pts, QUBIT_POS[q], FLUX_STANDOFF)
         segs = draw_traced(design, f"FLUX_{q}", pts, over=("CPL_",), tag="AB")
         terminate(design, f"FLUXSHORT_{q}", ShortToGround, pts, segs[-1], at="end")
         design.connect_pins(lp.id, "tie", design.components[segs[0]].id, "start")
     for q, path in sorted(LINES["drive"]["path"].items()):
         lp = design.components[f"LP_drive_{q}"]
         pts = join_pad([np.array(p) for p in path], lp, at="start")
-        pts = trim_to_standoff(pts, QUBIT_XY[q], DRIVE_STANDOFF)
+        pts = trim_to_standoff(pts, QUBIT_POS[q], DRIVE_STANDOFF)
         segs = draw_traced(design, f"DRIVE_{q}", pts, over=("CPL_", "FLUX_"), tag="ABD")
         terminate(design, f"DRIVEOPEN_{q}", OpenToGround, pts, segs[-1], at="end")
         design.connect_pins(lp.id, "tie", design.components[segs[0]].id, "start")
@@ -609,9 +646,11 @@ def stage_readout(design):
         pin = np.array(design.components[q].pins["pin_rdout"]["middle"])
         normal = np.array(design.components[q].pins["pin_rdout"]["normal"])
         pts = [np.array(p) for p in path]
-        if np.linalg.norm(pts[0] - QUBIT_XY[q]) > np.linalg.norm(pts[-1] - QUBIT_XY[q]):
+        if np.linalg.norm(pts[0] - QUBIT_POS[q]) > np.linalg.norm(
+            pts[-1] - QUBIT_POS[q]
+        ):
             pts = pts[::-1]
-        pts = [p for p in pts if np.linalg.norm(p - QUBIT_XY[q]) > PIN_R]
+        pts = [p for p in pts if np.linalg.norm(p - QUBIT_POS[q]) > PIN_R]
         while len(pts) > 2 and (pts[0] - pin) @ normal < TRACE_STEP / 2:
             pts.pop(0)
         pts = [pin] + pts
@@ -798,17 +837,33 @@ def build():
 
 
 def pin_directions(design):
-    """{qubit: (sorted coupler-pin angles, readout-pin angle)} from the BUILT pins.
+    """{qubit: {pin or "jj": compass angle}} read back from the BUILT qubits.
 
-    Reads the drawn geometry back rather than the options passed in -- the
-    check that catches a rotation convention being off by 90 degrees.
+    Reads the drawn geometry rather than the options passed in -- the check
+    that catches a rotation convention being off. Compare with
+    :func:`pad_angles`.
     """
+    tbl = design.qgeometry.tables["junction"]
+    out = {}
+    for q in QUBITS:
+        comp = design.components[q]
+        angles = {}
+        for pin in ("pin_cpl1", "pin_cpl2", "pin_cpl3", "pin_cpl4", "pin_rdout"):
+            n = comp.pins[pin]["normal"]
+            angles[pin] = round(math.degrees(math.atan2(n[1], n[0]))) % 360
+        jj = tbl[tbl.component == comp.id].geometry.iloc[0].centroid
+        c = QUBIT_POS[q]
+        angles["jj"] = round(math.degrees(math.atan2(jj.y - c[1], jj.x - c[0]))) % 360
+        out[q] = angles
+    return out
 
-    def ang(q, pin):
-        n = design.components[q].pins[pin]["normal"]
-        return round(math.degrees(math.atan2(n[1], n[0]))) % 360
 
-    return {
-        q: (sorted(ang(q, f"pin_cpl{i}") for i in range(1, 5)), ang(q, "pin_rdout"))
-        for q in QUBITS
+def expected_pin_directions(q):
+    """What :func:`pin_directions` should read for qubit ``q``."""
+    pads = pad_angles(q)
+    exp = {
+        f"pin_cpl{i}": pads["cpl"][arm] for i, arm in enumerate((0, 90, 180, 270), 1)
     }
+    exp["pin_rdout"] = pads["rdout"]
+    exp["jj"] = pads["jj"]
+    return exp

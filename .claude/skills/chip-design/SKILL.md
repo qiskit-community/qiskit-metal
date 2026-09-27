@@ -100,6 +100,11 @@ confirm.
 - `design.rebuild()` must leave DRC unchanged. If it does not, look at
   `design.net_info` first.
 - Prove a diagnosis (compare old vs new geometry) before writing it down.
+- A check that stops firing after a change that should not have fixed it
+  is suspect: nanometer boolean slivers once joined ground islands and hid
+  a real warning.
+- Verify the GDS itself after export (every line's gap is cut, no dropped
+  holes), not only the design.
 
 ## 7. Simulate a cell, then iterate
 

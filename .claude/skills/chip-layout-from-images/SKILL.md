@@ -87,6 +87,14 @@ The general build rules -- explicit terminations, wired airbridges,
 `connect_pins` and taps, fillet limits, waivers -- are in the chip-design
 skill (section 5). Specific to a traced build:
 
+- **Measure each element's own layout from a close-up before placing it.**
+  A qubit's pad angles and junction site are not the lattice's. Forcing the
+  17-qubit chip's pads onto the compass points gave sideways line exits, a
+  junction on a pad and floating slivers; the device close-up showed five
+  pads about 72 degrees apart, and the fix removed every workaround.
+- **Measure distances from where a component is drawn**, not from its
+  traced center: traced centers scattered ~50 um about the lattice here.
+
 - **Build the whole chip from one script that reads measured data files**
   (JSON, with provenance) and hard-codes nothing; run a conformance check
   after every build.

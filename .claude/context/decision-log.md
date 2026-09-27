@@ -266,9 +266,26 @@ Suggested order if picked up: `W605` → `B006` → the pure-style groups → an
 `QGDSRenderer` (positive and negative mask) and `Cheesing` subtract through
 `gds_boolean.subtract_in_strips`: the base is sliced into 16 vertical strips
 and each strip is subtracted against only the cuts that overlap it. A single
-boolean can fail to link a hole and drop it without an error. The cost is
-that output polygons meet along strip edges (fabrication tools merge them);
-the gain is correctness and, for cheesing, a large speed-up.
+boolean can fail to link a hole and drop it without an error. Strips reduce
+that but do not remove it, so each strip's area is checked against the same
+difference in shapely (GEOS keeps holes as holes); on a mismatch the strip is
+rebuilt from the shapely result, cut into hole-free polygons. gdstk's own
+"Unable to link hole" message is silenced for the fast call, since the
+result is verified. Output polygons meet along strip edges (fabrication tools
+merge them). Cheesing becomes much faster as a side effect.
+
+### Ground-continuity ignores links narrower than 0.1 um
+
+`GroundContinuityRule(min_link_width=1e-4)` opens the ground sheet before
+counting regions, so floating-point slivers where two etched edges almost
+coincide no longer join regions that no fabricated metal joins. Setting it
+to 0 restores the exact behavior.
+
+### `StarQubit.rotation_jj`
+
+The junction was always drawn opposite coupler 1. `rotation_jj` places it
+independently, with the same convention as the connector rotations; the
+default `'auto'` keeps the old placement, so existing designs are unchanged.
 
 ### `QComponent.rebuild` restores connections that `make()` does not
 

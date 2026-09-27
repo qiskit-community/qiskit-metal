@@ -894,6 +894,29 @@ specks) and to prepend the `.. image::` directive (making it the docstring's
 summary line). Both are fixed in `_dev/generate_qlibrary_thumbnails.py`;
 still look at the PNG and the class docstring it produced.
 
+### Match a component's internal layout to a close-up before placing it
+
+The 17-qubit rebuild put every StarQubit's four coupler arms on the compass
+points because the lattice runs that way. The device qubit (a close-up in
+the slides) has five pads about 72 degrees apart, with the SQUID on the
+island arm between the readout pad and a coupler pad. Forcing the arms to
+90 degrees produced three separate-looking symptoms -- couplers leaving
+their pads sideways, a junction drawn on top of a coupler pad (island
+shorted to it), and floating island slivers between the 45-degree-apart
+cuts -- each of which got its own workaround before the cause was found.
+Measure the element's own geometry (pad angles, where the junction sits)
+from a close-up first; the traced lines then meet the pins square-on without
+special cases.
+
+### A clean DRC after a change that should not have fixed anything
+
+When the pads moved, the ground-continuity warning disappeared although the
+plaquette ground islands were still there: nanometer-wide slivers left by
+floating-point booleans where two etched edges almost coincide joined them
+to the main ground. The rule now ignores links narrower than
+`min_link_width` (0.1 um). If a check stops firing and you cannot say why,
+find out before believing it.
+
 ### GDS export silently dropped whole line gaps ("Unable to link hole")
 
 The ground plane was one `gdstk.boolean(chip, all_cuts, "not")`. The result
@@ -902,7 +925,9 @@ to the outline it prints `[GDSTK] Unable to link hole in boolean operation`
 to stderr and *drops the hole*. On the 17-qubit chip three whole flux-line
 gaps came out as solid ground -- DRC was clean, the file was wrong, and a
 harmless-looking 40 um change elsewhere was enough to trigger it. Fixed by
-`renderer_gds/gds_boolean.subtract_in_strips` (ground and cheesing).
+`renderer_gds/gds_boolean.subtract_in_strips` (ground and cheesing): strips, then each
+strip checked against shapely by area and rebuilt without holes if gdstk got it wrong --
+strips alone were not enough once the qubit geometry changed.
 If you see that message, check the GDS, not the design. Side effect worth
 knowing: cheesing against strip-sliced ground went from ~40 s to ~1 s.
 
