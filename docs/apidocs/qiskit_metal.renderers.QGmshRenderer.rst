@@ -18,6 +18,7 @@ QGmshRenderer
    .. autoattribute:: QGmshRenderer.design
    .. autoattribute:: QGmshRenderer.element_extensions
    .. autoattribute:: QGmshRenderer.element_table_data
+   .. autoattribute:: QGmshRenderer.element_table_docs
    .. autoattribute:: QGmshRenderer.initialized
    .. autoattribute:: QGmshRenderer.logger
    .. autoattribute:: QGmshRenderer.model

@@ -20,6 +20,7 @@ QAnsysRenderer
    .. autoattribute:: QAnsysRenderer.design
    .. autoattribute:: QAnsysRenderer.element_extensions
    .. autoattribute:: QAnsysRenderer.element_table_data
+   .. autoattribute:: QAnsysRenderer.element_table_docs
    .. autoattribute:: QAnsysRenderer.initialized
    .. autoattribute:: QAnsysRenderer.logger
    .. autoattribute:: QAnsysRenderer.modeler

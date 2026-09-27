@@ -65,6 +65,7 @@ RouteAnchors
    .. automethod:: RouteAnchors.set_lead
    .. automethod:: RouteAnchors.set_lead_extension
    .. automethod:: RouteAnchors.set_pin
+   .. automethod:: RouteAnchors.to_html
    .. automethod:: RouteAnchors.to_script
    .. automethod:: RouteAnchors.trim_pts
    .. automethod:: RouteAnchors.unary_union

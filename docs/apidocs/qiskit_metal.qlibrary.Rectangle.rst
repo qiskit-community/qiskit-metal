@@ -52,6 +52,7 @@ Rectangle
    .. automethod:: Rectangle.qgeometry_plot
    .. automethod:: Rectangle.qgeometry_table
    .. automethod:: Rectangle.rebuild
+   .. automethod:: Rectangle.to_html
    .. automethod:: Rectangle.to_script
 
    

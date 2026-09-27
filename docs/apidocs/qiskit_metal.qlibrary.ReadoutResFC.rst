@@ -54,6 +54,7 @@ ReadoutResFC
    .. automethod:: ReadoutResFC.qgeometry_plot
    .. automethod:: ReadoutResFC.qgeometry_table
    .. automethod:: ReadoutResFC.rebuild
+   .. automethod:: ReadoutResFC.to_html
    .. automethod:: ReadoutResFC.to_script
 
    

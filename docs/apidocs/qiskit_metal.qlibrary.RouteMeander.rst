@@ -67,6 +67,7 @@ RouteMeander
    .. automethod:: RouteMeander.set_lead
    .. automethod:: RouteMeander.set_lead_extension
    .. automethod:: RouteMeander.set_pin
+   .. automethod:: RouteMeander.to_html
    .. automethod:: RouteMeander.to_script
 
    

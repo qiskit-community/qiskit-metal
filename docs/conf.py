@@ -262,6 +262,7 @@ exclude_patterns = [
     "_utility",  # '*.ipynb',
     "_archive",  # archived configs / configs kept for revival
     "stubs/**",  # autosummary stub files are generated but not included in any toctree
+    "**/resources/**",  # data and helper files that notebooks load, not pages
 ]
 
 nbsphinx_execute_arguments = [

@@ -23,6 +23,7 @@ QHFSSPyaedt
    .. autoattribute:: QHFSSPyaedt.desktop
    .. autoattribute:: QHFSSPyaedt.element_extensions
    .. autoattribute:: QHFSSPyaedt.element_table_data
+   .. autoattribute:: QHFSSPyaedt.element_table_docs
    .. autoattribute:: QHFSSPyaedt.logger
    .. autoattribute:: QHFSSPyaedt.name
    .. autoattribute:: QHFSSPyaedt.options

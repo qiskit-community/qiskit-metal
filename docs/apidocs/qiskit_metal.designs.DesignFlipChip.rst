@@ -31,6 +31,7 @@ DesignFlipChip
    
    .. rubric:: Methods
    
+   .. automethod:: DesignFlipChip.__getitem__
    .. automethod:: DesignFlipChip.add_chip_info
    .. automethod:: DesignFlipChip.add_default_data_for_qgeometry_tables
    .. automethod:: DesignFlipChip.add_dependency

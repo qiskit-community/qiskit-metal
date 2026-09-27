@@ -52,6 +52,7 @@ ShortToGround
    .. automethod:: ShortToGround.qgeometry_plot
    .. automethod:: ShortToGround.qgeometry_table
    .. automethod:: ShortToGround.rebuild
+   .. automethod:: ShortToGround.to_html
    .. automethod:: ShortToGround.to_script
 
    

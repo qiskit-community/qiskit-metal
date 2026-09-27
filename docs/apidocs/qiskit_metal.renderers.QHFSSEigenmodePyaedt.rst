@@ -24,6 +24,7 @@ QHFSSEigenmodePyaedt
    .. autoattribute:: QHFSSEigenmodePyaedt.desktop
    .. autoattribute:: QHFSSEigenmodePyaedt.element_extensions
    .. autoattribute:: QHFSSEigenmodePyaedt.element_table_data
+   .. autoattribute:: QHFSSEigenmodePyaedt.element_table_docs
    .. autoattribute:: QHFSSEigenmodePyaedt.logger
    .. autoattribute:: QHFSSEigenmodePyaedt.name
    .. autoattribute:: QHFSSEigenmodePyaedt.options

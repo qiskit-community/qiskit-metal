@@ -23,6 +23,7 @@ QQ3DPyaedt
    .. autoattribute:: QQ3DPyaedt.desktop
    .. autoattribute:: QQ3DPyaedt.element_extensions
    .. autoattribute:: QQ3DPyaedt.element_table_data
+   .. autoattribute:: QQ3DPyaedt.element_table_docs
    .. autoattribute:: QQ3DPyaedt.logger
    .. autoattribute:: QQ3DPyaedt.name
    .. autoattribute:: QQ3DPyaedt.options

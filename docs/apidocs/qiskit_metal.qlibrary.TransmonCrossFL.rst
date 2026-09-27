@@ -56,6 +56,7 @@ TransmonCrossFL
    .. automethod:: TransmonCrossFL.qgeometry_plot
    .. automethod:: TransmonCrossFL.qgeometry_table
    .. automethod:: TransmonCrossFL.rebuild
+   .. automethod:: TransmonCrossFL.to_html
    .. automethod:: TransmonCrossFL.to_script
 
    

@@ -22,6 +22,7 @@ QPyaedt
    .. autoattribute:: QPyaedt.desktop
    .. autoattribute:: QPyaedt.element_extensions
    .. autoattribute:: QPyaedt.element_table_data
+   .. autoattribute:: QPyaedt.element_table_docs
    .. autoattribute:: QPyaedt.logger
    .. autoattribute:: QPyaedt.name
    .. autoattribute:: QPyaedt.options

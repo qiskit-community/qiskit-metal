@@ -17,6 +17,7 @@ QRenderer
    .. autoattribute:: QRenderer.design
    .. autoattribute:: QRenderer.element_extensions
    .. autoattribute:: QRenderer.element_table_data
+   .. autoattribute:: QRenderer.element_table_docs
    .. autoattribute:: QRenderer.logger
    .. autoattribute:: QRenderer.name
    .. autoattribute:: QRenderer.options

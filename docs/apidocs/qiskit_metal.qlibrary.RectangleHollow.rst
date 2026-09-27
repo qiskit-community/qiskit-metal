@@ -52,6 +52,7 @@ RectangleHollow
    .. automethod:: RectangleHollow.qgeometry_plot
    .. automethod:: RectangleHollow.qgeometry_table
    .. automethod:: RectangleHollow.rebuild
+   .. automethod:: RectangleHollow.to_html
    .. automethod:: RectangleHollow.to_script
 
    

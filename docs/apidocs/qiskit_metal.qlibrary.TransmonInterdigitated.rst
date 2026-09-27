@@ -52,6 +52,7 @@ TransmonInterdigitated
    .. automethod:: TransmonInterdigitated.qgeometry_plot
    .. automethod:: TransmonInterdigitated.qgeometry_table
    .. automethod:: TransmonInterdigitated.rebuild
+   .. automethod:: TransmonInterdigitated.to_html
    .. automethod:: TransmonInterdigitated.to_script
 
    

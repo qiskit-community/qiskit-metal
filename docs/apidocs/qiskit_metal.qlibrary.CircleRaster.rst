@@ -52,6 +52,7 @@ CircleRaster
    .. automethod:: CircleRaster.qgeometry_plot
    .. automethod:: CircleRaster.qgeometry_table
    .. automethod:: CircleRaster.rebuild
+   .. automethod:: CircleRaster.to_html
    .. automethod:: CircleRaster.to_script
 
    

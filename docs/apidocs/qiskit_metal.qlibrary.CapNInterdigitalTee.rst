@@ -52,6 +52,7 @@ CapNInterdigitalTee
    .. automethod:: CapNInterdigitalTee.qgeometry_plot
    .. automethod:: CapNInterdigitalTee.qgeometry_table
    .. automethod:: CapNInterdigitalTee.rebuild
+   .. automethod:: CapNInterdigitalTee.to_html
    .. automethod:: CapNInterdigitalTee.to_script
 
    

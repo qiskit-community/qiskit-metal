@@ -52,6 +52,7 @@ QComponent
    .. automethod:: QComponent.qgeometry_plot
    .. automethod:: QComponent.qgeometry_table
    .. automethod:: QComponent.rebuild
+   .. automethod:: QComponent.to_html
    .. automethod:: QComponent.to_script
 
    

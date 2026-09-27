@@ -17,6 +17,7 @@ QRendererAnalysis
    .. autoattribute:: QRendererAnalysis.design
    .. autoattribute:: QRendererAnalysis.element_extensions
    .. autoattribute:: QRendererAnalysis.element_table_data
+   .. autoattribute:: QRendererAnalysis.element_table_docs
    .. autoattribute:: QRendererAnalysis.logger
    .. autoattribute:: QRendererAnalysis.name
    .. autoattribute:: QRendererAnalysis.options

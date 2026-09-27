@@ -52,6 +52,7 @@ SNAIL
    .. automethod:: SNAIL.qgeometry_plot
    .. automethod:: SNAIL.qgeometry_table
    .. automethod:: SNAIL.rebuild
+   .. automethod:: SNAIL.to_html
    .. automethod:: SNAIL.to_script
 
    
