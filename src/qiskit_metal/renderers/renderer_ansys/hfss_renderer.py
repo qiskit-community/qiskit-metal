@@ -513,19 +513,19 @@ class QHFSSRenderer(QAnsysRenderer):
 
         if not name:
             name = self.parse_value(dsu["name"])
-        if not freq_ghz:
+        if freq_ghz is None:
             freq_ghz = int(self.parse_value(dsu["freq_ghz"]))
-        if not max_delta_s:
+        if max_delta_s is None:
             max_delta_s = float(self.parse_value(dsu["max_delta_s"]))
-        if not max_passes:
+        if max_passes is None:
             max_passes = int(self.parse_value(dsu["max_passes"]))
-        if not min_passes:
+        if min_passes is None:
             min_passes = int(self.parse_value(dsu["min_passes"]))
-        if not min_converged:
+        if min_converged is None:
             min_converged = int(self.parse_value(dsu["min_converged"]))
-        if not pct_refinement:
+        if pct_refinement is None:
             pct_refinement = int(self.parse_value(dsu["pct_refinement"]))
-        if not basis_order:
+        if basis_order is None:
             basis_order = int(self.parse_value(dsu["basis_order"]))
 
         if self.pinfo:
@@ -600,21 +600,21 @@ class QHFSSRenderer(QAnsysRenderer):
 
         if not name:
             name = self.parse_value(esu["name"])
-        if not min_freq_ghz:
+        if min_freq_ghz is None:
             min_freq_ghz = int(self.parse_value(esu["min_freq_ghz"]))
-        if not n_modes:
+        if n_modes is None:
             n_modes = int(self.parse_value(esu["n_modes"]))
-        if not max_delta_f:
+        if max_delta_f is None:
             max_delta_f = float(self.parse_value(esu["max_delta_f"]))
-        if not max_passes:
+        if max_passes is None:
             max_passes = int(self.parse_value(esu["max_passes"]))
-        if not min_passes:
+        if min_passes is None:
             min_passes = int(self.parse_value(esu["min_passes"]))
-        if not min_converged:
+        if min_converged is None:
             min_converged = int(self.parse_value(esu["min_converged"]))
-        if not pct_refinement:
+        if pct_refinement is None:
             pct_refinement = int(self.parse_value(esu["pct_refinement"]))
-        if not basis_order:
+        if basis_order is None:
             basis_order = int(self.parse_value(esu["basis_order"]))
 
         if self.pinfo:

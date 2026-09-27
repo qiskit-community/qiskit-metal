@@ -916,6 +916,75 @@ as the reference answers until such an environment exists. Related: the
 Ansys 2025R1 issues (#1041, #1046) and the runtime spot-check request (#1079)
 under "Known bug-triage queue".
 
+The target is the pyaedt renderers: the COM renderers run only on Windows,
+while pyaedt runs wherever AEDT does. pyEPR already has a pyaedt path
+(`PyaedtDistributedAnalysis`). A pyaedt renderer can implement the stage-1
+neutral protocol directly (`docs/architecture/solver_backends.md`, 3.12)
+instead of the COM track's informal method list. The locked pyaedt versions
+are 0.23.0 (below Python 3.14) and 1.7.0 (Python 3.14, the latest release).
+Changes to the pyaedt renderers use only calls that both versions have.
+
+**Fixed in September 2026, not yet run in AEDT.** Each fix has a test that
+uses mocks; `changelog.md` has the details.
+
+- **pyaedt HFSS input check.** The renderers drew nothing unless both
+  `port_list` and `jj_to_port` were given, so the eigenmode renderer never
+  drew anything.
+- **COM HFSS `TypeError`.** It was raised for ports given without
+  `open_terminations`.
+- **pyaedt Q3D `TypeError`.** It was raised when `open_pins` was not given.
+- **pyaedt eigenmode `analyze_setup`.** For a setup that did not exist yet,
+  it called a driven-modal method.
+- **Q3D per-pass units.** Per-pass matrices were labeled "fF" but held
+  farads.
+- **pyaedt HFSS `default_setup`.** It was a one-element tuple.
+- **COM HFSS port height.** Port sheets were drawn at z = 0 on raised chips.
+- **pyaedt autosave options.** They had no effect, and closing forced AEDT
+  autosave on.
+- **Setup arguments.** An explicit `False` or `0` was replaced by the
+  default.
+
+**Open in the Ansys renderers** (found in the solver-backends gap analysis;
+the design note, section 2, has file references):
+
+- **pyaedt renderers cannot be driven by the simulation classes.** They lack
+  `execute_design`, `initialize_*`, `get_convergences`, `set_mode`,
+  `plot_fields` and the `epr_*` methods. The registered `aedt_hfss` defaults
+  to `renderer_type="HFSS"`, which is not one of `HFSS_DM`, `HFSS_EM`, `Q3D`,
+  so the tutorials create the eigenmode and driven-modal classes directly.
+- **pyaedt eigenmode** refuses `port_list` and `jj_to_port`.
+- **pyaedt Q3D.** `get_capacitance_matrix` is a stub, and
+  `get_capacitance_all_passes` returns magnitudes, losing the sign of the
+  mutual capacitances.
+- **pyaedt mesh and wirebonds.** `add_mesh` is empty, so there are no
+  junction or port mesh operations. Wirebond rendering is commented out.
+- **The two tracks disagree on:**
+  - the voltage-line direction: COM runs along the sheet's axis from the low
+    to the high coordinate (pyEPR `make_center_line`), whatever way the pin
+    faces, while pyaedt follows the pin normal. Junction EPR signs depend on
+    it.
+  - the meaning of `sample_holder_top` / `sample_holder_bottom`:
+    coordinates in pyaedt, distances in COM.
+- **Both tracks assume pins along x or y**, for port sheets and endcaps.
+- **Not exposed in either track:** absorbing or radiation walls, symmetry
+  planes, surface impedance (kinetic inductance), finite conductivity, and
+  wave ports.
+- **The `<renderer>_mesh_kw_jj` junction column** is written but never read.
+- **COM `get_convergences`** writes `hfss_eig_f_convergence.csv` into the
+  working directory.
+- **`ScatteringImpedanceSim`** never fills its `param_z` / `param_y` /
+  `param_s` data labels; results are reached through `plot_params`.
+
+**Open in the open-FEM path**, each assigned to a stage-1 step in the design
+note:
+
+- gmsh endcaps assume pins along x or y (step 1.6).
+- The gmsh and ElmerFEM renderers do not read the `helper` column.
+- ElmerFEM:
+  - hard-codes its materials (step 1.7);
+  - writes a placeholder ground self-capacitance (300 fF);
+  - labels and orders nets differently from Q3D (steps 1.3 and D3).
+
 ### Testing solvers without losing the stored answers
 
 The tutorials hold the reference answers: the committed outputs of the

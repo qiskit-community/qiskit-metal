@@ -233,27 +233,27 @@ class QQ3DRenderer(QAnsysRenderer):
 
         if not name:
             name = self.parse_value(su["name"])
-        if not freq_ghz:
+        if freq_ghz is None:
             freq_ghz = float(self.parse_value(su["freq_ghz"]))
-        if not save_fields:
+        if save_fields is None:
             save_fields = is_true(su["save_fields"])
-        if not enabled:
+        if enabled is None:
             enabled = is_true(su["enabled"])
-        if not max_passes:
+        if max_passes is None:
             max_passes = int(self.parse_value(su["max_passes"]))
-        if not min_passes:
+        if min_passes is None:
             min_passes = int(self.parse_value(su["min_passes"]))
-        if not min_converged_passes:
+        if min_converged_passes is None:
             min_converged_passes = int(self.parse_value(su["min_converged_passes"]))
-        if not percent_error:
+        if percent_error is None:
             percent_error = float(self.parse_value(su["percent_error"]))
-        if not percent_refinement:
+        if percent_refinement is None:
             percent_refinement = int(self.parse_value(su["percent_refinement"]))
-        if not auto_increase_solution_order:
+        if auto_increase_solution_order is None:
             auto_increase_solution_order = is_true(su["auto_increase_solution_order"])
-        if not solution_order:
+        if solution_order is None:
             solution_order = self.parse_value(su["solution_order"])
-        if not solver_type:
+        if solver_type is None:
             solver_type = self.parse_value(su["solver_type"])
 
         if self.pinfo:

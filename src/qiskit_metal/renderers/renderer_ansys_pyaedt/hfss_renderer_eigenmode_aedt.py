@@ -132,23 +132,23 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             )
             return None
 
-        if not MinimumFrequency:
+        if MinimumFrequency is None:
             MinimumFrequency = float(self.parse_value(esu["MinimumFrequency"]))
-        if not NumModes:
+        if NumModes is None:
             NumModes = int(self.parse_value(esu["NumModes"]))
-        if not MaxDeltaFreq:
+        if MaxDeltaFreq is None:
             MaxDeltaFreq = float(self.parse_value(esu["MaxDeltaFreq"]))
-        if not MaximumPasses:
+        if MaximumPasses is None:
             MaximumPasses = int(self.parse_value(esu["MaximumPasses"]))
-        if not MinimumPasses:
+        if MinimumPasses is None:
             MinimumPasses = int(self.parse_value(esu["MinimumPasses"]))
-        if not MinimumConvergedPasses:
+        if MinimumConvergedPasses is None:
             MinimumConvergedPasses = int(
                 self.parse_value(esu["MinimumConvergedPasses"])
             )
-        if not PercentRefinement:
+        if PercentRefinement is None:
             PercentRefinement = int(self.parse_value(esu["PercentRefinement"]))
-        if not BasisOrder:
+        if BasisOrder is None:
             BasisOrder = int(self.parse_value(esu["BasisOrder"]))
 
         new_setup = self.current_app.create_setup(name)

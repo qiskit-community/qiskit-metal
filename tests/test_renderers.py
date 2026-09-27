@@ -905,6 +905,59 @@ class TestRenderers(unittest.TestCase):
         desktop.disable_autosave.assert_not_called()
         desktop.enable_autosave.assert_not_called()
 
+    def test_setup_functions_keep_explicit_false_and_zero(self):
+        """The setup functions filled defaults with ``if not x``, so an explicit
+        False or 0 became the default: LumpedElementsSim could not turn off
+        auto_increase_solution_order or enabled, nor pass basis_order=0. Only
+        None now means "use the default"."""
+        from qiskit_metal import Dict
+
+        design = designs.DesignPlanar()
+
+        q3d = QQ3DRenderer(design, initiate=False)
+        q3d._pinfo = MagicMock()
+        q3d.add_q3d_setup(auto_increase_solution_order=False, enabled=False)
+        kwargs = q3d._pinfo.design.create_q3d_setup.call_args.kwargs
+        self.assertIs(kwargs["auto_increase_solution_order"], False)
+        self.assertIs(kwargs["enabled"], False)
+        self.assertEqual(kwargs["max_passes"], 15)  # None -> default
+
+        hfss = QHFSSRenderer(design, initiate=False)
+        hfss._pinfo = MagicMock()
+        hfss.add_eigenmode_setup(basis_order=0)
+        kwargs = hfss._pinfo.design.create_em_setup.call_args.kwargs
+        self.assertEqual(kwargs["basis_order"], 0)
+        self.assertEqual(kwargs["n_modes"], 1)
+
+        aedt_q3d = object.__new__(QQ3DPyaedt)
+        aedt_q3d._design = MagicMock()
+        aedt_q3d.activate_user_project_design = MagicMock()
+        aedt_q3d.current_app = MagicMock()
+        aedt_q3d.default_setup = Dict(
+            name="Setup",
+            AdaptiveFreq=5.0,
+            SaveFields=False,
+            Enabled=True,
+            MaxPass=15,
+            MinPass=2,
+            MinConvPass=2,
+            PerError=0.5,
+            PerRefine=30,
+            AutoIncreaseSolutionOrder=True,
+            SolutionOrder="High",
+            Solver_Type="Iterative",
+        )
+        aedt_q3d.parse_value = lambda v: v
+        aedt_q3d.add_q3d_setup(Enabled=False, AutoIncreaseSolutionOrder=False)
+        props = aedt_q3d.current_app.create_setup.return_value.props
+        set_on_props = [c.args for c in props.__setitem__.call_args_list]
+        set_on_cap = [
+            c.args for c in props.__getitem__.return_value.__setitem__.call_args_list
+        ]
+        self.assertIn(("Enabled", False), set_on_props)
+        self.assertIn(("AutoIncreaseSolutionOrder", False), set_on_cap)
+        self.assertIn(("MaxPass", 15), set_on_cap)  # None -> default
+
     def test_pyaedt_hfss_default_setup_is_a_dict(self):
         """A trailing comma made QHFSSPyaedt.default_setup a 1-tuple."""
         from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import (
