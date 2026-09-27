@@ -93,7 +93,7 @@ The file ``uv.lock`` lists "locked" versions for all dependencies listed in ``py
 Running tests
 ^^^^^^^^^^^^^
 
-Tox is configured to run tests (using pytest) for Python 3.10–3.12. Use the following command to run tests for all three versions::
+Tox is configured to run tests (using pytest) for Python 3.10–3.14. Use the following command to run tests for all supported versions::
 
    tox -m test
 

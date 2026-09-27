@@ -321,12 +321,12 @@ Run the following commands in the root of the repository (i.e. the ``quantum-met
 
    .. tab-item:: uv (recommended)
 
-      **Why:** Fast, modern resolver/installer; typically the least friction for scientific stacks. Use Python 3.10, 3.11, or 3.12. ``uv`` installations instruction are available `here <https://docs.astral.sh/uv/getting-started/installation/>`_.
+      **Why:** Fast, modern resolver/installer; typically the least friction for scientific stacks. Use Python 3.10 through 3.14. ``uv`` installations instruction are available `here <https://docs.astral.sh/uv/getting-started/installation/>`_.
 
       .. code-block:: sh
 
          # Create a new virtual environment
-         uv venv --python 3.11  # could also be 3.10 or 3.12
+         uv venv --python 3.11  # any of 3.10-3.14
 
          # Install the package in editable mode
          uv pip install -e .
