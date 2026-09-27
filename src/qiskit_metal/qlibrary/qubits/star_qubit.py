@@ -283,6 +283,12 @@ class StarQubit(QComponent):
         # Subtract from circle
         circle = self.make_circle()
         total1 = draw.subtract(circle, traps)
+        # Arms placed close together (e.g. a readout arm 45 degrees from its
+        # neighbors) leave thin fragments of the disc between two cuts. They
+        # are not connected to the island, so keep only the part at its center.
+        if total1.geom_type == "MultiPolygon":
+            center = draw.Point(0, 0)
+            total1 = next(g for g in total1.geoms if g.contains(center))
 
         # create rectangular connectors to junction
         pockets = self.make_pockets()
