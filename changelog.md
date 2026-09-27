@@ -8,6 +8,10 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ## Unreleased
 
+### Upgrade notes
+
+- **`validate()` runs four more rules by default** (the shape rules above), so its report says "11 rules ran" instead of 7, and designs with a self-crossing line, a hairpin, a starved fillet or a line leaving a pin askew get new findings.
+
 ### Added
 
 - **`PolylineCPW`** (`qlibrary.tlines`): a CPW drawn along an explicit list of points, with no routing -- for paths you already have (traced, exported, octilinear). `taps={name: [x, y]}` adds pins partway along the line for branches, so a mid-line joint is a registered connection instead of a DRC waiver.
@@ -15,7 +19,7 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 - **`TransmonStar`** (`qlibrary.qubits`): `TransmonCross` generalized to `num_points` radial arms; arms without a connection pad stay bare stubs.
 - **`Airbridge` pins `a`/`b`** for signal crossovers: cut the upper line and connect the cut ends to the bridge.
 - **`StarQubit.rotation_jj`** places the junction independently of the couplers (same convention as the connector rotations). The default `'auto'` keeps the old placement.
-- **Shape rules (`validation.SHAPE_RULES`, opt-in):** `SelfIntersectionRule`, `SharpTurnRule`, `FilletStarvationRule`, `DanglingEndRule` (an unconnected CPW end fabricates as a short), and `PinAlignmentRule` (a line must leave the pin it connects to square-on). Run with `validate(design, rules=[*DEFAULT_RULES, *SHAPE_RULES])`.
+- **Shape rules:** `SelfIntersectionRule`, `SharpTurnRule`, `FilletStarvationRule` and `PinAlignmentRule` (a line must leave the pin it connects to square-on) now run by default. `DanglingEndRule` (an unconnected CPW end fabricates as a short) is opt-in, because it also reports unused qubit pad stubs: `validate(design, rules=[*DEFAULT_RULES, *SHAPE_RULES])` runs all of them, each once.
 - **`QComponent.to_html()` and a Jupyter HTML view.** A component shown in a notebook now renders as a table of its options -- nested groups indented, each option's description parsed from the `Default Options:` sections of the class docstrings, optionally the parsed values -- and a table of its pins with their position, direction, width and what each connects to. Options changed from the class defaults are highlighted (hover a name for its default), and a picture of the component is included, drawn off-screen so it is safe headless and next to the desktop GUI. Readable in light and dark themes. `to_html(docs=..., parsed=..., pins=..., image=...)` selects the sections; `to_html(display=True)` shows the card directly. Renderer options such as `hfss_inductance` are documented through a new `QRenderer.element_table_docs`.
 - **HTML views for a design and its component list** (`design._repr_html_`, `design.components._repr_html_`), and `design["Q1"]` / `"Q1" in design` as shorthand for `design.components`.
 - **Two-qubit cell notebook:** a cell of the 17-qubit chip (two qubits and their coupler) built as its own cropped design and meshed with gmsh; the ElmerFEM capacitance step runs where `ElmerSolver` is installed.
