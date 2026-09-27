@@ -6,7 +6,11 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
-## Unreleased
+## Quantum Metal v0.9.0 (Python 3.13/3.14, numpy 2; raised dependency minimums)
+
+Minor release: new Python versions, numpy 2 support, and a batch of analysis,
+renderer and tutorial fixes. The dependency minimums move up (see *Upgrade
+notes*). No API removals.
 
 ### Added
 
@@ -27,8 +31,6 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 - **Docs:** `Subsystem` energies (`EJ`, `EL`, `EC`) are in MHz, not GHz (#920); `TransmonPocketCL` documents its `Charge_Line` pin (#989).
 - **Tutorials that failed on a fresh kernel.** Fifteen notebooks (3.5, 4.02–4.05, 4.11–4.14, 4.19, two Hamiltonian-model notebooks, and two Appendix B topics) lost their import cells when `%autoreload` was stripped in 6512e0d, and raised `NameError` at the first cell that used `designs`, `MetalGUI`, etc. The import cells are restored; stored outputs are unchanged.
 - **Tutorial 4.02: junction now follows `sim.setup.vars.Lj`.** Section I links the qubit's `hfss_inductance`/`hfss_capacitance` to the `Lj`/`Cj` design variables, so HFSS and the EPR step use the same junction inductance. (#1019)
-- **`TransmonCross` `connector_location='270'`** placed the connector on the east arm instead of the south arm. The rotation chain had no branch above 225 degrees, so 270 matched the `> 135` test. (#1173, closes #1052)
-- **`connector_location` now wraps mod 360.** The chain saturated at its top branch, so out-of-range angles landed arbitrarily — `'360'` resolved to south rather than west, `'-90'` to west rather than south. In-range angles, including the half-way values 45/135/225, keep their existing arm.
 
 ### Changed
 
@@ -38,10 +40,28 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 - **Clearer legacy-LOM size error.** `extract_transmon_coupled_Noscillator` now reports the actual and expected matrix size, the required net order, and that only floating two-pad transmons are supported, pointing grounded qubits to the Cell/Subsystem/CompositeSystem API. (#1015)
 - **`EigenmodeSim` warns when `setup.vars.Lj` can't reach the junction:** a rendered junction whose `hfss_inductance` is a fixed value different from `Lj` is simulated at that value while the EPR step reads `Lj`. Silent with defaults and when the junction is linked to the variable. (#1019)
 - **`EPRanalysis` warns before a very large spectrum diagonalisation** (`fock_trunc**n_modes` > 20,000 states) with the estimated memory. (#1018)
-- **`TransmonCrossFL` warns when a connection pad resolves to the south arm** while `make_fl` is True. That arm carries the flux line, and the claw polygon overlaps it. The south arm also carries the junction on the base `TransmonCross`; at default options the claw clears it by ~11um, with the etch region within ~5um. Both constraints are now documented on the class docstrings.
 - **Locked dependencies with known advisories updated:** anyio 4.14.2, click 8.5.0, jupyter-server 2.21.1, mistune 3.3.4, soupsieve 2.10 (all dev/docs/transitive; no runtime floor changes).
 - **CI: two dependency-bound jobs.** `tests-deps-pandas3` runs the suite with pandas 3 (Copy-on-Write default), and `tests-deps-lowest` with every direct dependency at its declared minimum. Both install outside `uv.lock`, as pip users do.
 - **GUI subprocess tests report the crash stack.** On a native crash in the child, failures showed only the last 2,000 characters of stderr, which faulthandler fills with its extension-module list. `tests/_crash_output.py` drops that list and keeps the fatal error and thread stacks. (#1048)
+
+### Upgrade notes
+
+- **Minimum versions raised:** pandas 2.2.2, scipy 1.13.0, matplotlib 3.8.4, shapely 2.0.4, pint 0.24.4, pyyaml 6.0.1. An environment pinned below these will need to upgrade them.
+- **`ResonatorLumped`:** default geometry is unchanged, but designs that set `n_turns` or `inner_space` explicitly now get that geometry instead of the fixed 14-turn meander.
+- **Python 3.14 + `[ansys]`** installs pyaedt 1.x, which has not been validated against AEDT with the pyaedt renderer.
+
+## Quantum Metal v0.8.1 (GUI stability + interactive editing; no breaking changes)
+
+GUI stability fixes for issue #1048 and interactive canvas editing (select, move, rotate, rebuild from the keyboard). Full notes: https://github.com/qiskit-community/qiskit-metal/releases/tag/v0.8.1
+
+### Fixed
+
+- **`TransmonCross` `connector_location='270'`** placed the connector on the east arm instead of the south arm. The rotation chain had no branch above 225 degrees, so 270 matched the `> 135` test. (#1173, closes #1052)
+- **`connector_location` now wraps mod 360.** The chain saturated at its top branch, so out-of-range angles landed arbitrarily — `'360'` resolved to south rather than west, `'-90'` to west rather than south. In-range angles, including the half-way values 45/135/225, keep their existing arm.
+
+### Changed
+
+- **`TransmonCrossFL` warns when a connection pad resolves to the south arm** while `make_fl` is True. That arm carries the flux line, and the claw polygon overlaps it. The south arm also carries the junction on the base `TransmonCross`; at default options the claw clears it by ~11um, with the etch region within ~5um. Both constraints are now documented on the class docstrings.
 
 ## Quantum Metal v0.8.0 (airbridges + design-rule checking; no breaking changes)
 
