@@ -164,8 +164,9 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: dict[str, float], shorted=False):
             pCL[node] = 0.5 * val * utl(Ltl) ** 2 / E_cap
         Q_zpf[node] = np.sqrt(hbar * wr / 2 * pCL[node] * val)
 
-        # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2
-        Phi_zpf[node] = 0.5 * hbar / Q_zpf[node]
+        # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2;
+        # an open end (no loading capacitance) carries no charge fluctuation
+        Phi_zpf[node] = 0.5 * hbar / Q_zpf[node] if Q_zpf[node] else np.inf
 
     return Q_zpf, Phi_zpf, phi, Ltl
 
