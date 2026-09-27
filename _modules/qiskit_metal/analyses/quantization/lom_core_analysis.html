@@ -1274,7 +1274,11 @@
 <span class="sd">    flux, resonator frequency, scQubits truncation, etc. — are passed through</span>
 <span class="sd">    the ``q_opts`` dict.</span>
 
-<span class="sd">    **Any frequency-like value in** ``q_opts`` **must be given in GHz.**</span>
+<span class="sd">    **Units:** energies (``EJ``, ``EL``, ``EC``) are in **MHz** and</span>
+<span class="sd">    frequencies (``f_res``) are in **GHz**. The ``TRANSMON`` and ``FLUXONIUM``</span>
+<span class="sd">    builders compute ``EC`` (and, for the transmon, ``EJ``) in MHz, so the</span>
+<span class="sd">    resulting eigenvalues are in MHz even though scqubits' default unit label</span>
+<span class="sd">    is GHz; call ``scqubits.set_units("MHz")`` for correctly labelled plots.</span>
 
 <span class="sd">    Built-in ``sys_type`` values and their ``q_opts``</span>
 <span class="sd">    -------------------------------------------------</span>
@@ -1296,8 +1300,8 @@
 
 <span class="sd">    ``"FLUXONIUM"`` — maps to ``scqubits.Fluxonium``.</span>
 <span class="sd">        - ``EC`` — *(computed)* from the extracted C matrix.</span>
-<span class="sd">        - ``EJ`` — Josephson energy in GHz **(required)**.</span>
-<span class="sd">        - ``EL`` — inductive energy in GHz **(required)**.</span>
+<span class="sd">        - ``EJ`` — Josephson energy in MHz **(required)**.</span>
+<span class="sd">        - ``EL`` — inductive energy in MHz **(required)**.</span>
 <span class="sd">        - ``flux`` — external flux in units of the flux quantum</span>
 <span class="sd">          :math:`\\Phi_0` **(required)**.</span>
 <span class="sd">        - ``cutoff`` — basis cutoff (default ``110``).</span>

@@ -40,6 +40,7 @@ LumpedElementsSim
    .. automethod:: LumpedElementsSim.run
    .. automethod:: LumpedElementsSim.run_sim
    .. automethod:: LumpedElementsSim.run_sweep
+   .. automethod:: LumpedElementsSim.save_capacitance_matrix
    .. automethod:: LumpedElementsSim.save_run_args
    .. automethod:: LumpedElementsSim.save_screenshot
    .. automethod:: LumpedElementsSim.select_renderer

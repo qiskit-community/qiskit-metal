@@ -665,6 +665,11 @@
 <span class="sd">    Calculate the χ The full dispersive splitting using analytical</span>
 <span class="sd">    approximations, i.e., return the `|0&gt; --&gt; |1&gt;` splitting.</span>
 
+<span class="sd">    Only floating two-pad transmons are supported (two islands, ``pad1`` and</span>
+<span class="sd">    ``pad2``, joined by the junction). For grounded or single-island qubits</span>
+<span class="sd">    such as ``TransmonCross``, use ``Cell`` / ``Subsystem`` /</span>
+<span class="sd">    ``CompositeSystem`` from ``lom_core_analysis`` instead.</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        capMatrix (np.ndarray): Order of the capacitance matrix must be</span>
 <span class="sd">          bus1...busN-1, ground, Qubit_pad1, Qubit_pad2, readout. (in F)</span>
@@ -696,7 +701,16 @@
     <span class="k">if</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"N must positive"</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">capMatrix</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">3</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Capacitance matrix is not the right size"</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Capacitance matrix is not the right size: got "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">capMatrix</span><span class="p">)</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">capMatrix</span><span class="p">)</span><span class="si">}</span><span class="s2">, expected </span><span class="si">{</span><span class="n">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="si">}</span><span class="s2"> for "</span>
+            <span class="sa">f</span><span class="s2">"N=</span><span class="si">{</span><span class="n">N</span><span class="si">}</span><span class="s2"> coupling pads (in LOManalysis, N = 1 + len(setup.freq_bus)). "</span>
+            <span class="sa">f</span><span class="s2">"Expected net order: bus1...busN-1, ground, pad1, pad2, readout. "</span>
+            <span class="sa">f</span><span class="s2">"This extraction only supports floating two-pad transmons; for a "</span>
+            <span class="sa">f</span><span class="s2">"grounded or single-island qubit (e.g. TransmonCross) use Cell / "</span>
+            <span class="sa">f</span><span class="s2">"Subsystem / CompositeSystem from lom_core_analysis "</span>
+            <span class="sa">f</span><span class="s2">"(tutorials 4.04 and 4.05)."</span>
+        <span class="p">)</span>
 
     <span class="c1"># make list of angular frequencies of resonators</span>
     <span class="n">wr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>  <span class="c1"># angular freq of resonators (GHz-rad)</span>
@@ -1337,9 +1351,13 @@
 <span class="sd">    Args:</span>
 <span class="sd">        df_cmat (dataframe): Dataframe to display</span>
 <span class="sd">    """</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
 
-    <span class="n">display</span><span class="p">(</span><span class="n">df_cmat</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">"</span><span class="si">{:.2f}</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"#5fba7d"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span></div>
+        <span class="n">display</span><span class="p">(</span><span class="n">df_cmat</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">"</span><span class="si">{:.2f}</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"#5fba7d"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="c1"># Lite installs may lack IPython or jinja2 (needed by DataFrame.style).</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">df_cmat</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span></div>
 
 
 

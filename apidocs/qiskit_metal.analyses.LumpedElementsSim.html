@@ -750,6 +750,30 @@ Sweeper.run_sweep().</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.LumpedElementsSim.save_capacitance_matrix">
+<span class="sig-name descname"><span class="pre">save_capacitance_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/simulation/lumped_elements.html#LumpedElementsSim.save_capacitance_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.LumpedElementsSim.save_capacitance_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Save the capacitance matrix to a CSV file you choose.</p>
+<p>The values are in <code class="docutils literal notranslate"><span class="pre">self.units</span></code> (typically fF); the units are written
+into the header cell, e.g. <code class="docutils literal notranslate"><span class="pre">C</span> <span class="pre">[fF]</span></code>. Reload the matrix with
+<code class="docutils literal notranslate"><span class="pre">pd.read_csv(path,</span> <span class="pre">index_col=0)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>Path</em>) – Destination file. Missing parent directories
+are created.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The file written.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If there is no capacitance matrix yet.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.LumpedElementsSim.save_run_args">
 <span class="sig-name descname"><span class="pre">save_run_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.LumpedElementsSim.save_run_args" title="Link to this definition">¶</a></dt>
 <dd><p>Intended to be used to store the kwargs passed to the run() method,
@@ -903,6 +927,7 @@ If you intend to change a single setting, the better way is: <cite>setup.setting
 <li><a class="reference internal" href="#qiskit_metal.analyses.LumpedElementsSim.run"><code class="docutils literal notranslate"><span class="pre">LumpedElementsSim.run()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.analyses.LumpedElementsSim.run_sim"><code class="docutils literal notranslate"><span class="pre">LumpedElementsSim.run_sim()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.analyses.LumpedElementsSim.run_sweep"><code class="docutils literal notranslate"><span class="pre">LumpedElementsSim.run_sweep()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.analyses.LumpedElementsSim.save_capacitance_matrix"><code class="docutils literal notranslate"><span class="pre">LumpedElementsSim.save_capacitance_matrix()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.analyses.LumpedElementsSim.save_run_args"><code class="docutils literal notranslate"><span class="pre">LumpedElementsSim.save_run_args()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.analyses.LumpedElementsSim.save_screenshot"><code class="docutils literal notranslate"><span class="pre">LumpedElementsSim.save_screenshot()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.analyses.LumpedElementsSim.select_renderer"><code class="docutils literal notranslate"><span class="pre">LumpedElementsSim.select_renderer()</span></code></a></li>

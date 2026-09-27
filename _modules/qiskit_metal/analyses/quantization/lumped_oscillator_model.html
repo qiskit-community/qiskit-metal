@@ -618,17 +618,23 @@
 
         <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_matrix</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_matrix</span> <span class="o">==</span> <span class="p">{}:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">"Please initialize the capacitance_matrix before executing this method."</span>
-                    <span class="s2">"`self.sim.capacitance_matrix = pd.DataFrame(...)`"</span>
-                <span class="p">)</span>
-                <span class="k">return</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_all_passes</span> <span class="o">==</span> <span class="p">{}:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_all_passes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_matrix</span><span class="o">.</span><span class="n">values</span>
-
         <span class="n">ureg</span> <span class="o">=</span> <span class="n">UnitRegistry</span><span class="p">()</span>
+
+        <span class="n">cmat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_matrix</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cmat</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cmat</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"Please initialize the capacitance_matrix before executing this method. "</span>
+                <span class="s2">"`self.sim.capacitance_matrix = pd.DataFrame(...)`"</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_all_passes</span><span class="p">:</span>
+            <span class="c1"># A matrix set directly (not produced by a simulation run) has no</span>
+            <span class="c1"># per-pass history: use it as the only pass. Per-pass matrices are</span>
+            <span class="c1"># stored in farads (see QQ3DRenderer.get_capacitance_all_passes),</span>
+            <span class="c1"># while capacitance_matrix is in ``sim.units`` (default fF).</span>
+            <span class="n">to_farad</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">units</span> <span class="ow">or</span> <span class="s2">"fF"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"farad"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_all_passes</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">cmat</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">to_farad</span><span class="p">}</span>
+
         <span class="n">ic_amps</span> <span class="o">=</span> <span class="n">Ic_from_Lj</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">Lj</span><span class="p">,</span> <span class="s2">"nH"</span><span class="p">,</span> <span class="s2">"A"</span><span class="p">)</span>
         <span class="n">cj</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">Cj</span><span class="si">}</span><span class="s2"> fF"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"farad"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
         <span class="n">fread</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">freq_readout</span><span class="si">}</span><span class="s2"> GHz"</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"GHz"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>

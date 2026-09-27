@@ -695,6 +695,10 @@ parameters of the Hamiltonian of the system.</p>
 <p>The capMatrix can be imported using <cite>readin_q3d_matrix</cite></p>
 <p>Calculate the χ The full dispersive splitting using analytical
 approximations, i.e., return the <cite>|0&gt; –&gt; |1&gt;</cite> splitting.</p>
+<p>Only floating two-pad transmons are supported (two islands, <code class="docutils literal notranslate"><span class="pre">pad1</span></code> and
+<code class="docutils literal notranslate"><span class="pre">pad2</span></code>, joined by the junction). For grounded or single-island qubits
+such as <code class="docutils literal notranslate"><span class="pre">TransmonCross</span></code>, use <code class="docutils literal notranslate"><span class="pre">Cell</span></code> / <code class="docutils literal notranslate"><span class="pre">Subsystem</span></code> /
+<code class="docutils literal notranslate"><span class="pre">CompositeSystem</span></code> from <code class="docutils literal notranslate"><span class="pre">lom_core_analysis</span></code> instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

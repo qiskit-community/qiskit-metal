@@ -482,6 +482,13 @@ dictionary. Each connector line has a name and a list of default
 properties.</p>
 <p>This is a child of TransmonPocket, see TransmonPocket for the variables and
 description of that class.</p>
+<dl class="simple">
+<dt>Pins:</dt><dd><p>In addition to one pin per entry in <code class="docutils literal notranslate"><span class="pre">connection_pads</span></code>, the charge
+line adds a pin named <code class="docutils literal notranslate"><span class="pre">Charge_Line</span></code> when <code class="docutils literal notranslate"><span class="pre">make_CL=True</span></code> (the
+default). Its width and gap follow <code class="docutils literal notranslate"><span class="pre">cl_width</span></code> and <code class="docutils literal notranslate"><span class="pre">cl_gap</span></code>.
+<code class="docutils literal notranslate"><span class="pre">list(qubit.pins)</span></code> lists the pin names of any component.</p>
+</dd>
+</dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_________________</span>
 <span class="o">|</span>               <span class="o">|</span>
 <span class="o">|</span><span class="n">_______________</span><span class="o">|</span>       <span class="o">^</span>

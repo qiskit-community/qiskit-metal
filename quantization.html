@@ -576,7 +576,11 @@ built-in or custom quantum model it maps to), and the list of circuit
 <code class="docutils literal notranslate"><span class="pre">nodes</span></code> it occupies. Type-specific numbers — offset charge, external
 flux, resonator frequency, scQubits truncation, etc. — are passed through
 the <code class="docutils literal notranslate"><span class="pre">q_opts</span></code> dict.</p>
-<p><strong>Any frequency-like value in</strong> <code class="docutils literal notranslate"><span class="pre">q_opts</span></code> <strong>must be given in GHz.</strong></p>
+<p><strong>Units:</strong> energies (<code class="docutils literal notranslate"><span class="pre">EJ</span></code>, <code class="docutils literal notranslate"><span class="pre">EL</span></code>, <code class="docutils literal notranslate"><span class="pre">EC</span></code>) are in <strong>MHz</strong> and
+frequencies (<code class="docutils literal notranslate"><span class="pre">f_res</span></code>) are in <strong>GHz</strong>. The <code class="docutils literal notranslate"><span class="pre">TRANSMON</span></code> and <code class="docutils literal notranslate"><span class="pre">FLUXONIUM</span></code>
+builders compute <code class="docutils literal notranslate"><span class="pre">EC</span></code> (and, for the transmon, <code class="docutils literal notranslate"><span class="pre">EJ</span></code>) in MHz, so the
+resulting eigenvalues are in MHz even though scqubits’ default unit label
+is GHz; call <code class="docutils literal notranslate"><span class="pre">scqubits.set_units(&quot;MHz&quot;)</span></code> for correctly labelled plots.</p>
 <section id="built-in-sys-type-values-and-their-q-opts">
 <h4>Built-in <code class="docutils literal notranslate"><span class="pre">sys_type</span></code> values and their <code class="docutils literal notranslate"><span class="pre">q_opts</span></code><a class="headerlink" href="#built-in-sys-type-values-and-their-q-opts" title="Link to this heading">¶</a></h4>
 <p>The list below is the accepted-parameter reference for the four models
@@ -597,8 +601,8 @@ back to the defaults shown.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">&quot;FLUXONIUM&quot;</span></code> — maps to <code class="docutils literal notranslate"><span class="pre">scqubits.Fluxonium</span></code>.</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">EC</span></code> — <em>(computed)</em> from the extracted C matrix.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">EJ</span></code> — Josephson energy in GHz <strong>(required)</strong>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">EL</span></code> — inductive energy in GHz <strong>(required)</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EJ</span></code> — Josephson energy in MHz <strong>(required)</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EL</span></code> — inductive energy in MHz <strong>(required)</strong>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">flux</span></code> — external flux in units of the flux quantum
 <span class="math notranslate nohighlight">\(\Phi_0\)</span> <strong>(required)</strong>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">cutoff</span></code> — basis cutoff (default <code class="docutils literal notranslate"><span class="pre">110</span></code>).</p></li>

@@ -709,8 +709,33 @@
 <span class="w">        </span><span class="sd">"""Short-cut to the same-name method found in renderers.ansys_renderer.py.</span>
 <span class="sd">        Eventually, the analysis code needs to be only here, and the renderer method deprecated.</span>
 <span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warn_large_hilbert_space</span><span class="p">(</span><span class="n">fock_trunc</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">epr_spectrum_analysis</span><span class="p">(</span><span class="n">cos_trunc</span><span class="p">,</span> <span class="n">fock_trunc</span><span class="p">)</span></div>
 
+
+    <span class="c1"># Dense Hilbert spaces above this size need several GB for the full</span>
+    <span class="c1"># diagonalisation in pyEPR (16 bytes per complex entry).</span>
+    <span class="n">_LARGE_HILBERT_SPACE</span> <span class="o">=</span> <span class="mi">20_000</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_warn_large_hilbert_space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fock_trunc</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Warn before a numerical diagonalisation that will need a lot of</span>
+<span class="sd">        memory. pyEPR builds a ``fock_trunc ** n_modes`` Hilbert space (#1018).</span>
+<span class="sd">        """</span>
+        <span class="n">n_modes</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="p">,</span> <span class="s2">"setup"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"n_modes"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_modes</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fock_trunc</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="n">fock_trunc</span><span class="o">**</span><span class="n">n_modes</span>
+        <span class="k">if</span> <span class="n">states</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_LARGE_HILBERT_SPACE</span><span class="p">:</span>
+            <span class="n">gb</span> <span class="o">=</span> <span class="n">states</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">16</span> <span class="o">/</span> <span class="mf">1e9</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"Spectrum analysis: fock_trunc**n_modes = </span><span class="si">%d</span><span class="s2">**</span><span class="si">%d</span><span class="s2"> = </span><span class="si">%d</span><span class="s2"> states; a "</span>
+                <span class="s2">"dense matrix of that size needs about </span><span class="si">%.0f</span><span class="s2"> GB. If you run out of "</span>
+                <span class="s2">"memory, lower setup.fock_trunc or analyse a subset of modes."</span><span class="p">,</span>
+                <span class="n">fock_trunc</span><span class="p">,</span>
+                <span class="n">n_modes</span><span class="p">,</span>
+                <span class="n">states</span><span class="p">,</span>
+                <span class="n">gb</span><span class="p">,</span>
+            <span class="p">)</span>
 
 <div class="viewcode-block" id="EPRanalysis.report_hamiltonian">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.EPRanalysis.html#qiskit_metal.analyses.EPRanalysis.report_hamiltonian">[docs]</a>

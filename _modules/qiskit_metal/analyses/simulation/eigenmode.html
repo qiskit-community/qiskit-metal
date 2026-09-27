@@ -592,6 +592,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_initialized</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_renderer</span><span class="p">()</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warn_unlinked_junction_inductance</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
         <span class="n">vars_to_initialize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">vars</span>
         <span class="n">renderer_design_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_render</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
@@ -608,6 +609,67 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_analyze</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">renderer_design_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_setup_name</span></div>
 
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_warn_unlinked_junction_inductance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Warn when ``setup.vars.Lj`` disagrees with the junctions that will</span>
+<span class="sd">        actually be rendered.</span>
+
+<span class="sd">        ``setup.vars`` only defines renderer design variables. A junction's</span>
+<span class="sd">        lumped boundary takes its inductance from the component option</span>
+<span class="sd">        ``&lt;renderer&gt;_inductance`` (e.g. ``hfss_inductance``, default</span>
+<span class="sd">        ``"10nH"``). If that option is a literal value that differs from</span>
+<span class="sd">        ``setup.vars.Lj``, the field simulation ignores ``Lj`` while the EPR</span>
+<span class="sd">        step reads it (#1019). Junctions set to a variable name are left</span>
+<span class="sd">        alone, as are literal values equal to ``Lj``.</span>
+<span class="sd">        """</span>
+        <span class="n">lj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">vars</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Lj"</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">vars</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">lj</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer_name</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2">_inductance"</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"junction"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">table</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">table</span><span class="o">.</span><span class="n">empty</span> <span class="ow">or</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">components</span><span class="p">:</span>
+            <span class="n">ids</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">components</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span>
+            <span class="p">}</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">ids</span><span class="p">)]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnitRegistry</span>
+
+            <span class="n">ureg</span> <span class="o">=</span> <span class="n">UnitRegistry</span><span class="p">()</span>
+            <span class="n">lj_h</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lj</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"henry"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># unparseable Lj: nothing reliable to compare</span>
+            <span class="k">return</span>
+
+        <span class="n">mismatched</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">vars</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c1"># linked to a design variable</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">val_h</span> <span class="o">=</span> <span class="n">ureg</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"henry"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">val_h</span> <span class="o">-</span> <span class="n">lj_h</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">lj_h</span><span class="p">),</span> <span class="mf">1e-30</span><span class="p">):</span>
+                <span class="n">comp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]]</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">mismatched</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">comp</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">)"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">mismatched</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"setup.vars.Lj = </span><span class="si">%r</span><span class="s2">, but these junctions are rendered with a "</span>
+                <span class="s2">"fixed inductance, so the simulation will not use Lj: </span><span class="si">%s</span><span class="s2">. "</span>
+                <span class="s2">"To link them, set e.g. "</span>
+                <span class="s2">"design.components['&lt;name&gt;'].options.</span><span class="si">%s</span><span class="s2"> = 'Lj' (and </span><span class="si">%s</span><span class="s2"> = 'Cj') "</span>
+                <span class="s2">"and rebuild. See tutorial 4.02."</span><span class="p">,</span>
+                <span class="n">lj</span><span class="p">,</span>
+                <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mismatched</span><span class="p">),</span>
+                <span class="n">col</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"_inductance"</span><span class="p">,</span> <span class="s2">"_capacitance"</span><span class="p">),</span>
+            <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">convergence_f</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
