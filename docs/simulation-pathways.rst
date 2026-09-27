@@ -40,8 +40,9 @@ result from one path can be checked against another.
        capacitance matrices
      - ``pip install "quantum-metal[mesh]" scikit-fem pymetis``
        (``pymetis`` optional)
-     - a tutorial resource module, ``docs/tut/resources/package_modes``
-       (not yet a renderer)
+     - ``qiskit_metal.analyses.fem`` (the solver) and
+       ``qiskit_metal.analyses.em.package_modes`` (the analytic models);
+       not yet a renderer
      - 4.41–4.45
    * - **AWS Palace via SQDMetal** (open source)
      - eigenmodes, capacitance, driven and inductance studies on MPI;

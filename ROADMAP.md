@@ -883,11 +883,16 @@ decisions taken and the step-by-step sequence are in
 
 ### Stage 2 — backends on the shared abstractions
 
-1. **scikit-fem** (pip-only, runs in CI): move `MaxwellFEM`, `PortROM`,
-   `Electrostatics` and the field evaluator from the tutorial module into
-   `src/qiskit_metal/analyses/` behind an optional extra; a
-   `renderer_name="skfem"` renderer for the eigenmode and capacitance flows;
-   `package_modes.py` stays a thin wrapper so 4.41–4.45 run unchanged.
+1. **scikit-fem** (pip-only, runs in CI).
+   - Done (September 2026): the solver moved from the tutorial module into
+     `qiskit_metal.analyses.fem` and `qiskit_metal.analyses.em.package_modes`,
+     and `package_modes.py` is a thin wrapper, so 4.41–4.45 run unchanged.
+   - To do:
+     - an install extra;
+     - reading the geometry from `QGmshRenderer.group_map` and `mesh_spec`
+       instead of the tutorial mesher;
+     - a `renderer_name="skfem"` backend for the eigenmode and capacitance
+       flows.
 2. **ElmerFEM beyond electrostatics**: eigenmodes with lumped junctions from
    Elmer's electromagnetic-wave solvers; cross-check against scikit-fem (the
    4.19 cell, the 4.43 package).

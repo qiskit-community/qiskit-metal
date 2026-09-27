@@ -34,8 +34,9 @@ Today each backend gets these facts differently:
   example `port_list=[("Q1", "a", 50)]` and `open_terminations`.
 - **Gmsh + ElmerFEM:** the renderer infers them from name suffixes and
   hard-codes a material list.
-- **scikit-fem:** the tutorial module (tutorials 4.41–4.45) builds its own
-  mesh and passes junctions as edge chains.
+- **scikit-fem:** the solver of tutorials 4.41–4.45 (now
+  `qiskit_metal.analyses.fem`) builds its own mesh and passes junctions as
+  edge chains.
 - **Palace:** Metal has no path. SQDMetal and pyPalace take a Metal design
   and derive the facts themselves, each from its own reading of the qgeometry
   tables.
@@ -1022,12 +1023,16 @@ Notes:
   Each step is checked against a byte-identical `.sif` and the same net
   dictionary on the tutorial 4.19 design. The direct
   `render_design` / `add_solution_setup` / `run` API stays.
-- **scikit-fem.** Stage 2 moves `MaxwellFEM`, `PortROM` and `Electrostatics`
-  into `src/` behind an optional extra. It reads geometry from `group_map`
-  instead of `mesh_package`, which brings ground planes with cutouts and
-  CPWs. `package_modes.py` stays as a thin wrapper, so tutorials 4.41–4.45
-  run unchanged. Junction lines need gmsh to embed 1D entities, which the
-  port step (1.6) provides.
+- **scikit-fem.**
+  - Done: `MaxwellFEM`, `PortROM`, `Electrostatics` and the package mesher
+    are in `qiskit_metal.analyses.fem`, and the analytic models are in
+    `qiskit_metal.analyses.em.package_modes`. `package_modes.py` is a thin
+    wrapper, so tutorials 4.41–4.45 run unchanged; the moved code gives
+    bit-identical results.
+  - Next: read the geometry from `group_map` instead of `mesh_package`, which
+    brings ground planes with cutouts and CPWs. Junction lines need gmsh to
+    embed 1D entities, which the port step (1.6) provides.
+  - Then: an install extra, and the `SolverBackend` front door.
 - **Palace.**
   - The config is plain JSON, validated against the schema Palace ships
     (`scripts/schema/config-schema.json`). pyPalace's `Config.load_config`

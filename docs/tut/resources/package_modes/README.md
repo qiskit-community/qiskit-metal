@@ -15,13 +15,31 @@ does the rest:
 pip install "quantum-metal[mesh]" scikit-fem pymetis   # pymetis is optional
 ```
 
-`package_modes.py`, in the order the notebooks use it:
+The solver lives in Quantum Metal; the notebooks reach it through
+`package_modes.py`, which re-exports it as `pm.<name>`.
+
+`package_modes.py` itself holds what is specific to the paper:
 
 1. the device and the numbers the paper reports (`DEVICE`, `PAPER`);
-2. analytic LSM modes of the dielectric-loaded box and the dipole estimate (`lsm_mode`, `dipole_coupling`);
-3. the two-mode circuit and the Appendix D impedance fit (`circuit_couplings`, `fit_impedance`);
-4. the design in Quantum Metal (`build_design`, `TwoPadTransmon`) and the geometry a mesher needs (`package_from_design`);
-5. meshing with gmsh (`mesh_package`), with optional extra seeding around the junctions;
-6. the curl-curl eigenproblem on lowest-order Nédélec edge elements (`MaxwellFEM`): metal and symmetry planes as boundary conditions, a lumped junction as a rank-one term;
-7. a port reduced-order model (`PortROM`): junction inductors and impedance matrices without new factorizations;
-8. electrostatics (`Electrostatics`): the capacitance across each junction and the qubit's dipole moment.
+2. the design in Quantum Metal (`build_design`, `TwoPadTransmon`);
+3. the paper's device as the default arguments of the analytic functions
+   (`lsm_mode`, `fit_amplitude`, `package_from_design`, …).
+
+`qiskit_metal.analyses.em.package_modes` holds the analytic models:
+
+- analytic LSM modes of the dielectric-loaded box and the dipole estimate
+  (`lsm_mode`, `dipole_coupling`);
+- the two-mode circuit and the Appendix D impedance fit
+  (`circuit_couplings`, `fit_impedance`).
+
+`qiskit_metal.analyses.fem` holds the finite-element solver:
+
+- the geometry a mesher needs (`package_from_design`) and meshing with gmsh
+  (`mesh_package`), with optional extra seeding around the junctions;
+- the curl-curl eigenproblem on lowest-order Nédélec edge elements
+  (`MaxwellFEM`): metal and symmetry planes as boundary conditions, a lumped
+  junction as a rank-one term;
+- a port reduced-order model (`PortROM`): junction inductors and impedance
+  matrices without new factorizations;
+- electrostatics (`Electrostatics`): the capacitance across each junction and
+  the qubit's dipole moment.

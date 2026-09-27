@@ -15,9 +15,9 @@ opposite went wrong (tutorials 4.41–4.45, `docs/tut/4-Analysis/4.4*`).
 
 | Question | Tool |
 |---|---|
-| capacitance matrix, LOM | Ansys Q3D; ElmerFEM (`renderer_elmer`, tutorials 4.19, A.4); P1/P2 electrostatics in `docs/tut/resources/package_modes/` |
-| eigenmodes, EPR, junction-mode couplings | Ansys HFSS (`renderer_ansys*`); gmsh + scikit-fem (`package_modes.MaxwellFEM`, lowest-order edge elements, junction = lumped inductor) |
-| impedance / S-parameters at ports | HFSS driven; `package_modes.PortROM.impedance` (lumped line ports) |
+| capacitance matrix, LOM | Ansys Q3D; ElmerFEM (`renderer_elmer`, tutorials 4.19, A.4); P1/P2 electrostatics (`qiskit_metal.analyses.fem.Electrostatics`) |
+| eigenmodes, EPR, junction-mode couplings | Ansys HFSS (`renderer_ansys*`); gmsh + scikit-fem (`qiskit_metal.analyses.fem.MaxwellFEM`, lowest-order edge elements, junction = lumped inductor) |
+| impedance / S-parameters at ports | HFSS driven; `qiskit_metal.analyses.fem.PortROM.impedance` (lumped line ports) |
 | first estimates | analytic: `analyses.hamiltonian.transmon_analytics`, `analyses.em.cpw_calculations`; closed-form cavity modes |
 
 The scikit-fem path runs anywhere `pip` does, in minutes for ~10^5–10^6

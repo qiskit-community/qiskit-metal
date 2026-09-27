@@ -118,7 +118,7 @@ confirm.
   LOM analysis turns the matrix into frequencies and couplings
   (`docs/tut/4-Analysis/4.0*`). **Eigenmode / EPR / couplings**: Ansys HFSS,
   or the open-source gmsh + scikit-fem solver of tutorials 4.43–4.45
-  (`docs/tut/resources/package_modes/`).
+  (`qiskit_metal.analyses.fem`).
 - Validation, mesh convergence, symmetry, junctions as lumped elements and
   the choice of coupling-extraction method: `.claude/skills/chip-simulation/SKILL.md`.
 - Sweep the few dimensions that set each target

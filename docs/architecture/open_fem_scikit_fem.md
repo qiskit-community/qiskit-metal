@@ -1,10 +1,25 @@
 # Open-source Maxwell solver: gmsh + scikit-fem
 
 Design notes, validation record and extension path for the finite-element
-solver in `docs/tut/resources/package_modes/package_modes.py`, written for
-tutorials 4.41–4.45 (a reproduction of R. Molavi *et al.*,
+solver written for tutorials 4.41–4.45 (a reproduction of R. Molavi *et al.*,
 arXiv:2609.22442). Read this before reusing the solver elsewhere or turning
 it into a backend (see `ROADMAP.md`, "Solver backends").
+
+Where it lives:
+
+- **The solver:** `src/qiskit_metal/analyses/fem/solver.py`, exported as
+  `qiskit_metal.analyses.fem`. It holds the package geometry and mesher,
+  `MaxwellFEM`, `PortROM` and `Electrostatics`.
+- **The analytic models:** `src/qiskit_metal/analyses/em/package_modes.py`.
+  These are the LSM modes, the dipole estimate, the two-mode circuit and the
+  impedance fit.
+- **The tutorials' resource module**
+  (`docs/tut/resources/package_modes/package_modes.py`) keeps only the
+  paper's device and numbers, the 10 × 10 design, and the paper's device as
+  default arguments. It re-exports the rest, so the notebooks call
+  everything as `pm.<name>`.
+- **Numbers unchanged by the move:** the moved code gives bit-identical
+  results on single-threaded meshes.
 
 ## What it does
 
@@ -123,10 +138,11 @@ the same kind of seams. For this solver:
    tutorial's own mesher; this also brings ground planes with
    cutouts and CPW paths. `mesh_package` shows what the tags must carry:
    metal surfaces, junction lines as edge chains, probe lines, cut faces.
-2. **Solver code**: move `MaxwellFEM`, `PortROM`, `Electrostatics` and
-   `_Locator` into `src/qiskit_metal/analyses/` behind an optional extra
-   (`scikit-fem`, optional `pymetis`). Keep `package_modes.py` as a thin
-   wrapper so the tutorials keep running unchanged.
+2. **Solver code** (done, September 2026): in `qiskit_metal.analyses.fem`
+   and `qiskit_metal.analyses.em.package_modes`; `package_modes.py` is a
+   thin wrapper. The dependencies are still installed by hand
+   (`pip install "quantum-metal[mesh]" scikit-fem`, optional `pymetis`); an
+   install extra is still to come.
 3. **Renderer front door**: a `renderer_name="skfem"` renderer on the same
    seam as Elmer and Palace, implementing the eigenmode and capacitance
    flows of the simulation classes; the port reduced-order model and the
