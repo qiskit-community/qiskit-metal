@@ -25,6 +25,7 @@ from qiskit_metal.validation import (
     SHAPE_RULES,
     DanglingEndRule,
     FilletStarvationRule,
+    PinAlignmentRule,
     SelfIntersectionRule,
     SharpTurnRule,
     validate,
@@ -113,6 +114,47 @@ class TestShapeRules(unittest.TestCase):
         self.design.connect_pins(a.id, "end", b.id, "start")
         names = {x.location for x in _run(self.design, DanglingEndRule())}
         self.assertEqual(names, {(0.0, 0.0), (2.0, 0.0)})
+
+    # --- pin alignment ---------------------------------------------------------
+    def _joined(self, first, second):
+        a = self.line("a", first)
+        b = self.line("b", second)
+        self.design.connect_pins(a.id, "end", b.id, "start")
+        return _run(self.design, PinAlignmentRule())
+
+    def test_straight_continuation_is_square_on(self):
+        self.assertEqual(self._joined([[0, 0], [1, 0]], [[1, 0], [2, 0]]), [])
+
+    def test_line_leaving_a_pin_at_an_angle_is_flagged(self):
+        """The 17-qubit couplers left their pads 40-80 degrees off the pin."""
+        f = self._joined([[0, 0], [1, 0]], [[1, 0], [1.5, 0.3]])
+        self.assertTrue(f)
+        self.assertTrue(all(x.rule == "pin-alignment" for x in f))
+        self.assertAlmostEqual(max(x.value for x in f), 30.96, places=1)
+
+    def test_line_starting_off_its_pin_is_flagged(self):
+        f = self._joined([[0, 0], [1, 0]], [[1, 0.001], [2, 0.001]])
+        self.assertTrue(any("um from" in x.message for x in f))
+
+    def test_terminated_end_is_square_on(self):
+        """OpenToGround's pin faces back into the line it terminates."""
+        ln = self.line("ln", [[0, 0], [1, 0]])
+        op = OpenToGround(
+            self.design, "op", options=dict(pos_x="1mm", pos_y="0mm", orientation="0")
+        )
+        self.design.connect_pins(ln.id, "end", op.id, "open")
+        self.assertEqual(_run(self.design, PinAlignmentRule()), [])
+
+    def test_branch_off_a_tap(self):
+        """A branch must leave a tap perpendicular to the line."""
+        a = self.line("a", [[0, 0], [1, 0]], taps=dict(t=[0.5, 0.2]))
+        square = self.line("square", [[0.5, 0], [0.5, 0.4]])
+        self.design.connect_pins(a.id, "t", square.id, "start")
+        self.assertEqual(_run(self.design, PinAlignmentRule()), [])
+        self.design.delete_component("square")
+        askew = self.line("askew", [[0.5, 0], [0.6, 0.4]])
+        self.design.connect_pins(a.id, "t", askew.id, "start")
+        self.assertTrue(_run(self.design, PinAlignmentRule()))
 
     # --- packaging -------------------------------------------------------------
     def test_shape_rules_are_opt_in(self):

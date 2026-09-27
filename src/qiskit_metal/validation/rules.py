@@ -747,6 +747,109 @@ class DanglingEndRule(DesignRule):
                 )
 
 
+class PinAlignmentRule(DesignRule):
+    """A connected path end that does not leave its pin square-on.
+
+    Two connected pins face each other, so a line should leave the pin it
+    connects to along that pin's outward normal, starting on the pin. When it
+    leaves at an angle, the CPW's flush end meets the pad or line askew: the
+    gaps do not line up, and a corner of the end cap hangs over the pad edge
+    or into the ground. Checks the drawn first segment at every connected
+    path end against the partner pin: the angle to its normal
+    (``max_angle`` degrees) and the distance from its middle (``tol``).
+    Applies to routes, polylines, and branches off taps alike.
+    """
+
+    name = "pin-alignment"
+    description = "Path leaves a connected pin at an angle or off the pin."
+
+    def __init__(
+        self,
+        max_angle: float = 1.0,
+        tol: float = 1e-4,
+        severity: Severity = Severity.WARNING,
+    ):
+        self.max_angle = max_angle
+        self.tol = tol
+        self.severity = severity
+
+    def check(self, design: "QDesign") -> Iterable[Finding]:
+        names = component_names_by_id(design)
+        net = getattr(design, "net_info", None)
+        if net is None or not len(net):
+            return
+        partner = {}
+        for _, group in net.groupby("net_id"):
+            pins = list(zip(group["component_id"], group["pin_name"]))
+            if len(pins) == 2:
+                partner[pins[0]] = pins[1]
+                partner[pins[1]] = pins[0]
+        for _, row in _trace_rows(design).iterrows():
+            cid = row["component"]
+            comp = design.components[names[cid]]
+            coords = np.asarray(row["geometry"].coords, dtype=float)
+            for end in (coords, coords[::-1]):
+                steps = np.linalg.norm(np.diff(end, axis=0), axis=1)
+                if not np.any(steps > 0):
+                    continue
+                first = end[1 + int(np.argmax(steps > 0))] - end[0]
+                direction = first / np.linalg.norm(first)
+                for pin_name, pin in comp.pins.items():
+                    if np.linalg.norm(np.asarray(pin["middle"]) - end[0]) > self.tol:
+                        continue
+                    other = partner.get((cid, pin_name))
+                    if other is None or other[0] not in names:
+                        continue
+                    other_name = names[other[0]]
+                    other_pin = design.components[other_name].pins[other[1]]
+                    yield from self._compare(
+                        names[cid],
+                        pin_name,
+                        other_name,
+                        other[1],
+                        end[0],
+                        direction,
+                        other_pin,
+                    )
+
+    def _compare(
+        self, name, pin_name, other_name, other_pin_name, end, direction, other_pin
+    ):
+        normal = np.asarray(other_pin["normal"], dtype=float)
+        normal = normal / np.linalg.norm(normal)
+        angle = float(np.degrees(np.arccos(np.clip(direction @ normal, -1.0, 1.0))))
+        offset = float(np.linalg.norm(np.asarray(other_pin["middle"]) - end))
+        where = (float(end[0]), float(end[1]))
+        if angle > self.max_angle:
+            yield Finding(
+                rule=self.name,
+                severity=self.severity,
+                message=(
+                    f"{name}.{pin_name} leaves {other_name}.{other_pin_name} at "
+                    f"{angle:.1f} deg to its normal (max {self.max_angle:g}): the "
+                    "flush end meets the pad askew -- start the line with a "
+                    "straight lead along the pin"
+                ),
+                components=(name, other_name),
+                location=where,
+                value=angle,
+                limit=self.max_angle,
+            )
+        if offset > self.tol:
+            yield Finding(
+                rule=self.name,
+                severity=self.severity,
+                message=(
+                    f"{name}.{pin_name} starts {offset * 1000:.2f} um from "
+                    f"{other_name}.{other_pin_name}, the pin it is connected to"
+                ),
+                components=(name, other_name),
+                location=where,
+                value=offset,
+                limit=self.tol,
+            )
+
+
 #: Single-path shape checks. Not in ``DEFAULT_RULES`` yet -- opt in with
 #: ``validate(design, rules=[*DEFAULT_RULES, *SHAPE_RULES])``.
 SHAPE_RULES: tuple[DesignRule, ...] = (
@@ -754,6 +857,7 @@ SHAPE_RULES: tuple[DesignRule, ...] = (
     SharpTurnRule(),
     FilletStarvationRule(),
     DanglingEndRule(),
+    PinAlignmentRule(),
 )
 
 
