@@ -94,11 +94,16 @@ class Vec3DArray:
         if ret_path_angle:
             v1 = Vec3D.normed(self.path_vecs[i])
             v2 = Vec3D.normed(self.path_vecs[j])
-            return np.round(np.pi - np.arccos(Vec3D.dot(v1, v2)), decimals=9)
+            return np.round(
+                np.pi - np.arccos(np.clip(Vec3D.dot(v1, v2), -1.0, 1.0)), decimals=9
+            )
 
         v1 = Vec3D.normed(self.points[i])
         v2 = Vec3D.normed(self.points[j])
-        return np.round(np.pi - np.arccos(Vec3D.dot(v1, v2)), decimals=9)
+        # Clip: rounding can push the dot product past +-1 (arccos -> NaN).
+        return np.round(
+            np.pi - np.arccos(np.clip(Vec3D.dot(v1, v2), -1.0, 1.0)), decimals=9
+        )
 
     @staticmethod
     def make_vec3DArray(points: list[list[Union[int, float]]], layer_z: float = None):
@@ -416,7 +421,11 @@ def render_path_curves(
             raise ValueError(f"Expected positive fillet radius, got {fillet}.")
 
         elif fillet > 0.0 and is_filleted:
-            if np.allclose(angle12, np.pi, rtol=straight_line_tol):
+            # Straight, or so nearly straight that the arc (whose control
+            # points are rounded to 1e-9) would collapse and gmsh could not
+            # create it: draw straight through.
+            arc_reach = fillet * np.tan(max(np.pi - angle12, 0.0) / 2)
+            if np.allclose(angle12, np.pi, rtol=straight_line_tol) or arc_reach < 1e-6:
                 p1, p2 = line_width_offset_pts(v, pv2, width, layer_z)
                 recent_pts += [p1, p2]
 

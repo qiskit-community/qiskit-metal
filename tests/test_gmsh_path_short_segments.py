@@ -111,5 +111,75 @@ class TestMeanderRendersIn3D(unittest.TestCase):
         self.assertGreater(n_volumes, 0)
 
 
+@unittest.skipUnless(
+    _gmsh_importable(), "gmsh not installed (optional [mesh] extra); 3D render check"
+)
+class TestNearlyStraightCornersRender(unittest.TestCase):
+    """A filleted path through vertices that are straight to within rounding.
+
+    The path angle came from ``arccos`` of a dot product that can round past
+    1 (NaN), and a corner bent by ~1e-6 rad got a fillet arc shorter than the
+    1e-9 rounding of its control points: gmsh raised 'Could not create circle
+    arc'. Resampled traced lines hit both."""
+
+    def test_renders(self):
+        import gmsh
+        from qiskit_metal.designs.design_multiplanar import MultiPlanar
+        from qiskit_metal.qlibrary.tlines.polyline_cpw import PolylineCPW
+        from qiskit_metal.renderers.renderer_gmsh.gmsh_renderer import QGmshRenderer
+
+        design = MultiPlanar()
+        design.overwrite_enabled = True
+        # A coupler from a traced 17-qubit layout that raised the error.
+        points = [
+            [0.161803399, -0.11755705],
+            [0.194164079, -0.14106846],
+            [0.241930934, -0.158747972],
+            [0.286256414, -0.154886508],
+            [0.325959737, -0.132643281],
+            [0.365663059, -0.110400055],
+            [0.405366382, -0.088156829],
+            [0.445069705, -0.065913603],
+            [0.484773027, -0.043670376],
+            [0.524835328, -0.022130627],
+            [0.566964968, -0.005700654],
+            [0.612005778, -1.9098e-05],
+            [0.657515208, -0.000101048],
+            [0.703024639, -0.000182998],
+            [0.748534069, -0.000264947],
+            [0.794043499, -0.000346897],
+            [0.839552929, -0.000428847],
+            [0.885062359, -0.000510797],
+            [0.930571789, -0.000592746],
+            [0.976081219, -0.000674696],
+            [1.021590649, -0.000756646],
+            [1.06710008, -0.000838596],
+            [1.111077626, -0.006610503],
+            [1.146043598, -0.033885422],
+            [1.173559371, -0.06889895],
+            [1.212673657, -0.079345757],
+            [1.248117682, -0.052990504],
+            [1.277879991, -0.019455952],
+            [1.318218464, -0.002611507],
+            [1.3692, 0.0],
+            [1.4092, 0.0],
+        ]
+        PolylineCPW(
+            design,
+            "line",
+            options=dict(points=points, fillet="15um", min_segment="30um"),
+        )
+
+        r = QGmshRenderer(design, layer_types=dict(metal=[1], dielectric=[3]))
+        try:
+            r.render_design(
+                draw_sample_holder=False, mesh_geoms=False, box_plus_buffer=False
+            )
+            n_volumes = len(gmsh.model.getEntities(3))
+        finally:
+            r.close()
+        self.assertGreater(n_volumes, 0)
+
+
 if __name__ == "__main__":
     unittest.main()
