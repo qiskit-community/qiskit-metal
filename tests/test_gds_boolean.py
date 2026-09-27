@@ -8,9 +8,12 @@ region the plain boolean should give.
 """
 
 import unittest
+from unittest import mock
 
 import gdstk
+from shapely.geometry import box as shapely_box
 
+from qiskit_metal.renderers.renderer_gds import gds_boolean
 from qiskit_metal.renderers.renderer_gds.gds_boolean import subtract_in_strips
 
 PRECISION = 1e-9
@@ -74,6 +77,34 @@ class TestSubtractInStrips(unittest.TestCase):
         self.assertEqual(
             subtract_in_strips([], [], layer=1, datatype=0, precision=PRECISION), []
         )
+
+
+class TestFallback(unittest.TestCase):
+    """When gdstk's result is wrong, the strip is rebuilt from shapely."""
+
+    def test_dropped_result_is_repaired(self):
+        cuts = [gdstk.rectangle((-1, -1), (1, 1)), gdstk.rectangle((2, 2), (3, 4))]
+        expected = _chip().area() - 4 - 2
+        real_boolean = gdstk.boolean
+
+        def lossy(*args, **kwargs):  # a gdstk that silently drops every hole
+            return real_boolean(args[0], [], "not", **kwargs)
+
+        with mock.patch.object(gds_boolean.gdstk, "boolean", side_effect=lossy):
+            out = subtract_in_strips(
+                [_chip()], cuts, layer=1, datatype=0, precision=PRECISION, strips=1
+            )
+        self.assertAlmostEqual(_area(out), expected, places=6)
+
+    def test_without_holes_keeps_area_and_removes_holes(self):
+        square = shapely_box(-5, -5, 5, 5)
+        holes = square.difference(shapely_box(-1, -1, 1, 1)).difference(
+            shapely_box(2, 2, 3, 4)
+        )
+        out = gds_boolean._without_holes(holes, layer=1, datatype=0)
+        self.assertAlmostEqual(_area(out), holes.area, places=9)
+        for poly in out:  # a gdstk polygon has no holes; check it is simple
+            self.assertGreater(poly.area(), 0)
 
 
 if __name__ == "__main__":
