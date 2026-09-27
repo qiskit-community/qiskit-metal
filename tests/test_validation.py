@@ -13,7 +13,8 @@ that always fires (or never does) fails here.
 import unittest
 import warnings
 
-from qiskit_metal import Dict, designs
+from qiskit_metal import Dict, designs, draw
+from qiskit_metal.qlibrary.core import QComponent
 from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
 from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
 from qiskit_metal.qlibrary.tlines.pathfinder import RoutePathfinder
@@ -391,6 +392,44 @@ class TestGroundContinuityRule(unittest.TestCase):
         findings = list(GroundContinuityRule(max_void_size="50um").check(design))
         self.assertTrue(findings, "pocket is far wider than 50 um")
         self.assertTrue(all("parasitic mode" in f.message for f in findings))
+
+
+class _EtchedStrips(QComponent):
+    """Two etched rectangles across the chip at y=0, ``gap`` apart at x=0."""
+
+    default_options = Dict(gap="0um", half_width="0.01mm", reach="4mm")
+
+    def make(self):
+        p = self.p
+        left = draw.rectangle(p.reach, 2 * p.half_width, -p.reach / 2 - p.gap / 2, 0)
+        right = draw.rectangle(p.reach, 2 * p.half_width, p.reach / 2 + p.gap / 2, 0)
+        self.add_qgeometry("poly", {"left": left, "right": right}, subtract=True)
+
+
+class TestGroundContinuityLinkWidth(unittest.TestCase):
+    """A nanometer ground sliver between two etched edges is not a connection.
+
+    Where two etched edges almost coincide, floating-point booleans leave a
+    ground strip a nanometer wide; on a 17-qubit chip such slivers joined
+    every plaquette island to the main ground and the rule stopped reporting
+    the split.
+    """
+
+    def _findings(self, gap, **rule_opts):
+        design = _design()
+        _EtchedStrips(design, "cut", options=dict(gap=gap))
+        return list(GroundContinuityRule(**rule_opts).check(design))
+
+    def test_nanometer_link_counts_as_split(self):
+        findings = self._findings("0.000001mm")  # 1 nm
+        self.assertEqual(len(findings), 1, msg=f"expected one split: {findings}")
+        self.assertIn("2 disconnected regions", findings[0].message)
+
+    def test_real_ground_bridge_keeps_ground_connected(self):
+        self.assertEqual(self._findings("10um"), [])
+
+    def test_zero_link_width_is_exact(self):
+        self.assertEqual(self._findings("0.000001mm", min_link_width=0), [])
 
 
 class TestQDesignCheckDeprecation(unittest.TestCase):

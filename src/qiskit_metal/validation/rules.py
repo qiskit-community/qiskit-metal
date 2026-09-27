@@ -429,6 +429,11 @@ class GroundContinuityRule(DesignRule):
     every boundary is a correct design; a split without them is not. The
     finding tells you which question to ask.
 
+    Two regions joined only by a strip narrower than ``min_link_width``
+    (default 0.1 um) count as split: where two etched edges almost coincide,
+    floating-point boolean operations leave ground slivers a nanometer wide
+    that would otherwise join regions no fabricated metal joins.
+
     ``max_void_size`` additionally flags etched voids large enough to host
     a parasitic cavity mode; [GDSII2Wafer]_ (R9) puts that at 50 um. It is
     **off by default** because a transmon pocket is a deliberate void far
@@ -445,6 +450,7 @@ class GroundContinuityRule(DesignRule):
         max_void_size=None,
         severity: Severity = Severity.WARNING,
         min_region_area: float = 1e-4,
+        min_link_width: float = 1e-4,
     ):
         self.chip = chip
         self.layer = layer
@@ -453,6 +459,9 @@ class GroundContinuityRule(DesignRule):
         # 1e-4 mm^2 == 100 um^2. Below this a "region" is boolean-op noise
         # on a shared edge, not a piece of ground plane.
         self.min_region_area = min_region_area
+        # 1e-4 mm == 0.1 um: far below any fabricated feature, far above the
+        # nanometer slivers left where two etched edges almost coincide.
+        self.min_link_width = min_link_width
 
     def _ground_sheet(self, design: "QDesign"):
         from shapely.geometry import box
@@ -470,7 +479,11 @@ class GroundContinuityRule(DesignRule):
         ]
         if not etched:
             return sheet
-        return sheet.difference(unary_union(etched))
+        ground = sheet.difference(unary_union(etched))
+        if self.min_link_width:
+            half = self.min_link_width / 2.0
+            ground = ground.buffer(-half, join_style=2).buffer(half, join_style=2)
+        return ground
 
     def check(self, design: "QDesign") -> Iterable[Finding]:
         sheet = self._ground_sheet(design)
