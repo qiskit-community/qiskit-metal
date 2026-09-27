@@ -921,7 +921,7 @@ class _QuantumBuilderMeta(type):
                 )
             QuantumSystemRegistry.add_to_registry(sys_type, cls)
 
-            logger.info(
+            logger.debug(
                 "%s with system_type %s registered to QuantumSystemRegistry",
                 cls.__name__,
                 sys_type,
