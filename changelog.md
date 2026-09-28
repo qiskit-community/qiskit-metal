@@ -80,6 +80,7 @@ notes*). No API removals.
 
 ### Changed
 
+- **`pyEPR-quantum>=1.0.2`** in `[ansys]` and `[full]`. pyEPR 1.0.1 raised `AttributeError` under numpy 2 at the end of a default EPR analysis (`print_result=True`, which the pyaedt eigenmode renderer passes) and could not read Q3D matrix exports under pandas 3; 1.0.2 fixes both.
 - **numpy 2 supported; `numpy<2` cap removed.** The cap dated from a `pandas==1.5.3` pin: wheels built against numpy 1.x fail to import under numpy 2. Floors now sit at the first numpy-2-compatible releases: pandas 2.2.2, scipy 1.13.0, matplotlib 3.8.4, shapely 2.0.4 and pint 0.24.4 (older pint calls `np.cumproduct`; 0.24.0–0.24.3 also break with flexparser 0.4). numpy 1.x remains supported. pyyaml floor 6.0.1 (first with Python 3.12 wheels). Verified by running the suite at the lowest allowed versions under both numpy 1.24.2 and 2.0.0.
 - **pyaedt pin is Python-version dependent.** `>=0.21,<0.24` on Python < 3.14 (unchanged), `>=1.0.1` on 3.14 only, because pyaedt 0.2x requires `numpy<2.3`, which has no 3.14 wheels. The pyaedt renderer has not been validated against AEDT with pyaedt 1.x.
 - `math_and_overrides.cross` computes the 2D z-component directly; `np.cross` on 2-element vectors is deprecated in numpy 2. (@PositroniumJS, #1182)
@@ -92,7 +93,7 @@ notes*). No API removals.
 
 ### Upgrade notes
 
-- **Minimum versions raised:** pandas 2.2.2, scipy 1.13.0, matplotlib 3.8.4, shapely 2.0.4, pint 0.24.4, pyyaml 6.0.1. An environment pinned below these will need to upgrade them.
+- **Minimum versions raised:** pandas 2.2.2, scipy 1.13.0, matplotlib 3.8.4, shapely 2.0.4, pint 0.24.4, pyyaml 6.0.1, and pyEPR-quantum 1.0.2 (`[ansys]`, `[full]`). An environment pinned below these will need to upgrade them.
 - **`ResonatorLumped`:** default geometry is unchanged, but designs that set `n_turns` or `inner_space` explicitly now get that geometry instead of the fixed 14-turn meander.
 - **Python 3.14 + `[ansys]`** installs pyaedt 1.x, which has not been validated against AEDT with the pyaedt renderer.
 - **`validate()` runs four more rules by default** (the shape rules above), so its report says "11 rules ran" instead of 7, and designs with a self-crossing line, a hairpin, a starved fillet or a line leaving a pin askew get new findings.

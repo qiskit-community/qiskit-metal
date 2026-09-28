@@ -75,7 +75,7 @@
         ansys = [
             "pyaedt>=0.21,<0.24; python_version < '3.14'",  # vetted range; 0.24 had bugs
             "pyaedt>=1.0.1; python_version >= '3.14'",  # 0.2x needs numpy<2.3, which has no cp314 wheels
-            "pyEPR-quantum>=1.0.1",
+            "pyEPR-quantum>=1.0.2",
         ]
         # gmsh — the universal mesher. Used by Elmer (today), Palace
         # (future), and any other open FEM backend. The mesher itself is
@@ -105,7 +105,7 @@
             "qdarkstyle>=3.1",
             "pyaedt>=0.21,<0.24; python_version < '3.14'",  # vetted range; 0.24 had bugs
             "pyaedt>=1.0.1; python_version >= '3.14'",  # 0.2x needs numpy<2.3, which has no cp314 wheels
-            "pyEPR-quantum>=1.0.1",
+            "pyEPR-quantum>=1.0.2",
             "gmsh>=4.15.0,<5",
         ]
 

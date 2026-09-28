@@ -11,7 +11,7 @@ dependencies:
   - numpy>=1.24.2 # Synced with pyproject.toml floor. numpy 1.x and 2.x both supported.
   - pandas>=2.2.2 # Synced with pyproject.toml floor (first numpy-2 build).
   - pint>=0.24.4 # Synced with pyproject.toml floor.
-  - pyEPR-quantum>=1.0.1 # Synced with pyproject.toml floor.
+  - pyEPR-quantum>=1.0.2 # Synced with pyproject.toml floor.
   - pygments~=2.14
   - qdarkstyle~=3.1
   - qutip>=5.1.0 # Synced with pyproject.toml floor.
