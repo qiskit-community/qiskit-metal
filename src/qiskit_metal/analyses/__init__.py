@@ -102,3 +102,9 @@ from qiskit_metal.analyses.hamiltonian import HO_wavefunctions
 from qiskit_metal.analyses.hamiltonian import transmon_analytics
 from qiskit_metal.analyses.hamiltonian.transmon_CPB_analytic import Hcpb_analytic
 from qiskit_metal.analyses.sweep_and_optimize.sweeper import Sweeper
+
+from qiskit_metal.analyses.quantization import _scqubits_compat
+
+# scqubits < 4.2 (what macOS resolves next to a current scipy) needs two numpy
+# aliases that numpy 2 removed, also when called directly (tutorial 4.34).
+_scqubits_compat.restore_numpy_aliases_if_needed()

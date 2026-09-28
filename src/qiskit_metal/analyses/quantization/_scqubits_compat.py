@@ -19,9 +19,17 @@ LOM 2.0 Hamiltonian step (``CompositeSystem.hamiltonian_results``):
 ``apply()`` restores the two numpy aliases and makes the converter return a
 ``csc_matrix``. Each fix is applied only when it is needed, and none changes
 results. Remove this module once scqubits handles both.
+
+The aliases matter beyond LOM 2.0: any scqubits < 4.2 call that builds such an
+array fails, e.g. ``Transmon.wavefunction()`` in tutorial 4.34. So
+``qiskit_metal.analyses`` calls ``restore_numpy_aliases_if_needed()`` on
+import, which adds them only when the installed scqubits is older than 4.2; it
+reads the package metadata and does not import scqubits.
 """
 
+import re
 import sys
+from importlib.metadata import PackageNotFoundError, version
 
 import numpy as np
 import scipy.sparse as sp
@@ -32,6 +40,28 @@ def _restore_numpy_aliases():
         np.float_ = np.float64
     if not hasattr(np, "complex_"):
         np.complex_ = np.complex128
+
+
+def _scqubits_uses_removed_aliases(installed=None) -> bool:
+    """True if scqubits is installed and older than 4.2.
+
+    Args:
+        installed (str): a version string to check instead of the installed
+            one (for tests).
+    """
+    if installed is None:
+        try:
+            installed = version("scqubits")
+        except PackageNotFoundError:
+            return False
+    major_minor = tuple(int(part) for part in re.findall(r"\d+", installed)[:2])
+    return major_minor < (4, 2)
+
+
+def restore_numpy_aliases_if_needed():
+    """Add ``np.float_`` / ``np.complex_`` back if the installed scqubits needs them."""
+    if _scqubits_uses_removed_aliases():
+        _restore_numpy_aliases()
 
 
 def _qutip_returns_sparse_arrays() -> bool:

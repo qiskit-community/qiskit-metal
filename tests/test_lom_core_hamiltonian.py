@@ -175,6 +175,36 @@ class TestScqubitsCompat(unittest.TestCase):
         self.assertEqual(space.hamiltonian().shape, (9, 9))
 
 
+class TestNumpyAliases(unittest.TestCase):
+    """scqubits < 4.2 needs np.float_ / np.complex_ also outside LOM 2.0."""
+
+    def test_only_old_scqubits_needs_them(self):
+        from qiskit_metal.analyses.quantization import _scqubits_compat as compat
+
+        cases = [("3.2", True), ("4.1.0", True), ("4.1.0.post1", True)]
+        cases += [("4.2.0", False), ("4.3.1", False), ("5.0", False)]
+        for installed, needed in cases:
+            with self.subTest(installed=installed):
+                self.assertEqual(
+                    compat._scqubits_uses_removed_aliases(installed), needed
+                )
+
+    def test_direct_scqubits_call_after_importing_metal(self):
+        """Tutorial 4.34's call, in a fresh process where LOM is not imported."""
+        import subprocess
+
+        code = (
+            "import qiskit_metal, scqubits as scq\n"
+            "t = scq.Transmon(EJ=30.0, EC=1.2, ng=0.0, ncut=10)\n"
+            "print(t.wavefunction(which=0).amplitudes.dtype)\n"
+        )
+        run = subprocess.run(
+            [sys.executable, "-c", code], capture_output=True, text=True, timeout=300
+        )
+        self.assertEqual(run.returncode, 0, run.stderr[-2000:])
+        self.assertEqual(run.stdout.strip().splitlines()[-1], "complex128")
+
+
 class TestImportSideEffects(unittest.TestCase):
     def test_h5py_is_not_replaced(self):
         """Importing LOM must not swap a dummy into sys.modules['h5py']."""
