@@ -76,6 +76,9 @@ docs/tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling.ipynb
 #     cells tagged requires-ansys are kept without outputs)
 #   docs/circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop.ipynb
 #     (same: layout and GDS run anywhere, Ansys cells tagged)
+#   docs/tut/2-From-components-to-chip/FlipChip-design-tutorial.ipynb
+#     (same; rerun_auto.py runs every cell, so it cannot run it until it
+#     skips the requires-ansys cells)
 #
 # gmsh + Linux X libs:
 #   docs/tut/3-Renderers/3.4-How-do-I-make-my-custom-QRenderer.ipynb
