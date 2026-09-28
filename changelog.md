@@ -6,15 +6,16 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
-## Unreleased
+## Quantum Metal v0.9.0 (Python 3.13/3.14, numpy 2; raised dependency minimums)
 
-### Upgrade notes
-
-- **`validate()` runs four more rules by default** (the shape rules above), so its report says "11 rules ran" instead of 7, and designs with a self-crossing line, a hairpin, a starved fillet or a line leaving a pin askew get new findings.
-- **Tutorial notebooks moved to `docs/`.** The copies in `tutorials/` (names with spaces) are gone; every notebook now lives once, under `docs/tut/` or `docs/circuit-examples/`, with the hyphenated names the docs site already used. `tutorials/README.md` maps each old path to its new one. Input files the notebooks load (e.g. `Fake_Junctions.GDS`) are in `docs/tut/resources/`; a local `renderers_to_load` entry for the skeleton renderer becomes `docs.tut.resources.skeleton_renderer`.
+Minor release: new Python versions, numpy 2 support, and a batch of analysis,
+renderer and tutorial fixes. The dependency minimums move up (see *Upgrade
+notes*). No API removals.
 
 ### Added
 
+- **Python 3.13 and 3.14 support.** `requires-python` is now `>=3.10,<3.15`. Until now every release since 0.5.2.post4 declared `<3.13`, so `pip install quantum-metal` on 3.13/3.14 silently resolved to 0.5.1. CI tests 3.10–3.14 on Linux and 3.10 + 3.14 on macOS/Windows. Based on #1182 by @PositroniumJS. (closes #1029)
+- **`LumpedElementsSim.save_capacitance_matrix(path)`** saves the capacitance matrix to a CSV of your choice, with the units in the header cell. (#1017)
 - **The scikit-fem Maxwell solver of tutorials 4.41–4.45 is part of Quantum Metal**: `qiskit_metal.analyses.fem` (package mesher, `MaxwellFEM` eigenmodes with lumped junctions, `PortROM` port reduced-order model, `Electrostatics`) and `qiskit_metal.analyses.em.package_modes` (analytic LSM package modes, dipole estimate, two-mode circuit, impedance-matrix fit). The tutorials' `package_modes.py` keeps the paper's device and design and re-exports the rest; their results are unchanged. Install with `pip install "quantum-metal[skfem]"`, which brings gmsh and scikit-fem; ElmerFEM and Palace need only `[mesh]` (`pymetis`, optional, speeds up the sparse factorizations).
 - **Ports and junction lines in the gmsh model.** `QGmshRenderer.ports` takes lumped ports (on a pin: a sheet across the end gap, or two sheets across a CPW's side gaps, or a line; or on an explicit segment) and wave ports (a face on an outer wall), each with its own physical group that records its name and voltage direction (`group_map`); a lumped port's pin gets an endcap. `options.junction_lines` embeds each junction's line as a 1D entity for edge-element solvers. Open-pin endcaps now work at any pin angle (they assumed pins along x or y). Without ports the mesh is unchanged.
 - **`QGmshRenderer.mesh_spec`**: refine the mesh by role, net, component, around a junction (a ball) or in a box, on top of the `mesh` options, with sizes in design units or strings with units (`analyses.simulation.problem.MeshSpec`, `Refine`, `Select`). Its `max_size` / `min_size` override the options. Without a spec the mesh is unchanged.
@@ -38,6 +39,18 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ### Fixed
 
+- **`ResonatorLumped`: `n_turns` and `inner_space` now take effect, and the trace stays connected.** The meander was hard-coded to 14 U-turns, so both options were ignored. Its lines were offset by `res_width` while its bends used `perimeter_thickness`, and the last bend assumed `initial == turn_radius`, so changing any of those split the trace into up to 27 disconnected pieces. The meander is now built from `n_turns` (default now `14`), `turn_radius`, and `inner_space`, which is the edge-to-edge gap between lines (default now `0.19mm`). Default geometry is unchanged (within 1 nm). The component warns when the trace overlaps the perimeter, or when `final` ends inside the box.
+- **`LumpedElementsSim()` / `EigenmodeSim()` without a design no longer connect to Ansys on construction.** The design-less path created the renderer with `initiate=True`, so building a simulation object just to load a saved matrix failed off Windows. It now matches the design path (`initiate=False`); `run_sim()` still starts the renderer. An unknown `renderer_name` without a design now logs an error instead of raising `AttributeError`.
+- **Pin names documented.** Seventeen components (the three tees, both tunable couplers, `CapNInterdigital`, `Cap3Interdigital`, `ResonatorCoilRect`, `NSquareSpiral`, `TransmonInterdigitated`, `StarQubit`, both concentric transmons, `TransmonCrossFL`, `ResonatorLumped`, and the three launchpads) now list their pins in a `Pins:` section. A test checks that every pin created at default options is named in its class docstring.
+- **Elmer capacitance matrix was wrong under pandas 3.** Two chained assignments in `QElmerRenderer._get_capacitance_matrix` are no-ops under Copy-on-Write (pandas 3's default, which pip installs on Python 3.11+), leaving the diagonal unconverted and the ground entry NaN with only a warning. Now `.iloc`/`.loc`.
+- **`DesignPlanar()` crashed when gmsh was installed but could not load** (e.g. `libGLU.so.1` missing on headless Linux): the import guards only caught `ImportError`. The gmsh renderer is now skipped, and using it explains which system library failed to load.
+- **Clear errors instead of cryptic ones:** `QElmerRenderer.add_solution_setup()`/`run()` without `render_design()` on the same renderer (was `AttributeError: nets`, #1008); ElmerSolver crashes (was a later missing-file error; now raises with the log tail, #1005); a layer/datatype missing from the layer stack (was `TypeError: Dict / int` in the pyaedt renderer, #992).
+- **Non-string geometry names.** `add_qgeometry` coerces dictionary keys to `str`, so e.g. `{0: jj_line}` no longer breaks the HFSS renderer's name sanitiser or MultiPolygon splitting. (#995)
+- **`LOManalysis.run_lom()` with a user-supplied matrix.** Setting only `sim.capacitance_matrix` (as the method's own warning suggests) raised `KeyError: 0`: an inverted type check never filled the per-pass data. It now uses the matrix as the single pass, converted from `sim.units` (default fF) to farads.
+- **Lite installs: `load_q3d_capacitance_matrix()` no longer needs IPython/jinja2** to print the matrix; it falls back to plain text.
+- **Docs:** `Subsystem` energies (`EJ`, `EL`, `EC`) are in MHz, not GHz (#920); `TransmonPocketCL` documents its `Charge_Line` pin (#989).
+- **Tutorials that failed on a fresh kernel.** Fifteen notebooks (3.5, 4.02–4.05, 4.11–4.14, 4.19, two Hamiltonian-model notebooks, and two Appendix B topics) lost their import cells when `%autoreload` was stripped in 6512e0d, and raised `NameError` at the first cell that used `designs`, `MetalGUI`, etc. The import cells are restored; stored outputs are unchanged.
+- **Tutorial 4.02: junction now follows `sim.setup.vars.Lj`.** Section I links the qubit's `hfss_inductance`/`hfss_capacitance` to the `Lj`/`Cj` design variables, so HFSS and the EPR step use the same junction inductance. (#1019)
 - **scqubits < 4.2 failed under numpy 2 outside LOM 2.0**, e.g. `Transmon.wavefunction()` in tutorial 4.34 raised `AttributeError: np.complex_ was removed`. scqubits 4.1 builds arrays with `np.float_` / `np.complex_`, and it is what macOS resolves next to a current scipy (scqubits 4.2+ caps scipy at 1.13.1 there). Only the LOM 2.0 path restored the two aliases; `import qiskit_metal` now does, when the installed scqubits is older than 4.2. With scqubits 4.2+ nothing changes.
 - **Tutorial 2.14's third route doubled back over itself**, as the new self-intersection rule found: from its anchor at y = -1.5 the pathfinder could only leave back along the route's own first leg. The anchor is now at y = -1.25. The chip is also 13 mm wide instead of 9 mm, so the two qubits at x = ±5 mm and the routes that wrap around them are inside it.
 - **ElmerFEM mislabeled shapes after a component was deleted.** `QElmerRenderer` found a component's name from its id by position in `design.components`, so once a component had been deleted, shapes were named after the wrong component and `add_solution_setup` failed with a `KeyError`. Net assignment now lives in `toolbox_metal/nets.py` (shared by the solver backends), with the correct id-to-name map; results for designs without deletions are unchanged.
@@ -65,32 +78,6 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 - **Importing LOM analysis replaced `h5py`** for the whole process with a dummy class (a 2021 workaround for a conda conflict); scqubits already treats h5py as optional, so the replacement is gone.
 - **Pre-commit hook** split staged paths containing spaces (e.g. `tutorials/Appendix C ...`) into nonexistent files.
 
-## Quantum Metal v0.9.0 (Python 3.13/3.14, numpy 2; raised dependency minimums)
-
-Minor release: new Python versions, numpy 2 support, and a batch of analysis,
-renderer and tutorial fixes. The dependency minimums move up (see *Upgrade
-notes*). No API removals.
-
-### Added
-
-- **Python 3.13 and 3.14 support.** `requires-python` is now `>=3.10,<3.15`. Until now every release since 0.5.2.post4 declared `<3.13`, so `pip install quantum-metal` on 3.13/3.14 silently resolved to 0.5.1. CI tests 3.10–3.14 on Linux and 3.10 + 3.14 on macOS/Windows. Based on #1182 by @PositroniumJS. (closes #1029)
-- **`LumpedElementsSim.save_capacitance_matrix(path)`** saves the capacitance matrix to a CSV of your choice, with the units in the header cell. (#1017)
-
-### Fixed
-
-- **`ResonatorLumped`: `n_turns` and `inner_space` now take effect, and the trace stays connected.** The meander was hard-coded to 14 U-turns, so both options were ignored. Its lines were offset by `res_width` while its bends used `perimeter_thickness`, and the last bend assumed `initial == turn_radius`, so changing any of those split the trace into up to 27 disconnected pieces. The meander is now built from `n_turns` (default now `14`), `turn_radius`, and `inner_space`, which is the edge-to-edge gap between lines (default now `0.19mm`). Default geometry is unchanged (within 1 nm). The component warns when the trace overlaps the perimeter, or when `final` ends inside the box.
-- **`LumpedElementsSim()` / `EigenmodeSim()` without a design no longer connect to Ansys on construction.** The design-less path created the renderer with `initiate=True`, so building a simulation object just to load a saved matrix failed off Windows. It now matches the design path (`initiate=False`); `run_sim()` still starts the renderer. An unknown `renderer_name` without a design now logs an error instead of raising `AttributeError`.
-- **Pin names documented.** Seventeen components (the three tees, both tunable couplers, `CapNInterdigital`, `Cap3Interdigital`, `ResonatorCoilRect`, `NSquareSpiral`, `TransmonInterdigitated`, `StarQubit`, both concentric transmons, `TransmonCrossFL`, `ResonatorLumped`, and the three launchpads) now list their pins in a `Pins:` section. A test checks that every pin created at default options is named in its class docstring.
-- **Elmer capacitance matrix was wrong under pandas 3.** Two chained assignments in `QElmerRenderer._get_capacitance_matrix` are no-ops under Copy-on-Write (pandas 3's default, which pip installs on Python 3.11+), leaving the diagonal unconverted and the ground entry NaN with only a warning. Now `.iloc`/`.loc`.
-- **`DesignPlanar()` crashed when gmsh was installed but could not load** (e.g. `libGLU.so.1` missing on headless Linux): the import guards only caught `ImportError`. The gmsh renderer is now skipped, and using it explains which system library failed to load.
-- **Clear errors instead of cryptic ones:** `QElmerRenderer.add_solution_setup()`/`run()` without `render_design()` on the same renderer (was `AttributeError: nets`, #1008); ElmerSolver crashes (was a later missing-file error; now raises with the log tail, #1005); a layer/datatype missing from the layer stack (was `TypeError: Dict / int` in the pyaedt renderer, #992).
-- **Non-string geometry names.** `add_qgeometry` coerces dictionary keys to `str`, so e.g. `{0: jj_line}` no longer breaks the HFSS renderer's name sanitiser or MultiPolygon splitting. (#995)
-- **`LOManalysis.run_lom()` with a user-supplied matrix.** Setting only `sim.capacitance_matrix` (as the method's own warning suggests) raised `KeyError: 0`: an inverted type check never filled the per-pass data. It now uses the matrix as the single pass, converted from `sim.units` (default fF) to farads.
-- **Lite installs: `load_q3d_capacitance_matrix()` no longer needs IPython/jinja2** to print the matrix; it falls back to plain text.
-- **Docs:** `Subsystem` energies (`EJ`, `EL`, `EC`) are in MHz, not GHz (#920); `TransmonPocketCL` documents its `Charge_Line` pin (#989).
-- **Tutorials that failed on a fresh kernel.** Fifteen notebooks (3.5, 4.02–4.05, 4.11–4.14, 4.19, two Hamiltonian-model notebooks, and two Appendix B topics) lost their import cells when `%autoreload` was stripped in 6512e0d, and raised `NameError` at the first cell that used `designs`, `MetalGUI`, etc. The import cells are restored; stored outputs are unchanged.
-- **Tutorial 4.02: junction now follows `sim.setup.vars.Lj`.** Section I links the qubit's `hfss_inductance`/`hfss_capacitance` to the `Lj`/`Cj` design variables, so HFSS and the EPR step use the same junction inductance. (#1019)
-
 ### Changed
 
 - **numpy 2 supported; `numpy<2` cap removed.** The cap dated from a `pandas==1.5.3` pin: wheels built against numpy 1.x fail to import under numpy 2. Floors now sit at the first numpy-2-compatible releases: pandas 2.2.2, scipy 1.13.0, matplotlib 3.8.4, shapely 2.0.4 and pint 0.24.4 (older pint calls `np.cumproduct`; 0.24.0–0.24.3 also break with flexparser 0.4). numpy 1.x remains supported. pyyaml floor 6.0.1 (first with Python 3.12 wheels). Verified by running the suite at the lowest allowed versions under both numpy 1.24.2 and 2.0.0.
@@ -108,6 +95,8 @@ notes*). No API removals.
 - **Minimum versions raised:** pandas 2.2.2, scipy 1.13.0, matplotlib 3.8.4, shapely 2.0.4, pint 0.24.4, pyyaml 6.0.1. An environment pinned below these will need to upgrade them.
 - **`ResonatorLumped`:** default geometry is unchanged, but designs that set `n_turns` or `inner_space` explicitly now get that geometry instead of the fixed 14-turn meander.
 - **Python 3.14 + `[ansys]`** installs pyaedt 1.x, which has not been validated against AEDT with the pyaedt renderer.
+- **`validate()` runs four more rules by default** (the shape rules above), so its report says "11 rules ran" instead of 7, and designs with a self-crossing line, a hairpin, a starved fillet or a line leaving a pin askew get new findings.
+- **Tutorial notebooks moved to `docs/`.** The copies in `tutorials/` (names with spaces) are gone; every notebook now lives once, under `docs/tut/` or `docs/circuit-examples/`, with the hyphenated names the docs site already used. `tutorials/README.md` maps each old path to its new one. Input files the notebooks load (e.g. `Fake_Junctions.GDS`) are in `docs/tut/resources/`; a local `renderers_to_load` entry for the skeleton renderer becomes `docs.tut.resources.skeleton_renderer`.
 
 ## Quantum Metal v0.8.1 (GUI stability + interactive editing; no breaking changes)
 
