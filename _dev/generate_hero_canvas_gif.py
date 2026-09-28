@@ -1,21 +1,19 @@
 # /// script
 # requires-python = ">=3.10"
 # ///
-"""Generate the v0.8.1 interactive-canvas hero GIF, per the recording brief
-(social-media brain, 2026-08-10): click-select, arrow-move, rotate, rebuild
-(selection survives, CPW re-routes), fit-view, and a closing flash of the
-shortcuts help dialog.
+"""Generate the v0.8.1 interactive-canvas hero GIF: click-select, arrow-move,
+rotate, rebuild (selection survives, CPW re-routes), fit-view, and a closing
+flash of the shortcuts help dialog.
 
 Unlike ``_dev/generate_gui_shortcut_gifs.py`` (headless ``qm.view()`` frames
 with a hand-drawn highlight box, for the docs page), this drives a REAL
 ``MetalGUI`` through genuine ``QTest``-injected mouse/keyboard events and
 grabs the actual widget -- ``gui.plot_win`` (the canvas + its own toolbar,
 nothing else: no docks, no window chrome, no file paths) -- so what's in
-the GIF is pixel-for-pixel what a user's screen shows, matching the
-brief's "whatever the GUI window renders at."
+the GIF is pixel-for-pixel what a user's screen shows.
 
 Local-only: writes to the path given on the command line (default: the
-session scratchpad). Does NOT touch docs/, assets/, or any publishing
+system temporary folder). Does NOT touch docs/, assets/, or any publishing
 pipeline -- nothing here uploads or posts anything.
 
 Run from the repo root (needs a Qt platform plugin; offscreen is fine and
@@ -26,6 +24,7 @@ is what makes this reproducible without a real display):
 
 import os
 import sys
+import tempfile
 from pathlib import Path
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
@@ -41,16 +40,11 @@ REPO = Path(__file__).resolve().parent.parent
 # Outside the repo tree on purpose: "keep all work local" means this file
 # shouldn't even be a candidate for `git add -A` to sweep up by accident.
 # Pass a different path on the command line to save elsewhere.
-DEFAULT_OUT = (
-    Path("/private/tmp/claude-501/-Users-zlatkominev-CODE-REPOS-quantum-hardware-all")
-    / "f24267f7-d962-4ad7-846e-9dbde0d75a86"
-    / "scratchpad"
-    / "hero-canvas-081.gif"
-)
+DEFAULT_OUT = Path(tempfile.gettempdir()) / "hero-canvas-081.gif"
 
 # Per-frame durations, ms -- most steps quick and punchy; the rebuild beat
 # and the closing help-dialog flash linger so they read as distinct beats
-# rather than flashing past. Keeps total loop length in the brief's 8-12s
+# rather than flashing past. Keeps total loop length in the 8-12s
 # target without needing a large frame count (see the docstring above for
 # why this repo favors discrete keyframes over literal 12-15fps capture).
 DUR_QUICK = 350
@@ -94,9 +88,9 @@ def _grab(gui, frame_paths, tmp_dir, tag):
 
 
 def _build_design():
-    """Two transmons joined by a CPW -- minimal, per the brief ("don't
-    build something elaborate"), and it's what makes the rebuild step
-    worth showing (the route re-routes, not just a static redraw)."""
+    """Two transmons joined by a CPW -- minimal on purpose, and it's what
+    makes the rebuild step worth showing (the route re-routes, not just a
+    static redraw)."""
     from qiskit_metal import designs
     from qiskit_metal.qlibrary.qubits.transmon_pocket import TransmonPocket
     from qiskit_metal.qlibrary.tlines.straight_path import RouteStraight
@@ -168,8 +162,8 @@ def _write_gif(frame_paths, durations, out_path):
     if size_kb > 8192:
         print(
             "WARNING: over ~8MB -- some platforms flatten large GIFs to "
-            "their first frame on upload (the exact issue the brief "
-            "flags). Consider fewer/smaller frames before handing this off."
+            "their first frame on upload. Consider fewer/smaller frames "
+            "before handing this off."
         )
 
 
