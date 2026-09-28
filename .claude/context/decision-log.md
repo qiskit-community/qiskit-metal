@@ -43,6 +43,44 @@ this file is for choices we made on purpose.
 
 ---
 
+## 2026-09-27 — numpy 2 reach, test guards and notebook lists before v0.9.0
+
+### scqubits aliases restored on `import qiskit_metal`, not only for LOM 2.0
+
+The `np.float_` / `np.complex_` shim (see "scqubits compatibility shims"
+below) ran only when the LOM 2.0 module was imported, so a direct scqubits
+call still failed on macOS: tutorial 4.34's `Transmon.wavefunction()`.
+`qiskit_metal.analyses` now calls `restore_numpy_aliases_if_needed()` on
+import. It reads the installed scqubits version from the package metadata
+and adds the two aliases only below 4.2; importing scqubits to check would
+slow every `import qiskit_metal`. Not done: adding the aliases
+unconditionally, which would change numpy's namespace for everyone, or
+patching scqubits' Qobj converter at import, which needs scqubits imported
+(that patch stays on the LOM path).
+
+### pyEPR floor raised instead of a renderer workaround
+
+pyEPR 1.0.1's `print_matrix` (`np.mat`) fails under numpy 2 at the end of
+`analyze_variation(print_result=True)`, which the pyaedt eigenmode renderer
+passes by default. The fix is in pyEPR 1.0.2 (zlatko-minev/pyEPR#213), and
+`[ansys]` / `[full]` require it. Passing `print_result=False` from the
+renderer would have dropped the report and changed a hard-constraint zone.
+
+### Airbridge Elmer tests skip on Windows only
+
+They were limited to Linux, and the recorded reason is a gmsh
+heap-corruption crash on the Windows runner. They pass on macOS, so only
+Windows is skipped. The mesh still runs in a subprocess, and a signal kill
+is still reported as a skip.
+
+### Flip-chip tutorial off the executed notebook lists
+
+`_dev/rerun_auto.py` runs every cell, including cells tagged
+`requires-ansys`, which fail off Windows. The notebook is listed in the
+external-gated reference block with A.7 and the pyaedt notebooks. Deferred:
+skipping tagged cells in `rerun_auto.py`, which would let all of them run in
+CI.
+
 ## 2026-08-10 — GUI crash defenses: journal file over QSettings cookie, layout restore opt-in
 
 Issue #1048, PR #1180 CI failures.
