@@ -6,11 +6,15 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
-## Quantum Metal v0.9.0 (Python 3.13/3.14, numpy 2; raised dependency minimums)
+## Quantum Metal v0.9.0 (open-source FEM solver, shape DRC, Python 3.13/3.14 and numpy 2)
 
-Minor release: new Python versions, numpy 2 support, and a batch of analysis,
-renderer and tutorial fixes. The dependency minimums move up (see *Upgrade
-notes*). No API removals.
+Minor release: the gmsh + scikit-fem Maxwell solver and the package-mode
+tutorials (4.41–4.45); shape rules in the design-rule check; new components
+(`PolylineCPW`, `CapFingerInFrame`, `TransmonStar`) and two reference chips; the
+first shared solver-backend abstractions (nets, physical groups, mesh
+refinement, ports) for the gmsh renderer; every tutorial in one tree under
+`docs/`; Python 3.13/3.14 and numpy 2; and analysis, renderer and tutorial
+fixes. The dependency minimums move up (see *Upgrade notes*). No API removals.
 
 ### Added
 
