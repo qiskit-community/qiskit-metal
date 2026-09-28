@@ -66,6 +66,7 @@ RoutePathfinder
    .. automethod:: RoutePathfinder.set_lead
    .. automethod:: RoutePathfinder.set_lead_extension
    .. automethod:: RoutePathfinder.set_pin
+   .. automethod:: RoutePathfinder.to_html
    .. automethod:: RoutePathfinder.to_script
    .. automethod:: RoutePathfinder.trim_pts
    .. automethod:: RoutePathfinder.unary_union

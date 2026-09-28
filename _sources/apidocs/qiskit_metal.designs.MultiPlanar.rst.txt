@@ -31,6 +31,7 @@ MultiPlanar
    
    .. rubric:: Methods
    
+   .. automethod:: MultiPlanar.__getitem__
    .. automethod:: MultiPlanar.add_default_data_for_qgeometry_tables
    .. automethod:: MultiPlanar.add_dependency
    .. automethod:: MultiPlanar.all_component_names_id

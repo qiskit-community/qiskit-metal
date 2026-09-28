@@ -55,6 +55,7 @@ TransmonPocketTeeth
    .. automethod:: TransmonPocketTeeth.qgeometry_plot
    .. automethod:: TransmonPocketTeeth.qgeometry_table
    .. automethod:: TransmonPocketTeeth.rebuild
+   .. automethod:: TransmonPocketTeeth.to_html
    .. automethod:: TransmonPocketTeeth.to_script
 
    

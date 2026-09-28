@@ -52,6 +52,7 @@ OpenToGround
    .. automethod:: OpenToGround.qgeometry_plot
    .. automethod:: OpenToGround.qgeometry_table
    .. automethod:: OpenToGround.rebuild
+   .. automethod:: OpenToGround.to_html
    .. automethod:: OpenToGround.to_script
 
    

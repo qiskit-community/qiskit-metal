@@ -23,6 +23,7 @@ ScatteringImpedanceSim
    .. autoattribute:: ScatteringImpedanceSim.renderer_initialized
    .. autoattribute:: ScatteringImpedanceSim.setup
    .. autoattribute:: ScatteringImpedanceSim.sim_setup_name
+   .. autoattribute:: ScatteringImpedanceSim.study_kind
    .. autoattribute:: ScatteringImpedanceSim.supported_data
    .. autoattribute:: ScatteringImpedanceSim.sweep_name
    

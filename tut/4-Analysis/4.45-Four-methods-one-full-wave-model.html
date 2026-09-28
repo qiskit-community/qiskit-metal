@@ -1,0 +1,1257 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="2.01 QComponent lifecycle — use, copy, delete, rename" href="../2-From-components-to-chip/2.01-How-to-use-a-QComponent.html"><link rel="prev" title="4.44 Every Coupling from One Eigenmode" href="4.44-Every-coupling-from-one-eigenmode.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>4.45 Four Methods, One Full-Wave Model - Quantum Metal 0.9.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyterlite_sphinx.css?v=f676e775" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 2H2C1.73478 2 1.48043 2.10536 1.29289 2.29289C1.10536 2.48043 1 2.73478 1 3V13C1 13.2652 1.10536 13.5196 1.29289 13.7071C1.48043 13.8946 1.73478 14 2 14H14C14.2652 14 14.5196 13.8946 14.7071 13.7071C14.8946 13.5196 15 13.2652 15 13V3C15 2.73478 14.8946 2.48043 14.7071 2.29289C14.5196 2.10536 14.2652 2 14 2V2ZM2 3H10V13H2V3ZM14 13H11V3H14V13Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 3H2V4H14V3Z" fill="currentColor"/>
+      <path d="M14 12H2V13H14V12Z" fill="currentColor"/>
+      <path d="M14 6H2V7H14V6Z" fill="currentColor"/>
+      <path d="M14 9H2V10H14V9Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 8L6.00005 13L5.30005 12.3L9.60005 8L5.30005 3.7L6.00005 3L11 8Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 13H1V14H15V13Z" fill="currentColor"/>
+      <path d="M12.7 4.5C13.1 4.1 13.1 3.5 12.7 3.1L10.9 1.3C10.5 0.9 9.9 0.9 9.5 1.3L2 8.8V12H5.2L12.7 4.5ZM10.2 2L12 3.8L10.5 5.3L8.7 3.5L10.2 2ZM3 11V9.2L8 4.2L9.8 6L4.8 11H3Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 13.0002C11.5523 13.0002 12 12.5525 12 12.0002C12 11.4479 11.5523 11.0002 11 11.0002C10.4477 11.0002 10 11.4479 10 12.0002C10 12.5525 10.4477 13.0002 11 13.0002Z" fill="currentColor"/>
+      <path d="M14.8884 11.7394C14.5795 10.9524 14.0464 10.2734 13.3552 9.78646C12.664 9.29954 11.8451 9.02615 11 9.00017C10.1549 9.02615 9.33604 9.29954 8.64484 9.78646C7.95365 10.2734 7.42052 10.9524 7.11155 11.7394L7 12.0002L7.11155 12.2609C7.42052 13.0479 7.95365 13.727 8.64484 14.2139C9.33604 14.7008 10.1549 14.9742 11 15.0002C11.8451 14.9742 12.664 14.7008 13.3552 14.2139C14.0464 13.727 14.5795 13.0479 14.8884 12.2609L15 12.0002L14.8884 11.7394ZM11 14.0002C10.6044 14.0002 10.2178 13.8829 9.88886 13.6631C9.55996 13.4433 9.30362 13.131 9.15224 12.7655C9.00087 12.4001 8.96126 11.998 9.03843 11.61C9.1156 11.222 9.30608 10.8657 9.58579 10.586C9.86549 10.3063 10.2219 10.1158 10.6098 10.0386C10.9978 9.96143 11.3999 10.001 11.7654 10.1524C12.1308 10.3038 12.4432 10.5601 12.6629 10.889C12.8827 11.2179 13 11.6046 13 12.0002C12.9994 12.5304 12.7885 13.0388 12.4136 13.4137C12.0386 13.7887 11.5303 13.9996 11 14.0002Z" fill="currentColor"/>
+      <path d="M6 14.0002H4V2.00017H8V5.00017C8.00077 5.26515 8.10637 5.51906 8.29374 5.70643C8.48111 5.8938 8.73502 5.99941 9 6.00017H12V8.00017H13V5.00017C13.0018 4.93446 12.9893 4.86913 12.9634 4.80871C12.9375 4.74828 12.8988 4.6942 12.85 4.65017L9.35 1.15017C9.30599 1.10134 9.2519 1.06263 9.19147 1.03674C9.13104 1.01084 9.06572 0.998364 9 1.00017H4C3.73502 1.00094 3.48111 1.10654 3.29374 1.29391C3.10637 1.48128 3.00077 1.73519 3 2.00017V14.0002C3.00077 14.2652 3.10637 14.5191 3.29374 14.7064C3.48111 14.8938 3.73502 14.9994 4 15.0002H6V14.0002ZM9 2.20017L11.8 5.00017H9V2.20017Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Quantum Metal 0.9.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">Quantum Metal 0.9.0</span>
+  
+</a>
+<form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing Quantum Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1-Overview/1.1-Quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ecosystem.html">Built on / with Quantum Metal</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials &amp; Examples</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.1-Quick-start.html">1.1 Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.2-Bird%27s-eye-view-of-Quantum-Metal.html">1.2 Bird’s eye view of Quantum Metal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.3-Build-a-4-qubit-chip.html">1.3 Build a 4-qubit chip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.4-Saving-Your-Chip-Design.html">1.4 Saving Your Chip Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1-Overview/1.5-Parametric-design---iterate-and-compare.html">1.5 Parametric Design: Iterate and Compare</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.41-The-package-mode-on-paper.html">4.41 The Package Mode on Paper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.42-Four-ways-to-measure-a-coupling.html">4.42 Four Ways to Measure a Coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.43-Mesh-and-solve-the-10x10-processor.html">4.43 Mesh and Solve the 10 × 10 Processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.44-Every-coupling-from-one-eigenmode.html">4.44 Every Coupling from One Eigenmode</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">4.45 Four Methods, One Full-Wave Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">2.01 QComponent lifecycle — use, copy, delete, rename</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.11-Routing-101.html">2.11 Routing 101</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.12-Simple-Meander.html">2.12 Simple Meander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.13-Hybrid-Auto-and-AStar.html">2.13 Hybrid Auto and AStar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute.html">2.14 Get them all with MixedRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.15-Airbridges.html">Airbridges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.html">2.21 Design a 4 qubit full chip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">2.22 Design 100 qubits programmatically</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.23-Modify-chip-options.html">2.23 Modify chip options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.24-Design-rule-checking.html">Design rule checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/FlipChip-design-tutorial.html">Flip-Chip Devices in Quantum Metal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.31-Create-a-QComponent-Basic.html">2.31 Create a QComponent - Basic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.html">2.32 Create a QComponent - Advanced</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.html">2.33 Add my QComponent to a reusable python file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3-Renderers/3.1-Introduction-to-QRenderers.html">3.1 Introduction to QRenderers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3-Renderers/3.2-Export-your-design-to-GDS.html">3.2 Export your design to GDS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3-Renderers/3.3-Render-your-design-to-Ansys.html">3.3 Render your design to Ansys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3-Renderers/3.4-How-do-I-make-my-custom-QRenderer.html">3.4 How do I make my custom QRenderer?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3-Renderers/3.5-Render-your-design-to-Gmsh.html">3.5 Render your design to Gmsh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.01-Capacitance-and-LOM.html">4.01 Capacitance matrix and LOM analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.02-Eigenmode-and-EPR.html">4.02 Eigenmode and EPR analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.03-Impedance.html">4.03 Impedance, admittance and scattering analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.04-New-LOM-and-Fluxonium-Example.html">4.04 New LOM and Fluxonium Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.05-New-LOM-and-Two-Coupled-Transmon-Example.html">4.05 New LOM and Two Coupled Transmon Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.html">4.05 New LOM and Two Coupled Transmon Example with sequence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.11-Analyze-and-tune-a-transmon.html">4.11 Analyzing and tuning a transmon qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.12-Analyze-a-resonator.html">4.12 Analyzing and tuning a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.13-Analyze-transmon-and-resonator.html">4.13 Analyzing and tuning a transmon qubit with a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.14-Analyze-a-double-hanger-resonator.html">4.14 Analyzing a double hanger resonator (S Param)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.15-CPW-kappa-calculation.html">4.15 CPW Kappa Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html">4.16 S21 simulation of a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.17-Fit-S21-of-Hanger-Resonator-Geometry.html">4.17 S21 simulation and fitting of a resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.18-Analyse-a-Resonator-with-Ports.html">4.18 Eigenmode simulation with Ports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.19-Analyze-a-transmon-using-ElmerFEM.html">4.19 Analyse a Transmon Qubit using ElmerFEM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.21-Capacitance-matrix.html">4.21 Sweeps - Capacitance matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.22-Eigenmode-matrix.html">4.22 Sweeps - Eigenmode matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.23-Impedance-and-scattering-Z-S-Y-matrices.html">4.23 Sweeps - Impedance, scattering and admittance (Z S Y) matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaedt-multiplanar/DrivenModal-pyaedt-multiplanar.html">HFSS Driven Modal Simulation of a MultiPlanar Design with pyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaedt-multiplanar/Eigenmode-pyaedt-multiplanar.html">Running Eigenmode Simulations &amp; EPR Analysis with <code class="docutils literal notranslate"><span class="pre">QHFSSEigenmodePyaedt</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaedt-multiplanar/Q3D-pyaedt-multiplanar.html">Q3D Capacitance Matrix of a MultiPlanar Design with pyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.31-Plot-quantum-oscillator-wavefunction.html">4.31 Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.32-Transmon-analytics-HCPB.html">4.32 Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.33-Transmon-analytics.html">4.33 Transmon Analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html">4.34 Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Design-and-Simulation-of-a-Cross-Resonance-Gate.html">The Cross Resonance (CR) Gate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cQED-with-the-Jaynes-Cummings-Interaction-Model.html">Circuit Quantum Electrodynamics (cQED) and the Jaynes-Cummings Interaction Model Using the HCPB Class and QuTip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../full-design-examples/A.1-Transmon-with-readout-resonator.html">A.1 Reference design — Transmon with readout resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../full-design-examples/A.2-Two-coupled-transmons.html">A.2 Reference design — Two coupled transmons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../full-design-examples/A.3-Four-qubit-multiplexed-readout.html">A.3 Reference design — Four-qubit multiplexed readout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/JJ-Demo-Notebook.html">Josephson Junction QComponent Demo Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/Managing-pins.html">Managing pins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/Managing-variables.html">Managing variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/Opening-documentation.html">Opening the documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/QComponent-3-fingers-capacitor.html">QComponent - 3-fingers capacitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/QComponent-Interdigitated-transmon.html">QComponent - Interdigitated transmon qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/Testing-QComponents-for-overlap-and-collisions.html">Demo Notebook Demonstrating How to Test for Component/CPW Overlap</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../circuit-examples/index.html">Example Designs</a><input aria-label="Toggle navigation of Example Designs" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.html">Google style — 5-Qubit Xmon Processor (Barends et al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode.html">Wallraff group (ETH Zurich) — 17-Qubit Distance-3 Surface Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh.html">Two-Qubit Cell of the 17-Qubit Chip — Mesh for Simulation (gmsh)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.html">IBM-era Qiskit Metal example — Four-Qubit Chip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates.html">Three Published iSWAP Gates — Full Chips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">100-Qubit Mockup (algorithmic design, no routing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/A.4-Full-chip-design.html">Full Chip Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/03-concentric_transmon.html">Concentric Transmon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/04-Interdigitated_Transmon.html">Interdigitated Transmon Qubits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/05-Transmon_cross_fl.html">Single Transmon - Grounded (xmon) flux lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/06-Transmon_floating_6.html">Single Transmon - Floating with 6 connection pads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/07-Transmon_floating_cl.html">Single Transmon - Floating with charge lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/08-JJ-Dolan.html">Josephson Junction (Dolan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/D.Qubit-couplers/32-TwoTransmonsDirectCoupling.html">Direct Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/D.Qubit-couplers/33-TwoTransmonsWithMeander.html">Bus Resonator Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/E.Input-output-coupling/41-LaunchPad.html">CPW Launch Pad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/E.Input-output-coupling/42-ResonatorAndLaunchPad.html">Readout line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/E.Input-output-coupling/43-TransmonPocketCL.html">Charge Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/A.4-Full-chip-design.html">A.4 Full chip design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/A.5-Launch-video-example.html">A.5 Launch video example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/A.6-Hackathon-exercise-South-Korea-2020.html">A.6 Hackathon exercise — South Korea 2020</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop.html">A.7 Qiskit Metal tutorial for IMS 2022</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../qcomponents-gallery.html">QComponent Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../videoseducation.html">Videos &amp; Education</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How It Works</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../workflow.html">Quantum Metal Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulation-pathways.html">Simulation Pathways</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">QDesigns</a><input aria-label="Toggle navigation of QDesigns" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.DesignFlipChip.html">DesignFlipChip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.QNet.html">QNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.Components.html">Components</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QComponents</a><input aria-label="Toggle navigation of QComponents" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.QRoute.html">QRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.QRouteLead.html">QRouteLead</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.QRoutePoint.html">QRoutePoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CircleCaterpillar.html">CircleCaterpillar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CircleRaster.html">CircleRaster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.NGon.html">NGon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.NSquareSpiral.html">NSquareSpiral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.Rectangle.html">Rectangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RectangleHollow.html">RectangleHollow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.Cap3Interdigital.html">Cap3Interdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CapFingerInFrame.html">CapFingerInFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CapNInterdigital.html">CapNInterdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ResonatorCoilRect.html">ResonatorCoilRect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CoupledLineTee.html">CoupledLineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.LineTee.html">LineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.CapNInterdigitalTee.html">CapNInterdigitalTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TunableCoupler02.html">TunableCoupler02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ReadoutResFC.html">ReadoutResFC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ResonatorLumped.html">ResonatorLumped</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebond.html">LaunchpadWirebond</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled.html">LaunchpadWirebondCoupled</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.LaunchpadWirebondDriven.html">LaunchpadWirebondDriven</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.OpenToGround.html">OpenToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ShortToGround.html">ShortToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteStraight.html">RouteStraight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteFramed.html">RouteFramed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteMeander.html">RouteMeander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteAnchors.html">RouteAnchors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RouteMixed.html">RouteMixed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.RoutePathfinder.html">RoutePathfinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.PolylineCPW.html">PolylineCPW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.jj_dolan.html">jj_dolan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.jj_manhattan.html">jj_manhattan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonConcentric.html">TransmonConcentric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonConcentricType2.html">TransmonConcentricType2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonCross.html">TransmonCross</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html">TransmonCrossFL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonInterdigitated.html">TransmonInterdigitated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonPocket.html">TransmonPocket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonPocketCL.html">TransmonPocketCL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonPocket6.html">TransmonPocket6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TransmonPocketTeeth.html">TransmonPocketTeeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.SQUID_LOOP.html">SQUID_LOOP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.SNAIL.html">SNAIL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.StarQubit.html">StarQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/analyses.html">Analyses</a><input aria-label="Toggle navigation of Analyses" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.QAnalysis.html">QAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.QSimulation.html">QSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.LOManalysis.html">LOManalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.EPRanalysis.html">EPRanalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.LumpedElementsSim.html">LumpedElementsSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.EigenmodeSim.html">EigenmodeSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.ScatteringImpedanceSim.html">ScatteringImpedanceSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.Hcpb.html">Hcpb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.Hcpb_analytic.html">Hcpb_analytic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.HO_wavefunctions.html">HO_wavefunctions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.transmon_analytics.html">transmon_analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.cpw_calculations.html">cpw_calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.kappa_calculation.html">kappa_calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.lumped_capacitive.html">lumped_capacitive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.Sweeper.html">Sweeper</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">QRenderers</a><input aria-label="Toggle navigation of QRenderers" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox</a><input aria-label="Toggle navigation of Toolbox" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.about.html">about</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.import_export.html">import_export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html">math_and_overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.parsing.html">parsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html">layer_stack_handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html">bounds_for_path_and_poly_tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.determine_larger_box.html">determine_larger_box</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometry</a><input aria-label="Toggle navigation of QGeometry" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI</a><input aria-label="Toggle navigation of GUI" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community &amp; Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributor-guide.html">Contributor Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../headless-usage.html">Using Quantum Metal without Qt</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+</ul>
+
+</div></div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/tut/4-Analysis/4.45-Four-methods-one-full-wave-model.ipynb.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut/4-Analysis/4.45-Four-methods-one-full-wave-model.ipynb">tut/4-Analysis/4.45-Four-methods-one-full-wave-model.ipynb</a>.</p>
+</div>
+<section id="4.45-Four-Methods,-One-Full-Wave-Model">
+<h1>4.45 Four Methods, One Full-Wave Model<a class="headerlink" href="#4.45-Four-Methods,-One-Full-Wave-Model" title="Link to this heading">¶</a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs%2Ftut%2F4-Analysis%2F4.45-Four-methods-one-full-wave-model.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> <a class="reference external" href="https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=docs%2Ftut%2F4-Analysis%2F4.45-Four-methods-one-full-wave-model.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
+<blockquote>
+<div><p>💡 <strong>What you need.</strong> gmsh, scikit-fem and SciPy (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;quantum-metal[skfem]&quot;</span> <span class="pre">pymetis</span></code>). About 6 minutes and 10 GB of memory: the whole 10 × 10 package is meshed, because a junction on one qubit breaks the mirror symmetry. Last of five notebooks reproducing Molavi <em>et al.</em> [1]; <a class="reference internal" href="4.42-Four-ways-to-measure-a-coupling.html"><span class="doc">4.42</span></a> introduced the four methods on a circuit.</p>
+</div></blockquote>
+<blockquote>
+<div><p>🧭 <strong>Other simulation pathways.</strong> This notebook uses the open-source gmsh + scikit-fem solver. The same quantities can come from Ansys HFSS / Q3D (tutorials 4.01–4.23) or, for capacitance, from the open-source ElmerFEM path for capacitance (tutorial 4.19); AWS Palace is available through SQDMetal, with a native integration in progress. <a class="reference external" href="https://qiskit-community.github.io/qiskit-metal/simulation-pathways.html">Simulation pathways</a> summarizes what each solver computes, how to install it, and
+which tutorials use it.</p>
+</div></blockquote>
+<p>The paper’s central result is its Fig. 7: four different ways of extracting the qubit–package coupling, run on the same 3D model, agree to within 5% for every qubit. This notebook reproduces that comparison with the open-source solver of notebooks 4.43 and 4.44.</p>
+<p>The four methods differ only in what sits in the junction gap — an open circuit, a fixed inductor, a swept inductor, or a port with a shunt. In the edge-element formulation (notebook 4.43) a lumped element across a junction is one rank-one term, <span class="math notranslate nohighlight">\((\mu_0/L)\,c\,c^T\)</span>, added to the stiffness matrix. The structure itself never changes. So the model is built once, as a <em>port reduced-order model</em>: its response at the 25 junctions of one quadrant plus a probe port, captured from one sparse
+factorization. Every method then runs on small dense matrices — the open-source equivalent of the fast frequency sweep in a commercial solver.</p>
+<p><strong>What you’ll learn</strong></p>
+<ul class="simple">
+<li><p>how to build a reduced model of a full-wave structure at its ports, and check it against direct solves;</p></li>
+<li><p>how the four methods look on a finite-element model: avoided crossing (the paper’s Fig. 5), EPR, induced EMF and the impedance-matrix fit;</p></li>
+<li><p>how closely they agree across a quadrant of the array (Fig. 7), and where the small differences come from.</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Colab, uncomment to install the dependencies of the whole series.</span>
+<span class="c1"># !pip install -q "quantum-metal[skfem]" pymetis</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">urllib.request</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># The solver code shared by tutorials 4.41-4.45 lives in docs/tut/resources/package_modes/.</span>
+<span class="n">RES</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"../resources/package_modes"</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+    <span class="n">RES</span> <span class="o">/</span> <span class="s2">"package_modes.py"</span>
+<span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>  <span class="c1"># e.g. in Colab: fetch it next to the notebook</span>
+    <span class="n">RES</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"package_modes"</span><span class="p">)</span>
+    <span class="n">RES</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span>
+        <span class="s2">"https://raw.githubusercontent.com/qiskit-community/qiskit-metal/main/"</span>
+        <span class="s2">"docs/tut/resources/package_modes/package_modes.py"</span><span class="p">,</span>
+        <span class="n">RES</span> <span class="o">/</span> <span class="s2">"package_modes.py"</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">RES</span><span class="p">))</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">package_modes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pm</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">opt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogNorm</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+
+<span class="n">MESH</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">h_metal</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">h_max</span><span class="o">=</span><span class="mf">1.0</span>
+<span class="p">)</span>  <span class="c1"># mm; add h_junction=0.05 to seed the junctions more finely</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">PAPER</span>
+<span class="n">TWO_PI</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">design</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">build_design</span><span class="p">()</span>
+<span class="n">package</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">package_from_design</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
+<span class="n">QUADRANT</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">f</span><span class="s2">"Q_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">]</span>  <span class="c1"># the 25 qubits of the paper's Fig. 7</span>
+</pre></div>
+</div>
+</div>
+<section id="1.-The-full-package-and-its-port-model">
+<h2>1. The full package and its port model<a class="headerlink" href="#1.-The-full-package-and-its-port-model" title="Link to this heading">¶</a></h2>
+<p>The mesh covers the whole box and all 100 qubits. It carries one extra port: a vertical wire from floor to lid, 0.5 mm from the wall at <span class="math notranslate nohighlight">\(y = L_y\)</span> — across the box from the quadrant of qubits we compare, so that none of them sits next to it. The paper replaces a sidewall by a wave port to reach the package mode in its driven simulations; this probe does the same job for the impedance-matrix method. Left open it is invisible; shunted by a small inductance it is a thin post next to the wall.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pm.PortROM</span></code> factors the finite-element matrix once at a shift near 6.35 GHz and builds a block Krylov space from the 26 port vectors. Projecting onto it matches the ports’ frequency response around the shift to high order — every junction termination, every eigenfrequency, every impedance in the band follows from small dense matrices.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">mesh_package</span><span class="p">(</span><span class="n">package</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s2">"full"</span><span class="p">,</span> <span class="n">probe</span><span class="o">=</span><span class="p">(</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">29.5</span><span class="p">),</span> <span class="o">**</span><span class="n">MESH</span><span class="p">)</span>
+<span class="n">fem</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MaxwellFEM</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">mesh</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">fem</span><span class="o">.</span><span class="n">n_dofs</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> unknowns, assembled in </span><span class="si">{</span><span class="n">fem</span><span class="o">.</span><span class="n">assembly_time</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> s"</span>
+<span class="p">)</span>
+<span class="n">rom</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">PortROM</span><span class="p">(</span><span class="n">fem</span><span class="p">,</span> <span class="n">QUADRANT</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"probe"</span><span class="p">],</span> <span class="n">f_center</span><span class="o">=</span><span class="mf">6.35e9</span><span class="p">,</span> <span class="n">n_moments</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">fem</span><span class="o">.</span><span class="n">_factors</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>  <span class="c1"># the reduced model holds everything the methods need</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+full package: 438,045 tetrahedra, 81,305 nodes, 200 paddles, 100 junctions, 1 probe (meshed in 3.9 s)
+455,656 unknowns, assembled in 15 s
+port ROM: 26 ports, 104 basis vectors, built in 48 s
+</pre></div></div>
+</div>
+</section>
+<section id="2.-The-capacitance-this-model-sees">
+<h2>2. The capacitance this model sees<a class="headerlink" href="#2.-The-capacitance-this-model-sees" title="Link to this heading">¶</a></h2>
+<p>The induced-EMF method needs the capacitance across each junction. Notebook 4.43 computed it with second-order electrostatics: 174 fF. But a fair comparison of methods puts all four on the <em>same</em> discrete model, and this model’s qubits are slightly different. Lowest-order edge elements contain the gradients of first-order nodal functions exactly, so the static fields of the Maxwell model — including each qubit’s charge configuration — are those of <em>first-order</em> electrostatics on the same mesh.
+On a coarse mesh that capacitance comes out larger, because the charge that crowds onto the paddle edges is poorly resolved. <code class="docutils literal notranslate"><span class="pre">pm.Electrostatics(mesh,</span> <span class="pre">order=1)</span></code> computes exactly the capacitance the Maxwell model sees.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">es1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Electrostatics</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">C_port</span> <span class="o">=</span> <span class="p">{</span><span class="n">q</span><span class="p">:</span> <span class="n">es1</span><span class="o">.</span><span class="n">port_capacitance</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">q</span><span class="si">}</span><span class="s2">.pad_left"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">q</span><span class="si">}</span><span class="s2">.pad_right"</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">QUADRANT</span><span class="p">}</span>
+<span class="k">del</span> <span class="n">es1</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"capacitance across the junction seen by this mesh: </span><span class="si">{</span><span class="nb">min</span><span class="p">(</span><span class="n">C_port</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e15</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> - "</span>
+    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">C_port</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e15</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> fF  (</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> s)"</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">"converged value (notebook 4.43, second-order electrostatics on a finer mesh): 174 fF"</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+capacitance across the junction seen by this mesh: 228 - 237 fF  (14 s)
+converged value (notebook 4.43, second-order electrostatics on a finer mesh): 174 fF
+</pre></div></div>
+</div>
+<p>Trust, but verify: one direct eigensolve of the full model, with every junction open, against the reduced model.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="p">(</span><span class="n">direct</span><span class="p">,)</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">eigenmodes</span><span class="p">(</span><span class="mf">6.5e9</span><span class="p">)</span>
+<span class="n">f_rom</span><span class="p">,</span> <span class="n">V_rom</span> <span class="o">=</span> <span class="n">rom</span><span class="o">.</span><span class="n">eigenmodes</span><span class="p">(</span><span class="n">fmin</span><span class="o">=</span><span class="mf">6e9</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="mf">7e9</span><span class="p">)</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">rom</span><span class="o">.</span><span class="n">_index</span><span class="p">(</span><span class="s2">"Q_1_1"</span><span class="p">)</span>
+<span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">V_rom</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">direct</span><span class="o">.</span><span class="n">voltage</span><span class="p">(</span><span class="s2">"Q_1_1"</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"package mode: direct </span><span class="si">{</span><span class="n">direct</span><span class="o">.</span><span class="n">f</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> GHz, reduced </span><span class="si">{</span><span class="n">f_rom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> GHz"</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"voltage across the open junction of Q_1_1: direct </span><span class="si">{</span><span class="n">direct</span><span class="o">.</span><span class="n">voltage</span><span class="p">(</span><span class="s1">'Q_1_1'</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> V,"</span>
+    <span class="sa">f</span><span class="s2">" reduced </span><span class="si">{</span><span class="n">sign</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">V_rom</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> V   (</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> s)"</span>
+<span class="p">)</span>
+<span class="k">del</span> <span class="n">direct</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+package mode: direct 6.486131 GHz, reduced 6.486131 GHz
+voltage across the open junction of Q_1_1: direct -6373.92 V, reduced -6373.92 V   (20 s)
+</pre></div></div>
+</div>
+</section>
+<section id="3.-Induced-EMF">
+<h2>3. Induced EMF<a class="headerlink" href="#3.-Induced-EMF" title="Link to this heading">¶</a></h2>
+<p>All junctions open, one mode, 25 voltages, Eq. (11), with the capacitance of Sec. 2:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f_m</span> <span class="o">=</span> <span class="n">f_rom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">V_open</span> <span class="o">=</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">V_rom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">g_emf</span> <span class="o">=</span> <span class="p">{</span><span class="n">q</span><span class="p">:</span> <span class="n">pm</span><span class="o">.</span><span class="n">emf_coupling</span><span class="p">(</span><span class="n">f_m</span><span class="p">,</span> <span class="n">V_open</span><span class="p">[</span><span class="n">rom</span><span class="o">.</span><span class="n">_index</span><span class="p">(</span><span class="n">q</span><span class="p">)],</span> <span class="n">C_port</span><span class="p">[</span><span class="n">q</span><span class="p">])</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">QUADRANT</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">"g_EMF/2pi (MHz):"</span><span class="p">,</span>
+    <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">g</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">+.2f</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">g_emf</span><span class="o">.</span><span class="n">items</span><span class="p">())[:</span><span class="mi">6</span><span class="p">]),</span>
+    <span class="s2">"..."</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+g_EMF/2pi (MHz): 0_0 -2.68, 1_0 -2.41, 2_0 -2.12, 3_0 -1.16, 4_0 -0.26, 0_1 -7.89 ...
+</pre></div></div>
+</div>
+</section>
+<section id="4.-Avoided-crossing-(Fig.-5)">
+<h2>4. Avoided crossing (Fig. 5)<a class="headerlink" href="#4.-Avoided-crossing-(Fig.-5)" title="Link to this heading">¶</a></h2>
+<p>Put an inductor <span class="math notranslate nohighlight">\(L_{\rm qubit}\)</span> across one junction, leave the rest open, and sweep it. In the reduced model each value of <span class="math notranslate nohighlight">\(L_{\rm qubit}\)</span> is a dense eigenproblem of a hundred-odd unknowns — milliseconds. For qubit (1,1), the paper’s example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">two_modes</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">L</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The two eigenfrequencies nearest the package mode with inductor L on junction q."""</span>
+    <span class="n">f</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">rom</span><span class="o">.</span><span class="n">eigenmodes</span><span class="p">(</span><span class="n">inductors</span><span class="o">=</span><span class="p">{</span><span class="n">q</span><span class="p">:</span> <span class="n">L</span><span class="p">},</span> <span class="n">fmin</span><span class="o">=</span><span class="mf">1e9</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="mf">12e9</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">f</span> <span class="o">-</span> <span class="n">f_m</span><span class="p">))[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">splitting</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">two_modes</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">L</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">min_splitting</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Scan, then refine: the inductance where the two branches come closest."""</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1.5e-9</span><span class="p">,</span> <span class="mf">4.5e-9</span><span class="p">,</span> <span class="mi">61</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">([</span><span class="n">splitting</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="n">grid</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">opt</span><span class="o">.</span><span class="n">minimize_scalar</span><span class="p">(</span>
+        <span class="n">splitting</span><span class="p">,</span>
+        <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)],</span> <span class="n">grid</span><span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">60</span><span class="p">)]),</span>
+        <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">q</span><span class="p">,),</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">"bounded"</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">xatol</span><span class="o">=</span><span class="mf">1e-16</span><span class="p">),</span>
+    <span class="p">)</span>
+
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">min_splitting</span><span class="p">(</span><span class="s2">"Q_1_1"</span><span class="p">)</span>
+<span class="n">two_g</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">fun</span>
+<span class="n">Ls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="mf">0.35e-9</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.35e-9</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+<span class="n">branches</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">two_modes</span><span class="p">(</span><span class="s2">"Q_1_1"</span><span class="p">,</span> <span class="n">L</span><span class="p">)</span> <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="n">Ls</span><span class="p">])</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Ls</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">branches</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"tab:blue"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">"$\omega_-$"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Ls</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">branches</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"tab:red"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">"$\omega_+$"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">f_m</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"k"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">":"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"package mode, junctions open"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">"$L_{\rm qubit}$ (nH)"</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">"frequency (GHz)"</span><span class="p">,</span>
+    <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="n">f_m</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="o">-</span> <span class="mf">0.04</span><span class="p">,</span> <span class="n">f_m</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="o">+</span> <span class="mf">0.04</span><span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">"qubit (1,1): 2|g|/2π = </span><span class="si">{</span><span class="n">two_g</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MHz   (paper: </span><span class="si">{</span><span class="n">P</span><span class="p">[</span><span class="s1">'two_g_q11'</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> MHz)  — cf. Fig. 5"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.45-Four-methods-one-full-wave-model_16_0.png" src="../../_images/tut_4-Analysis_4.45-Four-methods-one-full-wave-model_16_0.png" />
+</div>
+</div>
+<p>What do the two modes look like at the bottom of the anticrossing? <code class="docutils literal notranslate"><span class="pre">rom.modes</span></code> returns full finite-element fields from the reduced model. Next to the package mode with every junction open, the two hybrid modes both carry the package field <em>and</em> the qubit’s own dipole field around qubit (1,1) — one excitation shared between the qubit and the box. The color scale is logarithmic: near its paddles the qubit’s field is a hundred times the package field.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L_star</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span>
+<span class="n">open_mode</span> <span class="o">=</span> <span class="n">rom</span><span class="o">.</span><span class="n">modes</span><span class="p">(</span><span class="n">fmin</span><span class="o">=</span><span class="n">f_m</span> <span class="o">-</span> <span class="mf">1e6</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="n">f_m</span> <span class="o">+</span> <span class="mf">1e6</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">hybrids</span> <span class="o">=</span> <span class="n">rom</span><span class="o">.</span><span class="n">modes</span><span class="p">(</span><span class="n">inductors</span><span class="o">=</span><span class="p">{</span><span class="s2">"Q_1_1"</span><span class="p">:</span> <span class="n">L_star</span><span class="p">},</span> <span class="n">fmin</span><span class="o">=</span><span class="n">f_m</span> <span class="o">-</span> <span class="mf">0.05e9</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="n">f_m</span> <span class="o">+</span> <span class="mf">0.05e9</span><span class="p">)</span>
+<span class="n">zx</span><span class="p">,</span> <span class="n">zy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">240</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">240</span><span class="p">))</span>
+<span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">zx</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">zy</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">zx</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">package</span><span class="o">.</span><span class="n">t</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)])</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+    <span class="n">ax</span><span class="p">,</span>
+    <span class="p">[</span><span class="n">open_mode</span><span class="p">]</span> <span class="o">+</span> <span class="n">hybrids</span><span class="p">,</span>
+    <span class="p">[</span>
+        <span class="s2">"package mode, junctions open"</span><span class="p">,</span>
+        <span class="sa">r</span><span class="s2">"$\omega_-$ at the anticrossing"</span><span class="p">,</span>
+        <span class="sa">r</span><span class="s2">"$\omega_+$ at the anticrossing"</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">):</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
+    <span class="n">mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">E</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">E</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">zx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+        <span class="n">zx</span><span class="p">,</span> <span class="n">zy</span><span class="p">,</span> <span class="n">mag</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"magma"</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">600</span><span class="p">),</span> <span class="n">shading</span><span class="o">=</span><span class="s2">"auto"</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">poly</span> <span class="ow">in</span> <span class="n">package</span><span class="o">.</span><span class="n">metals</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">poly</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">poly</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"w"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+        <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+        <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+        <span class="n">aspect</span><span class="o">=</span><span class="s2">"equal"</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="s2">"x (mm)"</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">f</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> GHz"</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+    <span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">"|E$_\parallel$| at the silicon surface (MV/m, 1 J)"</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.45-Four-methods-one-full-wave-model_18_0.png" src="../../_images/tut_4-Analysis_4.45-Four-methods-one-full-wave-model_18_0.png" />
+</div>
+</div>
+<p>On this coarse full-box mesh the splitting comes out larger than the paper’s 12.6 MHz: the qubits of this discrete model carry the larger capacitance of Sec. 2. The converged induced-EMF couplings of notebook 4.44, <span class="math notranslate nohighlight">\(|A|/2\pi \approx\)</span> 15.6 MHz, give <span class="math notranslate nohighlight">\(2|g|/2\pi = 2|A|\cos(0.15\pi)\sin(0.15\pi) \approx\)</span> 12.6 MHz for this qubit — the paper’s value.</p>
+<p>The same minimization, automated over the quadrant:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">g_ac</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">QUADRANT</span><span class="p">:</span>
+    <span class="n">g_ac</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">min_splitting</span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="o">.</span><span class="n">fun</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">g_emf</span><span class="p">[</span><span class="n">q</span><span class="p">])</span>
+    <span class="p">)</span>  <span class="c1"># the splitting gives |g|; the sign is copied for plotting</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"25 avoided crossings in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> s"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+25 avoided crossings in 42 s
+</pre></div></div>
+</div>
+</section>
+<section id="5.-Energy-participation">
+<h2>5. Energy participation<a class="headerlink" href="#5.-Energy-participation" title="Link to this heading">¶</a></h2>
+<p>Fix the inductor so the qubit sits about 0.23 GHz below the package mode (the paper uses 6.25 GHz), solve for the package-like mode, and read the voltage across the inductor. With the mode normalized to <span class="math notranslate nohighlight">\(E_m\)</span> = 1 J, Eq. (9) and Eq. (10) give</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[g = \frac{\omega_m^2-\omega_n^2}{2\sqrt{\omega_m\omega_n}}\;\frac{V_{n}}{\omega_m\sqrt{2E_mL_{\rm qubit}}}\;\sqrt{\frac{\omega_m}{\omega_n}} ,\]</div>
+</div>
+<p>with <span class="math notranslate nohighlight">\(\omega_n\)</span> the qubit-like mode of the same solve. The sign of <span class="math notranslate nohighlight">\(V_n\)</span> is the sign of <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F_QUBIT</span> <span class="o">=</span> <span class="mf">6.25e9</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">qubit_frequency</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">L</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Frequency of the qubit-like mode: the one with the largest junction voltage relative to the probe."""</span>
+    <span class="n">f</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">rom</span><span class="o">.</span><span class="n">eigenmodes</span><span class="p">(</span><span class="n">inductors</span><span class="o">=</span><span class="p">{</span><span class="n">q</span><span class="p">:</span> <span class="n">L</span><span class="p">},</span> <span class="n">fmin</span><span class="o">=</span><span class="mf">1e9</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="mf">12e9</span><span class="p">)</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">V</span><span class="p">[:,</span> <span class="n">rom</span><span class="o">.</span><span class="n">_index</span><span class="p">(</span><span class="n">q</span><span class="p">)])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">V</span><span class="p">[:,</span> <span class="n">rom</span><span class="o">.</span><span class="n">_index</span><span class="p">(</span><span class="s2">"probe"</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">f</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">ratio</span><span class="p">)]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">inductance_for</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">f_target</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The junction inductance that puts qubit q's mode at f_target."""</span>
+    <span class="k">return</span> <span class="n">opt</span><span class="o">.</span><span class="n">brentq</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">L</span><span class="p">:</span> <span class="n">qubit_frequency</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">L</span><span class="p">)</span> <span class="o">-</span> <span class="n">f_target</span><span class="p">,</span> <span class="mf">1.0e-9</span><span class="p">,</span> <span class="mf">8.0e-9</span><span class="p">,</span> <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-16</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">epr</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">inductance_for</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">F_QUBIT</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">rom</span><span class="o">.</span><span class="n">eigenmodes</span><span class="p">(</span><span class="n">inductors</span><span class="o">=</span><span class="p">{</span><span class="n">q</span><span class="p">:</span> <span class="n">L</span><span class="p">},</span> <span class="n">fmin</span><span class="o">=</span><span class="mf">1e9</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="mf">12e9</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">f</span> <span class="o">-</span> <span class="n">f_m</span><span class="p">))</span>  <span class="c1"># the package-like mode</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">f</span> <span class="o">-</span> <span class="n">F_QUBIT</span><span class="p">))</span>  <span class="c1"># the qubit-like mode</span>
+    <span class="n">wm</span><span class="p">,</span> <span class="n">wn</span> <span class="o">=</span> <span class="n">TWO_PI</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">TWO_PI</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+    <span class="n">Vq</span> <span class="o">=</span> <span class="n">V</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">rom</span><span class="o">.</span><span class="n">_index</span><span class="p">(</span><span class="n">q</span><span class="p">)]</span> <span class="o">*</span> <span class="n">sign</span>
+    <span class="n">lhs</span> <span class="o">=</span> <span class="p">(</span><span class="n">wm</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">wn</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">wm</span> <span class="o">*</span> <span class="n">wn</span><span class="p">))</span> <span class="o">*</span> <span class="n">Vq</span> <span class="o">/</span> <span class="p">(</span><span class="n">wm</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">L</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">lhs</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">wm</span> <span class="o">/</span> <span class="n">wn</span><span class="p">)</span> <span class="o">/</span> <span class="n">TWO_PI</span><span class="p">,</span> <span class="n">L</span>
+
+
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">g_epr</span><span class="p">,</span> <span class="n">L_epr</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">QUADRANT</span><span class="p">:</span>
+    <span class="n">g_epr</span><span class="p">[</span><span class="n">q</span><span class="p">],</span> <span class="n">L_epr</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">=</span> <span class="n">epr</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"L_qubit = </span><span class="si">{</span><span class="nb">min</span><span class="p">(</span><span class="n">L_epr</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">L_epr</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> nH;"</span>
+    <span class="sa">f</span><span class="s2">" 25 EPR extractions in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> s"</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+L_qubit = 2.542 - 2.639 nH; 25 EPR extractions in 5 s
+</pre></div></div>
+</div>
+</section>
+<section id="6.-Impedance-matrix">
+<h2>6. Impedance matrix<a class="headerlink" href="#6.-Impedance-matrix" title="Link to this heading">¶</a></h2>
+<p>Shunt the junction of one qubit and the probe, leave the other qubits open, and compute the 2 × 2 impedance matrix from 6 to 7 GHz with 0.1 MHz resolution, as in the paper — refined around the two poles, because for a weakly coupled qubit the package pole sits within a kHz of a zero. The reduced model knows where the poles are, and evaluating it on a fine grid costs nothing: an adaptive frequency sweep. The paper’s 3.6 nH shunt put its qubit 0.39 GHz below the package mode; our qubit has a
+larger capacitance on this mesh (Sec. 2), so the shunt is chosen for the same detuning. The paper shunts its wall port with 1 pH; our probe reaches the package mode more weakly than a whole wall, and with 1 pH its pole and the zero beside it fall within one 0.1 MHz step, so it gets 0.1 nH. Then fit with the procedure of Appendix D (notebook 4.42) and compute <span class="math notranslate nohighlight">\(g\)</span> from the fitted circuit.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L_PROBE</span> <span class="o">=</span> <span class="mf">0.1e-9</span>  <span class="c1"># probe shunt</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">impedance_fit</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">inductance_for</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">f_m</span> <span class="o">-</span> <span class="mf">0.39e9</span><span class="p">)</span>
+    <span class="n">shunts</span> <span class="o">=</span> <span class="p">{</span><span class="n">q</span><span class="p">:</span> <span class="n">L</span><span class="p">,</span> <span class="s2">"probe"</span><span class="p">:</span> <span class="n">L_PROBE</span><span class="p">}</span>
+    <span class="c1"># 0.1 MHz steps from 6 to 7 GHz, as in the paper, refined to 0.1 kHz around the two poles:</span>
+    <span class="c1"># the reduced model knows where they are, as an adaptive frequency sweep would</span>
+    <span class="n">poles</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rom</span><span class="o">.</span><span class="n">eigenmodes</span><span class="p">(</span><span class="n">inductors</span><span class="o">=</span><span class="n">shunts</span><span class="p">,</span> <span class="n">fmin</span><span class="o">=</span><span class="mf">6e9</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="mf">7e9</span><span class="p">)</span>
+    <span class="n">fine</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mf">0.2e6</span><span class="p">,</span> <span class="n">p</span> <span class="o">+</span> <span class="mf">0.2e6</span><span class="p">,</span> <span class="mi">4001</span><span class="p">)</span> <span class="o">+</span> <span class="mf">37.3</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">poles</span>
+    <span class="p">]</span>  <span class="c1"># 100 Hz steps, offset so none lands on a pole</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">union1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">6.0e9</span><span class="p">,</span> <span class="mf">7.0e9</span><span class="p">,</span> <span class="mi">10001</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">fine</span><span class="p">))</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">rom</span><span class="o">.</span><span class="n">impedance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">inductors</span><span class="o">=</span><span class="n">shunts</span><span class="p">,</span> <span class="n">ports</span><span class="o">=</span><span class="p">[</span><span class="s2">"probe"</span><span class="p">,</span> <span class="n">q</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">pm</span><span class="o">.</span><span class="n">fit_impedance</span><span class="p">(</span><span class="n">TWO_PI</span> <span class="o">*</span> <span class="n">f</span><span class="p">,</span> <span class="n">Z</span><span class="p">),</span> <span class="n">Z</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">f</span>
+
+
+<span class="n">fit00</span><span class="p">,</span> <span class="n">Z00</span><span class="p">,</span> <span class="n">L00</span><span class="p">,</span> <span class="n">f_grid</span> <span class="o">=</span> <span class="n">impedance_fit</span><span class="p">(</span><span class="s2">"Q_0_0"</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c_</span><span class="p">),</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+    <span class="n">ax</span><span class="p">,</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="p">(</span><span class="s2">"probe"</span><span class="p">,</span> <span class="s2">"qubit (0,0)"</span><span class="p">,</span> <span class="s2">"transfer"</span><span class="p">)</span>
+<span class="p">):</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">f_grid</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Z00</span><span class="p">[:,</span> <span class="n">r</span><span class="p">,</span> <span class="n">c_</span><span class="p">]))</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">"|Z| </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (Ω)"</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">"frequency (GHz)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">gC</span><span class="p">,</span> <span class="n">gL</span><span class="p">,</span> <span class="n">g00</span> <span class="o">=</span> <span class="n">fit00</span><span class="o">.</span><span class="n">couplings</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"shunt </span><span class="si">{</span><span class="n">L00</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> nH; poles </span><span class="si">{</span><span class="n">fit00</span><span class="o">.</span><span class="n">poles</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">TWO_PI</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e9</span><span class="si">}</span><span class="s2"> GHz, relative misfit </span><span class="si">{</span><span class="n">fit00</span><span class="o">.</span><span class="n">rms_error</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">"</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">''</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'this fit'</span><span class="si">:</span><span class="s2">&gt;9</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'paper'</span><span class="si">:</span><span class="s2">&gt;8</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">ours</span><span class="p">,</span> <span class="n">theirs</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s2">"L'_n (nH)"</span><span class="p">,</span> <span class="n">fit00</span><span class="o">.</span><span class="n">Lp</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">P</span><span class="p">[</span><span class="s2">"zfit_q00"</span><span class="p">][</span><span class="s2">"Lp_n"</span><span class="p">],</span> <span class="mf">1e9</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"C_n (fF)"</span><span class="p">,</span> <span class="n">fit00</span><span class="o">.</span><span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">fit00</span><span class="o">.</span><span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">P</span><span class="p">[</span><span class="s2">"zfit_q00"</span><span class="p">][</span><span class="s2">"C_n"</span><span class="p">],</span> <span class="mf">1e15</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"dL'_n (nH)"</span><span class="p">,</span> <span class="n">fit00</span><span class="o">.</span><span class="n">dL</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">P</span><span class="p">[</span><span class="s2">"zfit_q00"</span><span class="p">][</span><span class="s2">"dL_n"</span><span class="p">],</span> <span class="mf">1e9</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"g/2pi (MHz)"</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">g00</span><span class="p">),</span> <span class="n">P</span><span class="p">[</span><span class="s2">"zfit_q00"</span><span class="p">][</span><span class="s2">"g"</span><span class="p">],</span> <span class="mf">1e-6</span><span class="p">),</span>
+<span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">ours</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="si">:</span><span class="s2">9.3f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">theirs</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.45-Four-methods-one-full-wave-model_25_0.png" src="../../_images/tut_4-Analysis_4.45-Four-methods-one-full-wave-model_25_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+shunt 2.74 nH; poles [6.09613078 6.48907592] GHz, relative misfit 9.7e-05
+            this fit    paper
+ L&#39;_n (nH)     2.738    3.630
+  C_n (fF)   231.133  173.800
+dL&#39;_n (nH)     0.211    0.320
+g/2pi (MHz)     2.680    2.420
+</pre></div></div>
+</div>
+<p>The fit returns the shunt we put in, and the qubit’s capacitance and geometric inductance as <em>this</em> model has them: the capacitance of Sec. 2 rather than the converged 174 fF, and a geometric inductance of a few tenths of a nH, like the paper’s 0.32 nH. The package side of the circuit need not match the paper at all: our probe is not the paper’s wave port, and a different port reaches the same distributed mode through different <span class="math notranslate nohighlight">\(C_c\)</span>, <span class="math notranslate nohighlight">\(M\)</span> and <span class="math notranslate nohighlight">\(\delta L'_m\)</span> (the paper’s own
+warning about separating <span class="math notranslate nohighlight">\(g_C\)</span> from <span class="math notranslate nohighlight">\(g_L\)</span>). Only <span class="math notranslate nohighlight">\(g\)</span> is port-independent. Now the quadrant:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">g_z</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">QUADRANT</span><span class="p">:</span>
+    <span class="n">fit</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">impedance_fit</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+    <span class="n">g_z</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">couplings</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"25 impedance fits in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> s"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+25 impedance fits in 16 s
+</pre></div></div>
+</div>
+</section>
+<section id="7.-Side-by-side-(Fig.-7)">
+<h2>7. Side by side (Fig. 7)<a class="headerlink" href="#7.-Side-by-side-(Fig.-7)" title="Link to this heading">¶</a></h2>
+<p>The qubits are numbered 1 to 25 row by row from the corner, (0,0) = 1, (4,0) = 5, (0,1) = 6, and so on. The sign convention is that of the induced EMF; the avoided crossing gives magnitudes only.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">methods</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"EPR"</span><span class="p">:</span> <span class="n">g_epr</span><span class="p">,</span>
+    <span class="s2">"avoided crossing"</span><span class="p">:</span> <span class="n">g_ac</span><span class="p">,</span>
+    <span class="s2">"induced EMF"</span><span class="p">:</span> <span class="n">g_emf</span><span class="p">,</span>
+    <span class="s2">"impedance matrix"</span><span class="p">:</span> <span class="n">g_z</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="nb">abs</span><span class="p">(</span><span class="n">methods</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="n">q</span><span class="p">])</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">QUADRANT</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">])</span>  <span class="c1"># (4, 25), Hz</span>
+<span class="n">number</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">26</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">marker</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">methods</span><span class="p">,</span> <span class="s2">"os^D"</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">number</span> <span class="o">+</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mf">1.5</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.12</span><span class="p">,</span> <span class="n">G</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="s2">"qubit number"</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">"|g|/2π (MHz)"</span><span class="p">,</span>
+    <span class="n">xticks</span><span class="o">=</span><span class="n">number</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"four methods, one full-wave model  — cf. paper Fig. 7"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"upper center"</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.14</span><span class="p">))</span>
+<span class="n">inset</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">inset_axes</span><span class="p">([</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.52</span><span class="p">,</span> <span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.42</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">nmb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">QUADRANT</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Package</span><span class="o">.</span><span class="n">qubit_index</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+    <span class="n">inset</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">nmb</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">inset</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">),</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
+<span class="n">inset</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"numbering"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">spread</span> <span class="o">=</span> <span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">G</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">G</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"largest relative difference between methods: </span><span class="si">{</span><span class="n">spread</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">  (paper: </span><span class="si">{</span><span class="n">P</span><span class="p">[</span><span class="s1">'max_rel_diff'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">)"</span>
+<span class="p">)</span>
+<span class="n">ratio_epr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">G</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"EPR below the other three by </span><span class="si">{</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ratio_epr</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> on average; counting only the junction's share of the"</span>
+    <span class="sa">f</span><span class="s2">" qubit inductance predicts </span><span class="si">{</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">L00</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">L00</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fit00</span><span class="o">.</span><span class="n">dL</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]))</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> (notebook 4.42)"</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"average relative difference: </span><span class="si">{</span><span class="n">spread</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">  (paper: 2.9%)"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">methods</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&gt;17</span><span class="si">}</span><span class="s2">: mean ratio to the four-method average </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">row</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">G</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.45-Four-methods-one-full-wave-model_29_0.png" src="../../_images/tut_4-Analysis_4.45-Four-methods-one-full-wave-model_29_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+largest relative difference between methods: 4.1%  (paper: 4.8%)
+EPR below the other three by 3.7% on average; counting only the junction&#39;s share of the qubit inductance predicts 3.6% (notebook 4.42)
+average relative difference: 3.8%  (paper: 2.9%)
+              EPR: mean ratio to the four-method average 0.972
+ avoided crossing: mean ratio to the four-method average 1.009
+      induced EMF: mean ratio to the four-method average 1.009
+ impedance matrix: mean ratio to the four-method average 1.010
+</pre></div></div>
+</div>
+<p>The same data as maps of the quadrant, one per method, on a common color scale, and the spread between methods qubit by qubit:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">))</span>
+<span class="n">vmax</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">/</span> <span class="mf">1e6</span>
+<span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">methods</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span>
+    <span class="p">)</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">"column i"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">"row j"</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">yticks</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[:</span><span class="mi">4</span><span class="p">],</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"|g|/2π (MHz)"</span><span class="p">)</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">spread</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"lower"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"Greys"</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">spread</span><span class="p">):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="n">k</span> <span class="o">%</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">k</span> <span class="o">//</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">v</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">ha</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
+        <span class="n">va</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">"tab:red"</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"spread between methods (%)"</span><span class="p">,</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="s2">"column i"</span><span class="p">,</span>
+    <span class="n">xticks</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
+    <span class="n">yticks</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.45-Four-methods-one-full-wave-model_31_0.png" src="../../_images/tut_4-Analysis_4.45-Four-methods-one-full-wave-model_31_0.png" />
+</div>
+</div>
+</section>
+<section id="What-this-tells-you">
+<h2>What this tells you<a class="headerlink" href="#What-this-tells-you" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>They agree.</strong> Four simulations that put four different things in the junction — nothing, a fixed inductor, a swept inductor, a port — return the same coupling for every qubit, within a few percent. The choice of method is a matter of convenience, as the paper concludes.</p></li>
+<li><p><strong>Agreement is not convergence.</strong> All four run on the same coarse full-box mesh and share its discretization error; the converged couplings are those of notebook 4.44 (|A|/2π ≈ 15.6 MHz). Refining the paddle edges moves all four together.</p></li>
+<li><p><strong>The spread has a structure.</strong> EPR sits lowest, as in the paper, and by the amount notebook 4.42 predicts: Eq. (8) counts only the junction’s share of the qubit’s inductance and leaves out the geometric inductance of the paddles — here part of the field around the junction, a few tenths of a nH according to the impedance fit.</p></li>
+<li><p><strong>Cost decides.</strong> The induced EMF needs one eigenmode for all qubits and one capacitance per qubit. EPR and the avoided crossing need a solve per qubit (per inductance, for the crossing); the impedance matrix needs a driven sweep and a fit per qubit. Here the reduced model makes the extra solves nearly free — a direct approach would need 25 separate factorizations for EPR alone.</p></li>
+</ul>
+</section>
+<section id="Where-to-go-next">
+<h2>Where to go next<a class="headerlink" href="#Where-to-go-next" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Tighten the mesh</strong> around the junctions (<code class="docutils literal notranslate"><span class="pre">h_junction=0.05</span></code> in <code class="docutils literal notranslate"><span class="pre">MESH</span></code>) and watch all four methods move together — the agreement between methods is not a substitute for convergence (notebook 4.44, Sec. 4).</p></li>
+<li><p><strong>Qubit–qubit couplings.</strong> The same port model holds all 25 junctions: put inductors on two neighboring qubits and look for their avoided crossing — the paper notes the methods apply to qubit–qubit couplings unchanged.</p></li>
+<li><p><strong>A real processor</strong> adds a ground plane, readout resonators and couplers; each is more geometry for the same mesher and solver, and more ports for the same reduced model.</p></li>
+</ul>
+</section>
+<section id="References">
+<h2>References<a class="headerlink" href="#References" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><ol class="upperalpha simple" start="18">
+<li><p>Molavi, E. Forati, Y. Zhang, A. R. Klots, J. Atalaya, B. W. Langley, D. A. Timucin, M. Nazari, G. Khan, Z. K. Minev, A. N. Korotkov, M. H. Devoret, “Extracting electromagnetic bare mode couplings in large superconducting quantum processors,” <a class="reference external" href="https://arxiv.org/abs/2609.22442">arXiv:2609.22442</a> (2026).</p></li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="26">
+<li><ol class="upperalpha simple" start="11">
+<li><p>Minev, Z. Leghtas, S. O. Mundhada, L. Christakis, I. M. Pop, M. H. Devoret, “Energy-participation quantization of Josephson circuits,” <em>npj Quantum Inf.</em> <strong>7</strong>, 131 (2021). <a class="reference external" href="https://doi.org/10.1038/s41534-021-00461-8">doi:10.1038/s41534-021-00461-8</a></p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="3">
+<li><ol class="upperalpha simple">
+<li><p>Balanis, <em>Advanced Engineering Electromagnetics</em>, 2nd ed. (Wiley, 2012) — LSM modes of a partially filled waveguide.</p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="3">
+<li><p>Geuzaine, J.-F. Remacle, “Gmsh: A 3-D finite element mesh generator with built-in pre- and post-processing facilities,” <em>Int. J. Numer. Methods Eng.</em> <strong>79</strong>, 1309–1331 (2009). <a class="reference external" href="https://doi.org/10.1002/nme.2579">doi:10.1002/nme.2579</a></p></li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="20">
+<li><p>Gustafsson, G. D. McBain, “scikit-fem: A Python package for finite element assembly,” <em>J. Open Source Softw.</em> <strong>5</strong>, 2369 (2020). <a class="reference external" href="https://doi.org/10.21105/joss.02369">doi:10.21105/joss.02369</a></p></li>
+</ol>
+</li>
+</ol>
+</section>
+</section>
+<br><br>
+<h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
+<div style="border:solid 1 px #990000;">
+<table>
+<tr><td><ul><li>Superconducting Qubits I: Quantizing a Harmonic Oscillator, Josephson Junctions Part 1</ul></td>
+<td width="15%"><a href="https://www.youtube.com/watch?v=eZJjQGu85Ps&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+<td width="15%"><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-6.pdf?raw=true">Lecture Notes</a></td>
+<td width="5%"><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-6.zip?raw=true">Lab</a></td></tr>
+<tr><td><ul><li>Superconducting Qubits I: Quantizing a Harmonic Oscillator, Josephson Junctions Part 2</ul></td>
+<td><a href="https://www.youtube.com/watch?v=SDiiFOham6Y&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-6.pdf?raw=true">Lecture Notes</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-6.zip?raw=true">Lab</a></td></tr>
+<tr><td><ul><li>Superconducting Qubits I: Quantizing a Harmonic Oscillator, Josephson Junctions Part 3</ul></td>
+<td><a href="https://www.youtube.com/watch?v=hGBAz63NIH8&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-6.pdf?raw=true">Lecture Notes</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-6.zip?raw=true">Lab</a></td></tr>
+<tr><td><ul><li>Superconducting Qubits II: Circuit Quantum Electrodynamics, Readout and Calibration Methods Part 1</ul></td>
+<td><a href="https://www.youtube.com/watch?v=dmYnfGo-8eM&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-7.pdf?raw=true">Lecture Notes</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-7.zip?raw=true">Lab</a></td></tr>
+<tr><td><ul><li>Superconducting Qubits II: Circuit Quantum Electrodynamics, Readout and Calibration Methods Part 2</ul></td>
+<td><a href="https://www.youtube.com/watch?v=jUPAeOoZpEU&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-7.pdf?raw=true">Lecture Notes</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-7.zip?raw=true">Lab</a></td></tr>
+<tr><td><ul><li>Superconducting Qubits II: Circuit Quantum Electrodynamics, Readout and Calibration Methods Part 3</ul></td>
+<td><a href="https://www.youtube.com/watch?v=_IpCwMvc0dA&list=PLOFEBzvs-VvrXTMy5Y2IqmSaUjfnhvBHR">Lecture Video</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/lectures/introqcqh-lecture-notes-7.pdf?raw=true">Lecture Notes</a></td>
+<td><a href="https://github.com/qiskit-community/intro-to-quantum-computing-and-quantum-hardware/blob/master/labs/introqcqh-lab-7.zip?raw=true">Lab</a></td></tr></table>
+</div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">2.01 QComponent lifecycle — use, copy, delete, rename</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="4.44-Every-coupling-from-one-eigenmode.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">4.44 Every Coupling from One Eigenmode</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Quantum Metal Community; 2019-2025 Qiskit Development Team
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2026/09/28</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">4.45 Four Methods, One Full-Wave Model</a><ul>
+<li><a class="reference internal" href="#1.-The-full-package-and-its-port-model">1. The full package and its port model</a></li>
+<li><a class="reference internal" href="#2.-The-capacitance-this-model-sees">2. The capacitance this model sees</a></li>
+<li><a class="reference internal" href="#3.-Induced-EMF">3. Induced EMF</a></li>
+<li><a class="reference internal" href="#4.-Avoided-crossing-(Fig.-5)">4. Avoided crossing (Fig. 5)</a></li>
+<li><a class="reference internal" href="#5.-Energy-participation">5. Energy participation</a></li>
+<li><a class="reference internal" href="#6.-Impedance-matrix">6. Impedance matrix</a></li>
+<li><a class="reference internal" href="#7.-Side-by-side-(Fig.-7)">7. Side by side (Fig. 7)</a></li>
+<li><a class="reference internal" href="#What-this-tells-you">What this tells you</a></li>
+<li><a class="reference internal" href="#Where-to-go-next">Where to go next</a></li>
+<li><a class="reference internal" href="#References">References</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../_static/jupyterlite_sphinx.js?v=96e329c5"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    </body>
+</html>

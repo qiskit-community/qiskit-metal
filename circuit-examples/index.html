@@ -3,10 +3,10 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Single Transmon - Grounded (xmon)" href="A.Qubits/01-Transmon_cross.html"><link rel="prev" title="QComponent Gallery" href="../qcomponents-gallery.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="5-Qubit Xmon Processor (Barends et al., 2014)" href="F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.html"><link rel="prev" title="Demo Notebook Demonstrating How to Test for Component/CPW Overlap" href="../tut/quick-topics/Testing-QComponents-for-overlap-and-collisions.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Circuit Examples - Quantum Metal 0.9.0</title>
+        <title>Example Designs - Quantum Metal 0.9.0</title>
       <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/qiskit-sphinx-theme.css?v=8ff9dcb6" />
@@ -203,6 +203,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../tut/1-Overview/1.3-Build-a-4-qubit-chip.html">1.3 Build a 4-qubit chip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/1-Overview/1.4-Saving-Your-Chip-Design.html">1.4 Saving Your Chip Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/1-Overview/1.5-Parametric-design---iterate-and-compare.html">1.5 Parametric Design: Iterate and Compare</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.41-The-package-mode-on-paper.html">4.41 The Package Mode on Paper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling.html">4.42 Four Ways to Measure a Coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.43-Mesh-and-solve-the-10x10-processor.html">4.43 Mesh and Solve the 10 × 10 Processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.44-Every-coupling-from-one-eigenmode.html">4.44 Every Coupling from One Eigenmode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.45-Four-methods-one-full-wave-model.html">4.45 Four Methods, One Full-Wave Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">2.01 QComponent lifecycle — use, copy, delete, rename</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.11-Routing-101.html">2.11 Routing 101</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.12-Simple-Meander.html">2.12 Simple Meander</a></li>
@@ -213,6 +218,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">2.22 Design 100 qubits programmatically</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.23-Modify-chip-options.html">2.23 Modify chip options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.24-Design-rule-checking.html">Design rule checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/FlipChip-design-tutorial.html">Flip-Chip Devices in Quantum Metal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.html">2.31 Create a QComponent - Basic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.html">2.32 Create a QComponent - Advanced</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.html">2.33 Add my QComponent to a reusable python file</a></li>
@@ -239,15 +245,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.21-Capacitance-matrix.html">4.21 Sweeps - Capacitance matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.22-Eigenmode-matrix.html">4.22 Sweeps - Eigenmode matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.23-Impedance-and-scattering-Z-S-Y-matrices.html">4.23 Sweeps - Impedance, scattering and admittance (Z S Y) matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/pyaedt-multiplanar/DrivenModal-pyaedt-multiplanar.html">HFSS Driven Modal Simulation of a MultiPlanar Design with pyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/pyaedt-multiplanar/Eigenmode-pyaedt-multiplanar.html">Running Eigenmode Simulations &amp; EPR Analysis with <code class="docutils literal notranslate"><span class="pre">QHFSSEigenmodePyaedt</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/pyaedt-multiplanar/Q3D-pyaedt-multiplanar.html">Q3D Capacitance Matrix of a MultiPlanar Design with pyaedt</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.html">4.31 Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.32-Transmon-analytics-HCPB.html">4.32 Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.33-Transmon-analytics.html">4.33 Transmon Analytics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html">4.34 Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate.html">The Cross Resonance (CR) Gate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.html">Circuit Quantum Electrodynamics (cQED) and the Jaynes-Cummings Interaction Model Using the HCPB Class and QuTip</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/full-design-examples/Reference-design-1-Transmon-with-readout-resonator.html">Reference design 1 — Transmon with readout resonator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/full-design-examples/Reference-design-2-Two-coupled-transmons.html">Reference design 2 — Two coupled transmons</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tut/full-design-examples/Reference-design-3-Four-qubit-multiplexed-readout.html">Reference design 3 — Four-qubit multiplexed readout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/full-design-examples/A.1-Transmon-with-readout-resonator.html">A.1 Reference design — Transmon with readout resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/full-design-examples/A.2-Two-coupled-transmons.html">A.2 Reference design — Two coupled transmons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/full-design-examples/A.3-Four-qubit-multiplexed-readout.html">A.3 Reference design — Four-qubit multiplexed readout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/quick-topics/JJ-Demo-Notebook.html">Josephson Junction QComponent Demo Notebook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/quick-topics/Managing-pins.html">Managing pins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tut/quick-topics/Managing-variables.html">Managing variables</a></li>
@@ -257,8 +266,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../tut/quick-topics/Testing-QComponents-for-overlap-and-collisions.html">Demo Notebook Demonstrating How to Test for Component/CPW Overlap</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../qcomponents-gallery.html">QComponent Gallery</a></li>
 <li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Example Designs</a><input aria-label="Toggle navigation of Example Designs" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.html">Google style — 5-Qubit Xmon Processor (Barends et al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode.html">Wallraff group (ETH Zurich) — 17-Qubit Distance-3 Surface Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh.html">Two-Qubit Cell of the 17-Qubit Chip — Mesh for Simulation (gmsh)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="F.Small-quantum-chips/51-Four_qubit_chip.html">IBM-era Qiskit Metal example — Four-Qubit Chip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates.html">Three Published iSWAP Gates — Full Chips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">100-Qubit Mockup (algorithmic design, no routing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="full-design-flow-examples/A.4-Full-chip-design.html">Full Chip Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
 <li class="toctree-l2"><a class="reference internal" href="A.Qubits/03-concentric_transmon.html">Concentric Transmon</a></li>
@@ -270,26 +285,28 @@
 <li class="toctree-l2"><a class="reference internal" href="A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
 <li class="toctree-l2"><a class="reference internal" href="A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
-<li class="toctree-l2"><a class="reference internal" href="C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="D.Qubit-couplers/32-TwoTransmonsDirectCoupling.html">Direct Coupler (transmon-transmon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="D.Qubit-couplers/33-TwoTransmonsWithMeander.html">Bus Resonator Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="E.Input-output-coupling/41-LaunchPad.html">CPW Launch Pad</a></li>
 <li class="toctree-l2"><a class="reference internal" href="E.Input-output-coupling/42-ResonatorAndLaunchPad.html">Readout line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="E.Input-output-coupling/43-TransmonPocketCL.html">Charge Line</a></li>
-<li class="toctree-l2"><a class="reference internal" href="F.Small-quantum-chips/51-Four_qubit_chip.html">Four Qubit Chip Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="full-design-flow-examples/Example-full-chip-design.html">Example full chip design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="full-design-flow-examples/Example-used-in-the-launch-video.html">Launch Videos</a></li>
-<li class="toctree-l2"><a class="reference internal" href="full-design-flow-examples/Exercise-for-the-South-Korea-Hackathon%2720.html">South Korea Qiskit Hackathon’20 - Qiskit Metal exercise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="full-design-flow-examples/A.4-Full-chip-design.html">A.4 Full chip design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="full-design-flow-examples/A.5-Launch-video-example.html">A.5 Launch video example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="full-design-flow-examples/A.6-Hackathon-exercise-South-Korea-2020.html">A.6 Hackathon exercise — South Korea 2020</a></li>
+<li class="toctree-l2"><a class="reference internal" href="full-design-flow-examples/A.7-IMS-2022-workshop.html">A.7 Qiskit Metal tutorial for IMS 2022</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../qcomponents-gallery.html">QComponent Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../videoseducation.html">Videos &amp; Education</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">How It Works</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation-pathways.html">Simulation Pathways</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
@@ -318,6 +335,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.Rectangle.html">Rectangle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.RectangleHollow.html">RectangleHollow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.Cap3Interdigital.html">Cap3Interdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.CapFingerInFrame.html">CapFingerInFrame</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.CapNInterdigital.html">CapNInterdigital</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.ResonatorCoilRect.html">ResonatorCoilRect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.CoupledLineTee.html">CoupledLineTee</a></li>
@@ -338,6 +356,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.RouteAnchors.html">RouteAnchors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.RouteMixed.html">RouteMixed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.RoutePathfinder.html">RoutePathfinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.PolylineCPW.html">PolylineCPW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.jj_dolan.html">jj_dolan</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.jj_manhattan.html">jj_manhattan</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../apidocs/qiskit_metal.qlibrary.TransmonConcentric.html">TransmonConcentric</a></li>
@@ -468,8 +487,46 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="circuit-examples">
-<span id="id1"></span><h1>Circuit Examples<a class="headerlink" href="#circuit-examples" title="Link to this heading">¶</a></h1>
+          <section id="example-designs">
+<span id="circuit-examples"></span><h1>Example Designs<a class="headerlink" href="#example-designs" title="Link to this heading">¶</a></h1>
+<section id="quantum-chips">
+<h2>Quantum Chips<a class="headerlink" href="#quantum-chips" title="Link to this heading">¶</a></h2>
+<p>Complete chip designs — qubits, routing, readout, and control lines end to
+end, each reproducing (or, for the 100-qubit case, illustrating the scale
+of) a real or representative device.</p>
+<div class="toctree-wrapper compound">
+<div class="nbsphinx-gallery">
+<a class="reference internal" href="F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.html">
+  <div><img alt="" src="../_images/circuit-examples_F.Small-quantum-chips_52-Barends_5Qubit_Xmon_Processor_23_0.png"></div>
+  <div>Google style — 5-Qubit Xmon Processor (Barends et al.)</div>
+</a>
+<a class="reference internal" href="F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode.html">
+  <div><img alt="" src="../_images/circuit-examples_F.Small-quantum-chips_53-Wallraff_17Qubit_SurfaceCode_21_0.png"></div>
+  <div>Wallraff group (ETH Zurich) — 17-Qubit Distance-3 Surface Code</div>
+</a>
+<a class="reference internal" href="F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh.html">
+  <div><img alt="" src="../_images/circuit-examples_F.Small-quantum-chips_54-Wallraff_TwoQubit_Cell_Mesh_11_0.png"></div>
+  <div>Two-Qubit Cell of the 17-Qubit Chip — Mesh for Simulation (gmsh)</div>
+</a>
+<a class="reference internal" href="F.Small-quantum-chips/51-Four_qubit_chip.html">
+  <div><img alt="" src="../_images/circuit-examples_F.Small-quantum-chips_51-Four_qubit_chip_39_0.png"></div>
+  <div>IBM-era Qiskit Metal example — Four-Qubit Chip</div>
+</a>
+<a class="reference internal" href="F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates.html">
+  <div><img alt="" src="../_images/circuit-examples_F.Small-quantum-chips_Full-Physical-Design-of-iSWAP-Gates_47_0.png"></div>
+  <div>Three Published iSWAP Gates — Full Chips</div>
+</a>
+<a class="reference internal" href="../tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">
+  <div><img alt="" src="../_images/tut_2-From-components-to-chip_2.22-Design-100-qubits-programmatically_19_0.png"></div>
+  <div>100-Qubit Mockup (algorithmic design, no routing)</div>
+</a>
+<a class="reference internal" href="full-design-flow-examples/A.4-Full-chip-design.html">
+  <div><img alt="" src="../_images/circuit-examples_full-design-flow-examples_A.4-Full-chip-design_78_0.png"></div>
+  <div>Full Chip Design</div>
+</a>
+</div>
+</div>
+</section>
 <section id="qubits">
 <h2>Qubits<a class="headerlink" href="#qubits" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
@@ -521,6 +578,25 @@
 </div>
 </div>
 </section>
+<section id="qubit-couplers">
+<h2>Qubit Couplers<a class="headerlink" href="#qubit-couplers" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<div class="nbsphinx-gallery">
+<a class="reference internal" href="D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">
+  <div><img alt="" src="../_images/circuit-examples_D.Qubit-couplers_31-TwoCrossmonsTunableCoupler_14_0.png"></div>
+  <div>Tunable Coupler (MIT)</div>
+</a>
+<a class="reference internal" href="D.Qubit-couplers/32-TwoTransmonsDirectCoupling.html">
+  <div><img alt="" src="../_images/circuit-examples_D.Qubit-couplers_32-TwoTransmonsDirectCoupling_14_0.png"></div>
+  <div>Direct Coupler (transmon-transmon)</div>
+</a>
+<a class="reference internal" href="D.Qubit-couplers/33-TwoTransmonsWithMeander.html">
+  <div><img alt="" src="../_images/circuit-examples_D.Qubit-couplers_33-TwoTransmonsWithMeander_15_0.png"></div>
+  <div>Bus Resonator Coupler (transmon-transmon)</div>
+</a>
+</div>
+</div>
+</section>
 <section id="resonators">
 <h2>Resonators<a class="headerlink" href="#resonators" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
@@ -539,25 +615,6 @@
 <a class="reference internal" href="C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">
   <div><img alt="" src="../_images/circuit-examples_C.Composite-bi-partite_21-OneTransmonsWithMeanderAndOTG_17_0.png"></div>
   <div>Transmon coupled to CPW resonator</div>
-</a>
-</div>
-</div>
-</section>
-<section id="qubit-couplers">
-<h2>Qubit Couplers<a class="headerlink" href="#qubit-couplers" title="Link to this heading">¶</a></h2>
-<div class="toctree-wrapper compound">
-<div class="nbsphinx-gallery">
-<a class="reference internal" href="D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">
-  <div><img alt="" src="../_images/circuit-examples_D.Qubit-couplers_31-TwoCrossmonsTunableCoupler_14_0.png"></div>
-  <div>Tunable Coupler (MIT)</div>
-</a>
-<a class="reference internal" href="D.Qubit-couplers/32-TwoTransmonsDirectCoupling.html">
-  <div><img alt="" src="../_images/circuit-examples_D.Qubit-couplers_32-TwoTransmonsDirectCoupling_14_0.png"></div>
-  <div>Direct Coupler (transmon-transmon)</div>
-</a>
-<a class="reference internal" href="D.Qubit-couplers/33-TwoTransmonsWithMeander.html">
-  <div><img alt="" src="../_images/circuit-examples_D.Qubit-couplers_33-TwoTransmonsWithMeander_15_0.png"></div>
-  <div>Bus Resonator Coupler (transmon-transmon)</div>
 </a>
 </div>
 </div>
@@ -581,32 +638,25 @@
 </div>
 </div>
 </section>
-<section id="small-quantum-chips">
-<h2>Small Quantum Chips<a class="headerlink" href="#small-quantum-chips" title="Link to this heading">¶</a></h2>
-<div class="toctree-wrapper compound">
-<div class="nbsphinx-gallery">
-<a class="reference internal" href="F.Small-quantum-chips/51-Four_qubit_chip.html">
-  <div><img alt="" src="../_images/circuit-examples_F.Small-quantum-chips_51-Four_qubit_chip_39_0.png"></div>
-  <div>Four Qubit Chip Design</div>
-</a>
-</div>
-</div>
-</section>
 <section id="design-flow">
 <h2>Design Flow<a class="headerlink" href="#design-flow" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <div class="nbsphinx-gallery">
-<a class="reference internal" href="full-design-flow-examples/Example-full-chip-design.html">
-  <div><img alt="" src="../_images/circuit-examples_full-design-flow-examples_Example-full-chip-design_43_0.png"></div>
-  <div>Example full chip design</div>
+<a class="reference internal" href="full-design-flow-examples/A.4-Full-chip-design.html">
+  <div><img alt="" src="../_images/circuit-examples_full-design-flow-examples_A.4-Full-chip-design_78_0.png"></div>
+  <div>A.4 Full chip design</div>
 </a>
-<a class="reference internal" href="full-design-flow-examples/Example-used-in-the-launch-video.html">
-  <div><img alt="" src="../_images/circuit-examples_full-design-flow-examples_Example-used-in-the-launch-video_18_0.png"></div>
-  <div>Launch Videos</div>
+<a class="reference internal" href="full-design-flow-examples/A.5-Launch-video-example.html">
+  <div><img alt="" src="../_images/circuit-examples_full-design-flow-examples_A.5-Launch-video-example_21_0.png"></div>
+  <div>A.5 Launch video example</div>
 </a>
-<a class="reference internal" href="full-design-flow-examples/Exercise-for-the-South-Korea-Hackathon%2720.html">
-  <div><img alt="" src="../_images/circuit-examples_full-design-flow-examples_Exercise-for-the-South-Korea-Hackathon&#x27;20_24_0.png"></div>
-  <div>South Korea Qiskit Hackathon’20 - Qiskit Metal exercise</div>
+<a class="reference internal" href="full-design-flow-examples/A.6-Hackathon-exercise-South-Korea-2020.html">
+  <div><img alt="" src="../_images/circuit-examples_full-design-flow-examples_A.6-Hackathon-exercise-South-Korea-2020_27_0.png"></div>
+  <div>A.6 Hackathon exercise — South Korea 2020</div>
+</a>
+<a class="reference internal" href="full-design-flow-examples/A.7-IMS-2022-workshop.html">
+  <div><img alt="" src="../_images/circuit-examples_full-design-flow-examples_A.7-IMS-2022-workshop_39_0.png"></div>
+  <div>A.7 Qiskit Metal tutorial for IMS 2022</div>
 </a>
 </div>
 </div>
@@ -618,23 +668,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="A.Qubits/01-Transmon_cross.html">
+          <a class="next-page" href="F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Single Transmon - Grounded (xmon)</div>
+                <div class="title">5-Qubit Xmon Processor (Barends <em>et al.</em>, 2014)</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../qcomponents-gallery.html">
+          <a class="prev-page" href="../tut/quick-topics/Testing-QComponents-for-overlap-and-collisions.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">QComponent Gallery</div>
+                <div class="title">Demo Notebook Demonstrating How to Test for Component/CPW Overlap</div>
                 
               </div>
             </a>
@@ -648,7 +698,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/09/27</div>
+              Last updated on 2026/09/28</div>
           </div>
           <div class="right-details">
             
@@ -669,13 +719,13 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Circuit Examples</a><ul>
+<li><a class="reference internal" href="#">Example Designs</a><ul>
+<li><a class="reference internal" href="#quantum-chips">Quantum Chips</a></li>
 <li><a class="reference internal" href="#qubits">Qubits</a></li>
+<li><a class="reference internal" href="#qubit-couplers">Qubit Couplers</a></li>
 <li><a class="reference internal" href="#resonators">Resonators</a></li>
 <li><a class="reference internal" href="#composite-bi-partite-systems">Composite Bi-Partite Systems</a></li>
-<li><a class="reference internal" href="#qubit-couplers">Qubit Couplers</a></li>
 <li><a class="reference internal" href="#input-output-coupling">Input-Output Coupling</a></li>
-<li><a class="reference internal" href="#small-quantum-chips">Small Quantum Chips</a></li>
 <li><a class="reference internal" href="#design-flow">Design Flow</a></li>
 </ul>
 </li>

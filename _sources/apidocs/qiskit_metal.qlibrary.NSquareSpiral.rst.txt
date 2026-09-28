@@ -52,6 +52,7 @@ NSquareSpiral
    .. automethod:: NSquareSpiral.qgeometry_plot
    .. automethod:: NSquareSpiral.qgeometry_table
    .. automethod:: NSquareSpiral.rebuild
+   .. automethod:: NSquareSpiral.to_html
    .. automethod:: NSquareSpiral.to_script
 
    

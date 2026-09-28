@@ -52,6 +52,7 @@ NGon
    .. automethod:: NGon.qgeometry_plot
    .. automethod:: NGon.qgeometry_table
    .. automethod:: NGon.rebuild
+   .. automethod:: NGon.to_html
    .. automethod:: NGon.to_script
 
    

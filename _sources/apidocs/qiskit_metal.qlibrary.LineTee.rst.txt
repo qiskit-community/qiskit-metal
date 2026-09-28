@@ -52,6 +52,7 @@ LineTee
    .. automethod:: LineTee.qgeometry_plot
    .. automethod:: LineTee.qgeometry_table
    .. automethod:: LineTee.rebuild
+   .. automethod:: LineTee.to_html
    .. automethod:: LineTee.to_script
 
    

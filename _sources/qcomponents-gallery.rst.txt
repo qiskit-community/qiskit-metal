@@ -240,6 +240,22 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
       .. rubric:: ``TransmonPocketTeeth``
 
 
+   .. grid-item-card:: Transmon Star
+      :link: apidocs/qlibrary
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/TransmonStar.png
+         :alt: Transmon Star
+         :width: 180px
+         :align: center
+
+      A transmon island with ``num_points`` radial arms evenly spaced around
+
+      .. rubric:: ``TransmonStar``
+
+
 🔗 Couplers
 ==============
 
@@ -346,6 +362,22 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
       A single airbridge: two base-metal landing pads joined by an elevated
 
       .. rubric:: ``Airbridge``
+
+
+   .. grid-item-card:: CPW along an explicit list of points
+      :link: apidocs/qiskit_metal.qlibrary.PolylineCPW
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/PolylineCPW.png
+         :alt: CPW along an explicit list of points
+         :width: 180px
+         :align: center
+
+      A coplanar waveguide drawn along an explicit polyline.
+
+      .. rubric:: ``PolylineCPW``
 
 
    .. grid-item-card:: RouteAnchors
@@ -588,6 +620,22 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
       Create a three finger planar capacitor with a ground pocket cuttout.
 
       .. rubric:: ``Cap3Interdigital``
+
+
+   .. grid-item-card:: CapFingerInFrame
+      :link: apidocs/qiskit_metal.qlibrary.CapFingerInFrame
+      :link-type: doc
+      :class-card: sd-shadow-sm
+      :text-align: center
+
+      .. image:: images/qlibrary/CapFingerInFrame.png
+         :alt: CapFingerInFrame
+         :width: 180px
+         :align: center
+
+      Two-pin gap capacitor with one electrode framing the other.
+
+      .. rubric:: ``CapFingerInFrame``
 
 
    .. grid-item-card:: Cap N Interdigital

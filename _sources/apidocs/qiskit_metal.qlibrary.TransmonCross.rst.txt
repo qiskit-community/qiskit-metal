@@ -55,6 +55,7 @@ TransmonCross
    .. automethod:: TransmonCross.qgeometry_plot
    .. automethod:: TransmonCross.qgeometry_table
    .. automethod:: TransmonCross.rebuild
+   .. automethod:: TransmonCross.to_html
    .. automethod:: TransmonCross.to_script
 
    

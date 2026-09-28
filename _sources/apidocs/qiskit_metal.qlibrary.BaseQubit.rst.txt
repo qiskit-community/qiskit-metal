@@ -52,6 +52,7 @@ BaseQubit
    .. automethod:: BaseQubit.qgeometry_plot
    .. automethod:: BaseQubit.qgeometry_table
    .. automethod:: BaseQubit.rebuild
+   .. automethod:: BaseQubit.to_html
    .. automethod:: BaseQubit.to_script
 
    

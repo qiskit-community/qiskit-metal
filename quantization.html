@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="GUI Navigation &amp; Shortcuts" href="gui-shortcuts.html"><link rel="prev" title="Quantum Metal Workflow" href="workflow.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Simulation pathways" href="simulation-pathways.html"><link rel="prev" title="Quantum Metal Workflow" href="workflow.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Quantization Methods Overview - Quantum Metal 0.9.0</title>
@@ -202,6 +202,11 @@
 <li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.3-Build-a-4-qubit-chip.html">1.3 Build a 4-qubit chip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.4-Saving-Your-Chip-Design.html">1.4 Saving Your Chip Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/1-Overview/1.5-Parametric-design---iterate-and-compare.html">1.5 Parametric Design: Iterate and Compare</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.41-The-package-mode-on-paper.html">4.41 The Package Mode on Paper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling.html">4.42 Four Ways to Measure a Coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.43-Mesh-and-solve-the-10x10-processor.html">4.43 Mesh and Solve the 10 × 10 Processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.44-Every-coupling-from-one-eigenmode.html">4.44 Every Coupling from One Eigenmode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.45-Four-methods-one-full-wave-model.html">4.45 Four Methods, One Full-Wave Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">2.01 QComponent lifecycle — use, copy, delete, rename</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.11-Routing-101.html">2.11 Routing 101</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.12-Simple-Meander.html">2.12 Simple Meander</a></li>
@@ -212,6 +217,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">2.22 Design 100 qubits programmatically</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.23-Modify-chip-options.html">2.23 Modify chip options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.24-Design-rule-checking.html">Design rule checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/FlipChip-design-tutorial.html">Flip-Chip Devices in Quantum Metal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.html">2.31 Create a QComponent - Basic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.html">2.32 Create a QComponent - Advanced</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.html">2.33 Add my QComponent to a reusable python file</a></li>
@@ -238,15 +244,18 @@
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.21-Capacitance-matrix.html">4.21 Sweeps - Capacitance matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.22-Eigenmode-matrix.html">4.22 Sweeps - Eigenmode matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.23-Impedance-and-scattering-Z-S-Y-matrices.html">4.23 Sweeps - Impedance, scattering and admittance (Z S Y) matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/pyaedt-multiplanar/DrivenModal-pyaedt-multiplanar.html">HFSS Driven Modal Simulation of a MultiPlanar Design with pyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/pyaedt-multiplanar/Eigenmode-pyaedt-multiplanar.html">Running Eigenmode Simulations &amp; EPR Analysis with <code class="docutils literal notranslate"><span class="pre">QHFSSEigenmodePyaedt</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/pyaedt-multiplanar/Q3D-pyaedt-multiplanar.html">Q3D Capacitance Matrix of a MultiPlanar Design with pyaedt</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.html">4.31 Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.32-Transmon-analytics-HCPB.html">4.32 Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.33-Transmon-analytics.html">4.33 Transmon Analytics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html">4.34 Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate.html">The Cross Resonance (CR) Gate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.html">Circuit Quantum Electrodynamics (cQED) and the Jaynes-Cummings Interaction Model Using the HCPB Class and QuTip</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/full-design-examples/Reference-design-1-Transmon-with-readout-resonator.html">Reference design 1 — Transmon with readout resonator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/full-design-examples/Reference-design-2-Two-coupled-transmons.html">Reference design 2 — Two coupled transmons</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/full-design-examples/Reference-design-3-Four-qubit-multiplexed-readout.html">Reference design 3 — Four-qubit multiplexed readout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/full-design-examples/A.1-Transmon-with-readout-resonator.html">A.1 Reference design — Transmon with readout resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/full-design-examples/A.2-Two-coupled-transmons.html">A.2 Reference design — Two coupled transmons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/full-design-examples/A.3-Four-qubit-multiplexed-readout.html">A.3 Reference design — Four-qubit multiplexed readout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/JJ-Demo-Notebook.html">Josephson Junction QComponent Demo Notebook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Managing-pins.html">Managing pins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Managing-variables.html">Managing variables</a></li>
@@ -256,8 +265,14 @@
 <li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Testing-QComponents-for-overlap-and-collisions.html">Demo Notebook Demonstrating How to Test for Component/CPW Overlap</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="qcomponents-gallery.html">QComponent Gallery</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="circuit-examples/index.html">Example Designs</a><input aria-label="Toggle navigation of Example Designs" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.html">Google style — 5-Qubit Xmon Processor (Barends et al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode.html">Wallraff group (ETH Zurich) — 17-Qubit Distance-3 Surface Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh.html">Two-Qubit Cell of the 17-Qubit Chip — Mesh for Simulation (gmsh)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.html">IBM-era Qiskit Metal example — Four-Qubit Chip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates.html">Three Published iSWAP Gates — Full Chips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">100-Qubit Mockup (algorithmic design, no routing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.4-Full-chip-design.html">Full Chip Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/03-concentric_transmon.html">Concentric Transmon</a></li>
@@ -269,26 +284,28 @@
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/32-TwoTransmonsDirectCoupling.html">Direct Coupler (transmon-transmon)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/33-TwoTransmonsWithMeander.html">Bus Resonator Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/41-LaunchPad.html">CPW Launch Pad</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/42-ResonatorAndLaunchPad.html">Readout line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/43-TransmonPocketCL.html">Charge Line</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.html">Four Qubit Chip Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/Example-full-chip-design.html">Example full chip design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/Example-used-in-the-launch-video.html">Launch Videos</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/Exercise-for-the-South-Korea-Hackathon%2720.html">South Korea Qiskit Hackathon’20 - Qiskit Metal exercise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.4-Full-chip-design.html">A.4 Full chip design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.5-Launch-video-example.html">A.5 Launch video example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.6-Hackathon-exercise-South-Korea-2020.html">A.6 Hackathon exercise — South Korea 2020</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop.html">A.7 Qiskit Metal tutorial for IMS 2022</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="qcomponents-gallery.html">QComponent Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="videoseducation.html">Videos &amp; Education</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">How It Works</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation-pathways.html">Simulation Pathways</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
@@ -317,6 +334,7 @@
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.Rectangle.html">Rectangle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.RectangleHollow.html">RectangleHollow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.Cap3Interdigital.html">Cap3Interdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.CapFingerInFrame.html">CapFingerInFrame</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.CapNInterdigital.html">CapNInterdigital</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.ResonatorCoilRect.html">ResonatorCoilRect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.CoupledLineTee.html">CoupledLineTee</a></li>
@@ -337,6 +355,7 @@
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.RouteAnchors.html">RouteAnchors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.RouteMixed.html">RouteMixed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.RoutePathfinder.html">RoutePathfinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.PolylineCPW.html">PolylineCPW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.jj_dolan.html">jj_dolan</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.jj_manhattan.html">jj_manhattan</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.TransmonConcentric.html">TransmonConcentric</a></li>
@@ -536,31 +555,29 @@ the the user provides as inputs to this object</p>
 <p>Initialize the cell object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>options</strong> (<em>Dict</em>) – <p>options can contain the following keys
-node_rename (dict): a dict mapping from original node names to</p>
-<blockquote>
-<div><p>new node names, {old_name: new_name}</p>
-</div></blockquote>
-<dl class="simple">
-<dt>cap_mat (pd.DataFrame): Maxwell capacitance of the cell in</dt><dd><p>pandas dataframe</p>
-</dd>
-<dt>ind_dict (dict): the keys are tuples of specifying the two nodes</dt><dd><p>between which the inductors lie. For example,
+<dd class="field-odd"><p><strong>options</strong> (<em>Dict</em>) – <p>options can contain the following keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_rename</span></code> (dict): a dict mapping from original node names to
+new node names, {old_name: new_name}</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cap_mat</span></code> (pd.DataFrame): Maxwell capacitance of the cell in
+pandas dataframe</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ind_dict</span></code> (dict): the keys are tuples of specifying the two nodes
+between which the inductors lie. For example,
 {(‘n1’, ‘n2’): 10} specifies that there is an inductor of 10
 nH between node ‘n1’ and ‘n2’ for one cell and an inductor of
-13 nH between node ‘n5’ and ‘n7’ for another cell</p>
-</dd>
-<dt>jj_dict (dict): dict mapping original circuit nodes to custom-named</dt><dd><p>junction nodes. This is the parameter informing the LOM analysis between
+13 nH between node ‘n5’ and ‘n7’ for another cell</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">jj_dict</span></code> (dict): dict mapping original circuit nodes to custom-named
+junction nodes. This is the parameter informing the LOM analysis between
 which nodes the Josephson junctions are located. For example,
 {(‘n1’, ‘n2’): ‘j1’} specifies that there is a junction between
-nodes ‘n1’ and ‘n2’ and named as ‘j1’ cf_dict (dict):</p>
-</dd>
-<dt>cj_dict (dict): if provided, specifies the junction capacitances in each</dt><dd><p>cell. Structure is the same as ind_dict. For the dict, the keys are
+nodes ‘n1’ and ‘n2’ and named as ‘j1’</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cj_dict</span></code> (dict): if provided, specifies the junction capacitances in each
+cell. Structure is the same as ind_dict. For the dict, the keys are
 tuples of specifying the two nodes between which the junctions lie.
 For example, {(‘n1’, ‘n2’): 2} specifies that there is an
 junction capacitance of 2 fF between node ‘n1’ and ‘n2’ for the first
-provided cell and None for the second provided cell.</p>
-</dd>
-</dl>
+provided cell and None for the second provided cell.</p></li>
+</ul>
 </p>
 </dd>
 </dl>
@@ -610,11 +627,7 @@ back to the defaults shown.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">nodes</span></code> — a single junction node.</p></li>
 </ul>
 </dd>
-</dl>
-<p><code class="docutils literal notranslate"><span class="pre">&quot;TL_RESONATOR&quot;</span></code> — distributed transmission-line resonator, maps to
-<code class="docutils literal notranslate"><span class="pre">scqubits.Oscillator</span></code>.</p>
-<blockquote>
-<div><ul class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;TL_RESONATOR&quot;</span></code> — distributed transmission-line resonator, maps to <code class="docutils literal notranslate"><span class="pre">scqubits.Oscillator</span></code>.</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">f_res</span></code> — resonator frequency in GHz <strong>(required)</strong>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Z0</span></code> — characteristic impedance in ohms (default <code class="docutils literal notranslate"><span class="pre">50</span></code>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">vp</span></code> — phase velocity in m/s, or the string <code class="docutils literal notranslate"><span class="pre">&quot;use_design&quot;</span></code>
@@ -623,22 +636,31 @@ back to the defaults shown.</p>
 <code class="docutils literal notranslate"><span class="pre">vp=&quot;use_design&quot;</span></code>: <code class="docutils literal notranslate"><span class="pre">line_width</span></code>, <code class="docutils literal notranslate"><span class="pre">line_gap</span></code>,
 <code class="docutils literal notranslate"><span class="pre">substrate_thickness</span></code>, <code class="docutils literal notranslate"><span class="pre">film_thickness</span></code>, all in <strong>meters</strong>
 (defaults <code class="docutils literal notranslate"><span class="pre">10e-6</span></code>, <code class="docutils literal notranslate"><span class="pre">6e-6</span></code>, <code class="docutils literal notranslate"><span class="pre">750e-6</span></code>, <code class="docutils literal notranslate"><span class="pre">200e-9</span></code>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">truncated_dim</span></code> — retained levels (default <code class="docutils literal notranslate"><span class="pre">3</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">truncated_dim</span></code> — retained levels (default: chosen by
+<a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.create_hilbertspace" title="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.create_hilbertspace"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CompositeSystem.create_hilbertspace()</span></code></a>, see below).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">other_end_shorted</span></code> — <code class="docutils literal notranslate"><span class="pre">True</span></code> if the far end is shorted to
 ground (default <code class="docutils literal notranslate"><span class="pre">False</span></code>). A shorted resonator must be given a
 single node.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nodes</span></code> — one node (open- or shorted-end) or two nodes.</p></li>
 </ul>
-</div></blockquote>
-<p><code class="docutils literal notranslate"><span class="pre">&quot;LUMPED_RESONATOR&quot;</span></code> — lumped LC resonator, maps to
-<code class="docutils literal notranslate"><span class="pre">scqubits.Oscillator</span></code>.</p>
-<blockquote>
-<div><ul class="simple">
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;LUMPED_RESONATOR&quot;</span></code> — lumped LC resonator, maps to <code class="docutils literal notranslate"><span class="pre">scqubits.Oscillator</span></code>.</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">f_res</span></code> — <em>(computed)</em> from the extracted L and C matrices.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">truncated_dim</span></code> — retained levels (default <code class="docutils literal notranslate"><span class="pre">3</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">truncated_dim</span></code> — retained levels (default: chosen by
+<a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.create_hilbertspace" title="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.create_hilbertspace"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CompositeSystem.create_hilbertspace()</span></code></a>, see below).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nodes</span></code> — a single node.</p></li>
 </ul>
-</div></blockquote>
+</dd>
+</dl>
+<p><strong>Resonator levels.</strong> A resonator’s self-Kerr (its diagonal entry in the
+chi matrix) comes from its two-photon level. With only three levels that
+level is the top of the retained space and has no partner above it, so
+the self-Kerr comes out wrong (e.g. +0.57 MHz where the converged value
+is -0.0003 MHz); qubit frequencies, anharmonicities and qubit-resonator
+shifts are unaffected. When <code class="docutils literal notranslate"><span class="pre">truncated_dim</span></code> is not given, resonators
+therefore keep 5 levels if the whole Hilbert space stays at or below
+<a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.max_auto_dimension" title="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.max_auto_dimension"><code class="xref py py-attr docutils literal notranslate"><span class="pre">CompositeSystem.max_auto_dimension</span></code></a> states, and 3 levels otherwise,
+with a warning that their self-Kerr is not converged.</p>
 <p>See tutorials <code class="docutils literal notranslate"><span class="pre">4.04</span></code> and <code class="docutils literal notranslate"><span class="pre">4.05</span></code> for worked transmon / fluxonium /
 coupled-transmon examples.</p>
 <p>Initialize the Subsystem object</p>
@@ -807,6 +829,9 @@ subsystems</p>
 <dt>create the composite hilbertspace including all the subsystems. Interaction</dt><dd><p>NOT included</p>
 </dd>
 </dl>
+<p>Resonators without an explicit <code class="docutils literal notranslate"><span class="pre">truncated_dim</span></code> get 5 levels when the
+whole space stays within <a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.max_auto_dimension" title="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.max_auto_dimension"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_auto_dimension</span></code></a> states, else 3
+(see <a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem" title="qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subsystem</span></code></a>, “Resonator levels”).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><dl class="simple">
@@ -842,6 +867,14 @@ after diagonalizing the Hamiltonian. Defaults to 10.</p></li>
 <dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.max_auto_dimension">
+<span class="sig-name descname"><span class="pre">max_auto_dimension</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4000</span></span><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.max_auto_dimension" title="Link to this definition">¶</a></dt>
+<dd><p>Largest Hilbert space (number of states) for which resonators without
+an explicit <code class="docutils literal notranslate"><span class="pre">truncated_dim</span></code> get 5 levels instead of 3; full dense
+diagonalization stays within seconds up to about this size.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -930,12 +963,12 @@ set coupling windows, or debug unexpected mode crowding.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="gui-shortcuts.html">
+          <a class="next-page" href="simulation-pathways.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">GUI Navigation &amp; Shortcuts</div>
+                <div class="title">Simulation pathways</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -960,7 +993,7 @@ set coupling windows, or debug unexpected mode crowding.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/09/27</div>
+              Last updated on 2026/09/28</div>
           </div>
           <div class="right-details">
             
@@ -997,6 +1030,7 @@ set coupling windows, or debug unexpected mode crowding.</p>
 <li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.compute_gs"><code class="docutils literal notranslate"><span class="pre">CompositeSystem.compute_gs()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.create_hilbertspace"><code class="docutils literal notranslate"><span class="pre">CompositeSystem.create_hilbertspace()</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.hamiltonian_results"><code class="docutils literal notranslate"><span class="pre">CompositeSystem.hamiltonian_results()</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.max_auto_dimension"><code class="docutils literal notranslate"><span class="pre">CompositeSystem.max_auto_dimension</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.node_index"><code class="docutils literal notranslate"><span class="pre">CompositeSystem.node_index()</span></code></a></li>
 </ul>
 </li>

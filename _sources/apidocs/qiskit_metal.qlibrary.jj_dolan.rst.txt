@@ -52,6 +52,7 @@ jj_dolan
    .. automethod:: jj_dolan.qgeometry_plot
    .. automethod:: jj_dolan.qgeometry_table
    .. automethod:: jj_dolan.rebuild
+   .. automethod:: jj_dolan.to_html
    .. automethod:: jj_dolan.to_script
 
    

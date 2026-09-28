@@ -52,6 +52,7 @@ Cap3Interdigital
    .. automethod:: Cap3Interdigital.qgeometry_plot
    .. automethod:: Cap3Interdigital.qgeometry_table
    .. automethod:: Cap3Interdigital.rebuild
+   .. automethod:: Cap3Interdigital.to_html
    .. automethod:: Cap3Interdigital.to_script
 
    

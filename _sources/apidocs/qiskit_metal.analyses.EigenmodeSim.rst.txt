@@ -22,6 +22,7 @@ EigenmodeSim
    .. autoattribute:: EigenmodeSim.renderer_initialized
    .. autoattribute:: EigenmodeSim.setup
    .. autoattribute:: EigenmodeSim.sim_setup_name
+   .. autoattribute:: EigenmodeSim.study_kind
    .. autoattribute:: EigenmodeSim.supported_data
    
 

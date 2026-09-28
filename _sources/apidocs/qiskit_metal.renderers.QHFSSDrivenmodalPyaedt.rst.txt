@@ -24,6 +24,7 @@ QHFSSDrivenmodalPyaedt
    .. autoattribute:: QHFSSDrivenmodalPyaedt.desktop
    .. autoattribute:: QHFSSDrivenmodalPyaedt.element_extensions
    .. autoattribute:: QHFSSDrivenmodalPyaedt.element_table_data
+   .. autoattribute:: QHFSSDrivenmodalPyaedt.element_table_docs
    .. autoattribute:: QHFSSDrivenmodalPyaedt.logger
    .. autoattribute:: QHFSSDrivenmodalPyaedt.name
    .. autoattribute:: QHFSSDrivenmodalPyaedt.options

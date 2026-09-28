@@ -17,6 +17,7 @@ QRendererGui
    .. autoattribute:: QRendererGui.design
    .. autoattribute:: QRendererGui.element_extensions
    .. autoattribute:: QRendererGui.element_table_data
+   .. autoattribute:: QRendererGui.element_table_docs
    .. autoattribute:: QRendererGui.logger
    .. autoattribute:: QRendererGui.name
    .. autoattribute:: QRendererGui.options

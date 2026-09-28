@@ -52,6 +52,7 @@ SQUID_LOOP
    .. automethod:: SQUID_LOOP.qgeometry_plot
    .. automethod:: SQUID_LOOP.qgeometry_table
    .. automethod:: SQUID_LOOP.rebuild
+   .. automethod:: SQUID_LOOP.to_html
    .. automethod:: SQUID_LOOP.to_script
 
    

@@ -31,6 +31,7 @@ QDesign
    
    .. rubric:: Methods
    
+   .. automethod:: QDesign.__getitem__
    .. automethod:: QDesign.add_default_data_for_qgeometry_tables
    .. automethod:: QDesign.add_dependency
    .. automethod:: QDesign.all_component_names_id
