@@ -338,38 +338,16 @@ templates so users know to expect it.
 
 ## Tutorials / docs
 
-### Tutorials live in TWO folders that must stay in sync
+### Tutorials lived in two folders until September 2026
 
-**Symptom**: edits to one of `tutorials/X.YY ...ipynb` or
-`docs/tut/X.YY-...ipynb` silently don't show up in the other; the docs site
-ends up out of date relative to what users open in JupyterLab (or vice versa).
-
-**Cause**: every numbered notebook is mirrored into both folders for
-distinct reasons — `tutorials/` is the conventional GitHub-browse + JupyterLab
-file-tree location (with space-separated names that don't work in nbsphinx
-URLs), and `docs/tut/` is the Sphinx source tree (hyphenated names that do).
-**This is the permanent design, not a stopgap** — the naming constraints are
-mutually exclusive (Sphinx/nbsphinx need hyphenated filenames for clean URL
-resolution; JupyterLab/GitHub-browse/external citations need the human
-space-separated form). No single naming scheme satisfies both, so both
-folders must coexist and be edited together. Do not propose "simplifying"
-by deleting one of them.
-
-**Fix** (after editing one folder): re-sync from a script with per-notebook
-canonical-choice baked in:
-
-```bash
-python3 _dev/sync_two_folders.py --write
-uv run scripts/check_tutorials_sync.py   # must exit 0
-```
-
-CI runs the check on every push/PR (`tutorials-sync` job in
-`.github/workflows/main.yml`). Drift fails the PR loudly with a
-file-by-file list and the re-sync command in the error message.
-
-If you genuinely want a different canonical-folder choice for a notebook
-(e.g. "this one tutorials/ should win"), update the `CANONICAL` dict in
-`_dev/sync_two_folders.py` and re-run with `--write`.
+Every notebook used to exist twice, `tutorials/` (names with spaces) and
+`docs/tut/` / `docs/circuit-examples/` (hyphenated, for Sphinx), kept identical
+by `_dev/sync_two_folders.py` and a CI check. Drift was the constant failure
+mode, and the sync script itself once copied a stale notebook over a rewritten
+one (its tiebreaker picked the wrong side after a rename in both trees). The
+second tree was removed: `docs/` is the only copy and `tutorials/README.md`
+maps old paths to new. Hyphenated names browse fine on GitHub and open fine in
+JupyterLab and Colab, so the naming argument for two trees did not hold up.
 
 ### Notebook heading-level skips trip nbsphinx
 
@@ -798,6 +776,287 @@ slow CI jobs sample every push. The pre-push hook now runs
 `test_gui_init.py` + `test_gui_teardown.py` on the real display
 whenever a push touches `_gui/` or `renderer_mpl/` (~40s) — the local
 gate that would have caught the PR #1180 matrix failures before push.
+
+## Component-authoring traps (silent, geometric, no traceback)
+
+These bit while building a real chip from published images. What they
+share is that nothing raises — the geometry is simply wrong, and it
+looks plausible until you measure it.
+
+**`add_pin`'s two input forms fail quietly.** With the default
+`input_as_norm=False`, `points` is the line **across** the conductor
+(the pin's face): `middle` is that line's midpoint and `normal` comes
+out perpendicular. With `input_as_norm=True`, `points` is a line
+**along** the connection: `middle` is `points[1]` and `normal` runs
+toward it. Hand a route's first segment to the default form and the pin
+lands at the *midpoint of the segment* with a normal rotated 90°, and
+nothing complains. `LaunchpadWirebond`'s `tie` pin is the reference for
+an end-of-trace pin. Assert on `pins[name]['middle']` and `['normal']`
+in a test — don't trust the call.
+
+**A component's rotation option is not necessarily its pin's angle.**
+`StarQubit.rotation_*` sits 90° ahead of where the corresponding pin
+ends up: `rotation_rdout='45'` puts `pin_rdout` at 315. This silently
+rotated every readout arm on a 17-qubit reproduction for several
+passes, because the four *coupler* arms at 0/90/180/270 map onto the
+same set when shifted by −90 and so looked fine. Any component taking
+an angle should state in its docstring where the resulting **pin**
+lands; several still don't.
+
+**Verify the built geometry, never the options you passed.** Both of
+the above are invisible to a check that reads back `component.options`
+— that only confirms you passed what you meant to pass. Read the pin
+normals (or the qgeometry) back out of the design and assert on those.
+That is the only check that catches this whole class.
+
+**`QRoute.connect_simple()` cannot express non-Manhattan paths.** It
+tries four fixed shapes (`^|_`, `^^|`, `__|`, `_|^`) between
+consecutive waypoints and raises `QiskitMetalDesignError` when none
+fits. On a real device's octilinear control lines (measured: 55%
+axis-aligned, 41% at 45°) it failed outright on 7 of 17 routes and
+turned the rest into staircases. When the path is already known,
+`PolylineCPW` (`qlibrary/tlines/polyline_cpw.py`) draws it as given —
+that is a different job from routing, which is why it is a plain
+`QComponent` and not a `QRoute`.
+
+**The DRC needs no per-component configuration — but it does need you
+to model two things.** The rules read qgeometry generically, so any
+component you write is covered automatically. What it cannot infer:
+
+* *Intent to connect.* A component wired up without going through the
+  `pin_inputs` machinery reports its intended junctions as metal-overlap
+  shorts. `MetalOverlapRule` skips pairs sharing a net, so call
+  `design.connect_pins(...)` — six spurious findings vanished at once.
+  For a joint in the middle of a line, add a `PolylineCPW` tap and
+  connect to that.
+* *Out-of-plane structure.* Overlap and spacing are grouped **per
+  layer**, so a crossover modelled properly — base trace interrupted,
+  span on `Airbridge`'s bridge layer — simply is not an overlap. Drawing
+  both conductors on layer 1 and then arguing the finding is expected is
+  the wrong fix; putting the span on its own layer is the right one, and
+  it drops the report to zero errors without touching a rule.
+
+`validate(design, rules=...)` lets you swap or retune rules, but there is
+no waiver mechanism for "expected" findings — if you need one, say so
+rather than quietly widening a threshold.
+
+**An unconnected CPW end is a short, not an open.** Path metal and its
+ground cut end flush (flat caps in the renderers and the DRC; gdstk
+`FlexPath` defaults to flush ends in GDS), so a bare line end butts the
+ground plane. On a 17-qubit reproduction all 17 capacitively coupled drive
+lines were drawn this way and would have fabricated shorted. Terminate every
+end explicitly (`OpenToGround` / `ShortToGround`) or connect it;
+`DanglingEndRule` (in `SHAPE_RULES`) reports the ones you missed.
+
+**A line cut for an `Airbridge` is broken unless the bridge is wired.**
+Splitting a line at a crossing and placing an `Airbridge` over the gap
+leaves two unconnected ends — each a short, per the entry above — unless
+the cut ends are connected to the bridge's pins `a`/`b`. Sixty such ends
+passed every default rule on the same chip.
+
+**Mid-line branches: use `PolylineCPW` taps, not waivers.** A stub joined
+to the middle of a line has no pin to connect, so the DRC reports the joint
+as a metal-overlap short. A `taps={name: [x, y]}` pin on the line makes the
+joint a real net; a per-joint `Waiver` works but records an exception for
+ordinary connectivity.
+
+**Editing a CRLF file can rewrite every line.** Some files here are CRLF
+(`qlibrary/__init__.py`); an editor or tool that writes LF turns a two-line
+change into a whole-file diff, and `git diff --stat` shows only a large
+count. Check `git diff --ignore-cr-at-eol --stat` against the plain stat
+before committing, and write CRLF files back as bytes.
+
+**Check the thumbnail and the docstring after adding a component.** The
+generator used to frame against the die outline (small parts rendered as
+specks) and to prepend the `.. image::` directive (making it the docstring's
+summary line). Both are fixed in `_dev/generate_qlibrary_thumbnails.py`;
+still look at the PNG and the class docstring it produced.
+
+### A sawtooth of spikes along a straight CPW is the drawing, not the design
+
+`QMplRenderer._calc_fillet` computed the corner angle with
+`arccos(dot(u1, u2))`. On a resampled straight run the dot product rounds to
+-1.0000000000000002, arccos returns NaN, NaN passes every "can this corner be
+filleted" check, and the fillet points come out NaN -- drawn (GUI and
+`qm.view`) as regular V-shaped spikes along the line. 43 of 164 lines on the
+17-qubit chip were affected; the stored geometry was fine. Clip the dot
+product and treat near-straight corners as straight
+(`tests/test_mpl_fillet.py`). When a drawn line looks wrong, compare the
+drawn polyline with the stored one before touching the design.
+
+### Match a component's internal layout to a close-up before placing it
+
+The 17-qubit rebuild put every StarQubit's four coupler arms on the compass
+points because the lattice runs that way. The device qubit (a close-up in
+the slides) has five pads about 72 degrees apart, with the SQUID on the
+island arm between the readout pad and a coupler pad. Forcing the arms to
+90 degrees produced three separate-looking symptoms -- couplers leaving
+their pads sideways, a junction drawn on top of a coupler pad (island
+shorted to it), and floating island slivers between the 45-degree-apart
+cuts -- each of which got its own workaround before the cause was found.
+Measure the element's own geometry (pad angles, where the junction sits)
+from a close-up first; the traced lines then meet the pins square-on without
+special cases.
+
+### A clean DRC after a change that should not have fixed anything
+
+When the pads moved, the ground-continuity warning disappeared although the
+plaquette ground islands were still there: nanometer-wide slivers left by
+floating-point booleans where two etched edges almost coincide joined them
+to the main ground. The rule now ignores links narrower than
+`min_link_width` (0.1 um). If a check stops firing and you cannot say why,
+find out before believing it.
+
+### GDS export silently dropped whole line gaps ("Unable to link hole")
+
+The ground plane was one `gdstk.boolean(chip, all_cuts, "not")`. The result
+is a polygon with every enclosed cut as a hole; when gdstk cannot link a hole
+to the outline it prints `[GDSTK] Unable to link hole in boolean operation`
+to stderr and *drops the hole*. On the 17-qubit chip three whole flux-line
+gaps came out as solid ground -- DRC was clean, the file was wrong, and a
+harmless-looking 40 um change elsewhere was enough to trigger it. Fixed by
+`renderer_gds/gds_boolean.subtract_in_strips` (ground and cheesing): strips, then each
+strip checked against shapely by area and rebuilt without holes if gdstk got it wrong --
+strips alone were not enough once the qubit geometry changed.
+If you see that message, check the GDS, not the design. Side effect worth
+knowing: cheesing against strip-sliced ground went from ~40 s to ~1 s.
+
+### `rebuild()` used to drop connections made with `design.connect_pins`
+
+`QComponent.rebuild` deletes the component's nets before `make()`. Routes
+reconnect inside `make()`, so nobody noticed; anything wired with
+`design.connect_pins` (terminations, capacitors, airbridges, `PolylineCPW`)
+silently lost its connection on any rebuild — including `design.rebuild()` and
+GUI edits — and the partner pin kept a stale `net_id`. On the 17-qubit chip one
+`design.rebuild()` took the net table from 656 rows to 0 and DRC from clean to
+126 overlap errors. Fixed: `rebuild` records the partners and restores those
+`make()` did not reconnect (`tests/test_rebuild_connections.py`). When a design
+is DRC-clean after building but not after a rebuild, check `design.net_info`
+first.
+
+## LOM 2.0 and scqubits: the lockfile hides what a fresh install gets
+
+`CompositeSystem.hamiltonian_results` had no test, and it broke in two
+different ways depending on the resolver:
+
+- **macOS:** scqubits 4.2+ pins `scipy<=1.13.1` on darwin/py>=3.10, so a
+  resolver that keeps a newer scipy picks scqubits 4.1.0, which uses
+  `np.float_` (gone in numpy 2).
+- **Linux / fresh pip:** scqubits 4.3.1 with qutip 5.3 fails inside scqubits
+  itself (`Unsupported operator type: csc_array`), because qutip 5.3 returns
+  scipy sparse arrays. `uv.lock` pinned qutip 5.2.2, so the repo venv never
+  saw it.
+
+`analyses/quantization/_scqubits_compat.py` handles both. To check a
+dependency combination the lock does not produce, build a scratch venv
+(`uv venv` + `uv pip install -e . "scqubits==X" "qutip==Y"`) and run
+`tests/test_lom_core_hamiltonian.py` there; the repo's pytest config needs
+`-p no:rich -o addopts=""` without the dev extras.
+
+## Open FEM: gmsh + scikit-fem
+
+From the solver behind tutorials 4.41–4.45
+(`docs/tut/resources/package_modes/`). Design and physics notes:
+`docs/architecture/open_fem_scikit_fem.md`.
+
+### gmsh 1D meshing takes minutes with a `Min` of two size fields
+
+**Symptom**: meshing a 30 mm box with 200 paddles goes from ~3 s to
+~400 s after adding a second `Threshold` field (junction seeding)
+combined with `Min`; almost all of it in "Meshing 1D".
+
+**Cause**: with a background field, gmsh integrates 1/size along each
+curve to place nodes, to `Mesh.LcIntegrationPrecision` (default 1e-9).
+The `Min` of two distance fields makes that integration crawl.
+
+**Fix**: `gmsh.option.setNumber("Mesh.LcIntegrationPrecision", 1e-3)`
+— same mesh, 1D in ~1 s. Merge curves into one `Distance` field when
+they share a size.
+
+### `basis.interpolator` / `basis.probes` stall on large tetrahedral meshes
+
+**Symptom**: evaluating a scikit-fem field at 100 points on a
+~100k-element mesh runs for minutes; a notebook kernel doing a 200×200
+field map appears to die.
+
+**Cause**: the generic element finder is not built for many queries on
+big meshes.
+
+**Fix**: locate points with a `scipy.spatial.cKDTree` over element
+centroids plus barycentric coordinates, and evaluate the shape
+functions directly (Whitney functions for `ElementTetN0`, Lagrange for
+P2). 40k points in ~0.4 s, identical to the interpolator to 1e-16.
+`package_modes._Locator`.
+
+### ARPACK shift-invert on a curl-curl problem is 100× slower than it should be
+
+**Symptom**: `eigsh(K, M=M, sigma=s, k=3)` on 27k unknowns takes
+~100 s; the two extra eigenvalues come back as 0.
+
+**Cause**: the curl-curl operator has a huge null space (gradients,
+including static charge states of floating conductors). Asking for
+more eigenvalues than lie near the shift makes ARPACK resolve that
+degenerate cluster.
+
+**Fix**: request only the modes near the shift (`k=1`/`2`), and pass
+your own `OPinv` from one factorization.
+
+### SuperLU fill on 3D edge-element matrices
+
+**Symptom**: `splu` with the default `COLAMD` needs 100M+ nonzeros and
+tens of seconds at 70k unknowns.
+
+**Fix**: symmetric permutation from `pymetis.nested_dissection`, then
+`splu(..., permc_spec="NATURAL", options=dict(SymmetricMode=True),
+diag_pivot_thresh=0)`: ~4× less fill and time. Without pymetis,
+`permc_spec="MMD_AT_PLUS_A"` is the next best.
+
+### gmsh `fragment` with no tool entities returns an empty map
+
+**Symptom**: meshing an empty box (no paddles) gives no tetrahedra
+material tags → `np.vstack` of an empty list.
+
+**Fix**: classify volumes after `fragment` by bounding box (below the
+slab top = substrate), not through the fragment output map.
+
+### A mesh slice through mesh nodes has holes
+
+**Symptom**: cutting tetrahedra with a plane that passes exactly
+through nodes (e.g. along a junction line) leaves white gaps.
+
+**Fix**: offset the plane slightly (1.51 mm instead of 1.5 mm).
+
+### The impedance fit finds one pole where there are two
+
+**Symptom**: `fit_impedance` raises "found 1 of 2 poles" for a weakly
+coupled qubit, or for a port shunted by 1 pH.
+
+**Cause**: the pole and the zero next to it fall inside one frequency
+step, so `det X` shows no sign change.
+
+**Fix**: sample adaptively around the poles (a reduced model gives
+them), never exactly on a pole; keep the residual vector a fixed length
+when samples near a trial pole are excluded (least squares
+finite-differences it).
+
+## Executing notebooks that open MetalGUI: the kernel can hang
+
+`metal.gui(design)` in a Jupyter kernel switches the kernel's event loop to
+ipykernel's `loop_qt` during that cell (`get_ipython().kernel.eventloop` is
+`None` before, `loop_qt` after). When a runner (nbclient, the
+`notebooks-qt-refresh` job) sends the next execute request immediately, the
+request can arrive before ipykernel's Qt socket notifier is armed; the kernel
+then idles in `QEventLoop.exec()` and never runs the cell. Seen in about 1 of
+3 runs of a notebook with a GUI (ipykernel 7.1, PySide6 6.10, macOS,
+`QT_QPA_PLATFORM=offscreen`); never when cells are run by hand. A native
+stack (`sample <pid>` on macOS) shows the main thread in
+`QEventLoop::exec` / `qt_safe_poll` at 0% CPU. Use a per-cell timeout
+(a few minutes) and retry the notebook; the outputs of the run that
+completes are fine. At kernel shutdown ipykernel's Qt hook can also print
+`OSError: Stream is closed`; that is ipykernel tearing down, not Metal.
+
+`gui.screenshot()` also writes `shot.png` and `shot750.png` into the working
+folder; clean them up after executing a notebook.
 
 ## What this list doesn't include
 

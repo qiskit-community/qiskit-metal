@@ -198,7 +198,9 @@ class QHFSSRenderer(QAnsysRenderer):
 
         self.render_tables()
         if port_list:
-            self.add_endcaps(open_pins + [(qcomp, pin) for qcomp, pin, _ in port_list])
+            self.add_endcaps(
+                (open_pins or []) + [(qcomp, pin) for qcomp, pin, _ in port_list]
+            )
         else:
             self.add_endcaps(open_pins)
 
@@ -226,9 +228,12 @@ class QHFSSRenderer(QAnsysRenderer):
                 pdict["normal"],
                 pdict["width"],
             )
+            # On the component's chip, like its endcap (add_endcaps)
+            chip_name = self.design.components[qcomp].options.chip
+            qc_chip_z = parse_units(self.design.get_chip_z(chip_name))
             width = parse_units(width)
             endpoints = parse_units([midpt, midpt + gap_size * norm_vec])
-            endpoints_3d = to_vec3D(endpoints, 0)  # Set z height to 0
+            endpoints_3d = to_vec3D(endpoints, qc_chip_z)
             x0, y0 = endpoints_3d[0][:2]
             x1, y1 = endpoints_3d[1][:2]
             if abs(y1 - y0) > abs(x1 - x0):
@@ -243,7 +248,7 @@ class QHFSSRenderer(QAnsysRenderer):
             # Draw rectangle
             self.logger.debug(f"Drawing a rectangle: {port_name}")
             poly_ansys = self.modeler.draw_rect_corner(
-                [x_min, y_min, 0],
+                [x_min, y_min, qc_chip_z],
                 x_max - x_min,
                 y_max - y_min,
                 0,
@@ -508,19 +513,19 @@ class QHFSSRenderer(QAnsysRenderer):
 
         if not name:
             name = self.parse_value(dsu["name"])
-        if not freq_ghz:
+        if freq_ghz is None:
             freq_ghz = int(self.parse_value(dsu["freq_ghz"]))
-        if not max_delta_s:
+        if max_delta_s is None:
             max_delta_s = float(self.parse_value(dsu["max_delta_s"]))
-        if not max_passes:
+        if max_passes is None:
             max_passes = int(self.parse_value(dsu["max_passes"]))
-        if not min_passes:
+        if min_passes is None:
             min_passes = int(self.parse_value(dsu["min_passes"]))
-        if not min_converged:
+        if min_converged is None:
             min_converged = int(self.parse_value(dsu["min_converged"]))
-        if not pct_refinement:
+        if pct_refinement is None:
             pct_refinement = int(self.parse_value(dsu["pct_refinement"]))
-        if not basis_order:
+        if basis_order is None:
             basis_order = int(self.parse_value(dsu["basis_order"]))
 
         if self.pinfo:
@@ -595,21 +600,21 @@ class QHFSSRenderer(QAnsysRenderer):
 
         if not name:
             name = self.parse_value(esu["name"])
-        if not min_freq_ghz:
+        if min_freq_ghz is None:
             min_freq_ghz = int(self.parse_value(esu["min_freq_ghz"]))
-        if not n_modes:
+        if n_modes is None:
             n_modes = int(self.parse_value(esu["n_modes"]))
-        if not max_delta_f:
+        if max_delta_f is None:
             max_delta_f = float(self.parse_value(esu["max_delta_f"]))
-        if not max_passes:
+        if max_passes is None:
             max_passes = int(self.parse_value(esu["max_passes"]))
-        if not min_passes:
+        if min_passes is None:
             min_passes = int(self.parse_value(esu["min_passes"]))
-        if not min_converged:
+        if min_converged is None:
             min_converged = int(self.parse_value(esu["min_converged"]))
-        if not pct_refinement:
+        if pct_refinement is None:
             pct_refinement = int(self.parse_value(esu["pct_refinement"]))
-        if not basis_order:
+        if basis_order is None:
             basis_order = int(self.parse_value(esu["basis_order"]))
 
         if self.pinfo:

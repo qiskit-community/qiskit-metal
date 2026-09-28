@@ -52,6 +52,7 @@ LaunchpadWirebond
    .. automethod:: LaunchpadWirebond.qgeometry_plot
    .. automethod:: LaunchpadWirebond.qgeometry_table
    .. automethod:: LaunchpadWirebond.rebuild
+   .. automethod:: LaunchpadWirebond.to_html
    .. automethod:: LaunchpadWirebond.to_script
 
    

@@ -20,6 +20,7 @@ QSimulation
    .. autoattribute:: QSimulation.renderer_initialized
    .. autoattribute:: QSimulation.setup
    .. autoattribute:: QSimulation.sim_setup_name
+   .. autoattribute:: QSimulation.study_kind
    .. autoattribute:: QSimulation.supported_data
    
 

@@ -91,6 +91,12 @@ class QComponent:
             * chip: 'main' -- Chip holding the QComponent.
             * layer: '1' -- Manufacturing layer used for the QComponent.
 
+        Common Options:
+            * subtract: 'False' -- Draw the shapes as cuts in the ground plane
+              (True) rather than as metal (False).
+            * helper: 'False' -- Helper shapes are drawn for reference only;
+              renderers do not export them.
+
             Nested default options can be overwritten with the update function.
             The following code demonstrates how the update works.
 
@@ -694,6 +700,46 @@ name='{strname}'{other_args}
 
         return full_import, body
 
+    def _connected_partners(self) -> list:
+        """List this component's connections as ``(pin, other_id, other_pin)``."""
+        net_info = self.design.net_info
+        mine = net_info[net_info["component_id"] == self.id]
+        partners = []
+        for net_id, pin in zip(mine["net_id"], mine["pin_name"]):
+            other = net_info[
+                (net_info["net_id"] == net_id) & (net_info["component_id"] != self.id)
+            ]
+            for other_id, other_pin in zip(other["component_id"], other["pin_name"]):
+                partners.append((pin, other_id, other_pin))
+        return partners
+
+    def _restore_connections(self, partners: list) -> None:
+        """Reconnect pins that ``make`` did not connect itself.
+
+        A rebuild drops this component's nets. Routes reconnect in ``make``;
+        connections made with ``design.connect_pins`` are restored here when
+        both pins still exist and are free. The partner pin of a connection
+        that cannot be restored is reset to net 0.
+        """
+        net_info = self.design.net_info
+
+        def in_net(comp_id, pin):
+            return (
+                (net_info["component_id"] == comp_id) & (net_info["pin_name"] == pin)
+            ).any()
+
+        for pin, other_id, other_pin in partners:
+            other = self.design._components.get(other_id)
+            if other is None or other_pin not in other.pins:
+                continue
+            if in_net(other_id, other_pin):
+                continue
+            if pin in self.pins and not in_net(self.id, pin):
+                self.design.connect_pins(self.id, pin, other_id, other_pin)
+                net_info = self.design.net_info
+            else:
+                other.pins[other_pin].net_id = 0
+
     def rebuild(self) -> None:
         """Builds the QComponent.
 
@@ -717,12 +763,15 @@ name='{strname}'{other_args}
         """
         self.status = "failed"
         try:
+            partners = []
             if self._made:  # already made, just remaking
                 self.design.qgeometry.delete_component_id(self.id)
 
+                partners = self._connected_partners()
                 self.design._delete_all_pins_for_component(self.id)
 
             self.make()
+            self._restore_connections(partners)
             self._made = True
             self.status = "good"
 
@@ -907,6 +956,28 @@ name='{strname}'{other_args}
                      .*
                      .|
             ..........|
+
+        Note:
+            Which of the two forms you are passing is set by ``input_as_norm``,
+            and mixing them up fails *quietly* rather than raising:
+
+            * ``input_as_norm=False`` (the default) -- ``points`` is the line
+              **across** the conductor, i.e. the pin's own face. ``middle``
+              becomes the midpoint of that line and ``normal`` comes out
+              perpendicular to it. This is the form
+              :class:`~qiskit_metal.qlibrary.terminations.launchpad_wb.LaunchpadWirebond`
+              uses for its ``tie`` pin, and the one to copy for a component
+              whose pin sits at the end of a trace.
+            * ``input_as_norm=True`` -- ``points`` is a line **along** the
+              intended connection. ``middle`` becomes ``points[1]`` and
+              ``normal`` runs from ``points[0]`` toward it.
+
+            The usual symptom of picking the wrong one is a pin that sits at
+            the midpoint of a segment instead of at its end, with a normal
+            rotated 90 degrees from the direction you expected. Nothing
+            errors -- the route simply attaches in the wrong place -- so assert
+            on ``pins[name]['middle']`` and ``['normal']`` in a test rather
+            than trusting the call.
         """
         assert len(points) == 2
 
@@ -1222,6 +1293,52 @@ name='{strname}'{other_args}
         return all_renderers_key_value
 
     ######################################
+
+    def to_html(
+        self,
+        docs: bool = True,
+        parsed: bool = True,
+        pins: bool = True,
+        image: bool = True,
+        display: bool = False,
+    ) -> str | None:
+        """HTML card of this component: options, pins, and a picture.
+
+        Jupyter shows it automatically when a component is the last thing in
+        a cell. Options changed from the class defaults are highlighted.
+        Reads correctly in light and dark themes.
+
+        Args:
+            docs (bool): Add each option's description, parsed from the
+                ``Default Options:`` sections of the class docstrings (and,
+                for renderer options such as ``hfss_inductance``, from the
+                renderer). Defaults to True.
+            parsed (bool): Add each option's parsed value (design units).
+                Defaults to True.
+            pins (bool): Add a table of the pins: position, normal direction,
+                width, and what each connects to. Defaults to True.
+            image (bool): Add a picture of the component, drawn alone on an
+                off-screen figure (safe headless and next to the GUI).
+                Defaults to True.
+            display (bool): Show the card in the notebook now instead of
+                returning the HTML. Defaults to False.
+
+        Returns:
+            str | None: The HTML, or None when ``display`` is True.
+        """
+        from ._html_repr import component_html
+
+        page = component_html(self, docs=docs, parsed=parsed, pins=pins, image=image)
+        if not display:
+            return page
+        from IPython.display import HTML
+        from IPython.display import display as show
+
+        show(HTML(page))
+        return None
+
+    def _repr_html_(self):
+        return self.to_html()
 
     def __repr__(self, *args):
 

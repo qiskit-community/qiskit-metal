@@ -52,6 +52,7 @@ ResonatorLumped
    .. automethod:: ResonatorLumped.qgeometry_plot
    .. automethod:: ResonatorLumped.qgeometry_table
    .. automethod:: ResonatorLumped.rebuild
+   .. automethod:: ResonatorLumped.to_html
    .. automethod:: ResonatorLumped.to_script
 
    

@@ -63,6 +63,7 @@ StarQubit
    .. automethod:: StarQubit.qgeometry_plot
    .. automethod:: StarQubit.qgeometry_table
    .. automethod:: StarQubit.rebuild
+   .. automethod:: StarQubit.to_html
    .. automethod:: StarQubit.to_script
 
    

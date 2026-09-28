@@ -52,6 +52,7 @@ CircleCaterpillar
    .. automethod:: CircleCaterpillar.qgeometry_plot
    .. automethod:: CircleCaterpillar.qgeometry_table
    .. automethod:: CircleCaterpillar.rebuild
+   .. automethod:: CircleCaterpillar.to_html
    .. automethod:: CircleCaterpillar.to_script
 
    

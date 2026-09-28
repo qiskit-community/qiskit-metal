@@ -142,29 +142,29 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             )
             return None
 
-        if not Frequency:
+        if Frequency is None:
             Frequency = float(self.parse_value(dsu["Frequency"]))
-        if not SolveType:
+        if SolveType is None:
             SolveType = str(self.parse_value(dsu["SolveType"]))
-        if not MaxDeltaE:
+        if MaxDeltaE is None:
             MaxDeltaE = float(self.parse_value(dsu["MaxDeltaE"]))
-        if not MaximumPasses:
+        if MaximumPasses is None:
             MaximumPasses = int(self.parse_value(dsu["MaximumPasses"]))
-        if not MinimumPasses:
+        if MinimumPasses is None:
             MinimumPasses = int(self.parse_value(dsu["MinimumPasses"]))
-        if not MinimumConvergedPasses:
+        if MinimumConvergedPasses is None:
             MinimumConvergedPasses = int(
                 self.parse_value(dsu["MinimumConvergedPasses"])
             )
-        if not PercentRefinement:
+        if PercentRefinement is None:
             PercentRefinement = int(self.parse_value(dsu["PercentRefinement"]))
-        if not BasisOrder:
+        if BasisOrder is None:
             BasisOrder = int(self.parse_value(dsu["BasisOrder"]))
-        if not MultipleAdaptiveFreqsSetup:
+        if MultipleAdaptiveFreqsSetup is None:
             MultipleAdaptiveFreqsSetup = dsu["MultipleAdaptiveFreqsSetup"]
-        if not BroadbandLowFreq:
+        if BroadbandLowFreq is None:
             BroadbandLowFreq = float(self.parse_value(dsu["BroadbandLowFreq"]))
-        if not BroadbandHighFreq:
+        if BroadbandHighFreq is None:
             BroadbandHighFreq = float(self.parse_value(dsu["BroadbandHighFreq"]))
 
         new_setup = self.current_app.create_setup(name)

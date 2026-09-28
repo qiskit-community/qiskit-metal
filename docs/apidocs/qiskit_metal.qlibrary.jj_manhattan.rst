@@ -52,6 +52,7 @@ jj_manhattan
    .. automethod:: jj_manhattan.qgeometry_plot
    .. automethod:: jj_manhattan.qgeometry_table
    .. automethod:: jj_manhattan.rebuild
+   .. automethod:: jj_manhattan.to_html
    .. automethod:: jj_manhattan.to_script
 
    

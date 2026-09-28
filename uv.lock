@@ -2925,7 +2925,7 @@ wheels = [
 
 [[package]]
 name = "pyepr-quantum"
-version = "1.0.1"
+version = "1.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "addict" },
@@ -2945,9 +2945,9 @@ dependencies = [
     { name = "xarray", version = "2025.6.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "xarray", version = "2025.12.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/47/1c/9e62c109736000768a3a768181b959193b6f4f013a158bfb38bdc847f4d4/pyepr_quantum-1.0.1.tar.gz", hash = "sha256:b16cf1dff322369677c961fd8a916b718dc0b7cc97246d0b93e6df279951c846", size = 138918, upload-time = "2026-07-17T18:25:20.067Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/68/9a/31cc689665461dfdc8a2f390e876c8b6892e23f2a50fca75cc8f9526db54/pyepr_quantum-1.0.2.tar.gz", hash = "sha256:f203e7feab3355aed1a0364298375e657fc849c88489420515707a30ef29b493", size = 141098, upload-time = "2026-09-28T01:26:59.513Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/14/1c/62625646dd0436dc5e851e5a5bc4a364f10a1b25043fccff274156707653/pyepr_quantum-1.0.1-py3-none-any.whl", hash = "sha256:548e8db772c9a05dfb5915c2290bb47419711d04551d28020d6764620976e047", size = 120521, upload-time = "2026-07-17T18:25:18.506Z" },
+    { url = "https://files.pythonhosted.org/packages/02/ac/8558aa64e9c8d919797f0cacdee363606c087fe6d3c6a57c3a5d4e33451d/pyepr_quantum-1.0.2-py3-none-any.whl", hash = "sha256:db1b880777645e45be46e422c0091436e5fa4100dce2089618422076d2ab3dc0", size = 120540, upload-time = "2026-09-28T01:26:58.258Z" },
 ]
 
 [[package]]
@@ -3507,6 +3507,10 @@ gui = [
 mesh = [
     { name = "gmsh" },
 ]
+skfem = [
+    { name = "gmsh" },
+    { name = "scikit-fem" },
+]
 
 [package.dev-dependencies]
 docs = [
@@ -3541,6 +3545,7 @@ test = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-rich" },
+    { name = "scikit-fem" },
 ]
 
 [package.metadata]
@@ -3551,6 +3556,7 @@ requires-dist = [
     { name = "gmsh", marker = "extra == 'fem'", specifier = ">=4.15.0,<5" },
     { name = "gmsh", marker = "extra == 'full'", specifier = ">=4.15.0,<5" },
     { name = "gmsh", marker = "extra == 'mesh'", specifier = ">=4.15.0,<5" },
+    { name = "gmsh", marker = "extra == 'skfem'", specifier = ">=4.15.0,<5" },
     { name = "matplotlib", specifier = ">=3.8.4" },
     { name = "numpy", specifier = ">=1.24.2" },
     { name = "pandas", specifier = ">=2.2.2" },
@@ -3559,8 +3565,8 @@ requires-dist = [
     { name = "pyaedt", marker = "python_full_version >= '3.14' and extra == 'full'", specifier = ">=1.0.1" },
     { name = "pyaedt", marker = "python_full_version < '3.14' and extra == 'ansys'", specifier = ">=0.21,<0.24" },
     { name = "pyaedt", marker = "python_full_version < '3.14' and extra == 'full'", specifier = ">=0.21,<0.24" },
-    { name = "pyepr-quantum", marker = "extra == 'ansys'", specifier = ">=1.0.1" },
-    { name = "pyepr-quantum", marker = "extra == 'full'", specifier = ">=1.0.1" },
+    { name = "pyepr-quantum", marker = "extra == 'ansys'", specifier = ">=1.0.2" },
+    { name = "pyepr-quantum", marker = "extra == 'full'", specifier = ">=1.0.2" },
     { name = "pygments", specifier = ">=2.14.0" },
     { name = "pyside6", marker = "extra == 'full'", specifier = ">=6.8" },
     { name = "pyside6", marker = "extra == 'gui'", specifier = ">=6.8" },
@@ -3568,11 +3574,12 @@ requires-dist = [
     { name = "qdarkstyle", marker = "extra == 'full'", specifier = ">=3.1" },
     { name = "qdarkstyle", marker = "extra == 'gui'", specifier = ">=3.1" },
     { name = "qutip", specifier = ">=5.1.0" },
+    { name = "scikit-fem", marker = "extra == 'skfem'", specifier = ">=12" },
     { name = "scipy", specifier = ">=1.13.0" },
     { name = "scqubits", specifier = ">=4.1.0" },
     { name = "shapely", specifier = ">=2.0.4" },
 ]
-provides-extras = ["gui", "ansys", "mesh", "fem", "full"]
+provides-extras = ["gui", "ansys", "mesh", "fem", "skfem", "full"]
 
 [package.metadata.requires-dev]
 docs = [
@@ -3601,6 +3608,7 @@ test = [
     { name = "pytest", specifier = ">=8.4.1" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
     { name = "pytest-rich", specifier = ">=0.2.0" },
+    { name = "scikit-fem", specifier = ">=12" },
 ]
 
 [[package]]
@@ -3881,6 +3889,21 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/4e/02/bb3ff8b6e6d02ce9e3740f4c17dfbbfb55f34c789c139e9cd91985f356c7/ruff-0.14.11-py3-none-win32.whl", hash = "sha256:337c5dd11f16ee52ae217757d9b82a26400be7efac883e9e852646f1557ed841", size = 12851094, upload-time = "2026-01-08T19:11:45.163Z" },
     { url = "https://files.pythonhosted.org/packages/58/f1/90ddc533918d3a2ad628bc3044cdfc094949e6d4b929220c3f0eb8a1c998/ruff-0.14.11-py3-none-win_amd64.whl", hash = "sha256:f981cea63d08456b2c070e64b79cb62f951aa1305282974d4d5216e6e0178ae6", size = 14001379, upload-time = "2026-01-08T19:11:52.591Z" },
     { url = "https://files.pythonhosted.org/packages/c4/1c/1dbe51782c0e1e9cfce1d1004752672d2d4629ea46945d19d731ad772b3b/ruff-0.14.11-py3-none-win_arm64.whl", hash = "sha256:649fb6c9edd7f751db276ef42df1f3df41c38d67d199570ae2a7bd6cbc3590f0", size = 12938644, upload-time = "2026-01-08T19:11:50.027Z" },
+]
+
+[[package]]
+name = "scikit-fem"
+version = "12.0.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "scipy", version = "1.17.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a7/5f/77643ece20e33a770fdfb6cafb9b2a5a1dd51b8a1ee1d3dc5bac8c72bdfa/scikit_fem-12.0.2.tar.gz", hash = "sha256:0a38764cdb93411c5a994451c22c1da07808ebabf920f462c6253f78f5703f8a", size = 130353, upload-time = "2026-06-05T20:45:50.903Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5b/13/d46cf943bd1b04b1b010094eb08493d6660c99c49652fa46cf7c3bf36ab5/scikit_fem-12.0.2-py3-none-any.whl", hash = "sha256:34cd891f80072c0c1eb759a2371e82f0eeec91ff7c08acab96d27b6edbbe1b05", size = 178478, upload-time = "2026-06-05T20:45:49.084Z" },
 ]
 
 [[package]]

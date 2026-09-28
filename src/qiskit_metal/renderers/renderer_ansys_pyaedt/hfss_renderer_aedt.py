@@ -40,29 +40,27 @@ class QHFSSPyaedt(QPyaedt):
 
     """
 
-    default_setup = (
-        Dict(
-            drivenmodal=Dict(
-                name="Setup",
-                freq_ghz="5.0",
-                max_delta_s="0.1",
-                max_passes="10",
-                min_passes="1",
-                min_converged="1",
-                pct_refinement="30",
-                basis_order="1",
-            ),
-            eigenmode=Dict(
-                name="Setup",
-                min_freq_ghz="1",
-                n_modes="1",
-                max_delta_f="0.5",
-                max_passes="10",
-                min_passes="1",
-                min_converged="1",
-                pct_refinement="30",
-                basis_order="-1",
-            ),
+    default_setup = Dict(
+        drivenmodal=Dict(
+            name="Setup",
+            freq_ghz="5.0",
+            max_delta_s="0.1",
+            max_passes="10",
+            min_passes="1",
+            min_converged="1",
+            pct_refinement="30",
+            basis_order="1",
+        ),
+        eigenmode=Dict(
+            name="Setup",
+            min_freq_ghz="1",
+            n_modes="1",
+            max_delta_f="0.5",
+            max_passes="10",
+            min_passes="1",
+            min_converged="1",
+            pct_refinement="30",
+            basis_order="-1",
         ),
     )
     name = "aedt_hfss"
@@ -719,7 +717,7 @@ class QHFSSPyaedt(QPyaedt):
             if not self.port_list_is_valid:
                 self.logger.error('Arguments are not in Design for port_list.')
         else:
-            self.port_list_is_valid
+            self.port_list_is_valid = True
 
         if jj_to_port:
             self.jj_to_port_is_valid = self.confirm_jj_to_port_has_valid_request(
@@ -728,7 +726,7 @@ class QHFSSPyaedt(QPyaedt):
                 self.logger.error(
                     'Arguments are not in Design for jj_to_port.')
         else:
-            self.jj_to_port_is_valid
+            self.jj_to_port_is_valid = True
 
         if ignored_jjs:
             self.ignored_jjs_is_valid = self.confirm_ignored_jjs_has_valid_request(

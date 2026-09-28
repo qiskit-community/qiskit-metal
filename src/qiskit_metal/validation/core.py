@@ -71,6 +71,101 @@ class Finding:
         return f"[{self.severity}] {self.rule}: {self.message}{where}"
 
 
+@dataclass(frozen=True)
+class Waiver:
+    """A documented exemption for findings you have decided are correct.
+
+    Real designs contain geometry that a same-layer geometric check must flag
+    and a designer knows is intended. The honest way to handle those is not to
+    widen a threshold until the report goes quiet -- that blinds the rule to
+    genuine violations of the same kind -- but to waive the specific finding and
+    say why.
+
+    A waiver never hides anything: waived findings are moved to
+    :attr:`ValidationResult.waived` and still listed in
+    :meth:`ValidationResult.report`, with their reason. They simply stop
+    counting as errors, so ``result.ok`` and
+    :meth:`~ValidationResult.raise_if_errors` reflect the design's real state.
+
+    ``reason`` is required and comes first, because a waiver without one is
+    indistinguishable from a bug someone got tired of.
+
+    Matching is an AND over whichever fields are set; an all-default waiver
+    matches everything, so set at least one.
+
+    Args:
+        reason (str): why this finding is acceptable. Required.
+        rule (str): only waive findings from this rule, e.g. ``"metal-overlap"``.
+        components (Iterable[str]): only waive findings whose component set is
+            exactly these names (order-insensitive).
+        component_pattern (str): only waive findings where some involved
+            component name matches this :mod:`fnmatch` pattern, e.g.
+            ``"AB_*"``.
+        max_value (float): only waive when the finding's ``value`` is at or
+            below this, so a waiver written for a 256 um^2 overlap does not
+            silently cover a 5000 um^2 one later.
+
+    Example:
+        Two flux lines cross couplings and are carried over on airbridges::
+
+            Waiver("carried over on an airbridge, see fab notes",
+                   rule="metal-overlap", component_pattern="FLUX_D5",
+                   max_value=400e-6)
+    """
+
+    reason: str
+    rule: str | None = None
+    components: tuple[str, ...] | None = None
+    component_pattern: str | None = None
+    max_value: float | None = None
+
+    def __post_init__(self):
+        if not str(self.reason).strip():
+            raise ValueError("Waiver needs a reason")
+        if self.components is not None:
+            object.__setattr__(self, "components", tuple(self.components))
+        if (
+            self.rule is None
+            and self.components is None
+            and self.component_pattern is None
+            and self.max_value is None
+        ):
+            raise ValueError(
+                "Waiver matches every finding; set rule, components, "
+                "component_pattern, or max_value"
+            )
+
+    def matches(self, finding: Finding) -> bool:
+        """Does this waiver cover `finding`?"""
+        import fnmatch
+
+        if self.rule is not None and finding.rule != self.rule:
+            return False
+        if self.components is not None and set(finding.components) != set(
+            self.components
+        ):
+            return False
+        if self.component_pattern is not None and not any(
+            fnmatch.fnmatch(c, self.component_pattern) for c in finding.components
+        ):
+            return False
+        if self.max_value is not None:
+            if finding.value is None or finding.value > self.max_value:
+                return False
+        return True
+
+
+@dataclass(frozen=True)
+class WaivedFinding:
+    """A :class:`Finding` matched by a :class:`Waiver`, kept for the report."""
+
+    finding: Finding
+    waiver: Waiver
+
+    def __str__(self) -> str:
+        return f"{self.finding}\n      waived: {self.waiver.reason}"
+
+
 @dataclass
 class ValidationResult:
     """Everything :func:`~qiskit_metal.validation.validate` found.
@@ -83,6 +178,8 @@ class ValidationResult:
 
     findings: list[Finding] = field(default_factory=list)
     rules_run: tuple[str, ...] = ()
+    waived: list[WaivedFinding] = field(default_factory=list)
+    unused_waivers: tuple[Waiver, ...] = ()
 
     @property
     def errors(self) -> list[Finding]:
@@ -125,14 +222,27 @@ class ValidationResult:
         """
         chosen = [f for f in self.findings if include is None or f.severity is include]
         if not chosen:
-            return (
+            head = (
                 f"Design rules passed ({len(self.rules_run)} rules ran, no findings)."
             )
-        lines = [
-            f"{len(chosen)} finding(s) from {len(self.rules_run)} rule(s): "
-            f"{len(self.errors)} error(s), {len(self.warnings)} warning(s)"
-        ]
-        lines += [f"  {f}" for f in chosen]
+            lines = [head]
+        else:
+            lines = [
+                f"{len(chosen)} finding(s) from {len(self.rules_run)} rule(s): "
+                f"{len(self.errors)} error(s), {len(self.warnings)} warning(s)"
+            ]
+            lines += [f"  {f}" for f in chosen]
+        # Waived findings are always shown. A waiver is a documented decision,
+        # not a way to make the report shorter.
+        if self.waived:
+            lines.append(f"{len(self.waived)} waived:")
+            lines += [f"  {w}" for w in self.waived]
+        if self.unused_waivers:
+            lines.append(
+                f"{len(self.unused_waivers)} waiver(s) matched nothing "
+                "(stale -- the design may have moved on):"
+            )
+            lines += [f"  {w.reason}" for w in self.unused_waivers]
         return "\n".join(lines)
 
     def __str__(self) -> str:

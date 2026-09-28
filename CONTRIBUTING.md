@@ -94,7 +94,7 @@ To submit your contribution, make a pull request from your forked repository to 
    successfully passes all tests.
 -  The documentation has been updated accordingly. In particular, if a
    function or class has been modified during the PR, please update the
-   *docstring* accordingly. If you have added or modified a feature, please update a corresponding tutorial in the `tutorials` folder as well to show its usage. See below for documentation structure and instructions.
+   *docstring* accordingly. If you have added or modified a feature, please update a corresponding tutorial notebook under `docs/tut/` as well to show its usage. See below for documentation structure and instructions.
 - If your code does not pass the automated CI tests, please fix the problems. Your pull request cannot be merged until the tests are passed and you have obtained approval from reviewers.
 
 ## Documentation Structure

@@ -55,6 +55,7 @@ Lumped
     :toctree: .
 
     Cap3Interdigital
+    CapFingerInFrame
     CapNInterdigital
     ResonatorCoilRect
 
@@ -107,6 +108,7 @@ Transmission Lines
     RouteAnchors
     RouteMixed
     RoutePathfinder
+    PolylineCPW
 
 
 Qubits
@@ -155,6 +157,7 @@ if config.is_building_docs():
     from .couplers.tunable_coupler_01 import TunableCoupler01
     from .couplers.tunable_coupler_02 import TunableCoupler02
     from .lumped.cap_3_interdigital import Cap3Interdigital
+    from .lumped.cap_finger_in_frame import CapFingerInFrame
     from .lumped.cap_n_interdigital import CapNInterdigital
     from .lumped.resonator_coil_rect import ResonatorCoilRect
     from .qubits.JJ_Dolan import jj_dolan
@@ -190,4 +193,5 @@ if config.is_building_docs():
     from .tlines.meandered import RouteMeander
     from .tlines.mixed_path import RouteMixed
     from .tlines.pathfinder import RoutePathfinder
+    from .tlines.polyline_cpw import PolylineCPW
     from .tlines.straight_path import RouteStraight

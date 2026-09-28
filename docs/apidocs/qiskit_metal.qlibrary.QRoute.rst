@@ -63,6 +63,7 @@ QRoute
    .. automethod:: QRoute.set_lead
    .. automethod:: QRoute.set_lead_extension
    .. automethod:: QRoute.set_pin
+   .. automethod:: QRoute.to_html
    .. automethod:: QRoute.to_script
 
    

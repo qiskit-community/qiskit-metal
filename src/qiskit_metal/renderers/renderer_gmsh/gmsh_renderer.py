@@ -63,6 +63,25 @@ class QGmshRenderer(QRenderer):
             * metal -- color for metallized entities
             * jj -- color for JJs
             * dielectric -- color for dielectric entity
+        * outer_face_groups -- add one physical group per outer wall of the
+          vacuum box (``outer_x-`` ... ``outer_z+``), for solvers that set a
+          condition per wall. Off by default: the extra groups change what
+          the exported mesh contains.
+        * junction_lines -- also embed each junction's line (from its
+          LineString) as a 1D entity with its own group (``<name>_line``),
+          for solvers that model a junction as an edge chain. Off by default.
+
+    Attributes:
+        mesh_spec (MeshSpec, optional): refinement by role, net, component,
+            junction or box, on top of the fields ``mesh`` options define
+            (:class:`~qiskit_metal.analyses.simulation.problem.MeshSpec`); its
+            ``max_size`` / ``min_size`` override those options. None: the
+            options alone.
+        ports (list): lumped ports (on pins or segments) and wave ports to
+            render (:class:`~qiskit_metal.analyses.simulation.problem.LumpedPort`,
+            ``WavePort``). A lumped port becomes a sheet (or a line) at the
+            metal's mid-height with its own ``port_<name>`` group, and its pin
+            gets an endcap; a wave port becomes a face on an outer wall.
     """
 
     default_options = Dict(
@@ -88,6 +107,8 @@ class QGmshRenderer(QRenderer):
             jj=(84, 140, 168, 150),
             dielectric=(180, 180, 180, 255),
         ),
+        outer_face_groups=False,
+        junction_lines=False,
     )
 
     name = "gmsh"
@@ -117,6 +138,18 @@ class QGmshRenderer(QRenderer):
         self.layer_types = default_layer_types if layer_types is None else layer_types
 
         self.bounds_handler = BoundsForPathAndPolyTables(self.design)
+
+        self.mesh_spec = None
+        self.ports = []
+        self.ports_dict = dict()
+        self.junc_lines = dict()
+        self.wave_ports = dict()
+
+        # Filled by render_design; read by group_map.
+        self._shape_sources = dict()
+        self._render_selection = None
+        self._render_open_pins = None
+        self._group_map = None
 
     @property
     def initialized(self):
@@ -280,6 +313,18 @@ class QGmshRenderer(QRenderer):
         self.juncs_dict = defaultdict(dict)
         self.physical_groups = defaultdict(dict)
 
+        # Set by render_layers when the sample holder is drawn.
+        self.vacuum_box = None
+
+        # For group_map: which component shape each named group comes from.
+        self._shape_sources = dict()
+        self._render_selection = selection
+        self._render_open_pins = open_pins
+        self.ports_dict = dict()
+        self.junc_lines = dict()
+        self.wave_ports = dict()
+        self._group_map = None
+
         self.clear_design()
 
         self.draw_geometries(
@@ -337,7 +382,8 @@ class QGmshRenderer(QRenderer):
             return
 
         self.render_tables(skip_junction=skip_junctions)
-        self.add_endcaps(open_pins=open_pins)
+        self.add_endcaps(open_pins=self._endcap_pins(open_pins))
+        self.render_ports()
         self.render_layers(
             box_plus_buffer=box_plus_buffer,
             omit_layers=omit_ground_for_layers,
@@ -483,6 +529,10 @@ class QGmshRenderer(QRenderer):
             + "_"
             + clean_name(junc["name"])
         )
+        self._shape_sources[qc_name] = (
+            self.design._components[junc["component"]].name,
+            junc["name"],
+        )
 
         # Considering JJ will always be a rectangle
         v1, v2 = line_width_offset_pts(
@@ -511,6 +561,17 @@ class QGmshRenderer(QRenderer):
 
         self.juncs_dict[junc.layer][qc_name] = [surface]
 
+        if self._options.get("junction_lines"):
+            coords = list(qc_shapely.coords)
+            (x0, y0), (x1, y1) = [
+                self.parse_units_gmsh(list(c)) for c in (coords[0], coords[-1])
+            ]
+            z = qc_z + qc_thickness / 2
+            line = gmsh.model.occ.addLine(
+                gmsh.model.occ.addPoint(x0, y0, z), gmsh.model.occ.addPoint(x1, y1, z)
+            )
+            self.junc_lines[qc_name] = dict(layer=junc.layer, tags=[line])
+
     def render_element_path(self, path: pd.Series):
         """Render an element of type: 'path'
 
@@ -538,6 +599,10 @@ class QGmshRenderer(QRenderer):
             self.design._components[path["component"]].name
             + "_"
             + clean_name(path["name"])
+        )
+        self._shape_sources[qc_name] = (
+            self.design._components[path["component"]].name,
+            path["name"],
         )
         bad_fillets = bad_fillet_idxs(coords, qc_fillet)
         curves = render_path_curves(vecs, qc_z, qc_fillet, qc_width, bad_fillets)
@@ -613,6 +678,10 @@ class QGmshRenderer(QRenderer):
             + "_"
             + clean_name(poly["name"])
         )
+        self._shape_sources[qc_name] = (
+            self.design._components[poly["component"]].name,
+            poly["name"],
+        )
 
         surface = self.make_poly_surface(vecs.points, qc_z)
 
@@ -674,8 +743,15 @@ class QGmshRenderer(QRenderer):
             )
 
             rect_mid = mid + normal * gap / 2
+            if min(abs(normal[0]), abs(normal[1])) > 1e-9:
+                self.layer_subtract_dict[qc_layer].add(
+                    self._oblique_endcap(
+                        rect_mid, normal, width, gap, qc_z, qc_thickness
+                    )
+                )
+                continue
             rect_vec = np.array([rect_mid[0], rect_mid[1], qc_z])
-            # Assumption: pins only point in x or y directions
+            # Pins along x or y: an axis-aligned box (oblique pins above)
             # If this assumption is not satisfied, addBox() no longer works
             # Solution: must draw points, lines, and shapes manually and then extrude
             if abs(normal[0]) > abs(normal[1]):
@@ -700,6 +776,110 @@ class QGmshRenderer(QRenderer):
                     x=rect_x, y=rect_y, z=rect_z, dx=dx, dy=dy
                 )
             self.layer_subtract_dict[qc_layer].add(endcap)
+
+    def _oblique_endcap(self, center, normal, width, gap, z, thickness) -> int:
+        """An endcap for a pin that is not along x or y: the gap x
+        (width + 2 gap) rectangle centered at ``center``, turned with the pin."""
+        normal = np.asarray(normal, dtype=float) / np.hypot(*normal)
+        tangent = np.array([-normal[1], normal[0]])
+        corners = [
+            center + sn * gap / 2 * normal + st * (width / 2 + gap) * tangent
+            for sn, st in ((-1, -1), (1, -1), (1, 1), (-1, 1))
+        ]
+        points = [gmsh.model.occ.addPoint(c[0], c[1], z) for c in corners]
+        lines = [
+            gmsh.model.occ.addLine(points[i], points[(i + 1) % 4]) for i in range(4)
+        ]
+        surface = self.make_general_surface(lines)
+        if np.abs(thickness) > 0:
+            extruded = gmsh.model.occ.extrude([(2, surface)], dx=0, dy=0, dz=thickness)
+            return [tag for dim, tag in extruded if dim == 3][0]
+        return surface
+
+    def _lumped_ports(self) -> list:
+        from qiskit_metal.analyses.simulation.problem import LumpedPort
+
+        return [p for p in self.ports if isinstance(p, LumpedPort)]
+
+    def _endcap_pins(self, open_pins):
+        """The open pins plus the pins of lumped ports (a port's pin ends in
+        an open gap, which its sheet bridges). Unchanged without pin ports."""
+        from qiskit_metal.analyses.simulation.problem import PinRef
+
+        port_pins = [
+            (p.at.component, p.at.pin)
+            for p in self._lumped_ports()
+            if isinstance(p.at, PinRef)
+        ]
+        if not port_pins:
+            return open_pins
+        pins = list(open_pins or [])
+        return pins + [pin for pin in port_pins if pin not in pins]
+
+    def render_ports(self):
+        """Draw each lumped port of ``self.ports`` at its metal layer's
+        mid-height: a sheet (two for ``"cpw"``), or a line for ``"line"``
+        ports. Recorded in ``self.ports_dict`` by group name."""
+        from qiskit_metal.analyses.simulation.problem import port_sheets
+
+        for port in self._lumped_ports():
+            label = port.label
+            if label is None:
+                raise ValueError(f"A port on {port.at} needs a name.")
+            for sheet in port_sheets(self.design, port):
+                thickness, z = self.get_thickness_zcoord_for_layer_datatype(sheet.layer)
+                z = z + thickness / 2
+                if sheet.polygon is None:
+                    (x0, y0), (x1, y1) = sheet.line
+                    tag, dim = (
+                        gmsh.model.occ.addLine(
+                            gmsh.model.occ.addPoint(x0, y0, z),
+                            gmsh.model.occ.addPoint(x1, y1, z),
+                        ),
+                        1,
+                    )
+                else:
+                    points = np.array(sheet.polygon.exterior.coords)
+                    points = np.column_stack([points, np.full(len(points), z)])
+                    tag, dim = self.make_poly_surface(points, z), 2
+                self.ports_dict[f"port_{label}{sheet.suffix}"] = dict(
+                    layer=sheet.layer,
+                    dim=dim,
+                    tags=[tag],
+                    port=label,
+                    direction=tuple(float(v) for v in sheet.direction),
+                )
+
+    def _render_wave_ports(self):
+        """Wave ports of ``self.ports``: a rectangle on an outer wall of the
+        vacuum box, recorded in ``self.wave_ports``."""
+        from qiskit_metal.analyses.simulation.problem import WavePort
+
+        waves = [p for p in self.ports if isinstance(p, WavePort)]
+        if not waves:
+            return
+        box = gmsh.model.occ.getBoundingBox(3, self.vacuum_box)
+        lo, hi = box[:3], box[3:]
+        for port in waves:
+            axis = "xyz".index(port.face[0])
+            plane = lo[axis] if port.face[1] == "-" else hi[axis]
+            u, v = [a for a in range(3) if a != axis]
+            (cu, cv), (su, sv) = (
+                self.parse_units_gmsh(list(port.center)),
+                self.parse_units_gmsh(list(port.size)),
+            )
+            corners = []
+            for du, dv in ((-1, -1), (1, -1), (1, 1), (-1, 1)):
+                c = [0.0, 0.0, 0.0]
+                c[axis], c[u], c[v] = plane, cu + du * su / 2, cv + dv * sv / 2
+                corners.append(c)
+            points = [gmsh.model.occ.addPoint(*c) for c in corners]
+            lines = [
+                gmsh.model.occ.addLine(points[i], points[(i + 1) % 4]) for i in range(4)
+            ]
+            self.wave_ports[f"port_{port.label}"] = dict(
+                tags=[self.make_general_surface(lines)], side=port.face, port=port.label
+            )
 
     def render_layers(
         self,
@@ -768,6 +948,11 @@ class QGmshRenderer(QRenderer):
             dy = (self.box_xy_bounds[3] - self.box_xy_bounds[1]) + 2 * tol
             dz = sum(vac_height)
             self.vacuum_box = gmsh.model.occ.addBox(x, y, z, dx, dy, dz)
+            self._render_wave_ports()
+        elif any(type(p).__name__ == "WavePort" for p in self.ports):
+            raise ValueError(
+                "Wave ports need the sample holder (draw_sample_holder=True)."
+            )
 
     def render_layer(self, layer_number: int, datatype: int = 0):
         """Render the given layer number and datatype.
@@ -869,6 +1054,23 @@ class QGmshRenderer(QRenderer):
             for _, jj_sfs in geoms.items():
                 all_geom_dimtags += [(2, jj) for jj in jj_sfs]
 
+        # Ports, junction lines and wave ports go last, so everything else
+        # keeps its input order; they are remapped separately below.
+        for record in self.junc_lines.values():
+            record.setdefault("dim", 1)
+        for record in self.wave_ports.values():
+            record.setdefault("dim", 2)
+        extras = [
+            ((record["dim"], tag), record)
+            for record in (
+                list(self.ports_dict.values())
+                + list(self.junc_lines.values())
+                + list(self.wave_ports.values())
+            )
+            for tag in record["tags"]
+        ]
+        all_geom_dimtags += [dimtag for dimtag, _ in extras]
+
         if draw_sample_holder:
             object_dimtag = (3, self.vacuum_box)
             all_layer_geoms[-1] = dict(vacuum_box=[self.vacuum_box])
@@ -905,8 +1107,9 @@ class QGmshRenderer(QRenderer):
             2: self.juncs_dict,
             3: self.layers_dict,
         }
+        extra_dimtags = {dimtag for dimtag, _ in extras}
         for old, children in zip(input_dimtags, out_map):
-            if not children:
+            if not children or old in extra_dimtags:
                 continue
             new = children[0]
             if old == new:
@@ -923,6 +1126,16 @@ class QGmshRenderer(QRenderer):
                             if geom_id == old[1]:
                                 all_dicts[i][l].append(new[1])
                                 all_dicts[i][l].remove(old[1])
+
+        # The ports and lines: keep every piece fragment split them into.
+        if extras:
+            position = {dimtag: k for k, dimtag in enumerate(input_dimtags)}
+            pieces = {}
+            for dimtag, record in extras:
+                found = pieces.setdefault(id(record), (record, []))[1]
+                found += [t for d, t in out_map[position[dimtag]] if d == dimtag[0]]
+            for record, tags in pieces.values():
+                record["tags"] = list(dict.fromkeys(tags))
 
         # TODO: Do we require 3D junctions? Active issue: #842
         # all_juncs = []
@@ -1068,6 +1281,17 @@ class QGmshRenderer(QRenderer):
                         )
                         self.physical_groups[layer][layer_name] = ph_tag
 
+        for name, record in self.ports_dict.items():
+            self.physical_groups[record["layer"]][name] = gmsh.model.addPhysicalGroup(
+                dim=record["dim"], tags=record["tags"], name=name
+            )
+        for name, record in self.junc_lines.items():
+            self.physical_groups[record["layer"]][f"{name}_line"] = (
+                gmsh.model.addPhysicalGroup(
+                    dim=1, tags=record["tags"], name=f"{name}_line"
+                )
+            )
+
         if draw_sample_holder:
             # Make physical groups for vacuum box (volume)
             vb_name = "vacuum_box"
@@ -1083,6 +1307,205 @@ class QGmshRenderer(QRenderer):
             )
             self.physical_groups["global"][vb_name + "_sfs"] = ph_vb_sfs_tag
 
+            for name, record in self.wave_ports.items():
+                self.physical_groups["global"][name] = gmsh.model.addPhysicalGroup(
+                    dim=2, tags=record["tags"], name=name
+                )
+
+            if self._options.get("outer_face_groups"):
+                for side, surfaces in self._outer_faces(vb_sfs).items():
+                    name = f"outer_{side}"
+                    ph_tag = gmsh.model.addPhysicalGroup(
+                        dim=2, tags=surfaces, name=name
+                    )
+                    self.physical_groups["global"][name] = ph_tag
+
+    def _outer_faces(self, surfaces: list[int]) -> dict[str, list[int]]:
+        """Sort the vacuum box's outer surfaces by wall: ``x-`` ... ``z+``."""
+        box = gmsh.model.occ.getBoundingBox(3, self.vacuum_box)
+        lo, hi = box[:3], box[3:]
+        tol = 1e-6 * max(h - l for l, h in zip(lo, hi))
+        sides = {}
+        for surface in surfaces:
+            bb = gmsh.model.occ.getBoundingBox(2, surface)
+            for axis, name in enumerate("xyz"):
+                if abs(bb[axis + 3] - bb[axis]) > tol:
+                    continue  # not flat along this axis
+                if abs(bb[axis] - lo[axis]) <= tol:
+                    sides.setdefault(f"{name}-", []).append(surface)
+                elif abs(bb[axis] - hi[axis]) <= tol:
+                    sides.setdefault(f"{name}+", []).append(surface)
+        return {side: sides[side] for side in sorted(sides)}
+
+    @property
+    def group_map(self) -> "PhysicalGroupMap":
+        """The physical groups of the last ``render_design``, with their roles.
+
+        Every group in ``physical_groups`` appears once, as a
+        :class:`~qiskit_metal.renderers.renderer_gmsh.groups.PhysicalGroup`
+        that says what it is (conductor, ground, dielectric, vacuum,
+        junction, outer wall), its component and shape, its net label
+        (``<shape>_<component>`` or ``ground_<chip>_plane``, from
+        :mod:`qiskit_metal.toolbox_metal.nets`) and its layer's material.
+        Built on first use; it needs no running gmsh session.
+        """
+        if self._group_map is None:
+            self._group_map = self._build_group_map()
+        return self._group_map
+
+    def _layer_materials(self) -> dict:
+        """Layer number -> the layer stack's material name (datatype 0)."""
+        ls = self.design.ls.ls_df
+        rows = ls[ls["datatype"].astype(int) == 0]
+        return {
+            int(layer): str(material).strip("'\" ")
+            for layer, material in zip(rows["layer"], rows["material"])
+        }
+
+    def _layer_chips(self) -> dict:
+        """Layer number -> the layer stack's chip name (datatype 0)."""
+        ls = self.design.ls.ls_df
+        rows = ls[ls["datatype"].astype(int) == 0]
+        return {
+            int(layer): str(chip).strip("'\" ")
+            for layer, chip in zip(rows["layer"], rows["chip_name"])
+        }
+
+    def _build_group_map(self) -> "PhysicalGroupMap":
+        from qiskit_metal.renderers.renderer_gmsh.groups import (
+            PhysicalGroup,
+            PhysicalGroupMap,
+            Role,
+        )
+        from qiskit_metal.toolbox_metal.nets import nets_for_design
+
+        metal_layers = list(self.layer_types["metal"])
+        netmap = nets_for_design(
+            self.design,
+            self._render_selection,
+            self._render_open_pins,
+            metal_layers,
+        )
+        net_of = {}
+        for net in netmap.nets:
+            label = netmap.label(net, "q3d")
+            for member in net.members:
+                net_of[(member.component, member.name)] = label
+
+        materials = self._layer_materials()
+        chips = self._layer_chips()
+        groups = []
+        for layer, entries in self.physical_groups.items():
+            if layer == "global":
+                for name, tag in entries.items():
+                    if name == "vacuum_box":
+                        groups.append(
+                            PhysicalGroup(name, 3, tag, Role.VACUUM, material="vacuum")
+                        )
+                    elif name == "vacuum_box_sfs":
+                        groups.append(
+                            PhysicalGroup(
+                                name, 2, tag, Role.OUTER_FACE, surfaces_of="vacuum_box"
+                            )
+                        )
+                    elif name in self.wave_ports:
+                        record = self.wave_ports[name]
+                        groups.append(
+                            PhysicalGroup(
+                                name,
+                                2,
+                                tag,
+                                Role.PORT,
+                                side=record["side"],
+                                port=record["port"],
+                            )
+                        )
+                    elif name.startswith("outer_"):
+                        groups.append(
+                            PhysicalGroup(
+                                name,
+                                2,
+                                tag,
+                                Role.OUTER_FACE,
+                                side=name[len("outer_") :],
+                            )
+                        )
+                continue
+
+            thickness = self.get_thickness_for_layer_datatype(layer_num=layer)
+            layer_dim = 3 if np.abs(thickness) > 0 else 2
+            is_metal = layer in metal_layers
+            material = materials.get(int(layer))
+            for name, tag in entries.items():
+                surfaces = name.endswith("_sfs")
+                base = name[: -len("_sfs")] if surfaces else name
+                dim = 2 if surfaces else layer_dim
+                surfaces_of = base if surfaces else None
+                if name in self.ports_dict:
+                    record = self.ports_dict[name]
+                    groups.append(
+                        PhysicalGroup(
+                            name,
+                            record["dim"],
+                            tag,
+                            Role.PORT,
+                            layer,
+                            port=record["port"],
+                            direction=record["direction"],
+                        )
+                    )
+                    continue
+                if name.endswith("_line") and name[: -len("_line")] in self.junc_lines:
+                    comp, shape = self._shape_sources.get(
+                        name[: -len("_line")], (None, None)
+                    )
+                    groups.append(
+                        PhysicalGroup(name, 1, tag, Role.JUNCTION, layer, comp, shape)
+                    )
+                    continue
+                if base in self.juncs_dict.get(layer, {}):
+                    comp, shape = self._shape_sources.get(base, (None, None))
+                    group = PhysicalGroup(
+                        name, 2, tag, Role.JUNCTION, layer, comp, shape
+                    )
+                elif base.startswith("ground_plane_(layer "):
+                    group = PhysicalGroup(
+                        name,
+                        dim,
+                        tag,
+                        Role.GROUND,
+                        layer,
+                        net=f"ground_{chips.get(int(layer), 'main')}_plane",
+                        material=material,
+                        surfaces_of=surfaces_of,
+                    )
+                elif base.startswith("dielectric_(layer "):
+                    group = PhysicalGroup(
+                        name,
+                        dim,
+                        tag,
+                        Role.DIELECTRIC,
+                        layer,
+                        material=material,
+                        surfaces_of=surfaces_of,
+                    )
+                else:
+                    comp, shape = self._shape_sources.get(base, (None, None))
+                    group = PhysicalGroup(
+                        name,
+                        dim,
+                        tag,
+                        Role.CONDUCTOR if is_metal else Role.DIELECTRIC,
+                        layer,
+                        comp,
+                        shape,
+                        net=net_of.get((comp, shape)) if is_metal else None,
+                        material=material,
+                        surfaces_of=surfaces_of,
+                    )
+                groups.append(group)
+        return PhysicalGroupMap(groups)
+
     def isometric_projection(self):
         """Set the view in Gmsh to isometric view manually."""
         gmsh.option.setNumber("General.Trackball", 0)
@@ -1092,10 +1515,18 @@ class QGmshRenderer(QRenderer):
         gmsh.option.setNumber("General.RotationY", 0)
         gmsh.option.setNumber("General.RotationZ", -45)
 
+    def _mesh_size(self, key: str):
+        """``min_size`` or ``max_size``: from ``mesh_spec`` when it sets one,
+        else from the ``mesh`` options."""
+        value = getattr(self.mesh_spec, key, None) if self.mesh_spec else None
+        if value is None:
+            value = self._options["mesh"][key]
+        return self.parse_units_gmsh(value)
+
     def define_mesh_size_fields(self):
         """Define size fields for mesh varying the mesh density across the design."""
-        min_mesh_size = self.parse_units_gmsh(self._options["mesh"]["min_size"])
-        max_mesh_size = self.parse_units_gmsh(self._options["mesh"]["max_size"])
+        min_mesh_size = self._mesh_size("min_size")
+        max_mesh_size = self._mesh_size("max_size")
         min_mesh_size_jj = self.parse_units_gmsh(self._options["mesh"]["max_size_jj"])
         grad_delta = self.parse_units_gmsh(
             self._options["mesh"]["mesh_size_fields"]["gradient_delta"]
@@ -1165,7 +1596,7 @@ class QGmshRenderer(QRenderer):
         for _, geoms in self.juncs_dict.items():
             jj_surfs += [tag[0] for tag in geoms.values()]
 
-        jj_curve_loops = [gmsh.model.occ.getCurveLoops(surf) for surf in all_surfs]
+        jj_curve_loops = [gmsh.model.occ.getCurveLoops(surf) for surf in jj_surfs]
         jj_curves = []
         for cl in jj_curve_loops:
             for curve_tag_list in cl[1]:  # extract curves
@@ -1173,8 +1604,8 @@ class QGmshRenderer(QRenderer):
                     jj_curves += [curve]
 
         jj_df = gmsh.model.mesh.field.add("Distance")
-        gmsh.model.mesh.field.setNumbers(df, "CurvesList", jj_curves)
-        gmsh.model.mesh.field.setNumber(df, "NumPointsPerCurve", 100)
+        gmsh.model.mesh.field.setNumbers(jj_df, "CurvesList", jj_curves)
+        gmsh.model.mesh.field.setNumber(jj_df, "NumPointsPerCurve", 100)
 
         jj_tf = gmsh.model.mesh.field.add("Threshold")
         gmsh.model.mesh.field.setNumber(jj_tf, "DistMin", dist_min)
@@ -1184,6 +1615,7 @@ class QGmshRenderer(QRenderer):
         gmsh.model.mesh.field.setNumber(jj_tf, "SizeMin", min_mesh_size_jj)
         gmsh.model.mesh.field.setNumber(jj_tf, "SizeMax", max_mesh_size)
         thresh_fields += [jj_tf]
+        thresh_fields += self._refinement_fields(max_mesh_size)
 
         min_field = gmsh.model.mesh.field.add("Min")
         gmsh.model.mesh.field.setNumbers(min_field, "FieldsList", thresh_fields)
@@ -1192,10 +1624,120 @@ class QGmshRenderer(QRenderer):
 
         gmsh.option.setNumber("Mesh.MeshSizeExtendFromBoundary", 0)
 
+    def _refine_surfaces(self, select) -> list[int]:
+        """The surfaces a ``Select`` picks, through ``group_map``."""
+        from qiskit_metal.renderers.renderer_gmsh.groups import Role
+
+        attrs = {}
+        if select.port is not None:
+            attrs.update(role=Role.PORT, port=select.port)
+        if select.role is not None:
+            attrs["role"] = Role(select.role)
+        if select.net is not None:
+            attrs["net"] = select.net
+        if select.component is not None:
+            attrs["component"] = select.component
+        if select.junction is not None:
+            attrs.update(
+                role=Role.JUNCTION,
+                component=select.junction.component,
+                qgeometry=select.junction.name,
+            )
+        groups = [g for g in self.group_map.select(**attrs) if g.dim == 2]
+        if not groups:
+            raise ValueError(f"Mesh refinement {select}: no surfaces match.")
+        return sorted(
+            {
+                int(s)
+                for g in groups
+                for s in gmsh.model.getEntitiesForPhysicalGroup(2, g.tag)
+            }
+        )
+
+    def _refinement_fields(self, max_mesh_size: float) -> list[int]:
+        """Size fields for ``mesh_spec.refine``; the caller takes their minimum
+        with the default fields."""
+        if not self.mesh_spec or not self.mesh_spec.refine:
+            return []
+        field = gmsh.model.mesh.field
+        fields = []
+        for refine in self.mesh_spec.refine:
+            size = self.parse_units_gmsh(refine.size)
+            grow = self.parse_units_gmsh(refine.grow)
+            if refine.select.box is not None:
+                x0, y0, x1, y1 = self.parse_units_gmsh(list(refine.select.box))
+                zlo, zhi = self._model_z_range()
+                f = field.add("Box")
+                for key, value in (
+                    ("XMin", min(x0, x1)),
+                    ("XMax", max(x0, x1)),
+                    ("YMin", min(y0, y1)),
+                    ("YMax", max(y0, y1)),
+                    ("ZMin", zlo),
+                    ("ZMax", zhi),
+                    ("VIn", size),
+                    ("VOut", max_mesh_size),
+                    ("Thickness", grow),
+                ):
+                    field.setNumber(f, key, value)
+                fields.append(f)
+                continue
+            surfaces = self._refine_surfaces(refine.select)
+            if refine.shape == "ball":
+                boxes = [gmsh.model.occ.getBoundingBox(2, s) for s in surfaces]
+                lo = [min(b[i] for b in boxes) for i in range(3)]
+                hi = [max(b[i + 3] for b in boxes) for i in range(3)]
+                f = field.add("Ball")
+                for key, value in (
+                    ("XCenter", (lo[0] + hi[0]) / 2),
+                    ("YCenter", (lo[1] + hi[1]) / 2),
+                    ("ZCenter", (lo[2] + hi[2]) / 2),
+                    ("Radius", grow),
+                    ("VIn", size),
+                    ("VOut", max_mesh_size),
+                ):
+                    field.setNumber(f, key, value)
+                fields.append(f)
+                continue
+            curves = sorted(
+                {
+                    int(c)
+                    for s in surfaces
+                    for loop in gmsh.model.occ.getCurveLoops(s)[1]
+                    for c in loop
+                }
+            )
+            distance = field.add("Distance")
+            field.setNumbers(distance, "CurvesList", curves)
+            field.setNumber(distance, "NumPointsPerCurve", 100)
+            f = field.add("Threshold")
+            field.setNumber(f, "InField", distance)
+            field.setNumber(f, "SizeMin", size)
+            field.setNumber(f, "SizeMax", max_mesh_size)
+            field.setNumber(f, "DistMin", 0.0)
+            field.setNumber(f, "DistMax", grow)
+            fields.append(f)
+        return fields
+
+    def _model_z_range(self) -> tuple[float, float]:
+        """The z extent of the model: the vacuum box if drawn, else all volumes."""
+        if getattr(self, "vacuum_box", None) is not None:
+            bb = gmsh.model.occ.getBoundingBox(3, self.vacuum_box)
+        else:
+            bb = gmsh.model.getBoundingBox(-1, -1)
+        return bb[2], bb[5]
+
     def define_mesh_properties(self):
         """Define properties for mesh depending on renderer options."""
-        min_mesh_size = self.parse_units_gmsh(self._options["mesh"]["min_size"])
-        max_mesh_size = self.parse_units_gmsh(self._options["mesh"]["max_size"])
+        min_mesh_size = self._mesh_size("min_size")
+        max_mesh_size = self._mesh_size("max_size")
+        if self.mesh_spec and self.mesh_spec.refine:
+            # Mesh.MeshSizeMin clamps every size field: let a refinement go
+            # below the global lower bound it asks for.
+            min_mesh_size = min(
+                [min_mesh_size]
+                + [self.parse_units_gmsh(r.size) for r in self.mesh_spec.refine]
+            )
         gmsh.option.setNumber(
             "Mesh.MeshSizeFromCurvature", self._options["mesh"]["nodes_per_2pi_curve"]
         )

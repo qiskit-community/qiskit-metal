@@ -76,6 +76,21 @@ of Metal as their foundation:
       Blender. Headless Colab install scripts. Fab-facing process docs
       (EBPG / BEAMER). Real fabricated chip examples.
 
+   .. grid-item-card:: 🎯 QDesignOptimizer
+      :class-header: sd-bg-primary sd-text-light
+      :link: https://github.com/202Q-lab/QDesignOptimizer
+      :link-type: url
+
+      **202Q-lab @ Chalmers · Apache 2.0**
+
+      Automated, physics-guided, multi-parameter design optimizer —
+      iteratively refines a Quantum Metal design against target
+      Hamiltonian parameters via HFSS simulations.
+
+      *Eriksson et al.,* `Quantum Sci. Technol. 11, 035024 (2026)
+      <https://iopscience.iop.org/article/10.1088/2058-9565/ae7ab6>`_ ·
+      `talk <https://www.youtube.com/watch?v=M940wW7Taos>`_
+
    .. grid-item-card:: 🌐 pypalace
       :class-header: sd-bg-secondary sd-text-light
       :link: https://pypalace.readthedocs.io/

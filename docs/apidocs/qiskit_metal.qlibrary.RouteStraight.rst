@@ -63,6 +63,7 @@ RouteStraight
    .. automethod:: RouteStraight.set_lead
    .. automethod:: RouteStraight.set_lead_extension
    .. automethod:: RouteStraight.set_pin
+   .. automethod:: RouteStraight.to_html
    .. automethod:: RouteStraight.to_script
 
    

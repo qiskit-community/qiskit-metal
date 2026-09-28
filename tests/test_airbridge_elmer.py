@@ -117,8 +117,8 @@ print("MESH_OK volumes=%d sif=%d" % (n_volumes, os.path.getsize(sif)))
 
 
 @unittest.skipUnless(
-    _gmsh_available() and sys.platform.startswith("linux"),
-    "gmsh 3D meshing is only exercised on Linux here — native gmsh crashes "
+    _gmsh_available() and not sys.platform.startswith("win"),
+    "gmsh 3D meshing is not exercised on Windows — native gmsh crashes "
     "(heap corruption) during 3D generation on the Windows CI runner",
 )
 class TestAirbridgeElmerSetup(unittest.TestCase):
@@ -156,9 +156,9 @@ class TestAirbridgeElmerSetup(unittest.TestCase):
 
 
 @unittest.skipUnless(
-    _gmsh_available() and _elmer_available() and sys.platform.startswith("linux"),
-    "ElmerSolver/ElmerGrid not on PATH (and gmsh 3D meshing is Linux-only "
-    "here) — install Elmer on Linux to run the FEM solve",
+    _gmsh_available() and _elmer_available() and not sys.platform.startswith("win"),
+    "ElmerSolver/ElmerGrid not on PATH (and gmsh 3D meshing is skipped on "
+    "Windows) — install Elmer on Linux or macOS to run the FEM solve",
 )
 class TestAirbridgeElmerSolve(unittest.TestCase):
     """Full capacitance solve of the 3D airbridge design. Fires only where the

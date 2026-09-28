@@ -52,6 +52,7 @@ TunableCoupler02
    .. automethod:: TunableCoupler02.qgeometry_plot
    .. automethod:: TunableCoupler02.qgeometry_table
    .. automethod:: TunableCoupler02.rebuild
+   .. automethod:: TunableCoupler02.to_html
    .. automethod:: TunableCoupler02.to_script
 
    

@@ -653,5 +653,5 @@ If you prefer the automated path, just push the tag and let GitHub Actions publi
 Tutorials
 =================================
 
-Jupyter notebook tutorials showing off features of Quantum Metal are located in the `tutorials`
-folder. If you add a new feature, please add a demonstration of its use to a notebook or start a new notebook.
+Jupyter notebook tutorials showing off features of Quantum Metal are located in `docs/tut/`
+(and circuit examples in `docs/circuit-examples/`). If you add a new feature, please add a demonstration of its use to a notebook or start a new notebook.

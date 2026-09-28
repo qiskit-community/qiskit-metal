@@ -37,6 +37,10 @@ Click a component to select it, then use the arrow keys.
    :alt: Arrow keys move the selected component up, down, left, and right.
    :width: 340
 
+.. image:: images/gui-shortcuts/move.gif
+   :alt: Animation of a transmon qubit being selected and moved with the arrow keys, then a zoomed-in view of the finer Alt step.
+   :width: 300
+
 Hold **Shift** while nudging for a coarser step, or **Alt** for a finer
 one — the same modifier convention most drawing tools use.
 
@@ -47,10 +51,26 @@ Rotate the selected component
    :alt: Q and the left bracket key rotate counter-clockwise; E and the right bracket key rotate clockwise.
    :width: 380
 
+.. image:: images/gui-shortcuts/rotate.gif
+   :alt: Animation of a transmon qubit rotating a full 90-degree-step circle, then a 15-degree fine wiggle.
+   :width: 300
+
 **Q** / **E** rotate counter-clockwise / clockwise in 90° steps — the
 same convention used for rotation in many games and creative tools.
 **[** / **]** do the same thing, for anyone who prefers the bracket
 keys. Hold **Shift** for a finer 15° step instead of 90°.
+
+Rebuild keeps your selection
+==============================
+
+Moving, rotating, and rebuilding (**R**) can be chained without ever
+re-clicking the component — rebuilding re-routes any connected CPWs to
+follow it, and the selection survives the rebuild so the next arrow key
+keeps moving the same component:
+
+.. image:: images/gui-shortcuts/rebuild.gif
+   :alt: Animation of a transmon qubit connected to another by a CPW, moved, rebuilt (the CPW re-routes), and moved again without re-selecting it.
+   :width: 340
 
 Other shortcuts
 ================

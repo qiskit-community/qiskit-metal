@@ -175,8 +175,8 @@ RING_CPWS = [
 # Readout architecture: each qubit's quarter-wave resonator taps a
 # CoupledLineTee — capacitively coupled to a short local feedline stub with
 # its own input/output ports, NOT wired directly to a port. This is the
-# coupling building block that "Reference design 3 - Four-qubit multiplexed
-# readout" (tutorials/Appendix A) chains multiple qubits onto for real
+# coupling building block that "A.3 Four-qubit multiplexed
+# readout" (Appendix A) chains multiple qubits onto for real
 # frequency-multiplexed readout; kept as one tee per qubit here (rather
 # than sharing one line across the ring) to avoid the routing/collision
 # complexity of threading a single feedline past the existing ring CPWs
@@ -873,7 +873,7 @@ def render_mesh_frame_3d(xlim, ylim, title):
 # embedded cell outputs at build time instead of duplicating the PNGs as
 # separate tracked files.
 AIRBRIDGE_TUTORIAL_NOTEBOOK = Path(
-    "tutorials/2 From components to chip/B. Routing between QComponents/2.15 Airbridges.ipynb"
+    "docs/tut/2-From-components-to-chip/2.15-Airbridges.ipynb"
 )
 AIRBRIDGE_GALLERY = [
     (24, "From tutorial 2.15 — a single airbridge, in 3-D (PyVista)"),

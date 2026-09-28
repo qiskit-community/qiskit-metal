@@ -91,14 +91,8 @@ jobs:
             --run --write-frozen --jobs 1 \
             --filter "${{ inputs.filter }}"
 
-      - name: Sync tutorials/ mirror
-        run: .venv/bin/python _dev/sync_two_folders.py --write
-
-      - name: Verify tutorials/ <-> docs/tut/ sync gate still passes
-        run: .venv/bin/python scripts/check_tutorials_sync.py
-
       - name: Show what changed
-        run: git status --short docs/tut tutorials
+        run: git status --short docs/tut docs/circuit-examples
 
       # Deliberately no commit/push/PR step. A human reviews the diff --
       # these are the docs site's most-viewed screenshots, and an
@@ -110,5 +104,5 @@ jobs:
           name: refreshed-frozen-qt-notebooks
           path: |
             docs/tut/**/*.ipynb
-            tutorials/**/*.ipynb
+            docs/circuit-examples/**/*.ipynb
           retention-days: 14

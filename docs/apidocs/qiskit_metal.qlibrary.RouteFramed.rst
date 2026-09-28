@@ -64,6 +64,7 @@ RouteFramed
    .. automethod:: RouteFramed.set_lead
    .. automethod:: RouteFramed.set_lead_extension
    .. automethod:: RouteFramed.set_pin
+   .. automethod:: RouteFramed.to_html
    .. automethod:: RouteFramed.to_script
    .. automethod:: RouteFramed.totlength
 

@@ -127,7 +127,9 @@ tutorials/**/*.tif
 tutorials/**/*.csv
 docs/**/*.csv
 *.gds
-!tutorials/resources/**
+!docs/tut/resources/**
+# ElmerFEM's default simulation_dir when a notebook runs the Elmer renderer
+**/simdata/
 __pycache__
 
 # mypy

@@ -64,6 +64,8 @@ class LumpedElementsSim(QSimulation):
     data_labels = ["cap_matrix", "cap_all_passes", "units", "is_converged"]
     """Default data labels."""
 
+    study_kind = "electrostatic"
+
     def __init__(self, design: Optional["QDesign"] = None, renderer_name: str = "q3d"):
         """Initialize the class to extract the capacitance matrix.
 
@@ -131,6 +133,8 @@ class LumpedElementsSim(QSimulation):
             argm = dict(locals())
             del argm["self"]
             self.save_run_args(**argm)
+        self._check_backend()
+
         # wipe data from the previous run (if any)
         self.clear_data()
 

@@ -21,6 +21,7 @@ QQ3DRenderer
    .. autoattribute:: QQ3DRenderer.design
    .. autoattribute:: QQ3DRenderer.element_extensions
    .. autoattribute:: QQ3DRenderer.element_table_data
+   .. autoattribute:: QQ3DRenderer.element_table_docs
    .. autoattribute:: QQ3DRenderer.initialized
    .. autoattribute:: QQ3DRenderer.logger
    .. autoattribute:: QQ3DRenderer.modeler

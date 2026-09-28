@@ -120,8 +120,9 @@ below.
 4. **AI-orchestration docs** — `docs/orchestration.rst` + the
    "Built for AI agents" page; the lite flip already removed the
    dependency blockers, so this is mostly writing.
-5. **`renderer_palace/` eigenmode PoC** — the strategic unlock for
-   HFSS-free CI validation. Larger effort; external help wanted.
+5. **Palace plugin, eigenmode first** — a downstream package on the
+   solver-backend abstractions, after v0.9.0 (see "Solver backends").
+   Larger effort; external help wanted.
 6. **Design-rule-check (DRC) validation stage** (#1169, shipped v0.8.0) —
    more rules and per-PDK rule sets remain. See the dedicated section
    below.
@@ -198,10 +199,11 @@ Known downstream packages:
   (LFL-Lab @ USC) — design-discovery database, consumes
   Metal `QDesign` objects. **`[planned]`** — issue to file.
 - **[SQDMetal](https://github.com/sqdlab/SQDMetal)**
-  (SQDLab @ UQ) — Palace simulation wrapper. **`[planned]`**
-  — issue to file; same migration plus the
-  `MetalGUI` → `qm.view()` story for headless Docker /
-  Brev contexts.
+  (SQDLab @ UQ) — Palace simulation wrapper. **`[in progress]`**
+  — Palace integration coordinated in
+  [sqdlab/SQDMetal#67](https://github.com/sqdlab/SQDMetal/issues/67);
+  same migration plus the `MetalGUI` → `qm.view()` story for
+  headless Docker / Brev contexts.
 - **[pypalace](https://pypalace.readthedocs.io/)**
   (Northwestern) — Palace wrapper. **`[planned]`** —
   issue to file.
@@ -295,8 +297,9 @@ The open FEM stack is the long-term answer. Three pieces:
   / analyses it does and doesn't handle today).
 - **AWS Palace** — open-source Maxwell solver from AWS.
   Native MPI, modern CMake build, eigenmode + driven +
-  electrostatic. A `renderer_palace/` module following
-  the `QRendererAnalysis` protocol would unblock
+  electrostatic. A Palace renderer following the
+  `QRendererAnalysis` protocol, shipped as a downstream
+  plugin (see "Solver backends"), would unblock
   HFSS-free CI validation of the entire qlibrary, plus
   give academic users a free path to full-field
   analysis.
@@ -310,7 +313,7 @@ The open FEM stack is the long-term answer. Three pieces:
 
 Initial proof-of-concept order:
 1. Validate `renderer_gmsh/` outputs against current gmsh
-2. Build a minimal `renderer_palace/` for eigenmode only
+2. Build a minimal Palace renderer (the plugin) for eigenmode only
 3. Cross-validate one canonical design (e.g.
    `TransmonPocket`) against a known HFSS result
 4. Document the gmsh-tag → Palace-port boundary contract
@@ -599,9 +602,12 @@ trial viable).
   canonical route for support requests so nothing gets lost in chat
   scrollback. `.github/ISSUE_TEMPLATE/config.yml` surfaces Docs / Roadmap
   / PyPI links plus Discord as a community-chat link (NOT a support route).
-- ✅ **JupyterLite tutorials on the docs site** — every notebook runnable
-  in-browser via the Pyodide kernel, zero install. Lives under `/lite/`
-  on the published docs site.
+- ✅ **JupyterLite on the docs site** — an in-browser Jupyter (Pyodide
+  kernel, zero install) under `/lite/` on the published docs site. No
+  notebooks are bundled yet: `jupyterlite_contents` in `docs/conf.py`
+  names `tutorials/`, which does not exist under `docs/`. Bundling the
+  notebooks that need no external solver or desktop GUI is `[planned]`,
+  after checking that the package installs in the Pyodide kernel.
 
 ### Quick wins (≤2 hours each)
 
@@ -664,6 +670,43 @@ trial viable).
   Metal 202X" with downloads, contributors, papers citing, new features.
   Community visibility artefact, useful for grant proposals and
   external reporting.
+
+---
+
+## Tutorials: structure, backend-swappable analysis, execution harness `[planned]`
+
+The tutorials and examples are 94 notebooks under `docs/tut/` and
+`docs/circuit-examples/`. CI executes 27 of them under the lite install
+(`_dev/rerun_auto.py` with `_dev/notebooks-auto-refresh.txt` and
+`_dev/notebooks-frozen-qt.txt`); the rest need Ansys, gmsh, ElmerFEM or
+the GUI and run only by hand.
+
+1. **Structure.** Categories with one suggested learning path; the
+   full-chip examples in order; links into the component gallery; later
+   notebooks reusing designs built in earlier ones instead of rebuilding
+   them; a thumbnail per notebook on the index pages and short feature
+   animations on the landing page.
+2. **Backend-swappable analysis tutorials.** Once `renderer_name` selects
+   the solver (see "Solver backends"), an analysis tutorial runs on the
+   pip-installable scikit-fem path first and on ElmerFEM where it needs
+   more, with the Ansys run and its stored outputs kept as a subsection.
+   Stored outputs remain the reference answers.
+3. **Execution harness.** Extend `_dev/rerun_auto.py` to every runnable
+   notebook, grouped by the extras it needs (lite, `[skfem]`, `[mesh]`,
+   external solvers). Each notebook executes in a scratch copy with a time
+   budget; the report lists errors, cells without outputs and run times.
+   Cells that need an external solver are skipped unless enabled, and
+   stored outputs under `docs/` are never rewritten by a check run. Run
+   locally before each release; the `[skfem]` group can join CI.
+   Refreshing a notebook's stored outputs stays a separate, reviewed
+   change, made when its code changes what it prints or draws or when an
+   output is known to be stale. Solver results are refreshed only by
+   running that solver; the curated GUI screenshots only through the
+   manual `notebooks-qt-refresh` workflow.
+4. **End-to-end renderer checks.** Each registered renderer runs a small
+   design end to end at its test tier (see "Testing solvers without losing
+   the stored answers" under "Solver backends"): scikit-fem in CI,
+   ElmerFEM, Palace and Ansys locally.
 
 ---
 
@@ -816,3 +859,202 @@ roadmap items above, but tracked so they don't get lost.
 - **Join the conversation.** Discord:
   https://discord.gg/FPNybyfpxd. QDC governance page:
   https://qdc-qcsa.vercel.app.
+
+---
+
+## Solver backends: shared abstractions, then scikit-fem, ElmerFEM, Palace and Ansys `[research]`
+
+Tutorials 4.41–4.45 (`docs/tut/4-Analysis/4.4*`) run eigenmode, driven
+(impedance) and electrostatic calculations with gmsh + scikit-fem + SciPy,
+from `docs/tut/resources/package_modes/`, and reproduce a published HFSS study
+to within a few percent. The goal is for the analysis tutorials to run on
+Ansys, ElmerFEM, scikit-fem or AWS Palace by changing the renderer name, and
+for each solver to be checked against the others. User-facing summary of the
+paths today: `docs/simulation-pathways.rst`. Design notes for the scikit-fem
+solver: `docs/architecture/open_fem_scikit_fem.md`.
+
+Today the switch point is `renderer_name` in the simulation classes
+(`analyses/simulation/`), whose contract with a renderer is informal and
+follows the Ansys renderers (`initialize_eigenmode`, `analyze_setup`,
+`get_convergences`, `set_mode` / `plot_fields`, `initialize_cap_extract`,
+`get_capacitance_matrix`). `QElmerRenderer` covers electrostatics through a
+different API (`add_solution_setup`, `run`, `capacitance_matrix`).
+
+A Palace design exists as an RFC in
+[sqdlab/SQDMetal#67](https://github.com/sqdlab/SQDMetal/issues/67): a
+`QPalaceRenderer` on the `QRendererAnalysis` seam composing `QGmshRenderer`,
+adapting SQDMetal's Palace pipeline (port vocabulary, gmsh wrappers,
+parsers), with small additive seams in Quantum Metal core. First slice: a
+transmon + launchpad + CPW → gmsh → Palace eigenmode with one lumped port,
+checked against an HFSS / SQDMetal reference.
+
+### Stage 1 — shared abstractions in core (lands first)
+
+Backends differ in what they can do; the aim is to make those differences
+explicit and small, not to hide them. Everything below lives in Quantum Metal
+core, is solver-neutral, and is what each backend reads:
+
+- **Ports**: one vocabulary for lumped ports (sheet or line), junctions
+  (open, lumped inductor, lumped port) and wave ports, attached to pins or
+  explicit geometry.
+- **Mesh-size control**: named refinement regions and per-region size fields
+  (metal edges, a sphere around each junction, the bulk), a global maximum,
+  in physical units.
+- **Named physical groups**: a structured map from roles (metal nets,
+  dielectrics, ports, boundaries, symmetry faces) to mesh entities, returned
+  by `QGmshRenderer`, replacing string matching.
+- **Boundary conditions**: perfect conductor, symmetry planes (PEC / PMC),
+  absorbing / radiation, surface impedance (e.g. kinetic inductance).
+- **Materials** from the layer stack (permittivity, loss tangent).
+- **Net naming and sign convention** for capacitance matrices, so
+  `LOManalysis` reads every backend the same way.
+- **Solve setups**: backend-neutral descriptions of eigenmode, driven and
+  electrostatic studies.
+- **Capabilities**: each backend declares which solve types, ports,
+  boundary conditions and outputs (EPR, convergence history, field plots) it
+  supports; the simulation classes check before running and fail with a
+  message naming the backends that can do it. The same table feeds
+  `docs/simulation-pathways.rst`.
+
+Before building these, a **gap analysis**: SQDMetal's Palace pipeline,
+pypalace, the Ansys renderers and `QGmshRenderer` / `QElmerRenderer` side by
+side — which of the abstractions above Quantum Metal already has, which it
+lacks, and which the others rely on. Done: the gap tables, the design, the
+decisions taken and the step-by-step sequence are in
+`docs/architecture/solver_backends.md`.
+
+### Stage 2 — backends on the shared abstractions
+
+1. **scikit-fem** (pip-only, runs in CI).
+   - Done (September 2026): the solver moved from the tutorial module into
+     `qiskit_metal.analyses.fem` and `qiskit_metal.analyses.em.package_modes`,
+     and `package_modes.py` is a thin wrapper, so 4.41–4.45 run unchanged.
+     Install: `pip install "quantum-metal[skfem]"`.
+   - To do:
+     - reading the geometry from `QGmshRenderer.group_map` and `mesh_spec`
+       instead of the tutorial mesher;
+     - a `renderer_name="skfem"` backend for the eigenmode and capacitance
+       flows.
+2. **ElmerFEM beyond electrostatics**: eigenmodes with lumped junctions from
+   Elmer's electromagnetic-wave solvers; cross-check against scikit-fem (the
+   4.19 cell, the 4.43 package).
+3. **Palace**: a downstream `quantum-metal-palace` plugin as in the RFC,
+   after v0.9.0; tested locally first (MPI binary). It reads the stage-1
+   abstractions.
+4. **Ansys HFSS / Q3D**: stays fully supported. In principle the Ansys
+   renderers read the same abstractions too, but any change to
+   `renderer_ansys*` is gated on validation in AEDT (see "Hard constraints"
+   in `CLAUDE.md`) and belongs to the Ansys track below.
+
+### Stage 3 — the renderer contract, written down
+
+Which calls each solve type needs (eigenmode, capacitance, driven), how
+"convergence" maps onto single-pass solvers, and how capabilities are
+reported — for all backends, Ansys included.
+
+### Ansys track (separate)
+
+Moving from the COM renderer (`renderer_ansys`) to current pyaedt
+(`renderer_ansys_pyaedt`; pinned `>=0.21,<0.24` below Python 3.14, `>=1.0.1`
+on 3.14) is its own project. It needs an AEDT test environment for every
+step, so it runs on its own track, with the stored HFSS / Q3D tutorial outputs
+as the reference answers until such an environment exists. Related: the
+Ansys 2025R1 issues (#1041, #1046) and the runtime spot-check request (#1079)
+under "Known bug-triage queue".
+
+The target is the pyaedt renderers: the COM renderers run only on Windows,
+while pyaedt runs wherever AEDT does. pyEPR already has a pyaedt path
+(`PyaedtDistributedAnalysis`). A pyaedt renderer can implement the stage-1
+neutral protocol directly (`docs/architecture/solver_backends.md`, 3.12)
+instead of the COM track's informal method list. The locked pyaedt versions
+are 0.23.0 (below Python 3.14) and 1.7.0 (Python 3.14, the latest release).
+Changes to the pyaedt renderers use only calls that both versions have.
+
+**Fixed in September 2026, not yet run in AEDT.** Each fix has a test that
+uses mocks; `changelog.md` has the details.
+
+- **pyaedt HFSS input check.** The renderers drew nothing unless both
+  `port_list` and `jj_to_port` were given, so the eigenmode renderer never
+  drew anything.
+- **COM HFSS `TypeError`.** It was raised for ports given without
+  `open_terminations`.
+- **pyaedt Q3D `TypeError`.** It was raised when `open_pins` was not given.
+- **pyaedt eigenmode `analyze_setup`.** For a setup that did not exist yet,
+  it called a driven-modal method.
+- **Q3D per-pass units.** Per-pass matrices were labeled "fF" but held
+  farads.
+- **pyaedt HFSS `default_setup`.** It was a one-element tuple.
+- **COM HFSS port height.** Port sheets were drawn at z = 0 on raised chips.
+- **pyaedt autosave options.** They had no effect, and closing forced AEDT
+  autosave on.
+- **Setup arguments.** An explicit `False` or `0` was replaced by the
+  default.
+
+**Open in the Ansys renderers** (found in the solver-backends gap analysis;
+the design note, section 2, has file references):
+
+- **pyaedt renderers cannot be driven by the simulation classes.** They lack
+  `execute_design`, `initialize_*`, `get_convergences`, `set_mode`,
+  `plot_fields` and the `epr_*` methods. The registered `aedt_hfss` defaults
+  to `renderer_type="HFSS"`, which is not one of `HFSS_DM`, `HFSS_EM`, `Q3D`,
+  so the tutorials create the eigenmode and driven-modal classes directly.
+- **pyaedt eigenmode** refuses `port_list` and `jj_to_port`.
+- **pyaedt Q3D.** `get_capacitance_matrix` is a stub, and
+  `get_capacitance_all_passes` returns magnitudes, losing the sign of the
+  mutual capacitances.
+- **pyaedt mesh and wirebonds.** `add_mesh` is empty, so there are no
+  junction or port mesh operations. Wirebond rendering is commented out.
+- **The two tracks disagree on:**
+  - the voltage-line direction: COM runs along the sheet's axis from the low
+    to the high coordinate (pyEPR `make_center_line`), whatever way the pin
+    faces, while pyaedt follows the pin normal. Junction EPR signs depend on
+    it.
+  - the meaning of `sample_holder_top` / `sample_holder_bottom`:
+    coordinates in pyaedt, distances in COM.
+- **Both tracks assume pins along x or y**, for port sheets and endcaps.
+- **Not exposed in either track:** absorbing or radiation walls, symmetry
+  planes, surface impedance (kinetic inductance), finite conductivity, and
+  wave ports.
+- **The `<renderer>_mesh_kw_jj` junction column** is written but never read.
+- **COM `get_convergences`** writes `hfss_eig_f_convergence.csv` into the
+  working directory.
+- **`ScatteringImpedanceSim`** never fills its `param_z` / `param_y` /
+  `param_s` data labels; results are reached through `plot_params`.
+
+**Open in the open-FEM path**, each assigned to a stage-1 step in the design
+note:
+
+- gmsh endcaps assume pins along x or y (step 1.6).
+- The gmsh and ElmerFEM renderers do not read the `helper` column.
+- ElmerFEM:
+  - hard-codes its materials (step 1.7);
+  - writes a placeholder ground self-capacitance (300 fF);
+  - labels and orders nets differently from Q3D (steps 1.3 and D3).
+
+### Testing solvers without losing the stored answers
+
+The tutorials hold the reference answers: the committed outputs of the
+external-gated notebooks (Ansys, ElmerFEM, the heavier scikit-fem runs) are
+the only record of many of these results, and CI never re-executes those
+notebooks in place. Solver runs are expensive and, on shared runners, risky
+(time, memory, licenses, external binaries). So:
+
+- **Reference files.** Extract the key numbers once from the stored notebook
+  outputs into version-controlled data (e.g. `tests/solver_references/*.json`:
+  value, tolerance, source notebook, solver, mesh settings). Tests compare
+  against these; notebooks are never overwritten by a test run (execute into
+  a scratch copy). Updating a reference is a reviewed change of its own.
+- **Tier 0 — CI, every PR (seconds, no external binaries).** Analytic
+  references (box and LSM modes, circuit couplings, the Appendix D fit) and a
+  tiny scikit-fem model (an empty box on a coarse mesh) when scikit-fem is
+  installed; skipped otherwise.
+- **Tier 1 — local or opt-in scheduled (minutes, pip-installable solvers).**
+  Small-mesh versions of the tutorial problems against the reference files;
+  behind a pytest marker that is not collected by default.
+- **Tier 2 — local only (external binaries, MPI, licenses, gigabytes).**
+  ElmerFEM, Palace, Ansys, and full-size tutorial runs; enabled per solver by
+  an environment variable; never on shared CI runners. Ansys tests need an
+  AEDT installation and license; until one is available, compare against the
+  stored HFSS / Q3D outputs only.
+- **Guardrails for every solver test**: a time and memory budget, a skip when
+  the binary or extra is missing, and no writes under `docs/`.

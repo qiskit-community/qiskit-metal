@@ -365,7 +365,9 @@ class TestRenderers(unittest.TestCase):
         renderer = QGmshRenderer(design)
         options = renderer.default_options
 
-        self.assertEqual(len(options), 4)
+        self.assertEqual(len(options), 6)
+        self.assertIs(options["outer_face_groups"], False)
+        self.assertIs(options["junction_lines"], False)
         self.assertEqual(len(options["mesh"]), 8)
         self.assertEqual(len(options["mesh"]["mesh_size_fields"]), 4)
         self.assertEqual(len(options["colors"]), 3)
@@ -741,6 +743,231 @@ class TestRenderers(unittest.TestCase):
                     f"DistributedAnalysis TypeError instead of catching it: {e!r}"
                 )
         self.assertIsNone(result)
+
+    def test_pyaedt_hfss_valid_input_arguments_accepts_omitted_lists(self):
+        """QHFSSPyaedt.valid_input_arguments must accept None or empty
+        port_list / jj_to_port. Commit cc3165fb8 turned the assignments
+        ``x_is_valid == True`` in those branches into bare expressions, so
+        the flags stayed None and ``not None`` rejected every call that
+        omitted them: render_design() then drew nothing. Called on a stub,
+        so neither pyaedt nor AEDT is needed."""
+        from types import SimpleNamespace
+
+        from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import (
+            QHFSSPyaedt,
+        )
+
+        def stub(names_valid=True):
+            # Flags start as None, as after reset_hfss_arguments().
+            return SimpleNamespace(
+                open_pins_is_valid=None,
+                port_list_is_valid=None,
+                jj_to_port_is_valid=None,
+                ignored_jjs_is_valid=None,
+                logger=MagicMock(),
+                confirm_open_pins_are_valid_names=lambda *a: names_valid,
+                confirm_port_list_have_valid_request=lambda *a: names_valid,
+                confirm_jj_to_port_has_valid_request=lambda *a: names_valid,
+                confirm_ignored_jjs_has_valid_request=lambda *a: names_valid,
+            )
+
+        validate = QHFSSPyaedt.valid_input_arguments
+        self.assertTrue(validate(stub(), None, None, None, None))
+        self.assertTrue(validate(stub(), [], [], [], []))
+        self.assertTrue(validate(stub(), [("Q1", "a")], None, None, None))
+        self.assertTrue(validate(stub(), None, [("Q1", "a", 50)], None, None))
+        self.assertFalse(validate(stub(False), None, [("Q1", "a", 50)], None, None))
+        self.assertFalse(validate(stub(False), None, None, [("Q1", "jj", 50)], None))
+
+    def test_hfss_render_design_ports_without_open_pins(self):
+        """QHFSSRenderer.render_design(port_list=...) with open_pins=None
+        (ScatteringImpedanceSim.run_sim without open_terminations) raised
+        TypeError on ``None + list``; the port pins alone get endcaps."""
+        from unittest.mock import DEFAULT
+
+        design = designs.DesignPlanar()
+        renderer = QHFSSRenderer(design, initiate=False)
+        steps = dict.fromkeys(
+            [
+                "render_tables",
+                "add_endcaps",
+                "render_chips",
+                "subtract_from_ground",
+                "create_ports",
+                "add_mesh",
+                "metallize",
+            ],
+            DEFAULT,
+        )
+        with (
+            patch.object(renderer, "get_unique_component_ids", return_value=([], 1)),
+            patch.multiple(renderer, **steps) as mocks,
+        ):
+            renderer.render_design(port_list=[("Q1", "a", 50)])
+        mocks["add_endcaps"].assert_called_once_with([("Q1", "a")])
+
+    def test_pyaedt_q3d_render_design_without_open_pins(self):
+        """QQ3DPyaedt.render_design() with the default open_pins=None raised
+        TypeError while validating the pin names. Built without __init__, so
+        neither pyaedt nor AEDT is needed."""
+        from qiskit_metal.renderers.renderer_ansys_pyaedt.pyaedt_base import QPyaedt
+
+        renderer = object.__new__(QQ3DPyaedt)
+        renderer._design = MagicMock()
+        renderer.case = 1
+        renderer.activate_user_project_design = MagicMock()
+        renderer.aedt_render_by_layer_then_tables = MagicMock()
+        with patch.object(QPyaedt, "render_design"):
+            renderer.render_design()
+        renderer.aedt_render_by_layer_then_tables.assert_called_once_with(
+            open_pins=None
+        )
+
+    def test_pyaedt_eigenmode_analyze_setup_adds_missing_setup(self):
+        """QHFSSEigenmodePyaedt.analyze_setup() added a missing setup with
+        add_hfss_dm_setup, which only the driven-modal class has
+        (AttributeError); it now adds an eigenmode setup."""
+        renderer = object.__new__(QHFSSEigenmodePyaedt)
+        renderer._design = MagicMock()
+        renderer.activate_user_project_design = MagicMock()
+        renderer.current_app = MagicMock(setup_names=[])
+        renderer.add_hfss_em_setup = MagicMock()
+        renderer.analyze_setup("Setup")
+        renderer.add_hfss_em_setup.assert_called_once_with("Setup")
+        renderer.current_app.analyze_setup.assert_called_once_with("Setup")
+
+    def test_q3d_capacitance_all_passes_units_are_farads(self):
+        """get_capacitance_all_passes converts every pass to farads; the units
+        it returns must say so (it used to return the matrix's own "fF")."""
+        import pandas as pd
+
+        design = designs.DesignPlanar()
+        renderer = QQ3DRenderer(design, initiate=False)
+        cmat = pd.DataFrame([[2.0, -1.0], [-1.0, 3.0]])
+        with patch.object(
+            renderer,
+            "get_capacitance_matrix",
+            side_effect=[(cmat, "fF"), pd.errors.EmptyDataError()],
+        ):
+            passes, units = renderer.get_capacitance_all_passes()
+        self.assertEqual(units, "farad")
+        self.assertAlmostEqual(passes[1][0, 0], 2.0e-15)
+
+    def test_hfss_ports_drawn_on_their_chip(self):
+        """create_ports drew the port sheet and its voltage line at z = 0; on a
+        chip whose center_z is not 0 (flip-chip) they missed the metal. They
+        now sit at the chip's z, like the component's endcaps."""
+        from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
+
+        design = designs.DesignPlanar()
+        design.chips.main.size.center_z = "0.1mm"
+        OpenToGround(design, "open1", options=dict(pos_x="1mm", orientation="0"))
+        design.rebuild()
+        renderer = QHFSSRenderer(design, initiate=False)
+        renderer._pinfo = MagicMock()
+        renderer._pinfo.design.solution_type = "DrivenModal"
+        renderer.create_ports([("open1", "open", 50)])
+
+        modeler = renderer._pinfo.design.modeler
+        corner = modeler.draw_rect_corner.call_args.args[0]
+        line = modeler.draw_polyline.call_args.args[0]
+        self.assertAlmostEqual(corner[2], 1e-4)  # 0.1 mm, in meters
+        self.assertAlmostEqual(line[0][2], 1e-4)
+        self.assertAlmostEqual(line[1][2], 1e-4)
+
+    def test_pyaedt_autosave_restored_as_found(self):
+        """Autosave is an AEDT user setting that persists. The renderer read a
+        misspelled option (begin_enable_autosave), so it never turned autosave
+        off, and on close it turned autosave on even for users who had it off.
+        It now records the setting, turns it off, and restores it on close."""
+        from qiskit_metal import Dict
+        from qiskit_metal.renderers.renderer_ansys_pyaedt import pyaedt_base
+
+        def run(autosave_on, begin_disable=True):
+            renderer = object.__new__(pyaedt_base.QPyaedt)
+            renderer._options = Dict(
+                begin_disable_autosave=begin_disable, close_enable_autosave=True
+            )
+            desktop = MagicMock()
+            desktop.odesktop.GetAutoSaveEnabled.return_value = int(autosave_on)
+            with patch.object(pyaedt_base, "Desktop", return_value=desktop):
+                renderer._initiate_renderer()
+                renderer._close_renderer()
+            return desktop
+
+        desktop = run(autosave_on=True)
+        desktop.disable_autosave.assert_called_once()
+        desktop.enable_autosave.assert_called_once()
+
+        desktop = run(autosave_on=False)
+        desktop.disable_autosave.assert_called_once()
+        desktop.enable_autosave.assert_not_called()
+
+        desktop = run(autosave_on=False, begin_disable=False)
+        desktop.disable_autosave.assert_not_called()
+        desktop.enable_autosave.assert_not_called()
+
+    def test_setup_functions_keep_explicit_false_and_zero(self):
+        """The setup functions filled defaults with ``if not x``, so an explicit
+        False or 0 became the default: LumpedElementsSim could not turn off
+        auto_increase_solution_order or enabled, nor pass basis_order=0. Only
+        None now means "use the default"."""
+        from qiskit_metal import Dict
+
+        design = designs.DesignPlanar()
+
+        q3d = QQ3DRenderer(design, initiate=False)
+        q3d._pinfo = MagicMock()
+        q3d.add_q3d_setup(auto_increase_solution_order=False, enabled=False)
+        kwargs = q3d._pinfo.design.create_q3d_setup.call_args.kwargs
+        self.assertIs(kwargs["auto_increase_solution_order"], False)
+        self.assertIs(kwargs["enabled"], False)
+        self.assertEqual(kwargs["max_passes"], 15)  # None -> default
+
+        hfss = QHFSSRenderer(design, initiate=False)
+        hfss._pinfo = MagicMock()
+        hfss.add_eigenmode_setup(basis_order=0)
+        kwargs = hfss._pinfo.design.create_em_setup.call_args.kwargs
+        self.assertEqual(kwargs["basis_order"], 0)
+        self.assertEqual(kwargs["n_modes"], 1)
+
+        aedt_q3d = object.__new__(QQ3DPyaedt)
+        aedt_q3d._design = MagicMock()
+        aedt_q3d.activate_user_project_design = MagicMock()
+        aedt_q3d.current_app = MagicMock()
+        aedt_q3d.default_setup = Dict(
+            name="Setup",
+            AdaptiveFreq=5.0,
+            SaveFields=False,
+            Enabled=True,
+            MaxPass=15,
+            MinPass=2,
+            MinConvPass=2,
+            PerError=0.5,
+            PerRefine=30,
+            AutoIncreaseSolutionOrder=True,
+            SolutionOrder="High",
+            Solver_Type="Iterative",
+        )
+        aedt_q3d.parse_value = lambda v: v
+        aedt_q3d.add_q3d_setup(Enabled=False, AutoIncreaseSolutionOrder=False)
+        props = aedt_q3d.current_app.create_setup.return_value.props
+        set_on_props = [c.args for c in props.__setitem__.call_args_list]
+        set_on_cap = [
+            c.args for c in props.__getitem__.return_value.__setitem__.call_args_list
+        ]
+        self.assertIn(("Enabled", False), set_on_props)
+        self.assertIn(("AutoIncreaseSolutionOrder", False), set_on_cap)
+        self.assertIn(("MaxPass", 15), set_on_cap)  # None -> default
+
+    def test_pyaedt_hfss_default_setup_is_a_dict(self):
+        """A trailing comma made QHFSSPyaedt.default_setup a 1-tuple."""
+        from qiskit_metal.renderers.renderer_ansys_pyaedt.hfss_renderer_aedt import (
+            QHFSSPyaedt,
+        )
+
+        self.assertIn("eigenmode", QHFSSPyaedt.default_setup)
+        self.assertIn("drivenmodal", QHFSSPyaedt.default_setup)
 
 
 if __name__ == "__main__":

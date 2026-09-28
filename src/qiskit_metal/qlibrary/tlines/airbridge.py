@@ -26,6 +26,19 @@ class Airbridge(QComponent):
     """A single airbridge: two base-metal landing pads joined by an elevated
     bridge span that crosses over a CPW.
 
+    Two uses. As a **ground strap** it sits across a CPW with its feet on the
+    ground planes either side, and its pins are left unconnected (inert). As a
+    **signal crossover** it carries one line over another: interrupt the upper
+    line for ``crossover_length`` at the crossing, place the bridge along it,
+    and connect the two cut ends to pins ``a`` and ``b`` with
+    :meth:`~qiskit_metal.designs.QDesign.connect_pins`. Without that wiring the
+    two cut ends are unconnected CPW ends, which butt the ground plane and so
+    fabricate as shorts -- the line is modelled as broken.
+
+    Pins ``a`` (at ``-x`` before rotation) and ``b`` (at ``+x``) sit at the
+    inner edge of each landing pad, i.e. ``crossover_length / 2`` from the
+    center, facing outward along the span.
+
     Unlike a GDS-export-only helper, this is a first-class ``QComponent`` — its
     geometry lives in the design's QGeometry, so it renders in ``qm.view`` and
     is exported by every renderer (GDS today; a 3D/Ansys span is tracked
@@ -105,19 +118,28 @@ class Airbridge(QComponent):
             right_post = draw.rectangle(pad_length, bridge_width, +pad_offset, 0)
             posts = draw.union(left_post, right_post)
 
+        # Pins at the two feet: at the inner edge of each landing pad, facing
+        # out along the span. Given as lines ALONG the connection (inner point
+        # first) so each normal points away from the bridge.
+        half = crossover_length / 2.0
+        pin_a = draw.LineString([(-half + pad_length / 2.0, 0), (-half, 0)])
+        pin_b = draw.LineString([(half - pad_length / 2.0, 0), (half, 0)])
+
         # Reposition the whole crossover.
-        geom = [span, pads] + ([posts] if posts is not None else [])
+        geom = [span, pads, pin_a, pin_b] + ([posts] if posts is not None else [])
         geom = draw.rotate(geom, p.orientation, origin=(0, 0))
         geom = draw.translate(geom, p.pos_x, p.pos_y)
         if posts is not None:
-            span, pads, posts = geom
+            span, pads, pin_a, pin_b, posts = geom
         else:
-            span, pads = geom
+            span, pads, pin_a, pin_b = geom
 
         self.add_qgeometry(
             "poly", {"bridge": span}, layer=p.bridge_layer, subtract=False
         )
         self.add_qgeometry("poly", {"pads": pads}, layer=p.pad_layer, subtract=False)
+        self.add_pin("a", pin_a.coords, width=pad_width, input_as_norm=True)
+        self.add_pin("b", pin_b.coords, width=pad_width, input_as_norm=True)
         if posts is not None:
             self.add_qgeometry(
                 "poly", {"posts": posts}, layer=p.post_layer, subtract=False

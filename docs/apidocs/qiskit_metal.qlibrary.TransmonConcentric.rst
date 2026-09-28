@@ -52,6 +52,7 @@ TransmonConcentric
    .. automethod:: TransmonConcentric.qgeometry_plot
    .. automethod:: TransmonConcentric.qgeometry_table
    .. automethod:: TransmonConcentric.rebuild
+   .. automethod:: TransmonConcentric.to_html
    .. automethod:: TransmonConcentric.to_script
 
    

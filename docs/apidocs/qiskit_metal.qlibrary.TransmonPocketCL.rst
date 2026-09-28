@@ -56,6 +56,7 @@ TransmonPocketCL
    .. automethod:: TransmonPocketCL.qgeometry_plot
    .. automethod:: TransmonPocketCL.qgeometry_table
    .. automethod:: TransmonPocketCL.rebuild
+   .. automethod:: TransmonPocketCL.to_html
    .. automethod:: TransmonPocketCL.to_script
 
    

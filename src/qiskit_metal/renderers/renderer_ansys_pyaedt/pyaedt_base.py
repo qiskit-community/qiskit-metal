@@ -58,8 +58,8 @@ class QPyaedt(QRendererAnalysis):
 
     # yapf: disable
     default_options = Dict(
-        begin_disable_autosave = True, # If True, Ansys will execute faster.
-        close_enable_autosave = True, # Before Ansys is closed, enable autosave.
+        begin_disable_autosave = True, # Turn AEDT autosave off while rendering (faster).
+        close_enable_autosave = True, # On close, turn autosave back on if it was on at start.
 
         x_buffer_width_mm=0.25,  # Buffer between max/min x and edge of ground plane, in mm
         y_buffer_width_mm=0.25,  # Buffer between max/min y and edge of ground plane, in mm
@@ -543,7 +543,14 @@ class QPyaedt(QRendererAnalysis):
         )
 
         self._desktop = desktop
-        if self.options.begin_enable_autosave:
+        # Autosave is an AEDT user setting that outlives this session: record
+        # it before turning it off so _close_renderer can restore it (the same
+        # pattern pyaedt uses around its own long operations).
+        self._autosave_was_enabled = None
+        if self.options.begin_disable_autosave:
+            self._autosave_was_enabled = (
+                self._desktop.odesktop.GetAutoSaveEnabled() == 1
+            )
             self._desktop.disable_autosave()
 
         # with Desktop(specified_version="2021.2",
@@ -572,7 +579,9 @@ class QPyaedt(QRendererAnalysis):
         """
         # Can use any one of three. In future, we may want to switch.
         # self._desktop.close_desktop
-        if self.options.close_enable_autosave:
+        if self.options.close_enable_autosave and getattr(
+            self, "_autosave_was_enabled", None
+        ):
             self._desktop.enable_autosave()
         self._desktop.release_desktop(close_projects=False, close_on_exit=False)
         # self._desktop.force_close_desktop()

@@ -645,15 +645,22 @@ class ElmerRunner:
         # FileNotFoundError from subprocess.run.
         elmergrid = _resolve_elmer_binary("ElmerGrid", elmergrid)
 
-        args = [elmergrid, "14", "2", os.path.join("..", meshfile)] + options
+        # Absolute paths: ElmerGrid runs inside sim_dir, and the mesh may be
+        # anywhere (it used to have to sit one level above sim_dir). It writes
+        # its output next to the input, in a folder named after the file.
+        os.makedirs(sim_dir, exist_ok=True)
+        meshfile = os.path.abspath(meshfile)
+        args = [elmergrid, "14", "2", meshfile] + options
         with open(os.path.join(sim_dir, "elmergrid.log"), "w+", encoding="utf-8") as f:
             subprocess.run(args, cwd=sim_dir, stdout=f, stderr=f)
 
-        mesh_dir = meshfile.split(".")[-2]
+        mesh_dir = os.path.splitext(meshfile)[0]
+        if not os.path.isdir(mesh_dir):
+            raise FileNotFoundError(
+                f"ElmerGrid did not convert {meshfile}; see "
+                f"{os.path.join(sim_dir, 'elmergrid.log')}"
+            )
         files = os.listdir(mesh_dir)
-
-        if not os.path.exists(sim_dir):
-            os.mkdir(sim_dir)
 
         for f in files:
             if os.path.exists(os.path.join(sim_dir, f)):

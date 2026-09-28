@@ -14,6 +14,21 @@ Overview
     1-Overview/*
 
 
+Featured: package modes and qubit couplings
+===========================================
+
+Five notebooks reproduce R. Molavi *et al.*, `arXiv:2609.22442
+<https://arxiv.org/abs/2609.22442>`_: the couplings of a 10 × 10 transmon array
+to the modes of its metal package. They go from an analytic estimate (4.41) to
+a full-wave model of the whole package (4.45), with gmsh and a scikit-fem
+Maxwell solver in place of HFSS (``pip install "quantum-metal[skfem]"``).
+
+.. nbgallery::
+    :glob:
+
+    4-Analysis/4.4*
+
+
 Components
 ==========
 
@@ -45,6 +60,7 @@ My first full quantum chip design
     :glob:
 
     2-From-components-to-chip/2.2*
+    2-From-components-to-chip/FlipChip-design-tutorial
 
 
 ----------------------------------
@@ -98,6 +114,16 @@ Parametric sweeps
     :glob:
 
     4-Analysis/4.2*
+
+
+-----------------------------------------
+MultiPlanar designs in Ansys with pyaedt
+-----------------------------------------
+
+.. nbgallery::
+    :glob:
+
+    4-Analysis/pyaedt-multiplanar/*
 
 
 ------------------

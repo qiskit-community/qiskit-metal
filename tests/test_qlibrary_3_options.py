@@ -309,7 +309,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         my_star_qubit = star_qubit.StarQubit(design, "my_name")
         options = my_star_qubit.default_options
 
-        self.assertEqual(len(options), 18)
+        self.assertEqual(len(options), 19)
         self.assertEqual(options["radius"], "300um")
         self.assertEqual(options["center_radius"], "100um")
         self.assertEqual(options["gap_couplers"], "25um")
@@ -323,6 +323,7 @@ class TestComponentOptions(unittest.TestCase, AssertionsMixin):
         self.assertEqual(options["rotation_rdout"], "144.0")
         self.assertEqual(options["rotation_cpl3"], "216.0")
         self.assertEqual(options["rotation_cpl4"], "288.0")
+        self.assertEqual(options["rotation_jj"], "auto")
         self.assertEqual(options["number_of_connectors"], "4")
         self.assertEqual(options["resolution"], "16")
         self.assertEqual(options["cap_style"], "round")

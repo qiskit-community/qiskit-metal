@@ -19,12 +19,18 @@
   <img src="https://raw.githubusercontent.com/qiskit-community/qiskit-metal/main/docs/_static/hero.gif" alt="Build a 4-qubit chip in ~15 lines of Python — qubits, CPW routing, launchpads, qm.view()" width="640"/>
 </p>
 
-<p align="center"><sub><a href="./scripts/make_hero_gif.py">Regenerate this GIF</a> · <a href="./tutorials/2 From components to chip/C. My first full quantum chip design/2.21 Design a 4 qubit full chip.ipynb">Full tutorial: 2.21</a></sub></p>
+<p align="center"><sub><a href="./scripts/make_hero_gif.py">Regenerate this GIF</a> · <a href="./docs/tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.ipynb">Full tutorial: 2.21</a></sub></p>
+
+**New in v0.8.1:** the desktop GUI canvas is now directly editable — click a
+component to select it, move and rotate it with the keyboard, rebuild to
+re-route connected CPWs (selection survives). See the
+[GUI Navigation & Shortcuts](https://qiskit-community.github.io/qiskit-metal/gui-shortcuts.html)
+docs page.
 
 ### 🚀 Try it now — zero install
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/tutorials/1%20Overview/1.1%20Quick%20start.ipynb)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=tutorials%2F1%20Overview%2F1.1%20Quick%20start.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs/tut/1-Overview/1.1-Quick-start.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=docs%2Ftut%2F1-Overview%2F1.1-Quick-start.ipynb)
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_in-Codespaces-181717?logo=github&logoColor=white&style=flat-square)](https://codespaces.new/qiskit-community/qiskit-metal)
 
 One click → working Quantum Metal in your browser in 60 seconds (lite install, no Qt required).
@@ -139,7 +145,7 @@ for the related environment switches.
 
 </details>
 
-**Next:** browse the [tutorial notebooks](./tutorials/) (40+ Jupyter notebooks
+**Next:** browse the [tutorial notebooks](./docs/tut/) (40+ Jupyter notebooks
 covering the full API) or the
 [online documentation](https://qiskit-community.github.io/qiskit-metal/).
 

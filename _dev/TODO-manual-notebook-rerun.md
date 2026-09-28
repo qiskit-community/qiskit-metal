@@ -23,9 +23,6 @@ uv run python _dev/rerun_auto.py --run
 
 # Filter to a section
 uv run python _dev/rerun_auto.py --run --filter 1-Overview
-
-# After execution, sync the tutorials/ mirror so both folders match
-uv run python _dev/sync_two_folders.py --write
 ```
 
 When a notebook fails on CI, the first instinct should be **"is the
@@ -44,8 +41,7 @@ When one of those tools changes (Ansys version bump, gmsh upgrade, etc.):
 1. Install the relevant extras: `pip install "quantum-metal[ansys]"` or
    `pip install "quantum-metal[mesh]"`.
 2. Open the notebook in JupyterLab and re-run cells manually.
-3. Sync: `python3 _dev/sync_two_folders.py --write`.
-4. Commit.
+3. Commit.
 
 ## 🟠 Interactive-only
 

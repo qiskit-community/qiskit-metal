@@ -18,6 +18,8 @@ import gdstk
 import numpy as np
 import shapely
 
+from qiskit_metal.renderers.renderer_gds.gds_boolean import subtract_in_strips
+
 
 class Cheesing:
     """Create a cheese cell based on input of no-cheese locations."""
@@ -432,13 +434,12 @@ class Cheesing:
             ground_cell = next(c for c in self.lib.cells if c.name == ground_cell_name)
             # Need to keep the depth at 0, otherwise all the
             # cell references (junctions) will be added for boolean.
-            ground_cheese = gdstk.boolean(
+            ground_cheese = subtract_in_strips(
                 ground_cell.get_polygons(depth=0),
                 diff_holes_cell.get_polygons(),
-                "not",
-                precision=self.precision,
                 layer=self.layer,
                 datatype=self.datatype_cheese,
+                precision=self.precision,
             )
             ground_cheese_cell_name = (
                 f"TOP_{self.chip_name}_{self.layer}_Cheese_{self.datatype_cheese}"

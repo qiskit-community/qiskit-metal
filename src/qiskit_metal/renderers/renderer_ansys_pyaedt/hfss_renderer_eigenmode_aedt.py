@@ -132,23 +132,23 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
             )
             return None
 
-        if not MinimumFrequency:
+        if MinimumFrequency is None:
             MinimumFrequency = float(self.parse_value(esu["MinimumFrequency"]))
-        if not NumModes:
+        if NumModes is None:
             NumModes = int(self.parse_value(esu["NumModes"]))
-        if not MaxDeltaFreq:
+        if MaxDeltaFreq is None:
             MaxDeltaFreq = float(self.parse_value(esu["MaxDeltaFreq"]))
-        if not MaximumPasses:
+        if MaximumPasses is None:
             MaximumPasses = int(self.parse_value(esu["MaximumPasses"]))
-        if not MinimumPasses:
+        if MinimumPasses is None:
             MinimumPasses = int(self.parse_value(esu["MinimumPasses"]))
-        if not MinimumConvergedPasses:
+        if MinimumConvergedPasses is None:
             MinimumConvergedPasses = int(
                 self.parse_value(esu["MinimumConvergedPasses"])
             )
-        if not PercentRefinement:
+        if PercentRefinement is None:
             PercentRefinement = int(self.parse_value(esu["PercentRefinement"]))
-        if not BasisOrder:
+        if BasisOrder is None:
             BasisOrder = int(self.parse_value(esu["BasisOrder"]))
 
         new_setup = self.current_app.create_setup(name)
@@ -167,7 +167,7 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
         return new_setup
 
     def analyze_setup(self, setup_name: str) -> bool:
-        """Run a specific solution setup in Ansys HFSS DrivenModal.
+        """Run a specific solution setup in Ansys HFSS Eigenmode.
 
         Args:
             setup_name (str): Name of setup.
@@ -181,10 +181,10 @@ class QHFSSEigenmodePyaedt(QHFSSPyaedt):
 
         if setup_name not in self.current_app.setup_names:
             self.logger.warning(
-                "Since the setup_name is not in the project/design which was used to start HFSS DrivenModal, "
-                "a new setup will be added to design with default settings for HFSS DrivenModal."
+                "Since the setup_name is not in the project/design which was used to start HFSS Eigenmode, "
+                "a new setup will be added to design with default settings for HFSS Eigenmode."
             )
-            self.add_hfss_dm_setup(setup_name)
+            self.add_hfss_em_setup(setup_name)
 
         return self.current_app.analyze_setup(setup_name)
 

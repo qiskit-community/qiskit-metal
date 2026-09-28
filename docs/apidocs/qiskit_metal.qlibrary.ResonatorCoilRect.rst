@@ -52,6 +52,7 @@ ResonatorCoilRect
    .. automethod:: ResonatorCoilRect.qgeometry_plot
    .. automethod:: ResonatorCoilRect.qgeometry_table
    .. automethod:: ResonatorCoilRect.rebuild
+   .. automethod:: ResonatorCoilRect.to_html
    .. automethod:: ResonatorCoilRect.to_script
 
    

@@ -52,6 +52,7 @@ CoupledLineTee
    .. automethod:: CoupledLineTee.qgeometry_plot
    .. automethod:: CoupledLineTee.qgeometry_table
    .. automethod:: CoupledLineTee.rebuild
+   .. automethod:: CoupledLineTee.to_html
    .. automethod:: CoupledLineTee.to_script
 
    

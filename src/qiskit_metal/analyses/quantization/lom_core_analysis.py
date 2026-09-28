@@ -11,21 +11,6 @@
 # that they have been altered from the originals.
 """LOM analysis based on https://arxiv.org/pdf/2103.10344.pdf"""
 
-# monkey patch to temporarily mock h5py dependency required by scqubits, which conflicts with
-# geopandas
-import sys
-
-from scipy.fftpack import hilbert
-
-
-class DummyH5py:
-    @property
-    def Group(self):
-        pass
-
-
-sys.modules["h5py"] = DummyH5py
-
 from collections import defaultdict, namedtuple
 from typing import (
     Any,
@@ -62,6 +47,9 @@ from qiskit_metal.analyses.quantization.constants import (
 )
 
 from qiskit_metal import logger
+from qiskit_metal.analyses.quantization import _scqubits_compat
+
+_scqubits_compat.apply()
 
 BasisTransform = namedtuple(
     "BasisTransform", ["orig_node_basis", "node_jj_basis", "num_negative_nodes"]
@@ -176,8 +164,9 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: dict[str, float], shorted=False):
             pCL[node] = 0.5 * val * utl(Ltl) ** 2 / E_cap
         Q_zpf[node] = np.sqrt(hbar * wr / 2 * pCL[node] * val)
 
-        # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2
-        Phi_zpf[node] = 0.5 * hbar / Q_zpf[node]
+        # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2;
+        # an open end (no loading capacitance) carries no charge fluctuation
+        Phi_zpf[node] = 0.5 * hbar / Q_zpf[node] if Q_zpf[node] else np.inf
 
     return Q_zpf, Phi_zpf, phi, Ltl
 
@@ -784,6 +773,9 @@ def _process_input_gs(gs):
     return gs
 
 
+_RESONATOR_TYPES = ("TL_RESONATOR", "LUMPED_RESONATOR")
+
+
 class QuantumSystemRegistry:
     _system_registry = {}
 
@@ -840,8 +832,7 @@ class Subsystem:
         - ``truncated_dim`` — retained levels (default ``10``).
         - ``nodes`` — a single junction node.
 
-    ``"TL_RESONATOR"`` — distributed transmission-line resonator, maps to
-    ``scqubits.Oscillator``.
+    ``"TL_RESONATOR"`` — distributed transmission-line resonator, maps to ``scqubits.Oscillator``.
         - ``f_res`` — resonator frequency in GHz **(required)**.
         - ``Z0`` — characteristic impedance in ohms (default ``50``).
         - ``vp`` — phase velocity in m/s, or the string ``"use_design"``
@@ -850,17 +841,28 @@ class Subsystem:
           ``vp="use_design"``: ``line_width``, ``line_gap``,
           ``substrate_thickness``, ``film_thickness``, all in **meters**
           (defaults ``10e-6``, ``6e-6``, ``750e-6``, ``200e-9``).
-        - ``truncated_dim`` — retained levels (default ``3``).
+        - ``truncated_dim`` — retained levels (default: chosen by
+          :meth:`CompositeSystem.create_hilbertspace`, see below).
         - ``other_end_shorted`` — ``True`` if the far end is shorted to
           ground (default ``False``). A shorted resonator must be given a
           single node.
         - ``nodes`` — one node (open- or shorted-end) or two nodes.
 
-    ``"LUMPED_RESONATOR"`` — lumped LC resonator, maps to
-    ``scqubits.Oscillator``.
+    ``"LUMPED_RESONATOR"`` — lumped LC resonator, maps to ``scqubits.Oscillator``.
         - ``f_res`` — *(computed)* from the extracted L and C matrices.
-        - ``truncated_dim`` — retained levels (default ``3``).
+        - ``truncated_dim`` — retained levels (default: chosen by
+          :meth:`CompositeSystem.create_hilbertspace`, see below).
         - ``nodes`` — a single node.
+
+    **Resonator levels.** A resonator's self-Kerr (its diagonal entry in the
+    chi matrix) comes from its two-photon level. With only three levels that
+    level is the top of the retained space and has no partner above it, so
+    the self-Kerr comes out wrong (e.g. +0.57 MHz where the converged value
+    is -0.0003 MHz); qubit frequencies, anharmonicities and qubit-resonator
+    shifts are unaffected. When ``truncated_dim`` is not given, resonators
+    therefore keep 5 levels if the whole Hilbert space stays at or below
+    :attr:`CompositeSystem.max_auto_dimension` states, and 3 levels otherwise,
+    with a warning that their self-Kerr is not converged.
 
     See tutorials ``4.04`` and ``4.05`` for worked transmon / fluxonium /
     coupled-transmon examples.
@@ -934,7 +936,7 @@ class _QuantumBuilderMeta(type):
                 )
             QuantumSystemRegistry.add_to_registry(sys_type, cls)
 
-            logger.info(
+            logger.debug(
                 "%s with system_type %s registered to QuantumSystemRegistry",
                 cls.__name__,
                 sys_type,
@@ -976,6 +978,11 @@ def set_builder_options(func):
         dflt_opts = getattr(self, "default_opts", {})
         build_options = QuantumBuilderOptions(**dflt_opts)
         build_options.set_from_input(subsystem.q_opts)
+        # Levels chosen by CompositeSystem.create_hilbertspace for a resonator
+        # whose q_opts leave truncated_dim unset.
+        auto_dim = getattr(subsystem, "_auto_truncated_dim", None)
+        if auto_dim is not None:
+            build_options.truncated_dim = auto_dim
         self.builder_options = build_options
         func(self, subsystem)
 
@@ -1258,27 +1265,28 @@ class Cell:
         """Initialize the cell object
 
         Args:
-            options (Dict): options can contain the following keys
-                node_rename (dict): a dict mapping from original node names to
-                    new node names, {old_name: new_name}
-                cap_mat (pd.DataFrame): Maxwell capacitance of the cell in
-                    pandas dataframe
-                ind_dict (dict): the keys are tuples of specifying the two nodes
-                    between which the inductors lie. For example,
-                    {('n1', 'n2'): 10} specifies that there is an inductor of 10
-                    nH between node 'n1' and 'n2' for one cell and an inductor of
-                    13 nH between node 'n5' and 'n7' for another cell
-                jj_dict (dict): dict mapping original circuit nodes to custom-named
-                    junction nodes. This is the parameter informing the LOM analysis between
-                    which nodes the Josephson junctions are located. For example,
-                    {('n1', 'n2'): 'j1'} specifies that there is a junction between
-                    nodes 'n1' and 'n2' and named as 'j1' cf_dict (dict):
-                cj_dict (dict): if provided, specifies the junction capacitances in each
-                    cell. Structure is the same as ind_dict. For the dict, the keys are
-                    tuples of specifying the two nodes between which the junctions lie.
-                    For example, {('n1', 'n2'): 2} specifies that there is an
-                    junction capacitance of 2 fF between node 'n1' and 'n2' for the first
-                    provided cell and None for the second provided cell.
+            options (Dict): options can contain the following keys:
+
+                * ``node_rename`` (dict): a dict mapping from original node names to
+                  new node names, {old_name: new_name}
+                * ``cap_mat`` (pd.DataFrame): Maxwell capacitance of the cell in
+                  pandas dataframe
+                * ``ind_dict`` (dict): the keys are tuples of specifying the two nodes
+                  between which the inductors lie. For example,
+                  {('n1', 'n2'): 10} specifies that there is an inductor of 10
+                  nH between node 'n1' and 'n2' for one cell and an inductor of
+                  13 nH between node 'n5' and 'n7' for another cell
+                * ``jj_dict`` (dict): dict mapping original circuit nodes to custom-named
+                  junction nodes. This is the parameter informing the LOM analysis between
+                  which nodes the Josephson junctions are located. For example,
+                  {('n1', 'n2'): 'j1'} specifies that there is a junction between
+                  nodes 'n1' and 'n2' and named as 'j1'
+                * ``cj_dict`` (dict): if provided, specifies the junction capacitances in each
+                  cell. Structure is the same as ind_dict. For the dict, the keys are
+                  tuples of specifying the two nodes between which the junctions lie.
+                  For example, {('n1', 'n2'): 2} specifies that there is an
+                  junction capacitance of 2 fF between node 'n1' and 'n2' for the first
+                  provided cell and None for the second provided cell.
 
         """
         self._node_rename = options.get("node_rename", {})
@@ -1447,15 +1455,54 @@ class CompositeSystem:
             raise ValueError("Subsystem not found in the circuit's nodes.")
         return subsystem_idx[0]
 
+    #: Largest Hilbert space (number of states) for which resonators without
+    #: an explicit ``truncated_dim`` get 5 levels instead of 3; full dense
+    #: diagonalization stays within seconds up to about this size.
+    max_auto_dimension = 4000
+
+    def _choose_resonator_levels(self):
+        """Set 5 or 3 levels on resonators whose ``q_opts`` leave it open."""
+        registry = QuantumSystemRegistry.registry()
+        auto, dims = [], []
+        for sub in self._subsystems:
+            sub._auto_truncated_dim = None  # an explicit truncated_dim always wins
+            opts = sub.q_opts or {}
+            builder = registry.get(sub.sys_type)
+            default = getattr(builder, "default_opts", {}).get("truncated_dim", 1)
+            if sub.sys_type in _RESONATOR_TYPES and "truncated_dim" not in opts:
+                auto.append(sub)
+            else:
+                dims.append(opts.get("truncated_dim", default))
+        if not auto:
+            return
+        fixed = int(np.prod(dims)) if dims else 1
+        levels = 5 if fixed * 5 ** len(auto) <= self.max_auto_dimension else 3
+        for sub in auto:
+            sub._auto_truncated_dim = levels
+        if levels == 3:
+            logger.warning(
+                "LOM: %d resonators keep 3 levels each (%d states in total). Their "
+                "self-Kerr (resonator diagonal of the chi matrix) is not converged "
+                "at 3 levels; qubit results are. Pass q_opts=dict(truncated_dim=5) "
+                "to a resonator to converge it.",
+                len(auto),
+                fixed * 3 ** len(auto),
+            )
+
     def create_hilbertspace(self) -> scq.HilbertSpace:
         """create the composite hilbertspace including all the subsystems. Interaction
             NOT included
+
+        Resonators without an explicit ``truncated_dim`` get 5 levels when the
+        whole space stays within :attr:`max_auto_dimension` states, else 3
+        (see :class:`Subsystem`, "Resonator levels").
 
         Returns:
             scq.HilbertSpace: Hilbertspace object for the Hamiltonian
                 of the composite system without interations added
         """
         cg = self.circuitGraph()
+        self._choose_resonator_levels()
 
         quantum_systems = []
         for sub in self._subsystems:

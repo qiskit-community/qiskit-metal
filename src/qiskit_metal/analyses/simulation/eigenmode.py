@@ -58,6 +58,8 @@ class EigenmodeSim(QSimulation):
     data_labels = ["convergence_t", "convergence_f"]
     """Default data labels."""
 
+    study_kind = "eigenmode"
+
     def __init__(self, design: Optional["QDesign"] = None, renderer_name: str = "hfss"):
         """Compute eigenmode, then derive from it using the epr method.
 
@@ -119,6 +121,8 @@ class EigenmodeSim(QSimulation):
             argm = locals()
             del argm["self"]
             self.save_run_args(**argm)
+        self._check_backend()
+
         # wipe data from the previous run (if any)
         self.clear_data()
 

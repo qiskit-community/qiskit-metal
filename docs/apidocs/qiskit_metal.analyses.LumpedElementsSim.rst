@@ -23,6 +23,7 @@ LumpedElementsSim
    .. autoattribute:: LumpedElementsSim.renderer_initialized
    .. autoattribute:: LumpedElementsSim.setup
    .. autoattribute:: LumpedElementsSim.sim_setup_name
+   .. autoattribute:: LumpedElementsSim.study_kind
    .. autoattribute:: LumpedElementsSim.supported_data
    .. autoattribute:: LumpedElementsSim.units
    
@@ -40,6 +41,7 @@ LumpedElementsSim
    .. automethod:: LumpedElementsSim.run
    .. automethod:: LumpedElementsSim.run_sim
    .. automethod:: LumpedElementsSim.run_sweep
+   .. automethod:: LumpedElementsSim.save_capacitance_matrix
    .. automethod:: LumpedElementsSim.save_run_args
    .. automethod:: LumpedElementsSim.save_screenshot
    .. automethod:: LumpedElementsSim.select_renderer

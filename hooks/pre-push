@@ -3,7 +3,7 @@
 #
 # Runs the *fast* CI gates locally before allowing a push, so you don't
 # have to wait for a cloud round-trip just to discover the
-# tutorials-sync or env-consistency job failed. Total budget ~15s.
+# env-consistency job failed. Total budget ~15s.
 #
 # Install once: ``./hook_setup.sh`` (links both pre-commit and pre-push).
 #
@@ -61,22 +61,7 @@ if ! uv run --quiet scripts/check_env_consistency.py > /tmp/.qm-prepush-env.log 
     fail=1
 fi
 
-# 3. tutorials/ ↔ docs/tut/ sync (only run if any notebook touched in this push)
-notebooks_touched=$(git diff --name-only "$remote_sha..$local_sha" 2>/dev/null | grep -E '\.ipynb$' | head -1)
-# If we couldn't determine touched files (e.g. first push of branch), run anyway — it's fast.
-if [[ -n "$notebooks_touched" ]] || [[ -z "$remote_sha" ]] || [[ "$remote_sha" == "0000000000000000000000000000000000000000" ]]; then
-    echo "  → tutorials/ ↔ docs/tut/ sync"
-    if ! uv run --quiet scripts/check_tutorials_sync.py > /tmp/.qm-prepush-sync.log 2>&1; then
-        echo "  ✗ Tutorial sync drift detected:"
-        cat /tmp/.qm-prepush-sync.log | tail -15
-        echo "    Fix: python3 _dev/sync_two_folders.py --write"
-        fail=1
-    fi
-else
-    echo "  → tutorials sync (skipped — no notebooks in this push)"
-fi
-
-# 4. QComponent ``.. image::`` directives resolve (cheap; <1s).
+# 3. QComponent ``.. image::`` directives resolve (cheap; <1s).
 # Catches Linux-case-sensitive thumbnail breakage + one-line directives
 # that the MetalGUI scanner can't see + orphan PNGs.
 echo "  → qlibrary image references"
@@ -87,7 +72,7 @@ if ! uv run --quiet scripts/check_qlibrary_images.py > /tmp/.qm-prepush-qlimg.lo
     fail=1
 fi
 
-# 5. On-screen GUI lifecycle tests — only when this push touches the GUI.
+# 4. On-screen GUI lifecycle tests — only when this push touches the GUI.
 # Issue #1048's crash class (native Qt init/teardown segfaults) never
 # shows up under the headless suite: offscreen skips the paint/QPA code
 # paths where it lives, and one fast local run rarely samples the race

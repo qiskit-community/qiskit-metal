@@ -20,6 +20,7 @@ QHFSSRenderer
    .. autoattribute:: QHFSSRenderer.design
    .. autoattribute:: QHFSSRenderer.element_extensions
    .. autoattribute:: QHFSSRenderer.element_table_data
+   .. autoattribute:: QHFSSRenderer.element_table_docs
    .. autoattribute:: QHFSSRenderer.hfss_options
    .. autoattribute:: QHFSSRenderer.initialized
    .. autoattribute:: QHFSSRenderer.logger

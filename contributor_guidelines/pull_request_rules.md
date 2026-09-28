@@ -24,7 +24,7 @@ The first step is to upload your code in a github branch or fork. You will then 
     1. Add the QComponent class name to the most appropriate toc-tree section
     1. Then locate the code line `if config.is_building_docs():` and inside(under) it add an import statement to your new QComponent class.
 5. Add a sample tutorial notebook.
-    - This notebook is for the general users and will be available only through a github download. Please add this to the tutorials appendix C folder.
+    - This notebook is for the general users and will be available only through a github download. Please add this to the Appendix C folder, `docs/circuit-examples/`.
     - Make sure the notebook looks the same as the other notebooks in that folder, especially the component rendering lines. Only deviate from a similar component template if your component has some unique behavior that is worth highlighting.
     - Important: Make sure the cell outputs are "cleared" before committing the notebook to your pull request.
 

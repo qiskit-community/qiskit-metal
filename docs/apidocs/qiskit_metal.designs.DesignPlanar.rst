@@ -31,6 +31,7 @@ DesignPlanar
    
    .. rubric:: Methods
    
+   .. automethod:: DesignPlanar.__getitem__
    .. automethod:: DesignPlanar.add_chip_info
    .. automethod:: DesignPlanar.add_default_data_for_qgeometry_tables
    .. automethod:: DesignPlanar.add_dependency

@@ -168,27 +168,27 @@ class QQ3DPyaedt(QPyaedt):
             )
             return
 
-        if not AdaptiveFreq:
+        if AdaptiveFreq is None:
             AdaptiveFreq = float(self.parse_value(su["AdaptiveFreq"]))
-        if not SaveFields:
+        if SaveFields is None:
             SaveFields = is_true(su["SaveFields"])
-        if not Enabled:
+        if Enabled is None:
             Enabled = is_true(su["Enabled"])
-        if not MaxPass:
+        if MaxPass is None:
             MaxPass = int(self.parse_value(su["MaxPass"]))
-        if not MinPass:
+        if MinPass is None:
             MinPass = int(self.parse_value(su["MinPass"]))
-        if not MinConvPass:
+        if MinConvPass is None:
             MinConvPass = int(self.parse_value(su["MinConvPass"]))
-        if not PerError:
+        if PerError is None:
             PerError = float(self.parse_value(su["PerError"]))
-        if not PerRefine:
+        if PerRefine is None:
             PerRefine = int(self.parse_value(su["PerRefine"]))
-        if not AutoIncreaseSolutionOrder:
+        if AutoIncreaseSolutionOrder is None:
             AutoIncreaseSolutionOrder = is_true(su["AutoIncreaseSolutionOrder"])
-        if not SolutionOrder:
+        if SolutionOrder is None:
             SolutionOrder = self.parse_value(su["SolutionOrder"])
-        if not Solver_Type:
+        if Solver_Type is None:
             Solver_Type = self.parse_value(su["Solver_Type"])
 
         new_setup = self.current_app.create_setup(name)
@@ -273,7 +273,9 @@ class QQ3DPyaedt(QPyaedt):
             )
             return
 
-        self.open_pins_is_valid = self.confirm_open_pins_are_valid_names(open_pins, [])
+        self.open_pins_is_valid = self.confirm_open_pins_are_valid_names(
+            open_pins or [], []
+        )
         if not self.open_pins_is_valid:
             self.logger.error(
                 "Check the arguments to render_design, invalid name was probably used."

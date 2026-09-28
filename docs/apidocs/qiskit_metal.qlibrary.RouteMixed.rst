@@ -71,6 +71,7 @@ RouteMixed
    .. automethod:: RouteMixed.set_lead
    .. automethod:: RouteMixed.set_lead_extension
    .. automethod:: RouteMixed.set_pin
+   .. automethod:: RouteMixed.to_html
    .. automethod:: RouteMixed.to_script
    .. automethod:: RouteMixed.trim_pts
    .. automethod:: RouteMixed.unary_union

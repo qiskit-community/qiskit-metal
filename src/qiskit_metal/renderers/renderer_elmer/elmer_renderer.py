@@ -3,10 +3,15 @@ from typing import Optional, Union
 
 import pandas as pd
 
-from qiskit_metal import Dict, draw
+from qiskit_metal import Dict
 from qiskit_metal.renderers.renderer_base import QRendererAnalysis
 from qiskit_metal.renderers.renderer_elmer.elmer_runner import ElmerRunner
 from qiskit_metal.renderers.renderer_gmsh.gmsh_renderer import QGmshRenderer
+from qiskit_metal.toolbox_metal.nets import (
+    galvanic_nets,
+    grounded_geometries,
+    metal_geometry_table,
+)
 
 
 def load_capacitance_matrix_from_file(filename: str) -> pd.DataFrame:
@@ -250,29 +255,7 @@ class QElmerRenderer(QRendererAnalysis):
         elif self.gmsh.case == 2:
             raise ValueError("Selection provided is invalid.")
 
-        metal_layers = self.layer_types["metal"]
-
-        mask = lambda table: (
-            table["component"].isin(qcomp_ids)
-            & ~table["subtract"]
-            & table["layer"].isin(metal_layers)
-        )
-
-        min_z = lambda layer: min(
-            sum(self.gmsh.get_thickness_zcoord_for_layer_datatype(layer)),
-            self.gmsh.get_thickness_zcoord_for_layer_datatype(layer)[1],
-        )
-
-        path_table = self.design.qgeometry.tables["path"]
-        poly_table = self.design.qgeometry.tables["poly"]
-        qcomp_paths = path_table[mask(table=path_table)]
-        qcomp_polys = poly_table[mask(table=poly_table)]
-        qcomp_geom_table = pd.concat([qcomp_paths, qcomp_polys], ignore_index=True)
-
-        qcomp_geom_table["min_z"] = qcomp_geom_table["layer"].apply(min_z)
-        qcomp_geom_table = qcomp_geom_table.sort_values(by=["min_z"], ignore_index=True)
-
-        return qcomp_geom_table
+        return metal_geometry_table(self.design, qcomp_ids, self.layer_types["metal"])
 
     def assign_nets(
         self, open_pins: Union[list, None] = None
@@ -280,6 +263,9 @@ class QElmerRenderer(QRendererAnalysis):
         """Assigns a netlist number to each galvanically connected metal region,
         and returns a dictionary with each net as a key, and the corresponding list of
         geometries associated with that net as values.
+
+        The nets come from :func:`qiskit_metal.toolbox_metal.nets.galvanic_nets`,
+        which every solver backend shares.
 
         Args:
             open_pins (Union[list, None], optional): List of tuples of pins that are open.
@@ -289,86 +275,9 @@ class QElmerRenderer(QRendererAnalysis):
             dict[Union[str, int], list[str]]: dictionary with keys for each net, and list of
                     values with the corresponding geometries associated with that net as values.
         """
-
-        netlists = dict()
-        netlist_id = 0
-
-        qgeom_names = self.qcomp_geom_table["name"]
-        qcomp_names_for_qgeom = [
-            list(self.design.components.keys())[i - 1]
-            for i in self.qcomp_geom_table["component"]
-        ]
-        phys_grps = [
-            s1 + "_" + s2 for s1, s2 in zip(qcomp_names_for_qgeom, qgeom_names)
-        ]
-        qgeom_idxs = list(range(len(self.qcomp_geom_table)))
-        id_net_dict = {k: -1 for k in phys_grps}
-
-        while len(qgeom_idxs) != 0:
-            i = qgeom_idxs.pop(0)
-            shape_i = self.qcomp_geom_table.iloc[[i]]["geometry"][i]
-            chip_i = self.qcomp_geom_table.iloc[[i]]["chip"][i]
-            layer_i = self.qcomp_geom_table.iloc[[i]]["layer"][i]
-            thick_i, z_coord_i = self.gmsh.get_thickness_zcoord_for_layer_datatype(
-                layer_i
-            )
-            id_net_dict[phys_grps[i]] = (
-                netlist_id
-                if (id_net_dict[phys_grps[i]] == -1)
-                else id_net_dict[phys_grps[i]]
-            )
-            for j in qgeom_idxs:
-                shape_j = self.qcomp_geom_table.iloc[[j]]["geometry"][j]
-                chip_j = self.qcomp_geom_table.iloc[[j]]["chip"][j]
-                layer_j = self.qcomp_geom_table.iloc[[j]]["layer"][j]
-                thick_j, z_coord_j = self.gmsh.get_thickness_zcoord_for_layer_datatype(
-                    layer_j
-                )
-                dist = shape_i.distance(shape_j)
-
-                layers_touch = False
-                if (
-                    layer_i == layer_j
-                    or z_coord_j == z_coord_i
-                    or z_coord_i + thick_i == z_coord_j
-                    or z_coord_j + thick_j == z_coord_i
-                ):
-                    layers_touch = True
-
-                if dist == 0.0 and chip_i == chip_j and layers_touch:
-                    if id_net_dict[phys_grps[j]] == -1:
-                        id_net_dict[phys_grps[j]] = id_net_dict[phys_grps[i]]
-                    elif id_net_dict[phys_grps[j]] != id_net_dict[phys_grps[i]]:
-                        net_id_i = id_net_dict[phys_grps[i]]
-                        for k, v in id_net_dict.items():
-                            if v == net_id_i:
-                                id_net_dict[k] = id_net_dict[phys_grps[j]]
-
-            if -1 not in id_net_dict.values():
-                break
-
-            netlist_id = max(list(id_net_dict.values())) + 1
-
-        gnd_phys_grps = self.get_gnd_qgeoms(open_pins)
-        gnd_netlist = list(
-            {net for (name, net) in id_net_dict.items() if (name in gnd_phys_grps)}
-        )
-
-        netlists["gnd"] = list()
-        for k, v in id_net_dict.items():
-            if v in gnd_netlist:
-                netlists["gnd"].append(k)
-            else:
-                if v not in netlists.keys():
-                    netlists[v] = list()
-                netlists[v].append(k)
-
-        netlists = {
-            (i - 1 if (k != "gnd") else k): v
-            for i, (k, v) in enumerate(netlists.items())
-        }
-
-        return netlists
+        return galvanic_nets(
+            self.design, self.qcomp_geom_table, open_pins
+        ).as_elmer_dict()
 
     def get_gnd_qgeoms(self, open_pins: Union[list, None] = None) -> list[str]:
         """Obtain a list of qgeometry names associated with pins shorted to ground.
@@ -380,45 +289,7 @@ class QElmerRenderer(QRendererAnalysis):
         Returns:
             list[str]: Names of qgeometry components with pins connected to ground plane.
         """
-
-        open_pins = open_pins if open_pins is not None else []
-        qcomp_lst = self.design.components.keys()
-        all_pins = list()
-        gnd_qgeoms = set()
-
-        for qcomp in qcomp_lst:
-            qcomp_pins = self.design.components[qcomp].pins.keys()
-            all_pins += list(zip([qcomp] * len(qcomp_pins), qcomp_pins))
-
-        nets_table = self.design.net_info
-        gnd_nets = list(nets_table[nets_table["pin_name"] == "short"]["net_id"])
-        gnd_nets_mask = nets_table["net_id"].isin(gnd_nets)
-        port_nets_table = nets_table[~gnd_nets_mask]
-        port_pins_names = port_nets_table["pin_name"]
-        qcomp_names_for_port_pins = [
-            list(qcomp_lst)[i - 1] for i in port_nets_table["component_id"]
-        ]
-        port_pins = list(zip(qcomp_names_for_port_pins, port_pins_names))
-        all_open_pins = list(set(port_pins + open_pins))
-        gnd_pins = [pin for pin in all_pins if pin not in all_open_pins]
-
-        for pin in gnd_pins:
-            qcomp_name, qcomp_pin = pin
-            pin_qcomp_id = self.design.components[qcomp_name].id
-
-            if pin_qcomp_id in list(self.qcomp_geom_table["component"]):
-                pin_qcomp_geom_table = self.qcomp_geom_table[
-                    self.qcomp_geom_table["component"] == pin_qcomp_id
-                ]
-                pin_point = draw.Point(
-                    self.design.components[qcomp_name].pins[qcomp_pin]["middle"]
-                )
-
-                for _, qgeom_row in pin_qcomp_geom_table.iterrows():
-                    if pin_point.intersects(qgeom_row["geometry"]):
-                        gnd_qgeoms.add(qcomp_name + "_" + qgeom_row["name"])
-
-        return list(gnd_qgeoms)
+        return grounded_geometries(self.design, self.qcomp_geom_table, open_pins)
 
     def run(
         self, sim_type: str, display_cap_matrix: bool = False
@@ -438,7 +309,10 @@ class QElmerRenderer(QRendererAnalysis):
         self._require_nets()
         setup = self.default_setup[sim_type]
         sim_dir = self._options["simulation_dir"]
-        meshfile = self._options["mesh_file"]
+        meshfile = self._mesh_path()
+        if not os.path.exists(meshfile):
+            self.logger.info("Mesh not exported yet; exporting it now.")
+            self.export_mesh()
         sif_name = self._options["simulation_input_file"]
         if sim_type == "capacitance":
             cap_matrix_file = os.path.join(
@@ -792,9 +666,19 @@ class QElmerRenderer(QRendererAnalysis):
         """Launch Gmsh GUI for viewing the model."""
         self.gmsh.launch_gui()
 
+    def _mesh_path(self) -> str:
+        """Where the Gmsh mesh is written: ``mesh_file`` if absolute, else
+        inside ``simulation_dir`` (so nothing lands in the working directory)."""
+        mesh_file = self._options["mesh_file"]
+        if os.path.isabs(mesh_file):
+            return mesh_file
+        return os.path.join(self._options["simulation_dir"], mesh_file)
+
     def export_mesh(self):
-        """Export Gmsh mesh"""
-        self.gmsh.export_mesh(self._options["mesh_file"])
+        """Export the Gmsh mesh to ``mesh_file`` (inside ``simulation_dir``)."""
+        path = self._mesh_path()
+        os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+        self.gmsh.export_mesh(path)
 
     def display_post_processing_data(self):
         """Import data given by ElmerFEM for Post-Processing in Gmsh"""

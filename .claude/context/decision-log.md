@@ -43,6 +43,44 @@ this file is for choices we made on purpose.
 
 ---
 
+## 2026-09-27 — numpy 2 reach, test guards and notebook lists before v0.9.0
+
+### scqubits aliases restored on `import qiskit_metal`, not only for LOM 2.0
+
+The `np.float_` / `np.complex_` shim (see "scqubits compatibility shims"
+below) ran only when the LOM 2.0 module was imported, so a direct scqubits
+call still failed on macOS: tutorial 4.34's `Transmon.wavefunction()`.
+`qiskit_metal.analyses` now calls `restore_numpy_aliases_if_needed()` on
+import. It reads the installed scqubits version from the package metadata
+and adds the two aliases only below 4.2; importing scqubits to check would
+slow every `import qiskit_metal`. Not done: adding the aliases
+unconditionally, which would change numpy's namespace for everyone, or
+patching scqubits' Qobj converter at import, which needs scqubits imported
+(that patch stays on the LOM path).
+
+### pyEPR floor raised instead of a renderer workaround
+
+pyEPR 1.0.1's `print_matrix` (`np.mat`) fails under numpy 2 at the end of
+`analyze_variation(print_result=True)`, which the pyaedt eigenmode renderer
+passes by default. The fix is in pyEPR 1.0.2 (zlatko-minev/pyEPR#213), and
+`[ansys]` / `[full]` require it. Passing `print_result=False` from the
+renderer would have dropped the report and changed a hard-constraint zone.
+
+### Airbridge Elmer tests skip on Windows only
+
+They were limited to Linux, and the recorded reason is a gmsh
+heap-corruption crash on the Windows runner. They pass on macOS, so only
+Windows is skipped. The mesh still runs in a subprocess, and a signal kill
+is still reported as a skip.
+
+### Flip-chip tutorial off the executed notebook lists
+
+`_dev/rerun_auto.py` runs every cell, including cells tagged
+`requires-ansys`, which fail off Windows. The notebook is listed in the
+external-gated reference block with A.7 and the pyaedt notebooks. Deferred:
+skipping tagged cells in `rerun_auto.py`, which would let all of them run in
+CI.
+
 ## 2026-08-10 — GUI crash defenses: journal file over QSettings cookie, layout restore opt-in
 
 Issue #1048, PR #1180 CI failures.
@@ -256,3 +294,192 @@ Counts are per-rule and reproducible with
 
 Suggested order if picked up: `W605` → `B006` → the pure-style groups → and
 `I001` on its own, gated on `tests-lite` passing.
+
+---
+
+## 2026-09-26 — Single-path shape rules, crossover airbridges, PolylineCPW taps
+
+### Chip-sized GDS booleans run in vertical strips
+
+`QGDSRenderer` (positive and negative mask) and `Cheesing` subtract through
+`gds_boolean.subtract_in_strips`: the base is sliced into 16 vertical strips
+and each strip is subtracted against only the cuts that overlap it. A single
+boolean can fail to link a hole and drop it without an error. Strips reduce
+that but do not remove it, so each strip's area is checked against the same
+difference in shapely (GEOS keeps holes as holes); on a mismatch the strip is
+rebuilt from the shapely result, cut into hole-free polygons. gdstk's own
+"Unable to link hole" message is silenced for the fast call, since the
+result is verified. Output polygons meet along strip edges (fabrication tools
+merge them). Cheesing becomes much faster as a side effect.
+
+### `PinAlignmentRule` joins `SHAPE_RULES`
+
+Checks that every connected path end leaves the partner pin along its
+normal (1 degree) and starts on it (0.1 um). Connected pins face each other,
+so one test covers qubit pads, launchpads, capacitors, airbridges,
+terminations and branches off `PolylineCPW` taps. Opt-in like the other
+shape rules until the tutorial notebooks are checked against it.
+
+### Ground-continuity ignores links narrower than 0.1 um
+
+`GroundContinuityRule(min_link_width=1e-4)` opens the ground sheet before
+counting regions, so floating-point slivers where two etched edges almost
+coincide no longer join regions that no fabricated metal joins. Setting it
+to 0 restores the exact behavior.
+
+### `StarQubit.rotation_jj`
+
+The junction was always drawn opposite coupler 1. `rotation_jj` places it
+independently, with the same convention as the connector rotations; the
+default `'auto'` keeps the old placement, so existing designs are unchanged.
+
+### `QComponent.rebuild` restores connections that `make()` does not
+
+A rebuild deletes the component's nets and calls `make()`. Routes re-add
+theirs from `pin_inputs`; connections made with `design.connect_pins` were
+lost. `rebuild` now records `(pin, partner, partner_pin)` beforehand and, after
+`make()`, reconnects each pair where both pins still exist and neither is in
+the net table. A partner that cannot be reconnected (pin gone, or a route
+retargeted elsewhere) has its `net_id` reset to 0 instead of left stale.
+Restoring rather than keeping the nets lets `make()` stay authoritative for
+components that manage their own connections.
+
+### Shape rules ship as `SHAPE_RULES`, not in `DEFAULT_RULES`
+
+`SelfIntersectionRule` (ERROR), `SharpTurnRule`, `FilletStarvationRule`
+and `DanglingEndRule` (WARNING) check the shape of a single path, which no
+pairwise rule can see. They are exported as `qiskit_metal.validation.SHAPE_RULES` and run
+with `validate(design, rules=[*DEFAULT_RULES, *SHAPE_RULES])`.
+
+They are not in `DEFAULT_RULES` because four published notebooks call
+`validate()` and commit its printed report as output (1.3, 2.24, the
+overlap quick-topic, and the 17-qubit example). Any change to the default
+set changes that output ("N rules ran", and possibly new warnings). Promote
+them together with a refresh of those notebooks through the dual-folder
+sync, not separately.
+
+`DanglingEndRule` rests on path metal and its ground cut ending flush:
+flat caps in `QMplRenderer` and in `validation.core`, and gdstk
+`FlexPath`'s default `ends="flush"` in GDS export. An unconnected CPW end
+therefore meets the ground plane and fabricates as a short, not an open.
+
+### `Airbridge` gains pins `a` and `b`
+
+At the inner edge of each landing pad, facing out along the span, so the
+component can carry a signal over another line when the cut ends of the
+upper line are connected to them. As a ground strap the pins are left
+unconnected; no renderer adds geometry for an unconnected pin unless it is
+passed in `open_pins`. Existing behaviour and geometry are unchanged.
+
+### `PolylineCPW` taps
+
+`taps={name: [x, y]}` adds a pin on the line at the point nearest
+`[x, y]`, normal toward it. A branch connected to a tap shares its net, so
+`MetalOverlapRule` treats the overlap at the joint as intended. The
+alternative, a DRC `Waiver` per joint, works but records an exception for
+what is ordinary connectivity.
+
+### Thumbnail generator: `chip_outline=False`, directive after the summary
+
+`_render_to_png` passes `chip_outline=False` (see "Die outline" above):
+with the outline, autoscaling framed small new components as specks.
+`_inject_image_directive` inserts the `.. image::` block after the
+docstring's summary paragraph; it previously prepended it, which left
+`.. image::` as the first docstring line, the line autosummary uses as the
+summary.
+
+### One notebook tree under `docs/`
+
+Notebooks were kept twice, in `tutorials/` (names with spaces) and under
+`docs/` (hyphenated names, which Sphinx needs), with a sync script and a CI
+check. The copies drifted repeatedly, and the sync once restored a stale
+notebook over a rewritten one. `docs/` is now the only copy: hyphenated names
+also work for GitHub browsing, JupyterLab and Colab, and the Colab/Binder
+badges point at the `docs/` paths. `tutorials/README.md` maps each old path
+to its new one so old links still lead somewhere. Six notebooks that were
+only in `tutorials/` moved to `docs/` and stay out of the site build
+(`exclude_patterns`) until they are re-run: they have no stored outputs, or
+store errors. Not changed: `jupyterlite_contents` still names `tutorials/`,
+a path that has never existed under `docs/`, so JupyterLite bundles no
+notebooks; which notebooks to bundle is a separate choice.
+
+### scqubits compatibility shims instead of dependency caps
+
+`analyses/quantization/_scqubits_compat.py` restores `np.float_` /
+`np.complex_` (used by scqubits 4.1, which macOS resolves because scqubits
+4.2+ caps scipy at 1.13.1 on darwin) and makes scqubits' Qobj converter
+return a `csc_matrix` (qutip 5.3 returns sparse arrays, which scqubits 4.3.1
+rejects). The alternative, `qutip<5.3` plus a newer scqubits floor, would
+hold every user back and still break on macOS. Each shim applies only when
+its condition is detected, and `tests/test_lom_core_hamiltonian.py` runs the
+failing scqubits call directly, so the shims can go once scqubits handles
+both.
+
+## 2026-09-27 — scikit-fem Maxwell solver lives with the tutorials, not in `src/`
+
+The gmsh + scikit-fem solver for tutorials 4.41–4.45 is a resource module,
+`docs/tut/resources/package_modes/package_modes.py`, not a `QRenderer`.
+The simulation classes' renderer contract (`initialize_eigenmode`,
+`analyze_setup`, passes and convergence) does not fit a direct solver, and
+the mesher does not yet handle ground planes or CPWs. The path to a reusable
+backend is recorded in `ROADMAP.md` ("Solver backends") and
+`docs/architecture/open_fem_scikit_fem.md` ("Extension path").
+
+## 2026-09-27 — open solver backends share the Palace RFC's seams
+
+The Palace integration proposed in
+[sqdlab/SQDMetal#67](https://github.com/sqdlab/SQDMetal/issues/67) reaches the
+simulation classes through the renderer seam (`renderer_name="palace"`) and
+adds core seams to `QGmshRenderer` (structured physical-group map, ports,
+per-region mesh fields, net naming). The ElmerFEM and scikit-fem backends use
+the same seams and the same front door, so the analysis tutorials can switch
+solver by renderer name. This supersedes the earlier ROADMAP draft that
+proposed a separate backend interface instead of a renderer.
+
+## 2026-09-27 — shared abstractions land before any new backend; Palace packaging open
+
+Stage 1 of the ROADMAP "Solver backends" plan — solver-neutral ports,
+mesh-size control, named physical groups, boundary conditions, net naming,
+solve setups and per-backend capability declarations in Quantum Metal core —
+comes before the scikit-fem, ElmerFEM or Palace renderers, preceded by a gap
+analysis against SQDMetal, pypalace and the Ansys renderers. Whether Palace
+ships as a native renderer in core or as a downstream plugin is not decided.
+Ansys HFSS / Q3D stays fully supported; changes to the Ansys renderers stay
+on a separate track gated on AEDT validation.
+
+
+## 2026-09-27 — solver backends: stage-1 design choices
+
+Design and gap analysis: `docs/architecture/solver_backends.md`.
+
+- Non-Ansys backends are `QRendererAnalysis` subclasses registered by name
+  that also implement a small protocol (`prepare(problem)`, `solve(study)`).
+  The simulation classes use it when present. Otherwise they keep today's
+  calls and arguments, so the Ansys renderers are unchanged.
+- Capacitance results use Q3D-style net labels (`{geometry}_{component}`,
+  `ground_{chip}_plane`) in alphabetical order. This is the order
+  `extract_transmon_coupled_Noscillator` reads by position, and the naming
+  the LOM 2.0 cells use.
+- Material properties are options with one set of documented defaults; no
+  backend holds a material constant. Loss tangents, conductivities and
+  interface layers have no defaults. Silicon's default εr is 11.45, the value
+  `QElmerRenderer` used.
+- Before rendering:
+  - a missing study, port kind, boundary condition or output is an error
+    that names the backends supporting it;
+  - an ignored setting is a warning, recorded with the result;
+  - on the Ansys path only the study type is checked.
+- EPR numerics stay in pyEPR. Non-Ansys backends pass mode frequencies, Q,
+  junction inductances and signed participations to it through an
+  array-based entry to `QuantumAnalysis`, with no Ansys project involved.
+- Palace packaging (native renderer or downstream plugin) is not decided.
+
+## 2026-09-27 — Palace ships as a downstream plugin, after v0.9.0
+
+Decision D2 of `docs/architecture/solver_backends.md`: the Palace renderer is
+a separate package on the stage-1 abstractions, not a module in core, and
+comes after the v0.9.0 release. The stage-1 modules it imports
+(`analyses/simulation/problem.py`, `capabilities.py`,
+`toolbox_metal/nets.py`, `renderer_gmsh/groups.py`) then need a deprecation
+policy. How the plugin registers (on import, or through entry points) is
+decided when it is built.
