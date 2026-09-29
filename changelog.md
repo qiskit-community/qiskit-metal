@@ -6,6 +6,12 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Unreleased
+
+### Fixed
+
+- **gmsh tutorials on Google Colab.** The PyPI gmsh wheel links against system graphics libraries that Colab lacks, so the first gmsh call failed with `OSError: libGLU.so.1`. The Colab install cells of 3.5, 4.19, 4.41–4.45, A.4 and the two-qubit cell notebook now include a Colab-only `apt-get` line for them; 3.5, 4.19 and 4.42 gained the Colab install cell they lacked.
+
 ## Quantum Metal v0.9.0 (open-source FEM solver, shape DRC, Python 3.13/3.14 and numpy 2)
 
 Minor release: the gmsh + scikit-fem Maxwell solver and the package-mode
