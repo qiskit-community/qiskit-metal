@@ -1040,8 +1040,8 @@ at least libGLU.
 **Fix**: in the notebook's Colab install cell, before pip:
 `!apt-get -qq update && apt-get -qq install -y libglu1-mesa libgl1
 libxcursor1 libxft2 libxinerama1 libxfixes3 libxrender1 libxext6
-libfontconfig1` (packages already present are no-ops). Tutorials 4.41–4.45
-and 54 carry it.
+libfontconfig1` (packages already present are no-ops), marked Colab only.
+Tutorials 3.5, 4.19, 4.41–4.45, A.4 and 54 carry it. Verified on Colab.
 
 ### The impedance fit finds one pole where there are two
 
