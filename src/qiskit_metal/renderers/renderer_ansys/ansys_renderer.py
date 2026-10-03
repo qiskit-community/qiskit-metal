@@ -1780,16 +1780,20 @@ class QAnsysRenderer(QRendererAnalysis):
 
         Args:
             junctions (dict, optional): Each element of this dictionary describes one junction.
-                Defaults to dict().
+                When given (even empty), it replaces the junctions held by pinfo, so
+                junctions from an earlier analysis do not carry over. When None, the
+                junctions already held by pinfo are kept. Defaults to None.
             dissipatives (dict, optional): Each element of this dictionary describes one dissipative.
                 Defaults to dict().
         """
         if self.pinfo:
-            if junctions:
+            if junctions is not None:
+                self.pinfo.junctions.clear()
                 for k, v in junctions.items():
                     self.pinfo.junctions[k] = v
-                # Check that valid names of variables and objects have been supplied
-                self.pinfo.validate_junction_info()
+                if junctions:
+                    # Check that valid names of variables and objects have been supplied
+                    self.pinfo.validate_junction_info()
             if dissipatives:
                 for k, v in dissipatives.items():
                     self.pinfo.dissipative[k] = v
@@ -1882,6 +1886,5 @@ class QAnsysRenderer(QRendererAnalysis):
         Returns:
             pd.DataFrame: multi-index, frequency and quality factors for each variation point.
         """
-        # TODO: do I need to reset self.pinfo.junctions (does it keep the older analysis one)
         self.epr_start(junctions, dissipatives)
         return self.epr_distributed_analysis.get_ansys_frequencies_all()
