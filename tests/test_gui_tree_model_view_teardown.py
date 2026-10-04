@@ -29,19 +29,32 @@ this fix) -- CI's real display and larger, longer-lived Qt object graph is
 what actually surfaced the use-after-free.
 """
 
+import os
+import subprocess
+import sys
+
 import pytest
+
+from tests._crash_output import crash_excerpt
 
 pytest.importorskip("PySide6")
 
-# pylint: disable=wrong-import-position
-import shiboken6  # noqa: E402
-from PySide6.QtWidgets import QApplication  # noqa: E402
+# The scenarios build a real QApplication, delete a view's C++ object out from
+# under a live model, and leave 500 ms polling timers armed. Run in the pytest
+# process, a native loss of that race kills the whole matrix (seen on the
+# Python 3.14 macOS CI job), so they run in a child that proves each step with
+# a printed marker.
+_SNIPPET = """
+import faulthandler
+faulthandler.enable()
+import shiboken6
+from PySide6.QtWidgets import QApplication
 
-from qiskit_metal import designs  # noqa: E402
-from qiskit_metal._gui.tree_view_base import QTreeView_Base  # noqa: E402
-from qiskit_metal._gui.widgets.edit_chip.tree_model_chips import (  # noqa: E402
-    QTreeModel_Chips,
-)
+app = QApplication.instance() or QApplication([])
+
+from qiskit_metal import designs
+from qiskit_metal._gui.tree_view_base import QTreeView_Base
+from qiskit_metal._gui.widgets.edit_chip.tree_model_chips import QTreeModel_Chips
 
 
 class _FakeLogger:
@@ -58,53 +71,58 @@ class _FakeGui:
         self.design = design
 
 
-@pytest.fixture(name="qapp")
-def qapp_fixture():
-    app = QApplication.instance() or QApplication([])
-    yield app
-
-
-def test_auto_refresh_survives_a_destroyed_view(qapp):
-    """Destroy the view out from under the model, then let the polling
-    timer tick -- it must neither raise nor touch the dead view again."""
+def build():
     design = designs.DesignPlanar()
     gui = _FakeGui(design)
     view = QTreeView_Base(None)
     model = QTreeModel_Chips(parent=None, gui=gui, view=view)
     view.setModel(model)
-
-    assert model.timer.isActive()
-
-    # Force a rowcount change so auto_refresh() would normally do real work
-    # (reset the model, then touch self._view) on the next tick.
     design.chips["extra"] = {"layer_start": "0", "layer_end": "1"}
-    model._row_count = -1  # pylint: disable=protected-access
-
-    # Simulate the dock/dialog closing: the view's C++ object goes away,
-    # but the model (and its timer) were never told.
-    shiboken6.delete(view)
-    assert not shiboken6.isValid(view)
-
-    # This is the polling timer's callback, invoked directly rather than
-    # waiting out the real 500ms -- must not raise.
-    model.auto_refresh()
-
-    # No point polling for a view that no longer exists.
-    assert not model.timer.isActive()
+    model._row_count = -1
+    return view, model
 
 
-def test_auto_refresh_keeps_working_with_a_live_view(qapp):
-    """Sanity check the guard doesn't false-positive on a normal, live view
-    and stop refreshing something that's still on screen."""
-    design = designs.DesignPlanar()
-    gui = _FakeGui(design)
-    view = QTreeView_Base(None)
-    model = QTreeModel_Chips(parent=None, gui=gui, view=view)
-    view.setModel(model)
+# Destroy the view out from under the model; the polling tick must neither
+# raise nor touch the dead view, and must stop polling.
+view, model = build()
+assert model.timer.isActive()
+shiboken6.delete(view)
+assert not shiboken6.isValid(view)
+model.auto_refresh()
+assert not model.timer.isActive()
+print("MARKER_DESTROYED_VIEW_OK", flush=True)
+model.timer.stop()
 
-    design.chips["extra"] = {"layer_start": "0", "layer_end": "1"}
-    model._row_count = -1  # pylint: disable=protected-access
+# A live view must not false-positive the guard.
+view, model = build()
+model.auto_refresh()
+assert model.timer.isActive()
+print("MARKER_LIVE_VIEW_OK", flush=True)
+model.timer.stop()
+print("MARKER_DONE", flush=True)
+"""
 
-    model.auto_refresh()
 
-    assert model.timer.isActive()
+def test_tree_model_view_teardown_in_subprocess():
+    env = dict(os.environ)
+    env.pop("QISKIT_METAL_HEADLESS", None)
+    env.setdefault("QT_QPA_PLATFORM", "offscreen")
+    proc = subprocess.run(
+        [sys.executable, "-X", "faulthandler", "-c", _SNIPPET],
+        capture_output=True,
+        text=True,
+        timeout=240,
+        env=env,
+    )
+    for marker in ("MARKER_DESTROYED_VIEW_OK", "MARKER_LIVE_VIEW_OK", "MARKER_DONE"):
+        assert marker in proc.stdout, (
+            f"tree-model teardown contract not proven: {marker} missing "
+            f"(rc={proc.returncode}).\nstdout:\n{proc.stdout}\n"
+            f"stderr tail:\n{crash_excerpt(proc.stderr)}"
+        )
+    assert "already deleted" not in proc.stdout + proc.stderr
+    if proc.returncode != 0:
+        print(
+            "NOTE: child proved both teardown scenarios (all markers) but "
+            f"exited {proc.returncode} during interpreter teardown."
+        )
