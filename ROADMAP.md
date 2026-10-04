@@ -1031,6 +1031,33 @@ note:
   - writes a placeholder ground self-capacitance (300 fF);
   - labels and orders nets differently from Q3D (steps 1.3 and D3).
 
+**EPR over gRPC, and the pyEPR `pywin32` marker** (noted October 2026, from a
+user report; checked against the local pyEPR 1.0.2 checkout, not run on
+Windows).
+
+- **Metal's EPR step still goes through COM, in both renderers.** The legacy
+  `renderer_ansys` and the pyaedt renderer's `run_epr()` both call
+  `epr.ProjectInfo()` and `epr.DistributedAnalysis`. pyEPR 1.0.2 already ships
+  `pyEPR/ansys_pyaedt.py` (`PyaedtDistributedAnalysis`, gRPC, no COM), which
+  its docstring says was checked against the COM path (`p_mj = 0.9755`).
+  Metal does not use it yet.
+- **Packaging bug in pyEPR (one-line fix, there rather than in Metal).** The
+  base install imports `win32com` but does not declare `pywin32`; only the
+  `[pyaedt]` extra does, although that path needs no COM. Move the
+  `pywin32; platform_system == "Windows"` marker to the base requirements and
+  drop it from `[pyaedt]`. Metal then gets it through pyEPR unchanged.
+- **Severity is low.** It affects only Windows users who connect to Ansys.
+  Import works (pyEPR swallows the missing import in `ansys.py`). The legacy
+  renderer already raises a friendly message pointing at `pip install pywin32`
+  (`ansys_renderer.py`). The pyaedt renderer's `epr.ProjectInfo()` probably
+  fails with a bare `NameError` on `Dispatch`; unverified, it needs Windows.
+- **Longer term:** switch the pyaedt renderer's `run_epr()` to
+  `PyaedtDistributedAnalysis`, so `pywin32` is needed only by the legacy
+  renderer. **Before switching, check feature parity.** The module has volume
+  energy (`energy_electric(obj)`), line voltage and `analyze()`; surface and
+  dielectric loss (which `setup_dielectric_for_epr` feeds today) were not seen
+  there. This needs AEDT, so it belongs on this track.
+
 ### Testing solvers without losing the stored answers
 
 The tutorials hold the reference answers: the committed outputs of the
