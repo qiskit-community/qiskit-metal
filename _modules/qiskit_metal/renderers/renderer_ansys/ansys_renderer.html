@@ -2392,16 +2392,20 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            junctions (dict, optional): Each element of this dictionary describes one junction.</span>
-<span class="sd">                Defaults to dict().</span>
+<span class="sd">                When given (even empty), it replaces the junctions held by pinfo, so</span>
+<span class="sd">                junctions from an earlier analysis do not carry over. When None, the</span>
+<span class="sd">                junctions already held by pinfo are kept. Defaults to None.</span>
 <span class="sd">            dissipatives (dict, optional): Each element of this dictionary describes one dissipative.</span>
 <span class="sd">                Defaults to dict().</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">junctions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">junctions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">junctions</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">junctions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">junctions</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
-                <span class="c1"># Check that valid names of variables and objects have been supplied</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">validate_junction_info</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">junctions</span><span class="p">:</span>
+                    <span class="c1"># Check that valid names of variables and objects have been supplied</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">validate_junction_info</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">dissipatives</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dissipatives</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">pinfo</span><span class="o">.</span><span class="n">dissipative</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
@@ -2509,7 +2513,6 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            pd.DataFrame: multi-index, frequency and quality factors for each variation point.</span>
 <span class="sd">        """</span>
-        <span class="c1"># TODO: do I need to reset self.pinfo.junctions (does it keep the older analysis one)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epr_start</span><span class="p">(</span><span class="n">junctions</span><span class="p">,</span> <span class="n">dissipatives</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">epr_distributed_analysis</span><span class="o">.</span><span class="n">get_ansys_frequencies_all</span><span class="p">()</span></div>
 </div>
@@ -2532,7 +2535,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/09/28</div>
+              Last updated on 2026/10/04</div>
           </div>
           <div class="right-details">
             

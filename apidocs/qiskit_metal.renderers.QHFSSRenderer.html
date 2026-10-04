@@ -1123,7 +1123,9 @@ DistributedAnalysis package, which can execute microwave analysis on eigenmode r
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>junctions</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>, </em><em>optional</em>) – Each element of this dictionary describes one junction.
-Defaults to dict().</p></li>
+When given (even empty), it replaces the junctions held by pinfo, so
+junctions from an earlier analysis do not carry over. When None, the
+junctions already held by pinfo are kept. Defaults to None.</p></li>
 <li><p><strong>dissipatives</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>, </em><em>optional</em>) – Each element of this dictionary describes one dissipative.
 Defaults to dict().</p></li>
 </ul>
@@ -1967,7 +1969,7 @@ Defaults to None.</p></li>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/09/28</div>
+              Last updated on 2026/10/04</div>
           </div>
           <div class="right-details">
             
