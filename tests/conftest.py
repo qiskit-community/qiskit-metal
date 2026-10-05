@@ -27,3 +27,10 @@ import os
 
 if not os.environ.get("CI"):
     os.environ.setdefault("QISKIT_METAL_GUI_NO_ACTIVATE", "1")
+
+
+def pytest_collection_modifyitems(config, items):  # pylint: disable=unused-argument
+    """Run in-process-Qt modules in child processes (see ``_gui_isolation``)."""
+    from tests._gui_isolation import isolate_modules
+
+    isolate_modules(items)
