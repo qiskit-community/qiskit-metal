@@ -476,6 +476,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
                 # C++ object already gone -- nothing to restart.
                 continue
         super().showEvent(event)
+        self.enable_dock_tab_scrolling()
 
     def _stop_refresh_timers(self):
         """Pause the periodic model-refresh timers.
@@ -891,6 +892,21 @@ class MetalGUI(QMainWindowBaseHandler):
         # (``dockDesign``) is only useful once components exist; raising
         # it first showed a near-empty pane on first open.
         self.ui.dockLibrary.raise_()
+        # Re-sweep the dock tab bars (scroll buttons) whenever a dock is
+        # re-tabbed; the first sweep runs in showEvent.
+        for dock in (
+            self.ui.dockDesign,
+            self.ui.dockComponent,
+            self.ui.dockLibrary,
+            self.ui.dockConnectors,
+            self.ui.dockVariables,
+        ):
+            dock.dockLocationChanged.connect(
+                self.main_window._schedule_dock_tab_scrolling
+            )
+        self.main_window.tabifiedDockWidgetActivated.connect(
+            self.main_window._schedule_dock_tab_scrolling
+        )
         self.main_window.resizeDocks([self.ui.dockDesign], [350], Qt.Horizontal)
 
         # These four are tabified together, so the tab bar already names each

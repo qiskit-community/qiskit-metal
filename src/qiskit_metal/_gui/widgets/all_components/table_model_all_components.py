@@ -16,7 +16,7 @@ from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
 from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 
 # from ...utility._handle_qt_messages import slot_catch_error
-from qiskit_metal._gui.utility._toolbox_qt import blend_colors
+from qiskit_metal._gui.utility._toolbox_qt import blend_colors, qt_alive
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -95,6 +95,12 @@ class QTableModel_AllComponents(QAbstractTableModel):
 
     def refresh_auto(self):
         """Automatic refresh, update row count, view, etc."""
+        if not qt_alive(self._tableView):
+            # The view was destroyed under the model; stop polling for good
+            # rather than touch it (use-after-free otherwise).
+            self._timer.stop()
+            return
+
         # We could not do if the widget is hidden
         new_count = self.rowCount()
 

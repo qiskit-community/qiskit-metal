@@ -573,7 +573,11 @@ class PlotCanvas(FigureCanvas):
         ``refresh_plot()`` again).
         """
         self.update()  # not sure if needed
-        self.flush_events()
+        # No ``flush_events()`` here: it spins a nested Qt event loop inside
+        # every refresh -- including the ones during startup, before the
+        # window has finished showing -- so any queued paint/resize/timer
+        # event could re-enter the GUI mid-call. ``draw()`` below is
+        # synchronous and ``draw_idle()`` covers the late-layout case.
         self.draw()
         self.draw_idle()
 

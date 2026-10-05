@@ -18,7 +18,27 @@ from PySide6.QtCore import QObject, QTimer, Qt
 from PySide6.QtGui import QColor, QIcon, QPainter, QPixmap
 from PySide6.QtWidgets import QDockWidget
 
-__all__ = ["blend_colors", "single_shot"]
+__all__ = ["blend_colors", "qt_alive", "single_shot"]
+
+
+def qt_alive(obj) -> bool:
+    """Whether ``obj``'s C++ object still exists (``None`` counts as dead).
+
+    For model poll timers: the model and its view are destroyed
+    independently, so a tick can land after the view's C++ side is gone. A
+    bare ``obj.show()`` then raises ``RuntimeError: ... already deleted``,
+    which is the Python-visible face of a native use-after-free (see
+    ``docs/architecture/gui_crash_defenses.md``). Fails closed: if
+    ``shiboken6.isValid`` itself raises, the object is treated as dead.
+    """
+    if obj is None:
+        return False
+    try:
+        import shiboken6
+
+        return bool(shiboken6.isValid(obj))
+    except Exception:  # pylint: disable=broad-except
+        return False
 
 
 def single_shot(parent: QObject, ms: int, callback) -> QTimer:
