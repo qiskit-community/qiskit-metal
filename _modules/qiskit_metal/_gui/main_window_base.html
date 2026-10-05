@@ -617,7 +617,7 @@
         <span class="c1"># should never set this; the modal is the correct behavior there.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">force_close</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"QISKIT_METAL_GUI_FORCE_CLOSE"</span><span class="p">))</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">childEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QChildEvent</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enable_dock_tab_scrolling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Let the tab bars of tabified docks scroll instead of pinning width.</span>
 
 <span class="sd">        QMainWindow creates a QTabBar lazily for each group of tabified docks</span>
@@ -627,13 +627,20 @@
 <span class="sd">        the sum of all its tabs -- 432 px for the six left-hand docks -- and</span>
 <span class="sd">        the splitter could not make the left panel any narrower. Turning on</span>
 <span class="sd">        scroll buttons drops that floor to roughly one tab plus the arrows.</span>
-<span class="sd">        ``ChildPolished`` fires once the tab bar is fully constructed.</span>
+
+<span class="sd">        This is a plain sweep, called from ``showEvent`` and from the dock</span>
+<span class="sd">        signals (via ``single_shot``), never from a ``childEvent`` override:</span>
+<span class="sd">        ``childEvent`` runs Python from inside C++ widget construction and</span>
+<span class="sd">        destruction, so a crash there is a native use-after-free that no</span>
+<span class="sd">        traceback explains. Idempotent and cheap.</span>
 <span class="sd">        """</span>
-        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QEvent</span><span class="o">.</span><span class="n">ChildPolished</span><span class="p">:</span>
-            <span class="n">child</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">child</span><span class="p">()</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">QTabBar</span><span class="p">):</span>
-                <span class="n">child</span><span class="o">.</span><span class="n">setUsesScrollButtons</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">childEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QTabBar</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">FindDirectChildrenOnly</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">bar</span><span class="o">.</span><span class="n">usesScrollButtons</span><span class="p">():</span>
+                <span class="n">bar</span><span class="o">.</span><span class="n">setUsesScrollButtons</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_schedule_dock_tab_scrolling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">_args</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Re-run the sweep once Qt has finished re-tabbing (signal slot)."""</span>
+        <span class="n">single_shot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_dock_tab_scrolling</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">logger</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">:</span>
@@ -1471,7 +1478,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/04</div>
+              Last updated on 2026/10/05</div>
           </div>
           <div class="right-details">
             

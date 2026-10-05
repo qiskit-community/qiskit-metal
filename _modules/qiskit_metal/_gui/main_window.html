@@ -958,6 +958,7 @@
                 <span class="c1"># C++ object already gone -- nothing to restart.</span>
                 <span class="k">continue</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">showEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_dock_tab_scrolling</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_stop_refresh_timers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Pause the periodic model-refresh timers.</span>
@@ -1384,6 +1385,21 @@
         <span class="c1"># (``dockDesign``) is only useful once components exist; raising</span>
         <span class="c1"># it first showed a near-empty pane on first open.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="o">.</span><span class="n">raise_</span><span class="p">()</span>
+        <span class="c1"># Re-sweep the dock tab bars (scroll buttons) whenever a dock is</span>
+        <span class="c1"># re-tabbed; the first sweep runs in showEvent.</span>
+        <span class="k">for</span> <span class="n">dock</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockComponent</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockConnectors</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockVariables</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="n">dock</span><span class="o">.</span><span class="n">dockLocationChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">_schedule_dock_tab_scrolling</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">tabifiedDockWidgetActivated</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">_schedule_dock_tab_scrolling</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">resizeDocks</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">],</span> <span class="p">[</span><span class="mi">350</span><span class="p">],</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
 
         <span class="c1"># These four are tabified together, so the tab bar already names each</span>
@@ -2537,7 +2553,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/04</div>
+              Last updated on 2026/10/05</div>
           </div>
           <div class="right-details">
             

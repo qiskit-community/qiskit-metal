@@ -1077,7 +1077,11 @@
 <span class="sd">        ``refresh_plot()`` again).</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>  <span class="c1"># not sure if needed</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">flush_events</span><span class="p">()</span>
+        <span class="c1"># No ``flush_events()`` here: it spins a nested Qt event loop inside</span>
+        <span class="c1"># every refresh -- including the ones during startup, before the</span>
+        <span class="c1"># window has finished showing -- so any queued paint/resize/timer</span>
+        <span class="c1"># event could re-enter the GUI mid-call. ``draw()`` below is</span>
+        <span class="c1"># synchronous and ``draw_idle()`` covers the late-layout case.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw_idle</span><span class="p">()</span></div>
 
@@ -1822,7 +1826,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/04</div>
+              Last updated on 2026/10/05</div>
           </div>
           <div class="right-details">
             

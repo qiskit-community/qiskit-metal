@@ -1571,6 +1571,33 @@ note:</p>
 </ul>
 </li>
 </ul>
+<p><strong>EPR over gRPC, and the pyEPR <code class="docutils literal notranslate"><span class="pre">pywin32</span></code> marker</strong> (noted October 2026, from a
+user report; checked against the local pyEPR 1.0.2 checkout, not run on
+Windows).</p>
+<ul class="simple">
+<li><p><strong>Metal’s EPR step still goes through COM, in both renderers.</strong> The legacy
+<code class="docutils literal notranslate"><span class="pre">renderer_ansys</span></code> and the pyaedt renderer’s <code class="docutils literal notranslate"><span class="pre">run_epr()</span></code> both call
+<code class="docutils literal notranslate"><span class="pre">epr.ProjectInfo()</span></code> and <code class="docutils literal notranslate"><span class="pre">epr.DistributedAnalysis</span></code>. pyEPR 1.0.2 already ships
+<code class="docutils literal notranslate"><span class="pre">pyEPR/ansys_pyaedt.py</span></code> (<code class="docutils literal notranslate"><span class="pre">PyaedtDistributedAnalysis</span></code>, gRPC, no COM), which
+its docstring says was checked against the COM path (<code class="docutils literal notranslate"><span class="pre">p_mj</span> <span class="pre">=</span> <span class="pre">0.9755</span></code>).
+Metal does not use it yet.</p></li>
+<li><p><strong>Packaging bug in pyEPR (one-line fix, there rather than in Metal).</strong> The
+base install imports <code class="docutils literal notranslate"><span class="pre">win32com</span></code> but does not declare <code class="docutils literal notranslate"><span class="pre">pywin32</span></code>; only the
+<code class="docutils literal notranslate"><span class="pre">[pyaedt]</span></code> extra does, although that path needs no COM. Move the
+<code class="docutils literal notranslate"><span class="pre">pywin32;</span> <span class="pre">platform_system</span> <span class="pre">==</span> <span class="pre">&quot;Windows&quot;</span></code> marker to the base requirements and
+drop it from <code class="docutils literal notranslate"><span class="pre">[pyaedt]</span></code>. Metal then gets it through pyEPR unchanged.</p></li>
+<li><p><strong>Severity is low.</strong> It affects only Windows users who connect to Ansys.
+Import works (pyEPR swallows the missing import in <code class="docutils literal notranslate"><span class="pre">ansys.py</span></code>). The legacy
+renderer already raises a friendly message pointing at <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pywin32</span></code>
+(<code class="docutils literal notranslate"><span class="pre">ansys_renderer.py</span></code>). The pyaedt renderer’s <code class="docutils literal notranslate"><span class="pre">epr.ProjectInfo()</span></code> probably
+fails with a bare <code class="docutils literal notranslate"><span class="pre">NameError</span></code> on <code class="docutils literal notranslate"><span class="pre">Dispatch</span></code>; unverified, it needs Windows.</p></li>
+<li><p><strong>Longer term:</strong> switch the pyaedt renderer’s <code class="docutils literal notranslate"><span class="pre">run_epr()</span></code> to
+<code class="docutils literal notranslate"><span class="pre">PyaedtDistributedAnalysis</span></code>, so <code class="docutils literal notranslate"><span class="pre">pywin32</span></code> is needed only by the legacy
+renderer. <strong>Before switching, check feature parity.</strong> The module has volume
+energy (<code class="docutils literal notranslate"><span class="pre">energy_electric(obj)</span></code>), line voltage and <code class="docutils literal notranslate"><span class="pre">analyze()</span></code>; surface and
+dielectric loss (which <code class="docutils literal notranslate"><span class="pre">setup_dielectric_for_epr</span></code> feeds today) were not seen
+there. This needs AEDT, so it belongs on this track.</p></li>
+</ul>
 </section>
 <section id="testing-solvers-without-losing-the-stored-answers">
 <h3>Testing solvers without losing the stored answers<a class="headerlink" href="#testing-solvers-without-losing-the-stored-answers" title="Link to this heading">¶</a></h3>
@@ -1639,7 +1666,7 @@ the binary or extra is missing, and no writes under <code class="docutils litera
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/04</div>
+              Last updated on 2026/10/05</div>
           </div>
           <div class="right-details">
             
