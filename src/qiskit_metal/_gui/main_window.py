@@ -60,6 +60,7 @@ from qiskit_metal._gui.utility._toolbox_qt import (
     clear_dock_error_badge,
     doShowHighlighWidget,
     doToggleDockWidget,
+    qt_alive,
     single_shot,
 )
 from qiskit_metal._gui.widgets.all_components.table_model_all_components import (
@@ -441,14 +442,22 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         """
         self.force_close = ison
 
-    def _refresh_timers(self):
+    def _refresh_timers(self, include_single_shot=True):
         """Every periodic model-refresh timer belonging to this window.
 
         Three are reachable through the widget tree. The components-table
         model is parented to the ``MetalGUI`` handler rather than into the
         tree, so ``findChildren`` misses it and it is collected explicitly.
         """
-        timers = list(self.findChildren(QTimer))
+        # ``include_single_shot=False`` (the show path) restarts pollers
+        # only: a pending one-shot (``single_shot``) is stopped on close but
+        # must never be restarted by ``showEvent``, or every past one-shot
+        # (focus-stealing ``_raise`` included) replays on each show.
+        timers = [
+            t
+            for t in self.findChildren(QTimer)
+            if include_single_shot or not t.isSingleShot()
+        ]
 
         proxy = getattr(self.ui, "proxyModel", None)
         if proxy is not None:
@@ -468,7 +477,7 @@ class QMainWindowExtension(QMainWindowExtensionBase):
         one-way trip: closing and reopening the same MetalGUI must leave the
         tables auto-refreshing as before (issue #1048).
         """
-        for timer in self._refresh_timers():
+        for timer in self._refresh_timers(include_single_shot=False):
             try:
                 if not timer.isActive():
                     timer.start()
@@ -714,6 +723,18 @@ class MetalGUI(QMainWindowBaseHandler):
         _trace_init("_setup_net_list_widget")
         self._setup_net_list_widget()
 
+        # Re-sweep the dock tab bars (scroll buttons) whenever any dock is
+        # re-tabbed or moved. Connected here, after every dock exists, so the
+        # late-created Chips/Layers/Log docks are covered too; the first
+        # sweep runs in showEvent.
+        for dock in self.main_window.findChildren(QDockWidget):
+            dock.dockLocationChanged.connect(
+                self.main_window._schedule_dock_tab_scrolling
+            )
+        self.main_window.tabifiedDockWidgetActivated.connect(
+            self.main_window._schedule_dock_tab_scrolling
+        )
+
         # Show and raise — single call after all docks are wired.
         _trace_init("main_window.show()")
         self.main_window.show()
@@ -822,9 +843,23 @@ class MetalGUI(QMainWindowBaseHandler):
         # ``set_design`` can be called on a partially built GUI.
         if getattr(self, "chips_model", None) is not None:
             self.chips_model.load()
-            if getattr(self, "chips_window", None) is not None:
-                self.chips_window.expandAll()
-                self.chips_window.autoresize_columns()
+            chips_window = getattr(self, "chips_window", None)
+            if chips_window is not None:
+                # Deferred, not inline: ``set_design`` runs inside
+                # ``__init__`` before the window is shown, and ``expandAll``
+                # there drives per-row sizing (``resize_on_expand`` ->
+                # model ``index``/``data`` with raw internal pointers) on a
+                # never-painted view. That is where a Windows CI crash
+                # landed (access violation, ``resize_on_expand`` from
+                # ``set_design``). The model's own poll tick re-expands
+                # ~500 ms later anyway; this just avoids a blank pane until
+                # then, once the event loop is running.
+                def _expand_chips(view=chips_window):
+                    if qt_alive(view):
+                        view.expandAll()
+                        view.autoresize_columns()
+
+                single_shot(chips_window, 0, _expand_chips)
         if getattr(self, "layers_window", None) is not None:
             self.layers_window.refresh()
 
@@ -892,21 +927,6 @@ class MetalGUI(QMainWindowBaseHandler):
         # (``dockDesign``) is only useful once components exist; raising
         # it first showed a near-empty pane on first open.
         self.ui.dockLibrary.raise_()
-        # Re-sweep the dock tab bars (scroll buttons) whenever a dock is
-        # re-tabbed; the first sweep runs in showEvent.
-        for dock in (
-            self.ui.dockDesign,
-            self.ui.dockComponent,
-            self.ui.dockLibrary,
-            self.ui.dockConnectors,
-            self.ui.dockVariables,
-        ):
-            dock.dockLocationChanged.connect(
-                self.main_window._schedule_dock_tab_scrolling
-            )
-        self.main_window.tabifiedDockWidgetActivated.connect(
-            self.main_window._schedule_dock_tab_scrolling
-        )
         self.main_window.resizeDocks([self.ui.dockDesign], [350], Qt.Horizontal)
 
         # These four are tabified together, so the tab bar already names each
