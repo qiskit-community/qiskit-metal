@@ -135,7 +135,7 @@ class QMainWindowExtensionBase(QMainWindow):
         # should never set this; the modal is the correct behavior there.
         self.force_close = bool(os.environ.get("QISKIT_METAL_GUI_FORCE_CLOSE"))
 
-    def childEvent(self, event: QtCore.QChildEvent):
+    def enable_dock_tab_scrolling(self):
         """Let the tab bars of tabified docks scroll instead of pinning width.
 
         QMainWindow creates a QTabBar lazily for each group of tabified docks
@@ -145,13 +145,20 @@ class QMainWindowExtensionBase(QMainWindow):
         the sum of all its tabs -- 432 px for the six left-hand docks -- and
         the splitter could not make the left panel any narrower. Turning on
         scroll buttons drops that floor to roughly one tab plus the arrows.
-        ``ChildPolished`` fires once the tab bar is fully constructed.
+
+        This is a plain sweep, called from ``showEvent`` and from the dock
+        signals (via ``single_shot``), never from a ``childEvent`` override:
+        ``childEvent`` runs Python from inside C++ widget construction and
+        destruction, so a crash there is a native use-after-free that no
+        traceback explains. Idempotent and cheap.
         """
-        if event.type() == QtCore.QEvent.ChildPolished:
-            child = event.child()
-            if isinstance(child, QTabBar):
-                child.setUsesScrollButtons(True)
-        super().childEvent(event)
+        for bar in self.findChildren(QTabBar, options=QtCore.Qt.FindDirectChildrenOnly):
+            if not bar.usesScrollButtons():
+                bar.setUsesScrollButtons(True)
+
+    def _schedule_dock_tab_scrolling(self, *_args):
+        """Re-run the sweep once Qt has finished re-tabbing (signal slot)."""
+        single_shot(self, 0, self.enable_dock_tab_scrolling)
 
     @property
     def logger(self) -> logging.Logger:
