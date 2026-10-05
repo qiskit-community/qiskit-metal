@@ -24,6 +24,8 @@ from PySide6 import QtCore
 from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
 from PySide6.QtGui import QFont
 
+from qiskit_metal._gui.utility._toolbox_qt import qt_alive
+
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -92,6 +94,10 @@ class QTableModel_Pins(QAbstractTableModel):
 
     def refresh_auto(self):
         """Polled refresh: only rebuild when the pin count actually changed."""
+        if not qt_alive(self._tableView):
+            # View destroyed under the model: stop polling for good.
+            self._timer.stop()
+            return
         design = self.design
         new_count = 0
         if design is not None:

@@ -15,6 +15,7 @@ from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
 from PySide6.QtGui import QFont
 
 from qiskit_metal import config
+from qiskit_metal._gui.utility._toolbox_qt import qt_alive
 
 
 class PropValTable(QAbstractTableModel):
@@ -74,6 +75,10 @@ class PropValTable(QAbstractTableModel):
 
     def auto_refresh(self):
         """Do an automatic refresh."""
+        if self._view is not None and not qt_alive(self._view):
+            # View destroyed under the model: stop polling for good.
+            self.timer.stop()
+            return
         new_row_count = self.rowCount(self)
         if self._row_count != new_row_count:
             # Wrap the reset logic in beginResetModel and endResetModel
