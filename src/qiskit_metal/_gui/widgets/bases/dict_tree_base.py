@@ -386,6 +386,11 @@ class QTreeModel_Base(QAbstractItemModel):
 
         # Clear existing tree paths if any
         self.paths.clear()
+        # Qt holds the nodes only as raw internal pointers in QModelIndex
+        # (``createIndex(row, col, python_object)`` takes no reference), so
+        # dropping the last Python reference frees them under any index Qt
+        # still has. Keep the previous generation alive until the next load.
+        self._retired_nodes = list(self.root.children)
         self.root.children.clear()
 
         # Construct the paths -> sets self.paths

@@ -533,6 +533,9 @@ class TreeModelParamEntry(QAbstractItemModel):
         self.beginResetModel()
 
         # Clear existing tree paths if any
+        # Keep the previous generation alive (Qt holds nodes only as raw
+        # internal pointers; see dict_tree_base.QTreeModel_Base.load).
+        self._retired_nodes = list(self.root.children)
         self.root.children.clear()
 
         # Construct the paths -> sets self.paths
