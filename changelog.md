@@ -6,6 +6,12 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Unreleased
+
+### Fixed
+
+- **`RouteMixed` with `avoid_collision` no longer crashes on a multi-part obstacle.** `RouteAnchors.unobstructed_close_up` read `GeoSeries.exterior`, which is `None` unless the buffered union is a single polygon, and then raised `'NoneType' object has no attribute 'coords'` while building a route between `LineTee` pins. The outline is now the exterior of each polygonal piece of that union. (#1010)
+
 ## Quantum Metal v0.9.0 (open-source FEM solver, shape DRC, Python 3.13/3.14 and numpy 2)
 
 Minor release: the gmsh + scikit-fem Maxwell solver and the package-mode

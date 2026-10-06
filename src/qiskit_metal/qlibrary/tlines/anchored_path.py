@@ -20,8 +20,7 @@ from qiskit_metal.toolbox_metal import math_and_overrides as mao
 from qiskit_metal.toolbox_metal.exceptions import QiskitMetalDesignError
 from collections.abc import Mapping
 from shapely.ops import unary_union
-from shapely.geometry import CAP_STYLE
-import geopandas as gpd
+from shapely.geometry import CAP_STYLE, GeometryCollection, MultiPolygon, Polygon
 
 
 def intersecting(a: np.array, b: np.array, c: np.array, d: np.array) -> bool:
@@ -169,17 +168,34 @@ class RouteAnchors(QRoute):
             )
         # merge all the polygons
         polygons = self.design.components[component_name].qgeometry_list("poly")
-        boundary = gpd.GeoSeries(unary_union(polygons + paths_converted))
-        boundary_coords = list(boundary.geometry.exterior[0].coords)
-        if any(
-            intersecting(
-                segment[0], segment[1], boundary_coords[i], boundary_coords[i + 1]
-            )
-            for i in range(len(boundary_coords) - 1)
-        ):
-            # At least 1 intersection with the actual component contour; do not proceed!
-            return False
-        # All clear, no intersections
+        # GeoSeries.exterior is None unless the union is a single Polygon, so a
+        # MultiPolygon or GeometryCollection (disjoint buffered paths) raised
+        # AttributeError on .coords. Walk each polygonal exterior instead.
+        merged = unary_union(polygons + paths_converted)
+        pieces = []
+        pending = [merged]
+        while pending:
+            geom = pending.pop()
+            if geom is None or geom.is_empty:
+                continue
+            if isinstance(geom, Polygon):
+                pieces.append(geom)
+            elif isinstance(geom, (MultiPolygon, GeometryCollection)):
+                pending.extend(geom.geoms)
+        for piece in pieces:
+            exterior = piece.exterior
+            if exterior is None:
+                continue
+            boundary_coords = list(exterior.coords)
+            if any(
+                intersecting(
+                    segment[0], segment[1], boundary_coords[i], boundary_coords[i + 1]
+                )
+                for i in range(len(boundary_coords) - 1)
+            ):
+                # At least 1 intersection with the actual component contour; do not proceed!
+                return False
+        # All clear, no intersections (or the union had no exterior ring)
         return True
 
     def unobstructed(self, segment: list) -> bool:
