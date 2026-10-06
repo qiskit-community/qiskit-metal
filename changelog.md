@@ -6,6 +6,12 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Unreleased
+
+### Fixed
+
+- **`RouteMixed` with `avoid_collision` no longer crashes on a multi-part obstacle.** `RouteAnchors.unobstructed_close_up` read `GeoSeries.exterior`, which is `None` unless the buffered union is a single polygon, and then raised `'NoneType' object has no attribute 'coords'` while building a route between `LineTee` pins. The outline is now the exterior of each polygonal piece of that union. (#1010)
+
 ## Quantum Metal v0.9.0 (open-source FEM solver, shape DRC, Python 3.13/3.14 and numpy 2)
 
 Minor release: the gmsh + scikit-fem Maxwell solver and the package-mode
@@ -43,7 +49,6 @@ fixes. The dependency minimums move up (see *Upgrade notes*). No API removals.
 
 ### Fixed
 
-- **`RouteMixed` with `avoid_collision` no longer crashes on a multi-part obstacle.** `RouteAnchors.unobstructed_close_up` read `GeoSeries.exterior`, which is `None` unless the buffered union is a single polygon, and then raised `'NoneType' object has no attribute 'coords'` while building a route between `LineTee` pins. The outline is now the exterior of each polygonal piece of that union. (#1010)
 - **`ResonatorLumped`: `n_turns` and `inner_space` now take effect, and the trace stays connected.** The meander was hard-coded to 14 U-turns, so both options were ignored. Its lines were offset by `res_width` while its bends used `perimeter_thickness`, and the last bend assumed `initial == turn_radius`, so changing any of those split the trace into up to 27 disconnected pieces. The meander is now built from `n_turns` (default now `14`), `turn_radius`, and `inner_space`, which is the edge-to-edge gap between lines (default now `0.19mm`). Default geometry is unchanged (within 1 nm). The component warns when the trace overlaps the perimeter, or when `final` ends inside the box.
 - **`LumpedElementsSim()` / `EigenmodeSim()` without a design no longer connect to Ansys on construction.** The design-less path created the renderer with `initiate=True`, so building a simulation object just to load a saved matrix failed off Windows. It now matches the design path (`initiate=False`); `run_sim()` still starts the renderer. An unknown `renderer_name` without a design now logs an error instead of raising `AttributeError`.
 - **Pin names documented.** Seventeen components (the three tees, both tunable couplers, `CapNInterdigital`, `Cap3Interdigital`, `ResonatorCoilRect`, `NSquareSpiral`, `TransmonInterdigitated`, `StarQubit`, both concentric transmons, `TransmonCrossFL`, `ResonatorLumped`, and the three launchpads) now list their pins in a `Pins:` section. A test checks that every pin created at default options is named in its class docstring.

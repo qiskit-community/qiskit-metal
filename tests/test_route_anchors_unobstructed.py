@@ -69,8 +69,10 @@ class TestRouteAnchorsUnobstructed(unittest.TestCase):
         self.assertTrue(route.unobstructed(segment))
 
     def test_route_mixed_into_linetee_builds(self):
-        """Issue #1010: RouteMixed between LineTee second_end pins, with
-        anchors and avoid_collision, builds and stores a trace."""
+        """Smoke test for the issue #1010 setup: RouteMixed between LineTee
+        second_end pins, with anchors and avoid_collision, builds and stores a
+        trace. This also passes without the fix; the regression test is
+        test_segment_missing_multipart_rings_is_unobstructed."""
         design = designs.DesignPlanar()
         design.overwrite_enabled = True
         LineTee(design, "Lt1", options=dict(pos_x="500um"))
@@ -121,8 +123,10 @@ class TestRouteAnchorsUnobstructed(unittest.TestCase):
         self.assertTrue(any(geom.length > 0 for geom in paths.geometry))
 
     def test_linetee_bbox_segment_does_not_raise(self):
-        """A segment across a LineTee bounding box returns a bool; one far
-        from the tee stays unobstructed (issue #1010)."""
+        """Smoke test: a segment across a LineTee bounding box returns a bool;
+        one far from the tee stays unobstructed. This also passes without the
+        #1010 fix; the regression test is
+        test_segment_missing_multipart_rings_is_unobstructed."""
         design = designs.DesignPlanar()
         design.overwrite_enabled = True
         LineTee(design, "tee")
