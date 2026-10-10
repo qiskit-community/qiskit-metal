@@ -4,7 +4,7 @@ import warnings
 from numpy import size
 import geopandas as gpd
 
-from qiskit_metal.toolbox_python.utility_functions import concat_tables
+from qiskit_metal.toolbox_python.pandas_tables import concat_tables
 
 _DEPRECATION_MESSAGE = (
     "QDesignCheck is deprecated and will be removed in a future release. "

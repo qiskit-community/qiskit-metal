@@ -32,7 +32,7 @@ import pandas as pd
 
 from qiskit_metal import draw
 from qiskit_metal.toolbox_metal.parsing import parse_value
-from qiskit_metal.toolbox_python.utility_functions import concat_tables
+from qiskit_metal.toolbox_python.pandas_tables import concat_tables
 
 if TYPE_CHECKING:
     from qiskit_metal.designs import QDesign

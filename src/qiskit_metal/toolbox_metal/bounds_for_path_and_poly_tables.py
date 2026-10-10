@@ -4,7 +4,7 @@ from copy import deepcopy
 
 import pandas as pd
 
-from qiskit_metal.toolbox_python.utility_functions import concat_tables
+from qiskit_metal.toolbox_python.pandas_tables import concat_tables
 
 
 def determine_larger_box(
