@@ -222,6 +222,11 @@ them working:
   any virtual Qt calls from inside C++ constructors/destructors) on a GUI
   widget, and never call `processEvents`/`flush_events` from a method that
   runs during startup. Use signals, `showEvent`, or `single_shot`.
+  Tests are covered too: a Python `QProxyStyle` subclass installed with
+  `app.setStyle()` runs Python for every style query of every widget,
+  including from inside C++ constructors (~4,000 `styleHint` calls per
+  `MetalGUI` start). Set such a style on the specific widget, after
+  construction, as `tests/test_gui_left_dock_min_width.py` does.
 - **A single clean run proves nothing** in either direction. The crash depends
   on memory layout.
 

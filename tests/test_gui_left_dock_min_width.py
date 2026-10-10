@@ -15,9 +15,24 @@ scroll buttons for every dock tab bar the main window creates.
 
 Headless defaults hide the bug: the offscreen/Fusion style already uses
 scroll arrows, so a plain offscreen run passes before and after the fix. The
-child process therefore installs a proxy style that reports
-``SH_TabBar_PreferNoArrows`` like macOS does, which reproduces the 432-ish px
-floor under ``offscreen``.
+child process therefore gives each dock tab bar a proxy style that reports
+``SH_TabBar_PreferNoArrows`` like macOS does (``QTabBar`` re-reads the hint
+on a style change, so the bars lose their arrows), then switches dock tabs
+the way a user does. That emits ``tabifiedDockWidgetActivated``, which runs
+the product's tab-bar sweep. Without the sweep the bars keep the sum-of-tabs
+floor (432 px on macOS, about 350 px under ``offscreen``).
+
+The proxy is applied to the existing tab bars after ``MetalGUI`` is built and
+removed again before teardown, never installed as the application style. A
+Python ``styleHint`` on the application style runs for every style query of
+every widget -- about 4,000 calls per ``MetalGUI`` start, many from inside
+C++ widget constructors (``QTabBar`` queries this very hint while it is being
+built), each wrapping the half-built widget and setting a dynamic property on
+it. That is the Python-in-Qt's-construction-path hazard of failure mode 5 in
+``docs/architecture/gui_crash_defenses.md``; the app-wide version of this
+test crashed the child intermittently on CI (access violation inside
+``styleHint`` during ``set_design``; ``rc=-6`` after the tab bars were
+measured). Product code installs no Python style.
 
 The full MetalGUI is built in a subprocess, like the other full-GUI tests,
 so a native teardown crash cannot take down the pytest process.
@@ -53,7 +68,6 @@ class MacLikeTabBarStyle(QProxyStyle):
 
 
 app = QApplication.instance() or QApplication([])
-app.setStyle(MacLikeTabBarStyle())
 
 from qiskit_metal import designs
 from qiskit_metal._gui.main_window import MetalGUI
@@ -68,19 +82,38 @@ def pump(ms):
 
 
 gui = MetalGUI(designs.DesignPlanar())
+# Module-level: setStyle() does not take ownership, so this reference keeps
+# the style alive for as long as any bar uses it.
+mac_style = MacLikeTabBarStyle()
+styled_bars = []
 try:
     pump(300)
     mw = gui.main_window
+    # Style only the dock tab bars, after construction. QTabBar re-reads
+    # SH_TabBar_PreferNoArrows on the style change, so each bar now has no
+    # scroll arrows, as a macOS-born bar does.
+    for b in mw.findChildren(QTabBar, options=Qt.FindDirectChildrenOnly):
+        b.setStyle(mac_style)
+        styled_bars.append(b)
+    pump(100)
+    # Switch dock tabs the way a user does: QMainWindow emits
+    # tabifiedDockWidgetActivated, which runs the product's tab-bar sweep.
+    for b in styled_bars:
+        if b.isVisible() and b.count() > 1:
+            b.setCurrentIndex((b.currentIndex() + 1) % b.count())
+    pump(200)
+    # Measure only docks actually on screen: a dock behind another tab
+    # keeps whatever width it last had, so it says nothing about the
+    # area's current floor.
     left = [
         d
         for d in mw.findChildren(QDockWidget)
-        if mw.dockWidgetArea(d) == Qt.LeftDockWidgetArea and d.isVisible()
+        if mw.dockWidgetArea(d) == Qt.LeftDockWidgetArea
+        and d.isVisible()
+        and not d.visibleRegion().isEmpty()
     ]
-    bars = [
-        b
-        for b in mw.findChildren(QTabBar, options=Qt.FindDirectChildrenOnly)
-        if b.isVisible()
-    ]
+    print("LEFT_DOCKS", len(left), flush=True)
+    bars = [b for b in styled_bars if b.isVisible()]
     print("TABBARS", len(bars), flush=True)
     for b in bars:
         print("TABBAR_SCROLL", b.usesScrollButtons(), flush=True)
@@ -92,6 +125,10 @@ try:
     print("LEFT_WIDTH", max(d.width() for d in left), flush=True)
     print("MARKER_OK", flush=True)
 finally:
+    # Back to the application style before teardown, so no Python style
+    # is in use while the widgets are destroyed.
+    for b in styled_bars:
+        b.setStyle(None)
     gui.main_window.force_close = True
     gui.main_window.close()
     pump(200)
@@ -133,6 +170,7 @@ def test_left_dock_area_can_shrink_below_threshold():
     for msh in re.findall(r"TABBAR_MSH (\d+)", out):
         assert int(msh) < MAX_LEFT_MIN_WIDTH, f"dock tab bar min width {msh} px"
 
+    assert int(re.search(r"LEFT_DOCKS (\d+)", out).group(1)) >= 1
     width = int(re.search(r"LEFT_WIDTH (\d+)", out).group(1))
     assert width < MAX_LEFT_MIN_WIDTH, (
         f"left dock area cannot shrink below {width} px (want < {MAX_LEFT_MIN_WIDTH})"

@@ -193,6 +193,14 @@ run to run, which made it look like the #1048 use-after-free family.
 6.12.0 and stays flat on 6.11.2. Check whether a newer PySide6 fixes it
 before lifting the exclusion.
 
+**Not the same crash**: on Windows the same test also died with an access
+violation inside the test's own Python `QProxyStyle.styleHint`, under
+PySide6 6.11.2. That one is the test installing a Python style
+application-wide before `MetalGUI` is built (failure mode 5 in
+`docs/architecture/gui_crash_defenses.md`); the test now sets the style on
+the built tab bars only. Check the installed PySide6 version in the job log
+before attributing a GUI crash to either cause.
+
 **Also**: the left-dock test printed only the last 2000 characters of the
 child's stderr, which for a native crash is faulthandler's extension-module
 list; it now prints from the crash report on.
