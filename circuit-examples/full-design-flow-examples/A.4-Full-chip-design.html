@@ -508,6 +508,10 @@
 <span class="c1"># Locally you should already have it via `pip install quantum-metal` or</span>
 <span class="c1"># `pip install 'quantum-metal[gui]'` for the desktop GUI.</span>
 <span class="c1"># !pip install -q quantum-metal</span>
+<span class="c1"># For the gmsh / ElmerFEM section, also:</span>
+<span class="c1"># Colab only (not needed locally): gmsh's Linux wheel needs system graphics libraries Colab lacks.</span>
+<span class="c1"># !apt-get -qq update &amp;&amp; apt-get -qq install -y libglu1-mesa libgl1 libxcursor1 libxft2 libxinerama1 libxfixes3 libxrender1 libxext6 libfontconfig1 &gt; /dev/null</span>
+<span class="c1"># !pip install -q "quantum-metal[mesh]"</span>
 </pre></div>
 </div>
 </div>

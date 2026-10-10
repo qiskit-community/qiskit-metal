@@ -540,6 +540,17 @@
 <li><p>how the Appendix D fit turns an impedance matrix back into a circuit.</p></li>
 </ul>
 <div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Colab, uncomment to install the dependencies of the whole series.</span>
+<span class="c1"># Colab only (not needed locally): gmsh's Linux wheel needs system graphics libraries Colab lacks.</span>
+<span class="c1"># !apt-get -qq update &amp;&amp; apt-get -qq install -y libglu1-mesa libgl1 libxcursor1 libxft2 libxinerama1 libxfixes3 libxrender1 libxext6 libfontconfig1 &gt; /dev/null</span>
+<span class="c1"># !pip install -q "quantum-metal[skfem]" pymetis</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -719,7 +730,7 @@ on-resonance g/2pi = 2.413 MHz   (paper: 2.42 MHz)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.42-Four-ways-to-measure-a-coupling_10_0.png" src="../../_images/tut_4-Analysis_4.42-Four-ways-to-measure-a-coupling_10_0.png" />
+<img alt="../../_images/tut_4-Analysis_4.42-Four-ways-to-measure-a-coupling_11_0.png" src="../../_images/tut_4-Analysis_4.42-Four-ways-to-measure-a-coupling_11_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -889,7 +900,7 @@ EMF: g/2pi = +2.4130 MHz   (exact +2.4130)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.42-Four-ways-to-measure-a-coupling_18_0.png" src="../../_images/tut_4-Analysis_4.42-Four-ways-to-measure-a-coupling_18_0.png" />
+<img alt="../../_images/tut_4-Analysis_4.42-Four-ways-to-measure-a-coupling_19_0.png" src="../../_images/tut_4-Analysis_4.42-Four-ways-to-measure-a-coupling_19_0.png" />
 </div>
 </div>
 <p>Two poles — the qubit near 6.07 GHz and the package mode near 6.48 GHz. <span class="math notranslate nohighlight">\(Z_{mm}\)</span> barely sees the package pole: its port is shunted by 1 pH, so a zero sits only ~0.6 MHz above the pole. That is why the frequency grid must be fine.</p>
@@ -998,7 +1009,7 @@ impedance matrix: g_C/2pi = 2.069, g_L/2pi = -0.251, g/2pi = +2.4130 MHz
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.42-Four-ways-to-measure-a-coupling_22_1.png" src="../../_images/tut_4-Analysis_4.42-Four-ways-to-measure-a-coupling_22_1.png" />
+<img alt="../../_images/tut_4-Analysis_4.42-Four-ways-to-measure-a-coupling_23_1.png" src="../../_images/tut_4-Analysis_4.42-Four-ways-to-measure-a-coupling_23_1.png" />
 </div>
 </div>
 <p>Three methods are exact on this circuit; EPR is 4% low for the reason found in Sec. 3, and exact once the whole qubit branch is counted. (The avoided crossing agrees to 0.01%: the counter-rotating terms that the rotating-wave picture drops shift the splitting only at order <span class="math notranslate nohighlight">\(g^2/\omega\)</span>.) On a 3D model, discretization error adds to these — notebook 4.45 runs the same four methods through a finite-element solver.</p>

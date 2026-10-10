@@ -552,6 +552,19 @@ following steps:</p>
 <div><p>🧭 <strong>Other simulation pathways.</strong> This notebook uses ElmerFEM for the capacitance matrix. The same design can also go to Ansys HFSS / Q3D (tutorials 4.01–4.23) or to the pip-installable gmsh + scikit-fem solver for eigenmodes, couplings and capacitance (tutorials 4.43–4.45); AWS Palace is available through SQDMetal, with a native integration in progress. <a class="reference external" href="https://qiskit-community.github.io/qiskit-metal/simulation-pathways.html">Simulation pathways</a> summarizes what each solver computes, how
 to install it, and which tutorials use it.</p>
 </div></blockquote>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Colab, uncomment to install Quantum Metal with the mesher.</span>
+<span class="c1"># The ElmerFEM steps also need ElmerSolver, which Colab does not provide;</span>
+<span class="c1"># rendering and meshing with gmsh work there.</span>
+<span class="c1"># Colab only (not needed locally): gmsh's Linux wheel needs system graphics libraries Colab lacks.</span>
+<span class="c1"># !apt-get -qq update &amp;&amp; apt-get -qq install -y libglu1-mesa libgl1 libxcursor1 libxft2 libxinerama1 libxfixes3 libxrender1 libxext6 libfontconfig1 &gt; /dev/null</span>
+<span class="c1"># !pip install -q "quantum-metal[mesh]"</span>
+</pre></div>
+</div>
+</div>
 </section>
 </section>
 <section id="Necessary-Imports">
