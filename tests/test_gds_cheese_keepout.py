@@ -74,5 +74,31 @@ class TestCheeseKeepoutEdge(unittest.TestCase):
         self.assertEqual(len(shifted), 245)
 
 
+class TestCheeseKeepoutMixedShapes(unittest.TestCase):
+    def test_polygons_with_different_vertex_counts(self):
+        # Keep-out polygons (and holes) with different numbers of vertices:
+        # building them as one shapely array raised ValueError, which broke
+        # GDS export in tutorials 3.1 and 3.2.
+        from types import SimpleNamespace
+
+        import gdstk
+
+        from qiskit_metal.renderers.renderer_gds.make_cheese import Cheesing
+
+        holes = [
+            gdstk.rectangle((0, 0), (1, 1)),  # clear of the keep-out
+            gdstk.rectangle((4, 0), (5, 1)),  # straddles it
+            gdstk.regular_polygon((0.5, 3.5), 0.5, 6),  # clear, 6 vertices
+        ]
+        keepout = [
+            gdstk.rectangle((4.5, -1), (6, 2)),
+            gdstk.Polygon([(10, 10), (11, 10), (11.5, 11), (11, 12), (10, 12)]),
+        ]
+        fake = SimpleNamespace(precision=1e-9, layer=1, datatype_cheese=100)
+        kept = Cheesing._holes_clear_of_keepout(fake, holes, keepout)
+        self.assertEqual(len(kept), 2)
+        self.assertEqual({p.datatype for p in kept}, {101})
+
+
 if __name__ == "__main__":
     unittest.main()

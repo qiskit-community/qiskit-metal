@@ -402,9 +402,15 @@ class Cheesing:
         """
         if not holes:
             return []
-        shapes = shapely.polygons([p.points for p in holes])
+        # One Polygon per gdstk polygon: shapely.polygons() on the list
+        # needs every polygon to have the same number of vertices.
+        shapes = np.array([shapely.Polygon(p.points) for p in holes], dtype=object)
         if keepout:
-            region = shapely.union_all(shapely.polygons([p.points for p in keepout]))
+            region = shapely.union_all(
+                shapely.make_valid(
+                    np.array([shapely.Polygon(p.points) for p in keepout], dtype=object)
+                )
+            )
             shapely.prepare(region)
             # Shrink each hole by the precision so a hole that only touches
             # the keepout, or overlaps it by rounding, is kept.
