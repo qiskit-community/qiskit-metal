@@ -32,7 +32,10 @@ ONE_OVER_FEMTO = 1e15
 e = 1.60217657e-19  # electron charge
 h = 6.62606957e-34  # Plank's
 hbar = 1.0545718e-34  # Plank's reduced
-phinot = 2.067 * 1e-15  # magnetic flux quantum (full, h/2e)
+# magnetic flux quantum (full, h/2e). Derived from h and e above; it used to
+# be the literal 2.067e-15, 4e-4 relative low, which put E_J (~ phinot^2)
+# 8e-4 low (#1207).
+phinot = h / (2 * e)
 phi0 = phinot / (2 * np.pi)  # reduced magnetic flux quantum (ℏ/2e)
 
 

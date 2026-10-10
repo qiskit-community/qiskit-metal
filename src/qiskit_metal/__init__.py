@@ -133,9 +133,10 @@ def setup_qt_backend():
 from qiskit_metal import config
 from qiskit_metal.toolbox_python._logging import setup_logger
 
-logger = setup_logger(
-    "metal", config.log.format, config.log.datefmt, capture_warnings=True
-)  # type: logging.Logger
+# Leave ``logging.captureWarnings`` alone: it is process-global, and with
+# it on, every ``warnings.warn`` in the process (numpy, shapely, user code)
+# goes to the handler-less ``py.warnings`` logger and is never shown (#1229).
+logger = setup_logger("metal", config.log.format, config.log.datefmt)  # type: logging.Logger
 del setup_logger
 
 ###########################################################################

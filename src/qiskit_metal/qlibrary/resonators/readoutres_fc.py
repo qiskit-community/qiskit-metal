@@ -29,6 +29,17 @@ class ReadoutResFC(QComponent):
         - Change coupling to the qubit by varying ``readout_radius``.
         - Couple to the feedthrough line via the horizontal section of length ``readout_l3``.
         - Adjust resonator frequency by varying ``readout_l5``.
+
+        Layers:
+        - The trace (``ro``) is drawn on ``layer``.
+        - The etch (``ro_etch``, subtracted from the ground plane when
+          ``subtract`` is true) is drawn on ``layer_subtract``. Left empty (the
+          default), it uses ``layer``, so the CPW gap is cut from the ground
+          plane of the trace's own layer. Up to v0.9.0 the default was ``"2"``,
+          which cut the gap from a separate layer-2 ground plane in the GDS
+          export; set ``layer_subtract="2"`` to get that layout back.
+        - The default ``chip="main"`` does not exist on a ``DesignFlipChip``;
+          set ``chip`` to ``"C_chip"`` or ``"Q_chip"`` there.
     """
 
     default_options = Dict(
@@ -46,7 +57,7 @@ class ReadoutResFC(QComponent):
         arc_step="1 um",
         orientation="0",
         layer="1",
-        layer_subtract="2",
+        layer_subtract="",
         subtract=True,
         chip="main",
         _default_connection_pads=Dict(),
@@ -175,12 +186,18 @@ class ReadoutResFC(QComponent):
         [ro, ro_etch, port_line] = polys
 
         # generate QGeometry
+        # An empty layer_subtract means "same layer as the trace" (#1224).
+        layer_subtract = self.options.get("layer_subtract")
+        if layer_subtract is None or str(layer_subtract).strip() == "":
+            layer_subtract = p.layer
+        else:
+            layer_subtract = p.layer_subtract
         self.add_qgeometry("poly", dict(ro=ro), chip=chip, layer=p.layer)
         self.add_qgeometry(
             "poly",
             dict(ro_etch=ro_etch),
             chip=chip,
-            layer=p.layer_subtract,
+            layer=layer_subtract,
             subtract=p.subtract,
         )
 

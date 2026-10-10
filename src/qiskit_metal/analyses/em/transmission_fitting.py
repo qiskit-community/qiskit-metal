@@ -39,7 +39,7 @@ def _detrend_transmission(
     # First detrending for the delay
     # This is done by detrending the phase using the initial points and the final points
 
-    mag, phas = np.abs(s21), np.angle(s21)
+    mag, phas = np.abs(s21), np.unwrap(np.angle(s21))
 
     fit_delay_init = linregress(
         x=np.hstack((del_freq[:detrend_points_init], del_freq[-detrend_points_final:])),
@@ -59,19 +59,6 @@ def _detrend_transmission(
     mag = mag - fit_poly_mag.slope * del_freq
 
     return mag * np.exp(1.0j * phas), fit_delay_init, fit_poly_mag
-
-
-def _retrend_transmission(del_freq, s21, fit_delay_init, fit_poly_mag):
-
-    mag, phas = np.abs(s21), np.angle(s21)
-    mag = mag + fit_poly_mag.slope * del_freq
-
-    phas = (
-        np.remainder((phas + fit_delay_init.slope * del_freq + np.pi), (2.0 * np.pi))
-        - np.pi
-    )
-
-    return mag, phas
 
 
 def _circle_residual(params, s21):
@@ -166,13 +153,25 @@ def _fit_phase_func(freq, phas, theta, Qr, fr):
 
 
 def _lorentz_func(
-    freq, amplitude_complex_mag, amplitude_complex_arg, Qr, Qc, fr, phi0, delay
+    freq,
+    amplitude_complex_mag,
+    amplitude_complex_arg,
+    Qr,
+    Qc,
+    fr,
+    phi0,
+    delay,
+    freq_ref=0.0,
 ):
+    # The cable delay acts on freq - freq_ref; amplitude_complex_arg is the
+    # phase of the off-resonant transmission at freq_ref.
     freq_ = freq[: len(freq) // 2]
     # Because one cannot fit complex functions with scipy.optimize.curve_fit
     s21 = (
         amplitude_complex_mag
-        * np.exp(1.0j * (amplitude_complex_arg - 2.0 * np.pi * freq_ * delay))
+        * np.exp(
+            1.0j * (amplitude_complex_arg - 2.0 * np.pi * (freq_ - freq_ref) * delay)
+        )
         * (1 - ((Qr / Qc) * np.exp(1.0j * phi0)) / (1 + 2.0j * Qr * (freq_ - fr) / fr))
     )
 
@@ -180,46 +179,55 @@ def _lorentz_func(
 
 
 def _lorentz_jacob(
-    freq, amplitude_complex_mag, amplitude_complex_arg, Qr, Qc, fr, phi0, delay
+    freq,
+    amplitude_complex_mag,
+    amplitude_complex_arg,
+    Qr,
+    Qc,
+    fr,
+    phi0,
+    delay,
+    freq_ref=0.0,
 ):
 
     freq_ = freq[: len(freq) // 2]
-    temp = (
-        np.exp(1.0j * (amplitude_complex_arg - 2.0 * np.pi * freq_ * delay))
-        * ((Qr / Qc) * np.exp(1.0j * phi0))
-        / (1 + 2.0j * Qr * (freq_ - fr) / fr)
+    background = np.exp(
+        1.0j * (amplitude_complex_arg - 2.0 * np.pi * (freq_ - freq_ref) * delay)
     )
-    jac1 = np.exp(1.0j * (amplitude_complex_arg - 2.0 * np.pi * freq_ * delay)) - temp
+    denom = 1 + 2.0j * Qr * (freq_ - fr) / fr
+    temp = background * ((Qr / Qc) * np.exp(1.0j * phi0)) / denom
+    jac1 = background - temp  # |A|
     jac2 = 1.0j * amplitude_complex_mag * jac1  # arg(A)
-    jac3 = -temp / (Qr * (1 + 2.0j * Qr * (freq_ - fr) / fr))  # Qr
-    jac4 = temp / Qc  # Qc
+    jac3 = -amplitude_complex_mag * temp / (Qr * denom)  # Qr
+    jac4 = amplitude_complex_mag * temp / Qc  # Qc
     jac5 = jac3 * 2.0j * freq_ * (Qr / fr) * (Qr / fr)  # fr
-    jac6 = -1.0j * temp  # phi0
-    jac7 = -2.0 * np.pi * freq_ * jac2  # delay
+    jac6 = -1.0j * amplitude_complex_mag * temp  # phi0
+    jac7 = -2.0 * np.pi * (freq_ - freq_ref) * jac2  # delay
 
-    jac1 = np.hstack((np.real(jac1), np.imag(jac1)))
-    jac2 = np.hstack((np.real(jac2), np.imag(jac2)))
-    jac3 = np.hstack((np.real(jac3), np.imag(jac3)))
-    jac4 = np.hstack((np.real(jac4), np.imag(jac4)))
-    jac5 = np.hstack((np.real(jac5), np.imag(jac5)))
-    jac6 = np.hstack((np.real(jac6), np.imag(jac6)))
-    jac7 = np.hstack((np.real(jac7), np.imag(jac7)))
-
-    return np.vstack((jac1, jac2, jac3, jac4, jac5, jac6, jac7)).T
-
-    # return np.stack((np.real(jac), np.imag(jac)), axis=2)
+    jacs = (jac1, jac2, jac3, jac4, jac5, jac6, jac7)
+    return np.vstack([np.hstack((np.real(j), np.imag(j))) for j in jacs]).T
 
 
 def _fit_lorentzian(
-    freq, s21, amplitude_complex_mag, amplitude_complex_arg, Qr, Qc, fr, phi0, delay
+    freq,
+    s21,
+    amplitude_complex_mag,
+    amplitude_complex_arg,
+    Qr,
+    Qc,
+    fr,
+    phi0,
+    delay,
+    freq_ref=0.0,
 ):
 
     lorentz_fit_result, lorentz_fit_cov = curve_fit(
-        _lorentz_func,
+        lambda f, *p: _lorentz_func(f, *p, freq_ref=freq_ref),
         np.hstack((freq, freq)),
         np.hstack((np.real(s21), np.imag(s21))),
         p0=[amplitude_complex_mag, amplitude_complex_arg, Qr, Qc, fr, phi0, delay],
-        jac=_lorentz_jacob,
+        jac=lambda f, *p: _lorentz_jacob(f, *p, freq_ref=freq_ref),
+        x_scale="jac",
         bounds=(
             [0.0, -np.inf, Qr / 2.0, Qc / 2.0, fr * (1 - 2.0 / Qr), -np.inf, -np.inf],
             [np.inf, np.inf, Qr * 2.0, Qc * 2.0, fr * (1 + 2.0 / Qr), np.inf, np.inf],
@@ -248,12 +256,17 @@ def fit_transmission(
     Args:
         freq (array): The frequencies corresponding to the S21
         s21 (complex array): The complex S21 to be fit
-        detrend (bool): If True, performs a linear detrending of the data before fitting it. Otherwise, uses the data as is. (defaults to True)
+        detrend (bool): If True, estimates the cable delay (slope of the unwrapped phase) and a linear magnitude slope from the end points and uses the detrended data for the starting values. The final fit always runs on the data as given, with the delay as a free parameter; a magnitude slope is not part of the model. If False, the starting values come from the data as is, with zero delay. (defaults to True)
         detrend_order (int): The order of polynomial to use when detrending the magnitude (As of now, only accepts value = 1) (defaults to 1)
         detrend_points_init (int): Number of points from the beginning of the array to use for detrending. Make sure that the resonance is at some distance from the beginning of the array (defaults to 1)
         detrend_points_final (int): Number of points from the end of the array to use for detrending. Make sure that the resonance is at some distance from the end of the array (defaults to 1)
         plot (bool): If True, plots the fits. If not, does not plot the fits (defaults to True)
         full_output (bool): If False, the function only returns the best fit parameters as a dictionary and the plots. If True, the function returns the fit output with the covariance matrix in the order [amplitude_complex_mag, amplitude_complex_arg, Qr, Qc, fr, phi0, delay] alongside the previous outputs. (defaults to False)
+
+    The model (Khalil et al. 2012, with a cable delay) is
+    ``S21(f) = A exp(-2 pi i f delay) (1 - (Qr/Qc) exp(i phi0) / (1 + 2 i Qr (f - fr)/fr))``
+    with absolute frequency ``f``; the returned ``amplitude_complex`` and
+    ``delay`` reproduce the data when inserted in it.
 
     Returns:
         dict: Returns a dictionary with the best fit parameters as key-value pairs. The key list is [amplitude_complex, Qr, Qc, fr, phi0, delay]
@@ -262,15 +275,24 @@ def fit_transmission(
         ndarray: (Optional) Returns the covariance matrix associated with the best fit as a numpy array with the rows and columns corresponding to te order described in Args
     """
 
+    freq = np.asarray(freq, dtype=float)
+    s21 = np.asarray(s21, dtype=complex)
     del_freq = freq - freq[0]
+    # The final fit references the cable delay to the centre of the span,
+    # which decorrelates delay and arg(A); the result is converted back to
+    # the absolute-frequency model of the docstring at the end.
+    freq_ref = 0.5 * (freq[0] + freq[-1])
 
-    fit_delay_init, fit_poly_mag = None, None
+    # The detrended data only provide starting values. The final fit runs on
+    # the raw data, so the returned parameters are those of the model.
     if detrend:
-        s21_detrended, fit_delay_init, fit_poly_mag = _detrend_transmission(
+        s21_detrended, fit_delay_init, _ = _detrend_transmission(
             del_freq, s21, detrend_order, detrend_points_init, detrend_points_final
         )
+        delay_init = -fit_delay_init.slope / (2.0 * np.pi)
     else:
         s21_detrended = s21.copy()
+        delay_init = 0.0
 
     amplitude_complex = s21_detrended[0]
     s21_new = s21_detrended / amplitude_complex
@@ -297,17 +319,33 @@ def fit_transmission(
 
     phi0_init = np.angle(x_center + 1.0j * y_center) - theta_init
 
+    # Off-resonant transmission at freq_ref, from the detrended first point
+    amplitude_ref = amplitude_complex * np.exp(
+        -2.0j * np.pi * (freq_ref - freq[0]) * delay_init
+    )
+
     lorentz_fit_result, lorentz_fit_cov = _fit_lorentzian(
         freq,
-        s21_detrended,
-        np.abs(amplitude_complex),
-        np.angle(amplitude_complex),
+        s21,
+        np.abs(amplitude_ref),
+        np.angle(amplitude_ref),
         Qr_init,
         Qc_init,
         fr_init,
         phi0_init,
-        0.0,
+        delay_init,
+        freq_ref=freq_ref,
     )
+
+    # Back to the model with absolute frequency, exp(-2 pi i f delay)
+    lorentz_fit_result = np.array(lorentz_fit_result, dtype=float)
+    delay = lorentz_fit_result[6]
+    lorentz_fit_result[1] = np.angle(
+        np.exp(1.0j * (lorentz_fit_result[1] + 2.0 * np.pi * freq_ref * delay))
+    )
+    to_absolute = np.eye(7)
+    to_absolute[1, 6] = 2.0 * np.pi * freq_ref
+    lorentz_fit_cov = to_absolute @ lorentz_fit_cov @ to_absolute.T
 
     amplitude_complex_mag, amplitude_complex_arg, Qr, Qc, fr, phi0, delay = (
         lorentz_fit_result
@@ -330,47 +368,32 @@ def fit_transmission(
 
         fit_s21 = fit_s21[: len(freq)] + 1.0j * fit_s21[len(freq) :]
 
-        if detrend:
-            fit_s21_mag, fit_s21_phas = _retrend_transmission(
-                del_freq, fit_s21, fit_delay_init, fit_poly_mag
-            )
-        else:
-            fit_s21_mag, fit_s21_phas = np.abs(fit_s21), np.angle(fit_s21)
-
         fig, ax = plt.subplots(1, 3)
         ax[0].scatter(freq, np.abs(s21), label="raw")
-        ax[0].plot(freq, fit_s21_mag, label="fit", color="red")
+        ax[0].plot(freq, np.abs(fit_s21), label="fit", color="red")
         ax[0].legend()
         ax[0].set_xlabel("Freq (Hz)")
         ax[0].set_ylabel("|S21|")
         ax[0].set_box_aspect(1.0)
         ax[1].scatter(freq, np.angle(s21), label="raw")
-        ax[1].plot(freq, fit_s21_phas, label="fit", color="red")
+        ax[1].plot(freq, np.angle(fit_s21), label="fit", color="red")
         ax[1].legend()
         ax[1].set_xlabel("Freq (Hz)")
         ax[1].set_ylabel("arg(S21)")
         ax[1].set_box_aspect(1.0)
         ax[2].scatter(np.real(s21), np.imag(s21), label="raw")
-        ax[2].plot(
-            fit_s21_mag * np.cos(fit_s21_phas),
-            fit_s21_mag * np.sin(fit_s21_phas),
-            label="fit",
-            color="red",
-        )
+        ax[2].plot(np.real(fit_s21), np.imag(fit_s21), label="fit", color="red")
         ax[2].legend()
         ax[2].set_xlabel("Re(S21)")
         ax[2].set_ylabel("Im(S21)")
         ax[2].set_box_aspect(1.0)
         fig.set_dpi(200)
         fig.tight_layout()
-        # plt.savefig('test.png')
-        # print('plotted')
         plots = plots + [fig, ax]
         plt.show()
 
     # Returning the results with post-processing
     amplitude_complex = amplitude_complex_mag * np.exp(1.0j * amplitude_complex_arg)
-    delay -= (fit_delay_init.slope) / (2.0 * np.pi)
 
     # amplitude_complex_mag, amplitude_complex_arg, Qr, Qc, fr, phi0, delay
 
