@@ -115,6 +115,112 @@ class TestLoadedTLShortedEnd(unittest.TestCase):
         self.assertLess(np.max(np.abs(resid)) / q[0], 1e-10)
 
 
+def _ladder_end_charges(L, vp, Z0, C0, CL, N=4000):
+    """Signed charge ZPF on the two end capacitors [F] of an N-section LC
+    ladder of length L, fundamental mode, normalised so that the z = 0 end
+    is positive. Independent of analyze_loaded_tl."""
+    from scipy.linalg import eigh_tridiagonal
+
+    from qiskit_metal.analyses.quantization.constants import hbar
+
+    c, lpu, dz = 1 / (Z0 * vp), Z0 / vp, L / N
+    cap = np.full(N + 1, c * dz)
+    cap[0] += C0 - c * dz / 2
+    cap[-1] += CL - c * dz / 2
+    y = 1 / (lpu * dz)
+    diag = np.full(N + 1, 2 * y)
+    diag[0] = diag[-1] = y
+    s = 1 / np.sqrt(cap)
+    w2, vec = eigh_tridiagonal(
+        diag * s * s, -y * s[:-1] * s[1:], select="i", select_range=(0, 2)
+    )
+    i = int(np.argmax(w2 > 1e16))  # skip the d.c. mode
+    w = np.sqrt(w2[i])
+    v = vec[:, i] * s
+    v = v * np.sign(v[0]) * np.sqrt(hbar / (2 * w * (v @ (cap * v))))
+    return w / (2 * np.pi), C0 * w * v[0], CL * w * v[-1]
+
+
+class TestLoadedTLTwoEndSigns(unittest.TestCase):
+    """Q_zpf at the two ends of a line loaded at both ends carries the sign
+    of the mode function there (#1219)."""
+
+    def test_against_lc_ladder(self):
+        vp, fr, Z0 = 0.4 * 299792458.0, 6000.0, 50.0
+        for c0, cl in ((20.0, 20.0), (20.0, 60.0), (600.0, 600.0)):
+            with self.subTest(c0=c0, cl=cl):
+                q, phi_zpf, _, L = analyze_loaded_tl(fr, vp, Z0, {"a": c0, "b": cl})
+                f, q0, ql = _ladder_end_charges(L, vp, Z0, c0 * 1e-15, cl * 1e-15)
+                self.assertAlmostEqual(f / (fr * 1e6), 1.0, places=5)
+                self.assertGreater(q["a"], 0)
+                self.assertLess(q["b"], 0)
+                self.assertAlmostEqual(q["a"] / q0, 1.0, places=5)
+                self.assertAlmostEqual(q["b"] / ql, 1.0, places=5)
+                self.assertLess(phi_zpf["b"], 0)
+
+    def test_bus_and_direct_coupling_interfere_constructively(self):
+        """Two transmons below a lambda/2 bus, coupled to opposite ends, plus a
+        small direct capacitance. The bus-mediated exchange g1 g2 / Delta and
+        the direct g12 add (an independent LC-ladder model of this circuit
+        gives J = 3.64 MHz vs 2.94 MHz direct-only), so with Delta < 0
+        sign(g1b * g2b) must be opposite to sign(g12)."""
+        import pandas as pd
+
+        from qiskit_metal.analyses.quantization.lom_core_analysis import (
+            Cell,
+            CompositeSystem,
+            Subsystem,
+        )
+
+        nodes = ["g", "q1a", "q1b", "q2a", "q2b", "b1", "b2"]
+        branch = {
+            ("q1a", "q1b"): 45, ("q2a", "q2b"): 45, ("q1a", "g"): 40,
+            ("q1b", "g"): 40, ("q2a", "g"): 40, ("q2b", "g"): 40,
+            ("q1a", "b1"): 4, ("q2a", "b2"): 4, ("b1", "g"): 20,
+            ("b2", "g"): 20, ("q1a", "q2a"): 0.3,
+        }  # fmt: skip
+        cmat = pd.DataFrame(0.0, index=nodes, columns=nodes)
+        for (a, b), c in branch.items():
+            cmat.loc[a, a] += c
+            cmat.loc[b, b] += c
+            cmat.loc[a, b] -= c
+            cmat.loc[b, a] -= c
+        cell = Cell(
+            dict(
+                node_rename={},
+                cap_mat=cmat,
+                jj_dict={("q1a", "q1b"): "j1", ("q2a", "q2b"): "j2"},
+                ind_dict={("q1a", "q1b"): 12.0, ("q2a", "q2b"): 12.0},
+                cj_dict={("q1a", "q1b"): 2.0, ("q2a", "q2b"): 2.0},
+            )
+        )
+        f_bus = 6.15
+        subs = [
+            Subsystem(name="Q1", sys_type="TRANSMON", nodes=["j1"]),
+            Subsystem(name="Q2", sys_type="TRANSMON", nodes=["j2"]),
+            Subsystem(
+                name="bus",
+                sys_type="TL_RESONATOR",
+                nodes=["b1", "b2"],
+                q_opts=dict(f_res=f_bus, Z0=50.0, vp=0.4 * 299792458.0),
+            ),
+        ]
+        system = CompositeSystem(
+            subsystems=subs, cells=[cell], grd_node="g", nodes_force_keep=["b1", "b2"]
+        )
+        system.create_hilbertspace()
+        for sub, node in ((subs[0], "j1"), (subs[1], "j2")):
+            p = sub.h_params[node]  # MHz
+            self.assertLess(np.sqrt(8 * p["EJ"] * p["EC"]) - p["EC"], f_bus * 1e3)
+        g = system.compute_gs()
+        idx = {n: system.node_index(n) for n in ("j1", "j2", "b1", "b2")}
+        g12 = g[idx["j1"], idx["j2"]]
+        g1b = g[idx["j1"], idx["b1"]]
+        g2b = g[idx["j2"], idx["b2"]]
+        self.assertNotEqual(g12, 0)
+        self.assertEqual(np.sign(g1b * g2b), -np.sign(g12))
+
+
 class TestLoadedTLInputUnchanged(unittest.TestCase):
     """The caller's ``cap_loading`` dict is left alone (#1232)."""
 

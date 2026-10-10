@@ -78,7 +78,14 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: dict[str, float], shorted=False):
         shorted (boolean): default false; true if the other end of the TL is shorted false otherwise
 
     Returns:
-        [type]: [description]
+        tuple: ``(Q_zpf, Phi_zpf, phi, L)`` for the fundamental mode.
+        ``Q_zpf`` and ``Phi_zpf`` are dicts keyed by node (plus ``"_cl"`` for
+        the far end when a single node is given) of the charge [C] and flux
+        [Wb] zero-point fluctuations, each with the sign of the mode function
+        u(z) = cos(k z + phi) at that end; an open or shorted end has
+        ``Q_zpf = 0`` and ``Phi_zpf = inf``. ``phi`` is the phase of u(z) at
+        z = 0 and ``L`` the line length [m] that puts the loaded fundamental
+        at ``fr``.
     """
     # work on a copy: a stand-in node is added below, which must not leak
     # into the caller's dict
@@ -142,16 +149,24 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: dict[str, float], shorted=False):
     Phi_zpf = {}
 
     for node in nodes:
-        if node in shorted_nodes:
+        if node in shorted_nodes or not caps[node]:
             pCL[node] = 0.0
             Q_zpf[node] = np.float64(0.0)
         else:
             val = caps[node]
             pCL[node] = 0.5 * val * u_end[node] ** 2 / E_cap
-            Q_zpf[node] = np.sqrt(hbar * wr / 2 * pCL[node] * val)
+            # Q_zpf carries the sign of the mode function at its end: for the
+            # fundamental of a line loaded at both ends the two end voltages
+            # are in antiphase (u(0) > 0, u(L) < 0). The relative sign matters
+            # when the two ends couple to subsystems that also couple by
+            # another path (#1219); the overall sign is a gauge choice.
+            Q_zpf[node] = np.sign(u_end[node]) * np.sqrt(
+                hbar * wr / 2 * pCL[node] * val
+            )
 
-        # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2;
-        # an open or shorted end carries no charge fluctuation
+        # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2
+        # (Phi_zpf carries the same sign); an open or shorted end carries no
+        # charge fluctuation
         Phi_zpf[node] = 0.5 * hbar / Q_zpf[node] if Q_zpf[node] else np.inf
 
     return Q_zpf, Phi_zpf, phi, Ltl
