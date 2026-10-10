@@ -28,17 +28,19 @@ path. That left two real bugs un-guarded:
    from silently producing broken Python. The ``ast.parse`` + sandboxed
    ``exec`` tests below catch that class of regression too.
 
-The sandboxed-exec tests substitute a no-op ``MetalGUI`` stub into the
-``qiskit_metal`` module's namespace before ``exec`` so the exported
-script doesn't actually try to construct a Qt window. That makes the
-tests runnable on the lite install (no PySide6).
+The sandboxed-exec tests substitute a no-op GUI stub for ``qiskit_metal.gui``
+before ``exec`` so the exported script doesn't actually try to construct a Qt
+window. That makes the tests runnable on the lite install (no PySide6).
+``TestHeadlessAndDesignState`` runs the script unstubbed (issue #1205).
 """
 
 from __future__ import annotations
 
 import ast
+import os
 import sys
 import unittest
+from unittest import mock
 
 import numpy as np
 
@@ -114,14 +116,14 @@ def _exec_exported_script(
     run_name: str = "__exported__",
     gui_cls: type = _StubMetalGUI,
 ) -> dict:
-    """Execute ``script`` in a clean namespace with ``MetalGUI`` stubbed.
+    """Execute ``script`` in a clean namespace with ``qiskit_metal.gui`` stubbed.
 
     The patch must target the ``qiskit_metal`` MODULE attribute -- the
-    exported script runs ``from qiskit_metal import designs, MetalGUI``
-    which resolves ``MetalGUI`` from the module's namespace, not the
-    caller's globals. We grab the live module via ``sys.modules`` (rather
-    than ``import qiskit_metal``) to avoid the dual ``import`` /
-    ``from import`` style smell on the same package.
+    exported script calls ``qiskit_metal.gui(design)``, which resolves
+    ``gui`` from the module's namespace, not the caller's globals. We grab
+    the live module via ``sys.modules`` (rather than ``import qiskit_metal``)
+    to avoid the dual ``import`` / ``from import`` style smell on the same
+    package.
 
     ``run_name`` sets the script's ``__name__``; pass ``"__main__"`` to
     exercise the standalone-run path that starts the Qt event loop.
@@ -133,17 +135,14 @@ def _exec_exported_script(
     failing test reports the actual error.
     """
     qm = sys.modules["qiskit_metal"]
-    original = qm.__dict__.get("MetalGUI", None)
-    qm.MetalGUI = gui_cls
+    original = qm.gui
+    qm.gui = gui_cls
     try:
         ns: dict = {"__name__": run_name}
         exec(compile(script, "<exported.metal.py>", "exec"), ns)
         return ns
     finally:
-        if original is None:
-            qm.__dict__.pop("MetalGUI", None)
-        else:
-            qm.MetalGUI = original
+        qm.gui = original
 
 
 class TestToPythonScriptStructure(unittest.TestCase):
@@ -157,9 +156,9 @@ class TestToPythonScriptStructure(unittest.TestCase):
 
         script = design.to_python_script()
 
-        self.assertIn("from qiskit_metal import designs, MetalGUI", script)
+        self.assertIn("import qiskit_metal", script)
         self.assertIn("design = designs.DesignPlanar()", script)
-        self.assertIn("MetalGUI(design)", script)
+        self.assertIn("gui = qiskit_metal.gui(design)", script)
         self.assertIn("gui.rebuild()", script)
         self.assertIn("gui.autoscale()", script)
 
@@ -337,6 +336,81 @@ class TestNumpyArrayImport(unittest.TestCase):
         # its end. Without this assertion a silent return-mid-script would
         # masquerade as a pass.
         self.assertIsInstance(ns.get("gui"), _StubMetalGUI)
+
+
+class TestHeadlessAndDesignState(unittest.TestCase):
+    """Issue #1205 — the script must run without the ``[gui]`` extra and must
+    restore the design class, ``design.chips`` and ``design.variables``."""
+
+    @staticmethod
+    def _run_unstubbed(script: str) -> dict:
+        """Exec the script with the real ``qiskit_metal.gui`` factory, forced
+        onto its headless path so no Qt window opens on a desktop runner."""
+        import matplotlib.pyplot as plt
+
+        try:
+            with mock.patch.dict(os.environ, {"QISKIT_METAL_HEADLESS": "1"}):
+                ns: dict = {"__name__": "__main__"}
+                exec(compile(script, "<exported.metal.py>", "exec"), ns)
+            return ns
+        finally:
+            plt.close("all")
+
+    def test_script_does_not_import_metalgui(self):
+        """``from qiskit_metal import MetalGUI`` raises ImportError on a lite
+        install, so the script must not import or construct it directly."""
+        design = designs.DesignPlanar()
+        TransmonPocket(design, "Q1", options=dict(connection_pads=dict(a=dict())))
+        code = [
+            line
+            for line in design.to_python_script().splitlines()
+            if not line.lstrip().startswith("#")
+        ]
+        self.assertFalse(any("MetalGUI" in line for line in code), "\n".join(code))
+
+    def test_chips_and_variables_round_trip(self):
+        """A design that changes chip size and a variable is reproduced, and
+        the rebuilt geometry is identical."""
+        from qiskit_metal.viewer import MetalGUIHeadless
+
+        design = designs.DesignPlanar()
+        design.chips.main.size.size_x = "6mm"
+        design.chips.main.material = "sapphire"
+        design.variables.cpw_width = "10um"
+        design.variables.my_var = "123um"
+        TransmonPocket(design, "Q1", options=dict(connection_pads=dict(a=dict())))
+
+        ns = self._run_unstubbed(design.to_python_script())
+        new = ns["design"]
+
+        self.assertIsInstance(ns["gui"], MetalGUIHeadless)
+        self.assertEqual(new.chips, design.chips)
+        self.assertEqual(new.chips.main.size.size_x, "6mm")
+        self.assertEqual(new.variables, design.variables)
+        self.assertEqual(new.variables.my_var, "123um")
+        old_poly = design.qgeometry.tables["poly"].geometry.reset_index(drop=True)
+        new_poly = new.qgeometry.tables["poly"].geometry.reset_index(drop=True)
+        self.assertTrue(new_poly.geom_equals(old_poly).all())
+
+    def test_design_class_is_kept(self):
+        """A DesignFlipChip is written as a DesignFlipChip, not DesignPlanar,
+        so its chips (Q_chip / C_chip) exist when the components are built."""
+        design = designs.DesignFlipChip()
+        design.chips["Q_chip"]["size"]["center_z"] = "8um"
+        TransmonPocket(
+            design,
+            "Q1",
+            options=dict(chip="Q_chip", connection_pads=dict(a=dict())),
+        )
+        script = design.to_python_script()
+        self.assertIn("design = designs.DesignFlipChip()", script)
+
+        new = self._run_unstubbed(script)["design"]
+        self.assertIsInstance(new, designs.DesignFlipChip)
+        self.assertEqual(new.chips, design.chips)
+        self.assertEqual(
+            list(new.qgeometry.tables["poly"]["chip"].unique()), ["Q_chip"]
+        )
 
 
 if __name__ == "__main__":
