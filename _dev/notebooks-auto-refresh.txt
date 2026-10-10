@@ -50,6 +50,7 @@ docs/tut/3-Renderers/3.1-Introduction-to-QRenderers.ipynb
 docs/tut/3-Renderers/3.2-Export-your-design-to-GDS.ipynb
 
 # --- Section 4: pure-Python analyses (no Ansys / Q3D / gmsh) ---
+docs/tut/4-Analysis/4.15-CPW-kappa-calculation.ipynb
 docs/tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.ipynb
 docs/tut/4-Analysis/4.32-Transmon-analytics-HCPB.ipynb
 docs/tut/4-Analysis/4.33-Transmon-analytics.ipynb
@@ -70,7 +71,8 @@ docs/tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling.ipynb
 #   docs/tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.ipynb
 #   docs/tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example.ipynb
 #   docs/tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.ipynb
-#   docs/tut/4-Analysis/4.11..4.18 (all Analyze-* notebooks)
+#   docs/tut/4-Analysis/4.11..4.18 (all Analyze-* notebooks; 4.15 is pure
+#     Python and runs in the list above)
 #   docs/tut/4-Analysis/4.21..4.23 (all matrix sweeps)
 #   docs/tut/4-Analysis/pyaedt-multiplanar/*.ipynb (layout cells run anywhere;
 #     cells tagged requires-ansys are kept without outputs)
@@ -91,6 +93,6 @@ docs/tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling.ipynb
 #   docs/tut/4-Analysis/4.44-Every-coupling-from-one-eigenmode.ipynb
 #   docs/tut/4-Analysis/4.45-Four-methods-one-full-wave-model.ipynb
 #
-# Cross-Resonance + cQED — depend on Ansys exports:
+# Cross-Resonance + cQED — the layout cells open the desktop MetalGUI (Qt):
 #   docs/tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.ipynb
 #   docs/tut/4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate.ipynb
