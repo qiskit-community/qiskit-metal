@@ -294,21 +294,51 @@ class TestNoscillatorBusBusAndPurcell(unittest.TestCase):
         g = 0.5 * tC12 / np.sqrt(tCS[0] * tCS[1]) * np.sqrt(wr[0] * wr[1])
         self.assertAlmostEqual(printed, g / (2 * np.pi * 1e6), places=5)
 
-    def test_purcell_returned_only_with_q_res(self):
-        hd, out = self._extract()
-        self.assertNotIn("T1", hd)
-        self.assertIn("placeholder Q", out)
-
-        q_res = [2e4, 3e5]
-        hd, _ = self._extract(Q_res=q_res)
+    @staticmethod
+    def _expected_t1bus(hd, q_res):
         wq = 2 * np.pi * hd["fQ"] * 1e9
         wr = 2 * np.pi * np.array([7.0, 6.0]) * 1e9
         g = 2 * np.pi * np.asarray(hd["gbus"]) * 1e6
         kappa = wr / np.array(q_res)
         koch = (wq - wr) ** 2 / (kappa * g**2)  # Koch et al. Eq. 4.7
-        expected = koch * ((wq + wr) / (2 * wq)) ** 2
+        return koch * ((wq + wr) / (2 * wq)) ** 2
+
+    def test_purcell_from_q_res_without_warning(self):
+        from qiskit_metal.analyses.quantization import lumped_capacitive
+
+        q_res = [2e4, 3e5]
+        with unittest.mock.patch.object(lumped_capacitive.logger, "warning") as warn:
+            hd, _ = self._extract(Q_res=q_res)
+        warn.assert_not_called()
+        expected = self._expected_t1bus(hd, q_res)
         np.testing.assert_allclose(hd["T1bus"], expected, rtol=1e-10)
         self.assertAlmostEqual(hd["T1"], 1 / np.sum(1 / expected), places=12)
+
+    def test_purcell_placeholder_q_returned_with_warning(self):
+        from qiskit_metal.analyses.quantization import lumped_capacitive
+
+        with unittest.mock.patch.object(lumped_capacitive.logger, "warning") as warn:
+            hd, out = self._extract()
+        warn.assert_called_once()
+        self.assertIn("placeholder", warn.call_args[0][0])
+        self.assertIn("placeholder Q", out)
+        expected = self._expected_t1bus(hd, [1e4, 1e5])
+        np.testing.assert_allclose(hd["T1bus"], expected, rtol=1e-10)
+        # existing keys keep their order; the new ones come last
+        self.assertEqual(
+            list(hd),
+            [
+                "fQ",
+                "EC",
+                "EJ",
+                "alpha",
+                "dispersion",
+                "gbus",
+                "chi_in_MHz",
+                "T1",
+                "T1bus",
+            ],
+        )
 
     def test_q_res_length_checked(self):
         with self.assertRaises(ValueError):
@@ -329,6 +359,50 @@ class TestNoscillatorBusBusAndPurcell(unittest.TestCase):
         t50 = chargeline_T1(0.1e-15, 80e-15, 5e9)
         self.assertEqual(t50, chargeline_T1(0.1e-15, 80e-15, 5e9, Z0=50.0))
         self.assertAlmostEqual(chargeline_T1(0.1e-15, 80e-15, 5e9, Z0=25.0) / t50, 2.0)
+
+
+class TestRunLomPurcellSetup(unittest.TestCase):
+    """setup.Q_res / setup.Z0 reach the extractor (#1222)."""
+
+    def _run(self, **setup):
+        a = LOManalysis()
+        a.setup.freq_bus = []
+        a.setup.update(setup)
+        a.sim.capacitance_matrix = _cmat_df()
+        a.sim.capacitance_all_passes = {
+            1: _CMAT_FF * 1e-15,
+            2: _CMAT_FF * 1e-15,
+            3: _CMAT_FF * 1e-15,
+        }
+        return a.run_lom()
+
+    def test_defaults(self):
+        self.assertIsNone(LOManalysis.default_setup.Q_res)
+        self.assertEqual(LOManalysis.default_setup.Z0, 50.0)
+
+    def test_q_res_and_z0_are_used(self):
+        from qiskit_metal.analyses.quantization import lumped_capacitive
+
+        with unittest.mock.patch.object(lumped_capacitive.logger, "warning") as warn:
+            a = self._run()
+        # one warning for the run, not one per pass
+        self.assertEqual(warn.call_count, 1)
+        with unittest.mock.patch.object(lumped_capacitive.logger, "warning") as warn:
+            b = self._run(Q_res=[1e5])
+        warn.assert_not_called()
+        self.assertAlmostEqual(b["T1"].iloc[-1] / a["T1"].iloc[-1], 10.0)
+        c = self._run(Z0=25.0)
+        self.assertNotAlmostEqual(c["gr MHz"].iloc[-1], a["gr MHz"].iloc[-1], places=3)
+
+    def test_column_order_unchanged_new_columns_last(self):
+        cols = list(self._run(Q_res=[1e4]).columns)
+        self.assertEqual(
+            cols,
+            [
+                "fQ", "EC", "EJ", "alpha", "dispersion", "gbus", "chi_in_MHz",
+                "χr MHz", "gr MHz", "T1", "T1bus",
+            ],
+        )  # fmt: skip
 
 
 class TestLevelsVsNgHermitianSolver(unittest.TestCase):

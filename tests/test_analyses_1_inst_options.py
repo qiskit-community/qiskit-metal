@@ -173,7 +173,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         """Test that the contents of default_setup in LOManalysis haven't accidentally changed."""
         default_setup = LOManalysis.default_setup
 
-        self.assertEqual(len(default_setup), 4)
+        self.assertEqual(len(default_setup), 6)
         self.assertEqual(len(default_setup["junctions"]), 2)
 
         self.assertEqual(default_setup["junctions"]["Lj"], 12)
@@ -181,6 +181,8 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         self.assertEqual(default_setup["freq_readout"], 7.0)
         self.assertEqual(default_setup["freq_bus"], [6.0, 6.2])
         self.assertIsNone(default_setup["res_L4_corr"])
+        self.assertIsNone(default_setup["Q_res"])
+        self.assertEqual(default_setup["Z0"], 50.0)
 
     def test_analyses_lumpedelementssim_default_setup(self):
         """Test that the contents of default_setup in LumpedElementsSim haven't accidentally change."""
