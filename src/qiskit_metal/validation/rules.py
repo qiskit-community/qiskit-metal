@@ -286,24 +286,41 @@ class ShortSegmentRule(DesignRule):
     renderer fails outright on them. This is the design-wide form of the
     condition behind issue #1086.
 
-    ``margin`` scales the requirement: 1.0 asks only that a segment be as
-    long as the fillet radius, which is the bare geometric minimum and in
-    practice still marginal, so the default asks for a little more.
+    ``margin`` scales the requirement. The default, 1.0, asks only for the
+    bare geometric minimum (one radius at a path end, two between two
+    corners), which in practice is still marginal; pass a larger ``margin``
+    to ask for more. Lengths within ``tol`` (design units) of the minimum
+    pass, so a segment drawn exactly to the limit is not flagged for
+    floating-point rounding.
+
+    A path's metal trace and its ground cut share one centerline, so each
+    short segment is reported once per component path, not once per row.
     """
 
     name = "short-segment"
     description = "Route segment is too short for its fillet radius."
 
-    def __init__(self, margin: float = 1.0, severity: Severity = Severity.WARNING):
+    def __init__(
+        self,
+        margin: float = 1.0,
+        severity: Severity = Severity.WARNING,
+        tol: float = 1e-9,
+    ):
         self.margin = margin
         self.severity = severity
+        self.tol = tol
 
     def check(self, design: "QDesign") -> Iterable[Finding]:
         names = component_names_by_id(design)
         tables = design.qgeometry.tables
         if "path" not in tables:
             return
-        for _, row in tables["path"].iterrows():
+        table = tables["path"]
+        if "subtract" in table.columns:
+            # Metal rows first, so a duplicate cut row is the one skipped.
+            table = table.sort_values("subtract", kind="stable")
+        seen = set()
+        for _, row in table.iterrows():
             fillet = row.get("fillet", None)
             if fillet is None or not np.isfinite(fillet) or fillet <= 0:
                 continue
@@ -311,13 +328,17 @@ class ShortSegmentRule(DesignRule):
             coords = np.asarray(row["geometry"].coords, dtype=float)
             if len(coords) < 3:
                 continue  # no interior corner to round
+            key = (row["component"], float(fillet), coords.round(9).tobytes())
+            if key in seen:
+                continue  # same centerline as a row already checked
+            seen.add(key)
             seg = np.linalg.norm(np.diff(coords, axis=0), axis=1)
             # Only interior segments sit between two corners; the first and
             # last run into an end pin and need no room on the outer side.
             for idx in range(len(seg)):
                 is_interior = 0 < idx < len(seg) - 1
                 needed = limit * (2.0 if is_interior else 1.0)
-                if seg[idx] >= needed:
+                if seg[idx] >= needed - self.tol:
                     continue
                 midpoint = (coords[idx] + coords[idx + 1]) / 2.0
                 yield Finding(
