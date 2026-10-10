@@ -222,6 +222,11 @@ them working:
   any virtual Qt calls from inside C++ constructors/destructors) on a GUI
   widget, and never call `processEvents`/`flush_events` from a method that
   runs during startup. Use signals, `showEvent`, or `single_shot`.
+  Tests are covered too: a Python `QProxyStyle` subclass installed with
+  `app.setStyle()` runs Python for every style query of every widget,
+  including from inside C++ constructors (~4,000 `styleHint` calls per
+  `MetalGUI` start). Set such a style on the specific widget, after
+  construction, as `tests/test_gui_left_dock_min_width.py` does.
 - **A single clean run proves nothing** in either direction. The crash depends
   on memory layout.
 
@@ -276,8 +281,34 @@ CI: `tests-gui-display` (Linux Xvfb) and `tests-gui-display-windows`
 
 ---
 
+## CI crash log, October 2026 (PRs #1235–#1238)
+
+Each crash seen on CI or reproduced locally while landing the #1202–#1234
+fixes. Read the PySide6 version in the job log first: two of these share a
+test and a platform but have different causes.
+
+| # | Where | Signature | Cause | Status |
+|---|---|---|---|---|
+| A | Linux and Windows, **Python 3.10/3.11**, PySide6 **6.12.0**; any test whose child builds a `MetalGUI` (seen in `test_gui_left_dock_min_width`, #1235 at 07d50ad, e4bfab6, b24c2a0, c5d8338) | `rc=-6` on Linux; faulthandler: `Fatal Python error: none_dealloc: deallocating None ... refcount error in a C extension`, in `processEvents`. Stdout often stops after `TABBAR_MSH` | PySide6 6.12.0 releases one reference to `None` too many while the GUI runs; `None` is immortal from 3.12, so newer jobs never crash. Reproduced locally with a Python 3.11 venv: 3/3 crashes on 6.12.0, 3/3 passes on 6.11.2, `sys.getrefcount(None)` falling steadily vs flat. An empty `MetalGUI` is enough. | **Worked around**: `pyside6!=6.12.0` (#1235). Lift once a fixed release ships; re-check with the refcount probe. |
+| B | **Windows**, Python 3.10, PySide6 **6.11.2**; `test_gui_left_dock_min_width` (#1235 at e4bfab6, #1237 at 23566fa) | `rc=3221225477` (access violation); stack: test's `QProxyStyle.styleHint` ← `tree_view_base.resize_on_expand` ← `MetalGUI.set_design` (`chips_window.expandAll()`) ← `MetalGUI.__init__` | The test installed a Python `QProxyStyle` as the application style before building the GUI: about 4,100 Python `styleHint` calls per start, many from inside C++ widget construction (failure mode 5). PySide also attaches `_PySideInvalidatePtr` to wrapped half-built widgets. | **Fixed in the test** (#1238): style set on the built tab bars only (36 calls, none during construction). No product code installs a Python style. Deferring `expandAll` (#1200) moves the call into the poll tick, it does not remove it. |
+| C | **macOS**, Python 3.14; `test_gui_left_dock_min_width` (#1235 at 0930684) | `rc=-11`; C stack in CoreGraphics glyph rendering: `render_glyph_list` → `ripc_GetColor` → `CGColorTransformConvertColorComponents` → `CGCMSConverterCreate` → `__NSArrayM dealloc` → `__NSDictionaryI dealloc`, during `processEvents` after `RESIZED` | Unknown. This head had the app-wide Python style (B's hazard) back in place (586db23), so it may be B in another form; or failure mode 5's use-after-free. | **Open.** Watch whether it recurs after #1238. |
+| D | **macOS** CI (`main` at 7a8d9d4, #1235 at 0930684) and **Linux offscreen locally on every run** (main and branch alike); `test_gui_nudge::TestRealClickAndKeyDelivery::test_click_then_arrows_move_the_component` | `AssertionError: focus/nudge contract not proven: MARKER_SELECTED missing` | Not a crash: the synthetic click does not select the component. Deterministic under local offscreen, intermittent on macOS CI. Probably click/focus delivery to the canvas. | **Open.** |
+| E | Local, Linux offscreen, Python 3.13 | Segfault at exit, 3/3, in `_teardown_qt_widgets` (`main_window.py:172`); gdb: null-vtable call in `QMenuBar::eventFilter` while the deferred-delete drain runs | A second `MetalGUI` built in one process after an application stylesheet was set (`gui.set_font_size(11)`) | **Open**; failure mode 1's mechanism under a new trigger. |
+| F | **macOS**, Python 3.14, PySide6 6.11.2; `test_gui_nudge::TestRealClickAndKeyDelivery` (#1238 at fb1d30e) | Reported as `MARKER_SELECTED missing`, but stderr shows `Fatal Python error: Segmentation fault` at child line 23 (startup, before any marker). C stack: `-[NSMenuItem font]` ← `-[NSMenuItem _effectiveFont]` ← `-[NSMenuItemView _effectiveFont]` ← `-[NSMenuBarItemView _effectiveFontRespectingPreferredParameters:]` ← `_ensureValidLineCache` ← `-[NSMenuBarItemView idealWidth]` | Native crash while AppKit lays out the native menu bar for the new window: a freed `NSMenuItem` (or its Qt-side `QAction`/`QMenu`) is read. Same family as failure mode 1 (menu-bar teardown, `QMenuBar::eventFilter`) and E. So at least some of D's macOS failures are this crash, not a selection failure. | **Open.** Check whether the test builds more than one `MetalGUI` / menu bar per process, and whether a previous window's `QMenuBar` is still being deleted. |
+
+Local reproduction without system packages: extract Ubuntu's `libegl1`
+`.deb` into a scratch directory, point `LD_LIBRARY_PATH` at it and use
+`QT_QPA_PLATFORM=offscreen`. For A, use a Python 3.11 venv
+(`uv venv -p 3.11`) with the `[gui]` extra and the PySide6 version from the
+job log. The left-dock test prints the faulthandler report from the crash on
+(it used to keep only the last 2000 characters of stderr, which is the
+extension-module list).
+
+---
+
 ## Still open
 
+- Crashes C, D, E and F in the October 2026 CI crash log above (D, E and F may share the menu-bar teardown mechanism of failure mode 1).
 - Failure mode (4), the GC teardown segfault, on all versions —
   **substantially narrowed** by the deferred-callback discipline and the
   completed atexit teardown (explicit `QApplication` destruction, step 4
