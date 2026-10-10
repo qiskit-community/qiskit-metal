@@ -1133,6 +1133,9 @@ matrix from. Only in effect with ‘AdaptivePass’ chosen. Defaults to 1.</p></
 <dt class="sig sig-object py" id="qiskit_metal.renderers.QQ3DRenderer.get_chip_names">
 <span class="sig-name descname"><span class="pre">get_chip_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#qiskit_metal.renderers.QQ3DRenderer.get_chip_names" title="Link to this definition">¶</a></dt>
 <dd><p>Obtain a list of chips on which the selection of components, if valid, resides.</p>
+<p>A component’s chips are the ones its qgeometry was drawn on. <code class="docutils literal notranslate"><span class="pre">options.chip</span></code>
+is only the default that <code class="docutils literal notranslate"><span class="pre">add_qgeometry</span></code> uses, so it is used here just for
+components that have no qgeometry.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Chips to render.</p>

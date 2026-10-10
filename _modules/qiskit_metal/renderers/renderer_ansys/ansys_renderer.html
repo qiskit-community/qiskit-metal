@@ -1972,7 +1972,7 @@
             <span class="n">pin_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp</span><span class="p">]</span><span class="o">.</span><span class="n">pins</span><span class="p">[</span><span class="n">pin</span><span class="p">]</span>
             <span class="n">width</span><span class="p">,</span> <span class="n">gap</span> <span class="o">=</span> <span class="n">parse_units</span><span class="p">([</span><span class="n">pin_dict</span><span class="p">[</span><span class="s2">"width"</span><span class="p">],</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">"gap"</span><span class="p">]])</span>
             <span class="n">mid</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">parse_units</span><span class="p">(</span><span class="n">pin_dict</span><span class="p">[</span><span class="s2">"middle"</span><span class="p">]),</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">"normal"</span><span class="p">]</span>
-            <span class="n">chip_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">comp</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">chip</span>
+            <span class="n">chip_name</span> <span class="o">=</span> <span class="n">pin_dict</span><span class="p">[</span><span class="s2">"chip"</span><span class="p">]</span>
             <span class="n">qc_chip_z</span> <span class="o">=</span> <span class="n">parse_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_chip_z</span><span class="p">(</span><span class="n">chip_name</span><span class="p">))</span>
             <span class="n">rect_mid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mid</span> <span class="o">+</span> <span class="n">normal</span> <span class="o">*</span> <span class="n">gap</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="n">qc_chip_z</span><span class="p">])</span>
             <span class="c1"># Assumption: pins only point in x or y directions</span>
@@ -1995,33 +1995,28 @@
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Obtain a list of chips on which the selection of components, if valid, resides.</span>
 
+<span class="sd">        A component's chips are the ones its qgeometry was drawn on. ``options.chip``</span>
+<span class="sd">        is only the default that ``add_qgeometry`` uses, so it is used here just for</span>
+<span class="sd">        components that have no qgeometry.</span>
+
 <span class="sd">        Returns:</span>
 <span class="sd">            List[str]: Chips to render.</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># One or more components not in QDesign.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"One or more components not found."</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">icomps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span>
+        <span class="c1"># case 1: all components rendered; otherwise a strict subset.</span>
+        <span class="n">comp_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">icomps</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">)</span>
+        <span class="n">geometry_chips</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chips_by_component</span><span class="p">(</span><span class="n">comp_ids</span><span class="p">)</span>
         <span class="n">chip_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># All components rendered.</span>
-            <span class="n">comps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span>
-            <span class="k">for</span> <span class="n">qcomp</span> <span class="ow">in</span> <span class="n">comps</span><span class="p">:</span>
-                <span class="k">if</span> <span class="s2">"chip"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">comps</span><span class="p">[</span><span class="n">qcomp</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">chip_designation_error</span><span class="p">()</span>
-                    <span class="k">return</span> <span class="p">[]</span>
-                <span class="c1"># elif comps[qcomp].options.chip != 'main':</span>
-                <span class="c1">#    self.chip_not_main()</span>
-                <span class="c1">#    return []</span>
-                <span class="n">chip_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">comps</span><span class="p">[</span><span class="n">qcomp</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">chip</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Strict subset rendered.</span>
-            <span class="n">icomps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">_components</span>
-            <span class="k">for</span> <span class="n">qcomp_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qcomp_ids</span><span class="p">:</span>
-                <span class="k">if</span> <span class="s2">"chip"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">icomps</span><span class="p">[</span><span class="n">qcomp_id</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">chip_designation_error</span><span class="p">()</span>
-                    <span class="k">return</span> <span class="p">[]</span>
-                <span class="c1"># elif icomps[qcomp_id].options.chip != 'main':</span>
-                <span class="c1">#    self.chip_not_main()</span>
-                <span class="c1">#    return []</span>
-                <span class="n">chip_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">icomps</span><span class="p">[</span><span class="n">qcomp_id</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">chip</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">qcomp_id</span> <span class="ow">in</span> <span class="n">comp_ids</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"chip"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">icomps</span><span class="p">[</span><span class="n">qcomp_id</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chip_designation_error</span><span class="p">()</span>
+                <span class="k">return</span> <span class="p">[]</span>
+            <span class="n">chip_names</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="n">geometry_chips</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">qcomp_id</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{</span><span class="n">icomps</span><span class="p">[</span><span class="n">qcomp_id</span><span class="p">]</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">chip</span><span class="p">}</span>
+            <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">unique_name</span> <span class="ow">in</span> <span class="n">chip_names</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">unique_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="p">:</span>
@@ -2029,6 +2024,25 @@
 
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">chip_names</span><span class="p">)</span></div>
 
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_chips_by_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comp_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Chips each component's qgeometry was drawn on.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            comp_ids (list): Ids of the components to look up.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Component id to the set of chip names in its qgeometry rows.</span>
+<span class="sd">        """</span>
+        <span class="n">chips</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">empty</span> <span class="ow">or</span> <span class="s2">"chip"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="p">[</span><span class="s2">"component"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">comp_ids</span><span class="p">)]</span>
+            <span class="k">for</span> <span class="n">comp_id</span><span class="p">,</span> <span class="n">chip</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="s2">"component"</span><span class="p">],</span> <span class="n">rows</span><span class="p">[</span><span class="s2">"chip"</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chip</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">chips</span><span class="p">[</span><span class="n">comp_id</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">chip</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">chips</span>
 
 <div class="viewcode-block" id="QAnsysRenderer.chip_designation_error">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.renderers.QAnsysRenderer.html#qiskit_metal.renderers.QAnsysRenderer.chip_designation_error">[docs]</a>
