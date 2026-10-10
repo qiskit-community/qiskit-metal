@@ -49,6 +49,29 @@ class TestAnalyticPackageModes(unittest.TestCase):
         tm110 = C0 / 2 * np.hypot(1 / 30e-3, 1 / 30e-3)
         self.assertLess(abs(mode.f / tm110 - 1), 1e-4)
 
+    def test_lsm_mode_small_box_finds_the_lowest_root(self):
+        """#1211: for small boxes the pole of ks tan(ks t) lies inside the
+        old bracket (ValueError at 4 mm, a higher root at 2 mm)."""
+        t, eps_r = 0.5, 11.45
+        for L, f_ghz in ((12, 16.072), (4, 39.093), (2, 51.329)):
+            mode = pm.lsm_mode(1, 1, L, L, 3.0, t, eps_r)
+            self.assertAlmostEqual(mode.f / 1e9, f_ghz, places=2)
+            self.assertLess(mode.kz_si * t * 1e-3, np.pi / 2)
+            ks, ka = mode.kz_si, mode.kz_air
+            lhs = ks * np.tan(ks * t * 1e-3)
+            rhs = eps_r * ka * np.tanh(ka * (3.0 - t) * 1e-3)
+            self.assertLess(abs(lhs - rhs) / abs(rhs), 1e-8)
+
+    def test_lsm_mode_approx_warns_outside_its_validity(self):
+        """#1211 follow-up: warn when kz_si * t > 0.5 (thin-slab limit)."""
+        import warnings
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            pm.lsm_mode_approx(1, 1, 30, 30, 3.0, 0.5, 11.45)
+        with self.assertWarns(UserWarning):
+            pm.lsm_mode_approx(1, 1, 5, 5, 3.0, 0.5, 11.45)
+
     def test_uncoupled_circuit_frequencies(self):
         C = np.diag([100e-15, 200e-15])
         L = np.diag([10e-9, 5e-9])
