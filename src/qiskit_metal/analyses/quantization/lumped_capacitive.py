@@ -496,9 +496,9 @@ def levels_vs_ng_real_units(Cq, IC, N=301, do_disp=0, do_plots=0):
         if not np.array_equal(H, np.transpose(np.conj(H))):
             raise ValueError("Matrix is not Hermitian")
 
-        [d, v] = np.linalg.eig(H)
-        sortIX = np.argsort(d)
-        sorted_d = d[sortIX]
+        # H is real symmetric: eigvalsh returns real, ascending eigenvalues
+        # (np.linalg.eig is a general solver that may return complex dtype)
+        sorted_d = np.linalg.eigvalsh(H)
 
         elvls[:, iindex] = sorted_d - sorted_d[0]
 

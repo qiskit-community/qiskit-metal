@@ -35,6 +35,10 @@ class LOManalysis(QAnalysis):
         * freq_readout (float): Coupling readout frequency (in GHz).
         * freq_bus (Union[list, float]): Coupling bus frequencies (in GHz).
             * freq_bus can be a list with the order they appear in the capMatrix.
+        * res_L4_corr (list or None): Per coupling pad, in the order
+          [readout, bus1, bus2, ...], 1 if that resonator is a quarter-wave
+          (lambda/4) line and 0 if it is a half-wave (lambda/2) line. None
+          (default) treats all resonators as lambda/2.
 
     Data Labels:
         * lumped_oscillator (pd.DataFrame): Lumped oscillator result at the last simulation pass
@@ -44,7 +48,10 @@ class LOManalysis(QAnalysis):
     """
 
     default_setup = Dict(
-        junctions=Dict(Lj=12, Cj=2), freq_readout=7.0, freq_bus=[6.0, 6.2]
+        junctions=Dict(Lj=12, Cj=2),
+        freq_readout=7.0,
+        freq_bus=[6.0, 6.2],
+        res_L4_corr=None,
     )
     """Default setup."""
 
@@ -187,6 +194,7 @@ class LOManalysis(QAnalysis):
                 num_cpads,
                 fbus,
                 fread,
+                res_L4_corr=s.get("res_L4_corr"),
                 g_scale=1,
                 print_info=bool(idx_cmat == len(self.sim.capacitance_all_passes)),
             )

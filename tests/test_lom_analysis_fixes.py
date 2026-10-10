@@ -210,5 +210,70 @@ class TestLargeHilbertSpaceWarning(unittest.TestCase):
         warn.assert_not_called()
 
 
+class TestRunLomQuarterWaveCorrection(unittest.TestCase):
+    """setup.res_L4_corr reaches the extractor (#1210)."""
+
+    def _run(self, corr):
+        a = LOManalysis()
+        a.setup.freq_bus = []
+        a.setup.res_L4_corr = corr
+        a.sim.capacitance_matrix = _cmat_df()
+        return a.run_lom()
+
+    def test_default_is_half_wave(self):
+        self.assertIsNone(LOManalysis.default_setup.res_L4_corr)
+        pd.testing.assert_frame_equal(self._run(None), self._run([0]))
+
+    def test_quarter_wave_matches_direct_call(self):
+        res = self._run([1])
+        from qiskit_metal.analyses.quantization.constants import Ic_from_Lj
+
+        direct = extract_transmon_coupled_Noscillator(
+            _CMAT_FF * 1e-15,
+            Ic_from_Lj(12, "nH", "A"),
+            2e-15,
+            1,
+            [],
+            7.0,
+            res_L4_corr=[1],
+        )
+        self.assertAlmostEqual(res["gr MHz"].iloc[-1], abs(direct["gbus"][0]), places=9)
+        self.assertNotAlmostEqual(
+            res["gr MHz"].iloc[-1], self._run(None)["gr MHz"].iloc[-1], places=3
+        )
+
+
+class TestLevelsVsNgHermitianSolver(unittest.TestCase):
+    """levels_vs_ng_real_units uses a Hermitian eigensolver (#1210)."""
+
+    def test_real_results_no_complex_warning(self):
+        import warnings
+
+        from qiskit_metal.analyses.quantization.lumped_capacitive import (
+            levels_vs_ng_real_units,
+        )
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            fq, alpha, disp, tphi = levels_vs_ng_real_units(65.0, 27.4, N=11)
+        for v in (fq, alpha, disp, tphi):
+            self.assertFalse(np.iscomplexobj(v))
+        # Koch et al. (2007): f01 ~ sqrt(8 EJ EC) - EC, alpha ~ -EC
+        self.assertGreater(fq, 4.0)
+        self.assertLess(alpha, 0.0)
+
+
+class TestHamiltonianResultsAnnotation(unittest.TestCase):
+    def test_return_annotation_is_dict(self):
+        import inspect
+
+        from qiskit_metal.analyses.quantization.lom_core_analysis import (
+            CompositeSystem,
+        )
+
+        sig = inspect.signature(CompositeSystem.hamiltonian_results)
+        self.assertIs(sig.return_annotation, dict)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

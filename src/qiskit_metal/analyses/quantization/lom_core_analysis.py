@@ -1628,7 +1628,7 @@ class CompositeSystem:
 
     def hamiltonian_results(
         self, hilbertspace: scq.HilbertSpace, evals_count=None, print_info=True
-    ) -> pd.DataFrame:
+    ) -> dict:
         """Print and return results
 
         Args:
@@ -1639,7 +1639,8 @@ class CompositeSystem:
             print_info (bool, optional): If true, print results as well. Defaults to True.
 
         Returns:
-            pd.DataFrame: dataframe containing the results
+            dict: ``{"fQ_in_Ghz": {subsystem name: f01 in GHz},
+            "chi_in_MHz": LabeledNdarray of the chi matrix in MHz}``
         """
         ham_res = {}
 
