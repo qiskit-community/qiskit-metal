@@ -110,7 +110,8 @@ class TestCmatPrintWithoutIPython(unittest.TestCase):
 
 class TestSaveCapacitanceMatrix(unittest.TestCase):
     def test_round_trip_with_units_header(self):
-        sim = LumpedElementsSim(designs.DesignPlanar())
+        # no renderer needed to save a matrix (and none in a lite install)
+        sim = LumpedElementsSim(designs.DesignPlanar(), None)
         sim.capacitance_matrix = _cmat_df()
         sim.units = "fF"
         with tempfile.TemporaryDirectory() as tmp:
@@ -123,7 +124,7 @@ class TestSaveCapacitanceMatrix(unittest.TestCase):
 
     def test_raises_without_matrix(self):
         with self.assertRaises(ValueError):
-            LumpedElementsSim(designs.DesignPlanar()).save_capacitance_matrix(
+            LumpedElementsSim(designs.DesignPlanar(), None).save_capacitance_matrix(
                 "unused.csv"
             )
 
@@ -145,9 +146,41 @@ class TestSimWithoutDesign(unittest.TestCase):
                 self.assertIsNotNone(sim.renderer)
                 self.assertFalse(sim.renderer_initialized)
 
-    def test_unknown_renderer_returns_none(self):
-        sim = LumpedElementsSim(renderer_name="no_such_renderer")
-        self.assertIsNone(sim.renderer)
+    def test_unknown_renderer_raises(self):
+        # used to return a simulation with renderer None, which only failed
+        # later with "'NoneType' object has no attribute 'initialized'" (#1230)
+        with self.assertRaisesRegex(ValueError, 'Renderer "no_such_renderer"') as cm:
+            LumpedElementsSim(renderer_name="no_such_renderer")
+        self.assertIn("not in config.renderers_to_load", str(cm.exception))
+        self.assertIn("q3d", str(cm.exception))  # lists the configured ones
+
+
+class TestSimRendererMissingFromDesign(unittest.TestCase):
+    """A renderer the design did not start raises at construction (#1230)."""
+
+    def test_configured_but_not_started(self):
+        design = designs.DesignPlanar(enable_renderers=False)
+        for cls, name in ((LumpedElementsSim, "q3d"), (EigenmodeSim, "hfss")):
+            with self.subTest(cls=cls.__name__):
+                with self.assertRaisesRegex(ValueError, f'Renderer "{name}"') as cm:
+                    cls(design, name)
+                self.assertIn("not started for this design", str(cm.exception))
+        with self.assertRaises(ValueError):
+            EPRanalysis(design, "hfss")
+
+    def test_unknown_with_design_lists_available(self):
+        design = designs.DesignPlanar()
+        with self.assertRaises(ValueError) as cm:
+            LumpedElementsSim(design, "no_such_renderer")
+        msg = str(cm.exception)
+        self.assertIn("not in config.renderers_to_load", msg)
+        self.assertIn("gds", msg)
+
+    def test_available_renderer_still_works(self):
+        design = designs.DesignPlanar()
+        if not design.renderers.get("q3d"):
+            self.skipTest("q3d renderer not available in this install")
+        self.assertIs(LumpedElementsSim(design, "q3d").renderer, design.renderers.q3d)
 
 
 class TestUnlinkedJunctionWarning(unittest.TestCase):
@@ -156,6 +189,8 @@ class TestUnlinkedJunctionWarning(unittest.TestCase):
     def setUp(self):
         self.design = designs.DesignPlanar()
         self.q1 = TransmonPocket(self.design, "Q1")  # hfss_inductance='10nH'
+        if not self.design.renderers.get("hfss"):
+            self.skipTest("HFSS renderer not installed (lite install)")
         self.sim = EigenmodeSim(self.design, "hfss")
         if "hfss_inductance" not in self.design.qgeometry.tables["junction"]:
             self.skipTest("HFSS renderer not installed (lite install)")
@@ -195,7 +230,10 @@ class TestUnlinkedJunctionWarning(unittest.TestCase):
 
 class TestLargeHilbertSpaceWarning(unittest.TestCase):
     def setUp(self):
-        self.epr = EPRanalysis(designs.DesignPlanar(), "hfss")
+        design = designs.DesignPlanar()
+        if not design.renderers.get("hfss"):
+            self.skipTest("HFSS renderer not installed (lite install)")
+        self.epr = EPRanalysis(design, "hfss")
 
     def test_warns_for_six_modes_at_default_truncation(self):
         self.epr.sim.setup.n_modes = 6
@@ -294,21 +332,51 @@ class TestNoscillatorBusBusAndPurcell(unittest.TestCase):
         g = 0.5 * tC12 / np.sqrt(tCS[0] * tCS[1]) * np.sqrt(wr[0] * wr[1])
         self.assertAlmostEqual(printed, g / (2 * np.pi * 1e6), places=5)
 
-    def test_purcell_returned_only_with_q_res(self):
-        hd, out = self._extract()
-        self.assertNotIn("T1", hd)
-        self.assertIn("placeholder Q", out)
-
-        q_res = [2e4, 3e5]
-        hd, _ = self._extract(Q_res=q_res)
+    @staticmethod
+    def _expected_t1bus(hd, q_res):
         wq = 2 * np.pi * hd["fQ"] * 1e9
         wr = 2 * np.pi * np.array([7.0, 6.0]) * 1e9
         g = 2 * np.pi * np.asarray(hd["gbus"]) * 1e6
         kappa = wr / np.array(q_res)
         koch = (wq - wr) ** 2 / (kappa * g**2)  # Koch et al. Eq. 4.7
-        expected = koch * ((wq + wr) / (2 * wq)) ** 2
+        return koch * ((wq + wr) / (2 * wq)) ** 2
+
+    def test_purcell_from_q_res_without_warning(self):
+        from qiskit_metal.analyses.quantization import lumped_capacitive
+
+        q_res = [2e4, 3e5]
+        with unittest.mock.patch.object(lumped_capacitive.logger, "warning") as warn:
+            hd, _ = self._extract(Q_res=q_res)
+        warn.assert_not_called()
+        expected = self._expected_t1bus(hd, q_res)
         np.testing.assert_allclose(hd["T1bus"], expected, rtol=1e-10)
         self.assertAlmostEqual(hd["T1"], 1 / np.sum(1 / expected), places=12)
+
+    def test_purcell_placeholder_q_returned_with_warning(self):
+        from qiskit_metal.analyses.quantization import lumped_capacitive
+
+        with unittest.mock.patch.object(lumped_capacitive.logger, "warning") as warn:
+            hd, out = self._extract()
+        warn.assert_called_once()
+        self.assertIn("placeholder", warn.call_args[0][0])
+        self.assertIn("placeholder Q", out)
+        expected = self._expected_t1bus(hd, [1e4, 1e5])
+        np.testing.assert_allclose(hd["T1bus"], expected, rtol=1e-10)
+        # existing keys keep their order; the new ones come last
+        self.assertEqual(
+            list(hd),
+            [
+                "fQ",
+                "EC",
+                "EJ",
+                "alpha",
+                "dispersion",
+                "gbus",
+                "chi_in_MHz",
+                "T1",
+                "T1bus",
+            ],
+        )
 
     def test_q_res_length_checked(self):
         with self.assertRaises(ValueError):
@@ -329,6 +397,50 @@ class TestNoscillatorBusBusAndPurcell(unittest.TestCase):
         t50 = chargeline_T1(0.1e-15, 80e-15, 5e9)
         self.assertEqual(t50, chargeline_T1(0.1e-15, 80e-15, 5e9, Z0=50.0))
         self.assertAlmostEqual(chargeline_T1(0.1e-15, 80e-15, 5e9, Z0=25.0) / t50, 2.0)
+
+
+class TestRunLomPurcellSetup(unittest.TestCase):
+    """setup.Q_res / setup.Z0 reach the extractor (#1222)."""
+
+    def _run(self, **setup):
+        a = LOManalysis()
+        a.setup.freq_bus = []
+        a.setup.update(setup)
+        a.sim.capacitance_matrix = _cmat_df()
+        a.sim.capacitance_all_passes = {
+            1: _CMAT_FF * 1e-15,
+            2: _CMAT_FF * 1e-15,
+            3: _CMAT_FF * 1e-15,
+        }
+        return a.run_lom()
+
+    def test_defaults(self):
+        self.assertIsNone(LOManalysis.default_setup.Q_res)
+        self.assertEqual(LOManalysis.default_setup.Z0, 50.0)
+
+    def test_q_res_and_z0_are_used(self):
+        from qiskit_metal.analyses.quantization import lumped_capacitive
+
+        with unittest.mock.patch.object(lumped_capacitive.logger, "warning") as warn:
+            a = self._run()
+        # one warning for the run, not one per pass
+        self.assertEqual(warn.call_count, 1)
+        with unittest.mock.patch.object(lumped_capacitive.logger, "warning") as warn:
+            b = self._run(Q_res=[1e5])
+        warn.assert_not_called()
+        self.assertAlmostEqual(b["T1"].iloc[-1] / a["T1"].iloc[-1], 10.0)
+        c = self._run(Z0=25.0)
+        self.assertNotAlmostEqual(c["gr MHz"].iloc[-1], a["gr MHz"].iloc[-1], places=3)
+
+    def test_column_order_unchanged_new_columns_last(self):
+        cols = list(self._run(Q_res=[1e4]).columns)
+        self.assertEqual(
+            cols,
+            [
+                "fQ", "EC", "EJ", "alpha", "dispersion", "gbus", "chi_in_MHz",
+                "χr MHz", "gr MHz", "T1", "T1bus",
+            ],
+        )  # fmt: skip
 
 
 class TestLevelsVsNgHermitianSolver(unittest.TestCase):
