@@ -243,6 +243,94 @@ class TestRunLomQuarterWaveCorrection(unittest.TestCase):
         )
 
 
+# bus1, ground, pad1, pad2, readout (fF): one readout and one bus (#1222)
+_CMAT5_FF = np.array(
+    [
+        [60.0, -40.0, -8.0, -1.0, -0.5],
+        [-40.0, 300.0, -30.0, -40.0, -5.0],
+        [-8.0, -30.0, 110.0, -60.0, -20.0],
+        [-1.0, -40.0, -60.0, 120.0, -10.0],
+        [-0.5, -5.0, -20.0, -10.0, 60.0],
+    ]
+)
+_IC = 2.067833848e-15 / (2 * np.pi * 12e-9)
+
+
+class TestNoscillatorBusBusAndPurcell(unittest.TestCase):
+    """Bus-bus coupling formula and Purcell T1 inputs (#1222)."""
+
+    def _extract(self, **kw):
+        import contextlib
+        import io
+
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            hd = extract_transmon_coupled_Noscillator(
+                _CMAT5_FF * 1e-15, _IC, 2e-15, 2, [6.0], 7.0, print_info=True, **kw
+            )
+        return hd, buf.getvalue()
+
+    def test_bus_bus_coupling_is_lc_resonator_value(self):
+        import re
+
+        _, out = self._extract()
+        printed = float(re.search(r"gbus1_2 (\S+) \[MHz\]", out).group(1))
+        # Effective capacitances, formed as in the extractor: buses at
+        # [readout, bus1] = matrix indices [4, 0], pads [2, 3], ground 1.
+        C = _CMAT5_FF * 1e-15
+        wr = 2 * np.pi * np.array([7.0, 6.0]) * 1e9
+        Cr = 0.5 * np.pi / (wr * 50)
+        b, q = [4, 0], [2, 3]
+        Cbus = np.array([[-C[i, j] for j in b] for i in q])
+        C1S = -C[2, 1] + Cbus[0].sum()
+        C2S = -C[3, 1] + Cbus[1].sum()
+        c12 = -C[4, 0]
+        tCS = [
+            Cr[i] - Cbus[:, i].sum() ** 2 / (C1S + C2S) + Cbus[:, i].sum() + c12
+            for i in range(2)
+        ]
+        tC12 = c12 + Cbus[:, 0].sum() * Cbus[:, 1].sum() / (C1S + C2S)
+        # two capacitively coupled LC resonators
+        g = 0.5 * tC12 / np.sqrt(tCS[0] * tCS[1]) * np.sqrt(wr[0] * wr[1])
+        self.assertAlmostEqual(printed, g / (2 * np.pi * 1e6), places=5)
+
+    def test_purcell_returned_only_with_q_res(self):
+        hd, out = self._extract()
+        self.assertNotIn("T1", hd)
+        self.assertIn("placeholder Q", out)
+
+        q_res = [2e4, 3e5]
+        hd, _ = self._extract(Q_res=q_res)
+        wq = 2 * np.pi * hd["fQ"] * 1e9
+        wr = 2 * np.pi * np.array([7.0, 6.0]) * 1e9
+        g = 2 * np.pi * np.asarray(hd["gbus"]) * 1e6
+        kappa = wr / np.array(q_res)
+        koch = (wq - wr) ** 2 / (kappa * g**2)  # Koch et al. Eq. 4.7
+        expected = koch * ((wq + wr) / (2 * wq)) ** 2
+        np.testing.assert_allclose(hd["T1bus"], expected, rtol=1e-10)
+        self.assertAlmostEqual(hd["T1"], 1 / np.sum(1 / expected), places=12)
+
+    def test_q_res_length_checked(self):
+        with self.assertRaises(ValueError):
+            self._extract(Q_res=[1e4])
+
+    def test_z0_default_unchanged(self):
+        a, _ = self._extract()
+        b, _ = self._extract(Z0=50.0)
+        c, _ = self._extract(Z0=25.0)
+        np.testing.assert_array_equal(a["gbus"], b["gbus"])
+        self.assertFalse(np.allclose(a["gbus"], c["gbus"]))
+
+    def test_chargeline_t1_z0(self):
+        from qiskit_metal.analyses.quantization.lumped_capacitive import (
+            chargeline_T1,
+        )
+
+        t50 = chargeline_T1(0.1e-15, 80e-15, 5e9)
+        self.assertEqual(t50, chargeline_T1(0.1e-15, 80e-15, 5e9, Z0=50.0))
+        self.assertAlmostEqual(chargeline_T1(0.1e-15, 80e-15, 5e9, Z0=25.0) / t50, 2.0)
+
+
 class TestLevelsVsNgHermitianSolver(unittest.TestCase):
     """levels_vs_ng_real_units uses a Hermitian eigensolver (#1210)."""
 
