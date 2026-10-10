@@ -20,7 +20,9 @@ import numpy as np
 from scipy.integrate import trapezoid
 from scipy.optimize import brentq
 
+from qiskit_metal.analyses.hamiltonian import transmon_analytics
 from qiskit_metal.analyses.hamiltonian.HO_wavefunctions import wavefunction
+from qiskit_metal.analyses.hamiltonian.transmon_CPB_analytic import Hcpb_analytic
 from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
 
 NCUT = 30
@@ -121,6 +123,41 @@ class TestParamsFromFreqFixEC(unittest.TestCase):
         h = Hcpb(nlevels=15, Ej=1.0, Ec=300.0, ng=0.0)
         with self.assertWarns(UserWarning):
             h.params_from_freq_fixEC(100.0, 300.0)
+
+
+class TestMathieuLevels(unittest.TestCase):
+    """#1220: Hcpb_analytic / transmon_eigenvalue vs the dense reference."""
+
+    NG = (0.0, 0.5, -0.5, 0.25, -0.3, 0.1, 0.9, 1.0)
+
+    def test_hcpb_analytic_matches_reference(self):
+        Ec = 298.0
+        for ratio in (1.0, 5.0, 20.0, 45.7, 100.0):
+            for ng in self.NG:
+                ref = ref_levels(ratio * Ec, Ec, ng)
+                h = Hcpb_analytic(Ej=ratio * Ec, Ec=Ec, ng=ng)
+                got = np.array([h.evalue_k(m) for m in range(6)])
+                np.testing.assert_allclose(
+                    got, ref, rtol=0, atol=1e-6 * Ec, err_msg=f"Ej/Ec={ratio}, ng={ng}"
+                )
+
+    def test_transmon_eigenvalue_explicit_and_module_defaults(self):
+        Ej, Ec = 13622.0, 298.0
+        for ng in (0.0, 0.25, 0.5):
+            ref = ref_levels(Ej, Ec, ng)
+            got = [
+                transmon_analytics.transmon_eigenvalue(m, ng, Ej=Ej, Ec=Ec)
+                for m in range(6)
+            ]
+            np.testing.assert_allclose(got, ref, rtol=0, atol=1e-6 * Ec)
+        # Without Ej/Ec, the module constants RATIO and E_C are used.
+        ref = ref_levels(
+            transmon_analytics.RATIO * transmon_analytics.E_C,
+            transmon_analytics.E_C,
+            0.0,
+        )
+        got = [transmon_analytics.transmon_eigenvalue(m, 0.0) for m in range(4)]
+        np.testing.assert_allclose(got, ref[:4], rtol=0, atol=1e-9)
 
 
 if __name__ == "__main__":
