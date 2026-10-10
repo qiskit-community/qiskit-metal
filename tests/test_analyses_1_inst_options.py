@@ -81,43 +81,43 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         """Test instantiation of LumpedElementsSim."""
         design = designs.DesignPlanar()
 
-        try:
-            LumpedElementsSim(design)
-        except Exception:
-            self.fail("LumpedElementsSim failed.")
+        if design.renderers.get("q3d"):
+            try:
+                LumpedElementsSim(design)
+            except Exception:
+                self.fail("LumpedElementsSim failed.")
 
-        try:
+        # an unknown renderer raises instead of leaving renderer None (#1230)
+        with self.assertRaises(ValueError):
             LumpedElementsSim(design, "capExtractName")
-        except Exception:
-            self.fail("LumpedElementsSim(design, renderer_name) failed.")
 
     def test_analyses_instantiate_eigenmodesim(self):
         """Test instantiation of EigenmodeSim."""
         design = designs.DesignPlanar()
 
-        try:
-            EigenmodeSim(design)
-        except Exception:
-            self.fail("EigenmodeSim failed.")
+        if design.renderers.get("hfss"):
+            try:
+                EigenmodeSim(design)
+            except Exception:
+                self.fail("EigenmodeSim failed.")
 
-        try:
+        # an unknown renderer raises instead of leaving renderer None (#1230)
+        with self.assertRaises(ValueError):
             EigenmodeSim(design, "eigenName")
-        except Exception:
-            self.fail("EigenmodeSim(design, renderer_name) failed.")
 
     def test_analyses_instantiate_ScatteringImpedanceSim(self):
         """Test instantiation of ScatteringImpedanceSim."""
         design = designs.DesignPlanar()
 
-        try:
-            ScatteringImpedanceSim(design)
-        except Exception:
-            self.fail("ScatteringImpedanceSim failed.")
+        if design.renderers.get("hfss"):
+            try:
+                ScatteringImpedanceSim(design)
+            except Exception:
+                self.fail("ScatteringImpedanceSim failed.")
 
-        try:
+        # an unknown renderer raises instead of leaving renderer None (#1230)
+        with self.assertRaises(ValueError):
             ScatteringImpedanceSim(design, "impName")
-        except Exception:
-            self.fail("ScatteringImpedanceSim(design, renderer_name) failed.")
 
     def test_analyses_instantiate_lomanalysis(self):
         """Test instantiation of LOManalysis."""

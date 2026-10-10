@@ -110,7 +110,8 @@ class TestCmatPrintWithoutIPython(unittest.TestCase):
 
 class TestSaveCapacitanceMatrix(unittest.TestCase):
     def test_round_trip_with_units_header(self):
-        sim = LumpedElementsSim(designs.DesignPlanar())
+        # no renderer needed to save a matrix (and none in a lite install)
+        sim = LumpedElementsSim(designs.DesignPlanar(), None)
         sim.capacitance_matrix = _cmat_df()
         sim.units = "fF"
         with tempfile.TemporaryDirectory() as tmp:
@@ -123,7 +124,7 @@ class TestSaveCapacitanceMatrix(unittest.TestCase):
 
     def test_raises_without_matrix(self):
         with self.assertRaises(ValueError):
-            LumpedElementsSim(designs.DesignPlanar()).save_capacitance_matrix(
+            LumpedElementsSim(designs.DesignPlanar(), None).save_capacitance_matrix(
                 "unused.csv"
             )
 
@@ -145,9 +146,41 @@ class TestSimWithoutDesign(unittest.TestCase):
                 self.assertIsNotNone(sim.renderer)
                 self.assertFalse(sim.renderer_initialized)
 
-    def test_unknown_renderer_returns_none(self):
-        sim = LumpedElementsSim(renderer_name="no_such_renderer")
-        self.assertIsNone(sim.renderer)
+    def test_unknown_renderer_raises(self):
+        # used to return a simulation with renderer None, which only failed
+        # later with "'NoneType' object has no attribute 'initialized'" (#1230)
+        with self.assertRaisesRegex(ValueError, 'Renderer "no_such_renderer"') as cm:
+            LumpedElementsSim(renderer_name="no_such_renderer")
+        self.assertIn("not in config.renderers_to_load", str(cm.exception))
+        self.assertIn("q3d", str(cm.exception))  # lists the configured ones
+
+
+class TestSimRendererMissingFromDesign(unittest.TestCase):
+    """A renderer the design did not start raises at construction (#1230)."""
+
+    def test_configured_but_not_started(self):
+        design = designs.DesignPlanar(enable_renderers=False)
+        for cls, name in ((LumpedElementsSim, "q3d"), (EigenmodeSim, "hfss")):
+            with self.subTest(cls=cls.__name__):
+                with self.assertRaisesRegex(ValueError, f'Renderer "{name}"') as cm:
+                    cls(design, name)
+                self.assertIn("not started for this design", str(cm.exception))
+        with self.assertRaises(ValueError):
+            EPRanalysis(design, "hfss")
+
+    def test_unknown_with_design_lists_available(self):
+        design = designs.DesignPlanar()
+        with self.assertRaises(ValueError) as cm:
+            LumpedElementsSim(design, "no_such_renderer")
+        msg = str(cm.exception)
+        self.assertIn("not in config.renderers_to_load", msg)
+        self.assertIn("gds", msg)
+
+    def test_available_renderer_still_works(self):
+        design = designs.DesignPlanar()
+        if not design.renderers.get("q3d"):
+            self.skipTest("q3d renderer not available in this install")
+        self.assertIs(LumpedElementsSim(design, "q3d").renderer, design.renderers.q3d)
 
 
 class TestUnlinkedJunctionWarning(unittest.TestCase):
@@ -156,6 +189,8 @@ class TestUnlinkedJunctionWarning(unittest.TestCase):
     def setUp(self):
         self.design = designs.DesignPlanar()
         self.q1 = TransmonPocket(self.design, "Q1")  # hfss_inductance='10nH'
+        if not self.design.renderers.get("hfss"):
+            self.skipTest("HFSS renderer not installed (lite install)")
         self.sim = EigenmodeSim(self.design, "hfss")
         if "hfss_inductance" not in self.design.qgeometry.tables["junction"]:
             self.skipTest("HFSS renderer not installed (lite install)")
@@ -195,7 +230,10 @@ class TestUnlinkedJunctionWarning(unittest.TestCase):
 
 class TestLargeHilbertSpaceWarning(unittest.TestCase):
     def setUp(self):
-        self.epr = EPRanalysis(designs.DesignPlanar(), "hfss")
+        design = designs.DesignPlanar()
+        if not design.renderers.get("hfss"):
+            self.skipTest("HFSS renderer not installed (lite install)")
+        self.epr = EPRanalysis(design, "hfss")
 
     def test_warns_for_six_modes_at_default_truncation(self):
         self.epr.sim.setup.n_modes = 6
