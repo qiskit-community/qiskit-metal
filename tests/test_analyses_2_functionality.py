@@ -1164,8 +1164,12 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analysis_kappa_calculation_kappa_in(self):
         """Test the kappa_in function in kappa_calculation.py."""
-        self.assertAlmostEqual(
-            kappa_calculation.kappa_in(5.0e9, 30.0e-15, 4.5e9), 161144.37988054403
+        # kappa/2pi in Hz; the value pinned before #1204 (161144.38) used f
+        # in place of omega and was (2 pi)**2 smaller.
+        self.assertAlmostEqualRel(
+            kappa_calculation.kappa_in(5.0e9, 30.0e-15, 4.5e9),
+            161144.37988054403 * (2 * np.pi) ** 2,
+            rel_tol=1e-12,
         )
 
     def test_analysis_sweeper_option_value(self):
