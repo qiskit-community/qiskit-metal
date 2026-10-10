@@ -280,6 +280,11 @@ class Hcpb:
             (float, float): Ej and Ec of the transmon Hamiltonian
             corresponding to the f01 and anharmonicty
             of the device
+
+        Warns:
+            UserWarning: if the returned (Ej, Ec) do not reproduce
+            (f01, anharm), for instance when the target is outside the
+            search bounds.
         """
         # Anharmonicty should be negative for the Transmon
         if anharm > 0:
@@ -288,19 +293,22 @@ class Hcpb:
         def fun(x):
             self.Ej = x[0]
             self.Ec = x[1]
-            # the 10 on the anharmonicity allows faster convergnce, see Minev
-            return (self.fij(0, 1) - f01) ** 2 + 10 * (self.anharm() - anharm) ** 2
+            # Residual vector (least_squares squares it itself).
+            return [self.fij(0, 1) - f01, self.anharm() - anharm]
 
         # Initial guesses from
         # f01 ~ sqrt(8*Ej*Ec) - Ec
         #  eta ~ -Ec
         x0 = [(f01 - anharm) ** 2 / (8 * (-anharm)), -anharm]
-        # can converge slowly if cost function not set up well, or alpha<<freq
         ops = dict(
-            bounds=[(0, 0), (x0[0] * 3, x0[1] * 3)], f_scale=1 / x0[0], max_nfev=2000
+            bounds=[(0, 0), (x0[0] * 3, x0[1] * 3)],
+            max_nfev=2000,
+            xtol=1e-12,
+            ftol=1e-12,
         )
         res = opt.least_squares(fun, x0, **{**ops, **kwargs})
         self.Ej, self.Ec = res.x
+        _warn_if_missed("params_from_spectrum", res, f01)
         return res.x
 
     def params_from_freq_fixEC(self, f01: float, Ec: float, **kwargs):

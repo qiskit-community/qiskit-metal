@@ -125,6 +125,36 @@ class TestParamsFromFreqFixEC(unittest.TestCase):
             h.params_from_freq_fixEC(100.0, 300.0)
 
 
+class TestParamsFromSpectrum(unittest.TestCase):
+    """#1221: (Ej, Ec) must reproduce (f01, anharm) or warn."""
+
+    def test_grid_reproduces_targets(self):
+        Ec = 250.0
+        for ratio in (20.0, 46.0, 100.0, 200.0, 300.0):
+            E = ref_levels(ratio * Ec, Ec, 0.5, 3)
+            f01, alpha = E[1] - E[0], (E[2] - E[1]) - (E[1] - E[0])
+            h = Hcpb(nlevels=15, Ej=1.0, Ec=1.0)  # default ng = 0.5
+            with warnings.catch_warnings():
+                warnings.simplefilter("error")
+                Ej, Ec_fit = h.params_from_spectrum(f01, alpha)
+            E2 = ref_levels(Ej, Ec_fit, 0.5, 3)
+            self.assertLess(abs((E2[1] - E2[0]) - f01), 1e-3, msg=ratio)
+            self.assertLess(
+                abs((E2[2] - E2[1]) - (E2[1] - E2[0]) - alpha), 1e-3, msg=ratio
+            )
+            # At ng = 1/2, alpha/Ec is not monotonic in Ej/Ec below ~30, so
+            # (f01, alpha) -> (Ej, Ec) is not unique there (Ej/Ec = 20 has a
+            # second solution near 15.6); only check uniqueness above that.
+            if ratio >= 30:
+                self.assertAlmostEqual(Ej / (ratio * Ec), 1.0, places=6)
+                self.assertAlmostEqual(Ec_fit / Ec, 1.0, places=6)
+
+    def test_unreachable_target_warns(self):
+        h = Hcpb(nlevels=15, Ej=1.0, Ec=1.0)
+        with self.assertWarns(UserWarning):
+            h.params_from_spectrum(3000.0, -800.0)
+
+
 class TestMathieuLevels(unittest.TestCase):
     """#1220: Hcpb_analytic / transmon_eigenvalue vs the dense reference."""
 
