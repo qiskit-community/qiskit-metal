@@ -335,6 +335,30 @@ class TestTwoNodeTLCoupling(unittest.TestCase):
         self.assertGreater(f_ladder_0 - f_ladder, 7e-3)
         self.assertLess(abs(f_lom - f_ladder), 1e-3)
 
+    def test_single_mode_bus_overestimates_exchange(self):
+        """Documented model limit (TLResonatorBuilder): the bus is one mode.
+        Linearized qubits on resonance (2J = splitting), exact ladder J =
+        0.893 / 3.635 MHz at c_dir = 0 / 0.3 fF; the LOM gives 1.028 / 3.821
+        MHz. Mode m of the line enters with sign (-1)^m (u_m(0) u_m(L)), so
+        the omitted modes m >= 2 reduce J. The qubits also miss the loading
+        by those modes and come out ~6 MHz high. Both qubits have the same
+        L_J, so the circuit is symmetric and on resonance: no tuning needed.
+        If the bus gains modes, update the docstring and these bounds."""
+        for c_dir, lo, hi in ((0.0, 1.12, 1.18), (0.3, 1.03, 1.07)):
+            with self.subTest(c_dir=c_dir):
+                system, cmat = _bus_system(c_dir=c_dir)
+                evals = system.add_interaction().eigenvals(evals_count=3)
+                j_lom = (evals[2] - evals[1]) / 2  # MHz
+                f = _ladder_frequencies(system, cmat)
+                j_ladder = (f[1] - f[0]) / 2 * 1e3
+                self.assertGreater(j_lom / j_ladder, lo)
+                self.assertLess(j_lom / j_ladder, hi)
+                shift = (evals[1] + evals[2] - 2 * evals[0]) / 2 - (
+                    f[0] + f[1]
+                ) / 2 * 1e3
+                self.assertGreater(shift, 4.0)  # MHz
+                self.assertLess(shift, 8.0)
+
 
 class TestLoadedTLInputUnchanged(unittest.TestCase):
     """The caller's ``cap_loading`` dict is left alone (#1232)."""
