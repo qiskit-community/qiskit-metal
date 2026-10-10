@@ -120,6 +120,7 @@ try:
         print("TABBAR_MSH", b.minimumSizeHint().width(), flush=True)
     # Ask for an impossibly narrow left area; Qt clamps to the real minimum.
     mw.resizeDocks(left, [20] * len(left), Qt.Horizontal)
+    print("RESIZED", flush=True)
     pump(200)
     print("LEFT_WIDTH", max(d.width() for d in left), flush=True)
     print("MARKER_OK", flush=True)
@@ -148,12 +149,17 @@ def test_left_dock_area_can_shrink_below_threshold():
         env=env,
     )
     out = proc.stdout
+    err = proc.stderr
+    # faulthandler's stack comes before its (long) extension-module list,
+    # so show the stderr from the crash report on, not just its tail.
+    crash = max(err.find("Fatal Python error"), err.find("Windows fatal exception"))
+    err_shown = err[crash : crash + 3000] if crash >= 0 else err[-2000:]
     assert "MARKER_OK" in out, (
         f"GUI child did not finish (rc={proc.returncode}).\n"
-        f"stdout:\n{out[-2000:]}\nstderr:\n{proc.stderr[-2000:]}"
+        f"stdout:\n{out[-2000:]}\nstderr:\n{err_shown}"
     )
 
-    assert "already deleted" not in out + proc.stderr
+    assert "already deleted" not in out + err
 
     n_bars = int(re.search(r"TABBARS (\d+)", out).group(1))
     assert n_bars >= 1, "expected the tabified left docks to have a tab bar"
