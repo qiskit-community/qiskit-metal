@@ -510,6 +510,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">opt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnitRegistry</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization.constants</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">e</span><span class="p">,</span>
     <span class="n">h</span><span class="p">,</span>
@@ -624,40 +625,57 @@
 
 <div class="viewcode-block" id="chi">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.chi">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">chi</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">wr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">w01</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">w12</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">chi</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">wr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">w01</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">w12</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">g12</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
-<span class="sd">    Calculate the dispersive shift $\chi$, where $2*\chi$ is</span>
-<span class="sd">    the `|0&gt; --&gt; |1&gt;` splitting).</span>
+<span class="sd">    Calculate the dispersive shift $\chi$, where $2\chi$ is the change of the</span>
+<span class="sd">    resonator frequency between qubit states `|0&gt;` and `|1&gt;`.</span>
 
-<span class="sd">    Accounts for push on the i-th transmon level due to the j-th transmon level,</span>
-<span class="sd">    mediated by cavity.</span>
+<span class="sd">    Convention: this is Koch et al.'s $\chi$ (resonator at $\omega_r \pm \chi$),</span>
+<span class="sd">    i.e. half of the "total" dispersive shift / cross-Kerr $\chi_{qr}$ of the</span>
+<span class="sd">    EPR convention (Minev et al., npj Quantum Inf. 7, 131 (2021), Eq. 26),</span>
+<span class="sd">    $\chi_{qr} = 2\chi$. ``extract_transmon_coupled_Noscillator`` reports</span>
+<span class="sd">    $2\chi$.</span>
+
+<span class="sd">    Approximations (this is Koch et al. (3.9)-(3.10) extended, not as</span>
+<span class="sd">    printed): second-order perturbation theory in the 0-1 and 1-2 transitions</span>
+<span class="sd">    only, *including* the counter-rotating terms ($1/(\omega_{ij}+\omega_r)$),</span>
+<span class="sd">    with $g_{12} = \sqrt{2}\,g$ (harmonic matrix elements) unless ``g12`` is</span>
+<span class="sd">    given. For a transmon $n_{12}/n_{01} \approx 1.33$-$1.39$ at</span>
+<span class="sd">    $E_J/E_C = 20$-$100$ rather than $\sqrt{2}$; with the default the result</span>
+<span class="sd">    differs from exact diagonalization by -6 % to -33 % for a qubit below the</span>
+<span class="sd">    resonator (detuning -0.7 to -2 GHz) and by +16 % to +140 % above it</span>
+<span class="sd">    (+1 to +2 GHz). Passing the exact ``g12`` (e.g.</span>
+<span class="sd">    ``g * Hcpb.n_ij(1, 2) / Hcpb.n_ij(0, 1)``) brings it to about 2 %</span>
+<span class="sd">    (up to 9 % at $E_J/E_C = 20$, 2 GHz detuning).</span>
 
 <span class="sd">    All args need to be in the same units.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        g (float): Qubit-cavity linear coupling.</span>
+<span class="sd">        g (float): Qubit-cavity linear coupling for the 0-1 transition.</span>
 <span class="sd">        wr (float): Frequency of resonator.</span>
 <span class="sd">        w01 (float): Qubit 01 transition frequency</span>
 <span class="sd">        w12 (float): Qubit 12 transition frequency</span>
+<span class="sd">        g12 (float, optional): Coupling for the 1-2 transition. Defaults to</span>
+<span class="sd">            ``sqrt(2) * g`` (harmonic-oscillator scaling).</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: Calculated chi value</span>
 <span class="sd">    """</span>
+    <span class="n">g12_sq</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">g</span><span class="o">**</span><span class="mi">2</span> <span class="k">if</span> <span class="n">g12</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">g12</span><span class="o">**</span><span class="mi">2</span>
 
     <span class="c1"># Push on the i-th transmon level due to the j-th transmon level</span>
     <span class="c1"># mediated by cavity</span>
 
     <span class="c1"># shift of the zero state</span>
     <span class="c1"># In this case i=0 and j=1.</span>
-    <span class="n">chibus_0</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">g</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">w01</span> <span class="o">/</span> <span class="p">(</span><span class="n">w01</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">wr</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Koch Eq. (3.10)</span>
+    <span class="n">chibus_0</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">g</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">w01</span> <span class="o">/</span> <span class="p">(</span><span class="n">w01</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">wr</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="c1"># shift of the 1 state</span>
-    <span class="c1"># the g of the levels scales rougly as sqrt(n), so the 2 for the 2 / (w12 - wr)</span>
-    <span class="n">chibus_1</span> <span class="o">=</span> <span class="n">g</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span>
-        <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">w01</span> <span class="o">-</span> <span class="n">wr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">w12</span> <span class="o">-</span> <span class="n">wr</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">w01</span> <span class="o">+</span> <span class="n">wr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">w12</span> <span class="o">+</span> <span class="n">wr</span><span class="p">)</span>
+    <span class="n">chibus_1</span> <span class="o">=</span> <span class="n">g</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">w01</span> <span class="o">-</span> <span class="n">wr</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">w01</span> <span class="o">+</span> <span class="n">wr</span><span class="p">))</span> <span class="o">-</span> <span class="n">g12_sq</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">w12</span> <span class="o">-</span> <span class="n">wr</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">w12</span> <span class="o">+</span> <span class="n">wr</span><span class="p">)</span>
     <span class="p">)</span>
 
-    <span class="k">return</span> <span class="p">(</span><span class="n">chibus_1</span> <span class="o">-</span> <span class="n">chibus_0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># Koch Eq. (3.9)</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">chibus_1</span> <span class="o">-</span> <span class="n">chibus_0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span></div>
 
 
 
@@ -673,6 +691,9 @@
     <span class="n">res_L4_corr</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">g_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">print_info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">Q_res</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">Z0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
+    <span class="n">_warn_placeholder_q</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Primary analysis function called by the user for lumped-element mode</span>
 <span class="sd">    (LOM) analysis. Uses a Maxwell capacitance matrix generated by a capacitive</span>
@@ -707,9 +728,34 @@
 <span class="sd">          in the form [1,0,1,...].  Defaults to None.</span>
 <span class="sd">        g_scale (float): Scale factor</span>
 <span class="sd">        print_info (bool): Print transmon and coupling properties. Defaults to False.</span>
+<span class="sd">        Q_res (list, optional): Loaded quality factors of the resonators, in</span>
+<span class="sd">          the order [readout, bus1, ...], used for the Purcell times ``T1``</span>
+<span class="sd">          and ``T1bus`` (in s) in the returned dict. If None (default),</span>
+<span class="sd">          placeholder values Q = 1e4 (readout) and 1e5 (buses) are used and</span>
+<span class="sd">          a warning is logged.</span>
+<span class="sd">        Z0 (float): Characteristic impedance of the resonators in ohm, used</span>
+<span class="sd">          for their lumped capacitance Cr = pi / (2 wr Z0) (lambda/2).</span>
+<span class="sd">          Defaults to 50.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: `ham_dict` is a dictionary of all the calculated values</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        * The coupling pads are treated as grounded when the qubit pad</span>
+<span class="sd">          capacitances are formed (pad-to-coupler capacitance is added to the</span>
+<span class="sd">          pad-to-ground capacitance).</span>
+<span class="sd">        * ``fQ``, ``alpha`` and ``dispersion`` come from a charge-basis</span>
+<span class="sd">          diagonalisation and are averages over the offset charge</span>
+<span class="sd">          n_g in [-1, 1].</span>
+<span class="sd">        * Purcell time per resonator,</span>
+<span class="sd">          T1bus = (wr^2 - wq^2)^2 / (4 kappa g^2 wq^2), i.e.</span>
+<span class="sd">          1/T1 = kappa g^2 (1/Delta + 1/Sigma)^2 with Delta = wq - wr,</span>
+<span class="sd">          Sigma = wq + wr: Koch et al. (2007) Eq. 4.7, Delta^2/(kappa g^2),</span>
+<span class="sd">          times ((wq + wr)/(2 wq))^2 (coupling through the charge quadrature</span>
+<span class="sd">          with counter-rotating terms kept). The Purcell rate of a real device</span>
+<span class="sd">          also depends on where the loss sits; treat it as an estimate.</span>
+<span class="sd">        * Bus-bus couplings (printed only) are those of two capacitively</span>
+<span class="sd">          coupled LC resonators, g = C12 sqrt(w1 w2) / (2 sqrt(C1 C2)).</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: If N is not positive</span>
@@ -746,7 +792,7 @@
     <span class="c1">#### Transmission line properties</span>
 
     <span class="c1"># Initial values</span>
-    <span class="n">Zbus</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="n">Zbus</span> <span class="o">=</span> <span class="n">Z0</span>
     <span class="n">Cr</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="n">wr</span> <span class="o">*</span> <span class="n">Zbus</span><span class="p">)</span>
     <span class="n">Lr</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">wr</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">Cr</span>
 
@@ -862,24 +908,40 @@
     <span class="c1"># gbus = bbus*wr*np.sqrt(Zbus)*e*(EJ/8/EC)**(1/4)/np.sqrt(hbar)</span>
     <span class="n">gbus_in_MHz</span> <span class="o">=</span> <span class="n">gqbus</span> <span class="o">/</span> <span class="mf">1e6</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
 
-    <span class="c1"># g's between pads</span>
-    <span class="n">gbusbus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">])</span>
-    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-            <span class="n">gbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">)</span> <span class="o">*</span> <span class="n">tCqbusbus</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="n">jj</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">tCSbus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">*</span> <span class="n">tCSbus</span><span class="p">[</span><span class="n">jj</span><span class="p">])</span>
+    <span class="c1"># g's between pads (rad/s): two capacitively coupled LC resonators,</span>
+    <span class="c1"># g = C12 sqrt(w1 w2) / (2 sqrt(C1 C2)). Used to be</span>
+    <span class="c1"># 0.01 * C12 / (C1 C2), which has units of 1/F (#1222).</span>
+    <span class="n">gbusbus</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mf">0.5</span> <span class="o">*</span> <span class="n">tCqbusbus</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tCSbus</span><span class="p">,</span> <span class="n">tCSbus</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">wr</span><span class="p">,</span> <span class="n">wr</span><span class="p">))</span>
+    <span class="p">)</span>
 
     <span class="c1">########################################################</span>
     <span class="c1">##### Purcell, Qs, dissipative</span>
 
-    <span class="c1"># guesses for the Q's</span>
-    <span class="n">Qreadout</span> <span class="o">=</span> <span class="mf">1e4</span>
-    <span class="n">Qcouplingbus</span> <span class="o">=</span> <span class="mf">1e5</span>
-    <span class="n">Qbus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">ii</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">Qbus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">Qreadout</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">Qbus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">Qcouplingbus</span>
+    <span class="k">if</span> <span class="n">Q_res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Qbus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Q_res</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">Qbus</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">N</span><span class="p">,):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Q_res must have one entry per coupling pad (N=</span><span class="si">{</span><span class="n">N</span><span class="si">}</span><span class="s2">), "</span>
+                <span class="sa">f</span><span class="s2">"in the order [readout, bus1, ...]; got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">Qbus</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># placeholder Q's when none are given</span>
+        <span class="k">if</span> <span class="n">_warn_placeholder_q</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"Purcell T1 / T1bus are computed from placeholder resonator "</span>
+                <span class="s2">"quality factors (Q = 1e4 readout, 1e5 buses), not from the "</span>
+                <span class="s2">"design. Pass Q_res (LOManalysis: setup.Q_res) for meaningful "</span>
+                <span class="s2">"values."</span>
+            <span class="p">)</span>
+        <span class="n">Qreadout</span> <span class="o">=</span> <span class="mf">1e4</span>
+        <span class="n">Qcouplingbus</span> <span class="o">=</span> <span class="mf">1e5</span>
+        <span class="n">Qbus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">ii</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">Qbus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">Qreadout</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">Qbus</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">Qcouplingbus</span>
 
     <span class="c1"># loss tangent</span>
     <span class="n">kbus</span> <span class="o">=</span> <span class="n">wr</span> <span class="o">/</span> <span class="n">Qbus</span>
@@ -911,6 +973,8 @@
     <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"dispersion"</span><span class="p">]</span> <span class="o">=</span> <span class="n">disp</span> <span class="o">/</span> <span class="mf">1e3</span>
     <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"gbus"</span><span class="p">]</span> <span class="o">=</span> <span class="n">gbus_in_MHz</span>
     <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"chi_in_MHz"</span><span class="p">]</span> <span class="o">=</span> <span class="n">Chi_in_MHz</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"T1"</span><span class="p">]</span> <span class="o">=</span> <span class="n">T1</span>
+    <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"T1bus"</span><span class="p">]</span> <span class="o">=</span> <span class="n">T1bus</span>
 
     <span class="k">if</span> <span class="n">print_info</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">qubit_index</span><span class="p">,</span> <span class="n">bus_index</span><span class="p">)</span>
@@ -924,7 +988,10 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">"dispersion </span><span class="si">%f</span><span class="s2"> [KHz]"</span> <span class="o">%</span> <span class="n">ham_dict</span><span class="p">[</span><span class="s2">"dispersion"</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">"Lq </span><span class="si">%f</span><span class="s2"> [nH]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">phi0</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">hbar</span> <span class="o">*</span> <span class="n">EJ</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e-9</span><span class="p">))</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">"Cq </span><span class="si">%f</span><span class="s2"> [fF]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">Cq</span> <span class="o">/</span> <span class="mf">1e-15</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">"T1 </span><span class="si">%f</span><span class="s2"> [us]"</span> <span class="o">%</span> <span class="p">(</span><span class="n">T1</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">)))</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">"T1 </span><span class="si">%f</span><span class="s2"> [us]</span><span class="si">%s</span><span class="s2">"</span>
+            <span class="o">%</span> <span class="p">(</span><span class="n">T1</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">),</span> <span class="s2">""</span> <span class="k">if</span> <span class="n">Q_res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">" (placeholder Q, see Q_res)"</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="nb">print</span><span class="p">()</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s2">"**Coupling Properties**"</span><span class="p">)</span>
@@ -998,9 +1065,9 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">H</span><span class="p">))):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Matrix is not Hermitian"</span><span class="p">)</span>
 
-        <span class="p">[</span><span class="n">d</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
-        <span class="n">sortIX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-        <span class="n">sorted_d</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">sortIX</span><span class="p">]</span>
+        <span class="c1"># H is real symmetric: eigvalsh returns real, ascending eigenvalues</span>
+        <span class="c1"># (np.linalg.eig is a general solver that may return complex dtype)</span>
+        <span class="n">sorted_d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
 
         <span class="n">elvls</span><span class="p">[:,</span> <span class="n">iindex</span><span class="p">]</span> <span class="o">=</span> <span class="n">sorted_d</span> <span class="o">-</span> <span class="n">sorted_d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -1148,19 +1215,20 @@
 
 <div class="viewcode-block" id="chargeline_T1">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.lumped_capacitive.html#qiskit_metal.analyses.lumped_capacitive.chargeline_T1">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">chargeline_T1</span><span class="p">(</span><span class="n">Ccharge</span><span class="p">,</span> <span class="n">Cq</span><span class="p">,</span> <span class="n">f01</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Calculate the charge line `T1`.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">chargeline_T1</span><span class="p">(</span><span class="n">Ccharge</span><span class="p">,</span> <span class="n">Cq</span><span class="p">,</span> <span class="n">f01</span><span class="p">,</span> <span class="n">Z0</span><span class="o">=</span><span class="mf">50.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate the charge line `T1`, T1 = Cq / (Ccharge^2 Z0 (2 pi f01)^2).</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        Cchare (float): Ccharge</span>
-<span class="sd">        Cq (float): Cq</span>
-<span class="sd">        f01 (float): f01</span>
+<span class="sd">        Ccharge (float): Capacitance between the qubit and the charge line (in F)</span>
+<span class="sd">        Cq (float): Qubit capacitance (in F)</span>
+<span class="sd">        f01 (float): Qubit frequency (in Hz)</span>
+<span class="sd">        Z0 (float): Impedance of the charge line (in ohm). Defaults to 50.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        float: Calculated chargeline T1</span>
+<span class="sd">        float: Calculated chargeline T1 (in s)</span>
 <span class="sd">    """</span>
 
-    <span class="k">return</span> <span class="n">Cq</span> <span class="o">/</span> <span class="p">(</span><span class="n">Ccharge</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">50.0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f01</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">Cq</span> <span class="o">/</span> <span class="p">(</span><span class="n">Ccharge</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">Z0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f01</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
 
 
 
@@ -1358,8 +1426,15 @@
     <span class="n">RES</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">RES</span><span class="p">])</span>
     <span class="n">RES</span><span class="p">[</span><span class="s2">"χr MHz"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">RES</span><span class="p">[</span><span class="s2">"chi_in_MHz"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="n">RES</span><span class="p">[</span><span class="s2">"gr MHz"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">RES</span><span class="p">[</span><span class="s2">"gbus"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">RES</span></div>
+    <span class="k">return</span> <span class="n">_purcell_columns_last</span><span class="p">(</span><span class="n">RES</span><span class="p">)</span></div>
 
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_purcell_columns_last</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Move the ``T1`` / ``T1bus`` columns (added in #1222) after the</span>
+<span class="sd">    existing ones, so the column order callers saw before is unchanged."""</span>
+    <span class="n">new</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"T1"</span><span class="p">,</span> <span class="s2">"T1bus"</span><span class="p">)</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">new</span><span class="p">]</span> <span class="o">+</span> <span class="n">new</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="df_cmat_style_print">
@@ -1443,7 +1518,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

@@ -499,75 +499,55 @@
 <span class="sd">    - or any other undergraduate quantum mechanics textbook)</span>
 <span class="sd">"""</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">factorial</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">eval_hermite</span><span class="p">,</span> <span class="n">gammaln</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"wavefunction"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="wavefunction">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.HO_wavefunctions.html#qiskit_metal.analyses.HO_wavefunctions.wavefunction">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">wavefunction</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""This function calculates the nth wavefunction of the harmonic oscillator</span>
-<span class="sd">    for a given value of inductance (L) and capacitance (C) at a charge x.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wavefunction</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">hbar</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Return the n-th energy eigenfunction of the LC (harmonic) oscillator.</span>
+
+<span class="sd">    The coordinate ``x`` is the capacitor charge :math:`Q`. With</span>
+<span class="sd">    :math:`H = \Phi^2/2L + Q^2/2C`, the flux :math:`\Phi` is the momentum</span>
+<span class="sd">    conjugate to :math:`Q`, so the "mass" is :math:`L` and</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \omega = 1/\sqrt{LC}, \qquad</span>
+<span class="sd">        \psi_n(Q) = \frac{1}{\sqrt{2^n n!}}</span>
+<span class="sd">        \left(\frac{L\omega}{\pi\hbar}\right)^{1/4}</span>
+<span class="sd">        e^{-L\omega Q^2/2\hbar}\,</span>
+<span class="sd">        H_n\!\left(\sqrt{L\omega/\hbar}\,Q\right),</span>
+
+<span class="sd">    normalized so that :math:`\int |\psi_n|^2\,dQ = 1`. Note</span>
+<span class="sd">    :math:`L\omega = \sqrt{L/C} = Z`, the characteristic impedance.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        L (float): The inductance of the inductor in an LC circuit.</span>
 <span class="sd">        C (float): The capacitance of the capacitor in an LC circuit.</span>
-<span class="sd">        n (int): The energy state of the harmonic oscillator.</span>
-<span class="sd">        x (float): The value of charge (independent variable) for which the wavefunction is calculated.</span>
+<span class="sd">        n (int): The energy level (any non-negative integer).</span>
+<span class="sd">        x (float or array): The charge at which the wavefunction is evaluated.</span>
+<span class="sd">        hbar (float): Reduced Planck constant in the units of ``L``, ``C``</span>
+<span class="sd">            and ``x``. Defaults to 1 (natural units); pass</span>
+<span class="sd">            ``scipy.constants.hbar`` for SI inputs.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        float: Calculated wavefunction</span>
+<span class="sd">        float or array: :math:`\psi_n(x)`.</span>
 <span class="sd">    """</span>
-    <span class="c1"># This is the fundamental frequency of the LC circuit</span>
-    <span class="n">omega</span> <span class="o">=</span> <span class="p">(</span><span class="n">L</span> <span class="o">*</span> <span class="n">C</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-
-    <span class="c1"># For simplicity, let's work in units where hbar=1</span>
-    <span class="n">hbar</span> <span class="o">=</span> <span class="mf">1.0</span>
-
-    <span class="c1"># these are two terms in the expression for wavefunction which do not depend on charge (x)</span>
-    <span class="n">prefactor</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">((</span><span class="mf">2.0</span><span class="o">**</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">))))</span>
-    <span class="n">qubic_root</span> <span class="o">=</span> <span class="p">((</span><span class="n">L</span> <span class="o">*</span> <span class="n">omega</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">pi</span> <span class="o">*</span> <span class="n">hbar</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
-
-    <span class="c1"># these are the terms in the expression for the wavefunction which depend on charge (x) and energy state (n)</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">Hermitian_term</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">prefactor</span>
-            <span class="o">*</span> <span class="n">qubic_root</span>
-            <span class="o">*</span> <span class="p">(</span><span class="mf">2.71828</span> <span class="o">**</span> <span class="p">((</span><span class="o">-</span><span class="n">L</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">hbar</span><span class="p">)))</span>
-            <span class="o">*</span> <span class="mf">1.0</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">Hermitian_term</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">prefactor</span>
-            <span class="o">*</span> <span class="n">qubic_root</span>
-            <span class="o">*</span> <span class="p">(</span><span class="mf">2.71828</span> <span class="o">**</span> <span class="p">((</span><span class="o">-</span><span class="n">L</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">hbar</span><span class="p">)))</span>
-            <span class="o">*</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">Hermitian_term</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">prefactor</span>
-            <span class="o">*</span> <span class="n">qubic_root</span>
-            <span class="o">*</span> <span class="p">(</span><span class="mf">2.71828</span> <span class="o">**</span> <span class="p">((</span><span class="o">-</span><span class="n">L</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">hbar</span><span class="p">)))</span>
-            <span class="o">*</span> <span class="p">(</span><span class="mf">4.0</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mf">2.0</span> <span class="o">-</span> <span class="mf">2.0</span><span class="p">)</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">Hermitian_term</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">prefactor</span>
-            <span class="o">*</span> <span class="n">qubic_root</span>
-            <span class="o">*</span> <span class="p">(</span><span class="mf">2.71828</span> <span class="o">**</span> <span class="p">((</span><span class="o">-</span><span class="n">L</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">hbar</span><span class="p">)))</span>
-            <span class="o">*</span> <span class="p">(</span><span class="mf">8.0</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mf">3.0</span> <span class="o">-</span> <span class="mf">12.0</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="n">Hermitian_term</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">prefactor</span>
-            <span class="o">*</span> <span class="n">qubic_root</span>
-            <span class="o">*</span> <span class="p">(</span><span class="mf">2.71828</span> <span class="o">**</span> <span class="p">((</span><span class="o">-</span><span class="n">L</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">hbar</span><span class="p">)))</span>
-            <span class="o">*</span> <span class="p">(</span><span class="mf">16.0</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mf">4.0</span> <span class="o">-</span> <span class="mf">48.0</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mf">2.0</span> <span class="o">+</span> <span class="mf">12.0</span><span class="p">)</span>
-        <span class="p">)</span>
-
-    <span class="c1"># the final wavefunction is the product of these terms</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">prefactor</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">qubic_root</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">Hermitian_term</span><span class="p">)</span></div>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"n must be a non-negative integer, got </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="c1"># Fundamental (angular) frequency of the LC circuit.</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">L</span> <span class="o">*</span> <span class="n">C</span><span class="p">)</span>
+    <span class="n">m_omega</span> <span class="o">=</span> <span class="n">L</span> <span class="o">*</span> <span class="n">omega</span>  <span class="c1"># = sqrt(L/C)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">m_omega</span> <span class="o">/</span> <span class="n">hbar</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="c1"># (2^n n!)^(-1/2) computed in log form so large n does not overflow.</span>
+    <span class="n">log_norm</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">gammaln</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">prefactor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_norm</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">m_omega</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">hbar</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.25</span>
+    <span class="k">return</span> <span class="n">prefactor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">xi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">eval_hermite</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span></div>
 
 </pre></div>
         </article>
@@ -587,7 +567,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

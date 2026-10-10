@@ -494,6 +494,7 @@
 <span class="sd">"""The base class of all QDesigns in Qiskit Metal."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span> <span class="k">as</span> <span class="n">Dict_</span>
@@ -1741,26 +1742,61 @@
 <span class="sd">        Generates a python script from current chip</span>
 
 <span class="sd">        The script is self-contained: it imports ``qiskit_metal`` and every</span>
-<span class="sd">        component class it uses, rebuilds the design in a ``MetalGUI``, and --</span>
-<span class="sd">        when run standalone (``python my_chip_design.py``) -- starts the Qt</span>
-<span class="sd">        event loop so the window stays open. The event loop is guarded on</span>
+<span class="sd">        component class it uses, creates a design of the same class, restores</span>
+<span class="sd">        ``design.chips`` and ``design.variables``, and rebuilds the components.</span>
+<span class="sd">        The viewer is created with :func:`qiskit_metal.gui`, which returns the</span>
+<span class="sd">        Qt ``MetalGUI`` where PySide6 and a display are available and the</span>
+<span class="sd">        headless ``MetalGUIHeadless`` otherwise, so the script also runs on a</span>
+<span class="sd">        lite install (no ``[gui]`` extra). Run standalone</span>
+<span class="sd">        (``python my_chip_design.py``) with the Qt GUI, it starts the Qt event</span>
+<span class="sd">        loop so the window stays open. The event loop is guarded on</span>
 <span class="sd">        ``__name__ == "__main__"`` and on a live ``QApplication``, so importing</span>
 <span class="sd">        the script, or running it where a Qt loop already exists (Jupyter with</span>
 <span class="sd">        ``%gui qt``) or where no display is available, does not block or raise.</span>
 
 <span class="sd">        Args:</span>
+<span class="sd">            thin (bool): If True, only component options that differ from the</span>
+<span class="sd">                defaults are written.</span>
 <span class="sd">            printout (bool): Whether to print the script</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Python script for current chip</span>
 <span class="sd">        """</span>
-        <span class="n">header</span> <span class="o">=</span> <span class="s2">"""</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span> <span class="k">as</span> <span class="n">designs_package</span>
+
+        <span class="n">pp</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">41</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">plain</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="c1"># addict.Dict -&gt; dict, recursively, so pprint output is a literal.</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">plain</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+        <span class="n">design_cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">design_import</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">designs_package</span><span class="p">,</span> <span class="n">design_cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="n">design_cls</span><span class="p">:</span>
+            <span class="n">design_ctor</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"designs.</span><span class="si">{</span><span class="n">design_cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">design_import</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"from </span><span class="si">{</span><span class="n">design_cls</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2"> import </span><span class="si">{</span><span class="n">design_cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="p">)</span>
+            <span class="n">design_ctor</span> <span class="o">=</span> <span class="n">design_cls</span><span class="o">.</span><span class="vm">__name__</span>
+
+        <span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
 <span class="s2">import qiskit_metal</span>
-<span class="s2">from qiskit_metal import designs, MetalGUI</span>
+<span class="s2">from qiskit_metal import designs, Dict</span>
+<span class="si">{</span><span class="n">design_import</span><span class="si">}</span>
+<span class="s2">design = </span><span class="si">{</span><span class="n">design_ctor</span><span class="si">}</span><span class="s2">()</span>
 
-<span class="s2">design = designs.DesignPlanar()</span>
+<span class="s2"># Chips and design variables as they were when this script was written.</span>
+<span class="s2">design.chips.clear()</span>
+<span class="s2">design.chips.update(Dict(</span><span class="si">{</span><span class="n">pp</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">plain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chips</span><span class="p">))</span><span class="si">}</span><span class="s2">))</span>
+<span class="s2">design.variables.clear()</span>
+<span class="s2">design.variables.update(</span><span class="si">{</span><span class="n">pp</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">plain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">))</span><span class="si">}</span><span class="s2">)</span>
 
-<span class="s2">gui = MetalGUI(design)</span>
+<span class="s2"># qiskit_metal.gui() opens the Qt MetalGUI when PySide6 and a display are</span>
+<span class="s2"># available and falls back to the headless viewer otherwise.</span>
+<span class="s2">gui = qiskit_metal.gui(design)</span>
 <span class="s2">"""</span>
         <span class="n">footer</span> <span class="o">=</span> <span class="s2">"""</span>
 <span class="s2">gui.rebuild()</span>
@@ -1772,9 +1808,10 @@
 <span class="s2">#</span>
 <span class="s2"># Guarded on __main__ so that importing this file -- or executing it inside a</span>
 <span class="s2"># session that already runs a Qt loop (Jupyter/IPython with ``</span><span class="si">%g</span><span class="s2">ui qt``) --</span>
-<span class="s2"># does not block the caller. ``gui.qApp`` may be None if no QApplication could</span>
-<span class="s2"># be created (e.g. a headless machine), so check before calling into it.</span>
-<span class="s2">if __name__ == "__main__" and gui.qApp is not None:</span>
+<span class="s2"># does not block the caller. The headless viewer has no ``qApp``, and</span>
+<span class="s2"># ``gui.qApp`` may be None if no QApplication could be created, so check</span>
+<span class="s2"># before calling into it.</span>
+<span class="s2">if __name__ == "__main__" and getattr(gui, "qApp", None) is not None:</span>
 <span class="s2">    gui.qApp.exec()</span>
 <span class="s2">"""</span>
         <span class="c1"># all imports at front</span>
@@ -1822,7 +1859,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

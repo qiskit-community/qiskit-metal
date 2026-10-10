@@ -511,7 +511,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scqubits</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">scq</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Matrix</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">optimize</span><span class="p">,</span> <span class="n">integrate</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python.utility_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_all_args</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.em.cpw_calculations</span><span class="w"> </span><span class="kn">import</span> <span class="n">guided_wavelength</span>
@@ -556,98 +555,100 @@
 <span class="sd">        vp (float): phase velocity in m/s</span>
 <span class="sd">        Z0 (float): characteristic impedance of the TL in ohm</span>
 <span class="sd">        cap_loading (dict): a dictionary of the loading capacitors; the keys</span>
-<span class="sd">            are the names of the nodes; the values the capacitances in fF</span>
+<span class="sd">            are the names of the nodes; the values the capacitances in fF.</span>
+<span class="sd">            The dict is not modified.</span>
 <span class="sd">        shorted (boolean): default false; true if the other end of the TL is shorted false otherwise</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        [type]: [description]</span>
+<span class="sd">        tuple: ``(Q_zpf, Phi_zpf, phi, L)`` for the fundamental mode.</span>
+<span class="sd">        ``Q_zpf`` and ``Phi_zpf`` are dicts keyed by node (plus ``"_cl"`` for</span>
+<span class="sd">        the far end when a single node is given) of the charge [C] and flux</span>
+<span class="sd">        [Wb] zero-point fluctuations, each with the sign of the mode function</span>
+<span class="sd">        u(z) = cos(k z + phi) at that end; an open or shorted end has</span>
+<span class="sd">        ``Q_zpf = 0`` and ``Phi_zpf = inf``. ``phi`` is the phase of u(z) at</span>
+<span class="sd">        z = 0 and ``L`` the line length [m] that puts the loaded fundamental</span>
+<span class="sd">        at ``fr``.</span>
 <span class="sd">    """</span>
-    <span class="c1"># An arbitrarily very large positive number in place of positive infinity.</span>
-    <span class="c1"># Almost exclusively function as an infinity flag instead of actually</span>
-    <span class="c1"># particupating in algebraic calculations, except for the boundary condition</span>
-    <span class="c1"># of a shorted end. In that case, in the calculation of the capacitive energy</span>
-    <span class="c1"># participation, the shorted end term is proportional to ,</span>
-    <span class="c1"># (C_shorted * cos(pi/2)) ^ 2, where C_shorted is infinity. Here, one cannot</span>
-    <span class="c1"># use np.infty for C_shorted because np.infty * np.cos(np.pi/2) = np.infty in python</span>
-    <span class="c1"># instead of zero as one would expect.</span>
-    <span class="c1">#</span>
-    <span class="c1"># Ultimately, the energy particpation of the shorted end doesn't matter as</span>
-    <span class="c1"># long as it's close to zero and not infinity since it's energy participation</span>
-    <span class="c1"># of the other (loaded with finite capacitance) end that matters.</span>
-    <span class="n">_POS_INFTY</span> <span class="o">=</span> <span class="mf">1e30</span>
-    <span class="c1"># Convert to SI</span>
-    <span class="n">wr</span> <span class="o">=</span> <span class="n">fr</span> <span class="o">*</span> <span class="n">MHzRad</span>
+    <span class="c1"># work on a copy: a stand-in node is added below, which must not leak</span>
+    <span class="c1"># into the caller's dict</span>
+    <span class="n">cap_loading</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cap_loading</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">cap_loading</span> <span class="o">==</span> <span class="p">{}:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"At least one loading capacitor needs to be defined. "</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">cap_loading</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">cap_loading</span><span class="p">[</span><span class="s2">"_cl"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">shorted</span> <span class="k">else</span> <span class="n">_POS_INFTY</span>
 
-    <span class="n">w_loading</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">cap_loading</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">cap_loading</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span> <span class="o">*</span> <span class="n">FEMTO</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="n">_POS_INFTY</span><span class="p">:</span>
-            <span class="n">w_loading</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">w_loading</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">Z0</span> <span class="o">*</span> <span class="n">cap_loading</span><span class="p">[</span><span class="n">node</span><span class="p">])</span> <span class="k">if</span> <span class="n">val</span> <span class="k">else</span> <span class="n">_POS_INFTY</span>
-
-    <span class="c1"># assign z = 0 to one of the nodes and z = L to the other; switching</span>
-    <span class="c1"># the assignment would not change the result</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">cap_loading</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">cap_loading</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">z</span><span class="p">[</span><span class="s2">"0"</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="n">_POS_INFTY</span><span class="p">:</span>
-            <span class="k">break</span>
-    <span class="n">z</span><span class="p">[</span><span class="s2">"L"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nodes</span> <span class="o">-</span> <span class="p">{</span><span class="n">z</span><span class="p">[</span><span class="s2">"0"</span><span class="p">]})[</span><span class="mi">0</span><span class="p">]</span>
-
+    <span class="c1"># Convert to SI</span>
+    <span class="n">wr</span> <span class="o">=</span> <span class="n">fr</span> <span class="o">*</span> <span class="n">MHzRad</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">wr</span> <span class="o">/</span> <span class="n">vp</span>
     <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">Z0</span> <span class="o">*</span> <span class="n">vp</span><span class="p">)</span>  <span class="c1"># cap/unit length</span>
 
-    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">wr</span> <span class="o">/</span> <span class="n">w_loading</span><span class="p">[</span><span class="n">z</span><span class="p">[</span><span class="s2">"0"</span><span class="p">]])</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">wr</span> <span class="o">/</span> <span class="n">vp</span>
-    <span class="n">utl</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="n">phi</span><span class="p">)</span>
-    <span class="n">utl2</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">utl</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># mode number</span>
+    <span class="c1"># ``shorted`` only applies when a single end is loaded; the other end is</span>
+    <span class="c1"># then the stand-in node ``_cl`` (open, or shorted to ground).</span>
+    <span class="n">short_end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cap_loading</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">shorted</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cap_loading</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">cap_loading</span><span class="p">[</span><span class="s2">"_cl"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">caps</span> <span class="o">=</span> <span class="p">{</span><span class="n">node</span><span class="p">:</span> <span class="n">val</span> <span class="o">*</span> <span class="n">FEMTO</span> <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">cap_loading</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">shorted_nodes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"_cl"</span><span class="p">}</span> <span class="k">if</span> <span class="n">short_end</span> <span class="k">else</span> <span class="nb">set</span><span class="p">()</span>
 
-    <span class="n">w_loading_vals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">w_loading</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_phase</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+        <span class="c1"># u(z) = cos(k z + phi) with tan(phi) = w Z0 C at an end loaded by a</span>
+        <span class="c1"># capacitor C to ground (arXiv:2103.10344, Eq. 17). An open end is</span>
+        <span class="c1"># C = 0 (phi = 0); a short is the limit C -&gt; inf (phi = pi/2). The</span>
+        <span class="c1"># short is treated exactly instead of through a large stand-in</span>
+        <span class="c1"># capacitance, whose rounding error made Q_zpf jitter (#1233).</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">shorted_nodes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">wr</span> <span class="o">*</span> <span class="n">Z0</span> <span class="o">*</span> <span class="n">caps</span><span class="p">[</span><span class="n">node</span><span class="p">])</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_arctan_arg</span><span class="p">(</span><span class="n">w_L</span><span class="p">,</span> <span class="n">w_R</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Need separate handling for limiting cases</span>
-<span class="sd">        from different boundary conditions</span>
-<span class="sd">        """</span>
-        <span class="c1"># left boundary of the TL is open, i.e., left loading capacitor is 0</span>
-        <span class="k">if</span> <span class="n">w_L</span> <span class="o">==</span> <span class="n">_POS_INFTY</span><span class="p">:</span>
-            <span class="k">return</span> <span class="o">-</span><span class="n">wr</span> <span class="o">/</span> <span class="n">w_R</span>
-        <span class="c1"># right boundary of the TL is open, i.e., right loading capacitor is 0</span>
-        <span class="k">elif</span> <span class="n">w_R</span> <span class="o">==</span> <span class="n">_POS_INFTY</span><span class="p">:</span>
-            <span class="k">return</span> <span class="o">-</span><span class="n">wr</span> <span class="o">/</span> <span class="n">w_L</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">wr</span> <span class="o">*</span> <span class="p">(</span><span class="n">w_L</span> <span class="o">+</span> <span class="n">w_R</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">wr</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">w_L</span> <span class="o">*</span> <span class="n">w_R</span><span class="p">)</span>
+    <span class="c1"># assign z = 0 to a node loaded with a finite, non-zero capacitance (if</span>
+    <span class="c1"># any) and z = L to the other; switching the assignment would not change</span>
+    <span class="c1"># the result</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">caps</span><span class="p">)</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">shorted_nodes</span><span class="p">]</span>
+    <span class="n">z0</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">candidates</span> <span class="k">if</span> <span class="n">caps</span><span class="p">[</span><span class="n">n</span><span class="p">]),</span> <span class="n">candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">zL</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="n">z0</span><span class="p">)</span>
 
-    <span class="n">root_eq</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">L</span><span class="p">:</span> <span class="p">(</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">_arctan_arg</span><span class="p">(</span><span class="n">w_loading_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">w_loading_vals</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">+</span> <span class="n">m</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">k</span> <span class="o">*</span> <span class="n">L</span>
-    <span class="p">)</span>  <span class="c1"># = 0</span>
-    <span class="n">sol</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="n">root_eq</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.007</span><span class="p">],</span> <span class="n">jac</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"hybr"</span><span class="p">)</span>  <span class="c1"># in meters SI</span>
-    <span class="n">Ltl</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">_phase</span><span class="p">(</span><span class="n">z0</span><span class="p">)</span>
+    <span class="n">phi_L</span> <span class="o">=</span> <span class="n">_phase</span><span class="p">(</span><span class="n">zL</span><span class="p">)</span>
+    <span class="c1"># Fundamental mode: cos(k L + phi) = -cos(phi_L), i.e.</span>
+    <span class="c1">#     k L = pi - phi - phi_L,</span>
+    <span class="c1"># which is Eq. 17 of arXiv:2103.10344 for m = 1, b = 0 (open far end,</span>
+    <span class="c1"># loaded lambda/2) and m = 0, b = 1 (shorted far end, loaded lambda/4,</span>
+    <span class="c1"># phi_L = pi/2), extended to a line loaded at both ends. Closed form, so</span>
+    <span class="c1"># no root-finder tolerance and no arctan branch ambiguity for heavy</span>
+    <span class="c1"># loading (phi + phi_L &gt; pi/2).</span>
+    <span class="n">Ltl</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">phi</span> <span class="o">-</span> <span class="n">phi_L</span><span class="p">)</span> <span class="o">/</span> <span class="n">k</span>
 
-    <span class="n">E_cap</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="mf">0.5</span> <span class="o">*</span> <span class="n">c</span> <span class="o">*</span> <span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="n">utl2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Ltl</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">cap_loading</span><span class="p">[</span><span class="n">z</span><span class="p">[</span><span class="s2">"0"</span><span class="p">]]</span> <span class="o">*</span> <span class="n">utl</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-        <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">cap_loading</span><span class="p">[</span><span class="n">z</span><span class="p">[</span><span class="s2">"L"</span><span class="p">]]</span> <span class="o">*</span> <span class="n">utl</span><span class="p">(</span><span class="n">Ltl</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="c1"># mode function at the two ends; exactly zero at a short</span>
+    <span class="n">u_end</span> <span class="o">=</span> <span class="p">{</span><span class="n">z0</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">zL</span><span class="p">:</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">zL</span> <span class="ow">in</span> <span class="n">shorted_nodes</span> <span class="k">else</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi_L</span><span class="p">)}</span>
+
+    <span class="c1"># integral of cos^2(k z + phi) over [0, L], in closed form</span>
+    <span class="n">line_int</span> <span class="o">=</span> <span class="n">Ltl</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">phi_L</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">E_cap</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">c</span> <span class="o">*</span> <span class="n">line_int</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="mf">0.5</span> <span class="o">*</span> <span class="n">caps</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">u_end</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">shorted_nodes</span>
     <span class="p">)</span>
 
     <span class="n">pCL</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">Q_zpf</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">Phi_zpf</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">cap_loading</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="n">z</span><span class="p">[</span><span class="s2">"0"</span><span class="p">]:</span>
-            <span class="n">pCL</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">val</span> <span class="o">*</span> <span class="n">utl</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">E_cap</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">shorted_nodes</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">caps</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+            <span class="n">pCL</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">Q_zpf</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">pCL</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">val</span> <span class="o">*</span> <span class="n">utl</span><span class="p">(</span><span class="n">Ltl</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">E_cap</span>
-        <span class="n">Q_zpf</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">hbar</span> <span class="o">*</span> <span class="n">wr</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pCL</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">*</span> <span class="n">val</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">caps</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+            <span class="n">pCL</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">val</span> <span class="o">*</span> <span class="n">u_end</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">E_cap</span>
+            <span class="c1"># Q_zpf carries the sign of the mode function at its end: for the</span>
+            <span class="c1"># fundamental of a line loaded at both ends the two end voltages</span>
+            <span class="c1"># are in antiphase (u(0) &gt; 0, u(L) &lt; 0). The relative sign matters</span>
+            <span class="c1"># when the two ends couple to subsystems that also couple by</span>
+            <span class="c1"># another path (#1219); the overall sign is a gauge choice.</span>
+            <span class="n">Q_zpf</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">u_end</span><span class="p">[</span><span class="n">node</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+                <span class="n">hbar</span> <span class="o">*</span> <span class="n">wr</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pCL</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">*</span> <span class="n">val</span>
+            <span class="p">)</span>
 
-        <span class="c1"># using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2;</span>
-        <span class="c1"># an open end (no loading capacitance) carries no charge fluctuation</span>
+        <span class="c1"># using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2</span>
+        <span class="c1"># (Phi_zpf carries the same sign); an open or shorted end carries no</span>
+        <span class="c1"># charge fluctuation</span>
         <span class="n">Phi_zpf</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">hbar</span> <span class="o">/</span> <span class="n">Q_zpf</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="k">if</span> <span class="n">Q_zpf</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
 
     <span class="k">return</span> <span class="n">Q_zpf</span><span class="p">,</span> <span class="n">Phi_zpf</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Ltl</span>
@@ -2140,7 +2141,7 @@
 <a class="viewcode-back" href="../../../../quantization.html#qiskit_metal.analyses.quantization.lom_core_analysis.CompositeSystem.hamiltonian_results">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">hamiltonian_results</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">hilbertspace</span><span class="p">:</span> <span class="n">scq</span><span class="o">.</span><span class="n">HilbertSpace</span><span class="p">,</span> <span class="n">evals_count</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">print_info</span><span class="o">=</span><span class="kc">True</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Print and return results</span>
 
 <span class="sd">        Args:</span>
@@ -2151,7 +2152,8 @@
 <span class="sd">            print_info (bool, optional): If true, print results as well. Defaults to True.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            pd.DataFrame: dataframe containing the results</span>
+<span class="sd">            dict: ``{"fQ_in_Ghz": {subsystem name: f01 in GHz},</span>
+<span class="sd">            "chi_in_MHz": LabeledNdarray of the chi matrix in MHz}``</span>
 <span class="sd">        """</span>
         <span class="n">ham_res</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -2203,7 +2205,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

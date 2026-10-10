@@ -500,10 +500,15 @@
 
 <span class="sd">P. Krantz, et al. Physical Review Applied 6, 021318 (2019)</span>
 <span class="sd">https://aip.scitation.org/doi/10.1063/1.5089550</span>
+
+<span class="sd">M. Goppl, et al. Journal of Applied Physics 104, 113904 (2008)</span>
+<span class="sd">https://doi.org/10.1063/1.3010859</span>
 <span class="sd">"""</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">pi</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">c</span> <span class="k">as</span> <span class="n">SPEED_OF_LIGHT</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">ellipk</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"kappa_in"</span><span class="p">]</span>
@@ -512,19 +517,54 @@
 <div class="viewcode-block" id="kappa_in">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.kappa_calculation.html#qiskit_metal.analyses.kappa_calculation.kappa_in">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">kappa_in</span><span class="p">(</span><span class="o">*</span><span class="n">argv</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""A simple calculator for the kappa value of a readout resonator.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Linewidth of a CPW resonator capacitively coupled to a matched line.</span>
+
+<span class="sd">    Two call forms::</span>
+
+<span class="sd">        kappa_in(freq, C_in, freq_res)</span>
+<span class="sd">        kappa_in(freq, C_in, length, res_width, res_gap, eta)</span>
+
+<span class="sd">    Uses the weak-coupling result (e.g. Goppl et al. 2008) for a resonator</span>
+<span class="sd">    coupled at one end through :math:`C_\mathrm{in}` to a line of impedance</span>
+<span class="sd">    :math:`Z_0 = 50\,\Omega`:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \kappa = \frac{\eta}{\pi}\,\omega^2 C_\mathrm{in}^2 Z_0^2\,\omega_r,</span>
+<span class="sd">        \qquad \omega = 2\pi f,\ \omega_r = 2\pi f_r,</span>
+
+<span class="sd">    with :math:`\eta = 2` for a half-wave and :math:`\eta = 4` for a</span>
+<span class="sd">    quarter-wave resonator (whose equivalent capacitance is half that of a</span>
+<span class="sd">    half-wave line). The three-argument form assumes a half-wave resonator.</span>
+
+<span class="sd">    **Units.** The return value is :math:`\kappa/2\pi` in Hz (the full width</span>
+<span class="sd">    at half maximum of the resonance); multiply by :math:`2\pi` for the</span>
+<span class="sd">    energy decay rate in 1/s. Before #1204 the formula was evaluated with</span>
+<span class="sd">    :math:`f` in place of :math:`\omega`, which returned a value</span>
+<span class="sd">    :math:`(2\pi)^2` smaller than :math:`\kappa/2\pi`.</span>
+
+<span class="sd">    In the six-argument form the resonance frequency is that of an ideal</span>
+<span class="sd">    (conformal-mapping) CPW whose effective permittivity makes its impedance</span>
+<span class="sd">    50 Ohm for the given width and gap:</span>
+<span class="sd">    :math:`f_r = c / (\eta\,\ell\sqrt{\epsilon_\mathrm{eff}})` with</span>
+<span class="sd">    :math:`\sqrt{\epsilon_\mathrm{eff}} = 30\pi K(k_0')/(Z_r K(k_0))`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        freq (float): The frequency of interest, in Hz</span>
-<span class="sd">        C_in (float): Effective capacitance between CPW and environment (from Q3D), in Farads</span>
-<span class="sd">        freq_res (float): Lowest resonant frequency of a CPW (from HFSS), in Hz</span>
-<span class="sd">        length (float): Length of the CPW readout resonator, in meters</span>
-<span class="sd">        res_width (float): Width of the resonator trace (center) line, in meters</span>
-<span class="sd">        res_gap (float): Width of resonator gap (dielectric space), in meters</span>
-<span class="sd">        eta (float): 2.0 for half-wavelength resonator; 4.0 for quarter-wavelength resonator</span>
+<span class="sd">        freq (float): The frequency at which kappa is evaluated, in Hz</span>
+<span class="sd">            (normally the resonance frequency).</span>
+<span class="sd">        C_in (float): Coupling capacitance between the CPW and the feed line</span>
+<span class="sd">            (from Q3D), in Farads.</span>
+<span class="sd">        freq_res (float): Resonant frequency of the CPW (from HFSS), in Hz.</span>
+<span class="sd">            Three-argument form only.</span>
+<span class="sd">        length (float): Length of the CPW resonator, in meters.</span>
+<span class="sd">        res_width (float): Width of the resonator center trace, in meters.</span>
+<span class="sd">        res_gap (float): Width of the resonator gap, in meters.</span>
+<span class="sd">        eta (float): 2.0 for a half-wavelength resonator; 4.0 for a</span>
+<span class="sd">            quarter-wavelength resonator.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        float: Kappa value</span>
+<span class="sd">        float: :math:`\kappa/2\pi` in Hz, or ``None`` (with a warning) if the</span>
+<span class="sd">        number of arguments is neither 3 nor 6.</span>
 <span class="sd">    """</span>
 
     <span class="c1"># Effective impedance of the CPW transmission line, in Ohms</span>
@@ -533,44 +573,37 @@
     <span class="c1"># Effective impedance of the readout resonator, in Ohms</span>
     <span class="n">Z_res</span> <span class="o">=</span> <span class="mf">50.0</span>
 
-    <span class="c1"># If three arguments are passed to kappa_in, then the lowest resonator frequency is assumed to be an input</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">argv</span><span class="p">:</span>
-            <span class="n">freq</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">C_in</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">freq_res</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-
-        <span class="c1"># Calculation of kappa</span>
-        <span class="n">kappa</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">freq</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">C_in</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">Z_tran</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">freq_res</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">kappa</span>
-
-    <span class="c1"># If six arguments are passed to kappa_in, the lowest resonator frequency of the resonator is calculated in the ideal case</span>
+        <span class="n">freq</span><span class="p">,</span> <span class="n">C_in</span><span class="p">,</span> <span class="n">freq_res</span> <span class="o">=</span> <span class="n">argv</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="mf">2.0</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">argv</span><span class="p">:</span>
-            <span class="n">freq</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">C_in</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">length</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-            <span class="n">res_width</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-            <span class="n">res_gap</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-            <span class="n">eta</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">freq</span><span class="p">,</span> <span class="n">C_in</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">res_width</span><span class="p">,</span> <span class="n">res_gap</span><span class="p">,</span> <span class="n">eta</span> <span class="o">=</span> <span class="n">argv</span>
 
-        <span class="c1"># Arguments for elliptic integrals</span>
+        <span class="c1"># Moduli for the complete elliptic integrals (scipy's ellipk takes the</span>
+        <span class="c1"># parameter m = k**2).</span>
         <span class="n">k0</span> <span class="o">=</span> <span class="p">(</span><span class="n">res_width</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">res_width</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">res_gap</span><span class="p">)</span>
         <span class="n">k01</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">k0</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
 
-        <span class="c1"># Calculation of the first resonant frequency of an ideal resonator</span>
+        <span class="c1"># Fundamental resonance of the ideal resonator, c / (eta l sqrt(eps_eff)),</span>
+        <span class="c1"># with sqrt(eps_eff) = 30 pi K(k0') / (Z_res K(k0)).</span>
         <span class="n">freq_res</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="p">(</span><span class="n">Z_res</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">ellipk</span><span class="p">(</span><span class="n">k0</span><span class="o">**</span><span class="mf">2.0</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mf">15.0</span> <span class="o">*</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">length</span> <span class="o">*</span> <span class="n">ellipk</span><span class="p">(</span><span class="n">k01</span><span class="o">**</span><span class="mf">2.0</span><span class="p">))</span>
+            <span class="n">SPEED_OF_LIGHT</span>
+            <span class="o">*</span> <span class="n">Z_res</span>
+            <span class="o">*</span> <span class="n">ellipk</span><span class="p">(</span><span class="n">k0</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mf">30.0</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">length</span> <span class="o">*</span> <span class="n">ellipk</span><span class="p">(</span><span class="n">k01</span><span class="o">**</span><span class="mf">2.0</span><span class="p">))</span>
         <span class="p">)</span>
-
-        <span class="c1"># Calculation of kappa</span>
-        <span class="n">kappa</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">freq</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">C_in</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">Z_tran</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">freq_res</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">kappa</span>
-
-    <span class="c1"># Only three or six arguments accepted by kappa_in, otherwise the calculation in invalid.</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">kappa</span> <span class="o">=</span> <span class="s2">"Invalid number of arguments passed for kappa_in"</span></div>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">"kappa_in takes 3 (freq, C_in, freq_res) or 6 (freq, C_in, length, "</span>
+            <span class="sa">f</span><span class="s2">"res_width, res_gap, eta) arguments, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span><span class="si">}</span><span class="s2">; returning None."</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">omega</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span>
+    <span class="n">omega_res</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">freq_res</span>
+    <span class="n">kappa</span> <span class="o">=</span> <span class="p">(</span><span class="n">eta</span> <span class="o">/</span> <span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">omega</span><span class="o">**</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">C_in</span><span class="o">**</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">Z_tran</span><span class="o">**</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">omega_res</span>  <span class="c1"># 1/s</span>
+    <span class="k">return</span> <span class="n">kappa</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">pi</span><span class="p">)</span>  <span class="c1"># kappa / 2 pi, in Hz</span></div>
 
 </pre></div>
         </article>
@@ -590,7 +623,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

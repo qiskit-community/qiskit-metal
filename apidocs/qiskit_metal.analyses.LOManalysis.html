@@ -490,7 +490,7 @@
 <h1>LOManalysis<a class="headerlink" href="#lomanalysis" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.LOManalysis">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">LOManalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign" title="qiskit_metal.designs.design_base.QDesign"><span class="pre">QDesign</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_oscillator_model.html#LOManalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">LOManalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign" title="qiskit_metal.designs.design_base.QDesign"><span class="pre">QDesign</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_oscillator_model.html#LOManalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis" title="Link to this definition">¶</a></dt>
 <dd><p>Performs Lumped Oscillator Model analysis on a simulated or user-provided capacitance matrix.</p>
 <dl class="simple">
 <dt>Default Setup:</dt><dd><ul class="simple">
@@ -510,6 +510,15 @@
 </dd>
 </dl>
 </li>
+<li><p>Q_res (list or None): Loaded quality factors of the resonators, in
+the order [readout, bus1, bus2, …], for the Purcell times <code class="docutils literal notranslate"><span class="pre">T1</span></code> and
+<code class="docutils literal notranslate"><span class="pre">T1bus</span></code>. None (default) uses placeholder Q’s and logs a warning.</p></li>
+<li><p>Z0 (float): Characteristic impedance of the resonators in ohm
+(default 50).</p></li>
+<li><p>res_L4_corr (list or None): Per coupling pad, in the order
+[readout, bus1, bus2, …], 1 if that resonator is a quarter-wave
+(lambda/4) line and 0 if it is a half-wave (lambda/2) line. None
+(default) treats all resonators as lambda/2.</p></li>
 </ul>
 </dd>
 <dt>Data Labels:</dt><dd><ul class="simple">
@@ -528,7 +537,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>design</strong> (<a class="reference internal" href="qiskit_metal.designs.QDesign.html#qiskit_metal.designs.QDesign" title="qiskit_metal.designs.QDesign"><em>QDesign</em></a>) – Pointer to the main qiskit-metal design.
 Used to access the QRenderer. Defaults to None.</p></li>
-<li><p><strong>renderer_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Which renderer to use. Valid entries: ‘q3d’.
+<li><p><strong>renderer_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em>, </em><em>optional</em>) – Which renderer to use. Valid entries: ‘q3d’.
 Defaults to None.</p></li>
 </ul>
 </dd>
@@ -542,7 +551,7 @@ Defaults to None.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.LOManalysis.default_setup">
-<span class="sig-name descname"><span class="pre">default_setup</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'freq_bus':</span> <span class="pre">[6.0,</span> <span class="pre">6.2],</span> <span class="pre">'freq_readout':</span> <span class="pre">7.0,</span> <span class="pre">'junctions':</span> <span class="pre">{'Cj':</span> <span class="pre">2,</span> <span class="pre">'Lj':</span> <span class="pre">12}}</span></span><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.default_setup" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">default_setup</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'Q_res':</span> <span class="pre">None,</span> <span class="pre">'Z0':</span> <span class="pre">50.0,</span> <span class="pre">'freq_bus':</span> <span class="pre">[6.0,</span> <span class="pre">6.2],</span> <span class="pre">'freq_readout':</span> <span class="pre">7.0,</span> <span class="pre">'junctions':</span> <span class="pre">{'Cj':</span> <span class="pre">2,</span> <span class="pre">'Lj':</span> <span class="pre">12},</span> <span class="pre">'res_L4_corr':</span> <span class="pre">None}</span></span><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.default_setup" title="Link to this definition">¶</a></dt>
 <dd><p>Default setup.</p>
 </dd></dl>
 
@@ -561,7 +570,7 @@ Defaults to None.</p></li>
 <dd class="field-odd"><p>Lumped oscillator result at the last simulation pass.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -610,7 +619,7 @@ Defaults to None.</p></li>
 <dd class="field-odd"><p>list of supported variable names.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#set" title="(in Python v3.14)">set</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#set" title="(in Python v3.15)">set</a></p>
 </dd>
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Getter</p>
@@ -621,11 +630,11 @@ Defaults to None.</p></li>
 <p class="rubric">Methods</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.LOManalysis.clear_data">
-<span class="sig-name descname"><span class="pre">clear_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.clear_data" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">clear_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.clear_data" title="Link to this definition">¶</a></dt>
 <dd><p>Clear data. Can optionally specify one or more labels to delete those labels and data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data_name</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>]</em><em>, </em><em>optional</em>) – Can list specific labels to clean.
+<dd class="field-odd"><p><strong>data_name</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><em>list</em></a><em>]</em><em>, </em><em>optional</em>) – Can list specific labels to clean.
 Defaults to None.</p>
 </dd>
 </dl>
@@ -633,12 +642,12 @@ Defaults to None.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.LOManalysis.get_data">
-<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.get_data" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.get_data" title="Link to this definition">¶</a></dt>
 <dd><p>Retrieves the analysis module data.
 Returns <cite>None</cite> if nothing is found.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Label to query for data. If not specified, the
+<dd class="field-odd"><p><strong>data_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em>, </em><em>optional</em>) – Label to query for data. If not specified, the
 entire dictionary is returned. Defaults to None.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -652,7 +661,7 @@ entire dictionary is returned. Defaults to None.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.LOManalysis.get_data_labels">
-<span class="sig-name descname"><span class="pre">get_data_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a></span></span><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.get_data_labels" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_data_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a></span></span><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.get_data_labels" title="Link to this definition">¶</a></dt>
 <dd><p>Retrieves the list of data labels currently set.
 Returns <cite>None</cite> if nothing is found.</p>
 <dl class="field-list simple">
@@ -660,19 +669,19 @@ Returns <cite>None</cite> if nothing is found.</p>
 <dd class="field-odd"><p>list of data names</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)">list</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.LOManalysis.load_simulation_data">
-<span class="sig-name descname"><span class="pre">load_simulation_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_oscillator_model.html#LOManalysis.load_simulation_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.load_simulation_data" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">load_simulation_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_oscillator_model.html#LOManalysis.load_simulation_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.load_simulation_data" title="Link to this definition">¶</a></dt>
 <dd><p>Load simulation data for the following analysis. This will override any data found</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – name of the variable</p></li>
+<li><p><strong>data_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – name of the variable</p></li>
 <li><p><strong>data</strong> (<em>Any</em>) – simulation output</p></li>
 </ul>
 </dd>
@@ -713,7 +722,7 @@ For input parameter, see documentation for LumpedElementsSim.run_sim().</p>
 <dd class="field-odd"><p>Pass numbers (keys) and respective lump oscillator information (values).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>(<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)">dict</a>)</p>
+<dd class="field-even"><p>(<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)">dict</a>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -728,7 +737,7 @@ and based on the setup values.</p>
 <dd class="field-odd"><p>Pass numbers (keys) and their respective capacitance matrices (values).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -749,14 +758,14 @@ for repeatability and for later identification of the QAnalysis instance.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.LOManalysis.set_data">
-<span class="sig-name descname"><span class="pre">set_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.set_data" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.set_data" title="Link to this definition">¶</a></dt>
 <dd><p>Stores data in a structure for later retrieval.
 Could be output, intermediate or even input data.
 Current implementation uses Dict()</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Label for the data. Used a storage key.</p></li>
+<li><p><strong>data_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Label for the data. Used a storage key.</p></li>
 <li><p><strong>data</strong> (<em>Any</em>) – Free format</p></li>
 </ul>
 </dd>
@@ -765,12 +774,12 @@ Current implementation uses Dict()</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.LOManalysis.setup_update">
-<span class="sig-name descname"><span class="pre">setup_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.setup_update" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setup_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qiskit_metal.analyses.LOManalysis.setup_update" title="Link to this definition">¶</a></dt>
 <dd><p>Intended to modify multiple setup settings at once, while retaining previous settings.
 If you intend to change a single setting, the better way is: <cite>setup.setting1 = value</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>section</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Setup section that contains the setup keys to update.</p>
+<dd class="field-odd"><p><strong>section</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Setup section that contains the setup keys to update.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -814,7 +823,7 @@ If you intend to change a single setting, the better way is: <cite>setup.setting
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

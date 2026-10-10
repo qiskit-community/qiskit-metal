@@ -575,24 +575,152 @@
         <span class="n">meander_end_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_lead</span><span class="p">(</span><span class="s2">"end"</span><span class="p">)</span>
 
         <span class="c1"># approximate length needed for the meander</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_length_segment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span> <span class="o">-</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">length</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">length</span>
+        <span class="n">length_segment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">length</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_meander</span><span class="p">(</span>
+            <span class="n">length_segment</span><span class="p">,</span> <span class="n">meander_start_point</span><span class="p">,</span> <span class="n">meander_end_point</span>
         <span class="p">)</span>
 
-        <span class="n">arc_pts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_meandered</span><span class="p">(</span><span class="n">meander_start_point</span><span class="p">,</span> <span class="n">meander_end_point</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">arc_pts</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjust_length</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span>
-            <span class="n">arc_pts</span><span class="p">,</span>
-            <span class="n">meander_start_point</span><span class="p">,</span>
-            <span class="n">meander_end_point</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="c1"># The first build misses total_length when adjust_length cannot place</span>
+        <span class="c1"># the remaining slack. The meander target above counts the leads at</span>
+        <span class="c1"># their straight-line length, while QRoute.length takes</span>
+        <span class="c1"># (2 - pi/2) * fillet off every corner, including the corners of</span>
+        <span class="c1"># jogged leads, so the target is too small by that amount (#1234). Feed</span>
+        <span class="c1"># the miss back into the meander's target length, also try the route</span>
+        <span class="c1"># without a meander, and keep the best build (see _pick_build). Routes</span>
+        <span class="c1"># the first build gets right are not rebuilt.</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">best</span><span class="p">[</span><span class="s2">"error"</span><span class="p">])</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">LENGTH_TOLERANCE</span><span class="p">:</span>
+            <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span><span class="n">best</span><span class="p">]</span>
+            <span class="n">candidates</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_meander_length</span><span class="p">(</span>
+                <span class="n">best</span><span class="p">,</span> <span class="n">meander_start_point</span><span class="p">,</span> <span class="n">meander_end_point</span>
+            <span class="p">)</span>
+            <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_without_meander</span><span class="p">())</span>
+            <span class="n">best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pick_build</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_length_segment</span> <span class="o">=</span> <span class="n">best</span><span class="p">[</span><span class="s2">"length_segment"</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">best</span><span class="p">[</span><span class="s2">"pts"</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">best</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warn_length_mismatch</span><span class="p">(</span><span class="n">best</span><span class="p">[</span><span class="s2">"n_meander_pts"</span><span class="p">])</span>
 
         <span class="c1"># Make points into elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">make_elements</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_points</span><span class="p">())</span></div>
 
+
+    <span class="c1">#: Largest difference, in design units, between the drawn length and</span>
+    <span class="c1">#: ``total_length`` that ``make`` accepts without refitting or warning.</span>
+    <span class="n">LENGTH_TOLERANCE</span> <span class="o">=</span> <span class="mf">1e-4</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_meander_warn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Log a meander warning, or hold it while ``make`` tries builds."""</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_meander_messages"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_meander_messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_meander</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">length_segment</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">start_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span> <span class="n">end_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Build the meander for a target meander length.</span>
+
+<span class="sd">        Sets ``self.intermediate_pts`` and returns the build: its points, its</span>
+<span class="sd">        length error (drawn minus ``total_length``), the warnings</span>
+<span class="sd">        ``connect_meandered`` raised for it, and the number of meander points.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_length_segment</span> <span class="o">=</span> <span class="n">length_segment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_meander_messages</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">arc_pts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_meandered</span><span class="p">(</span><span class="n">start_pt</span><span class="p">,</span> <span class="n">end_pt</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">arc_pts</span>
+            <span class="n">pts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjust_length</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">arc_pts</span><span class="p">,</span> <span class="n">start_pt</span><span class="p">,</span> <span class="n">end_pt</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">pts</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">messages</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meander_messages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meander_messages</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">length_segment</span><span class="o">=</span><span class="n">length_segment</span><span class="p">,</span>
+            <span class="n">pts</span><span class="o">=</span><span class="n">pts</span><span class="p">,</span>
+            <span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">n_meander_pts</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">arc_pts</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fit_meander_length</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">first</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">start_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span><span class="p">,</span> <span class="n">end_pt</span><span class="p">:</span> <span class="n">QRoutePoint</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Secant iteration on the meander's target length so that the drawn</span>
+<span class="sd">        length reaches ``total_length``. Returns every trial build.</span>
+
+<span class="sd">        The drawn length is piecewise in the target length: it can stay flat</span>
+<span class="sd">        (wiggles snapped to the leads by ``prevent_short_edges``) and then</span>
+<span class="sd">        jump, so the iteration can stall or step over ``total_length``; the</span>
+<span class="sd">        caller picks among the trials.</span>
+<span class="sd">        """</span>
+        <span class="n">trials</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">f0</span> <span class="o">=</span> <span class="n">first</span><span class="p">[</span><span class="s2">"length_segment"</span><span class="p">],</span> <span class="n">first</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">-</span> <span class="n">f0</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">trial</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_meander</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">start_pt</span><span class="p">,</span> <span class="n">end_pt</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># an extreme trial; keep the ones so far</span>
+                <span class="k">break</span>
+            <span class="n">trials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trial</span><span class="p">)</span>
+            <span class="n">f1</span> <span class="o">=</span> <span class="n">trial</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f1</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">1e-2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">LENGTH_TOLERANCE</span> <span class="ow">or</span> <span class="n">f1</span> <span class="o">==</span> <span class="n">f0</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">x0</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">x1</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">f1</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">f1</span> <span class="o">-</span> <span class="n">f0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">trials</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_without_meander</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The shortest route: the leads joined directly, no meander."""</span>
+        <span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_pts</span> <span class="o">=</span> <span class="n">pts</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">length_segment</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_length_segment</span><span class="p">,</span>
+            <span class="n">pts</span><span class="o">=</span><span class="n">pts</span><span class="p">,</span>
+            <span class="n">error</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">n_meander_pts</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_pick_build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">candidates</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Choose among builds; ``candidates[0]`` is the first build.</span>
+
+<span class="sd">        Never farther from ``total_length`` than the first build (which is</span>
+<span class="sd">        what ``make`` drew before the refit existed). Among those, prefer a</span>
+<span class="sd">        build that does not overshoot ``total_length``; overshoot only if</span>
+<span class="sd">        every eligible build does.</span>
+<span class="sd">        """</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LENGTH_TOLERANCE</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">eligible</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">candidates</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">"error"</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">first</span><span class="p">[</span><span class="s2">"error"</span><span class="p">])]</span>
+        <span class="n">not_over</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">eligible</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">]</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">not_over</span> <span class="ow">or</span> <span class="n">eligible</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">pool</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_warn_length_mismatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_meander_pts</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Warn when the drawn length differs from ``total_length`` (#1225)."""</span>
+        <span class="n">total_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">total_length</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="n">total_length</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LENGTH_TOLERANCE</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_units</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">length</span> <span class="o">&gt;</span> <span class="n">total_length</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">n_meander_pts</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: total_length=</span><span class="si">{</span><span class="n">total_length</span><span class="si">:</span><span class="s2">.6g</span><span class="si">}{</span><span class="n">units</span><span class="si">}</span><span class="s2"> is shorter "</span>
+                <span class="sa">f</span><span class="s2">"than the minimum route length </span><span class="si">{</span><span class="n">length</span><span class="si">:</span><span class="s2">.6g</span><span class="si">}{</span><span class="n">units</span><span class="si">}</span><span class="s2"> between "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.start and </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.end with these leads; the "</span>
+                <span class="s2">"route is drawn without a meander, at its minimum length. "</span>
+                <span class="s2">"Increase total_length or shorten the leads."</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: drawn length </span><span class="si">{</span><span class="n">length</span><span class="si">:</span><span class="s2">.6g</span><span class="si">}{</span><span class="n">units</span><span class="si">}</span><span class="s2"> differs from "</span>
+                <span class="sa">f</span><span class="s2">"total_length=</span><span class="si">{</span><span class="n">total_length</span><span class="si">:</span><span class="s2">.6g</span><span class="si">}{</span><span class="n">units</span><span class="si">}</span><span class="s2"> by "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">total_length</span><span class="si">:</span><span class="s2">+.4g</span><span class="si">}{</span><span class="n">units</span><span class="si">}</span><span class="s2">. The meander cannot "</span>
+                <span class="s2">"absorb the difference with the current lead / meander.spacing "</span>
+                <span class="s2">"/ fillet settings."</span>
+            <span class="p">)</span>
 
 <div class="viewcode-block" id="RouteMeander.connect_meandered">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.RouteMeander.html#qiskit_metal.qlibrary.RouteMeander.connect_meandered">[docs]</a>
@@ -709,6 +837,9 @@
 
         <span class="c1"># length to distribute on the meanders (excess w.r.t a straight line between start and end)</span>
         <span class="n">length_excess</span> <span class="o">=</span> <span class="n">length_meander</span> <span class="o">-</span> <span class="n">length_direct</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">asymmetry</span><span class="p">)</span>
+        <span class="c1"># A length_excess &lt;= 0 gives a zero-amplitude meander here, which</span>
+        <span class="c1"># adjust_length may still widen; RouteMeander.make also tries the route</span>
+        <span class="c1"># without a meander and keeps the closer one.</span>
         <span class="c1"># how much meander offset from center-line is needed to accommodate the length_excess (perpendicular length)</span>
         <span class="n">length_perp</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">length_excess</span> <span class="o">/</span> <span class="p">(</span><span class="n">meander_number</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">))</span>
 
@@ -724,13 +855,15 @@
         <span class="c1"># parity already chosen above for the start/end pin directions --</span>
         <span class="c1"># until length_perp clears the fillet radius or no further reduction</span>
         <span class="c1"># is possible without hitting zero (which would leave no meander).</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span> <span class="ow">and</span> <span class="n">length_perp</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span> <span class="ow">and</span> <span class="n">meander_number</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># The loop stops at 1 (odd) or 2 (even): stepping 2 -&gt; 0 left a</span>
+        <span class="c1"># single-row point array that crashed below (#1225).</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span> <span class="ow">and</span> <span class="n">length_perp</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="p">:</span>
             <span class="n">original_meander_number</span> <span class="o">=</span> <span class="n">meander_number</span>
-            <span class="k">while</span> <span class="n">meander_number</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">length_perp</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">meander_number</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">length_perp</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="p">:</span>
                 <span class="n">meander_number</span> <span class="o">-=</span> <span class="mi">2</span>
                 <span class="n">length_perp</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">length_excess</span> <span class="o">/</span> <span class="p">(</span><span class="n">meander_number</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">meander_number</span> <span class="o">!=</span> <span class="n">original_meander_number</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_meander_warn</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: reduced meander_number from "</span>
                     <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">original_meander_number</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">meander_number</span><span class="si">}</span><span class="s2"> so each "</span>
                     <span class="sa">f</span><span class="s2">"wiggle has room for the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="si">}</span><span class="s2">mm fillet "</span>
@@ -742,7 +875,7 @@
                     <span class="s2">"this adjustment."</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="n">length_perp</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_meander_warn</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: even at the minimum meander_number=</span><span class="si">{</span><span class="n">meander_number</span><span class="si">}</span><span class="s2">, "</span>
                     <span class="sa">f</span><span class="s2">"length_perp=</span><span class="si">{</span><span class="n">length_perp</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">mm is still smaller than "</span>
                     <span class="sa">f</span><span class="s2">"fillet=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">fillet</span><span class="si">}</span><span class="s2">mm -- this route's meander cannot be "</span>
@@ -988,9 +1121,11 @@
                         <span class="n">not_a_meander</span> <span class="o">=</span> <span class="mi">1</span>
 
         <span class="c1"># Finally, divide the slack amongst all points...</span>
-        <span class="n">sideways_adjustment</span> <span class="o">=</span> <span class="n">sideways</span> <span class="o">*</span> <span class="p">(</span>
-            <span class="n">delta_length</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">adjustment_vector</span><span class="p">)</span> <span class="o">-</span> <span class="n">not_a_meander</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">n_shifted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">adjustment_vector</span><span class="p">)</span> <span class="o">-</span> <span class="n">not_a_meander</span>
+        <span class="k">if</span> <span class="n">n_shifted</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># every wiggle is blocked; nothing can take the slack (#1234)</span>
+            <span class="k">return</span> <span class="n">pts</span>
+        <span class="n">sideways_adjustment</span> <span class="o">=</span> <span class="n">sideways</span> <span class="o">*</span> <span class="p">(</span><span class="n">delta_length</span> <span class="o">/</span> <span class="n">n_shifted</span><span class="p">)</span>
         <span class="n">pts</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">pts</span> <span class="o">+</span> <span class="n">sideways_adjustment</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">adjustment_vector</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
         <span class="p">)</span>
@@ -1043,7 +1178,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

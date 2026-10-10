@@ -513,6 +513,17 @@
 <span class="sd">        - Change coupling to the qubit by varying ``readout_radius``.</span>
 <span class="sd">        - Couple to the feedthrough line via the horizontal section of length ``readout_l3``.</span>
 <span class="sd">        - Adjust resonator frequency by varying ``readout_l5``.</span>
+
+<span class="sd">        Layers:</span>
+<span class="sd">        - The trace (``ro``) is drawn on ``layer``.</span>
+<span class="sd">        - The etch (``ro_etch``, subtracted from the ground plane when</span>
+<span class="sd">          ``subtract`` is true) is drawn on ``layer_subtract``. Left empty (the</span>
+<span class="sd">          default), it uses ``layer``, so the CPW gap is cut from the ground</span>
+<span class="sd">          plane of the trace's own layer. Up to v0.9.0 the default was ``"2"``,</span>
+<span class="sd">          which cut the gap from a separate layer-2 ground plane in the GDS</span>
+<span class="sd">          export; set ``layer_subtract="2"`` to get that layout back.</span>
+<span class="sd">        - The default ``chip="main"`` does not exist on a ``DesignFlipChip``;</span>
+<span class="sd">          set ``chip`` to ``"C_chip"`` or ``"Q_chip"`` there.</span>
 <span class="sd">    """</span>
 
     <span class="n">default_options</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
@@ -530,7 +541,7 @@
         <span class="n">arc_step</span><span class="o">=</span><span class="s2">"1 um"</span><span class="p">,</span>
         <span class="n">orientation</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>
         <span class="n">layer</span><span class="o">=</span><span class="s2">"1"</span><span class="p">,</span>
-        <span class="n">layer_subtract</span><span class="o">=</span><span class="s2">"2"</span><span class="p">,</span>
+        <span class="n">layer_subtract</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
         <span class="n">subtract</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">chip</span><span class="o">=</span><span class="s2">"main"</span><span class="p">,</span>
         <span class="n">_default_connection_pads</span><span class="o">=</span><span class="n">Dict</span><span class="p">(),</span>
@@ -664,12 +675,18 @@
         <span class="p">[</span><span class="n">ro</span><span class="p">,</span> <span class="n">ro_etch</span><span class="p">,</span> <span class="n">port_line</span><span class="p">]</span> <span class="o">=</span> <span class="n">polys</span>
 
         <span class="c1"># generate QGeometry</span>
+        <span class="c1"># An empty layer_subtract means "same layer as the trace" (#1224).</span>
+        <span class="n">layer_subtract</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"layer_subtract"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">layer_subtract</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">layer_subtract</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+            <span class="n">layer_subtract</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">layer</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">layer_subtract</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">layer_subtract</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ro</span><span class="o">=</span><span class="n">ro</span><span class="p">),</span> <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_qgeometry</span><span class="p">(</span>
             <span class="s2">"poly"</span><span class="p">,</span>
             <span class="nb">dict</span><span class="p">(</span><span class="n">ro_etch</span><span class="o">=</span><span class="n">ro_etch</span><span class="p">),</span>
             <span class="n">chip</span><span class="o">=</span><span class="n">chip</span><span class="p">,</span>
-            <span class="n">layer</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">layer_subtract</span><span class="p">,</span>
+            <span class="n">layer</span><span class="o">=</span><span class="n">layer_subtract</span><span class="p">,</span>
             <span class="n">subtract</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">subtract</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -735,7 +752,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

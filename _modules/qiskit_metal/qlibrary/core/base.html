@@ -633,6 +633,11 @@
 <span class="sd">    All options should have string keys and preferrable string values.</span>
 <span class="sd">    """</span>
 
+    <span class="n">_to_script_folded_args</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">()</span>
+<span class="w">    </span><span class="sd">"""Names of ``__init__`` arguments that are merged into ``options`` and not</span>
+<span class="sd">    stored on the instance. ``to_script`` skips them instead of reporting them</span>
+<span class="sd">    as missing."""</span>
+
     <span class="c1"># Dummy private attribute used to check if an instantiated object is</span>
     <span class="c1"># indeed a QComponent class. The problem is that the `isinstance`</span>
     <span class="c1"># built-in method fails when this module is reloaded.</span>
@@ -1114,6 +1119,9 @@
         <span class="c1">## setting up component-specific args</span>
         <span class="c1"># get init from child?</span>
         <span class="n">to_ignore</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"self"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">,</span> <span class="s2">"design"</span><span class="p">,</span> <span class="s2">"make"</span><span class="p">,</span> <span class="s2">"kwargs"</span><span class="p">,</span> <span class="s2">"options"</span><span class="p">,</span> <span class="s2">"args"</span><span class="p">}</span>
+        <span class="c1"># Constructor arguments a subclass merges into ``self.options`` (and</span>
+        <span class="c1"># does not store); their content is already in ``options=`` above.</span>
+        <span class="n">to_ignore</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_to_script_folded_args</span><span class="p">)</span>
         <span class="n">class_signature</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
 
         <span class="n">failed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -2034,7 +2042,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

@@ -647,6 +647,7 @@ Placed qubits Q0-Q4 and their XY coupling pads.
 <section id="3.-Multiplexed-readout-feedline">
 <h2>3. Multiplexed readout feedline<a class="headerlink" href="#3.-Multiplexed-readout-feedline" title="Link to this heading">¶</a></h2>
 <p>A single feedline runs across the top of the chip. A <code class="docutils literal notranslate"><span class="pre">CoupledLineTee</span></code> directional coupler sits above each qubit, and <code class="docutils literal notranslate"><span class="pre">CapNInterdigital</span></code> components terminate the feedline’s input/output before it reaches the edge launchpads.</p>
+<p>Each coupler’s second line is the coupling end of a readout resonator. <code class="docutils literal notranslate"><span class="pre">open_termination=False</span></code> shorts that end to ground; the other end is the open readout claw at the qubit, so each resonator is a quarter-wave (λ/4) resonator. With the coupler’s default, <code class="docutils literal notranslate"><span class="pre">open_termination=True</span></code>, both ends would be open and the fundamental would be a λ/2 mode at about twice the frequency.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -666,6 +667,9 @@ Placed qubits Q0-Q4 and their XY coupling pads.
                 <span class="n">orientation</span><span class="o">=</span><span class="s2">"0"</span><span class="p">,</span>
                 <span class="n">coupling_length</span><span class="o">=</span><span class="s2">"200um"</span><span class="p">,</span>
                 <span class="n">coupling_space</span><span class="o">=</span><span class="s2">"4um"</span><span class="p">,</span>
+                <span class="c1"># Short the resonator end to ground: with the open claw at</span>
+                <span class="c1"># the qubit, each readout resonator is a quarter-wave.</span>
+                <span class="n">open_termination</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">),</span>
         <span class="p">)</span>
     <span class="p">)</span>
@@ -1159,7 +1163,7 @@ Layout exported to GDSII: barends_5qubit_processor.gds
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

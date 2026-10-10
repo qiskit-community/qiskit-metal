@@ -502,9 +502,10 @@
 
 <span class="sd">"""</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">mathieu_a</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.hamiltonian.transmon_CPB_analytic</span><span class="w"> </span><span class="kn">import</span> <span class="n">mathieu_level</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"kidx"</span><span class="p">,</span> <span class="s2">"kidx_raw"</span><span class="p">,</span> <span class="s2">"plot_eigenvalues"</span><span class="p">,</span> <span class="s2">"transmon_eigenvalue"</span><span class="p">]</span>
 
@@ -564,22 +565,31 @@
 
 <div class="viewcode-block" id="transmon_eigenvalue">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.transmon_analytics.html#qiskit_metal.analyses.transmon_analytics.transmon_eigenvalue">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">transmon_eigenvalue</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">my_ng</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">transmon_eigenvalue</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">my_ng</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    This function calculate the energy eigenvalue of the transmon qubit for a given</span>
-<span class="sd">    energy level (m) and offset charge (my_ng). The input values are first used to</span>
-<span class="sd">    calculate the index using the function defined above, and then the calculated</span>
-<span class="sd">    index is used to calculate the energy eigenvalue using Mathieu's characteristic values.</span>
+<span class="sd">    energy level (m) and offset charge (my_ng), from Mathieu characteristic values</span>
+<span class="sd">    (Koch et al. Eq. 2.11), via</span>
+<span class="sd">    :func:`~qiskit_metal.analyses.hamiltonian.transmon_CPB_analytic.mathieu_level`:</span>
+<span class="sd">    even levels use the even (``a``) and odd levels the odd (``b``) characteristic</span>
+<span class="sd">    value at integer order, and non-integer orders (any ``my_ng`` other than 0 or</span>
+<span class="sd">    1/2 modulo 1) are computed from the Hill matrix.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            m (int): The energy level of the qubit (m=0,1,2,3,etc.)</span>
-<span class="sd">            ng (float): the offset charge of the Josephjunction island (in units of 2e)</span>
+<span class="sd">            my_ng (float): the offset charge of the Josephjunction island (in units of 2e)</span>
+<span class="sd">            Ej (float): Josephson energy. Defaults to ``RATIO * E_C`` (module</span>
+<span class="sd">                constants).</span>
+<span class="sd">            Ec (float): Charging energy. Defaults to the module constant ``E_C``.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: the calculated energy eigenvalue.</span>
 <span class="sd">    """</span>
-    <span class="n">index</span> <span class="o">=</span> <span class="n">kidx</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">my_ng</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">E_C</span><span class="p">)</span> <span class="o">*</span> <span class="n">mathieu_a</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">RATIO</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">Ec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Ec</span> <span class="o">=</span> <span class="n">E_C</span>
+    <span class="k">if</span> <span class="n">Ej</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Ej</span> <span class="o">=</span> <span class="n">RATIO</span> <span class="o">*</span> <span class="n">Ec</span>
+    <span class="k">return</span> <span class="n">mathieu_level</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">my_ng</span><span class="p">,</span> <span class="n">Ej</span><span class="p">,</span> <span class="n">Ec</span><span class="p">)</span></div>
 
 
 
@@ -663,7 +673,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

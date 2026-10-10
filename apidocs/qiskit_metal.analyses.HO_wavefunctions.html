@@ -501,31 +501,46 @@ corresponding to an LC circuit.</p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qiskit_metal.analyses.HO_wavefunctions.wavefunction" title="qiskit_metal.analyses.HO_wavefunctions.wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavefunction</span></code></a>(L, C, n, x)</p></td>
-<td><p>This function calculates the nth wavefunction of the harmonic oscillator for a given value of inductance (L) and capacitance (C) at a charge x.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qiskit_metal.analyses.HO_wavefunctions.wavefunction" title="qiskit_metal.analyses.HO_wavefunctions.wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavefunction</span></code></a>(L, C, n, x[, hbar])</p></td>
+<td><p>Return the n-th energy eigenfunction of the LC (harmonic) oscillator.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.HO_wavefunctions.wavefunction">
-<span class="sig-name descname"><span class="pre">wavefunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/hamiltonian/HO_wavefunctions.html#wavefunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.HO_wavefunctions.wavefunction" title="Link to this definition">¶</a></dt>
-<dd><p>This function calculates the nth wavefunction of the harmonic oscillator
-for a given value of inductance (L) and capacitance (C) at a charge x.</p>
+<span class="sig-name descname"><span class="pre">wavefunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/hamiltonian/HO_wavefunctions.html#wavefunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.HO_wavefunctions.wavefunction" title="Link to this definition">¶</a></dt>
+<dd><p>Return the n-th energy eigenfunction of the LC (harmonic) oscillator.</p>
+<p>The coordinate <code class="docutils literal notranslate"><span class="pre">x</span></code> is the capacitor charge <span class="math notranslate nohighlight">\(Q\)</span>. With
+<span class="math notranslate nohighlight">\(H = \Phi^2/2L + Q^2/2C\)</span>, the flux <span class="math notranslate nohighlight">\(\Phi\)</span> is the momentum
+conjugate to <span class="math notranslate nohighlight">\(Q\)</span>, so the “mass” is <span class="math notranslate nohighlight">\(L\)</span> and</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\omega = 1/\sqrt{LC}, \qquad
+\psi_n(Q) = \frac{1}{\sqrt{2^n n!}}
+\left(\frac{L\omega}{\pi\hbar}\right)^{1/4}
+e^{-L\omega Q^2/2\hbar}\,
+H_n\!\left(\sqrt{L\omega/\hbar}\,Q\right),\]</div>
+</div>
+<p>normalized so that <span class="math notranslate nohighlight">\(\int |\psi_n|^2\,dQ = 1\)</span>. Note
+<span class="math notranslate nohighlight">\(L\omega = \sqrt{L/C} = Z\)</span>, the characteristic impedance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>L</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – The inductance of the inductor in an LC circuit.</p></li>
-<li><p><strong>C</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – The capacitance of the capacitor in an LC circuit.</p></li>
-<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – The energy state of the harmonic oscillator.</p></li>
-<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – The value of charge (independent variable) for which the wavefunction is calculated.</p></li>
+<li><p><strong>L</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – The inductance of the inductor in an LC circuit.</p></li>
+<li><p><strong>C</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – The capacitance of the capacitor in an LC circuit.</p></li>
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – The energy level (any non-negative integer).</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em> or </em><em>array</em>) – The charge at which the wavefunction is evaluated.</p></li>
+<li><p><strong>hbar</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Reduced Planck constant in the units of <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">C</span></code>
+and <code class="docutils literal notranslate"><span class="pre">x</span></code>. Defaults to 1 (natural units); pass
+<code class="docutils literal notranslate"><span class="pre">scipy.constants.hbar</span></code> for SI inputs.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Calculated wavefunction</p>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\psi_n(x)\)</span>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)">float</a> or array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -567,7 +582,7 @@ for a given value of inductance (L) and capacitance (C) at a charge x.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             
@@ -608,5 +623,7 @@ for a given value of inductance (L) and capacitance (C) at a charge x.</p>
     <script src="../_static/jupyterlite_sphinx.js?v=96e329c5"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     </body>
 </html>

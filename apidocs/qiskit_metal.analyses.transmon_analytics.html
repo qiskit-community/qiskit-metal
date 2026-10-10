@@ -510,8 +510,8 @@ Phys. Rev. A. 76, 042319 (2007).</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qiskit_metal.analyses.transmon_analytics.plot_eigenvalues" title="qiskit_metal.analyses.transmon_analytics.plot_eigenvalues"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_eigenvalues</span></code></a>()</p></td>
 <td><p>This function actually creates the plot(s) of eigenvalues as a function of offset charge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qiskit_metal.analyses.transmon_analytics.transmon_eigenvalue" title="qiskit_metal.analyses.transmon_analytics.transmon_eigenvalue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transmon_eigenvalue</span></code></a>(m, my_ng)</p></td>
-<td><p>This function calculate the energy eigenvalue of the transmon qubit for a given energy level (m) and offset charge (my_ng).</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qiskit_metal.analyses.transmon_analytics.transmon_eigenvalue" title="qiskit_metal.analyses.transmon_analytics.transmon_eigenvalue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transmon_eigenvalue</span></code></a>(m, my_ng[, Ej, Ec])</p></td>
+<td><p>This function calculate the energy eigenvalue of the transmon qubit for a given energy level (m) and offset charge (my_ng), from Mathieu characteristic values (Koch et al. Eq.</p></td>
 </tr>
 </tbody>
 </table>
@@ -564,15 +564,23 @@ offset charge. No arguments need to be passed.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.transmon_analytics.transmon_eigenvalue">
-<span class="sig-name descname"><span class="pre">transmon_eigenvalue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my_ng</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/hamiltonian/transmon_analytics.html#transmon_eigenvalue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.transmon_analytics.transmon_eigenvalue" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">transmon_eigenvalue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my_ng</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ej</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/hamiltonian/transmon_analytics.html#transmon_eigenvalue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.transmon_analytics.transmon_eigenvalue" title="Link to this definition">¶</a></dt>
 <dd><p>This function calculate the energy eigenvalue of the transmon qubit for a given
-energy level (m) and offset charge (my_ng). The input values are first used to
-calculate the index using the function defined above, and then the calculated
-index is used to calculate the energy eigenvalue using Mathieu’s characteristic values.</p>
+energy level (m) and offset charge (my_ng), from Mathieu characteristic values
+(Koch et al. Eq. 2.11), via
+<code class="xref py py-func docutils literal notranslate"><span class="pre">mathieu_level()</span></code>:
+even levels use the even (<code class="docutils literal notranslate"><span class="pre">a</span></code>) and odd levels the odd (<code class="docutils literal notranslate"><span class="pre">b</span></code>) characteristic
+value at integer order, and non-integer orders (any <code class="docutils literal notranslate"><span class="pre">my_ng</span></code> other than 0 or
+1/2 modulo 1) are computed from the Hill matrix.</p>
 <blockquote>
-<div><dl class="simple">
+<div><dl>
 <dt>Args:</dt><dd><p>m (int): The energy level of the qubit (m=0,1,2,3,etc.)
-ng (float): the offset charge of the Josephjunction island (in units of 2e)</p>
+my_ng (float): the offset charge of the Josephjunction island (in units of 2e)
+Ej (float): Josephson energy. Defaults to <code class="docutils literal notranslate"><span class="pre">RATIO</span> <span class="pre">*</span> <span class="pre">E_C</span></code> (module</p>
+<blockquote>
+<div><p>constants).</p>
+</div></blockquote>
+<p>Ec (float): Charging energy. Defaults to the module constant <code class="docutils literal notranslate"><span class="pre">E_C</span></code>.</p>
 </dd>
 <dt>Returns:</dt><dd><p>float: the calculated energy eigenvalue.</p>
 </dd>
@@ -617,7 +625,7 @@ ng (float): the offset charge of the Josephjunction island (in units of 2e)</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

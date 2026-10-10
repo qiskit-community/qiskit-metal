@@ -1418,7 +1418,7 @@ it as True for each layer you are interested it.</p>
 <p>The location of cheesing is determined by</p>
 <ol class="arabic simple">
 <li><p>generating a grid of holes for the size of chip</p></li>
-<li><p>subtract the no_cheese region</p></li>
+<li><p>drop every hole that overlaps the no_cheese region (holes are dropped whole, not trimmed, so no slivers narrower than a hole are left)</p></li>
 <li><p>subtract the edge_nocheese region</p></li>
 </ol>
 <p>The method export_to_gds, uses the datatype in cheese dict, default is 100, and no_cheese dict, default is 99; then uses few extra datatypes by adding one or two. The extra datatypes are to show some intermediate steps. If you choose to view_in_file, then you will see cheese or no-cheese in the gds file.</p>
@@ -1426,7 +1426,7 @@ it as True for each layer you are interested it.</p>
 <p>TOP_chipname_layernumber_NoCheese_datatype is a cell that holds the “keep-out” region for cheesing.</p>
 <p>TOP_chipname_layernumber_Cheese_datatype is a cell that holds the cheesing region.</p>
 <p>TOP_chipname_layernumber holds the geometry taken from Metal GUI.</p>
-<p>TOP_chipname_layernumber_Cheese_diff is a cell that holds the difference between grid of holes on chip, minus the no_cheese region. It is placed in datatype_cheese+1. This is expected to change when we agree to some convention.</p>
+<p>TOP_chipname_layernumber_Cheese_diff is a cell that holds the grid of holes on chip, without the holes that overlap the no_cheese region. It is placed in datatype_cheese+1. This is expected to change when we agree to some convention.</p>
 <p><code class="docutils literal notranslate"><span class="pre">For</span> <span class="pre">negative</span> <span class="pre">mask</span></code>: TOP_chipname_layernumber_Cheese_diff is placed under TOP_chipname_layernumber.</p>
 <p><code class="docutils literal notranslate"><span class="pre">For</span> <span class="pre">positive</span> <span class="pre">mask</span></code>: TOP_chipname_layernumber_Cheese_diff is subtracted from ground and placed under TOP_chipname_layernumber.</p>
 </section>
@@ -19919,7 +19919,7 @@ LAYER / DATATYPE USAGE:
 <li><p>hole size comes from <code class="docutils literal notranslate"><span class="pre">cheese_0_x</span></code>, <code class="docutils literal notranslate"><span class="pre">cheese_0_y</span></code> or <code class="docutils literal notranslate"><span class="pre">cheese_1_radius</span></code>,</p></li>
 <li><p>hole shape is rectangular or circular based on <code class="docutils literal notranslate"><span class="pre">shape</span></code>,</p></li>
 <li><p>holes near the chip edges (<code class="docutils literal notranslate"><span class="pre">edge_nocheese</span></code>) are removed,</p></li>
-<li><p>holes that fall inside “no-cheese” regions are removed.</p></li>
+<li><p>holes that overlap a “no-cheese” region, even partly, are removed whole (not trimmed at its edge).</p></li>
 </ul>
 <p>the resulting holes are added to gds on the appropriate datatype.</p>
 </section>
@@ -20027,7 +20027,7 @@ LAYER / DATATYPE USAGE:
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

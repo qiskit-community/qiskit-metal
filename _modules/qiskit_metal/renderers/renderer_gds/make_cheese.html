@@ -500,7 +500,10 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_gds.gds_boolean</span><span class="w"> </span><span class="kn">import</span> <span class="n">subtract_in_strips</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.renderers.renderer_gds.gds_boolean</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">remove_cell</span><span class="p">,</span>
+    <span class="n">subtract_in_strips</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="Cheesing">
@@ -806,7 +809,7 @@
             <span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">cheese_one_hole_cell_name</span><span class="p">),</span> <span class="kc">None</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">cheese_one_hole_cell</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cheese_one_hole_cell</span><span class="p">)</span>
+            <span class="n">remove_cell</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="p">,</span> <span class="n">cheese_one_hole_cell</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_subtract_from_ground_and_move_under_top_chip_layer</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">diff_holes_cell</span><span class="p">:</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span>
@@ -858,13 +861,8 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">flat_nocheese</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         <span class="n">temp_keepout_cell</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">flat_nocheese</span><span class="p">)</span>
-        <span class="n">diff_holes</span> <span class="o">=</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">boolean</span><span class="p">(</span>
-            <span class="n">gather_holes_cell</span><span class="o">.</span><span class="n">get_polygons</span><span class="p">(),</span>
-            <span class="n">temp_keepout_cell</span><span class="o">.</span><span class="n">get_polygons</span><span class="p">(),</span>
-            <span class="s2">"not"</span><span class="p">,</span>
-            <span class="n">precision</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span>
-            <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-            <span class="n">datatype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datatype_cheese</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">diff_holes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_holes_clear_of_keepout</span><span class="p">(</span>
+            <span class="n">gather_holes_cell</span><span class="o">.</span><span class="n">get_polygons</span><span class="p">(),</span> <span class="n">temp_keepout_cell</span><span class="o">.</span><span class="n">get_polygons</span><span class="p">()</span>
         <span class="p">)</span>
         <span class="n">diff_holes_cell_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"TOP_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="si">}</span><span class="s2">_Cheese_diff"</span>
         <span class="n">diff_holes_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">new_cell</span><span class="p">(</span><span class="n">diff_holes_cell_name</span><span class="p">)</span>
@@ -872,6 +870,49 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">temp_keepout_cell</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">diff_holes_cell</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_holes_clear_of_keepout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">holes</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">keepout</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the holes that do not overlap the keepout, whole.</span>
+
+<span class="sd">        A hole that straddles the keepout edge is dropped, not trimmed:</span>
+<span class="sd">        trimming leaves etched slivers whose width depends only on where</span>
+<span class="sd">        the grid falls, and can be far below the minimum feature size</span>
+<span class="sd">        (#1214). Overlap smaller than ``precision`` (holes that only touch</span>
+<span class="sd">        the keepout) does not count.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            holes (list): gdstk polygons of the full hole grid.</span>
+<span class="sd">            keepout (list): gdstk polygons of the keepout region.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: The kept holes on ``layer``, datatype ``datatype_cheese + 1``.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">holes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="c1"># One Polygon per gdstk polygon: shapely.polygons() on the list</span>
+        <span class="c1"># needs every polygon to have the same number of vertices.</span>
+        <span class="n">shapes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">points</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">holes</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">keepout</span><span class="p">:</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">union_all</span><span class="p">(</span>
+                <span class="n">shapely</span><span class="o">.</span><span class="n">make_valid</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">shapely</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">points</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">keepout</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">shapely</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+            <span class="c1"># Shrink each hole by the precision so a hole that only touches</span>
+            <span class="c1"># the keepout, or overlaps it by rounding, is kept.</span>
+            <span class="n">probe</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">shapes</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span> <span class="n">join_style</span><span class="o">=</span><span class="s2">"mitre"</span><span class="p">)</span>
+            <span class="n">overlaps</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">probe</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">overlaps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">holes</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">kept</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">poly</span><span class="p">,</span> <span class="n">drop</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">holes</span><span class="p">,</span> <span class="n">overlaps</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">drop</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">poly</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span>
+            <span class="n">poly</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype_cheese</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">kept</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">kept</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_all_holes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">gdstk</span><span class="o">.</span><span class="n">Cell</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Return a cell with a grid of holes. The keepout has not been</span>
@@ -961,7 +1002,7 @@
         <span class="n">cell_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"TOP_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="si">}</span><span class="s2">_Cheese_diff"</span>
         <span class="n">cell</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">cell_name</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">cell</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+            <span class="n">remove_cell</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="p">,</span> <span class="n">cell</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_remove_ground_chip_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""[For a lib, chip and layer, remove the ground cell</span>
@@ -970,7 +1011,7 @@
         <span class="n">cell_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"ground_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chip_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="si">}</span><span class="s2">"</span>
         <span class="n">cell</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">cells</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">cell_name</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">cell</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span></div>
+            <span class="n">remove_cell</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="p">,</span> <span class="n">cell</span><span class="p">)</span></div>
 
 </pre></div>
         </article>
@@ -990,7 +1031,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

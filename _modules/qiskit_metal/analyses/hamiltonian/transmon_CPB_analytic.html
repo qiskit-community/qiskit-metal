@@ -495,11 +495,82 @@
 <span class="sd">Models the transmon qubit in the cooper-pair charge basis</span>
 <span class="sd">and calculate the exact (analytic) solutions</span>
 
+<span class="sd">Key References:</span>
+<span class="sd">    - J. Koch et al. "Charge-insensitive qubit design derived from the Cooper</span>
+<span class="sd">      pair box" Phys. Rev. A. 76, 042319 (2007), Eq. (2.11).</span>
+
 <span class="sd">@author: Nick Lanzillo (IBM)</span>
 <span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">mathieu_a</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">linalg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">mathieu_a</span><span class="p">,</span> <span class="n">mathieu_b</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hcpb_analytic"</span><span class="p">,</span> <span class="s2">"mathieu_level"</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_koch_index</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ng</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""2 [ng + k(m, ng)] of Koch Eq. (2.11), for -1/2 &lt;= ng &lt;= 1/2."""</span>
+    <span class="k">if</span> <span class="n">ng</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">m</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">((</span><span class="n">m</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">m</span>
+        <span class="o">+</span> <span class="mf">1.0</span>
+        <span class="o">-</span> <span class="p">((</span><span class="n">m</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">ng</span> <span class="o">*</span> <span class="p">((</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">ng</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)))</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">mathieu_level</span><span class="p">(</span><span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ng</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Ej</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Ec</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Energy of transmon level ``m`` from Mathieu characteristic values.</span>
+
+<span class="sd">    Koch et al. Eq. (2.11): :math:`E_m = E_C\, a_{2[n_g + k(m, n_g)]}(q)`,</span>
+<span class="sd">    :math:`q = -E_J/2E_C`, where :math:`a_\nu` is the characteristic value</span>
+<span class="sd">    of real order :math:`\nu`.</span>
+
+<span class="sd">    * At integer order (``ng`` = 0 or 1/2 modulo 1) the even and odd</span>
+<span class="sd">      solutions are degenerate in the index: even ``m`` uses</span>
+<span class="sd">      ``scipy.special.mathieu_a`` and odd ``m`` uses ``mathieu_b`` of the</span>
+<span class="sd">      same order (ng = 0: :math:`a_m`, :math:`b_{m+1}`; ng = 1/2:</span>
+<span class="sd">      :math:`a_{m+1}`, :math:`b_m`).</span>
+<span class="sd">    * scipy has no characteristic values of non-integer order, so for other</span>
+<span class="sd">      ``ng`` the value is computed from the Hill (Fourier) matrix of</span>
+<span class="sd">      Mathieu's equation with Floquet exponent :math:`2 n_g`, whose</span>
+<span class="sd">      ``m``-th eigenvalue is :math:`a_{2[n_g + k(m, n_g)]}(q)`.</span>
+
+<span class="sd">    ``ng`` is reduced modulo 1 into [-1/2, 1/2] first (the spectrum has</span>
+<span class="sd">    period 1 in ``ng``).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        m (int): Level index (0 = ground state).</span>
+<span class="sd">        ng (float): Offset charge in units of 2e.</span>
+<span class="sd">        Ej (float): Josephson energy.</span>
+<span class="sd">        Ec (float): Charging energy, same units as ``Ej``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: :math:`E_m` in the units of ``Ec``.</span>
+<span class="sd">    """</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">ng</span> <span class="o">=</span> <span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">ng</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">%</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">Ej</span> <span class="o">/</span> <span class="n">Ec</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">_koch_index</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ng</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">index</span> <span class="o">-</span> <span class="n">order</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">:</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">order</span><span class="p">))</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">mathieu_a</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="k">if</span> <span class="n">m</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">mathieu_b</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Hill matrix: diag (2 (n - ng))^2, off-diagonal q, n in [-N, N].</span>
+        <span class="n">ncut</span> <span class="o">=</span> <span class="mi">30</span> <span class="o">+</span> <span class="n">m</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">ncut</span><span class="p">,</span> <span class="n">ncut</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">evals</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eigh_tridiagonal</span><span class="p">(</span>
+            <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">ng</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">q</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ncut</span><span class="p">),</span>
+            <span class="n">select</span><span class="o">=</span><span class="s2">"i"</span><span class="p">,</span>
+            <span class="n">select_range</span><span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">),</span>
+            <span class="n">eigvals_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">evals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">Ec</span> <span class="o">*</span> <span class="n">value</span>
 
 
 <div class="viewcode-block" id="Hcpb_analytic">
@@ -528,11 +599,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_ng</span> <span class="o">=</span> <span class="n">ng</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">evals</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">evecs</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="c1"># Generate the diagonal and offdiagonal components of the Hamiltonian</span>
-        <span class="c1"># self._gen_operators()</span>
-        <span class="c1"># compute the eigenvectors and eigenvalues of the CPB</span>
-        <span class="c1"># all properties can be derived from these</span>
-        <span class="c1"># self._calc_H()</span>
 
 <div class="viewcode-block" id="Hcpb_analytic.evalue_k">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb_analytic.html#qiskit_metal.analyses.Hcpb_analytic.evalue_k">[docs]</a>
@@ -540,24 +606,16 @@
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the eigenvalue of the Hamiltonian for level k.</span>
 
+<span class="sd">        Uses :func:`mathieu_level` (Koch et al. Eq. 2.11); see there for</span>
+<span class="sd">        how integer and non-integer Mathieu orders are handled.</span>
+
 <span class="sd">        Arguments:</span>
 <span class="sd">            k (int): Index of the eigenvalue</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: eigenvalue of the Hamiltonian</span>
 <span class="sd">        """</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ng</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">((</span><span class="n">k</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">k</span>
-                <span class="o">+</span> <span class="mf">1.0</span>
-                <span class="o">-</span> <span class="p">((</span><span class="n">k</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span>
-                <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ng</span> <span class="o">*</span> <span class="p">((</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ng</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)))</span>
-            <span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">evals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Ec</span> <span class="o">*</span> <span class="n">mathieu_a</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Ej</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Ec</span><span class="p">)</span>
-        <span class="c1"># return self.evals[k]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">evals</span> <span class="o">=</span> <span class="n">mathieu_level</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ng</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Ej</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Ec</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evals</span></div>
 </div>
 
@@ -579,7 +637,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

@@ -828,7 +828,7 @@ Counter({&#39;short-segment&#39;: 4,
 <h2>Fixing them<a class="headerlink" href="#Fixing-them" title="Link to this heading">¶</a></h2>
 <p>Each finding names the physics it protects, so the fix is not arbitrary.</p>
 <ol class="arabic simple">
-<li><p><strong>``metal-overlap``</strong> – move <code class="docutils literal notranslate"><span class="pre">cross_v</span></code> clear of <code class="docutils literal notranslate"><span class="pre">cross_h</span></code>. If the crossing is deliberate, it needs an airbridge: those sit on their own layer and the rule is layer-aware, so a bridged crossing does not report.</p></li>
+<li><p><strong>``metal-overlap``</strong> – move <code class="docutils literal notranslate"><span class="pre">cross_v</span></code> clear of <code class="docutils literal notranslate"><span class="pre">cross_h</span></code>. If the crossing is deliberate, carry one line over the other on an airbridge. Drawing a bridge on top is not enough: the two lines still overlap on the base layer. See <em>Deliberate crossings</em> below.</p></li>
 <li><p><strong>``metal-spacing``</strong> – open the gap to 200 um. The 2 um default comes from published superconducting-chip rule sets; your foundry sets the real number.</p></li>
 <li><p><strong>``cpw-gap``</strong> – back to the standard 6 um. Narrow gaps push field into the substrate-metal interface, where two-level-system loss lives.</p></li>
 <li><p><strong>``chip-bounds``</strong> – pull the launchpad onto the die, or grow the die. Off-chip geometry is silently clipped by the GDS and FEM renderers.</p></li>
@@ -905,11 +905,123 @@ Design rules passed (11 rules ran, no findings).
 </div>
 </div>
 </section>
+<section id="Deliberate-crossings">
+<h2>Deliberate crossings<a class="headerlink" href="#Deliberate-crossings" title="Link to this heading">¶</a></h2>
+<p>The rules check metal on each layer. An <code class="docutils literal notranslate"><span class="pre">Airbridge</span></code> puts its span and landing pads on their own layers (30 and 31 by default), so placing one over the crossing changes nothing on layer 1: the two lines still overlap, and the check still reports a short.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.airbridge</span><span class="w"> </span><span class="kn">import</span> <span class="n">Airbridge</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Waiver</span>
+
+<span class="n">crossing</span> <span class="o">=</span> <span class="n">new_design</span><span class="p">()</span>
+<span class="n">link</span><span class="p">(</span><span class="n">crossing</span><span class="p">,</span> <span class="s2">"cross_h"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"-2.6mm"</span><span class="p">,</span> <span class="s2">"2mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"-1.2mm"</span><span class="p">,</span> <span class="s2">"2mm"</span><span class="p">),</span> <span class="s2">"180"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">)</span>
+<span class="n">link</span><span class="p">(</span><span class="n">crossing</span><span class="p">,</span> <span class="s2">"cross_v"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"-1.9mm"</span><span class="p">,</span> <span class="s2">"1.4mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"-1.9mm"</span><span class="p">,</span> <span class="s2">"2.6mm"</span><span class="p">),</span> <span class="s2">"270"</span><span class="p">,</span> <span class="s2">"90"</span><span class="p">)</span>
+<span class="n">Airbridge</span><span class="p">(</span>
+    <span class="n">crossing</span><span class="p">,</span> <span class="s2">"AB"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-1.9mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"2mm"</span><span class="p">,</span> <span class="n">crossover_length</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">crossing</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">validate</span><span class="p">(</span><span class="n">crossing</span><span class="p">)</span><span class="o">.</span><span class="n">report</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1 finding(s) from 11 rule(s): 1 error(s), 0 warning(s)
+  [error] metal-overlap: cross_h and cross_v overlap by 100 um^2 of metal on layer 1  @ (-1.9000, 2.0000)
+</pre></div></div>
+</div>
+<p>For a real crossover, cut the upper line where it crosses and connect the two cut ends to the bridge’s pins <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>. The line is then continuous through the bridge, nothing overlaps on layer 1, and the check passes.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crossing</span> <span class="o">=</span> <span class="n">new_design</span><span class="p">()</span>
+<span class="n">link</span><span class="p">(</span><span class="n">crossing</span><span class="p">,</span> <span class="s2">"cross_v"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"-1.9mm"</span><span class="p">,</span> <span class="s2">"1.4mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"-1.9mm"</span><span class="p">,</span> <span class="s2">"2.6mm"</span><span class="p">),</span> <span class="s2">"270"</span><span class="p">,</span> <span class="s2">"90"</span><span class="p">)</span>
+<span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">crossing</span><span class="p">,</span> <span class="s2">"h_west"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-2.6mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"2mm"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"180"</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">OpenToGround</span><span class="p">(</span>
+    <span class="n">crossing</span><span class="p">,</span> <span class="s2">"h_east"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-1.2mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"2mm"</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"0"</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">Airbridge</span><span class="p">(</span>
+    <span class="n">crossing</span><span class="p">,</span> <span class="s2">"AB"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pos_x</span><span class="o">=</span><span class="s2">"-1.9mm"</span><span class="p">,</span> <span class="n">pos_y</span><span class="o">=</span><span class="s2">"2mm"</span><span class="p">,</span> <span class="n">crossover_length</span><span class="o">=</span><span class="s2">"30um"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># cross_h, cut in two at the bridge: west end -&gt; pin a, pin b -&gt; east end.</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">"cross_h_west"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"h_west"</span><span class="p">,</span> <span class="s2">"open"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"AB"</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"cross_h_east"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"AB"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"h_east"</span><span class="p">,</span> <span class="s2">"open"</span><span class="p">)),</span>
+<span class="p">]:</span>
+    <span class="n">RouteStraight</span><span class="p">(</span>
+        <span class="n">crossing</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+            <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
+                <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pin</span><span class="o">=</span><span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pin</span><span class="o">=</span><span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="p">)</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+<span class="n">crossing</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">validate</span><span class="p">(</span><span class="n">crossing</span><span class="p">)</span><span class="o">.</span><span class="n">report</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Design rules passed (11 rules ran, no findings).
+</pre></div></div>
+</div>
+<p>If the layout keeps the lines whole on purpose – for example, the crossovers are cut and bridged later in the mask flow – keep the crossing and record a <code class="docutils literal notranslate"><span class="pre">Waiver</span></code> instead. A waiver needs a reason, can be limited to one rule, the components involved and a maximum value, and does not hide anything: the waived finding is still listed in the report, it just no longer counts as an error. Do not widen the rule’s threshold instead; that would also hide real shorts.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crossing</span> <span class="o">=</span> <span class="n">new_design</span><span class="p">()</span>
+<span class="n">link</span><span class="p">(</span><span class="n">crossing</span><span class="p">,</span> <span class="s2">"cross_h"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"-2.6mm"</span><span class="p">,</span> <span class="s2">"2mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"-1.2mm"</span><span class="p">,</span> <span class="s2">"2mm"</span><span class="p">),</span> <span class="s2">"180"</span><span class="p">,</span> <span class="s2">"0"</span><span class="p">)</span>
+<span class="n">link</span><span class="p">(</span><span class="n">crossing</span><span class="p">,</span> <span class="s2">"cross_v"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"-1.9mm"</span><span class="p">,</span> <span class="s2">"1.4mm"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"-1.9mm"</span><span class="p">,</span> <span class="s2">"2.6mm"</span><span class="p">),</span> <span class="s2">"270"</span><span class="p">,</span> <span class="s2">"90"</span><span class="p">)</span>
+<span class="n">crossing</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+
+<span class="n">waiver</span> <span class="o">=</span> <span class="n">Waiver</span><span class="p">(</span>
+    <span class="s2">"cross_v is carried over cross_h on an airbridge in the mask flow"</span><span class="p">,</span>
+    <span class="n">rule</span><span class="o">=</span><span class="s2">"metal-overlap"</span><span class="p">,</span>
+    <span class="n">components</span><span class="o">=</span><span class="p">(</span><span class="s2">"cross_h"</span><span class="p">,</span> <span class="s2">"cross_v"</span><span class="p">),</span>
+    <span class="n">max_value</span><span class="o">=</span><span class="mf">200e-6</span><span class="p">,</span>  <span class="c1"># mm^2: this crossing overlaps by 100 um^2</span>
+<span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">validate</span><span class="p">(</span><span class="n">crossing</span><span class="p">,</span> <span class="n">waivers</span><span class="o">=</span><span class="p">[</span><span class="n">waiver</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"passes:"</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">report</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+passes: True
+Design rules passed (11 rules ran, no findings).
+1 waived:
+  [error] metal-overlap: cross_h and cross_v overlap by 100 um^2 of metal on layer 1  @ (-1.9000, 2.0000)
+      waived: cross_v is carried over cross_h on an airbridge in the mask flow
+</pre></div></div>
+</div>
+</section>
 <section id="Tuning-the-rules">
 <h2>Tuning the rules<a class="headerlink" href="#Tuning-the-rules" title="Link to this heading">¶</a></h2>
 <p>Thresholds are constructor arguments, so a process design kit that differs from the defaults is a call, not a fork. Pass <code class="docutils literal notranslate"><span class="pre">rules=</span></code> to run a different set – either a subset, or the defaults with one swapped out.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_RULES</span><span class="p">,</span> <span class="n">CPWGapRule</span><span class="p">,</span> <span class="n">MetalSpacingRule</span>
@@ -936,7 +1048,7 @@ Design rules passed (11 rules ran, no findings).
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The 2 um default is a fabrication limit. A crosstalk budget is a separate,</span>
@@ -961,7 +1073,7 @@ Design rules passed (11 rules ran, no findings).
 </div>
 <p>Severity is an argument too. Promote a warning to an error when your process treats it as a hard rule, and the result turns falsy.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Severity</span>
@@ -984,7 +1096,7 @@ False
 <h2>Failing the build<a class="headerlink" href="#Failing-the-build" title="Link to this heading">¶</a></h2>
 <p>In a design script or CI job you want the check to stop the run, not print. <code class="docutils literal notranslate"><span class="pre">strict=True</span></code> raises <code class="docutils literal notranslate"><span class="pre">DesignRuleViolation</span></code> on any error.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DesignRuleViolation</span>
@@ -1020,7 +1132,7 @@ build stopped:
 <p>A rule is any object with a <code class="docutils literal notranslate"><span class="pre">name</span></code>, a <code class="docutils literal notranslate"><span class="pre">description</span></code>, and a <code class="docutils literal notranslate"><span class="pre">check(design)</span></code> that yields <code class="docutils literal notranslate"><span class="pre">Finding</span></code>s. Subclass <code class="docutils literal notranslate"><span class="pre">DesignRule</span></code> and use the same helpers the built-in rules use: <code class="docutils literal notranslate"><span class="pre">chip_bounds</span></code>, <code class="docutils literal notranslate"><span class="pre">component_geometry</span></code> (which unions each component’s drawn metal, per layer if you ask), and <code class="docutils literal notranslate"><span class="pre">representative_point</span></code>.</p>
 <p>Here is a fab rule the defaults do not cover: nothing may reach into the dicing street at the die edge.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">box</span>
@@ -1165,7 +1277,7 @@ build stopped:
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             
@@ -1191,6 +1303,7 @@ build stopped:
 <li><a class="reference internal" href="#Run-the-checks">Run the checks</a></li>
 <li><a class="reference internal" href="#Reading-the-result">Reading the result</a></li>
 <li><a class="reference internal" href="#Fixing-them">Fixing them</a></li>
+<li><a class="reference internal" href="#Deliberate-crossings">Deliberate crossings</a></li>
 <li><a class="reference internal" href="#Tuning-the-rules">Tuning the rules</a></li>
 <li><a class="reference internal" href="#Failing-the-build">Failing the build</a></li>
 <li><a class="reference internal" href="#Writing-your-own-rule">Writing your own rule</a></li>

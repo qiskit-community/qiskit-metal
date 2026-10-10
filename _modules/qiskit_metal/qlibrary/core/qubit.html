@@ -526,6 +526,9 @@
 
     <span class="n">TOOLTIP</span> <span class="o">=</span> <span class="s2">"""Qubit"""</span>
 
+    <span class="c1"># options_connection_pads is merged into options.connection_pads.</span>
+    <span class="n">_to_script_folded_args</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"options_connection_pads"</span><span class="p">,)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">design</span><span class="p">,</span>
@@ -585,7 +588,37 @@
                     <span class="s2">"_default_connection_pads"</span>
                 <span class="p">]</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">my_options_connection_pads</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">my_options_connection_pads</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fill_connection_pad_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Give every connection pad the class defaults for the keys it does</span>
+<span class="sd">        not set.</span>
+
+<span class="sd">        ``_set_options_connection_pads`` does this once, at construction. A</span>
+<span class="sd">        pad added afterwards (``q.options.connection_pads.b = Dict(...)``)</span>
+<span class="sd">        would otherwise reach ``make`` without ``pad_width``, ``cpw_width``,</span>
+<span class="sd">        ... (issue #1226). Only missing keys are filled, in place, so pads</span>
+<span class="sd">        that are already complete are left untouched.</span>
+<span class="sd">        """</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">template_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">defaults</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"_default_connection_pads"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">defaults</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">for</span> <span class="n">pad</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">defaults</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pad</span><span class="p">:</span>
+                    <span class="n">pad</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BaseQubit.rebuild">
+<a class="viewcode-back" href="../../../../apidocs/qiskit_metal.qlibrary.BaseQubit.html#qiskit_metal.qlibrary.BaseQubit.rebuild">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Fill defaults into connection pads added since construction, then</span>
+<span class="sd">        build (see :meth:`QComponent.rebuild`)."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fill_connection_pad_defaults</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span></div>
+</div>
 
 </pre></div>
         </article>
@@ -605,7 +638,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

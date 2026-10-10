@@ -499,10 +499,27 @@
 <span class="sd">@author: Christopher Warren (Chalmers University of Technology), updated by Zlatko K. Minev (IBM Quantum)</span>
 <span class="sd">"""</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">qutip</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">linalg</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">opt</span>
+
+<span class="c1"># Relative miss (of the target frequency) above which the inverse solvers warn.</span>
+<span class="n">_INVERSE_RTOL</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_warn_if_missed</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">f01</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Warn when an inverse fit did not reproduce its target."""</span>
+    <span class="n">miss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">fun</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">miss</span> <span class="o">&gt;</span> <span class="n">_INVERSE_RTOL</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f01</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Hcpb.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> did not reach the target: residual </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">fun</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+            <span class="sa">f</span><span class="s2">"(same units as f01) at x = </span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s2">; solver status </span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">: "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="p">)</span>
 
 
 <div class="viewcode-block" id="Hcpb">
@@ -773,6 +790,11 @@
 <span class="sd">            (float, float): Ej and Ec of the transmon Hamiltonian</span>
 <span class="sd">            corresponding to the f01 and anharmonicty</span>
 <span class="sd">            of the device</span>
+
+<span class="sd">        Warns:</span>
+<span class="sd">            UserWarning: if the returned (Ej, Ec) do not reproduce</span>
+<span class="sd">            (f01, anharm), for instance when the target is outside the</span>
+<span class="sd">            search bounds.</span>
 <span class="sd">        """</span>
         <span class="c1"># Anharmonicty should be negative for the Transmon</span>
         <span class="k">if</span> <span class="n">anharm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -781,19 +803,22 @@
         <span class="k">def</span><span class="w"> </span><span class="nf">fun</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Ej</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Ec</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="c1"># the 10 on the anharmonicity allows faster convergnce, see Minev</span>
-            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">f01</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">anharm</span><span class="p">()</span> <span class="o">-</span> <span class="n">anharm</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="c1"># Residual vector (least_squares squares it itself).</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">f01</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">anharm</span><span class="p">()</span> <span class="o">-</span> <span class="n">anharm</span><span class="p">]</span>
 
         <span class="c1"># Initial guesses from</span>
         <span class="c1"># f01 ~ sqrt(8*Ej*Ec) - Ec</span>
         <span class="c1">#  eta ~ -Ec</span>
         <span class="n">x0</span> <span class="o">=</span> <span class="p">[(</span><span class="n">f01</span> <span class="o">-</span> <span class="n">anharm</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">anharm</span><span class="p">)),</span> <span class="o">-</span><span class="n">anharm</span><span class="p">]</span>
-        <span class="c1"># can converge slowly if cost function not set up well, or alpha&lt;&lt;freq</span>
         <span class="n">ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">bounds</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">x0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)],</span> <span class="n">f_scale</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">max_nfev</span><span class="o">=</span><span class="mi">2000</span>
+            <span class="n">bounds</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">x0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)],</span>
+            <span class="n">max_nfev</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+            <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span>
+            <span class="n">ftol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">least_squares</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="o">**</span><span class="n">ops</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Ej</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ec</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span>
+        <span class="n">_warn_if_missed</span><span class="p">(</span><span class="s2">"params_from_spectrum"</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">f01</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span></div>
 
 
@@ -802,26 +827,38 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">params_from_freq_fixEC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f01</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Ec</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Find transmon Ej given a fixed EC and frequency.</span>
 
+<span class="sd">        Solves ``fij(0, 1) == f01`` for Ej at the given Ec (and the current</span>
+<span class="sd">        ``ng``). With Ec fixed the anharmonicity is not a free parameter, so</span>
+<span class="sd">        only the frequency enters the fit.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            f01 (float): Desired qubit frequency</span>
 <span class="sd">            Ec (float): Qubit EC (4ECn^2) in same units as f01</span>
 
+<span class="sd">        Keyword Args:</span>
+<span class="sd">            Passed to ``scipy.optimize.least_squares``.</span>
+
 <span class="sd">        Returns:</span>
 <span class="sd">            float: Ej in same units</span>
+
+<span class="sd">        Warns:</span>
+<span class="sd">            UserWarning: if the solver does not reproduce ``f01`` (for</span>
+<span class="sd">            instance, the target is outside the search bounds).</span>
 <span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">fun</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Ej</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Ec</span> <span class="o">=</span> <span class="n">Ec</span>
-            <span class="c1"># the 15 on the anharmonicity allows faster convergnce, see Minev</span>
-            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">f01</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">15</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">anharm</span><span class="p">()</span> <span class="o">-</span> <span class="n">Ec</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="c1"># Residual vector (least_squares squares it itself).</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">f01</span><span class="p">]</span>
 
-        <span class="n">x0</span> <span class="o">=</span> <span class="p">[(</span><span class="n">f01</span> <span class="o">-</span> <span class="n">Ec</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="p">(</span><span class="n">Ec</span><span class="p">))]</span>
-        <span class="c1"># can converge slowly if cost function not set up well, or alpha&lt;&lt;freq</span>
-        <span class="n">ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,)],</span> <span class="n">f_scale</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">max_nfev</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+        <span class="c1"># Initial guess from f01 ~ sqrt(8*Ej*Ec) - Ec</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="p">[(</span><span class="n">f01</span> <span class="o">+</span> <span class="n">Ec</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">Ec</span><span class="p">)]</span>
+        <span class="n">ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,)],</span> <span class="n">max_nfev</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">ftol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">least_squares</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="o">**</span><span class="n">ops</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Ej</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Ec</span> <span class="o">=</span> <span class="n">Ec</span>
+        <span class="n">_warn_if_missed</span><span class="p">(</span><span class="s2">"params_from_freq_fixEC"</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">f01</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
@@ -888,7 +925,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

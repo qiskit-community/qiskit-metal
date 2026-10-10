@@ -505,11 +505,11 @@ using the Duffing model. Typical input is the capacitance matrix calculated from
 <tr class="row-odd"><td><p><a class="reference internal" href="#qiskit_metal.analyses.lumped_capacitive.Ic_from_Lj" title="qiskit_metal.analyses.lumped_capacitive.Ic_from_Lj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Ic_from_Lj</span></code></a>(Lj)</p></td>
 <td><p>Critical current In SI units.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qiskit_metal.analyses.lumped_capacitive.chargeline_T1" title="qiskit_metal.analyses.lumped_capacitive.chargeline_T1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chargeline_T1</span></code></a>(Ccharge, Cq, f01)</p></td>
-<td><p>Calculate the charge line <cite>T1</cite>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qiskit_metal.analyses.lumped_capacitive.chargeline_T1" title="qiskit_metal.analyses.lumped_capacitive.chargeline_T1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chargeline_T1</span></code></a>(Ccharge, Cq, f01[, Z0])</p></td>
+<td><p>Calculate the charge line <cite>T1</cite>, T1 = Cq / (Ccharge^2 Z0 (2 pi f01)^2).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qiskit_metal.analyses.lumped_capacitive.chi" title="qiskit_metal.analyses.lumped_capacitive.chi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chi</span></code></a>(g, wr, w01, w12)</p></td>
-<td><p>Calculate the dispersive shift $chi$, where $2*chi$ is the <cite>|0&gt; --&gt; |1&gt;</cite> splitting).</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qiskit_metal.analyses.lumped_capacitive.chi" title="qiskit_metal.analyses.lumped_capacitive.chi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chi</span></code></a>(g, wr, w01, w12[, g12])</p></td>
+<td><p>Calculate the dispersive shift $chi$, where $2chi$ is the change of the resonator frequency between qubit states <cite>|0&gt;</cite> and <cite>|1&gt;</cite>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#qiskit_metal.analyses.lumped_capacitive.cos_to_mega_and_delta" title="qiskit_metal.analyses.lumped_capacitive.cos_to_mega_and_delta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cos_to_mega_and_delta</span></code></a>(Cin, ICin, f01, f02on2)</p></td>
 <td><p>Cost function for calculating C and IC given a C and IC calculate f and f02/2 from 'levels_vs_ng_real_units' and least square with measured f01,f02on2.</p></td>
@@ -552,98 +552,115 @@ using the Duffing model. Typical input is the capacitance matrix calculated from
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.Cs_from_Ec">
-<span class="sig-name descname"><span class="pre">Cs_from_Ec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#Cs_from_Ec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.Cs_from_Ec" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">Cs_from_Ec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#Cs_from_Ec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.Cs_from_Ec" title="Link to this definition">¶</a></dt>
 <dd><p>Get total shunt capacitance from charging energy In SI units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Ec</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – In Joules</p>
+<dd class="field-odd"><p><strong>Ec</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – In Joules</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>In farads</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.Ic_from_Ej">
-<span class="sig-name descname"><span class="pre">Ic_from_Ej</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ej</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#Ic_from_Ej"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.Ic_from_Ej" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">Ic_from_Ej</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ej</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#Ic_from_Ej"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.Ic_from_Ej" title="Link to this definition">¶</a></dt>
 <dd><p>Critical current In SI units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Ej</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – In Joules</p>
+<dd class="field-odd"><p><strong>Ej</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – In Joules</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>In Amps</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.Ic_from_Lj">
-<span class="sig-name descname"><span class="pre">Ic_from_Lj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Lj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#Ic_from_Lj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.Ic_from_Lj" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">Ic_from_Lj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Lj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#Ic_from_Lj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.Ic_from_Lj" title="Link to this definition">¶</a></dt>
 <dd><p>Critical current In SI units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Lj</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – In Henries</p>
+<dd class="field-odd"><p><strong>Lj</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – In Henries</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>In Amps</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.chargeline_T1">
-<span class="sig-name descname"><span class="pre">chargeline_T1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ccharge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#chargeline_T1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.chargeline_T1" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate the charge line <cite>T1</cite>.</p>
+<span class="sig-name descname"><span class="pre">chargeline_T1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ccharge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#chargeline_T1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.chargeline_T1" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the charge line <cite>T1</cite>, T1 = Cq / (Ccharge^2 Z0 (2 pi f01)^2).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Cchare</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Ccharge</p></li>
-<li><p><strong>Cq</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Cq</p></li>
-<li><p><strong>f01</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – f01</p></li>
+<li><p><strong>Ccharge</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Capacitance between the qubit and the charge line (in F)</p></li>
+<li><p><strong>Cq</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Qubit capacitance (in F)</p></li>
+<li><p><strong>f01</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Qubit frequency (in Hz)</p></li>
+<li><p><strong>Z0</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Impedance of the charge line (in ohm). Defaults to 50.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Calculated chargeline T1</p>
+<dd class="field-even"><p>Calculated chargeline T1 (in s)</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.chi">
-<span class="sig-name descname"><span class="pre">chi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">wr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">w01</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">w12</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#chi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.chi" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate the dispersive shift $chi$, where $2*chi$ is
-the <cite>|0&gt; –&gt; |1&gt;</cite> splitting).</p>
-<p>Accounts for push on the i-th transmon level due to the j-th transmon level,
-mediated by cavity.</p>
+<span class="sig-name descname"><span class="pre">chi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">wr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">w01</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">w12</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">g12</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#chi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.chi" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the dispersive shift $chi$, where $2chi$ is the change of the
+resonator frequency between qubit states <cite>|0&gt;</cite> and <cite>|1&gt;</cite>.</p>
+<p>Convention: this is Koch et al.’s $chi$ (resonator at $omega_r pm chi$),
+i.e. half of the “total” dispersive shift / cross-Kerr $chi_{qr}$ of the
+EPR convention (Minev et al., npj Quantum Inf. 7, 131 (2021), Eq. 26),
+$chi_{qr} = 2chi$. <code class="docutils literal notranslate"><span class="pre">extract_transmon_coupled_Noscillator</span></code> reports
+$2chi$.</p>
+<p>Approximations (this is Koch et al. (3.9)-(3.10) extended, not as
+printed): second-order perturbation theory in the 0-1 and 1-2 transitions
+only, <em>including</em> the counter-rotating terms ($1/(omega_{ij}+omega_r)$),
+with $g_{12} = sqrt{2},g$ (harmonic matrix elements) unless <code class="docutils literal notranslate"><span class="pre">g12</span></code> is
+given. For a transmon $n_{12}/n_{01} approx 1.33$-$1.39$ at
+$E_J/E_C = 20$-$100$ rather than $sqrt{2}$; with the default the result
+differs from exact diagonalization by -6 % to -33 % for a qubit below the
+resonator (detuning -0.7 to -2 GHz) and by +16 % to +140 % above it
+(+1 to +2 GHz). Passing the exact <code class="docutils literal notranslate"><span class="pre">g12</span></code> (e.g.
+<code class="docutils literal notranslate"><span class="pre">g</span> <span class="pre">*</span> <span class="pre">Hcpb.n_ij(1,</span> <span class="pre">2)</span> <span class="pre">/</span> <span class="pre">Hcpb.n_ij(0,</span> <span class="pre">1)</span></code>) brings it to about 2 %
+(up to 9 % at $E_J/E_C = 20$, 2 GHz detuning).</p>
 <p>All args need to be in the same units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>g</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Qubit-cavity linear coupling.</p></li>
-<li><p><strong>wr</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Frequency of resonator.</p></li>
-<li><p><strong>w01</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Qubit 01 transition frequency</p></li>
-<li><p><strong>w12</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Qubit 12 transition frequency</p></li>
+<li><p><strong>g</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Qubit-cavity linear coupling for the 0-1 transition.</p></li>
+<li><p><strong>wr</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Frequency of resonator.</p></li>
+<li><p><strong>w01</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Qubit 01 transition frequency</p></li>
+<li><p><strong>w12</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Qubit 12 transition frequency</p></li>
+<li><p><strong>g12</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>, </em><em>optional</em>) – Coupling for the 1-2 transition. Defaults to
+<code class="docutils literal notranslate"><span class="pre">sqrt(2)</span> <span class="pre">*</span> <span class="pre">g</span></code> (harmonic-oscillator scaling).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Calculated chi value</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -657,17 +674,17 @@ f01,f02on2.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Cin</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Cin</p></li>
-<li><p><strong>ICin</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – ICin</p></li>
-<li><p><strong>f01</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – f01</p></li>
-<li><p><strong>f02on2</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – f02on2</p></li>
+<li><p><strong>Cin</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Cin</p></li>
+<li><p><strong>ICin</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – ICin</p></li>
+<li><p><strong>f01</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – f01</p></li>
+<li><p><strong>f02on2</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – f02on2</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Calculated value</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -691,8 +708,8 @@ f01,f02on2.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>df</strong> (<em>DataFrame</em>) – Data frame to swap</p></li>
-<li><p><strong>i_from</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Index to move from</p></li>
-<li><p><strong>i_to</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Index to move to</p></li>
+<li><p><strong>i_from</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Index to move from</p></li>
+<li><p><strong>i_to</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Index to move to</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -706,7 +723,7 @@ f01,f02on2.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.extract_transmon_coupled_Noscillator">
-<span class="sig-name descname"><span class="pre">extract_transmon_coupled_Noscillator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capMatrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">CJ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">res_L4_corr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#extract_transmon_coupled_Noscillator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.extract_transmon_coupled_Noscillator" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">extract_transmon_coupled_Noscillator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capMatrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">CJ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">res_L4_corr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q_res</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_warn_placeholder_q</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#extract_transmon_coupled_Noscillator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.extract_transmon_coupled_Noscillator" title="Link to this definition">¶</a></dt>
 <dd><p>Primary analysis function called by the user for lumped-element mode
 (LOM) analysis. Uses a Maxwell capacitance matrix generated by a capacitive
 extractor, such as Q3D. Additionally takes more values to determine many
@@ -726,30 +743,58 @@ bus1…busN-1, ground, Qubit_pad1, Qubit_pad2, readout. (in F)
 If not in the correct order, use df_reorder_matrix_basis() to put
 it in the proper order. It is advised that the user follow a naming scheme
 in QiskitMetal or Q3D which results in the necessary order by default (eg. alphabetical)</p></li>
-<li><p><strong>Ic</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Junction Ic (in A)</p></li>
-<li><p><strong>Cj</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Junction capacitance (in F)</p></li>
-<li><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Coupling pads (1 readout, N-1 bus)</p></li>
-<li><p><strong>fb</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Coupling bus and readout frequencies (in GHz).
+<li><p><strong>Ic</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Junction Ic (in A)</p></li>
+<li><p><strong>Cj</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Junction capacitance (in F)</p></li>
+<li><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Coupling pads (1 readout, N-1 bus)</p></li>
+<li><p><strong>fb</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Coupling bus and readout frequencies (in GHz).
 fb can be a list with the order the order they appear in the capMatrix.</p></li>
-<li><p><strong>fr</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Coupling bus and readout frequencies (in GHz).
+<li><p><strong>fr</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Coupling bus and readout frequencies (in GHz).
 fr can be a list with the order the order they appear in the capMatrix.</p></li>
-<li><p><strong>res_L4_corr</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a>) – Correction factor is the resonators are L/4
+<li><p><strong>res_L4_corr</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><em>list</em></a>) – Correction factor is the resonators are L/4
 if none it ignores, otherwise this is a list of length N
 in the form [1,0,1,…].  Defaults to None.</p></li>
-<li><p><strong>g_scale</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Scale factor</p></li>
-<li><p><strong>print_info</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Print transmon and coupling properties. Defaults to False.</p></li>
+<li><p><strong>g_scale</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Scale factor</p></li>
+<li><p><strong>print_info</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a>) – Print transmon and coupling properties. Defaults to False.</p></li>
+<li><p><strong>Q_res</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><em>list</em></a><em>, </em><em>optional</em>) – Loaded quality factors of the resonators, in
+the order [readout, bus1, …], used for the Purcell times <code class="docutils literal notranslate"><span class="pre">T1</span></code>
+and <code class="docutils literal notranslate"><span class="pre">T1bus</span></code> (in s) in the returned dict. If None (default),
+placeholder values Q = 1e4 (readout) and 1e5 (buses) are used and
+a warning is logged.</p></li>
+<li><p><strong>Z0</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Characteristic impedance of the resonators in ohm, used
+for their lumped capacitance Cr = pi / (2 wr Z0) (lambda/2).
+Defaults to 50.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><cite>ham_dict</cite> is a dictionary of all the calculated values</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)">dict</a></p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If N is not positive</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the capacitance matrix is the wrong size</p></li>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The coupling pads are treated as grounded when the qubit pad
+capacitances are formed (pad-to-coupler capacitance is added to the
+pad-to-ground capacitance).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fQ</span></code>, <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and <code class="docutils literal notranslate"><span class="pre">dispersion</span></code> come from a charge-basis
+diagonalisation and are averages over the offset charge
+n_g in [-1, 1].</p></li>
+<li><p>Purcell time per resonator,
+T1bus = (wr^2 - wq^2)^2 / (4 kappa g^2 wq^2), i.e.
+1/T1 = kappa g^2 (1/Delta + 1/Sigma)^2 with Delta = wq - wr,
+Sigma = wq + wr: Koch et al. (2007) Eq. 4.7, Delta^2/(kappa g^2),
+times ((wq + wr)/(2 wq))^2 (coupling through the charge quadrature
+with counter-rotating terms kept). The Purcell rate of a real device
+also depends on where the loss sits; treat it as an estimate.</p></li>
+<li><p>Bus-bus couplings (printed only) are those of two capacitively
+coupled LC resonators, g = C12 sqrt(w1 w2) / (2 sqrt(C1 C2)).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – If N is not positive</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – If the capacitance matrix is the wrong size</p></li>
 </ul>
 </dd>
 </dl>
@@ -763,10 +808,10 @@ frequency and anharmonicity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Cin_est</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Initial guess for capacitance (in fF)</p></li>
-<li><p><strong>Icin_est</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Initial guess for critical current (in nA)</p></li>
-<li><p><strong>f01</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Transmon frequency (in GHz)</p></li>
-<li><p><strong>f02on2</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – 02/2 frequency (in GHz)</p></li>
+<li><p><strong>Cin_est</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Initial guess for capacitance (in fF)</p></li>
+<li><p><strong>Icin_est</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Initial guess for critical current (in nA)</p></li>
+<li><p><strong>f01</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Transmon frequency (in GHz)</p></li>
+<li><p><strong>f02on2</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – 02/2 frequency (in GHz)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -774,7 +819,7 @@ frequency and anharmonicity.</p>
 specified frequency and anharmonicity</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -788,21 +833,21 @@ the ground state is set to zero energy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>C</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – In fF</p></li>
-<li><p><strong>Ic</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – In nA</p></li>
-<li><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of charge values to use (needs to be odd)</p></li>
-<li><p><strong>do_disp</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Will print out the values</p></li>
-<li><p><strong>do_plots</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Will plot the data</p></li>
+<li><p><strong>C</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – In fF</p></li>
+<li><p><strong>Ic</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – In nA</p></li>
+<li><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Number of charge values to use (needs to be odd)</p></li>
+<li><p><strong>do_disp</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Will print out the values</p></li>
+<li><p><strong>do_plots</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Will plot the data</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>fqubitGHz, anharMHz, disp, tphi_ms</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a></p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the matrix is not Hermitian</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – If the matrix is not Hermitian</p>
 </dd>
 </dl>
 </dd></dl>
@@ -815,9 +860,9 @@ conductance. Units are read in automatically and converted to user units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to file.</p></li>
-<li><p><strong>user_units</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Units.  Defaults to ‘fF’.</p></li>
-<li><p><strong>_disp</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – whehter or not to display messages.  Defaults to True.</p></li>
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Path to file.</p></li>
+<li><p><strong>user_units</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Units.  Defaults to ‘fF’.</p></li>
+<li><p><strong>_disp</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a>) – whehter or not to display messages.  Defaults to True.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -831,69 +876,69 @@ conductance. Units are read in automatically and converted to user units.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.lumped_oscillator_from_path">
-<span class="sig-name descname"><span class="pre">lumped_oscillator_from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lj_nH</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cj_fF</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.6)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#lumped_oscillator_from_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.lumped_oscillator_from_path" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">lumped_oscillator_from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lj_nH</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cj_fF</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.6)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#lumped_oscillator_from_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.lumped_oscillator_from_path" title="Link to this definition">¶</a></dt>
 <dd><p>Obtain a single result dataframe from a Q3D capacitance file pointed to by path.
 Similar to member method lumped_oscillator_vs_passes() of QQ3DRenderer but for a user
 provided capacitance matrix file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to file.</p></li>
-<li><p><strong>Lj_nH</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Junction inductance (in nH)</p></li>
-<li><p><strong>Cj_fF</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Junction capacitance (in fF)</p></li>
-<li><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Coupling pads (1 readout, N - 1 bus)</p></li>
-<li><p><strong>fr</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Readout frequencies (in GHz). fr can be a list with the order
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Path to file.</p></li>
+<li><p><strong>Lj_nH</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Junction inductance (in nH)</p></li>
+<li><p><strong>Cj_fF</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Junction capacitance (in fF)</p></li>
+<li><p><strong>N</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Coupling pads (1 readout, N - 1 bus)</p></li>
+<li><p><strong>fr</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>]</em>) – Readout frequencies (in GHz). fr can be a list with the order
 they appear in the capMatrix.</p></li>
-<li><p><strong>fb</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – Coupling bus frequencies (in GHz). fb can be a list with the order
+<li><p><strong>fb</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>]</em>) – Coupling bus frequencies (in GHz). fb can be a list with the order
 they appear in the capMatrix.</p></li>
-<li><p><strong>g_scale</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Scale factor. Defaults to 1..</p></li>
+<li><p><strong>g_scale</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>, </em><em>optional</em>) – Scale factor. Defaults to 1..</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A single dataframe corresponding to a single capacitance matrix</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.move_index_to">
-<span class="sig-name descname"><span class="pre">move_index_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#move_index_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.move_index_to" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">move_index_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#move_index_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.move_index_to" title="Link to this definition">¶</a></dt>
 <dd><p>Utility function to swap index.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>i_from</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Data frame to swap index</p></li>
-<li><p><strong>i_to</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Data frame to index</p></li>
-<li><p><strong>len</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Length of array</p></li>
+<li><p><strong>i_from</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Data frame to swap index</p></li>
+<li><p><strong>i_to</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Data frame to index</p></li>
+<li><p><strong>len</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Length of array</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list of indecies, such as  array([1, 2, 3, 4, 0, 5])</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix">
-<span class="sig-name descname"><span class="pre">readin_q3d_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">delim_whitespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#readin_q3d_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">readin_q3d_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">delim_whitespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#readin_q3d_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix" title="Link to this definition">¶</a></dt>
 <dd><p>Read in the txt file created from q3d export as CSV and output the
 capacitance matrix file exported by Ansys Q3D.</p>
 <p>When exporting pick “save as type: data table”</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to file</p>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Path to file</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>df_cmat, units, design_variation, df_cond</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a></p>
 </dd>
 </dl>
 <p>Example file:</p>
@@ -927,11 +972,11 @@ Q1_readout_connector_pad        0       0       0       0       0       0
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix_m">
-<span class="sig-name descname"><span class="pre">readin_q3d_matrix_m</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.6)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#readin_q3d_matrix_m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix_m" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">readin_q3d_matrix_m</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.6)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#readin_q3d_matrix_m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.readin_q3d_matrix_m" title="Link to this definition">¶</a></dt>
 <dd><p>Read in Q3D cap matrix from a .m file exported by Ansys Q3d.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to .m file</p>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Path to .m file</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>pd.DataFrame of cap matrix, with no names of columns.</p>
@@ -941,21 +986,21 @@ Q1_readout_connector_pad        0       0       0       0       0       0
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qiskit_metal.analyses.lumped_capacitive.transmon_props">
-<span class="sig-name descname"><span class="pre">transmon_props</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#transmon_props"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.transmon_props" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">transmon_props</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/quantization/lumped_capacitive.html#transmon_props"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.lumped_capacitive.transmon_props" title="Link to this definition">¶</a></dt>
 <dd><p>Properties of a transmon qubit.</p>
 <p>Calculate LJ, EJ, EC, wq, eps from Ic,Cq.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Ic</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Junction Ic (in A)</p></li>
-<li><p><strong>Cq</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Junction capacitance (in F)</p></li>
+<li><p><strong>Ic</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Junction Ic (in A)</p></li>
+<li><p><strong>Cq</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Junction capacitance (in F)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>[LJ, EJ, Zqp, EC, wq, wq0, eps1] – Inductance</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -997,7 +1042,7 @@ Q1_readout_connector_pad        0       0       0       0       0       0
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

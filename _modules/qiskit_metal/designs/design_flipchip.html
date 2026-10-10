@@ -514,6 +514,13 @@
 <span class="sd">    Typically assumed to have some CPW geometries.</span>
 
 <span class="sd">    Inherits QDesign class.</span>
+
+<span class="sd">    The two chips are ``C_chip`` (device side at z = 0, extending to negative</span>
+<span class="sd">    z) and ``Q_chip`` (device side at ``chips["Q_chip"]["size"]["center_z"]``,</span>
+<span class="sd">    extending to positive z). The default gap between them, ``center_z =</span>
+<span class="sd">    "20 um"``, is a placeholder: set it to the bump height of the stack being</span>
+<span class="sd">    modelled (bump-bonded stacks are typically a few micrometres apart), e.g.</span>
+<span class="sd">    ``design.chips["Q_chip"]["size"]["center_z"] = "8 um"``.</span>
 <span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -673,7 +680,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

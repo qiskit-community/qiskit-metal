@@ -569,7 +569,7 @@
 <span class="sd">        * tolerance: '0.00001'</span>
 <span class="sd">        * precision: '0.000000001'</span>
 <span class="sd">        * width_LineString: '10um'</span>
-<span class="sd">        * path_filename: '../resources/Fake_Junctions.GDS'</span>
+<span class="sd">        * path_filename: None</span>
 <span class="sd">        * junction_pad_overlap: '5um'</span>
 <span class="sd">        * max_points: '199'</span>
 <span class="sd">        * fabricate: 'False'</span>
@@ -663,7 +663,10 @@
         <span class="c1"># into gds Metal output without being edited. The name of the cell can</span>
         <span class="c1"># be placed as options for a component, i.e. placing within a qubit.</span>
         <span class="c1"># During export, the cell will NOT be edited, just imported.</span>
-        <span class="n">path_filename</span><span class="o">=</span><span class="s2">"../resources/Fake_Junctions.GDS"</span><span class="p">,</span>
+        <span class="c1"># None (default): no junction file, so junction cells are not placed</span>
+        <span class="c1"># and the junction geometry is left out of the export. The tutorials</span>
+        <span class="c1"># ship an example file at docs/tut/resources/Fake_Junctions.GDS.</span>
+        <span class="n">path_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="c1"># For junction table, when cell from default_options.path_filename does</span>
         <span class="c1"># not fit into linestring, QGDSRender will create two pads and add to</span>
         <span class="c1"># junction to fill the location of lineString.  The junction_pad_overlap</span>
@@ -790,6 +793,8 @@
 
         <span class="c1"># if imported, hold the path to file name, otherwise None.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imported_junction_gds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># track only once</span>
+        <span class="c1"># True once this export has logged that no junction file is set.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warned_no_junction_file</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="n">QGDSRenderer</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 
@@ -2403,7 +2408,7 @@
             <span class="n">message_str</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s1">'Not able to find file:"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">path_filename</span><span class="si">}</span><span class="s1">".  '</span>
                 <span class="sa">f</span><span class="s2">"Not used to replace junction."</span>
-                <span class="sa">f</span><span class="s1">' Checked directory:"</span><span class="si">{</span><span class="n">directory_name</span><span class="si">}</span><span class="s1">".'</span>
+                <span class="sa">f</span><span class="s1">' Checked:"</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">path_filename</span><span class="p">)</span><span class="si">}</span><span class="s1">".'</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">message_str</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
@@ -2477,6 +2482,23 @@
 <span class="sd">                                                just chip_name.</span>
 <span class="sd">            layers_in_chip (list):  List of all layers in chip.</span>
 <span class="sd">        """</span>
+
+        <span class="n">junction_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="s2">"junction"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">junction_table</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">junction_table</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">path_filename</span><span class="p">:</span>
+            <span class="c1"># No junction file: nothing to place. Say so once per export.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_warned_no_junction_file</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_warned_no_junction_file</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">"QGDSRenderer: no junction GDS file set "</span>
+                    <span class="s2">"(options.path_filename is None), so junction geometry is "</span>
+                    <span class="s2">"left out of the export. Set "</span>
+                    <span class="s2">"`gds.options.path_filename` to a GDS file containing the "</span>
+                    <span class="s2">"cells named by each junction's gds_cell_name; the tutorials "</span>
+                    <span class="s2">"ship an example at docs/tut/resources/Fake_Junctions.GDS."</span>
+                <span class="p">)</span>
+            <span class="k">return</span>
 
         <span class="c1"># Make sure the file exists, before trying to read it.</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">directory_name</span> <span class="o">=</span> <span class="n">can_write_to_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">path_filename</span><span class="p">)</span>
@@ -2760,6 +2782,7 @@
 
         <span class="c1"># if imported, hold the path to file name, otherwise None.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imported_junction_gds</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warned_no_junction_file</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="n">max_points</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">max_points</span><span class="p">))</span>
 
@@ -3401,7 +3424,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

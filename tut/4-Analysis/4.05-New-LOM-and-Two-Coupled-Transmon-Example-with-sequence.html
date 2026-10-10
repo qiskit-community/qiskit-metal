@@ -502,6 +502,10 @@
 <div><p>🧭 <strong>Other simulation pathways.</strong> This notebook uses Ansys, which needs a license. Without one, the same kind of result can come from the open-source ElmerFEM path for capacitance (tutorial 4.19) or the pip-installable gmsh + scikit-fem solver for eigenmodes, couplings and capacitance (tutorials 4.43–4.45); AWS Palace is available through SQDMetal, with a native integration in progress. <a class="reference external" href="https://qiskit-community.github.io/qiskit-metal/simulation-pathways.html">Simulation pathways</a>
 summarizes what each solver computes, how to install it, and which tutorials use it.</p>
 </div></blockquote>
+<blockquote>
+<div><p>📦 <strong>What you need.</strong> The first half (the LOM analysis, from the stored Q3D capacitance matrices) needs only Quantum Metal. The second half uses the third-party <a class="reference external" href="https://sequencing.readthedocs.io">Sequencing</a> package, which Quantum Metal does not install: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">sequencing</span></code>. Its latest release (1.2.0) is written for qutip 4. Converting the LOM system to a Sequencing system works, but running a sequence fails with the qutip 5 that Quantum Metal requires
+(<code class="docutils literal notranslate"><span class="pre">AttributeError:</span> <span class="pre">module</span> <span class="pre">'qutip'</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">'Options'</span></code>). The time-evolution outputs stored below come from an earlier qutip 4 environment.</p>
+</div></blockquote>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -1275,7 +1279,7 @@ Cavity(name=&#39;readout_alice&#39;, cls=&#39;sequencing.modes.Cavity&#39;, leve
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_32_1.svg" src="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_32_1.svg" />
+<img alt="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_33_1.svg" src="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_33_1.svg" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1349,7 +1353,7 @@ Initial states: 100%|██████████| 4/4 [00:00&lt;00:00,  5.31i
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_37_0.svg" src="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_37_0.svg" />
+<img alt="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_38_0.svg" src="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_38_0.svg" />
 </div>
 </div>
 </section>
@@ -1431,7 +1435,7 @@ Disp. amp. (measure n=3): 100%|██████████| 21/21 [00:07&lt;0
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_42_0.svg" src="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_42_0.svg" />
+<img alt="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_43_0.svg" src="../../_images/tut_4-Analysis_4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence_43_0.svg" />
 </div>
 </div>
 </section>
@@ -1501,7 +1505,7 @@ Disp. amp. (measure n=3): 100%|██████████| 21/21 [00:07&lt;0
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

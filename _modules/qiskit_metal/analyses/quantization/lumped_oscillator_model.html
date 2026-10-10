@@ -503,7 +503,10 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">is_building_docs</span><span class="p">():</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">.lumped_capacitive</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract_transmon_coupled_Noscillator</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.lumped_capacitive</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+        <span class="n">_purcell_columns_last</span><span class="p">,</span>
+        <span class="n">extract_transmon_coupled_Noscillator</span><span class="p">,</span>
+    <span class="p">)</span>
 
 
 <span class="c1"># TODO: eliminate every reference to "renderer" in this file</span>
@@ -519,6 +522,15 @@
 <span class="sd">        * freq_readout (float): Coupling readout frequency (in GHz).</span>
 <span class="sd">        * freq_bus (Union[list, float]): Coupling bus frequencies (in GHz).</span>
 <span class="sd">            * freq_bus can be a list with the order they appear in the capMatrix.</span>
+<span class="sd">        * Q_res (list or None): Loaded quality factors of the resonators, in</span>
+<span class="sd">          the order [readout, bus1, bus2, ...], for the Purcell times ``T1`` and</span>
+<span class="sd">          ``T1bus``. None (default) uses placeholder Q's and logs a warning.</span>
+<span class="sd">        * Z0 (float): Characteristic impedance of the resonators in ohm</span>
+<span class="sd">          (default 50).</span>
+<span class="sd">        * res_L4_corr (list or None): Per coupling pad, in the order</span>
+<span class="sd">          [readout, bus1, bus2, ...], 1 if that resonator is a quarter-wave</span>
+<span class="sd">          (lambda/4) line and 0 if it is a half-wave (lambda/2) line. None</span>
+<span class="sd">          (default) treats all resonators as lambda/2.</span>
 
 <span class="sd">    Data Labels:</span>
 <span class="sd">        * lumped_oscillator (pd.DataFrame): Lumped oscillator result at the last simulation pass</span>
@@ -528,7 +540,12 @@
 <span class="sd">    """</span>
 
     <span class="n">default_setup</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span>
-        <span class="n">junctions</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">Lj</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">Cj</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">freq_readout</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">freq_bus</span><span class="o">=</span><span class="p">[</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">6.2</span><span class="p">]</span>
+        <span class="n">junctions</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">Lj</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">Cj</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+        <span class="n">freq_readout</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span>
+        <span class="n">freq_bus</span><span class="o">=</span><span class="p">[</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">6.2</span><span class="p">],</span>
+        <span class="n">res_L4_corr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">Q_res</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">Z0</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span>
     <span class="p">)</span>
 <span class="w">    </span><span class="sd">"""Default setup."""</span>
 
@@ -668,6 +685,7 @@
 
         <span class="c1"># get the LOM for every pass</span>
         <span class="n">all_res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">last_pass</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_all_passes</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">idx_cmat</span><span class="p">,</span> <span class="n">df_cmat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_all_passes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">extract_transmon_coupled_Noscillator</span><span class="p">(</span>
                 <span class="n">df_cmat</span><span class="p">,</span>
@@ -676,8 +694,13 @@
                 <span class="n">num_cpads</span><span class="p">,</span>
                 <span class="n">fbus</span><span class="p">,</span>
                 <span class="n">fread</span><span class="p">,</span>
+                <span class="n">res_L4_corr</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"res_L4_corr"</span><span class="p">),</span>
                 <span class="n">g_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                 <span class="n">print_info</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">idx_cmat</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_all_passes</span><span class="p">)),</span>
+                <span class="n">Q_res</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Q_res"</span><span class="p">),</span>
+                <span class="n">Z0</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Z0"</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">),</span>
+                <span class="c1"># warn about placeholder Q's once, not once per pass</span>
+                <span class="n">_warn_placeholder_q</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">idx_cmat</span> <span class="o">==</span> <span class="n">last_pass</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="n">all_res</span><span class="p">[</span><span class="n">idx_cmat</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lumped_oscillator</span> <span class="o">=</span> <span class="n">all_res</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">capacitance_all_passes</span><span class="p">)]</span>
@@ -693,7 +716,7 @@
 
         <span class="n">all_res</span><span class="p">[</span><span class="s2">"χr MHz"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">all_res</span><span class="p">[</span><span class="s2">"chi_in_MHz"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">_first</span><span class="p">))</span>
         <span class="n">all_res</span><span class="p">[</span><span class="s2">"gr MHz"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">all_res</span><span class="p">[</span><span class="s2">"gbus"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">_first</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lumped_oscillator_all</span> <span class="o">=</span> <span class="n">all_res</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lumped_oscillator_all</span> <span class="o">=</span> <span class="n">_purcell_columns_last</span><span class="p">(</span><span class="n">all_res</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lumped_oscillator_all</span></div>
 
 
@@ -755,7 +778,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             

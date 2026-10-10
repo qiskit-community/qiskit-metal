@@ -565,71 +565,84 @@
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.QSimulation.html#qiskit_metal.analyses.QSimulation.select_renderer">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">select_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Makes sure the renderer exists in qiskit-metal. If yes it sets the analysis</span>
-<span class="sd">        class variables to be able to reach it easily. Else it throws an error.</span>
+<span class="sd">        class variables to be able to reach it easily. Else it raises an error.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            renderer_name (str): Name of the renderer you intend to use.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            (QRenderer): The renderer to be used in the analysis.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the renderer is unknown, misconfigured, or was not</span>
+<span class="sd">                started for the design (usually because an optional dependency</span>
+<span class="sd">                is not installed). The message names the available renderers.</span>
 <span class="sd">        """</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="c1"># we want to setup a renderer from scratch</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># we want to setup a renderer from scratch</span>
 
-                <span class="c1"># renderer_ref will be {} if renderer_name does not exist</span>
-                <span class="n">renderer_ref</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">renderers_to_load</span><span class="p">[</span><span class="n">renderer_name</span><span class="p">]</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">renderer_ref</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">KeyError</span>  <span class="c1"># needed because this is a Dict, not a dict</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">path_name</span> <span class="ow">and</span> <span class="n">renderer_ref</span><span class="o">.</span><span class="n">class_name</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">"The renderer=</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2"> is not properly configured in"</span>
-                        <span class="s2">" config.renderers_to_load. Please add the missing information"</span>
-                        <span class="s2">" (Tip: needs to have both a path_name and a class_name keys)."</span>
-                    <span class="p">)</span>
-                    <span class="k">return</span> <span class="kc">None</span>
+            <span class="c1"># renderer_ref is None if renderer_name does not exist</span>
+            <span class="n">renderer_ref</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">renderers_to_load</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">renderer_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">renderer_ref</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_raise_renderer_unavailable</span><span class="p">(</span>
+                    <span class="n">renderer_name</span><span class="p">,</span> <span class="s2">"it is not in config.renderers_to_load"</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">path_name</span> <span class="ow">and</span> <span class="n">renderer_ref</span><span class="o">.</span><span class="n">class_name</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_raise_renderer_unavailable</span><span class="p">(</span>
+                    <span class="n">renderer_name</span><span class="p">,</span>
+                    <span class="s2">"it is not properly configured in config.renderers_to_load "</span>
+                    <span class="s2">"(it needs both a path_name and a class_name key)"</span><span class="p">,</span>
+                <span class="p">)</span>
 
-                <span class="c1"># if the path_name exists, grab the class</span>
-                <span class="k">if</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">path_name</span><span class="p">):</span>
-                    <span class="n">class_renderer</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
-                        <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">path_name</span><span class="p">),</span>
-                        <span class="n">renderer_ref</span><span class="o">.</span><span class="n">class_name</span><span class="p">,</span>
-                        <span class="kc">None</span><span class="p">,</span>
-                    <span class="p">)</span>
-
-                    <span class="c1"># if the class_name exists, then create the renderer object.</span>
-                    <span class="c1"># initiate=False, as for renderers registered with a design:</span>
-                    <span class="c1"># the connection is made by start() / run_sim(), not here.</span>
-                    <span class="k">if</span> <span class="n">class_renderer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="n">renderer</span> <span class="o">=</span> <span class="n">class_renderer</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">"Could not find the class=</span><span class="si">{</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">class_name</span><span class="si">}</span><span class="s2"> "</span>
-                            <span class="sa">f</span><span class="s2">"in the renderer=</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2">"</span>
-                        <span class="p">)</span>
-                        <span class="k">return</span> <span class="kc">None</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">"Could not find the renderer=</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2"> "</span>
-                        <span class="sa">f</span><span class="s2">"at the path=</span><span class="si">{</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">path_name</span><span class="si">}</span><span class="s2">."</span>
-                    <span class="p">)</span>
-                    <span class="k">return</span> <span class="kc">None</span>
-
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># the renderer would have been already registered within the design object</span>
-                <span class="n">renderer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="p">[</span><span class="n">renderer_name</span><span class="p">]</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">renderer</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">'Cannot find the renderer "</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s1">" registered with qiskit-metal'</span>
-                    <span class="p">)</span>
-                    <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"Cannot find a renderer </span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s2"> registered with qiskit-metal"</span>
+            <span class="c1"># if the path_name exists, grab the class</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">path_name</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_raise_renderer_unavailable</span><span class="p">(</span>
+                    <span class="n">renderer_name</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"the module </span><span class="si">{</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">path_name</span><span class="si">}</span><span class="s2"> was not found"</span>
+                <span class="p">)</span>
+            <span class="n">class_renderer</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">path_name</span><span class="p">),</span>
+                <span class="n">renderer_ref</span><span class="o">.</span><span class="n">class_name</span><span class="p">,</span>
+                <span class="kc">None</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">class_renderer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_raise_renderer_unavailable</span><span class="p">(</span>
+                    <span class="n">renderer_name</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">"the class </span><span class="si">{</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">class_name</span><span class="si">}</span><span class="s2"> was not found in "</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">renderer_ref</span><span class="o">.</span><span class="n">path_name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="c1"># initiate=False, as for renderers registered with a design:</span>
+            <span class="c1"># the connection is made by start() / run_sim(), not here.</span>
+            <span class="k">return</span> <span class="n">class_renderer</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">initiate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># the renderer would have been already registered within the design object</span>
+        <span class="n">renderer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">renderer_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">renderer</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">renderers_to_load</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">renderer_name</span><span class="p">):</span>
+                <span class="n">reason</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s2">"it is configured but was not started for this design, usually "</span>
+                    <span class="s2">"because an optional dependency is not installed (see the log "</span>
+                    <span class="s2">"from creating the design; e.g. `pip install quantum-metal[ansys]` "</span>
+                    <span class="s2">"for hfss / q3d)"</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">reason</span> <span class="o">=</span> <span class="s2">"it is not in config.renderers_to_load"</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_raise_renderer_unavailable</span><span class="p">(</span><span class="n">renderer_name</span><span class="p">,</span> <span class="n">reason</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">renderer</span></div>
 
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_raise_renderer_unavailable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Raise ``ValueError`` for a renderer that cannot be used (#1230)."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">available</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">where</span> <span class="o">=</span> <span class="s2">"started for this design"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">available</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">renderers_to_load</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">where</span> <span class="o">=</span> <span class="s2">"configured"</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">'Renderer "</span><span class="si">{</span><span class="n">renderer_name</span><span class="si">}</span><span class="s1">" is not available for '</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">reason</span><span class="si">}</span><span class="s2">. Renderers </span><span class="si">{</span><span class="n">where</span><span class="si">}</span><span class="s2">: "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">available</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">'none'</span><span class="si">}</span><span class="s2">."</span>
+        <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_check_backend</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Raise a clear error, before anything is rendered, when the renderer</span>
@@ -782,7 +795,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/05</div>
+              Last updated on 2026/10/10</div>
           </div>
           <div class="right-details">
             
