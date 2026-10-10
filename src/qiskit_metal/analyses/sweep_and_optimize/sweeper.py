@@ -71,6 +71,8 @@ class Sweeper:
             * 4 option_sweep is empty, need at least one entry.
             * 5 last key in option_name is not in Dict.
             * 6 need to have at least three arguments
+            * 7 run() raised for at least one value of option_sweep; the
+              entry of each such value has an ``"error"`` key with the message.
         """
         # Dict of all swept information.
         all_sweep = Dict()
@@ -153,7 +155,10 @@ class Sweeper:
 
                 * 0 Have list of capacitance matrix.
                 * 5 last key in option_name is not in Dict.
+                * 7 run() raised for at least one value; the entry of each
+                  such value has an ``"error"`` key with the message.
         """
+        failed = []
 
         for _, item in enumerate(args[2]):
             # Last item in list.
@@ -165,19 +170,29 @@ class Sweeper:
 
             self.design.rebuild()
 
+            error = None
             try:
                 self.parent.run(**all_dicts)
             except Exception as ex:
                 template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-                message = template.format(type(ex).__name__, ex.args)
+                error = template.format(type(ex).__name__, ex.args)
                 self.design.logger.warning(
                     f"For class {self.parent.__class__.__name__}, "
                     f"option_name={'.'.join(option_path)}, key={item}, "
-                    f"run() did not execute as expected: {message}"
+                    f"run() did not execute as expected: {error}"
                 )
 
             self.populate_all_sweep(all_sweep, item, args[1])
+            if error is not None:
+                all_sweep[item]["error"] = error
+                failed.append(item)
 
+        if failed:
+            self.design.logger.warning(
+                f"run() failed for {len(failed)} of {len(args[2])} values of "
+                f"{'.'.join(option_path)}: {failed}"
+            )
+            return all_sweep, 7
         return all_sweep, 0
 
     # #######  Populate all_sweep
