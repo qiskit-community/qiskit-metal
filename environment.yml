@@ -26,4 +26,4 @@ dependencies:
       - gmsh>=4.15.0,<5
       - scikit-fem>=12
       - gdstk~=0.9 # Used to be gdspy>=1.6.12
-      - pyside6~=6.8 # Critical to building gui, can causes lots of problems, careful.
+      - pyside6~=6.8,!=6.12.0 # 6.12.0 aborts on Python < 3.12 (None refcount). Critical to building gui, can causes lots of problems, careful.

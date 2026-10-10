@@ -1,4 +1,3 @@
-import sequencing as seq
 import numpy as np
 import scqubits as scq
 from typing import List
@@ -7,8 +6,12 @@ from qiskit_metal.analyses.quantization.lom_core_analysis import (
     CompositeSystem,
     Subsystem,
 )
+
+# Imported through lom_extensions, which raises an ImportError explaining how
+# to get ``sequencing`` when it is missing (#1231).
 from qiskit_metal.analyses.quantization.lom_extensions import (
     LOM_SUBSYSTEM_TO_SEQ_MODE,
+    seq,
     to_external_system,
 )
 
