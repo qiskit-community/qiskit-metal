@@ -41,6 +41,7 @@ changes*.
 - **Connection pads added after construction** (`options.connection_pads.new = ...`) rebuild correctly (#1226); `to_python_script()` no longer writes a spurious `options_connection_pads` warning for every qubit (#1227).
 - **`sequencing`** missing now raises an `ImportError` that says how to install it; the package (last release 2022) needs qutip 4 (#1231).
 - **Tutorials:** example 52's readout resonators are quarter-wave (`open_termination=False`) (#1217); the CR-gate and Jaynes-Cummings tutorials pass `e_ops` by keyword for qutip 5.3 (#1216); tutorial 2.24 shows that an airbridge over an uncut crossing still reports, and how to cut and wire through it or waive it (#1215).
+- **CR-gate tutorial** (#1216): the simulation now shows the conditional (ZX) dynamics. Two three-level transmons with a bus-mediated J; the control is driven at the dressed target frequency; the target's Bloch components are plotted for the control in |0⟩ and |1⟩; ZX, IX and ZI come from an exact block-diagonalisation and are compared with the leading-order formulas, with a check against an explicit bus. In the layout, the meander joins the `bus_01` pads (10.5 mm) instead of the `readout` pads.
 
 
 ## Quantum Metal v0.9.0 (open-source FEM solver, shape DRC, Python 3.13/3.14 and numpy 2)

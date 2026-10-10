@@ -91,6 +91,6 @@ docs/tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling.ipynb
 #   docs/tut/4-Analysis/4.44-Every-coupling-from-one-eigenmode.ipynb
 #   docs/tut/4-Analysis/4.45-Four-methods-one-full-wave-model.ipynb
 #
-# Cross-Resonance + cQED — depend on Ansys exports:
+# Cross-Resonance + cQED — the layout cells open the desktop MetalGUI (Qt):
 #   docs/tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.ipynb
 #   docs/tut/4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate.ipynb
