@@ -953,6 +953,22 @@ dependency combination the lock does not produce, build a scratch venv
 `tests/test_lom_core_hamiltonian.py` there; the repo's pytest config needs
 `-p no:rich -o addopts=""` without the dev extras.
 
+### `sequencing` 1.2.0 on qutip 5: two places, not one
+
+`sequencing` (optional, used by the LOM bridge and tutorial
+4.05-with-sequence) fails on qutip 5 first at `options.max_step = ...`:
+`qutip.Options()` still exists in qutip 5.2 but returns a `dict`. Fixing only
+that is not enough: `System.couplings` / `H0` / `c_ops` filter operators with
+`Qobj.data.nnz`, which no qutip 5 data layer (`CSR`, `Dia`, `Dense`) has.
+`analyses/quantization/_sequencing_compat.py` replaces the two solver calls and
+wraps the three methods (calling the originals with `clean=False`). With it,
+104 of sequencing's 112 own tests pass on qutip 5.2.2; the rest are
+`benchmarking.py` (`np.trace` of a `Qobj`), one ket-dims expectation, and a
+5e-9 run-vs-propagator check that qutip 5's default tolerances miss (6e-8).
+qutip 5's `propagator` returns its states, so it needs `store_states=True`,
+or it returns an empty list. To test, build a scratch venv
+(`uv pip install -e . sequencing==1.2.0`) and run `tests/test_lom_sequencing_import.py`.
+
 ## Open FEM: gmsh + scikit-fem
 
 From the solver behind tutorials 4.41–4.45
