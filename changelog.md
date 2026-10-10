@@ -41,6 +41,7 @@ changes*.
 - **`draw.buffer`** passes `quad_segs` to shapely (no DeprecationWarning on shapely ≥ 2.1) (#1228).
 - **Connection pads added after construction** (`options.connection_pads.new = ...`) rebuild correctly (#1226); `to_python_script()` no longer writes a spurious `options_connection_pads` warning for every qubit (#1227).
 - **`sequencing`** missing now raises an `ImportError` that says how to install it; the package (last release 2022) needs qutip 4 (#1231).
+- **Tutorials 4.15 and 4.31–4.34 re-executed** with the fixed formulas. 4.34 uses a converged charge cutoff for its transmon (`nlevels=15`; `nlevels=3` printed α/2π = +11 MHz), evaluates T2 = ħ/(Aπ|ε1|) as stated (the code was π² too long), and explains the `params_from_spectrum` result; 4.15 states that `kappa_in` returns κ/2π (6.4 MHz for its 30 fF example) and drops an unused `MetalGUI` import, so it now runs in the lite-install notebook job.
 - **Tutorials:** example 52's readout resonators are quarter-wave (`open_termination=False`) (#1217); the CR-gate and Jaynes-Cummings tutorials pass `e_ops` by keyword for qutip 5.3 (#1216); tutorial 2.24 shows that an airbridge over an uncut crossing still reports, and how to cut and wire through it or waive it (#1215).
 
 
