@@ -973,13 +973,9 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         x_range = np.linspace(-5, 5, 5)
         actual = wavefunction(1.0, 1.0, 0, x_range)
 
-        expected = [
-            2.10255658e-06,
-            2.47888124e-02,
-            5.64189584e-01,
-            2.47888124e-02,
-            2.10255658e-06,
-        ]
+        # L = C = 1, hbar = 1: psi_0(x) = pi**-0.25 * exp(-x**2 / 2) (#1202;
+        # the values pinned before were pi**-0.5 * exp(-x**2 / 2)).
+        expected = np.pi**-0.25 * np.exp(-0.5 * x_range**2)
 
         self.assertEqual(len(actual), len(expected))
 
