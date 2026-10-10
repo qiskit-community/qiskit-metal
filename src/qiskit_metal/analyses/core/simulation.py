@@ -131,11 +131,17 @@ class QSimulation(QAnalysis):
         # the renderer would have been already registered within the design object
         renderer = self.design.renderers.get(renderer_name)
         if not renderer:
-            if config.renderers_to_load.get(renderer_name):
+            skipped = getattr(self.design, "skipped_renderers", {})
+            if renderer_name in skipped:
+                reason = (
+                    f"it is configured but was not started for this design: "
+                    f"{skipped[renderer_name]}"
+                )
+            elif config.renderers_to_load.get(renderer_name):
                 reason = (
                     "it is configured but was not started for this design, usually "
-                    "because an optional dependency is not installed (see the log "
-                    "from creating the design; e.g. `pip install quantum-metal[ansys]` "
+                    "because an optional dependency is not installed (see "
+                    "design.skipped_renderers; e.g. `pip install quantum-metal[ansys]` "
                     "for hfss / q3d)"
                 )
             else:

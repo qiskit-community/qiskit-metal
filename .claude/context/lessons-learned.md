@@ -128,6 +128,29 @@ route had a lead segment shorter than the fillet radius, so it reached
 Regression test: `tests/test_gds_short_segments.py` (exports a short-lead
 meander and checks the area matches a low-fillet control).
 
+### pandas 2.1+: concat with empty or all-NA columns (FutureWarning, changes in pandas 3)
+
+**Symptom**: `FutureWarning: The behavior of DataFrame concatenation with
+empty or all-NA entries is deprecated` from `qgeometries_handler.py`,
+`gds_renderer.py`, `bounds_for_path_and_poly_tables.py`, `nets.py` and
+`design_check.py` on every build and GDS export. Hidden until #1229 stopped
+`captureWarnings`. On pandas 3 the `path` table's `fillet` column silently
+became `object` instead of `float64`.
+
+**Cause**: pandas 2 leaves a column that is empty or all-NA in one frame out
+when it picks the result dtype, but only when the chosen dtype can hold NA
+(float, object, datetime, extension); for int and bool it keeps the column
+as is (an empty `object` column next to an int one gives `object`). pandas
+3 always includes it. The `poly` table's `fillet` is an all-NA `object`
+column, `path`'s is `float64`, and each table starts empty. Dropping empty
+frames before the concat (the warning's advice) is not enough and changes
+the result: it loses the columns and dtypes that only the empty frame has.
+
+**Fix**: `toolbox_python.utility_functions.concat_tables` casts such
+columns to the dtype of the frames with values (when it can hold NA) before
+`pd.concat`. The pandas 2 results are reproduced exactly on both versions.
+Test: `tests/test_concat_tables.py`.
+
 ### qutip 5: `np.array([Qobj, ...])` no longer stacks
 
 **Symptom**: Code that worked under qutip 4 returns an object-dtype
@@ -976,6 +999,22 @@ dependency combination the lock does not produce, build a scratch venv
 (`uv venv` + `uv pip install -e . "scqubits==X" "qutip==Y"`) and run
 `tests/test_lom_core_hamiltonian.py` there; the repo's pytest config needs
 `-p no:rich -o addopts=""` without the dev extras.
+
+### `sequencing` 1.2.0 on qutip 5: two places, not one
+
+`sequencing` (optional, used by the LOM bridge and tutorial
+4.05-with-sequence) fails on qutip 5 first at `options.max_step = ...`:
+`qutip.Options()` still exists in qutip 5.2 but returns a `dict`. Fixing only
+that is not enough: `System.couplings` / `H0` / `c_ops` filter operators with
+`Qobj.data.nnz`, which no qutip 5 data layer (`CSR`, `Dia`, `Dense`) has.
+`analyses/quantization/_sequencing_compat.py` replaces the two solver calls and
+wraps the three methods (calling the originals with `clean=False`). With it,
+104 of sequencing's 112 own tests pass on qutip 5.2.2; the rest are
+`benchmarking.py` (`np.trace` of a `Qobj`), one ket-dims expectation, and a
+5e-9 run-vs-propagator check that qutip 5's default tolerances miss (6e-8).
+qutip 5's `propagator` returns its states, so it needs `store_states=True`,
+or it returns an empty list. To test, build a scratch venv
+(`uv pip install -e . sequencing==1.2.0`) and run `tests/test_lom_sequencing_import.py`.
 
 ## Open FEM: gmsh + scikit-fem
 

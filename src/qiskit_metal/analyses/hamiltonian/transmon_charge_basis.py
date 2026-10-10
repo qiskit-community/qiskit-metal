@@ -40,6 +40,33 @@ def _warn_if_missed(name, res, f01):
         )
 
 
+def _fix_phases(evecs, n_op):
+    """Fix the sign of each (real) eigenvector, in place and returned.
+
+    ``eigh_tridiagonal`` returns each eigenvector with an arbitrary sign. The
+    convention used here: the largest-magnitude charge component of the
+    ground state is positive, and every following state is signed so that
+    ``<k|n|k+1> > 0`` along the ladder. A link with ``|<k|n|k+1>| < 1e-12``
+    gives no sign; that state then has its largest-magnitude component
+    positive instead.
+    """
+    nstates = evecs.shape[1]
+
+    def largest_positive(k):
+        v = evecs[:, k]
+        if v[np.argmax(np.abs(v))] < 0:
+            evecs[:, k] = -v
+
+    largest_positive(0)
+    for k in range(nstates - 1):
+        link = np.dot(evecs[:, k], n_op * evecs[:, k + 1])
+        if abs(link) < 1e-12:
+            largest_positive(k + 1)
+        elif link < 0:
+            evecs[:, k + 1] = -evecs[:, k + 1]
+    return evecs
+
+
 class Hcpb:
     """Hamiltonian-model Cooper pair box (Hcpb) class.
 
@@ -126,7 +153,7 @@ class Hcpb:
         ham_off = -(self._Ej / 2.0) * self._off
         evals, evecs = linalg.eigh_tridiagonal(ham_diag, ham_off)
         self.evals = np.real(np.array(evals))
-        self.evecs = np.array(evecs)
+        self.evecs = _fix_phases(np.array(evecs), self._diag)
 
     def evalue_k(self, k: int):
         """Return the eigenvalue of the Hamiltonian for level k.
@@ -146,7 +173,10 @@ class Hcpb:
             k (int): Index of eigenvector
 
         Returns:
-            array: Eigenvector of the \|k> level of the CPB Hamiltonian
+            array: Eigenvector of the \|k> level of the CPB Hamiltonian, in
+            the charge basis ``n = -nlevels ... nlevels``. Real, with the sign
+            convention ``<k|n|k+1> > 0`` (the ground state has its
+            largest-magnitude component positive).
         """
         return self.evecs[:, k]
 
@@ -204,6 +234,15 @@ class Hcpb:
         r"""Compute the value of the number operator for coupling elements
         together in the energy eigen-basis.
 
+        The eigenvectors are real (the Hamiltonian is real symmetric for every
+        ``ng``), and their signs follow a fixed convention: ``n_ij(k, k+1) > 0``
+        for every ``k`` (see ``evec_k``). The other elements carry the sign
+        that follows, so ``n_ij(j, i) == n_ij(i, j)`` and gauge-invariant
+        products such as ``n_ij(0, 1) * n_ij(1, 2) * n_ij(2, 0)`` (negative
+        at ``ng = 0.25``) come out right. Up to 0.9.0 this returned
+        ``|<i|n|j>|``, which is gauge-equivalent to the signed matrix only
+        at ``ng = 0`` or ``ng = 1/2``.
+
         Args:
             i (int): \|i> Index of the transmon
             j (int): \|j> Index of the transmon
@@ -211,12 +250,10 @@ class Hcpb:
         Returns:
             float: Matrix element corresponding to the
             number operator in the transmon basis
-            `n_ij = |<i|n|j>|`
+            `n_ij = <i|n|j>` (real, signed)
         """
         n_op = np.arange(-self._nlevels, self._nlevels + 1)
-        n_ij = np.conj(self.evec_k(i)) * n_op * self.evec_k(j)
-        n_ij = np.abs(np.sum(n_ij))
-        return n_ij
+        return float(np.dot(self.evec_k(i), n_op * self.evec_k(j)))
 
     def h0_to_qutip(self, n_transmon: int):
         """Wrapper around Qutip to output the diagonalized Hamiltonian
@@ -242,13 +279,15 @@ class Hcpb:
             n_transmon (int): Number of energy levels to consider
             thresh (float): Threshold for keeping small values
                             in the number operator i.e `n_{i,i+2}`
-                            terms drop off exponentially. If None
+                            terms drop off exponentially. Elements with
+                            ``|n_ij| < thresh`` are set to zero. If None
                             retain all terms. Defaults to None
 
         Returns:
             Qobj: Returns a Qutip Qobj corresponding to the
             number operator for defining couplings in the
-            energy eigen-basis.
+            energy eigen-basis. The off-diagonal elements are the signed
+            ``n_ij`` (real symmetric matrix); the diagonal is set to zero.
         """
         n_op = np.zeros((n_transmon, n_transmon))
         for i in range(n_transmon):
@@ -258,7 +297,7 @@ class Hcpb:
                 else:
                     val = self.n_ij(i, j)
                     if thresh is not None:
-                        if val < thresh:
+                        if abs(val) < thresh:
                             val = 0
                     n_op[i, j] = val
         return qt.Qobj(n_op)
