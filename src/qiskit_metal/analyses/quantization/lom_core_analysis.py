@@ -97,7 +97,10 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: dict[str, float], shorted=False):
     wr = fr * MHzRad
     if cap_loading == {}:
         raise ValueError("At least one loading capacitor needs to be defined. ")
-    elif len(cap_loading) == 1:
+    # ``shorted`` only applies when a single end is loaded (the other end is
+    # then the stand-in node ``_cl``)
+    short_end = len(cap_loading) == 1 and shorted
+    if len(cap_loading) == 1:
         cap_loading["_cl"] = 0 if not shorted else _POS_INFTY
 
     w_loading = {}
@@ -124,7 +127,13 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: dict[str, float], shorted=False):
     k = wr / vp
     utl = lambda z: np.cos(k * z + phi)
     utl2 = lambda z: utl(z) ** 2
-    m = 1  # mode number
+    # Mode number of the fundamental. ``root_eq`` below reads
+    # k*L = arctan(...) + m*pi. For a line open or capacitively loaded at both
+    # ends the arctan term is in (-pi/2, 0], so the fundamental (loaded lambda/2)
+    # needs m = 1. With a shorted far end the arctan term is
+    # arctan(1 / (w Z0 C)) in (0, pi/2], which is already the loaded lambda/4
+    # fundamental; m = 1 there would give the 3*lambda/4 mode.
+    m = 0 if short_end else 1
 
     w_loading_vals = list(w_loading.values())
 
