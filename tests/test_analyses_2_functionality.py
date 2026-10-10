@@ -973,13 +973,9 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         x_range = np.linspace(-5, 5, 5)
         actual = wavefunction(1.0, 1.0, 0, x_range)
 
-        expected = [
-            2.10255658e-06,
-            2.47888124e-02,
-            5.64189584e-01,
-            2.47888124e-02,
-            2.10255658e-06,
-        ]
+        # L = C = 1, hbar = 1: psi_0(x) = pi**-0.25 * exp(-x**2 / 2) (#1202;
+        # the values pinned before were pi**-0.5 * exp(-x**2 / 2)).
+        expected = np.pi**-0.25 * np.exp(-0.5 * x_range**2)
 
         self.assertEqual(len(actual), len(expected))
 
@@ -1168,8 +1164,12 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
 
     def test_analysis_kappa_calculation_kappa_in(self):
         """Test the kappa_in function in kappa_calculation.py."""
-        self.assertAlmostEqual(
-            kappa_calculation.kappa_in(5.0e9, 30.0e-15, 4.5e9), 161144.37988054403
+        # kappa/2pi in Hz; the value pinned before #1204 (161144.38) used f
+        # in place of omega and was (2 pi)**2 smaller.
+        self.assertAlmostEqualRel(
+            kappa_calculation.kappa_in(5.0e9, 30.0e-15, 4.5e9),
+            161144.37988054403 * (2 * np.pi) ** 2,
+            rel_tol=1e-12,
         )
 
     def test_analysis_sweeper_option_value(self):

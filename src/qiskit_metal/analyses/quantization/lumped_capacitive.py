@@ -128,40 +128,57 @@ def transmon_props(Ic: float, Cq: float):
 # TODO: Move to a more generic file
 
 
-def chi(g: float, wr: float, w01: float, w12: float):
+def chi(g: float, wr: float, w01: float, w12: float, g12: float | None = None):
     r"""
-    Calculate the dispersive shift $\chi$, where $2*\chi$ is
-    the `|0> --> |1>` splitting).
+    Calculate the dispersive shift $\chi$, where $2\chi$ is the change of the
+    resonator frequency between qubit states `|0>` and `|1>`.
 
-    Accounts for push on the i-th transmon level due to the j-th transmon level,
-    mediated by cavity.
+    Convention: this is Koch et al.'s $\chi$ (resonator at $\omega_r \pm \chi$),
+    i.e. half of the "total" dispersive shift / cross-Kerr $\chi_{qr}$ of the
+    EPR convention (Minev et al., npj Quantum Inf. 7, 131 (2021), Eq. 26),
+    $\chi_{qr} = 2\chi$. ``extract_transmon_coupled_Noscillator`` reports
+    $2\chi$.
+
+    Approximations (this is Koch et al. (3.9)-(3.10) extended, not as
+    printed): second-order perturbation theory in the 0-1 and 1-2 transitions
+    only, *including* the counter-rotating terms ($1/(\omega_{ij}+\omega_r)$),
+    with $g_{12} = \sqrt{2}\,g$ (harmonic matrix elements) unless ``g12`` is
+    given. For a transmon $n_{12}/n_{01} \approx 1.33$-$1.39$ at
+    $E_J/E_C = 20$-$100$ rather than $\sqrt{2}$; with the default the result
+    differs from exact diagonalization by -6 % to -33 % for a qubit below the
+    resonator (detuning -0.7 to -2 GHz) and by +16 % to +140 % above it
+    (+1 to +2 GHz). Passing the exact ``g12`` (e.g.
+    ``g * Hcpb.n_ij(1, 2) / Hcpb.n_ij(0, 1)``) brings it to about 2 %
+    (up to 9 % at $E_J/E_C = 20$, 2 GHz detuning).
 
     All args need to be in the same units.
 
     Args:
-        g (float): Qubit-cavity linear coupling.
+        g (float): Qubit-cavity linear coupling for the 0-1 transition.
         wr (float): Frequency of resonator.
         w01 (float): Qubit 01 transition frequency
         w12 (float): Qubit 12 transition frequency
+        g12 (float, optional): Coupling for the 1-2 transition. Defaults to
+            ``sqrt(2) * g`` (harmonic-oscillator scaling).
 
     Returns:
         float: Calculated chi value
     """
+    g12_sq = 2 * g**2 if g12 is None else g12**2
 
     # Push on the i-th transmon level due to the j-th transmon level
     # mediated by cavity
 
     # shift of the zero state
     # In this case i=0 and j=1.
-    chibus_0 = -2 * g**2 * w01 / (w01**2 - wr**2)  # Koch Eq. (3.10)
+    chibus_0 = -2 * g**2 * w01 / (w01**2 - wr**2)
 
     # shift of the 1 state
-    # the g of the levels scales rougly as sqrt(n), so the 2 for the 2 / (w12 - wr)
-    chibus_1 = g**2 * (
-        1 / (w01 - wr) - 2 / (w12 - wr) + 1 / (w01 + wr) - 2 / (w12 + wr)
+    chibus_1 = g**2 * (1 / (w01 - wr) + 1 / (w01 + wr)) - g12_sq * (
+        1 / (w12 - wr) + 1 / (w12 + wr)
     )
 
-    return (chibus_1 - chibus_0) / 2  # Koch Eq. (3.9)
+    return (chibus_1 - chibus_0) / 2
 
 
 def extract_transmon_coupled_Noscillator(
