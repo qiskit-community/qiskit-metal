@@ -49,8 +49,8 @@ _DRAWING = re.compile(
 #: pathfinder jogs shorter than the 180 um a corner arc needs. Cosmetic in
 #: the mpl view, but the GDS and gmsh renderers drop the fillet there.
 KNOWN_WARNINGS = {
-    "A.2-Two-coupled-transmons": {"short-segment": 2},
-    "A.3-Four-qubit-multiplexed-readout": {"short-segment": 2},
+    "A.2-Two-coupled-transmons": {"short-segment": 1},
+    "A.3-Four-qubit-multiplexed-readout": {"short-segment": 1},
 }
 
 

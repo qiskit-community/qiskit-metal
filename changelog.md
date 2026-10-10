@@ -8,9 +8,41 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ## Unreleased
 
+Fixes for issues #1202–#1234: analytic formulas (transmon, LOM, kappa, chi,
+package modes, resonator fitting), GDS export, design-rule checks, routing,
+and tutorials. Several fixes change numbers or geometry; see *Behaviour
+changes*.
+
+### Behaviour changes
+
+- **`RouteMeander` now reaches `total_length` when its leads are jogged or its fillet/spacing pair left it short** (#1225, #1234). `make()` refits the meander (up to 8 secant steps) when the first build misses by more than 1e-4 design units, and warns with both lengths when it still cannot. A `total_length` shorter than the shortest possible route draws that route and warns with its length, where it raised `IndexError` before. Routes that already reached `total_length` are unchanged bit for bit; routes that were short change shape on existing chips.
+- **`ReadoutResFC` etches on its own layer** (#1224). `layer_subtract` now defaults to `""` (same as `layer`); it defaulted to `"2"`, so the GDS ground ended up on layer 2 while the trace was on layer 1. `layer_subtract="2"` gives the old output.
+- **GDS cheesing drops holes that cross the no-cheese region** instead of trimming them into slivers narrower than the spacing rule (#1214). Fewer holes along the keep-out edge; holes that only touch it are kept.
+- **Design-rule checks on `DesignFlipChip`** (#1212). Overlap and spacing rules group geometry by chip and layer; `ChipBoundsRule` and `GroundContinuityRule` default to `chip=None` (every chip in `design.chips`) instead of `"main"`. Planar results and messages are unchanged.
+- **`QGDSRenderer` `path_filename` defaults to `None`** (#1223). The old default, `'../resources/Fake_Junctions.GDS'`, was relative to the working directory and the file is not in the package, so outside the tutorial folders the export already had no junction cells, with a warning per chip. Now an export with junctions and no `path_filename` logs one warning saying the junction geometry is left out and how to set a junction GDS file; a missing file is reported with its absolute path; `path_filename = None` no longer raises `TypeError`.
+- **`constants.phinot` is h/2e to full precision** (#1207). It was 2.067e-15 (4e-4 low), which shifted `Ej_from_Lj` f01 by about −2.3 MHz for a 5.4 GHz transmon; LOM 1.0 mixed the two values. Stored outputs of tutorials 4.01, 4.11 and 4.21 move in the fourth digit.
+- **LOM 2.0 two-node transmission-line resonators carry the sign of the mode at each end** (#1219). Bus-mediated and direct couplings now add with the correct relative sign, which changes J in designs with both paths.
+- **`kappa_in` returns κ/2π in Hz** (#1204). It used f where the formula needs ω, so values were off by (2π)²; the six-argument form now computes the resonance frequency correctly and uses the λ/4 prefactor.
+- **`import qiskit_metal` no longer calls `logging.captureWarnings(True)`** (#1229). Python warnings from other libraries were routed to a logger with no handler and disappeared; they print again.
+- **`QAnalysis.run_sweep` returns code 7 when any run fails** (#1230), with the error recorded under `'error'` for that value; it returned 0. **Simulations raise `ValueError` at construction when the renderer is unavailable** (unknown, misconfigured, or not started because its optional dependency is not installed), naming the available renderers; they returned `None` and failed later with `AttributeError`. `LOManalysis(design)` with no renderer is unchanged.
+- **`fit_transmission`** fits the raw S21 with a free cable delay, after using the detrended data only for starting values (#1209). Q is unbiased for narrow spans and cable delays (it was +11 % at ±6 linewidths and failed at 40 ns). `amplitude_complex` and `delay` refer to the absolute-frequency model stated in the docstring. A real slope in the |S21| baseline is not in the model and biases Q by about +0.7 % per 2 % slope.
+- **`design.to_python_script()`** opens the viewer with `qiskit_metal.gui(design)` (headless fallback on lite installs), keeps the design class, and restores chips and variables (#1205).
+
 ### Fixed
 
 - **`RouteMixed` with `avoid_collision` no longer crashes on a multi-part obstacle.** `RouteAnchors.unobstructed_close_up` read `GeoSeries.exterior`, which is `None` unless the buffered union is a single polygon, and then raised `'NoneType' object has no attribute 'coords'` while building a route between `LineTee` pins. The outline is now the exterior of each polygonal piece of that union. (#1010)
+- **Transmon analytics:** `HO_wavefunctions.wavefunction` uses ω = 1/√(LC), is normalized and works for any n (#1202); `Hcpb.params_from_freq_fixEC` returns an Ej that reproduces f01 (#1203); `Hcpb.params_from_spectrum` fits a residual vector and warns when the target is unreachable (#1221); `Hcpb_analytic` and `transmon_analytics` use `mathieu_b` for odd levels and handle any ng (#1220).
+- **`lumped_capacitive.chi`** documents its convention (Koch's χ) and approximations; a new optional `g12` uses the exact 1–2 matrix element, which brings χ within ~2 % of full diagonalization for Ej/Ec ≥ 30. The default (g12 = √2 g) is unchanged (#1208).
+- **`analyze_loaded_tl`:** a shorted single-ended line is solved for its λ/4 mode, not 3λ/4 (#1206); the caller's `cap_loading` dict is no longer modified (#1232); the short is treated exactly instead of as a 1e30 fF capacitor, removing ~1e-4 noise in Q_zpf and a wrong-mode root for heavily loaded two-ended lines (#1233).
+- **LOM:** `run_lom` passes `res_L4_corr` (#1210); bus–bus coupling uses C12·√(ω1ω2)/(2√(C1C2)); `extract_transmon_coupled_Noscillator` takes `Q_res` and `Z0` (also `LOManalysis.setup.Q_res` / `.Z0`) and always returns `T1`/`T1bus`, appended after the existing keys and columns; without `Q_res` they use the placeholder Qs (1e4 readout, 1e5 bus) and a warning says so (#1222). Bus–bus g values print about 1.6× the old value.
+- **`package_modes.lsm_mode`** finds the lowest LSM root for small boxes (ValueError below ~4 mm, a higher mode at 2 mm); `lsm_mode_approx` warns outside its thin-slab validity (#1211). The paper device of tutorials 4.41–4.45 is unchanged.
+- **GDS:** `fabricate=True` with cheesing no longer leaves dangling cell references (#1218).
+- **Validation:** `ShortSegmentRule` has a float tolerance and reports each path once (#1213).
+- **`draw.buffer`** passes `quad_segs` to shapely (no DeprecationWarning on shapely ≥ 2.1) (#1228).
+- **Connection pads added after construction** (`options.connection_pads.new = ...`) rebuild correctly (#1226); `to_python_script()` no longer writes a spurious `options_connection_pads` warning for every qubit (#1227).
+- **`sequencing`** missing now raises an `ImportError` that says how to install it; the package (last release 2022) needs qutip 4 (#1231).
+- **Tutorials:** example 52's readout resonators are quarter-wave (`open_termination=False`) (#1217); the CR-gate and Jaynes-Cummings tutorials pass `e_ops` by keyword for qutip 5.3 (#1216); tutorial 2.24 shows that an airbridge over an uncut crossing still reports, and how to cut and wire through it or waive it (#1215).
+
 
 ## Quantum Metal v0.9.0 (open-source FEM solver, shape DRC, Python 3.13/3.14 and numpy 2)
 

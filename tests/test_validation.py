@@ -258,6 +258,41 @@ class TestShortSegmentRule(unittest.TestCase):
         self.assertIs(findings[0].severity, Severity.WARNING)
         self.assertLess(findings[0].value, findings[0].limit)
 
+    def test_short_segment_reported_once_per_path(self):
+        """The trace and cut rows share a centerline: one finding, not two (#1213)."""
+        design = _design()
+        self._bent_route(design, "tight", reach="0.1mm", fillet="150um")
+        design.rebuild()
+        findings = list(ShortSegmentRule().check(design))
+        keys = [(f.components, f.location) for f in findings]
+        self.assertTrue(findings)
+        self.assertEqual(len(keys), len(set(keys)), [f.message for f in findings])
+        self.assertTrue(all(".trace " in f.message for f in findings))
+
+    def test_segment_exactly_at_limit_passes(self):
+        """A lead exactly as long as the fillet is not short by rounding (#1213)."""
+        design = _design()
+        OpenToGround(
+            design, "A", options=dict(pos_x="0mm", pos_y="0mm", orientation="180")
+        )
+        OpenToGround(
+            design, "B", options=dict(pos_x="1mm", pos_y="0.6mm", orientation="0")
+        )
+        RoutePathfinder(
+            design,
+            "P",
+            options=Dict(
+                fillet="90um",
+                lead=Dict(start_straight="90um", end_straight="90um"),
+                pin_inputs=Dict(
+                    start_pin=Dict(component="A", pin="open"),
+                    end_pin=Dict(component="B", pin="open"),
+                ),
+            ),
+        )
+        design.rebuild()
+        self.assertEqual([f.message for f in ShortSegmentRule().check(design)], [])
+
     def test_generous_segment_passes(self):
         design = _design()
         self._bent_route(design, "roomy", reach="2mm", fillet="50um")
@@ -372,6 +407,44 @@ class TestAirbridgeLayerSeparation(unittest.TestCase):
             f"report as shorts against the CPW they cross: {crossings}",
         )
 
+    def test_bridge_over_uncut_crossing_still_reports(self):
+        """#1215 / tutorial 2.24: a bridge drawn over two crossing lines does
+        not change the base-layer overlap; cutting one line and wiring the cut
+        ends through pins a and b does."""
+        from qiskit_metal.qlibrary.tlines.airbridge import Airbridge
+
+        bridge = dict(pos_x="0mm", pos_y="0mm", crossover_length="30um")
+
+        design = _design()
+        _route(design, "h", ("-0.7mm", "0mm"), ("0.7mm", "0mm"), "180", "0")
+        _route(design, "v", ("0mm", "-0.6mm"), ("0mm", "0.6mm"), "270", "90")
+        Airbridge(design, "AB", options=bridge)
+        design.rebuild()
+        overlaps = list(MetalOverlapRule().check(design))
+        self.assertEqual([set(f.components) for f in overlaps], [{"h", "v"}])
+
+        design = _design()
+        _route(design, "v", ("0mm", "-0.6mm"), ("0mm", "0.6mm"), "270", "90")
+        OpenToGround(design, "h_W", options=dict(pos_x="-0.7mm", orientation="180"))
+        OpenToGround(design, "h_E", options=dict(pos_x="0.7mm", orientation="0"))
+        Airbridge(design, "AB", options=bridge)
+        for name, start, end in [
+            ("h_west", ("h_W", "open"), ("AB", "a")),
+            ("h_east", ("AB", "b"), ("h_E", "open")),
+        ]:
+            RouteStraight(
+                design,
+                name,
+                options=Dict(
+                    pin_inputs=Dict(
+                        start_pin=Dict(component=start[0], pin=start[1]),
+                        end_pin=Dict(component=end[0], pin=end[1]),
+                    )
+                ),
+            )
+        design.rebuild()
+        self.assertEqual(list(MetalOverlapRule().check(design)), [])
+
 
 class TestGroundContinuityRule(unittest.TestCase):
     """A CPW that reaches both chip edges cuts the ground plane in two."""
@@ -476,6 +549,70 @@ class TestQDesignCheckDeprecation(unittest.TestCase):
             checker = QDesignCheck(design)
             checker.update_design(design)
             checker.overlap_tester()  # prints; asserted only not to raise
+
+
+class TestFlipChip(unittest.TestCase):
+    """Rules work on ``DesignFlipChip`` and compare geometry per chip (#1212)."""
+
+    def _flip_chip(self, *lines):
+        from qiskit_metal.qlibrary.tlines.polyline_cpw import PolylineCPW
+
+        design = designs.DesignFlipChip()
+        design.overwrite_enabled = True
+        for name, chip, points in lines:
+            PolylineCPW(design, name, options=Dict(chip=chip, points=points))
+        design.rebuild()
+        return design
+
+    def test_empty_flip_chip_validates(self):
+        # Used to raise KeyError: 'main' from ChipBoundsRule / GroundContinuityRule.
+        result = validate(designs.DesignFlipChip())
+        self.assertEqual(result.findings, [])
+
+    def test_crossing_on_facing_chips_is_not_an_overlap(self):
+        design = self._flip_chip(
+            ("top", "Q_chip", [[-1, 0], [1, 0]]),
+            ("bot", "C_chip", [[0, -1], [0, 1]]),
+        )
+        self.assertEqual(list(MetalOverlapRule().check(design)), [])
+
+    def test_crossing_on_same_chip_is_an_overlap(self):
+        design = self._flip_chip(
+            ("top", "Q_chip", [[-1, 0], [1, 0]]),
+            ("bot", "Q_chip", [[0, -1], [0, 1]]),
+        )
+        findings = list(MetalOverlapRule().check(design))
+        self.assertEqual(len(findings), 1)
+        self.assertIn("of chip 'Q_chip'", findings[0].message)
+
+    def test_spacing_not_checked_across_chips(self):
+        design = self._flip_chip(
+            ("top", "Q_chip", [[-1, 0], [1, 0]]),
+            ("bot", "C_chip", [[-1, 0.011], [1, 0.011]]),
+        )
+        self.assertEqual(list(MetalSpacingRule().check(design)), [])
+
+    def test_chip_bounds_uses_each_component_chip(self):
+        from qiskit_metal.qlibrary.tlines.polyline_cpw import PolylineCPW
+
+        design = designs.DesignFlipChip()
+        design.overwrite_enabled = True
+        design.chips["Q_chip"]["size"].update(size_x="2mm", size_y="2mm")
+        # Inside the 9 mm C_chip, outside the 2 mm Q_chip.
+        PolylineCPW(design, "bot", options=Dict(chip="C_chip", points=[[2, 0], [3, 0]]))
+        PolylineCPW(design, "far", options=Dict(chip="Q_chip", points=[[2, 0], [3, 0]]))
+        design.rebuild()
+        self.assertEqual(list(ChipBoundsRule(chip="C_chip").check(design)), [])
+        findings = list(ChipBoundsRule().check(design))
+        self.assertEqual([f.components for f in findings], [("far",)])
+        self.assertIn("'Q_chip'", findings[0].message)
+
+    def test_ground_continuity_uses_only_its_chip_cuts(self):
+        design = self._flip_chip(("top", "Q_chip", [[-4.5, 0], [4.5, 0]]))
+        self.assertEqual(list(GroundContinuityRule(chip="C_chip").check(design)), [])
+        findings = list(GroundContinuityRule().check(design))
+        self.assertEqual(len(findings), 1)
+        self.assertIn("of chip 'Q_chip'", findings[0].message)
 
 
 if __name__ == "__main__":

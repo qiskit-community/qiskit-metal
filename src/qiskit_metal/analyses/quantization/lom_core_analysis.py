@@ -29,7 +29,6 @@ import numpy as np
 import pandas as pd
 import scqubits as scq
 from sympy import Matrix
-from scipy import optimize, integrate
 
 from qiskit_metal.toolbox_python.utility_functions import get_all_args
 from qiskit_metal.analyses.em.cpw_calculations import guided_wavelength
@@ -74,98 +73,100 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: dict[str, float], shorted=False):
         vp (float): phase velocity in m/s
         Z0 (float): characteristic impedance of the TL in ohm
         cap_loading (dict): a dictionary of the loading capacitors; the keys
-            are the names of the nodes; the values the capacitances in fF
+            are the names of the nodes; the values the capacitances in fF.
+            The dict is not modified.
         shorted (boolean): default false; true if the other end of the TL is shorted false otherwise
 
     Returns:
-        [type]: [description]
+        tuple: ``(Q_zpf, Phi_zpf, phi, L)`` for the fundamental mode.
+        ``Q_zpf`` and ``Phi_zpf`` are dicts keyed by node (plus ``"_cl"`` for
+        the far end when a single node is given) of the charge [C] and flux
+        [Wb] zero-point fluctuations, each with the sign of the mode function
+        u(z) = cos(k z + phi) at that end; an open or shorted end has
+        ``Q_zpf = 0`` and ``Phi_zpf = inf``. ``phi`` is the phase of u(z) at
+        z = 0 and ``L`` the line length [m] that puts the loaded fundamental
+        at ``fr``.
     """
-    # An arbitrarily very large positive number in place of positive infinity.
-    # Almost exclusively function as an infinity flag instead of actually
-    # particupating in algebraic calculations, except for the boundary condition
-    # of a shorted end. In that case, in the calculation of the capacitive energy
-    # participation, the shorted end term is proportional to ,
-    # (C_shorted * cos(pi/2)) ^ 2, where C_shorted is infinity. Here, one cannot
-    # use np.infty for C_shorted because np.infty * np.cos(np.pi/2) = np.infty in python
-    # instead of zero as one would expect.
-    #
-    # Ultimately, the energy particpation of the shorted end doesn't matter as
-    # long as it's close to zero and not infinity since it's energy participation
-    # of the other (loaded with finite capacitance) end that matters.
-    _POS_INFTY = 1e30
-    # Convert to SI
-    wr = fr * MHzRad
+    # work on a copy: a stand-in node is added below, which must not leak
+    # into the caller's dict
+    cap_loading = dict(cap_loading)
     if cap_loading == {}:
         raise ValueError("At least one loading capacitor needs to be defined. ")
-    elif len(cap_loading) == 1:
-        cap_loading["_cl"] = 0 if not shorted else _POS_INFTY
 
-    w_loading = {}
-    for node, val in cap_loading.items():
-        cap_loading[node] = val * FEMTO
-        if val == _POS_INFTY:
-            w_loading[node] = 0
-        else:
-            w_loading[node] = 1 / (Z0 * cap_loading[node]) if val else _POS_INFTY
-
-    # assign z = 0 to one of the nodes and z = L to the other; switching
-    # the assignment would not change the result
-    z = {}
-    nodes = set(cap_loading.keys())
-    for node, val in cap_loading.items():
-        z["0"] = node
-        if val != 0 and val < _POS_INFTY:
-            break
-    z["L"] = list(nodes - {z["0"]})[0]
-
+    # Convert to SI
+    wr = fr * MHzRad
+    k = wr / vp
     c = 1 / (Z0 * vp)  # cap/unit length
 
-    phi = np.arctan(wr / w_loading[z["0"]])
-    k = wr / vp
-    utl = lambda z: np.cos(k * z + phi)
-    utl2 = lambda z: utl(z) ** 2
-    m = 1  # mode number
+    # ``shorted`` only applies when a single end is loaded; the other end is
+    # then the stand-in node ``_cl`` (open, or shorted to ground).
+    short_end = len(cap_loading) == 1 and shorted
+    if len(cap_loading) == 1:
+        cap_loading["_cl"] = 0.0
+    caps = {node: val * FEMTO for node, val in cap_loading.items()}
+    shorted_nodes = {"_cl"} if short_end else set()
 
-    w_loading_vals = list(w_loading.values())
+    def _phase(node):
+        # u(z) = cos(k z + phi) with tan(phi) = w Z0 C at an end loaded by a
+        # capacitor C to ground (arXiv:2103.10344, Eq. 17). An open end is
+        # C = 0 (phi = 0); a short is the limit C -> inf (phi = pi/2). The
+        # short is treated exactly instead of through a large stand-in
+        # capacitance, whose rounding error made Q_zpf jitter (#1233).
+        if node in shorted_nodes:
+            return np.pi / 2
+        return np.arctan(wr * Z0 * caps[node])
 
-    def _arctan_arg(w_L, w_R):
-        """Need separate handling for limiting cases
-        from different boundary conditions
-        """
-        # left boundary of the TL is open, i.e., left loading capacitor is 0
-        if w_L == _POS_INFTY:
-            return -wr / w_R
-        # right boundary of the TL is open, i.e., right loading capacitor is 0
-        elif w_R == _POS_INFTY:
-            return -wr / w_L
-        else:
-            return wr * (w_L + w_R) / (wr**2 - w_L * w_R)
+    # assign z = 0 to a node loaded with a finite, non-zero capacitance (if
+    # any) and z = L to the other; switching the assignment would not change
+    # the result
+    nodes = list(caps)
+    candidates = [n for n in nodes if n not in shorted_nodes]
+    z0 = next((n for n in candidates if caps[n]), candidates[0])
+    zL = next(n for n in nodes if n != z0)
 
-    root_eq = lambda L: (
-        np.arctan(_arctan_arg(w_loading_vals[0], w_loading_vals[1])) + m * np.pi - k * L
-    )  # = 0
-    sol = optimize.root(root_eq, [0.007], jac=False, method="hybr")  # in meters SI
-    Ltl = sol.x[0]
+    phi = _phase(z0)
+    phi_L = _phase(zL)
+    # Fundamental mode: cos(k L + phi) = -cos(phi_L), i.e.
+    #     k L = pi - phi - phi_L,
+    # which is Eq. 17 of arXiv:2103.10344 for m = 1, b = 0 (open far end,
+    # loaded lambda/2) and m = 0, b = 1 (shorted far end, loaded lambda/4,
+    # phi_L = pi/2), extended to a line loaded at both ends. Closed form, so
+    # no root-finder tolerance and no arctan branch ambiguity for heavy
+    # loading (phi + phi_L > pi/2).
+    Ltl = (np.pi - phi - phi_L) / k
 
-    E_cap = (
-        0.5 * c * integrate.quad(utl2, 0, Ltl)[0]
-        + 0.5 * cap_loading[z["0"]] * utl(0) ** 2
-        + 0.5 * cap_loading[z["L"]] * utl(Ltl) ** 2
+    # mode function at the two ends; exactly zero at a short
+    u_end = {z0: np.cos(phi), zL: 0.0 if zL in shorted_nodes else -np.cos(phi_L)}
+
+    # integral of cos^2(k z + phi) over [0, L], in closed form
+    line_int = Ltl / 2 - (np.sin(2 * phi) + np.sin(2 * phi_L)) / (4 * k)
+    E_cap = 0.5 * c * line_int + sum(
+        0.5 * caps[n] * u_end[n] ** 2 for n in nodes if n not in shorted_nodes
     )
 
     pCL = {}
     Q_zpf = {}
     Phi_zpf = {}
 
-    for node, val in cap_loading.items():
-        if node == z["0"]:
-            pCL[node] = 0.5 * val * utl(0) ** 2 / E_cap
+    for node in nodes:
+        if node in shorted_nodes or not caps[node]:
+            pCL[node] = 0.0
+            Q_zpf[node] = np.float64(0.0)
         else:
-            pCL[node] = 0.5 * val * utl(Ltl) ** 2 / E_cap
-        Q_zpf[node] = np.sqrt(hbar * wr / 2 * pCL[node] * val)
+            val = caps[node]
+            pCL[node] = 0.5 * val * u_end[node] ** 2 / E_cap
+            # Q_zpf carries the sign of the mode function at its end: for the
+            # fundamental of a line loaded at both ends the two end voltages
+            # are in antiphase (u(0) > 0, u(L) < 0). The relative sign matters
+            # when the two ends couple to subsystems that also couple by
+            # another path (#1219); the overall sign is a gauge choice.
+            Q_zpf[node] = np.sign(u_end[node]) * np.sqrt(
+                hbar * wr / 2 * pCL[node] * val
+            )
 
-        # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2;
-        # an open end (no loading capacitance) carries no charge fluctuation
+        # using the uncertainty relationship that Q_zpf * Phi_zpf = hbar / 2
+        # (Phi_zpf carries the same sign); an open or shorted end carries no
+        # charge fluctuation
         Phi_zpf[node] = 0.5 * hbar / Q_zpf[node] if Q_zpf[node] else np.inf
 
     return Q_zpf, Phi_zpf, phi, Ltl
@@ -1627,7 +1628,7 @@ class CompositeSystem:
 
     def hamiltonian_results(
         self, hilbertspace: scq.HilbertSpace, evals_count=None, print_info=True
-    ) -> pd.DataFrame:
+    ) -> dict:
         """Print and return results
 
         Args:
@@ -1638,7 +1639,8 @@ class CompositeSystem:
             print_info (bool, optional): If true, print results as well. Defaults to True.
 
         Returns:
-            pd.DataFrame: dataframe containing the results
+            dict: ``{"fQ_in_Ghz": {subsystem name: f01 in GHz},
+            "chi_in_MHz": LabeledNdarray of the chi matrix in MHz}``
         """
         ham_res = {}
 

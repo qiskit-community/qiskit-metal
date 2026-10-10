@@ -18,7 +18,10 @@ import gdstk
 import numpy as np
 import shapely
 
-from qiskit_metal.renderers.renderer_gds.gds_boolean import subtract_in_strips
+from qiskit_metal.renderers.renderer_gds.gds_boolean import (
+    remove_cell,
+    subtract_in_strips,
+)
 
 
 class Cheesing:
@@ -319,7 +322,7 @@ class Cheesing:
             (c for c in self.lib.cells if c.name == cheese_one_hole_cell_name), None
         )
         if cheese_one_hole_cell:
-            self.lib.remove(cheese_one_hole_cell)
+            remove_cell(self.lib, cheese_one_hole_cell)
 
     def _subtract_from_ground_and_move_under_top_chip_layer(
         self, diff_holes_cell: gdstk.Cell
@@ -371,13 +374,8 @@ class Cheesing:
             else:
                 flat_nocheese.append(item)
         temp_keepout_cell.add(*flat_nocheese)
-        diff_holes = gdstk.boolean(
-            gather_holes_cell.get_polygons(),
-            temp_keepout_cell.get_polygons(),
-            "not",
-            precision=self.precision,
-            layer=self.layer,
-            datatype=self.datatype_cheese + 1,
+        diff_holes = self._holes_clear_of_keepout(
+            gather_holes_cell.get_polygons(), temp_keepout_cell.get_polygons()
         )
         diff_holes_cell_name = f"TOP_{self.chip_name}_{self.layer}_Cheese_diff"
         diff_holes_cell = self.lib.new_cell(diff_holes_cell_name)
@@ -385,6 +383,49 @@ class Cheesing:
 
         self.lib.remove(temp_keepout_cell)
         return diff_holes_cell
+
+    def _holes_clear_of_keepout(self, holes: list, keepout: list) -> list:
+        """Return the holes that do not overlap the keepout, whole.
+
+        A hole that straddles the keepout edge is dropped, not trimmed:
+        trimming leaves etched slivers whose width depends only on where
+        the grid falls, and can be far below the minimum feature size
+        (#1214). Overlap smaller than ``precision`` (holes that only touch
+        the keepout) does not count.
+
+        Args:
+            holes (list): gdstk polygons of the full hole grid.
+            keepout (list): gdstk polygons of the keepout region.
+
+        Returns:
+            list: The kept holes on ``layer``, datatype ``datatype_cheese + 1``.
+        """
+        if not holes:
+            return []
+        # One Polygon per gdstk polygon: shapely.polygons() on the list
+        # needs every polygon to have the same number of vertices.
+        shapes = np.array([shapely.Polygon(p.points) for p in holes], dtype=object)
+        if keepout:
+            region = shapely.union_all(
+                shapely.make_valid(
+                    np.array([shapely.Polygon(p.points) for p in keepout], dtype=object)
+                )
+            )
+            shapely.prepare(region)
+            # Shrink each hole by the precision so a hole that only touches
+            # the keepout, or overlaps it by rounding, is kept.
+            probe = shapely.buffer(shapes, -self.precision, join_style="mitre")
+            overlaps = shapely.intersects(region, probe)
+        else:
+            overlaps = np.zeros(len(holes), dtype=bool)
+        kept = []
+        for poly, drop in zip(holes, overlaps):
+            if drop:
+                continue
+            poly.layer = self.layer
+            poly.datatype = self.datatype_cheese + 1
+            kept.append(poly)
+        return kept
 
     def _get_all_holes(self) -> gdstk.Cell:
         """Return a cell with a grid of holes. The keepout has not been
@@ -474,7 +515,7 @@ class Cheesing:
         cell_name = f"TOP_{self.chip_name}_{self.layer}_Cheese_diff"
         cell = next((c for c in self.lib.cells if c.name == cell_name), None)
         if cell:
-            self.lib.remove(cell)
+            remove_cell(self.lib, cell)
 
     def _remove_ground_chip_layer(self):
         """[For a lib, chip and layer, remove the ground cell
@@ -483,4 +524,4 @@ class Cheesing:
         cell_name = f"ground_{self.chip_name}_{self.layer}"
         cell = next((c for c in self.lib.cells if c.name == cell_name), None)
         if cell:
-            self.lib.remove(cell)
+            remove_cell(self.lib, cell)
