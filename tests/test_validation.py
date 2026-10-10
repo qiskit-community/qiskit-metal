@@ -513,5 +513,69 @@ class TestQDesignCheckDeprecation(unittest.TestCase):
             checker.overlap_tester()  # prints; asserted only not to raise
 
 
+class TestFlipChip(unittest.TestCase):
+    """Rules work on ``DesignFlipChip`` and compare geometry per chip (#1212)."""
+
+    def _flip_chip(self, *lines):
+        from qiskit_metal.qlibrary.tlines.polyline_cpw import PolylineCPW
+
+        design = designs.DesignFlipChip()
+        design.overwrite_enabled = True
+        for name, chip, points in lines:
+            PolylineCPW(design, name, options=Dict(chip=chip, points=points))
+        design.rebuild()
+        return design
+
+    def test_empty_flip_chip_validates(self):
+        # Used to raise KeyError: 'main' from ChipBoundsRule / GroundContinuityRule.
+        result = validate(designs.DesignFlipChip())
+        self.assertEqual(result.findings, [])
+
+    def test_crossing_on_facing_chips_is_not_an_overlap(self):
+        design = self._flip_chip(
+            ("top", "Q_chip", [[-1, 0], [1, 0]]),
+            ("bot", "C_chip", [[0, -1], [0, 1]]),
+        )
+        self.assertEqual(list(MetalOverlapRule().check(design)), [])
+
+    def test_crossing_on_same_chip_is_an_overlap(self):
+        design = self._flip_chip(
+            ("top", "Q_chip", [[-1, 0], [1, 0]]),
+            ("bot", "Q_chip", [[0, -1], [0, 1]]),
+        )
+        findings = list(MetalOverlapRule().check(design))
+        self.assertEqual(len(findings), 1)
+        self.assertIn("of chip 'Q_chip'", findings[0].message)
+
+    def test_spacing_not_checked_across_chips(self):
+        design = self._flip_chip(
+            ("top", "Q_chip", [[-1, 0], [1, 0]]),
+            ("bot", "C_chip", [[-1, 0.011], [1, 0.011]]),
+        )
+        self.assertEqual(list(MetalSpacingRule().check(design)), [])
+
+    def test_chip_bounds_uses_each_component_chip(self):
+        from qiskit_metal.qlibrary.tlines.polyline_cpw import PolylineCPW
+
+        design = designs.DesignFlipChip()
+        design.overwrite_enabled = True
+        design.chips["Q_chip"]["size"].update(size_x="2mm", size_y="2mm")
+        # Inside the 9 mm C_chip, outside the 2 mm Q_chip.
+        PolylineCPW(design, "bot", options=Dict(chip="C_chip", points=[[2, 0], [3, 0]]))
+        PolylineCPW(design, "far", options=Dict(chip="Q_chip", points=[[2, 0], [3, 0]]))
+        design.rebuild()
+        self.assertEqual(list(ChipBoundsRule(chip="C_chip").check(design)), [])
+        findings = list(ChipBoundsRule().check(design))
+        self.assertEqual([f.components for f in findings], [("far",)])
+        self.assertIn("'Q_chip'", findings[0].message)
+
+    def test_ground_continuity_uses_only_its_chip_cuts(self):
+        design = self._flip_chip(("top", "Q_chip", [[-4.5, 0], [4.5, 0]]))
+        self.assertEqual(list(GroundContinuityRule(chip="C_chip").check(design)), [])
+        findings = list(GroundContinuityRule().check(design))
+        self.assertEqual(len(findings), 1)
+        self.assertIn("of chip 'Q_chip'", findings[0].message)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

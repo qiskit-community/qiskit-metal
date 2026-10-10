@@ -37,6 +37,7 @@ from shapely.strtree import STRtree
 
 from .core import (
     DesignRule,
+    _row_chip,
     Finding,
     Severity,
     chip_bounds,
@@ -44,6 +45,7 @@ from .core import (
     component_geometry_by_layer,
     component_names_by_id,
     connected_component_pairs,
+    geometry_chips,
     representative_point,
 )
 
@@ -55,6 +57,27 @@ if TYPE_CHECKING:  # pragma: no cover - typing only
 _EMPTY_FRAME = pd.DataFrame(
     columns=["geometry", "width", "layer", "subtract", "component", "name"]
 )
+
+
+def _by_chip_and_layer(design: "QDesign"):
+    """Yield ``(chip suffix, layer, {name: geometry})`` per chip and layer.
+
+    Metal on two chips of a flip-chip design shares layer numbers but not a
+    plane, so same-layer comparisons are made within one chip only. The
+    suffix names the chip in messages when the design has more than one.
+    """
+    chips = geometry_chips(design)
+    for chip in chips:
+        multi = len(chips) > 1 or len(design._chips) > 1
+        suffix = f" of chip '{chip}'" if multi else ""
+        by_layer = component_geometry_by_layer(design, chip=chip)
+        for layer, geoms in sorted(by_layer.items()):
+            yield suffix, layer, geoms
+
+
+def _design_chips(design: "QDesign", chip: str | None) -> list[str]:
+    """``[chip]``, or every chip the design defines when ``chip`` is None."""
+    return list(design._chips) if chip is None else [chip]
 
 
 def _parse(design: "QDesign", value) -> float:
@@ -75,6 +98,10 @@ class MetalOverlapRule(DesignRule):
     a shared pin needs a tolerance: an abutment has ~zero area, a real
     crossing of two CPW centre conductors has hundreds of um^2.
     ``min_area`` sets that cut, in design units squared.
+
+    Shapes are compared only within one layer of one chip; metal on the
+    two facing chips of a flip-chip design is not checked against each
+    other.
     """
 
     name = "metal-overlap"
@@ -88,7 +115,7 @@ class MetalOverlapRule(DesignRule):
 
     def check(self, design: "QDesign") -> Iterable[Finding]:
         connected = connected_component_pairs(design)
-        for layer, geoms in sorted(component_geometry_by_layer(design).items()):
+        for chip_suffix, layer, geoms in _by_chip_and_layer(design):
             names = list(geoms)
             if len(names) < 2:
                 continue
@@ -116,6 +143,7 @@ class MetalOverlapRule(DesignRule):
                         message=(
                             f"{a} and {b} overlap by "
                             f"{inter.area * 1e6:.0f} um^2 of metal on layer {layer}"
+                            f"{chip_suffix}"
                         ),
                         components=(a, b),
                         location=representative_point(inter),
@@ -138,6 +166,9 @@ class MetalSpacingRule(DesignRule):
     component it connects to) are at distance 0 and would swamp the report,
     so touching pairs are skipped -- :class:`MetalOverlapRule` is what
     distinguishes an intended junction from a short.
+
+    As for :class:`MetalOverlapRule`, only shapes on the same layer of the
+    same chip are compared.
     """
 
     name = "metal-spacing"
@@ -150,7 +181,7 @@ class MetalSpacingRule(DesignRule):
     def check(self, design: "QDesign") -> Iterable[Finding]:
         limit = _parse(design, self.min_spacing)
         connected = connected_component_pairs(design)
-        for _layer, geoms in sorted(component_geometry_by_layer(design).items()):
+        for _suffix, _layer, geoms in _by_chip_and_layer(design):
             yield from self._check_layer(geoms, limit, connected)
 
     def _check_layer(self, geoms, limit, connected) -> Iterable[Finding]:
@@ -247,34 +278,39 @@ class ChipBoundsRule(DesignRule):
     Anything past the edge is silently clipped downstream -- the renderers
     cut it against the chip extent, so a launchpad hanging off the edge
     turns into a hole in the ground plane rather than an obvious error.
+
+    Geometry is checked against the outline of the chip it is on. ``chip``
+    restricts the check to one chip; the default, ``None``, checks every
+    chip in ``design.chips`` (``"main"`` alone for a planar design).
     """
 
     name = "chip-bounds"
     description = "Component geometry extends beyond the chip outline."
 
-    def __init__(self, chip: str = "main", severity: Severity = Severity.ERROR):
+    def __init__(self, chip: str | None = None, severity: Severity = Severity.ERROR):
         self.chip = chip
         self.severity = severity
 
     def check(self, design: "QDesign") -> Iterable[Finding]:
-        minx, miny, maxx, maxy = chip_bounds(design, self.chip)
-        geoms = component_geometry(design, subtract=None)
-        for name in sorted(geoms):
-            gminx, gminy, gmaxx, gmaxy = geoms[name].bounds
-            over = max(gmaxx - maxx, gmaxy - maxy, minx - gminx, miny - gminy)
-            if over > 0:
-                yield Finding(
-                    rule=self.name,
-                    severity=self.severity,
-                    message=(
-                        f"{name} extends {over * 1000:.1f} um beyond the "
-                        f"'{self.chip}' chip outline"
-                    ),
-                    components=(name,),
-                    location=representative_point(geoms[name]),
-                    value=over,
-                    limit=0.0,
-                )
+        for chip in _design_chips(design, self.chip):
+            minx, miny, maxx, maxy = chip_bounds(design, chip)
+            geoms = component_geometry(design, subtract=None, chip=chip)
+            for name in sorted(geoms):
+                gminx, gminy, gmaxx, gmaxy = geoms[name].bounds
+                over = max(gmaxx - maxx, gmaxy - maxy, minx - gminx, miny - gminy)
+                if over > 0:
+                    yield Finding(
+                        rule=self.name,
+                        severity=self.severity,
+                        message=(
+                            f"{name} extends {over * 1000:.1f} um beyond the "
+                            f"'{chip}' chip outline"
+                        ),
+                        components=(name,),
+                        location=representative_point(geoms[name]),
+                        value=over,
+                        limit=0.0,
+                    )
 
 
 class ShortSegmentRule(DesignRule):
@@ -461,6 +497,10 @@ class GroundContinuityRule(DesignRule):
     a parasitic cavity mode; [GDSII2Wafer]_ (R9) puts that at 50 um. It is
     **off by default** because a transmon pocket is a deliberate void far
     larger than that and would dominate the report.
+
+    Each chip's ground is built from that chip's outline and cuts only.
+    ``chip`` restricts the check to one chip; the default, ``None``, checks
+    every chip in ``design.chips``.
     """
 
     name = "ground-continuity"
@@ -468,7 +508,7 @@ class GroundContinuityRule(DesignRule):
 
     def __init__(
         self,
-        chip: str = "main",
+        chip: str | None = None,
         layer: int = 1,
         max_void_size=None,
         severity: Severity = Severity.WARNING,
@@ -486,11 +526,11 @@ class GroundContinuityRule(DesignRule):
         # nanometer slivers left where two etched edges almost coincide.
         self.min_link_width = min_link_width
 
-    def _ground_sheet(self, design: "QDesign"):
+    def _ground_sheet(self, design: "QDesign", chip: str):
         from shapely.geometry import box
         from shapely.ops import unary_union
 
-        minx, miny, maxx, maxy = chip_bounds(design, self.chip)
+        minx, miny, maxx, maxy = chip_bounds(design, chip)
         sheet = box(minx, miny, maxx, maxy)
         etched = [
             row["geometry"].buffer(row["width"] / 2.0, cap_style=2)
@@ -498,7 +538,9 @@ class GroundContinuityRule(DesignRule):
             else row["geometry"]
             for table in ("path", "poly")
             for _, row in design.qgeometry.tables.get(table, _EMPTY_FRAME).iterrows()
-            if bool(row["subtract"]) and int(row["layer"]) == self.layer
+            if bool(row["subtract"])
+            and int(row["layer"]) == self.layer
+            and _row_chip(row) == chip
         ]
         if not etched:
             return sheet
@@ -509,7 +551,13 @@ class GroundContinuityRule(DesignRule):
         return ground
 
     def check(self, design: "QDesign") -> Iterable[Finding]:
-        sheet = self._ground_sheet(design)
+        chips = _design_chips(design, self.chip)
+        for chip in chips:
+            suffix = f" of chip '{chip}'" if len(design._chips) > 1 else ""
+            yield from self._check_chip(design, chip, suffix)
+
+    def _check_chip(self, design, chip, suffix) -> Iterable[Finding]:
+        sheet = self._ground_sheet(design, chip)
         regions = [
             p for p in getattr(sheet, "geoms", [sheet]) if p.area > self.min_region_area
         ]
@@ -524,7 +572,7 @@ class GroundContinuityRule(DesignRule):
                 rule=self.name,
                 severity=self.severity,
                 message=(
-                    f"ground plane on layer {self.layer} is split into "
+                    f"ground plane on layer {self.layer}{suffix} is split into "
                     f"{len(regions)} disconnected regions (mm^2: {summary}); "
                     "confirm airbridges or vias tie them together -- this "
                     "check sees only same-layer metal"
@@ -536,9 +584,9 @@ class GroundContinuityRule(DesignRule):
 
         if self.max_void_size is not None:
             limit = _parse(design, self.max_void_size)
-            yield from self._check_voids(design, sheet, limit)
+            yield from self._check_voids(design, sheet, limit, chip, suffix)
 
-    def _check_voids(self, design, sheet, limit) -> Iterable[Finding]:
+    def _check_voids(self, design, sheet, limit, chip, suffix) -> Iterable[Finding]:
         """Flag etched voids that can inscribe a circle of diameter ``limit``.
 
         Eroding a void by half the limit and asking whether anything
@@ -547,7 +595,7 @@ class GroundContinuityRule(DesignRule):
         """
         from shapely.geometry import box
 
-        minx, miny, maxx, maxy = chip_bounds(design, self.chip)
+        minx, miny, maxx, maxy = chip_bounds(design, chip)
         voids = box(minx, miny, maxx, maxy).difference(sheet)
         for void in getattr(voids, "geoms", [voids]):
             if void.is_empty or void.buffer(-limit / 2.0).is_empty:
@@ -556,7 +604,7 @@ class GroundContinuityRule(DesignRule):
                 rule=self.name,
                 severity=Severity.WARNING,
                 message=(
-                    f"etched void on layer {self.layer} is wider than "
+                    f"etched void on layer {self.layer}{suffix} is wider than "
                     f"{limit * 1000:.0f} um and can host a parasitic mode"
                 ),
                 location=representative_point(void),
