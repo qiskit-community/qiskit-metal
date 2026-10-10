@@ -374,13 +374,8 @@ class Cheesing:
             else:
                 flat_nocheese.append(item)
         temp_keepout_cell.add(*flat_nocheese)
-        diff_holes = gdstk.boolean(
-            gather_holes_cell.get_polygons(),
-            temp_keepout_cell.get_polygons(),
-            "not",
-            precision=self.precision,
-            layer=self.layer,
-            datatype=self.datatype_cheese + 1,
+        diff_holes = self._holes_clear_of_keepout(
+            gather_holes_cell.get_polygons(), temp_keepout_cell.get_polygons()
         )
         diff_holes_cell_name = f"TOP_{self.chip_name}_{self.layer}_Cheese_diff"
         diff_holes_cell = self.lib.new_cell(diff_holes_cell_name)
@@ -388,6 +383,43 @@ class Cheesing:
 
         self.lib.remove(temp_keepout_cell)
         return diff_holes_cell
+
+    def _holes_clear_of_keepout(self, holes: list, keepout: list) -> list:
+        """Return the holes that do not overlap the keepout, whole.
+
+        A hole that straddles the keepout edge is dropped, not trimmed:
+        trimming leaves etched slivers whose width depends only on where
+        the grid falls, and can be far below the minimum feature size
+        (#1214). Overlap smaller than ``precision`` (holes that only touch
+        the keepout) does not count.
+
+        Args:
+            holes (list): gdstk polygons of the full hole grid.
+            keepout (list): gdstk polygons of the keepout region.
+
+        Returns:
+            list: The kept holes on ``layer``, datatype ``datatype_cheese + 1``.
+        """
+        if not holes:
+            return []
+        shapes = shapely.polygons([p.points for p in holes])
+        if keepout:
+            region = shapely.union_all(shapely.polygons([p.points for p in keepout]))
+            shapely.prepare(region)
+            # Shrink each hole by the precision so a hole that only touches
+            # the keepout, or overlaps it by rounding, is kept.
+            probe = shapely.buffer(shapes, -self.precision, join_style="mitre")
+            overlaps = shapely.intersects(region, probe)
+        else:
+            overlaps = np.zeros(len(holes), dtype=bool)
+        kept = []
+        for poly, drop in zip(holes, overlaps):
+            if drop:
+                continue
+            poly.layer = self.layer
+            poly.datatype = self.datatype_cheese + 1
+            kept.append(poly)
+        return kept
 
     def _get_all_holes(self) -> gdstk.Cell:
         """Return a cell with a grid of holes. The keepout has not been
