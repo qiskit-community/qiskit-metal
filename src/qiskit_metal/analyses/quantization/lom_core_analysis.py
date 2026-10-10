@@ -1595,8 +1595,12 @@ class CompositeSystem:
             for jj in range(ii, self.num_subsystems):
                 sub2 = self._subsystems[jj]
                 sub2_nodes = sub2.nodes
-                for node1 in sub1_nodes:
-                    for node2 in sub2_nodes:
+                for kk, node1 in enumerate(sub1_nodes):
+                    # Two nodes of the same subsystem (the two ends of a
+                    # TL_RESONATOR): 1/2 Q^T C_k^-1 Q holds
+                    # C^-1_12 Q_1 Q_2 once, so take each unordered pair once
+                    # (#1219). Pairs across subsystems are unordered already.
+                    for node2 in sub2_nodes[kk + 1 :] if ii == jj else sub2_nodes:
                         if node1 == node2:
                             continue
 

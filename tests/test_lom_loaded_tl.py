@@ -221,6 +221,121 @@ class TestLoadedTLTwoEndSigns(unittest.TestCase):
         self.assertEqual(np.sign(g1b * g2b), -np.sign(g12))
 
 
+# The #1219 circuit: two floating transmons, each coupled with 4 fF to one end
+# of a two-node TL_RESONATOR bus; c_dir between the transmon pads and c12
+# between the two bus ends. Capacitances in fF, inductances in nH.
+_BUS_VP, _BUS_Z0, _BUS_F, _LJ, _CJ = 0.4 * 299792458.0, 50.0, 6.15, 12.0, 2.0
+
+
+def _bus_system(c_dir=0.0, c12=0.0):
+    """CompositeSystem of the #1219 circuit with the transmons linearized
+    (``LUMPED_RESONATOR`` on the junction, L_J and C), so that an exact
+    linear circuit is the reference."""
+    import pandas as pd
+
+    from qiskit_metal.analyses.quantization.lom_core_analysis import (
+        Cell,
+        CompositeSystem,
+        Subsystem,
+    )
+
+    names = ["g", "q1a", "q1b", "q2a", "q2b", "b1", "b2"]
+    branch = {
+        ("q1a", "q1b"): 45, ("q2a", "q2b"): 45, ("q1a", "g"): 40,
+        ("q1b", "g"): 40, ("q2a", "g"): 40, ("q2b", "g"): 40,
+        ("q1a", "b1"): 4, ("q2a", "b2"): 4, ("b1", "g"): 20,
+        ("b2", "g"): 20, ("q1a", "q2a"): c_dir, ("b1", "b2"): c12,
+    }  # fmt: skip
+    cmat = pd.DataFrame(0.0, index=names, columns=names)
+    for (a, b), c in branch.items():
+        cmat.loc[a, a] += c
+        cmat.loc[b, b] += c
+        cmat.loc[a, b] -= c
+        cmat.loc[b, a] -= c
+    junctions = (("q1a", "q1b"), ("q2a", "q2b"))
+    cell = Cell(
+        dict(
+            node_rename={},
+            cap_mat=cmat,
+            jj_dict=dict(zip(junctions, ("j1", "j2"))),
+            ind_dict={j: _LJ for j in junctions},
+            cj_dict={j: _CJ for j in junctions},
+        )
+    )
+    bus_opts = dict(f_res=_BUS_F, Z0=_BUS_Z0, vp=_BUS_VP, truncated_dim=4)
+    subs = [
+        Subsystem(name=f"Q{i}", sys_type="LUMPED_RESONATOR", nodes=[f"j{i}"])
+        for i in (1, 2)
+    ]
+    subs.append(
+        Subsystem(
+            name="bus", sys_type="TL_RESONATOR", nodes=["b1", "b2"], q_opts=bus_opts
+        )
+    )
+    system = CompositeSystem(
+        subsystems=subs, cells=[cell], grd_node="g", nodes_force_keep=["b1", "b2"]
+    )
+    return system, cmat
+
+
+def _ladder_frequencies(system, cmat, sections=200):
+    """Normal-mode frequencies [GHz] of the same circuit with the qubits
+    linear (L_J, C_J) and the bus an LC ladder of the length the LOM assigns
+    to it. Independent of the LOM Hamiltonian assembly."""
+    from scipy.linalg import eigh
+
+    c_inv = np.asarray(system.circuitGraph().C_inv_k)
+    port = {b: system.node_index(b) for b in ("b1", "b2")}
+    loads = {b: 1 / c_inv[i, i] for b, i in port.items()}
+    *_, length = analyze_loaded_tl(_BUS_F * 1e3, _BUS_VP, _BUS_Z0, loads)
+    nodes = ["q1a", "q1b", "q2a", "q2b", "b1", "b2"]
+    idx = {n: i for i, n in enumerate(nodes)}
+    n0, dim = len(nodes), len(nodes) + sections - 1
+    cap = np.zeros((dim, dim))
+    cap[:n0, :n0] = cmat.loc[nodes, nodes].to_numpy() * 1e-15
+    k_inv = np.zeros((dim, dim))
+
+    def branch(mat, a, b, y):
+        mat[a, a] += y
+        mat[b, b] += y
+        mat[a, b] -= y
+        mat[b, a] -= y
+
+    for a, b in (("q1a", "q1b"), ("q2a", "q2b")):
+        branch(cap, idx[a], idx[b], _CJ * 1e-15)
+        branch(k_inv, idx[a], idx[b], 1 / (_LJ * 1e-9))
+    dz = length / sections
+    chain = [idx["b1"], *range(n0, dim), idx["b2"]]
+    for m, node in enumerate(chain):
+        cap[node, node] += dz / (_BUS_Z0 * _BUS_VP) * (0.5 if m in (0, sections) else 1)
+    for a, b in zip(chain[:-1], chain[1:]):
+        branch(k_inv, a, b, _BUS_VP / (_BUS_Z0 * dz))
+    w2 = eigh(k_inv, cap, eigvals_only=True)
+    f = np.sqrt(w2[w2 > (2 * np.pi * 1e9) ** 2]) / (2 * np.pi * 1e9)
+    return np.sort(f)
+
+
+class TestTwoNodeTLCoupling(unittest.TestCase):
+    """Couplings through a two-node TL_RESONATOR against an exact linear
+    circuit (#1219 follow-up)."""
+
+    def test_end_to_end_term_counted_once(self):
+        """C^-1_k[b1, b2] Q_b1 Q_b2 appears once in 1/2 Q^T C_k^-1 Q. 1 fF
+        between the bus ends moves the ladder bus 7.8 MHz down. The LOM bus,
+        counting the term once, is 0.24 MHz above the ladder (the rest is
+        second order in c12, through the omitted bus modes); counted twice,
+        as before, it was 7.3 MHz below."""
+        bus = []
+        for c12 in (0.0, 1.0):
+            system, cmat = _bus_system(c12=c12)
+            evals = system.add_interaction().eigenvals(evals_count=4)
+            f_lom = (evals[3] - evals[0]) / 1e3  # GHz; levels 1, 2 are the qubits
+            bus.append((f_lom, _ladder_frequencies(system, cmat)[2]))
+        (_, f_ladder_0), (f_lom, f_ladder) = bus
+        self.assertGreater(f_ladder_0 - f_ladder, 7e-3)
+        self.assertLess(abs(f_lom - f_ladder), 1e-3)
+
+
 class TestLoadedTLInputUnchanged(unittest.TestCase):
     """The caller's ``cap_loading`` dict is left alone (#1232)."""
 
