@@ -190,5 +190,96 @@ class TestMathieuLevels(unittest.TestCase):
         np.testing.assert_allclose(got, ref[:4], rtol=0, atol=1e-9)
 
 
+def ref_charge_matrix(Ej, Ec, ng, nlev=6):
+    """Reference <i|n|j> (signs as numpy's eigh returns them) and levels."""
+    n = np.arange(-NCUT, NCUT + 1)
+    H = np.diag(4 * Ec * (n - ng) ** 2) - 0.5 * Ej * (
+        np.eye(len(n), k=1) + np.eye(len(n), k=-1)
+    )
+    E, V = np.linalg.eigh(H)
+    V = V[:, :nlev]
+    return E[:nlev], V.T @ (n[:, None] * V)
+
+
+class TestSignedChargeMatrixElements(unittest.TestCase):
+    """#1221: n_ij is the signed <i|n|j> in a fixed gauge.
+
+    Eigenvector signs are arbitrary, so only gauge-invariant quantities are
+    compared with the reference: magnitudes and loop products such as
+    n01 n12 n20. ``|<i|n|j>|`` gets the loop sign wrong whenever ng is not
+    0 or 1/2."""
+
+    RATIOS = (1.0, 5.0, 20.0, 50.0)
+    NG = (0.0, 0.1, 0.25, 0.5, -0.3)
+    LOOPS = ((0, 1, 2), (0, 1, 3), (1, 2, 3), (0, 2, 3))
+
+    def test_issue_numbers(self):
+        """Ej/Ec = 5, ng = 0.25: n02 = 0.129, loop n01 n12 n20 = -0.0354."""
+        h = Hcpb(nlevels=15, Ej=5.0, Ec=1.0, ng=0.25)
+        self.assertAlmostEqual(abs(h.n_ij(0, 2)), 0.12898, places=5)
+        loop = h.n_ij(0, 1) * h.n_ij(1, 2) * h.n_ij(2, 0)
+        self.assertAlmostEqual(loop, -0.035434, places=6)
+
+    def test_loop_products_match_reference(self):
+        for ratio in self.RATIOS:
+            for ng in self.NG:
+                _, N = ref_charge_matrix(ratio, 1.0, ng)
+                h = Hcpb(nlevels=15, Ej=ratio, Ec=1.0, ng=ng)
+                for i, j, k in self.LOOPS:
+                    ref = N[i, j] * N[j, k] * N[k, i]
+                    got = h.n_ij(i, j) * h.n_ij(j, k) * h.n_ij(k, i)
+                    self.assertAlmostEqual(
+                        got, ref, places=10, msg=f"Ej/Ec={ratio}, ng={ng}, {i}{j}{k}"
+                    )
+                # places=6: at Ej/Ec = 1, ng = 1/2 levels 4 and 5 are split by
+                # only 4e-7 Ec, so their eigenvectors are ill-conditioned.
+                for i in range(5):
+                    for j in range(5):
+                        self.assertAlmostEqual(
+                            abs(h.n_ij(i, j)), abs(N[i, j]), places=6
+                        )
+
+    def test_gauge_convention(self):
+        """n_{k,k+1} > 0 along the ladder and n_ij is symmetric."""
+        for ratio in self.RATIOS:
+            for ng in self.NG:
+                h = Hcpb(nlevels=15, Ej=ratio, Ec=1.0, ng=ng)
+                for k in range(5):
+                    self.assertGreater(h.n_ij(k, k + 1), 0)
+                for i in range(5):
+                    for j in range(5):
+                        self.assertAlmostEqual(h.n_ij(i, j), h.n_ij(j, i), places=12)
+
+    def test_coupled_spectrum_matches_reference(self):
+        """Transmon-resonator spectrum built from n_to_qutip agrees with the
+        one built from the reference matrix (gauge invariant)."""
+        Ec, ng, g, nt, nr = 300.0, 0.25, 100.0, 4, 8
+        E, N = ref_charge_matrix(5 * Ec, Ec, ng, nt)
+        h = Hcpb(nlevels=15, Ej=5 * Ec, Ec=Ec, ng=ng)
+        wr = h.fij(0, 1) - 500.0
+        a = np.diag(np.sqrt(np.arange(1, nr)), 1)
+
+        def spectrum(n_mat):
+            n_mat = n_mat.copy()
+            np.fill_diagonal(n_mat, 0)
+            H = (
+                np.kron(np.diag(E - E[0]), np.eye(nr))
+                + np.kron(np.eye(nt), wr * a.T @ a)
+                + g * np.kron(n_mat, a + a.T)
+            )
+            return np.linalg.eigvalsh(H)
+
+        got = spectrum(h.n_to_qutip(nt).full().real)
+        np.testing.assert_allclose(got, spectrum(N), rtol=0, atol=1e-6)
+
+    def test_thresh_uses_magnitude(self):
+        h = Hcpb(nlevels=15, Ej=5.0, Ec=1.0, ng=0.25)
+        n_op = h.n_to_qutip(3, thresh=0.05).full().real
+        self.assertAlmostEqual(n_op[0, 2], h.n_ij(0, 2))  # -0.129 is kept
+        self.assertLess(n_op[0, 2], -0.05)
+        n_op = h.n_to_qutip(3, thresh=0.2).full().real
+        self.assertEqual(n_op[0, 2], 0.0)
+
+
 if __name__ == "__main__":
     unittest.main()

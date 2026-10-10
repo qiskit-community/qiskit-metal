@@ -4,6 +4,8 @@ from copy import deepcopy
 
 import pandas as pd
 
+from qiskit_metal.toolbox_python.pandas_tables import concat_tables
+
 
 def determine_larger_box(
     minx: Union[None, float],
@@ -119,8 +121,8 @@ class BoundsForPathAndPolyTables:
 
             # Concat the frames and then determine the total bounds of all the geometries.
             # maybe, change name to package_cavity
-            path_and_poly_with_valid_comps = pd.concat(frames, ignore_index=True)
-            path_poly_and_junction_valid_comps = pd.concat(
+            path_and_poly_with_valid_comps = concat_tables(frames, ignore_index=True)
+            path_poly_and_junction_valid_comps = concat_tables(
                 frames_with_jj, ignore_index=True
             )
             minx, miny, maxx, maxy = list(
@@ -152,8 +154,8 @@ class BoundsForPathAndPolyTables:
         else:  # Incorporate all the chip sizes.
             frames = [path_dataframe, poly_dataframe]
             frames_with_jj = [path_dataframe, poly_dataframe, junction_dataframe]
-            path_and_poly_with_valid_comps = pd.concat(frames, ignore_index=True)
-            path_poly_and_junction_valid_comps = pd.concat(
+            path_and_poly_with_valid_comps = concat_tables(frames, ignore_index=True)
+            path_poly_and_junction_valid_comps = concat_tables(
                 frames_with_jj, ignore_index=True
             )
             return (

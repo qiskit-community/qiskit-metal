@@ -1399,7 +1399,7 @@ class QAnsysRenderer(QRendererAnalysis):
             pin_dict = self.design.components[comp].pins[pin]
             width, gap = parse_units([pin_dict["width"], pin_dict["gap"]])
             mid, normal = parse_units(pin_dict["middle"]), pin_dict["normal"]
-            chip_name = self.design.components[comp].options.chip
+            chip_name = pin_dict["chip"]
             qc_chip_z = parse_units(self.design.get_chip_z(chip_name))
             rect_mid = np.append(mid + normal * gap / 2, [qc_chip_z])
             # Assumption: pins only point in x or y directions
@@ -1419,39 +1419,53 @@ class QAnsysRenderer(QRendererAnalysis):
         """
         Obtain a list of chips on which the selection of components, if valid, resides.
 
+        A component's chips are the ones its qgeometry was drawn on. ``options.chip``
+        is only the default that ``add_qgeometry`` uses, so it is used here just for
+        components that have no qgeometry.
+
         Returns:
             List[str]: Chips to render.
         """
         if self.case == 2:  # One or more components not in QDesign.
             self.logger.warning("One or more components not found.")
             return []
+        icomps = self.design._components
+        # case 1: all components rendered; otherwise a strict subset.
+        comp_ids = list(icomps) if self.case == 1 else list(self.qcomp_ids)
+        geometry_chips = self._chips_by_component(comp_ids)
         chip_names = set()
-        if self.case == 1:  # All components rendered.
-            comps = self.design.components
-            for qcomp in comps:
-                if "chip" not in comps[qcomp].options:
-                    self.chip_designation_error()
-                    return []
-                # elif comps[qcomp].options.chip != 'main':
-                #    self.chip_not_main()
-                #    return []
-                chip_names.add(comps[qcomp].options.chip)
-        else:  # Strict subset rendered.
-            icomps = self.design._components
-            for qcomp_id in self.qcomp_ids:
-                if "chip" not in icomps[qcomp_id].options:
-                    self.chip_designation_error()
-                    return []
-                # elif icomps[qcomp_id].options.chip != 'main':
-                #    self.chip_not_main()
-                #    return []
-                chip_names.add(icomps[qcomp_id].options.chip)
+        for qcomp_id in comp_ids:
+            if "chip" not in icomps[qcomp_id].options:
+                self.chip_designation_error()
+                return []
+            chip_names.update(
+                geometry_chips.get(qcomp_id) or {icomps[qcomp_id].options.chip}
+            )
 
         for unique_name in chip_names:
             if unique_name not in self.design.chips:
                 self.chip_not_in_design_error(unique_name)
 
         return list(chip_names)
+
+    def _chips_by_component(self, comp_ids: list) -> dict:
+        """Chips each component's qgeometry was drawn on.
+
+        Args:
+            comp_ids (list): Ids of the components to look up.
+
+        Returns:
+            dict: Component id to the set of chip names in its qgeometry rows.
+        """
+        chips = defaultdict(set)
+        for table in self.design.qgeometry.tables.values():
+            if table.empty or "chip" not in table.columns:
+                continue
+            rows = table[table["component"].isin(comp_ids)]
+            for comp_id, chip in zip(rows["component"], rows["chip"]):
+                if isinstance(chip, str):
+                    chips[comp_id].add(chip)
+        return chips
 
     def chip_designation_error(self):
         """

@@ -1065,12 +1065,12 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         # Diagonal entries are zeroed by construction.
         for k in range(n):
             self.assertAlmostEqual(full[k, k], 0.0)
-        # Off-diagonal magnitudes match hcpb.n_ij(i, j).
+        # Off-diagonal entries are the signed hcpb.n_ij(i, j) (#1221).
         for i in range(n):
             for j in range(n):
                 if i != j:
                     self.assertAlmostEqualRel(
-                        abs(full[i, j]), hcpb.n_ij(i, j), rel_tol=1e-10
+                        full[i, j].real, hcpb.n_ij(i, j), rel_tol=1e-10
                     )
 
     def test_analysis_transmon_charge_basis_n_to_qutip_thresh(self):

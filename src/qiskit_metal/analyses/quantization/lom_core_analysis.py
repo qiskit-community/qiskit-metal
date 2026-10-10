@@ -1117,6 +1117,23 @@ class TLResonatorBuilder(QuantumBuilder):
             takes advantage of the scQbuits package (https://scqubits.readthedocs.io).
             Consequently, the default options correspond to the default options of
             the qubit classes in scQubits
+
+    Single-mode model:
+        The line is represented by its loaded fundamental only (one
+        oscillator). arXiv:2103.10344 Eq. 18 expands the line in all its modes
+        m; the modes m >= 2 are left out here. Through a line with one node
+        on each end, mode m couples the two ends with the sign of
+        u_m(0) u_m(L), i.e. (-1)^m, so the omitted modes reduce a
+        bus-mediated exchange coupling that the fundamental gives. In the
+        #1219 circuit (two linearized transmons at 5.58 GHz, each coupled
+        with 4 fF to one end of a 6.15 GHz bus) the single-mode J is 1.03 MHz
+        against 0.89 MHz for the exact linear circuit (+15 %), and 3.82
+        against 3.64 MHz (+5 %) with 0.3 fF of direct capacitance between
+        the qubits. Keeping N modes converges to the exact value with
+        alternating sign (N = 2: 0.80, N = 3: 1.00, N = 40: 0.88,
+        N = 640: 0.893 MHz). The loading of the qubits by the line is
+        missing in the same way (here the qubits come out ~6 MHz high).
+        ``tests/test_lom_loaded_tl.py`` pins these numbers.
     """
 
     system_type = "TL_RESONATOR"
@@ -1595,8 +1612,12 @@ class CompositeSystem:
             for jj in range(ii, self.num_subsystems):
                 sub2 = self._subsystems[jj]
                 sub2_nodes = sub2.nodes
-                for node1 in sub1_nodes:
-                    for node2 in sub2_nodes:
+                for kk, node1 in enumerate(sub1_nodes):
+                    # Two nodes of the same subsystem (the two ends of a
+                    # TL_RESONATOR): 1/2 Q^T C_k^-1 Q holds
+                    # C^-1_12 Q_1 Q_2 once, so take each unordered pair once
+                    # (#1219). Pairs across subsystems are unordered already.
+                    for node2 in sub2_nodes[kk + 1 :] if ii == jj else sub2_nodes:
                         if node1 == node2:
                             continue
 
