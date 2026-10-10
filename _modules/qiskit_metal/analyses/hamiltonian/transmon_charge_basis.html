@@ -522,6 +522,33 @@
         <span class="p">)</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_fix_phases</span><span class="p">(</span><span class="n">evecs</span><span class="p">,</span> <span class="n">n_op</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Fix the sign of each (real) eigenvector, in place and returned.</span>
+
+<span class="sd">    ``eigh_tridiagonal`` returns each eigenvector with an arbitrary sign. The</span>
+<span class="sd">    convention used here: the largest-magnitude charge component of the</span>
+<span class="sd">    ground state is positive, and every following state is signed so that</span>
+<span class="sd">    ``&lt;k|n|k+1&gt; &gt; 0`` along the ladder. A link with ``|&lt;k|n|k+1&gt;| &lt; 1e-12``</span>
+<span class="sd">    gives no sign; that state then has its largest-magnitude component</span>
+<span class="sd">    positive instead.</span>
+<span class="sd">    """</span>
+    <span class="n">nstates</span> <span class="o">=</span> <span class="n">evecs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">largest_positive</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">evecs</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v</span><span class="p">))]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">evecs</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">v</span>
+
+    <span class="n">largest_positive</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nstates</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">evecs</span><span class="p">[:,</span> <span class="n">k</span><span class="p">],</span> <span class="n">n_op</span> <span class="o">*</span> <span class="n">evecs</span><span class="p">[:,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">link</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">:</span>
+            <span class="n">largest_positive</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">link</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">evecs</span><span class="p">[:,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">evecs</span><span class="p">[:,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">evecs</span>
+
+
 <div class="viewcode-block" id="Hcpb">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html#qiskit_metal.analyses.Hcpb">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Hcpb</span><span class="p">:</span>
@@ -610,7 +637,7 @@
         <span class="n">ham_off</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Ej</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_off</span>
         <span class="n">evals</span><span class="p">,</span> <span class="n">evecs</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eigh_tridiagonal</span><span class="p">(</span><span class="n">ham_diag</span><span class="p">,</span> <span class="n">ham_off</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">evals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">evals</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">evecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">evecs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">evecs</span> <span class="o">=</span> <span class="n">_fix_phases</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">evecs</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_diag</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Hcpb.evalue_k">
 <a class="viewcode-back" href="../../../../apidocs/qiskit_metal.analyses.Hcpb.html#qiskit_metal.analyses.Hcpb.evalue_k">[docs]</a>
@@ -635,7 +662,10 @@
 <span class="sd">            k (int): Index of eigenvector</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            array: Eigenvector of the \|k&gt; level of the CPB Hamiltonian</span>
+<span class="sd">            array: Eigenvector of the \|k&gt; level of the CPB Hamiltonian, in</span>
+<span class="sd">            the charge basis ``n = -nlevels ... nlevels``. Real, with the sign</span>
+<span class="sd">            convention ``&lt;k|n|k+1&gt; &gt; 0`` (the ground state has its</span>
+<span class="sd">            largest-magnitude component positive).</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evecs</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span></div>
 
@@ -705,6 +735,15 @@
 <span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the value of the number operator for coupling elements</span>
 <span class="sd">        together in the energy eigen-basis.</span>
 
+<span class="sd">        The eigenvectors are real (the Hamiltonian is real symmetric for every</span>
+<span class="sd">        ``ng``), and their signs follow a fixed convention: ``n_ij(k, k+1) &gt; 0``</span>
+<span class="sd">        for every ``k`` (see ``evec_k``). The other elements carry the sign</span>
+<span class="sd">        that follows, so ``n_ij(j, i) == n_ij(i, j)`` and gauge-invariant</span>
+<span class="sd">        products such as ``n_ij(0, 1) * n_ij(1, 2) * n_ij(2, 0)`` (negative</span>
+<span class="sd">        at ``ng = 0.25``) come out right. Up to 0.9.0 this returned</span>
+<span class="sd">        ``|&lt;i|n|j&gt;|``, which is gauge-equivalent to the signed matrix only</span>
+<span class="sd">        at ``ng = 0`` or ``ng = 1/2``.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            i (int): \|i&gt; Index of the transmon</span>
 <span class="sd">            j (int): \|j&gt; Index of the transmon</span>
@@ -712,12 +751,10 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            float: Matrix element corresponding to the</span>
 <span class="sd">            number operator in the transmon basis</span>
-<span class="sd">            `n_ij = |&lt;i|n|j&gt;|`</span>
+<span class="sd">            `n_ij = &lt;i|n|j&gt;` (real, signed)</span>
 <span class="sd">        """</span>
         <span class="n">n_op</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_nlevels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nlevels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">n_ij</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evec_k</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="o">*</span> <span class="n">n_op</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">evec_k</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
-        <span class="n">n_ij</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">n_ij</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">n_ij</span></div>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evec_k</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">n_op</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">evec_k</span><span class="p">(</span><span class="n">j</span><span class="p">)))</span></div>
 
 
 <div class="viewcode-block" id="Hcpb.h0_to_qutip">
@@ -749,13 +786,15 @@
 <span class="sd">            n_transmon (int): Number of energy levels to consider</span>
 <span class="sd">            thresh (float): Threshold for keeping small values</span>
 <span class="sd">                            in the number operator i.e `n_{i,i+2}`</span>
-<span class="sd">                            terms drop off exponentially. If None</span>
+<span class="sd">                            terms drop off exponentially. Elements with</span>
+<span class="sd">                            ``|n_ij| &lt; thresh`` are set to zero. If None</span>
 <span class="sd">                            retain all terms. Defaults to None</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Qobj: Returns a Qutip Qobj corresponding to the</span>
 <span class="sd">            number operator for defining couplings in the</span>
-<span class="sd">            energy eigen-basis.</span>
+<span class="sd">            energy eigen-basis. The off-diagonal elements are the signed</span>
+<span class="sd">            ``n_ij`` (real symmetric matrix); the diagonal is set to zero.</span>
 <span class="sd">        """</span>
         <span class="n">n_op</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_transmon</span><span class="p">,</span> <span class="n">n_transmon</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_transmon</span><span class="p">):</span>
@@ -765,7 +804,7 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_ij</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">thresh</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="n">thresh</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">thresh</span><span class="p">:</span>
                             <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
                     <span class="n">n_op</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
         <span class="k">return</span> <span class="n">qt</span><span class="o">.</span><span class="n">Qobj</span><span class="p">(</span><span class="n">n_op</span><span class="p">)</span></div>

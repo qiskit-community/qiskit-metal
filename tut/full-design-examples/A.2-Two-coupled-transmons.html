@@ -512,7 +512,7 @@
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
@@ -532,14 +532,6 @@
 <span class="n">design</span><span class="o">.</span><span class="n">chips</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">size_y</span> <span class="o">=</span> <span class="s2">"9mm"</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-09:27PM 19s INFO [_start_renderers]: Renderer=gmsh skipped: runtime dependency not installed (renderer_gmsh requires gmsh. Install with: pip install &#39;quantum-metal[mesh]&#39; (or the legacy alias &#39;quantum-metal[fem]&#39;)).
-</pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -617,72 +609,112 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-magenta-intense-fg ansi-bold">name:    </span><span class="ansi-blue-intense-fg ansi-bold">Q2</span>
-<span class="ansi-magenta-intense-fg ansi-bold">class:   </span><span class="ansi-blue-intense-fg ansi-bold">TransmonPocket        </span>
-<span class="ansi-magenta-intense-fg ansi-bold">options: </span>
-  &#39;pos_x&#39;             : &#39;2.5mm&#39;,
-  &#39;pos_y&#39;             : &#39;-1.5mm&#39;,
-  &#39;orientation&#39;       : &#39;0.0&#39;,
-  &#39;chip&#39;              : &#39;main&#39;,
-  &#39;layer&#39;             : &#39;1&#39;,
-  <span class="ansi-bold">&#39;connection_pads&#39;   </span>: {
-       <span class="ansi-bold">&#39;readout&#39;           </span>: {
-            &#39;pad_gap&#39;           : &#39;15um&#39;,
-            &#39;pad_width&#39;         : &#39;125um&#39;,
-            &#39;pad_height&#39;        : &#39;30um&#39;,
-            &#39;pad_cpw_shift&#39;     : &#39;5um&#39;,
-            &#39;pad_cpw_extent&#39;    : &#39;25um&#39;,
-            &#39;cpw_width&#39;         : &#39;cpw_width&#39;,
-            &#39;cpw_gap&#39;           : &#39;cpw_gap&#39;,
-            &#39;cpw_extend&#39;        : &#39;100um&#39;,
-            &#39;pocket_extent&#39;     : &#39;5um&#39;,
-            &#39;pocket_rise&#39;       : &#39;65um&#39;,
-            &#39;loc_W&#39;             : 1,
-            &#39;loc_H&#39;             : 1,
-                             },
-       <span class="ansi-bold">&#39;coupler&#39;           </span>: {
-            &#39;pad_gap&#39;           : &#39;15um&#39;,
-            &#39;pad_width&#39;         : &#39;125um&#39;,
-            &#39;pad_height&#39;        : &#39;30um&#39;,
-            &#39;pad_cpw_shift&#39;     : &#39;5um&#39;,
-            &#39;pad_cpw_extent&#39;    : &#39;25um&#39;,
-            &#39;cpw_width&#39;         : &#39;cpw_width&#39;,
-            &#39;cpw_gap&#39;           : &#39;cpw_gap&#39;,
-            &#39;cpw_extend&#39;        : &#39;100um&#39;,
-            &#39;pocket_extent&#39;     : &#39;5um&#39;,
-            &#39;pocket_rise&#39;       : &#39;65um&#39;,
-            &#39;loc_W&#39;             : -1,
-            &#39;loc_H&#39;             : -1,
-                             },
-                        },
-  &#39;pad_gap&#39;           : &#39;30um&#39;,
-  &#39;inductor_width&#39;    : &#39;20um&#39;,
-  &#39;pad_width&#39;         : &#39;425um&#39;,
-  &#39;pad_height&#39;        : &#39;90um&#39;,
-  &#39;pocket_width&#39;      : &#39;650um&#39;,
-  &#39;pocket_height&#39;     : &#39;650um&#39;,
-  &#39;hfss_wire_bonds&#39;   : False,
-  &#39;q3d_wire_bonds&#39;    : False,
-  &#39;aedt_q3d_wire_bonds&#39;: False,
-  &#39;aedt_hfss_wire_bonds&#39;: False,
-  &#39;hfss_inductance&#39;   : &#39;10nH&#39;,
-  &#39;hfss_capacitance&#39;  : 0,
-  &#39;hfss_resistance&#39;   : 0,
-  &#39;hfss_mesh_kw_jj&#39;   : 7e-06,
-  &#39;q3d_inductance&#39;    : &#39;10nH&#39;,
-  &#39;q3d_capacitance&#39;   : 0,
-  &#39;q3d_resistance&#39;    : 0,
-  &#39;q3d_mesh_kw_jj&#39;    : 7e-06,
-  &#39;gds_cell_name&#39;     : &#39;my_other_junction&#39;,
-  &#39;aedt_q3d_inductance&#39;: 1e-08,
-  &#39;aedt_q3d_capacitance&#39;: 0,
-  &#39;aedt_hfss_inductance&#39;: 1e-08,
-  &#39;aedt_hfss_capacitance&#39;: 0,
-<span class="ansi-magenta-intense-fg ansi-bold">module:  </span><span class="ansi-blue-intense-fg ansi-bold">qiskit_metal.qlibrary.qubits.transmon_pocket</span>
-<span class="ansi-magenta-intense-fg ansi-bold">id:      </span><span class="ansi-blue-intense-fg ansi-bold">2</span>
-</pre></div></div>
+<div class="output_area rendered_html docutils container">
+<style>
+.qm-card { font-family: var(--jp-ui-font-family, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif); font-size: 13px; line-height: 1.4; color: inherit;
+  background: transparent; text-align: left; border: 1px solid rgba(128,128,128,.3);
+  border-radius: 10px; padding: 10px 14px 6px 14px; margin: 4px 0 10px 0;
+  max-width: 1100px; }
+.qm-card .qm-title { display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 8px; margin: 0 0 8px 0; }
+.qm-card .qm-name { font-size: 16px; font-weight: 650; }
+.qm-card .qm-badge { font-size: 11px; font-weight: 600; padding: 1px 8px;
+  border-radius: 999px; background: rgba(59,130,246,.16); color: inherit;
+  border: 1px solid rgba(59,130,246,.35); }
+.qm-card .qm-meta { font-size: 12px; opacity: .7; }
+.qm-card details { margin: 4px 0 8px 0; }
+.qm-card summary { cursor: pointer; font-weight: 600; padding: 3px 0;
+  list-style-position: inside; }
+.qm-card summary .qm-meta { font-weight: 400; margin-left: 6px; }
+.qm-card table { border-collapse: separate; border-spacing: 0; margin: 4px 0 6px 0;
+  color: inherit; background: transparent; width: auto; }
+.qm-card table th, .qm-card table td { text-align: left !important;
+  vertical-align: top; padding: 3px 10px; border: 0 !important; color: inherit;
+  background: transparent; }
+.qm-card table th { font-size: 11px; font-weight: 650; text-transform: uppercase;
+  letter-spacing: .04em; opacity: .75; border-bottom: 1px solid rgba(128,128,128,.35) !important; }
+.qm-card table tbody tr:nth-child(even) td { background: rgba(128,128,128,.06); }
+.qm-card table tbody tr:hover td { background: rgba(59,130,246,.08); }
+.qm-card td.qm-key { font-family: var(--jp-code-font-family, ui-monospace, monospace);
+  white-space: nowrap; }
+.qm-card td.qm-val { font-family: var(--jp-code-font-family, ui-monospace, monospace);
+  white-space: nowrap; }
+.qm-card td.qm-doc { opacity: .78; max-width: 40em; white-space: normal; }
+.qm-card tr.qm-group td { font-weight: 650; opacity: .9; }
+.qm-card tr.qm-changed td { background: rgba(245,158,11,.14) !important; }
+.qm-card tr.qm-changed td.qm-key { box-shadow: inset 3px 0 0 rgba(245,158,11,.9); }
+.qm-card .qm-dot { display: inline-block; width: .6em; height: .6em;
+  border-radius: 50%; background: rgba(245,158,11,.9); margin-right: 4px; }
+.qm-card .qm-legend { font-size: 11px; opacity: .75; margin: 0 0 4px 0; }
+.qm-card img { max-width: 320px; height: auto; display: block; margin: 2px 0 8px 0;
+  border-radius: 6px; }
+</style>
+
+<div class="qm-card">
+<div class="qm-title"><span class="qm-name">Q2</span><span class="qm-badge">TransmonPocket</span><span class="qm-meta">id 2 &middot; 52 options, 7 changed &middot; 2 pins, 0 connected</span></div>
+<img alt="Q2" src="data:image/png;base64,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">
+<details open><summary>Options<span class="qm-meta">7 changed from the defaults</span></summary>
+<div class="qm-legend"><span class="qm-dot"></span>changed from the class default (hover the name for the default)</div>
+<table><thead><tr><th>option</th><th>value</th><th>parsed</th><th>description</th></tr></thead><tbody>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:10px" title="default: &#x27;0.0um&#x27;">pos_x</td><td class="qm-val">&#x27;2.5mm&#x27;</td><td class="qm-val">2.5</td><td class="qm-doc">The x/y position of the center of the QComponent.</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:10px" title="default: &#x27;0.0um&#x27;">pos_y</td><td class="qm-val">&#x27;-1.5mm&#x27;</td><td class="qm-val">-1.5</td><td class="qm-doc">The x/y position of the center of the QComponent.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">orientation</td><td class="qm-val">&#x27;0.0&#x27;</td><td class="qm-val">0.0</td><td class="qm-doc">The primary direction in degrees of the QComponent. Expressed counter-clockwise orientation.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">chip</td><td class="qm-val">&#x27;main&#x27;</td><td class="qm-val">&#x27;main&#x27;</td><td class="qm-doc">Chip holding the QComponent.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">layer</td><td class="qm-val">&#x27;1&#x27;</td><td class="qm-val">1.0</td><td class="qm-doc">Manufacturing layer used for the QComponent.</td></tr>
+<tr class="qm-group"><td class="qm-key" style="padding-left:10px">connection_pads</td><td></td><td></td><td class="qm-doc">The dictionary which contains all active connection lines for the qubit.</td></tr>
+<tr class="qm-group"><td class="qm-key" style="padding-left:26px">readout</td><td></td><td></td><td class="qm-doc"></td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pad_gap</td><td class="qm-val">&#x27;15um&#x27;</td><td class="qm-val">0.015</td><td class="qm-doc">Space between the connector pad and the charge island it is nearest to</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pad_width</td><td class="qm-val">&#x27;125um&#x27;</td><td class="qm-val">0.125</td><td class="qm-doc">Width (x-axis) of the connector pad</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pad_height</td><td class="qm-val">&#x27;30um&#x27;</td><td class="qm-val">0.03</td><td class="qm-doc">Height (y-axis) of the connector pad</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pad_cpw_shift</td><td class="qm-val">&#x27;5um&#x27;</td><td class="qm-val">0.005</td><td class="qm-doc">Shift the connector pad cpw line by this much away from qubit</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pad_cpw_extent</td><td class="qm-val">&#x27;25um&#x27;</td><td class="qm-val">0.025</td><td class="qm-doc">Shift the connector pad cpw line by this much away from qubit</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">cpw_width</td><td class="qm-val">&#x27;cpw_width&#x27;</td><td class="qm-val">0.01</td><td class="qm-doc">Center trace width of the CPW line</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">cpw_gap</td><td class="qm-val">&#x27;cpw_gap&#x27;</td><td class="qm-val">0.006</td><td class="qm-doc">Dielectric gap width of the CPW line</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">cpw_extend</td><td class="qm-val">&#x27;100um&#x27;</td><td class="qm-val">0.1</td><td class="qm-doc">Depth the connector line extense into ground (past the pocket edge)</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pocket_extent</td><td class="qm-val">&#x27;5um&#x27;</td><td class="qm-val">0.005</td><td class="qm-doc">How deep into the pocket should we penetrate with the cpw connector (into the fround plane)</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pocket_rise</td><td class="qm-val">&#x27;65um&#x27;</td><td class="qm-val">0.065</td><td class="qm-doc">How far up or downrelative to the center of the transmon should we elevate the cpw connection point on the ground plane</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:42px" title="default: &#x27;+1&#x27;">loc_W</td><td class="qm-val">1</td><td class="qm-val">1</td><td class="qm-doc">Width location  only +-1</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:42px" title="default: &#x27;+1&#x27;">loc_H</td><td class="qm-val">1</td><td class="qm-val">1</td><td class="qm-doc">Height location only +-1</td></tr>
+<tr class="qm-group"><td class="qm-key" style="padding-left:26px">coupler</td><td></td><td></td><td class="qm-doc"></td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pad_gap</td><td class="qm-val">&#x27;15um&#x27;</td><td class="qm-val">0.015</td><td class="qm-doc">Space between the connector pad and the charge island it is nearest to</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pad_width</td><td class="qm-val">&#x27;125um&#x27;</td><td class="qm-val">0.125</td><td class="qm-doc">Width (x-axis) of the connector pad</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pad_height</td><td class="qm-val">&#x27;30um&#x27;</td><td class="qm-val">0.03</td><td class="qm-doc">Height (y-axis) of the connector pad</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pad_cpw_shift</td><td class="qm-val">&#x27;5um&#x27;</td><td class="qm-val">0.005</td><td class="qm-doc">Shift the connector pad cpw line by this much away from qubit</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pad_cpw_extent</td><td class="qm-val">&#x27;25um&#x27;</td><td class="qm-val">0.025</td><td class="qm-doc">Shift the connector pad cpw line by this much away from qubit</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">cpw_width</td><td class="qm-val">&#x27;cpw_width&#x27;</td><td class="qm-val">0.01</td><td class="qm-doc">Center trace width of the CPW line</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">cpw_gap</td><td class="qm-val">&#x27;cpw_gap&#x27;</td><td class="qm-val">0.006</td><td class="qm-doc">Dielectric gap width of the CPW line</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">cpw_extend</td><td class="qm-val">&#x27;100um&#x27;</td><td class="qm-val">0.1</td><td class="qm-doc">Depth the connector line extense into ground (past the pocket edge)</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pocket_extent</td><td class="qm-val">&#x27;5um&#x27;</td><td class="qm-val">0.005</td><td class="qm-doc">How deep into the pocket should we penetrate with the cpw connector (into the fround plane)</td></tr>
+<tr><td class="qm-key" style="padding-left:42px">pocket_rise</td><td class="qm-val">&#x27;65um&#x27;</td><td class="qm-val">0.065</td><td class="qm-doc">How far up or downrelative to the center of the transmon should we elevate the cpw connection point on the ground plane</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:42px" title="default: &#x27;+1&#x27;">loc_W</td><td class="qm-val">-1</td><td class="qm-val">-1</td><td class="qm-doc">Width location  only +-1</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:42px" title="default: &#x27;+1&#x27;">loc_H</td><td class="qm-val">-1</td><td class="qm-val">-1</td><td class="qm-doc">Height location only +-1</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">pad_gap</td><td class="qm-val">&#x27;30um&#x27;</td><td class="qm-val">0.03</td><td class="qm-doc">The distance between the two charge islands, which is also the resulting &#x27;length&#x27; of the pseudo junction</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">inductor_width</td><td class="qm-val">&#x27;20um&#x27;</td><td class="qm-val">0.02</td><td class="qm-doc">Width of the pseudo junction between the two charge islands (if in doubt, make the same as pad_gap). Really just for simulating in HFSS / other EM software</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:10px" title="default: &#x27;455um&#x27;">pad_width</td><td class="qm-val">&#x27;425um&#x27;</td><td class="qm-val">0.425</td><td class="qm-doc">The width (x-axis) of the charge island pads</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">pad_height</td><td class="qm-val">&#x27;90um&#x27;</td><td class="qm-val">0.09</td><td class="qm-doc">The size (y-axis) of the charge island pads</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">pocket_width</td><td class="qm-val">&#x27;650um&#x27;</td><td class="qm-val">0.65</td><td class="qm-doc">Size of the pocket (cut out in ground) along x-axis</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">pocket_height</td><td class="qm-val">&#x27;650um&#x27;</td><td class="qm-val">0.65</td><td class="qm-doc">Size of the pocket (cut out in ground) along y-axis</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">hfss_wire_bonds</td><td class="qm-val">False</td><td class="qm-val">False</td><td class="qm-doc">Add wire bonds over this path when rendered to hfss.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">q3d_wire_bonds</td><td class="qm-val">False</td><td class="qm-val">False</td><td class="qm-doc">Add wire bonds over this path when rendered to q3d.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">aedt_q3d_wire_bonds</td><td class="qm-val">False</td><td class="qm-val">False</td><td class="qm-doc">Add wire bonds over this path when rendered to aedt_q3d.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">aedt_hfss_wire_bonds</td><td class="qm-val">False</td><td class="qm-val">False</td><td class="qm-doc">Add wire bonds over this path when rendered to aedt_hfss.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">hfss_inductance</td><td class="qm-val">&#x27;10nH&#x27;</td><td class="qm-val">&#x27;10nH&#x27;</td><td class="qm-doc">Junction inductance used when the junction is rendered to hfss.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">hfss_capacitance</td><td class="qm-val">0</td><td class="qm-val">0</td><td class="qm-doc">Junction capacitance used by hfss (0: none).</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">hfss_resistance</td><td class="qm-val">0</td><td class="qm-val">0</td><td class="qm-doc">Junction resistance used by hfss (0: none).</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">hfss_mesh_kw_jj</td><td class="qm-val">7e-06</td><td class="qm-val">7e-06</td><td class="qm-doc">Largest mesh element on the junction in hfss, in meters.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">q3d_inductance</td><td class="qm-val">&#x27;10nH&#x27;</td><td class="qm-val">&#x27;10nH&#x27;</td><td class="qm-doc">Junction inductance used when the junction is rendered to q3d.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">q3d_capacitance</td><td class="qm-val">0</td><td class="qm-val">0</td><td class="qm-doc">Junction capacitance used by q3d (0: none).</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">q3d_resistance</td><td class="qm-val">0</td><td class="qm-val">0</td><td class="qm-doc">Junction resistance used by q3d (0: none).</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">q3d_mesh_kw_jj</td><td class="qm-val">7e-06</td><td class="qm-val">7e-06</td><td class="qm-doc">Largest mesh element on the junction in q3d, in meters.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">gds_cell_name</td><td class="qm-val">&#x27;my_other_junction&#x27;</td><td class="qm-val">&#x27;my_other_junction&#x27;</td><td class="qm-doc">Cell of the junction GDS file (the GDS renderer&#x27;s path_filename) that replaces this component&#x27;s junction on export.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">aedt_q3d_inductance</td><td class="qm-val">1e-08</td><td class="qm-val">1e-08</td><td class="qm-doc">Junction inductance used when the junction is rendered to aedt_q3d.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">aedt_q3d_capacitance</td><td class="qm-val">0</td><td class="qm-val">0</td><td class="qm-doc">Junction capacitance used by aedt_q3d (0: none).</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">aedt_hfss_inductance</td><td class="qm-val">1e-08</td><td class="qm-val">1e-08</td><td class="qm-doc">Junction inductance used when the junction is rendered to aedt_hfss.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">aedt_hfss_capacitance</td><td class="qm-val">0</td><td class="qm-val">0</td><td class="qm-doc">Junction capacitance used by aedt_hfss (0: none).</td></tr>
+</tbody></table></details>
+<details open><summary>Pins<span class="qm-meta">2 pins, 0 connected</span></summary><table><thead><tr><th>pin</th><th>middle (mm)</th><th>normal</th><th>width (mm)</th><th>connected to</th></tr></thead><tbody><tr><td class="qm-key">readout</td><td class="qm-val">(2.9250, -1.3050)</td><td class="qm-val">0.0&deg;</td><td class="qm-val">0.01</td><td>&mdash;</td></tr><tr><td class="qm-key">coupler</td><td class="qm-val">(2.0750, -1.6950)</td><td class="qm-val">180.0&deg;</td><td class="qm-val">0.01</td><td>&mdash;</td></tr></tbody></table></details>
+</div></div>
 </div>
 </section>
 <section id="2.-Shared-feedline-+-two-readout-resonators">
@@ -760,55 +792,93 @@
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-09:27PM 19s WARNING [check_lengths]: For path table, component=coupler_bus, key=trace has short segments that could cause issues with fillet. Values in (37-38)  are index(es) in shapely geometry.
-09:27PM 19s WARNING [check_lengths]: For path table, component=coupler_bus, key=cut has short segments that could cause issues with fillet. Values in (37-38)  are index(es) in shapely geometry.
+06:53PM 22s WARNING [check_lengths]: For path table, component=coupler_bus, key=trace has short segments that could cause issues with fillet. Values in (37-38)  are index(es) in shapely geometry.
+06:53PM 22s WARNING [check_lengths]: For path table, component=coupler_bus, key=cut has short segments that could cause issues with fillet. Values in (37-38)  are index(es) in shapely geometry.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-magenta-intense-fg ansi-bold">name:    </span><span class="ansi-blue-intense-fg ansi-bold">coupler_bus</span>
-<span class="ansi-magenta-intense-fg ansi-bold">class:   </span><span class="ansi-blue-intense-fg ansi-bold">RouteMeander          </span>
-<span class="ansi-magenta-intense-fg ansi-bold">options: </span>
-  &#39;chip&#39;              : &#39;main&#39;,
-  &#39;layer&#39;             : &#39;1&#39;,
-  <span class="ansi-bold">&#39;pin_inputs&#39;        </span>: {
-       <span class="ansi-bold">&#39;start_pin&#39;         </span>: {
-            &#39;component&#39;         : &#39;Q1&#39;,
-            &#39;pin&#39;               : &#39;coupler&#39;,
-                             },
-       <span class="ansi-bold">&#39;end_pin&#39;           </span>: {
-            &#39;component&#39;         : &#39;Q2&#39;,
-            &#39;pin&#39;               : &#39;coupler&#39;,
-                             },
-                        },
-  &#39;fillet&#39;            : &#39;90um&#39;,
-  <span class="ansi-bold">&#39;lead&#39;              </span>: {
-       &#39;start_straight&#39;    : &#39;150um&#39;,
-       &#39;end_straight&#39;      : &#39;150um&#39;,
-       &#39;start_jogged_extension&#39;: &#39;&#39;,
-       &#39;end_jogged_extension&#39;: &#39;&#39;,
-                        },
-  &#39;total_length&#39;      : &#39;8mm&#39;,
-  &#39;trace_width&#39;       : &#39;cpw_width&#39;,
-  <span class="ansi-bold">&#39;meander&#39;           </span>: {
-       &#39;spacing&#39;           : &#39;200um&#39;,
-       &#39;asymmetry&#39;         : &#39;200um&#39;,
-                        },
-  &#39;snap&#39;              : &#39;true&#39;,
-  &#39;prevent_short_edges&#39;: &#39;true&#39;,
-  &#39;hfss_wire_bonds&#39;   : False,
-  &#39;q3d_wire_bonds&#39;    : False,
-  &#39;aedt_q3d_wire_bonds&#39;: False,
-  &#39;aedt_hfss_wire_bonds&#39;: False,
-  &#39;trace_gap&#39;         : &#39;cpw_gap&#39;,
-  &#39;_actual_length&#39;    : &#39;7.898275863494531 mm&#39;,
-<span class="ansi-magenta-intense-fg ansi-bold">module:  </span><span class="ansi-blue-intense-fg ansi-bold">qiskit_metal.qlibrary.tlines.meandered</span>
-<span class="ansi-magenta-intense-fg ansi-bold">id:      </span><span class="ansi-blue-intense-fg ansi-bold">12</span>
-</pre></div></div>
+<div class="output_area rendered_html docutils container">
+<style>
+.qm-card { font-family: var(--jp-ui-font-family, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif); font-size: 13px; line-height: 1.4; color: inherit;
+  background: transparent; text-align: left; border: 1px solid rgba(128,128,128,.3);
+  border-radius: 10px; padding: 10px 14px 6px 14px; margin: 4px 0 10px 0;
+  max-width: 1100px; }
+.qm-card .qm-title { display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 8px; margin: 0 0 8px 0; }
+.qm-card .qm-name { font-size: 16px; font-weight: 650; }
+.qm-card .qm-badge { font-size: 11px; font-weight: 600; padding: 1px 8px;
+  border-radius: 999px; background: rgba(59,130,246,.16); color: inherit;
+  border: 1px solid rgba(59,130,246,.35); }
+.qm-card .qm-meta { font-size: 12px; opacity: .7; }
+.qm-card details { margin: 4px 0 8px 0; }
+.qm-card summary { cursor: pointer; font-weight: 600; padding: 3px 0;
+  list-style-position: inside; }
+.qm-card summary .qm-meta { font-weight: 400; margin-left: 6px; }
+.qm-card table { border-collapse: separate; border-spacing: 0; margin: 4px 0 6px 0;
+  color: inherit; background: transparent; width: auto; }
+.qm-card table th, .qm-card table td { text-align: left !important;
+  vertical-align: top; padding: 3px 10px; border: 0 !important; color: inherit;
+  background: transparent; }
+.qm-card table th { font-size: 11px; font-weight: 650; text-transform: uppercase;
+  letter-spacing: .04em; opacity: .75; border-bottom: 1px solid rgba(128,128,128,.35) !important; }
+.qm-card table tbody tr:nth-child(even) td { background: rgba(128,128,128,.06); }
+.qm-card table tbody tr:hover td { background: rgba(59,130,246,.08); }
+.qm-card td.qm-key { font-family: var(--jp-code-font-family, ui-monospace, monospace);
+  white-space: nowrap; }
+.qm-card td.qm-val { font-family: var(--jp-code-font-family, ui-monospace, monospace);
+  white-space: nowrap; }
+.qm-card td.qm-doc { opacity: .78; max-width: 40em; white-space: normal; }
+.qm-card tr.qm-group td { font-weight: 650; opacity: .9; }
+.qm-card tr.qm-changed td { background: rgba(245,158,11,.14) !important; }
+.qm-card tr.qm-changed td.qm-key { box-shadow: inset 3px 0 0 rgba(245,158,11,.9); }
+.qm-card .qm-dot { display: inline-block; width: .6em; height: .6em;
+  border-radius: 50%; background: rgba(245,158,11,.9); margin-right: 4px; }
+.qm-card .qm-legend { font-size: 11px; opacity: .75; margin: 0 0 4px 0; }
+.qm-card img { max-width: 320px; height: auto; display: block; margin: 2px 0 8px 0;
+  border-radius: 6px; }
+</style>
+
+<div class="qm-card">
+<div class="qm-title"><span class="qm-name">coupler_bus</span><span class="qm-badge">RouteMeander</span><span class="qm-meta">id 12 &middot; 23 options, 9 changed &middot; 2 pins, 2 connected</span></div>
+<img alt="coupler_bus" src="data:image/png;base64,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">
+<details open><summary>Options<span class="qm-meta">9 changed from the defaults</span></summary>
+<div class="qm-legend"><span class="qm-dot"></span>changed from the class default (hover the name for the default)</div>
+<table><thead><tr><th>option</th><th>value</th><th>parsed</th><th>description</th></tr></thead><tbody>
+<tr><td class="qm-key" style="padding-left:10px">chip</td><td class="qm-val">&#x27;main&#x27;</td><td class="qm-val">&#x27;main&#x27;</td><td class="qm-doc">Chip holding the QComponent.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">layer</td><td class="qm-val">&#x27;1&#x27;</td><td class="qm-val">1.0</td><td class="qm-doc">Manufacturing layer used for the QComponent.</td></tr>
+<tr class="qm-group"><td class="qm-key" style="padding-left:10px">pin_inputs</td><td></td><td></td><td class="qm-doc"></td></tr>
+<tr class="qm-group"><td class="qm-key" style="padding-left:26px">start_pin</td><td></td><td></td><td class="qm-doc">Component and pin string pair. Define which pin to start from</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:42px" title="default: &#x27;&#x27;">component</td><td class="qm-val">&#x27;Q1&#x27;</td><td class="qm-val">&#x27;Q1&#x27;</td><td class="qm-doc">Name of component to start from, which has a pin</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:42px" title="default: &#x27;&#x27;">pin</td><td class="qm-val">&#x27;coupler&#x27;</td><td class="qm-val">&#x27;coupler&#x27;</td><td class="qm-doc">Name of pin used for pin_start</td></tr>
+<tr class="qm-group"><td class="qm-key" style="padding-left:26px">end_pin</td><td></td><td></td><td class="qm-doc">Component and pin string pair. Define which pin to start from</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:42px" title="default: &#x27;&#x27;">component</td><td class="qm-val">&#x27;Q2&#x27;</td><td class="qm-val">&#x27;Q2&#x27;</td><td class="qm-doc">Name of component to end on, which has a pin</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:42px" title="default: &#x27;&#x27;">pin</td><td class="qm-val">&#x27;coupler&#x27;</td><td class="qm-val">&#x27;coupler&#x27;</td><td class="qm-doc">Name of pin used for pin_end</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:10px" title="default: &#x27;0&#x27;">fillet</td><td class="qm-val">&#x27;90um&#x27;</td><td class="qm-val">0.09</td><td class="qm-doc"></td></tr>
+<tr class="qm-group"><td class="qm-key" style="padding-left:10px">lead</td><td></td><td></td><td class="qm-doc"></td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:26px" title="default: &#x27;0mm&#x27;">start_straight</td><td class="qm-val">&#x27;150um&#x27;</td><td class="qm-val">0.15</td><td class="qm-doc">Lead-in, defined as the straight segment extension from start_pin.  Defaults to 0.1um.</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:26px" title="default: &#x27;0mm&#x27;">end_straight</td><td class="qm-val">&#x27;150um&#x27;</td><td class="qm-val">0.15</td><td class="qm-doc">Lead-out, defined as the straight segment extension from end_pin.  Defaults to 0.1um.</td></tr>
+<tr><td class="qm-key" style="padding-left:26px">start_jogged_extension</td><td class="qm-val">&#x27;&#x27;</td><td class="qm-val">&#x27;&#x27;</td><td class="qm-doc">Lead-in, jogged extension of lead-in. Described as list of tuples</td></tr>
+<tr><td class="qm-key" style="padding-left:26px">end_jogged_extension</td><td class="qm-val">&#x27;&#x27;</td><td class="qm-val">&#x27;&#x27;</td><td class="qm-doc">Lead-out, jogged extension of lead-out. Described as list of tuples</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:10px" title="default: &#x27;7mm&#x27;">total_length</td><td class="qm-val">&#x27;8mm&#x27;</td><td class="qm-val">8</td><td class="qm-doc"></td></tr>
+<tr><td class="qm-key" style="padding-left:10px">trace_width</td><td class="qm-val">&#x27;cpw_width&#x27;</td><td class="qm-val">0.01</td><td class="qm-doc">Defines the width of the line.  Defaults to &#x27;cpw_width&#x27;.</td></tr>
+<tr class="qm-group"><td class="qm-key" style="padding-left:10px">meander</td><td></td><td></td><td class="qm-doc"></td></tr>
+<tr><td class="qm-key" style="padding-left:26px">spacing</td><td class="qm-val">&#x27;200um&#x27;</td><td class="qm-val">0.2</td><td class="qm-doc">Minimum spacing between adjacent meander curves.  Defaults to 200um.</td></tr>
+<tr class="qm-changed"><td class="qm-key" style="padding-left:26px" title="default: &#x27;0um&#x27;">asymmetry</td><td class="qm-val">&#x27;200um&#x27;</td><td class="qm-val">0.2</td><td class="qm-doc">offset between the center-line of the meander and the center-line that stretches from the tip of lead-in to the x (or y) coordinate of the tip of the lead-out.  Defaults to &#x27;0um&#x27;.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">snap</td><td class="qm-val">&#x27;true&#x27;</td><td class="qm-val">&#x27;true&#x27;</td><td class="qm-doc"></td></tr>
+<tr><td class="qm-key" style="padding-left:10px">prevent_short_edges</td><td class="qm-val">&#x27;true&#x27;</td><td class="qm-val">&#x27;true&#x27;</td><td class="qm-doc"></td></tr>
+<tr><td class="qm-key" style="padding-left:10px">hfss_wire_bonds</td><td class="qm-val">False</td><td class="qm-val">False</td><td class="qm-doc">Add wire bonds over this path when rendered to hfss.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">q3d_wire_bonds</td><td class="qm-val">False</td><td class="qm-val">False</td><td class="qm-doc">Add wire bonds over this path when rendered to q3d.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">aedt_q3d_wire_bonds</td><td class="qm-val">False</td><td class="qm-val">False</td><td class="qm-doc">Add wire bonds over this path when rendered to aedt_q3d.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">aedt_hfss_wire_bonds</td><td class="qm-val">False</td><td class="qm-val">False</td><td class="qm-doc">Add wire bonds over this path when rendered to aedt_hfss.</td></tr>
+<tr><td class="qm-key" style="padding-left:10px">trace_gap</td><td class="qm-val">&#x27;cpw_gap&#x27;</td><td class="qm-val">0.006</td><td class="qm-doc"></td></tr>
+<tr><td class="qm-key" style="padding-left:10px">_actual_length</td><td class="qm-val">&#x27;7.999999999999844 mm&#x27;</td><td class="qm-val">7.999999999999844</td><td class="qm-doc"></td></tr>
+</tbody></table></details>
+<details open><summary>Pins<span class="qm-meta">2 pins, 2 connected</span></summary><table><thead><tr><th>pin</th><th>middle (mm)</th><th>normal</th><th>width (mm)</th><th>connected to</th></tr></thead><tbody><tr><td class="qm-key">start</td><td class="qm-val">(-2.0750, -1.6950)</td><td class="qm-val">180.0&deg;</td><td class="qm-val">0.01</td><td>Q1.coupler</td></tr><tr><td class="qm-key">end</td><td class="qm-val">(2.0750, -1.6950)</td><td class="qm-val">0.0&deg;</td><td class="qm-val">0.01</td><td>Q2.coupler</td></tr></tbody></table></details>
+</div></div>
 </div>
 </section>
 <section id="4.-Visualize">

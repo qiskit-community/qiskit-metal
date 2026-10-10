@@ -599,7 +599,10 @@ just recomputes the properties</p>
 <dd class="field-odd"><p><strong>k</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Index of eigenvector</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Eigenvector of the |k&gt; level of the CPB Hamiltonian</p>
+<dd class="field-even"><p>Eigenvector of the |k&gt; level of the CPB Hamiltonian, in
+the charge basis <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">-nlevels</span> <span class="pre">...</span> <span class="pre">nlevels</span></code>. Real, with the sign
+convention <code class="docutils literal notranslate"><span class="pre">&lt;k|n|k+1&gt;</span> <span class="pre">&gt;</span> <span class="pre">0</span></code> (the ground state has its
+largest-magnitude component positive).</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array</p>
@@ -653,6 +656,14 @@ transmon</p>
 <span class="sig-name descname"><span class="pre">n_ij</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qiskit_metal/analyses/hamiltonian/transmon_charge_basis.html#Hcpb.n_ij"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.Hcpb.n_ij" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the value of the number operator for coupling elements
 together in the energy eigen-basis.</p>
+<p>The eigenvectors are real (the Hamiltonian is real symmetric for every
+<code class="docutils literal notranslate"><span class="pre">ng</span></code>), and their signs follow a fixed convention: <code class="docutils literal notranslate"><span class="pre">n_ij(k,</span> <span class="pre">k+1)</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>
+for every <code class="docutils literal notranslate"><span class="pre">k</span></code> (see <code class="docutils literal notranslate"><span class="pre">evec_k</span></code>). The other elements carry the sign
+that follows, so <code class="docutils literal notranslate"><span class="pre">n_ij(j,</span> <span class="pre">i)</span> <span class="pre">==</span> <span class="pre">n_ij(i,</span> <span class="pre">j)</span></code> and gauge-invariant
+products such as <code class="docutils literal notranslate"><span class="pre">n_ij(0,</span> <span class="pre">1)</span> <span class="pre">*</span> <span class="pre">n_ij(1,</span> <span class="pre">2)</span> <span class="pre">*</span> <span class="pre">n_ij(2,</span> <span class="pre">0)</span></code> (negative
+at <code class="docutils literal notranslate"><span class="pre">ng</span> <span class="pre">=</span> <span class="pre">0.25</span></code>) come out right. Up to 0.9.0 this returned
+<code class="docutils literal notranslate"><span class="pre">|&lt;i|n|j&gt;|</span></code>, which is gauge-equivalent to the signed matrix only
+at <code class="docutils literal notranslate"><span class="pre">ng</span> <span class="pre">=</span> <span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">ng</span> <span class="pre">=</span> <span class="pre">1/2</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -663,7 +674,7 @@ together in the energy eigen-basis.</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Matrix element corresponding to the
 number operator in the transmon basis
-<cite>n_ij = |&lt;i|n|j&gt;|</cite></p>
+<cite>n_ij = &lt;i|n|j&gt;</cite> (real, signed)</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)">float</a></p>
@@ -683,14 +694,16 @@ coupling between other elements in the system.</p>
 <li><p><strong>n_transmon</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Number of energy levels to consider</p></li>
 <li><p><strong>thresh</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Threshold for keeping small values
 in the number operator i.e <cite>n_{i,i+2}</cite>
-terms drop off exponentially. If None
+terms drop off exponentially. Elements with
+<code class="docutils literal notranslate"><span class="pre">|n_ij|</span> <span class="pre">&lt;</span> <span class="pre">thresh</span></code> are set to zero. If None
 retain all terms. Defaults to None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Returns a Qutip Qobj corresponding to the
 number operator for defining couplings in the
-energy eigen-basis.</p>
+energy eigen-basis. The off-diagonal elements are the signed
+<code class="docutils literal notranslate"><span class="pre">n_ij</span></code> (real symmetric matrix); the diagonal is set to zero.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Qobj</p>

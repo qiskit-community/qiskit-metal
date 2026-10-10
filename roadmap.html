@@ -1263,6 +1263,52 @@ the contributor guide.</p></li>
 <p>Full background and remediation options are in PR #1085’s discussion.</p>
 </section>
 <hr class="docutils" />
+<section id="open-items-after-the-1202-1234-batch-october-2026-planned">
+<h2>Open items after the #1202–#1234 batch (October 2026) <code class="docutils literal notranslate"><span class="pre">[planned]</span></code><a class="headerlink" href="#open-items-after-the-1202-1234-batch-october-2026-planned" title="Link to this heading">¶</a></h2>
+<p>Left over from #1235 and #1236. Each line says where to start.</p>
+<p><strong>CI / GUI</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pyside6!=6.12.0</span></code> (in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[gui]</span></code>/<code class="docutils literal notranslate"><span class="pre">[full]</span></code> and
+<code class="docutils literal notranslate"><span class="pre">environment.yml</span></code>): 6.12.0 aborts a <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> process with
+<code class="docutils literal notranslate"><span class="pre">none_dealloc:</span> <span class="pre">deallocating</span> <span class="pre">None</span></code> on Python &lt; 3.12. Lift the exclusion
+once a PySide6 release fixes it; check with Python 3.11 and
+<code class="docutils literal notranslate"><span class="pre">sys.getrefcount(None)</span></code> around <code class="docutils literal notranslate"><span class="pre">processEvents</span></code> (see lessons-learned).</p></li>
+<li><p>Intermittent macOS GUI test failures remain: <code class="docutils literal notranslate"><span class="pre">test_gui_nudge</span></code>
+(<code class="docutils literal notranslate"><span class="pre">MARKER_SELECTED</span></code> missing, also on <code class="docutils literal notranslate"><span class="pre">main</span></code> at 7a8d9d4) and a CoreGraphics
+segfault in <code class="docutils literal notranslate"><span class="pre">test_gui_left_dock_min_width</span></code> (glyph rendering after
+<code class="docutils literal notranslate"><span class="pre">resizeDocks</span></code>). Tracked with #1048 / #1200.</p></li>
+<li><p>Building a second <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> in one process after an application
+stylesheet is set (<code class="docutils literal notranslate"><span class="pre">gui.set_font_size(...)</span></code>) segfaults at exit in
+<code class="docutils literal notranslate"><span class="pre">_teardown_qt_widgets</span></code> (<code class="docutils literal notranslate"><span class="pre">QMenuBar::eventFilter</span></code>, failure mode 1 in
+<code class="docutils literal notranslate"><span class="pre">docs/architecture/gui_crash_defenses.md</span></code>). Reproducible 3/3; not fixed.</p></li>
+</ul>
+<p><strong>Analysis</strong></p>
+<ul class="simple">
+<li><p>LOM 2.0 <code class="docutils literal notranslate"><span class="pre">TL_RESONATOR</span></code> keeps one mode. Through a two-node bus the
+omitted modes enter with alternating sign, so an <code class="docutils literal notranslate"><span class="pre">n_modes</span></code> option needs
+many modes or an analytic tail correction (numbers in the
+<code class="docutils literal notranslate"><span class="pre">TLResonatorBuilder</span></code> docstring, #1219).</p></li>
+<li><p>LOM paper (arXiv:2103.10344) Eq. 13a writes 1/C_eff = 2 C⁻¹, a factor 2
+relative to Eq. 8; the code uses 1. Confirm the paper’s convention.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Hcpb.nlevels</span></code> setter calls <code class="docutils literal notranslate"><span class="pre">__init__</span></code>, which resets <code class="docutils literal notranslate"><span class="pre">Ej</span></code>/<code class="docutils literal notranslate"><span class="pre">Ec</span></code> to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hamiltonian_results</span></code> prints <code class="docutils literal notranslate"><span class="pre">np.float64(...)</span></code> in its frequency dict
+under numpy 2 (visible in tutorial 4.04).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fit_transmission(detrend=False)</span></code> with a large cable delay still starts
+from zero delay.</p></li>
+</ul>
+<p><strong>Tutorials that need Qt or Ansys to refresh</strong></p>
+<ul class="simple">
+<li><p>FlipChip tutorial (Layers dock screenshot; Ansys cells after the
+<code class="docutils literal notranslate"><span class="pre">ReadoutResFC</span></code> layer change, #1224).</p></li>
+<li><p>Full-Physical-Design-of-iSWAP-Gates: <code class="docutils literal notranslate"><span class="pre">tline</span></code> <code class="docutils literal notranslate"><span class="pre">total_length</span></code> 4.75 mm is
+below its 4.957 mm minimum route and now warns.</p></li>
+<li><p>A.4–A.7 and 2.21: stored <code class="docutils literal notranslate"><span class="pre">gds.options</span></code> prints and cheese counts
+(#1214, #1223); A.4 <code class="docutils literal notranslate"><span class="pre">Read_Q_Main</span></code> figures (#1225).</p></li>
+<li><p>LOM 1.0 notebooks 4.01, 4.11, 4.13, 4.21, A.4, A.6: E_J +0.08 % (#1207),
+bus–bus g about 1.6× (#1222), new <code class="docutils literal notranslate"><span class="pre">T1</span></code>/<code class="docutils literal notranslate"><span class="pre">T1bus</span></code> columns.</p></li>
+<li><p>The CR-gate notebook’s <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> cells.</p></li>
+</ul>
+</section>
 <section id="known-bug-triage-queue-needs-re-verification">
 <h2>Known bug-triage queue <code class="docutils literal notranslate"><span class="pre">[needs</span> <span class="pre">re-verification]</span></code><a class="headerlink" href="#known-bug-triage-queue-needs-re-verification" title="Link to this heading">¶</a></h2>
 <p>10 issues triaged on 2026-05-22 (now ~2.5 months stale against the current
@@ -1713,6 +1759,7 @@ the binary or extra is missing, and no writes under <code class="docutils litera
 </li>
 <li><a class="reference internal" href="#tutorials-structure-backend-swappable-analysis-execution-harness-planned">Tutorials: structure, backend-swappable analysis, execution harness <code class="docutils literal notranslate"><span class="pre">[planned]</span></code></a></li>
 <li><a class="reference internal" href="#docs-build-cleanup-research">Docs build cleanup <code class="docutils literal notranslate"><span class="pre">[research]</span></code></a></li>
+<li><a class="reference internal" href="#open-items-after-the-1202-1234-batch-october-2026-planned">Open items after the #1202–#1234 batch (October 2026) <code class="docutils literal notranslate"><span class="pre">[planned]</span></code></a></li>
 <li><a class="reference internal" href="#known-bug-triage-queue-needs-re-verification">Known bug-triage queue <code class="docutils literal notranslate"><span class="pre">[needs</span> <span class="pre">re-verification]</span></code></a></li>
 <li><a class="reference internal" href="#external-workshops-training-reference">External workshops &amp; training <code class="docutils literal notranslate"><span class="pre">[reference]</span></code></a></li>
 <li><a class="reference internal" href="#gui-ux-wishes-wish-list">GUI / UX wishes <code class="docutils literal notranslate"><span class="pre">[wish-list]</span></code></a></li>

@@ -677,6 +677,8 @@
 
         <span class="c1"># Instantiate and register renderers to Qdesign.renderers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_renderers</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">()</span>
+        <span class="c1"># Renderers that could not be started, and why (see skipped_renderers)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_skipped_renderers</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">enable_renderers</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_start_renderers</span><span class="p">()</span>
 
@@ -739,6 +741,14 @@
 <span class="w">        </span><span class="sd">"""Return a Dict of all the renderers registered within QDesign."""</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_renderers</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">skipped_renderers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Renderers in ``config.renderers_to_load`` that were not started for</span>
+<span class="sd">        this design because an optional dependency is missing, mapped to the</span>
+<span class="sd">        reason. On a lite install these are logged at DEBUG only; this is the</span>
+<span class="sd">        place to look when a renderer is not in ``renderers``."""</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_skipped_renderers</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">chips</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
@@ -1535,6 +1545,15 @@
 
     <span class="c1">######### Renderers ###############################################################</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_skip_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Record a renderer that cannot start for lack of an optional</span>
+<span class="sd">        dependency. Logged at DEBUG: on a lite install this is expected, and</span>
+<span class="sd">        at INFO every new design printed one line per renderer (#1229). The</span>
+<span class="sd">        reason stays available in ``skipped_renderers`` and in the error</span>
+<span class="sd">        raised when an analysis asks for the renderer."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_skipped_renderers</span><span class="p">[</span><span class="n">renderer_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">reason</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Renderer=</span><span class="si">{</span><span class="n">renderer_key</span><span class="si">}</span><span class="s2"> skipped: </span><span class="si">{</span><span class="n">reason</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">_start_renderers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Start the renderers.</span>
 
@@ -1581,13 +1600,13 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">path_name</span><span class="p">)</span>
             <span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># OSError: native lib failed to load</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">"Renderer=</span><span class="si">{</span><span class="n">renderer_key</span><span class="si">}</span><span class="s2"> skipped: "</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_skip_renderer</span><span class="p">(</span>
+                    <span class="n">renderer_key</span><span class="p">,</span>
                     <span class="sa">f</span><span class="s2">"an optional dependency for </span><span class="si">{</span><span class="n">path_name</span><span class="si">}</span><span class="s2"> is not "</span>
                     <span class="sa">f</span><span class="s2">"installed (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">). Install the corresponding extra "</span>
                     <span class="sa">f</span><span class="s2">"(e.g. `pip install quantum-metal[mesh]` for gmsh, "</span>
                     <span class="sa">f</span><span class="s2">"`pip install quantum-metal[ansys]` for pyaedt) "</span>
-                    <span class="sa">f</span><span class="s2">"to enable it."</span>
+                    <span class="sa">f</span><span class="s2">"to enable it"</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="k">continue</span>
 
@@ -1603,9 +1622,8 @@
                     <span class="c1"># actual heavy dep (pyEPR / pyaedt / gmsh) isn't</span>
                     <span class="c1"># installed. Same outcome as a missing module:</span>
                     <span class="c1"># skip + log + keep going.</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">"Renderer=</span><span class="si">{</span><span class="n">renderer_key</span><span class="si">}</span><span class="s2"> skipped: "</span>
-                        <span class="sa">f</span><span class="s2">"runtime dependency not installed (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">)."</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_skip_renderer</span><span class="p">(</span>
+                        <span class="n">renderer_key</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"runtime dependency not installed (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">)"</span>
                     <span class="p">)</span>
                     <span class="k">continue</span>
 

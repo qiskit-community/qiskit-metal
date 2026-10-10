@@ -21,6 +21,7 @@ MultiPlanar
    .. autoattribute:: MultiPlanar.qgeometry
    .. autoattribute:: MultiPlanar.qnet
    .. autoattribute:: MultiPlanar.renderers
+   .. autoattribute:: MultiPlanar.skipped_renderers
    .. autoattribute:: MultiPlanar.template_options
    .. autoattribute:: MultiPlanar.template_renderer_options
    .. autoattribute:: MultiPlanar.variables

@@ -503,11 +503,11 @@
 summarizes what each solver computes, how to install it, and which tutorials use it.</p>
 </div></blockquote>
 <blockquote>
-<div><p>📦 <strong>What you need.</strong> The first half (the LOM analysis, from the stored Q3D capacitance matrices) needs only Quantum Metal. The second half uses the third-party <a class="reference external" href="https://sequencing.readthedocs.io">Sequencing</a> package, which Quantum Metal does not install: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">sequencing</span></code>. Its latest release (1.2.0) is written for qutip 4. Converting the LOM system to a Sequencing system works, but running a sequence fails with the qutip 5 that Quantum Metal requires
-(<code class="docutils literal notranslate"><span class="pre">AttributeError:</span> <span class="pre">module</span> <span class="pre">'qutip'</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">'Options'</span></code>). The time-evolution outputs stored below come from an earlier qutip 4 environment.</p>
+<div><p>📦 <strong>What you need.</strong> The first half (the LOM analysis, from the stored Q3D capacitance matrices) needs only Quantum Metal. The second half uses the third-party <a class="reference external" href="https://sequencing.readthedocs.io">Sequencing</a> package, which Quantum Metal does not install: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">sequencing</span></code>. Its latest release (1.2.0) is written for qutip 4; when <code class="docutils literal notranslate"><span class="pre">lom_time_evolution_sim</span></code> is imported, Quantum Metal adapts Sequencing’s solver calls to the qutip 5 it requires, so the whole notebook runs. The time
+evolution runs in about 5 minutes.</p>
 </div></blockquote>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -533,7 +533,7 @@ summarizes what each solver computes, how to install it, and which tutorials use
 <section id="load-transmon-cell-Q3d-simulation-results">
 <h3>load transmon cell Q3d simulation results<a class="headerlink" href="#load-transmon-cell-Q3d-simulation-results" title="Link to this heading">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path1</span> <span class="o">=</span> <span class="s2">"./Q1_TwoTransmon_CapMatrix.txt"</span>
@@ -555,138 +555,140 @@ Imported capacitance matrix with UNITS: [fF] now converted to USER UNITS:[fF]   
 </div>
 <div class="output_area rendered_html docutils container">
 <style type="text/css">
-#T_c6d39_row0_col0, #T_c6d39_row1_col1, #T_c6d39_row2_col2, #T_c6d39_row3_col3, #T_c6d39_row4_col4 {
+#T_6fb04_row0_col0, #T_6fb04_row4_col4 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 100.0%, transparent 100.0%);
+  background: linear-gradient(90deg, transparent 38.6%, #5fba7d 38.6%, #5fba7d 100.0%, transparent 100.0%);
 }
-#T_c6d39_row0_col1, #T_c6d39_row4_col1 {
+#T_6fb04_row0_col1, #T_6fb04_row4_col1 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 0.9%, transparent 0.9%);
+  background: linear-gradient(90deg, transparent 0.9%, #5fba7d 0.9%, #5fba7d 13.9%, transparent 13.9%);
 }
-#T_c6d39_row0_col2 {
+#T_6fb04_row0_col2 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 28.4%, transparent 28.4%);
+  background: linear-gradient(90deg, transparent 28.4%, #5fba7d 28.4%, #5fba7d 30.0%, transparent 30.0%);
 }
-#T_c6d39_row0_col3 {
+#T_6fb04_row0_col3 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 15.6%, transparent 15.6%);
+  background: linear-gradient(90deg, transparent 15.6%, #5fba7d 15.6%, #5fba7d 30.0%, transparent 30.0%);
 }
-#T_c6d39_row0_col4, #T_c6d39_row4_col0 {
+#T_6fb04_row0_col4, #T_6fb04_row4_col0 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 38.4%, transparent 38.4%);
+  background: linear-gradient(90deg, transparent 38.4%, #5fba7d 38.4%, #5fba7d 38.6%, transparent 38.6%);
 }
-#T_c6d39_row1_col0, #T_c6d39_row1_col2, #T_c6d39_row1_col3, #T_c6d39_row1_col4, #T_c6d39_row3_col1 {
+#T_6fb04_row1_col0, #T_6fb04_row1_col4 {
   width: 10em;
-  height: 80%;
+  background: linear-gradient(90deg, #5fba7d 38.6%, transparent 38.6%);
 }
-#T_c6d39_row2_col0 {
+#T_6fb04_row1_col1 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 36.6%, transparent 36.6%);
+  background: linear-gradient(90deg, transparent 13.9%, #5fba7d 13.9%, #5fba7d 100.0%, transparent 100.0%);
 }
-#T_c6d39_row2_col1 {
+#T_6fb04_row1_col2, #T_6fb04_row1_col3 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 0.0%, transparent 0.0%);
+  background: linear-gradient(90deg, #5fba7d 30.0%, transparent 30.0%);
 }
-#T_c6d39_row2_col3 {
+#T_6fb04_row2_col0 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 7.0%, transparent 7.0%);
+  background: linear-gradient(90deg, transparent 36.6%, #5fba7d 36.6%, #5fba7d 38.6%, transparent 38.6%);
 }
-#T_c6d39_row2_col4 {
+#T_6fb04_row2_col1 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 18.7%, transparent 18.7%);
+  background: linear-gradient(90deg, transparent 0.0%, #5fba7d 0.0%, #5fba7d 13.9%, transparent 13.9%);
 }
-#T_c6d39_row3_col0 {
+#T_6fb04_row2_col2, #T_6fb04_row3_col3 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 18.8%, transparent 18.8%);
+  background: linear-gradient(90deg, transparent 30.0%, #5fba7d 30.0%, #5fba7d 100.0%, transparent 100.0%);
 }
-#T_c6d39_row3_col2 {
+#T_6fb04_row2_col3 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 6.9%, transparent 6.9%);
+  background: linear-gradient(90deg, transparent 7.0%, #5fba7d 7.0%, #5fba7d 30.0%, transparent 30.0%);
 }
-#T_c6d39_row3_col4 {
+#T_6fb04_row2_col4 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 36.5%, transparent 36.5%);
+  background: linear-gradient(90deg, transparent 18.7%, #5fba7d 18.7%, #5fba7d 38.6%, transparent 38.6%);
 }
-#T_c6d39_row4_col2 {
+#T_6fb04_row3_col0 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 15.5%, transparent 15.5%);
+  background: linear-gradient(90deg, transparent 18.8%, #5fba7d 18.8%, #5fba7d 38.6%, transparent 38.6%);
 }
-#T_c6d39_row4_col3 {
+#T_6fb04_row3_col1 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 28.5%, transparent 28.5%);
+  background: linear-gradient(90deg, #5fba7d 13.9%, transparent 13.9%);
+}
+#T_6fb04_row3_col2 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 6.9%, #5fba7d 6.9%, #5fba7d 30.0%, transparent 30.0%);
+}
+#T_6fb04_row3_col4 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 36.5%, #5fba7d 36.5%, #5fba7d 38.6%, transparent 38.6%);
+}
+#T_6fb04_row4_col2 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 15.5%, #5fba7d 15.5%, #5fba7d 30.0%, transparent 30.0%);
+}
+#T_6fb04_row4_col3 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 28.5%, #5fba7d 28.5%, #5fba7d 30.0%, transparent 30.0%);
 }
 </style>
-<table id="T_c6d39_">
+<table id="T_6fb04">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th class="col_heading level0 col0" >coupler_connector_pad_Q1</th>
-      <th class="col_heading level0 col1" >ground_main_plane</th>
-      <th class="col_heading level0 col2" >pad_bot_Q1</th>
-      <th class="col_heading level0 col3" >pad_top_Q1</th>
-      <th class="col_heading level0 col4" >readout_connector_pad_Q1</th>
+      <th id="T_6fb04_level0_col0" class="col_heading level0 col0" >coupler_connector_pad_Q1</th>
+      <th id="T_6fb04_level0_col1" class="col_heading level0 col1" >ground_main_plane</th>
+      <th id="T_6fb04_level0_col2" class="col_heading level0 col2" >pad_bot_Q1</th>
+      <th id="T_6fb04_level0_col3" class="col_heading level0 col3" >pad_top_Q1</th>
+      <th id="T_6fb04_level0_col4" class="col_heading level0 col4" >readout_connector_pad_Q1</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_c6d39_level0_row0" class="row_heading level0 row0" >coupler_connector_pad_Q1</th>
-      <td id="T_c6d39_row0_col0" class="data row0 col0" >59.20</td>
-      <td id="T_c6d39_row0_col1" class="data row0 col1" >-37.28</td>
-      <td id="T_c6d39_row0_col2" class="data row0 col2" >-2.01</td>
-      <td id="T_c6d39_row0_col3" class="data row0 col3" >-19.11</td>
-      <td id="T_c6d39_row0_col4" class="data row0 col4" >-0.23</td>
+      <th id="T_6fb04_level0_row0" class="row_heading level0 row0" >coupler_connector_pad_Q1</th>
+      <td id="T_6fb04_row0_col0" class="data row0 col0" >59.20</td>
+      <td id="T_6fb04_row0_col1" class="data row0 col1" >-37.28</td>
+      <td id="T_6fb04_row0_col2" class="data row0 col2" >-2.01</td>
+      <td id="T_6fb04_row0_col3" class="data row0 col3" >-19.11</td>
+      <td id="T_6fb04_row0_col4" class="data row0 col4" >-0.23</td>
     </tr>
     <tr>
-      <th id="T_c6d39_level0_row1" class="row_heading level0 row1" >ground_main_plane</th>
-      <td id="T_c6d39_row1_col0" class="data row1 col0" >-37.28</td>
-      <td id="T_c6d39_row1_col1" class="data row1 col1" >246.33</td>
-      <td id="T_c6d39_row1_col2" class="data row1 col2" >-39.79</td>
-      <td id="T_c6d39_row1_col3" class="data row1 col3" >-39.86</td>
-      <td id="T_c6d39_row1_col4" class="data row1 col4" >-37.30</td>
+      <th id="T_6fb04_level0_row1" class="row_heading level0 row1" >ground_main_plane</th>
+      <td id="T_6fb04_row1_col0" class="data row1 col0" >-37.28</td>
+      <td id="T_6fb04_row1_col1" class="data row1 col1" >246.33</td>
+      <td id="T_6fb04_row1_col2" class="data row1 col2" >-39.79</td>
+      <td id="T_6fb04_row1_col3" class="data row1 col3" >-39.86</td>
+      <td id="T_6fb04_row1_col4" class="data row1 col4" >-37.30</td>
     </tr>
     <tr>
-      <th id="T_c6d39_level0_row2" class="row_heading level0 row2" >pad_bot_Q1</th>
-      <td id="T_c6d39_row2_col0" class="data row2 col0" >-2.01</td>
-      <td id="T_c6d39_row2_col1" class="data row2 col1" >-39.79</td>
-      <td id="T_c6d39_row2_col2" class="data row2 col2" >93.05</td>
-      <td id="T_c6d39_row2_col3" class="data row2 col3" >-30.61</td>
-      <td id="T_c6d39_row2_col4" class="data row2 col4" >-19.22</td>
+      <th id="T_6fb04_level0_row2" class="row_heading level0 row2" >pad_bot_Q1</th>
+      <td id="T_6fb04_row2_col0" class="data row2 col0" >-2.01</td>
+      <td id="T_6fb04_row2_col1" class="data row2 col1" >-39.79</td>
+      <td id="T_6fb04_row2_col2" class="data row2 col2" >93.05</td>
+      <td id="T_6fb04_row2_col3" class="data row2 col3" >-30.61</td>
+      <td id="T_6fb04_row2_col4" class="data row2 col4" >-19.22</td>
     </tr>
     <tr>
-      <th id="T_c6d39_level0_row3" class="row_heading level0 row3" >pad_top_Q1</th>
-      <td id="T_c6d39_row3_col0" class="data row3 col0" >-19.11</td>
-      <td id="T_c6d39_row3_col1" class="data row3 col1" >-39.86</td>
-      <td id="T_c6d39_row3_col2" class="data row3 col2" >-30.61</td>
-      <td id="T_c6d39_row3_col3" class="data row3 col3" >92.99</td>
-      <td id="T_c6d39_row3_col4" class="data row3 col4" >-2.01</td>
+      <th id="T_6fb04_level0_row3" class="row_heading level0 row3" >pad_top_Q1</th>
+      <td id="T_6fb04_row3_col0" class="data row3 col0" >-19.11</td>
+      <td id="T_6fb04_row3_col1" class="data row3 col1" >-39.86</td>
+      <td id="T_6fb04_row3_col2" class="data row3 col2" >-30.61</td>
+      <td id="T_6fb04_row3_col3" class="data row3 col3" >92.99</td>
+      <td id="T_6fb04_row3_col4" class="data row3 col4" >-2.01</td>
     </tr>
     <tr>
-      <th id="T_c6d39_level0_row4" class="row_heading level0 row4" >readout_connector_pad_Q1</th>
-      <td id="T_c6d39_row4_col0" class="data row4 col0" >-0.23</td>
-      <td id="T_c6d39_row4_col1" class="data row4 col1" >-37.30</td>
-      <td id="T_c6d39_row4_col2" class="data row4 col2" >-19.22</td>
-      <td id="T_c6d39_row4_col3" class="data row4 col3" >-2.01</td>
-      <td id="T_c6d39_row4_col4" class="data row4 col4" >59.33</td>
+      <th id="T_6fb04_level0_row4" class="row_heading level0 row4" >readout_connector_pad_Q1</th>
+      <td id="T_6fb04_row4_col0" class="data row4 col0" >-0.23</td>
+      <td id="T_6fb04_row4_col1" class="data row4 col1" >-37.30</td>
+      <td id="T_6fb04_row4_col2" class="data row4 col2" >-19.22</td>
+      <td id="T_6fb04_row4_col3" class="data row4 col3" >-2.01</td>
+      <td id="T_6fb04_row4_col4" class="data row4 col4" >59.33</td>
     </tr>
   </tbody>
 </table></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path2</span> <span class="o">=</span> <span class="s2">"./Q2_TwoTransmon_CapMatrix.txt"</span>
@@ -708,117 +710,122 @@ Imported capacitance matrix with UNITS: [fF] now converted to USER UNITS:[fF]   
 </div>
 <div class="output_area rendered_html docutils container">
 <style type="text/css">
-#T_9e03b_row0_col0, #T_9e03b_row1_col1, #T_9e03b_row2_col2, #T_9e03b_row3_col3, #T_9e03b_row4_col4 {
+#T_5aeb6_row0_col0, #T_5aeb6_row4_col4 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 100.0%, transparent 100.0%);
+  background: linear-gradient(90deg, transparent 37.4%, #5fba7d 37.4%, #5fba7d 100.0%, transparent 100.0%);
 }
-#T_9e03b_row0_col1, #T_9e03b_row4_col1 {
+#T_5aeb6_row0_col1, #T_5aeb6_row4_col1 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 3.4%, transparent 3.4%);
+  background: linear-gradient(90deg, transparent 3.4%, #5fba7d 3.4%, #5fba7d 15.6%, transparent 15.6%);
 }
-#T_9e03b_row0_col2, #T_9e03b_row4_col3 {
+#T_5aeb6_row0_col2, #T_5aeb6_row4_col3 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 27.6%, transparent 27.6%);
+  background: linear-gradient(90deg, transparent 27.6%, #5fba7d 27.6%, #5fba7d 28.9%, transparent 28.9%);
 }
-#T_9e03b_row0_col3 {
+#T_5aeb6_row0_col3 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 15.5%, transparent 15.5%);
+  background: linear-gradient(90deg, transparent 15.5%, #5fba7d 15.5%, #5fba7d 28.9%, transparent 28.9%);
 }
-#T_9e03b_row0_col4, #T_9e03b_row4_col0 {
+#T_5aeb6_row0_col4, #T_5aeb6_row4_col0 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 37.2%, transparent 37.2%);
+  background: linear-gradient(90deg, transparent 37.2%, #5fba7d 37.2%, #5fba7d 37.4%, transparent 37.4%);
 }
-#T_9e03b_row1_col0, #T_9e03b_row1_col2, #T_9e03b_row1_col3, #T_9e03b_row1_col4, #T_9e03b_row3_col1 {
+#T_5aeb6_row1_col0, #T_5aeb6_row1_col4 {
   width: 10em;
-  height: 80%;
+  background: linear-gradient(90deg, #5fba7d 37.4%, transparent 37.4%);
 }
-#T_9e03b_row2_col0, #T_9e03b_row3_col4 {
+#T_5aeb6_row1_col1 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 35.3%, transparent 35.3%);
+  background: linear-gradient(90deg, transparent 15.6%, #5fba7d 15.6%, #5fba7d 100.0%, transparent 100.0%);
 }
-#T_9e03b_row2_col1 {
+#T_5aeb6_row1_col2, #T_5aeb6_row1_col3 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 0.0%, transparent 0.0%);
+  background: linear-gradient(90deg, #5fba7d 28.9%, transparent 28.9%);
 }
-#T_9e03b_row2_col3, #T_9e03b_row3_col2 {
+#T_5aeb6_row2_col0, #T_5aeb6_row3_col4 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 2.4%, transparent 2.4%);
+  background: linear-gradient(90deg, transparent 35.3%, #5fba7d 35.3%, #5fba7d 37.4%, transparent 37.4%);
 }
-#T_9e03b_row2_col4 {
+#T_5aeb6_row2_col1 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 15.1%, transparent 15.1%);
+  background: linear-gradient(90deg, transparent 0.0%, #5fba7d 0.0%, #5fba7d 15.6%, transparent 15.6%);
 }
-#T_9e03b_row3_col0 {
+#T_5aeb6_row2_col2, #T_5aeb6_row3_col3 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 15.2%, transparent 15.2%);
+  background: linear-gradient(90deg, transparent 28.9%, #5fba7d 28.9%, #5fba7d 100.0%, transparent 100.0%);
 }
-#T_9e03b_row4_col2 {
+#T_5aeb6_row2_col3, #T_5aeb6_row3_col2 {
   width: 10em;
-  height: 80%;
-  background: linear-gradient(90deg,#5fba7d 15.4%, transparent 15.4%);
+  background: linear-gradient(90deg, transparent 2.4%, #5fba7d 2.4%, #5fba7d 28.9%, transparent 28.9%);
+}
+#T_5aeb6_row2_col4 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 15.1%, #5fba7d 15.1%, #5fba7d 37.4%, transparent 37.4%);
+}
+#T_5aeb6_row3_col0 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 15.2%, #5fba7d 15.2%, #5fba7d 37.4%, transparent 37.4%);
+}
+#T_5aeb6_row3_col1 {
+  width: 10em;
+  background: linear-gradient(90deg, #5fba7d 15.6%, transparent 15.6%);
+}
+#T_5aeb6_row4_col2 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 15.4%, #5fba7d 15.4%, #5fba7d 28.9%, transparent 28.9%);
 }
 </style>
-<table id="T_9e03b_">
+<table id="T_5aeb6">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th class="col_heading level0 col0" >coupler_connector_pad_Q2</th>
-      <th class="col_heading level0 col1" >ground_main_plane</th>
-      <th class="col_heading level0 col2" >pad_bot_Q2</th>
-      <th class="col_heading level0 col3" >pad_top_Q2</th>
-      <th class="col_heading level0 col4" >readout_connector_pad_Q2</th>
+      <th id="T_5aeb6_level0_col0" class="col_heading level0 col0" >coupler_connector_pad_Q2</th>
+      <th id="T_5aeb6_level0_col1" class="col_heading level0 col1" >ground_main_plane</th>
+      <th id="T_5aeb6_level0_col2" class="col_heading level0 col2" >pad_bot_Q2</th>
+      <th id="T_5aeb6_level0_col3" class="col_heading level0 col3" >pad_top_Q2</th>
+      <th id="T_5aeb6_level0_col4" class="col_heading level0 col4" >readout_connector_pad_Q2</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_9e03b_level0_row0" class="row_heading level0 row0" >coupler_connector_pad_Q2</th>
-      <td id="T_9e03b_row0_col0" class="data row0 col0" >64.52</td>
-      <td id="T_9e03b_row0_col1" class="data row0 col1" >-38.63</td>
-      <td id="T_9e03b_row0_col2" class="data row0 col2" >-2.18</td>
-      <td id="T_9e03b_row0_col3" class="data row0 col3" >-22.93</td>
-      <td id="T_9e03b_row0_col4" class="data row0 col4" >-0.22</td>
+      <th id="T_5aeb6_level0_row0" class="row_heading level0 row0" >coupler_connector_pad_Q2</th>
+      <td id="T_5aeb6_row0_col0" class="data row0 col0" >64.52</td>
+      <td id="T_5aeb6_row0_col1" class="data row0 col1" >-38.63</td>
+      <td id="T_5aeb6_row0_col2" class="data row0 col2" >-2.18</td>
+      <td id="T_5aeb6_row0_col3" class="data row0 col3" >-22.93</td>
+      <td id="T_5aeb6_row0_col4" class="data row0 col4" >-0.22</td>
     </tr>
     <tr>
-      <th id="T_9e03b_level0_row1" class="row_heading level0 row1" >ground_main_plane</th>
-      <td id="T_9e03b_row1_col0" class="data row1 col0" >-38.63</td>
-      <td id="T_9e03b_row1_col1" class="data row1 col1" >267.40</td>
-      <td id="T_9e03b_row1_col2" class="data row1 col2" >-49.28</td>
-      <td id="T_9e03b_row1_col3" class="data row1 col3" >-49.30</td>
-      <td id="T_9e03b_row1_col4" class="data row1 col4" >-38.67</td>
+      <th id="T_5aeb6_level0_row1" class="row_heading level0 row1" >ground_main_plane</th>
+      <td id="T_5aeb6_row1_col0" class="data row1 col0" >-38.63</td>
+      <td id="T_5aeb6_row1_col1" class="data row1 col1" >267.40</td>
+      <td id="T_5aeb6_row1_col2" class="data row1 col2" >-49.28</td>
+      <td id="T_5aeb6_row1_col3" class="data row1 col3" >-49.30</td>
+      <td id="T_5aeb6_row1_col4" class="data row1 col4" >-38.67</td>
     </tr>
     <tr>
-      <th id="T_9e03b_level0_row2" class="row_heading level0 row2" >pad_bot_Q2</th>
-      <td id="T_9e03b_row2_col0" class="data row2 col0" >-2.18</td>
-      <td id="T_9e03b_row2_col1" class="data row2 col1" >-49.28</td>
-      <td id="T_9e03b_row2_col2" class="data row2 col2" >121.38</td>
-      <td id="T_9e03b_row2_col3" class="data row2 col3" >-45.24</td>
-      <td id="T_9e03b_row2_col4" class="data row2 col4" >-23.06</td>
+      <th id="T_5aeb6_level0_row2" class="row_heading level0 row2" >pad_bot_Q2</th>
+      <td id="T_5aeb6_row2_col0" class="data row2 col0" >-2.18</td>
+      <td id="T_5aeb6_row2_col1" class="data row2 col1" >-49.28</td>
+      <td id="T_5aeb6_row2_col2" class="data row2 col2" >121.38</td>
+      <td id="T_5aeb6_row2_col3" class="data row2 col3" >-45.24</td>
+      <td id="T_5aeb6_row2_col4" class="data row2 col4" >-23.06</td>
     </tr>
     <tr>
-      <th id="T_9e03b_level0_row3" class="row_heading level0 row3" >pad_top_Q2</th>
-      <td id="T_9e03b_row3_col0" class="data row3 col0" >-22.93</td>
-      <td id="T_9e03b_row3_col1" class="data row3 col1" >-49.30</td>
-      <td id="T_9e03b_row3_col2" class="data row3 col2" >-45.24</td>
-      <td id="T_9e03b_row3_col3" class="data row3 col3" >121.24</td>
-      <td id="T_9e03b_row3_col4" class="data row3 col4" >-2.18</td>
+      <th id="T_5aeb6_level0_row3" class="row_heading level0 row3" >pad_top_Q2</th>
+      <td id="T_5aeb6_row3_col0" class="data row3 col0" >-22.93</td>
+      <td id="T_5aeb6_row3_col1" class="data row3 col1" >-49.30</td>
+      <td id="T_5aeb6_row3_col2" class="data row3 col2" >-45.24</td>
+      <td id="T_5aeb6_row3_col3" class="data row3 col3" >121.24</td>
+      <td id="T_5aeb6_row3_col4" class="data row3 col4" >-2.18</td>
     </tr>
     <tr>
-      <th id="T_9e03b_level0_row4" class="row_heading level0 row4" >readout_connector_pad_Q2</th>
-      <td id="T_9e03b_row4_col0" class="data row4 col0" >-0.22</td>
-      <td id="T_9e03b_row4_col1" class="data row4 col1" >-38.67</td>
-      <td id="T_9e03b_row4_col2" class="data row4 col2" >-23.06</td>
-      <td id="T_9e03b_row4_col3" class="data row4 col3" >-2.18</td>
-      <td id="T_9e03b_row4_col4" class="data row4 col4" >64.70</td>
+      <th id="T_5aeb6_level0_row4" class="row_heading level0 row4" >readout_connector_pad_Q2</th>
+      <td id="T_5aeb6_row4_col0" class="data row4 col0" >-0.22</td>
+      <td id="T_5aeb6_row4_col1" class="data row4 col1" >-38.67</td>
+      <td id="T_5aeb6_row4_col2" class="data row4 col2" >-23.06</td>
+      <td id="T_5aeb6_row4_col3" class="data row4 col3" >-2.18</td>
+      <td id="T_5aeb6_row4_col4" class="data row4 col4" >64.70</td>
     </tr>
   </tbody>
 </table></div>
@@ -827,7 +834,7 @@ Imported capacitance matrix with UNITS: [fF] now converted to USER UNITS:[fF]   
 <section id="Create-LOM-cells-from-capacitance-matrices">
 <h3>Create LOM cells from capacitance matrices<a class="headerlink" href="#Create-LOM-cells-from-capacitance-matrices" title="Link to this heading">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cell 1: transmon Alice cell</span>
@@ -864,7 +871,7 @@ Imported capacitance matrix with UNITS: [fF] now converted to USER UNITS:[fF]   
 <section id="Make-subsystems">
 <h3>Make subsystems<a class="headerlink" href="#Make-subsystems" title="Link to this heading">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># subsystem 1: transmon Alice</span>
@@ -905,7 +912,7 @@ Imported capacitance matrix with UNITS: [fF] now converted to USER UNITS:[fF]   
 <section id="Creat-the-composite-system-from-the-cells-and-the-subsystems">
 <h3>Creat the composite system from the cells and the subsystems<a class="headerlink" href="#Creat-the-composite-system-from-the-cells-and-the-subsystems" title="Link to this heading">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">composite_sys</span> <span class="o">=</span> <span class="n">CompositeSystem</span><span class="p">(</span>
@@ -918,7 +925,7 @@ Imported capacitance matrix with UNITS: [fF] now converted to USER UNITS:[fF]   
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cg</span> <span class="o">=</span> <span class="n">composite_sys</span><span class="o">.</span><span class="n">circuitGraph</span><span class="p">()</span>
@@ -941,7 +948,6 @@ nodes_keep:
 
 [&#39;j1&#39;, &#39;j2&#39;, &#39;readout_alice&#39;, &#39;readout_bob&#39;]
 
-
 L_inv_k (reduced inverse inductance matrix):
 -------------
 
@@ -960,14 +966,13 @@ j2             -0.766012  84.343548      -0.342145    10.039921
 readout_alice   8.318893  -0.342145      55.591197    -0.144354
 readout_bob    -0.323188  10.039921      -0.144354    60.347427
 
-
 </pre></div></div>
 </div>
 </section>
 <section id="Generate-the-hilberspace-from-the-composite-system,-leveraging-the-scqubits-package">
 <h3>Generate the hilberspace from the composite system, leveraging the scqubits package<a class="headerlink" href="#Generate-the-hilberspace-from-the-composite-system,-leveraging-the-scqubits-package" title="Link to this heading">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hilbertspace</span> <span class="o">=</span> <span class="n">composite_sys</span><span class="o">.</span><span class="n">create_hilbertspace</span><span class="p">()</span>
@@ -977,20 +982,20 @@ readout_bob    -0.323188  10.039921      -0.144354    60.347427
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
-Quantum object: dims = [[10, 10, 3, 3], [10, 10, 3, 3]], shape = (900, 900), type = oper, isherm = True\begin{equation*}\left(\begin{array}{*{11}c}-2.438\times10^{+04} &amp; 0.108j &amp; 0.0 &amp; 0.127j &amp; -0.436 &amp; \cdots &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0\\-0.108j &amp; -1.678\times10^{+04} &amp; 0.153j &amp; 0.436 &amp; 0.127j &amp; \cdots &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0\\0.0 &amp; -0.153j &amp; -9.184\times10^{+03} &amp; 0.0 &amp; 0.617 &amp; \cdots &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0\\-0.127j &amp; 0.436 &amp; 0.0 &amp; -1.638\times10^{+04} &amp; 0.108j &amp; \cdots &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0\\-0.436 &amp; -0.127j &amp; 0.617 &amp; -0.108j &amp; -8.784\times10^{+03} &amp; \cdots &amp; -1.839\times10^{-08} &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0\\\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots\\0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; -1.839\times10^{-08} &amp; \cdots &amp; 7.287\times10^{+04} &amp; 706.553j &amp; 0.617 &amp; 862.863j &amp; -0.872\\0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; \cdots &amp; -706.553j &amp; 8.047\times10^{+04} &amp; 0.0 &amp; 0.872 &amp; 862.863j\\0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; \cdots &amp; 0.617 &amp; 0.0 &amp; 7.327\times10^{+04} &amp; 499.608j &amp; 0.0\\0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; \cdots &amp; -862.863j &amp; 0.872 &amp; -499.608j &amp; 8.087\times10^{+04} &amp; 706.553j\\0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 &amp; \cdots &amp; -0.872 &amp; -862.863j &amp; 0.0 &amp; -706.553j &amp; 8.847\times10^{+04}\\\end{array}\right)\end{equation*}</div></div>
+Quantum object: dims=[[10, 10, 5, 5], [10, 10, 5, 5]], shape=(2500, 2500), type='oper', dtype=CSR, isherm=True$$\left(\begin{array}{cc}-2.438\times10^{ 4 } &amp; 0.108j &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\-0.108j &amp; -1.678\times10^{ 4 } &amp; 0.153j &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; -0.153j &amp; -9.184\times10^{ 3 } &amp; 0.187j &amp; 0 &amp; \cdots &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; -0.187j &amp; -1.584\times10^{ 3 } &amp; 0.216j &amp; \cdots &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; -0.216j &amp; 6.016\times10^{ 3 } &amp; \cdots &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 8.927\times10^{ 4 } &amp; 499.608j &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; -499.608j &amp; 9.687\times10^{ 4 } &amp; 706.553j &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; -706.553j &amp; 1.045\times10^{ 5 } &amp; 865.347j &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 &amp; -865.347j &amp; 1.121\times10^{ 5 } &amp; 999.216j\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 &amp; 0 &amp; 0 &amp; -999.216j &amp; 1.197\times10^{ 5 }\end{array}\right)$$</div></div>
 </div>
 </div>
 </section>
 <section id="Print-the-results">
 <h3>Print the results<a class="headerlink" href="#Print-the-results" title="Link to this heading">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hamiltonian_results</span> <span class="o">=</span> <span class="n">composite_sys</span><span class="o">.</span><span class="n">hamiltonian_results</span><span class="p">(</span><span class="n">hilbertspace</span><span class="p">,</span> <span class="n">evals_count</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
@@ -1002,23 +1007,22 @@ Quantum object: dims = [[10, 10, 3, 3], [10, 10, 3, 3]], shape = (900, 900), typ
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Finished eigensystem.
 
 system frequencies in GHz:
 --------------------------
-{&#39;transmon_alice&#39;: 6.053360688806868, &#39;transmon_bob&#39;: 4.7989883222888094, &#39;readout_alice&#39;: 8.009054820710865, &#39;readout_bob&#39;: 7.604412010766995}
+{&#39;transmon_alice&#39;: np.float64(6.053360674265853), &#39;transmon_bob&#39;: np.float64(4.798988315982038), &#39;readout_alice&#39;: np.float64(8.009053131548402), &#39;readout_bob&#39;: np.float64(7.604410557915028)}
 
 Chi matrices in MHz
 --------------------------
                 transmon_alice  transmon_bob  readout_alice  readout_bob
-transmon_alice     -353.239816     -0.542895      -4.132854    -0.003120
-transmon_bob         -0.542895   -263.940098      -0.001154    -1.460416
-readout_alice        -4.132854     -0.001154       4.283111    -0.000017
-readout_bob          -0.003120     -1.460416      -0.000017     3.829744
+transmon_alice     -353.239969     -0.542896      -4.199825    -0.003128
+transmon_bob         -0.542896   -263.940135      -0.001215    -1.487832
+readout_alice        -4.199825     -0.001215      -0.015910    -0.000019
+readout_bob          -0.003128     -1.487832      -0.000019    -0.002378
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hamiltonian_results</span><span class="p">[</span><span class="s2">"chi_in_MHz"</span><span class="p">]</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
@@ -1026,7 +1030,7 @@ readout_bob          -0.003120     -1.460416      -0.000017     3.829744
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1057,38 +1061,38 @@ readout_bob          -0.003120     -1.460416      -0.000017     3.829744
   <tbody>
     <tr>
       <th>transmon_alice</th>
-      <td>-353.239816</td>
-      <td>-0.542895</td>
-      <td>-4.132854</td>
-      <td>-0.003120</td>
+      <td>-353.239969</td>
+      <td>-0.542896</td>
+      <td>-4.199825</td>
+      <td>-0.003128</td>
     </tr>
     <tr>
       <th>transmon_bob</th>
-      <td>-0.542895</td>
-      <td>-263.940098</td>
-      <td>-0.001154</td>
-      <td>-1.460416</td>
+      <td>-0.542896</td>
+      <td>-263.940135</td>
+      <td>-0.001215</td>
+      <td>-1.487832</td>
     </tr>
     <tr>
       <th>readout_alice</th>
-      <td>-4.132854</td>
-      <td>-0.001154</td>
-      <td>4.283111</td>
-      <td>-0.000017</td>
+      <td>-4.199825</td>
+      <td>-0.001215</td>
+      <td>-0.015910</td>
+      <td>-0.000019</td>
     </tr>
     <tr>
       <th>readout_bob</th>
-      <td>-0.003120</td>
-      <td>-1.460416</td>
-      <td>-0.000017</td>
-      <td>3.829744</td>
+      <td>-0.003128</td>
+      <td>-1.487832</td>
+      <td>-0.000019</td>
+      <td>-0.002378</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">composite_sys</span><span class="o">.</span><span class="n">compute_gs</span><span class="p">()</span>
@@ -1096,20 +1100,20 @@ readout_bob          -0.003120     -1.460416      -0.000017     3.829744
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-                transmon_alice  transmon_bob  readout_alice  readout_bob
-transmon_alice        0.000000     20.115410    -129.897537     3.275638
-transmon_bob         20.115410      0.000000       2.678608  -111.508230
-readout_alice      -129.897537      2.678608       0.000000     0.436190
-readout_bob           3.275638   -111.508230       0.436190     0.000000
+                       j1          j2  readout_alice  readout_bob
+j1               0.000000   20.115409    -129.897533     3.275638
+j2              20.115409    0.000000       2.678608  -111.508227
+readout_alice -129.897533    2.678608       0.000000     0.436190
+readout_bob      3.275638 -111.508227       0.436190     0.000000
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transmon_alice</span><span class="o">.</span><span class="n">h_params</span>
@@ -1117,25 +1121,26 @@ readout_bob           3.275638   -111.508230       0.436190     0.000000
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{&#39;EJ&#39;: 16346.15128067812,
- &#39;EC&#39;: 312.756868730393,
- &#39;Q_zpf&#39;: 3.204353268e-19,
- &#39;default_charge_op&#39;: Operator(op=array([[-22,   0,   0, ...,   0,   0,   0],
-        [  0, -21,   0, ...,   0,   0,   0],
-        [  0,   0, -20, ...,   0,   0,   0],
-        ...,
-        [  0,   0,   0, ...,  20,   0,   0],
-        [  0,   0,   0, ...,   0,  21,   0],
-        [  0,   0,   0, ...,   0,   0,  22]]), add_hc=False)}
+defaultdict(dict,
+            {&#39;j1&#39;: {&#39;EJ&#39;: np.float64(16346.151155765461),
+              &#39;EC&#39;: np.float64(312.7568711203924),
+              &#39;Q_zpf&#39;: 3.20435314e-19,
+              &#39;default_charge_op&#39;: Operator(op=array([[-22,   0,   0, ...,   0,   0,   0],
+                     [  0, -21,   0, ...,   0,   0,   0],
+                     [  0,   0, -20, ...,   0,   0,   0],
+                     ...,
+                     [  0,   0,   0, ...,  20,   0,   0],
+                     [  0,   0,   0, ...,   0,  21,   0],
+                     [  0,   0,   0, ...,   0,   0,  22]], shape=(45, 45)), add_hc=False)}})
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transmon_bob</span><span class="o">.</span><span class="n">h_params</span>
@@ -1143,21 +1148,22 @@ readout_bob           3.275638   -111.508230       0.436190     0.000000
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{&#39;EJ&#39;: 13621.792733898432,
- &#39;EC&#39;: 234.32409269967633,
- &#39;Q_zpf&#39;: 3.204353268e-19,
- &#39;default_charge_op&#39;: Operator(op=array([[-22,   0,   0, ...,   0,   0,   0],
-        [  0, -21,   0, ...,   0,   0,   0],
-        [  0,   0, -20, ...,   0,   0,   0],
-        ...,
-        [  0,   0,   0, ...,  20,   0,   0],
-        [  0,   0,   0, ...,   0,  21,   0],
-        [  0,   0,   0, ...,   0,   0,  22]]), add_hc=False)}
+defaultdict(dict,
+            {&#39;j2&#39;: {&#39;EJ&#39;: np.float64(13621.79262980455),
+              &#39;EC&#39;: np.float64(234.32409449031465),
+              &#39;Q_zpf&#39;: 3.20435314e-19,
+              &#39;default_charge_op&#39;: Operator(op=array([[-22,   0,   0, ...,   0,   0,   0],
+                     [  0, -21,   0, ...,   0,   0,   0],
+                     [  0,   0, -20, ...,   0,   0,   0],
+                     ...,
+                     [  0,   0,   0, ...,  20,   0,   0],
+                     [  0,   0,   0, ...,   0,  21,   0],
+                     [  0,   0,   0, ...,   0,   0,  22]], shape=(45, 45)), add_hc=False)}})
 </pre></div></div>
 </div>
 </section>
@@ -1168,7 +1174,7 @@ readout_bob           3.275638   -111.508230       0.436190     0.000000
 <section id="Time-evolution-simulation-with-Sequencing-https://sequencing.readthedocs.io/en/latest/index.html">
 <h2>Time evolution simulation with Sequencing <a class="reference external" href="https://sequencing.readthedocs.io/en/latest/index.html">https://sequencing.readthedocs.io/en/latest/index.html</a><a class="headerlink" href="#Time-evolution-simulation-with-Sequencing-https://sequencing.readthedocs.io/en/latest/index.html" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_formats = ['svg']
@@ -1200,8 +1206,8 @@ readout_bob           3.275638   -111.508230       0.436190     0.000000
 <h3>Convert Metal LOM system to Sequencing system<a class="headerlink" href="#Convert-Metal-LOM-system-to-Sequencing-system" title="Link to this heading">¶</a></h3>
 <p>A Qiskit Metal LOM subsystem corresponds to a ‘mode’ in Sequencing system. The diagonal elements in <code class="docutils literal notranslate"><span class="pre">hamiltonian_results['chi_in_MHz']</span></code> (anharmonicity) are the self-Kerr’s and the off-diagonal elements the cross-Kerr’s in Sequencing’s Hamiltonian screenshot above.</p>
 <p>For more details on modes in Sequencing system, please check out the Sequencing package’s documentation. The <code class="docutils literal notranslate"><span class="pre">levels</span></code> parameter specifies the number of energy levels to keep for each mode in the Sequencing system. If not specified, i.e., None, they default to LOM subsystem’s respective dimensions as represented by the LOM composite system’s hilberspace (<code class="docutils literal notranslate"><span class="pre">hilbertspace.subsystem_dims</span></code>)</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">system</span> <span class="o">=</span> <span class="n">lom_composite_sys_to_seq_sys</span><span class="p">(</span>
@@ -1210,16 +1216,8 @@ readout_bob           3.275638   -111.508230       0.436190     0.000000
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Finished eigensystem.
-</pre></div></div>
-</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alice</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">modes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -1234,8 +1232,8 @@ Finished eigensystem.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Transmon(name=&#39;transmon_alice&#39;, cls=&#39;sequencing.modes.Transmon&#39;, levels=3, t1=inf, t2=inf, thermal_population=0.0, df=0.0, kerr=-0.3532398157382704, pulses={&#39;smoothed_constant_pulse&#39;: SmoothedConstantPulse(name=&#39;smoothed_constant_pulse&#39;, cls=&#39;sequencing.pulses.SmoothedConstantPulse&#39;, amp=1.0, detune=0.0, phase=0.0, noise_sigma=0.0, noise_alpha=0.0, scale_noise=False, length=100, sigma=0, shape=&#39;tanh&#39;), &#39;gaussian_pulse&#39;: GaussianPulse(name=&#39;gaussian_pulse&#39;, cls=&#39;sequencing.pulses.GaussianPulse&#39;, amp=1.0, detune=0.0, phase=0.0, noise_sigma=0.0, noise_alpha=0.0, scale_noise=False, sigma=10, chop=4, drag=0.0)}, default_pulse=&#39;gaussian_pulse&#39;)
-Cavity(name=&#39;readout_alice&#39;, cls=&#39;sequencing.modes.Cavity&#39;, levels=10, t1=inf, t2=inf, thermal_population=0.0, df=0.0, kerr=0.004283110746677267, pulses={&#39;smoothed_constant_pulse&#39;: SmoothedConstantPulse(name=&#39;smoothed_constant_pulse&#39;, cls=&#39;sequencing.pulses.SmoothedConstantPulse&#39;, amp=1.0, detune=0.0, phase=0.0, noise_sigma=0.0, noise_alpha=0.0, scale_noise=False, length=100, sigma=0, shape=&#39;tanh&#39;), &#39;gaussian_pulse&#39;: GaussianPulse(name=&#39;gaussian_pulse&#39;, cls=&#39;sequencing.pulses.GaussianPulse&#39;, amp=1.0, detune=0.0, phase=0.0, noise_sigma=0.0, noise_alpha=0.0, scale_noise=False, sigma=10, chop=4, drag=0.0)}, default_pulse=&#39;gaussian_pulse&#39;)
+Transmon(name=&#39;transmon_alice&#39;, cls=&#39;sequencing.modes.Transmon&#39;, levels=3, t1=inf, t2=inf, thermal_population=0.0, df=0.0, kerr=-0.3532399685176006, pulses={&#39;smoothed_constant_pulse&#39;: SmoothedConstantPulse(name=&#39;smoothed_constant_pulse&#39;, cls=&#39;sequencing.pulses.SmoothedConstantPulse&#39;, amp=1.0, detune=0.0, phase=0.0, dt=1, noise_sigma=0.0, noise_alpha=0.0, scale_noise=False, length=100, sigma=0, shape=&#39;tanh&#39;), &#39;gaussian_pulse&#39;: GaussianPulse(name=&#39;gaussian_pulse&#39;, cls=&#39;sequencing.pulses.GaussianPulse&#39;, amp=1.0, detune=0.0, phase=0.0, dt=1, noise_sigma=0.0, noise_alpha=0.0, scale_noise=False, sigma=10, chop=4, drag=0.0)}, default_pulse=&#39;gaussian_pulse&#39;)
+Cavity(name=&#39;readout_alice&#39;, cls=&#39;sequencing.modes.Cavity&#39;, levels=10, t1=inf, t2=inf, thermal_population=0.0, df=0.0, kerr=-1.5909784968243912e-05, pulses={&#39;smoothed_constant_pulse&#39;: SmoothedConstantPulse(name=&#39;smoothed_constant_pulse&#39;, cls=&#39;sequencing.pulses.SmoothedConstantPulse&#39;, amp=1.0, detune=0.0, phase=0.0, dt=1, noise_sigma=0.0, noise_alpha=0.0, scale_noise=False, length=100, sigma=0, shape=&#39;tanh&#39;), &#39;gaussian_pulse&#39;: GaussianPulse(name=&#39;gaussian_pulse&#39;, cls=&#39;sequencing.pulses.GaussianPulse&#39;, amp=1.0, detune=0.0, phase=0.0, dt=1, noise_sigma=0.0, noise_alpha=0.0, scale_noise=False, sigma=10, chop=4, drag=0.0)}, default_pulse=&#39;gaussian_pulse&#39;)
 </pre></div></div>
 </div>
 </section>
@@ -1246,7 +1244,7 @@ Cavity(name=&#39;readout_alice&#39;, cls=&#39;sequencing.modes.Cavity&#39;, leve
 <section id="Tune-the-amplitude-of-a-pulse-on-Alice-using-an-amplitude-Rabi-sequence">
 <h2>Tune the amplitude of a pulse on Alice using an amplitude-Rabi sequence<a class="headerlink" href="#Tune-the-amplitude-of-a-pulse-on-Alice-using-an-amplitude-Rabi-sequence" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">selective_sigma</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># ns</span>
@@ -1272,7 +1270,7 @@ Cavity(name=&#39;readout_alice&#39;, cls=&#39;sequencing.modes.Cavity&#39;, leve
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 51/51 [00:01&lt;00:00, 35.27it/s]
+100%|██████████| 51/51 [00:01&lt;00:00, 42.37it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1283,7 +1281,7 @@ Cavity(name=&#39;readout_alice&#39;, cls=&#39;sequencing.modes.Cavity&#39;, leve
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">selective_rotation</span><span class="p">(</span><span class="n">qubit</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">detune</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">selective_sigma</span><span class="p">):</span>
@@ -1296,7 +1294,7 @@ Cavity(name=&#39;readout_alice&#39;, cls=&#39;sequencing.modes.Cavity&#39;, leve
 <section id="Populate-alice-readout-cavity-with-0,-1,-2,-3-photons-respectively">
 <h2>Populate alice readout cavity with 0, 1, 2, 3 photons respectively<a class="headerlink" href="#Populate-alice-readout-cavity-with-0,-1,-2,-3-photons-respectively" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">init_states</span> <span class="o">=</span> <span class="p">[</span>
@@ -1307,7 +1305,7 @@ Cavity(name=&#39;readout_alice&#39;, cls=&#39;sequencing.modes.Cavity&#39;, leve
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply a selective pi pulse that is resonant</span>
@@ -1328,11 +1326,11 @@ Cavity(name=&#39;readout_alice&#39;, cls=&#39;sequencing.modes.Cavity&#39;, leve
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Initial states: 100%|██████████| 4/4 [00:00&lt;00:00,  5.31it/s]
+Initial states: 100%|██████████| 4/4 [00:00&lt;00:00,  6.19it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -1360,7 +1358,7 @@ Initial states: 100%|██████████| 4/4 [00:00&lt;00:00,  5.31i
 <section id="Use-the-qubit-to-measure-the-cavity:-how-many-photons-are-there?">
 <h2>Use the qubit to measure the cavity: how many photons are there?<a class="headerlink" href="#Use-the-qubit-to-measure-the-cavity:-how-many-photons-are-there?" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">rotate_qubit_on_n</span><span class="p">(</span>
@@ -1379,7 +1377,7 @@ Initial states: 100%|██████████| 4/4 [00:00&lt;00:00,  5.31i
 <section id="Displace-the-cavity-and-then-apply-selective-pulse-on-alice">
 <h3>Displace the cavity and then apply selective pulse on alice<a class="headerlink" href="#Displace-the-cavity-and-then-apply-selective-pulse-on-alice" title="Link to this heading">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_n</span> <span class="o">=</span> <span class="mi">4</span>
@@ -1410,14 +1408,14 @@ Initial states: 100%|██████████| 4/4 [00:00&lt;00:00,  5.31i
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Disp. amp. (measure n=0): 100%|██████████| 21/21 [00:07&lt;00:00,  2.76it/s]
-Disp. amp. (measure n=1): 100%|██████████| 21/21 [00:07&lt;00:00,  2.77it/s]
-Disp. amp. (measure n=2): 100%|██████████| 21/21 [00:07&lt;00:00,  2.80it/s]
-Disp. amp. (measure n=3): 100%|██████████| 21/21 [00:07&lt;00:00,  2.71it/s]
+Disp. amp. (measure n=0): 100%|██████████| 21/21 [00:04&lt;00:00,  5.02it/s]
+Disp. amp. (measure n=1): 100%|██████████| 21/21 [00:04&lt;00:00,  4.68it/s]
+Disp. amp. (measure n=2): 100%|██████████| 21/21 [00:04&lt;00:00,  4.71it/s]
+Disp. amp. (measure n=3): 100%|██████████| 21/21 [00:04&lt;00:00,  4.64it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>

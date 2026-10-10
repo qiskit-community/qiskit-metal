@@ -497,7 +497,7 @@
 <p>This module models the transmon qubit in the cooper-pair charge basis, assuming wrapped junction phase variable. The Hamiltonian is given by:</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
-\[\hat{H}=4E_{C}\left(\hat{n}-n_{g}\right)-E_{J}\cos\left(\hat{\phi}\right)\,,\]</div>
+\[\hat{H}=4E_{C}\left(\hat{n}-n_{g}\right)^{2}-E_{J}\cos\left(\hat{\phi}\right)\,,\]</div>
 </div>
 <p>where <span class="math notranslate nohighlight">\(E_{C}\)</span> is the charging energy, <span class="math notranslate nohighlight">\(E_{J}\)</span> is the Josephson energy, <span class="math notranslate nohighlight">\(\hat n\)</span> is the number of Cooper pairs transferred between charge islands, <span class="math notranslate nohighlight">\(\hat{\phi}\)</span> is the gauge-invariant phase difference between charge islands, and <span class="math notranslate nohighlight">\(n_{g}\)</span> is effective offset charge of the device. Expressions for the charging energy, Josephson energy and offset charge can be written as:</p>
 <div class="math-wrapper docutils container">
@@ -520,7 +520,7 @@
 <div class="math notranslate nohighlight">
 \[H=4E_\text{C}(\hat{n}-n_g)^2-\frac{1}{2}E_\text{J}\sum_n(|n\rangle\langle n+1|+\text{h.c.}),\]</div>
 </div>
-<p>Where <span class="math notranslate nohighlight">\(\hat{n} = \sum_{n=-\inf}^{\inf} |n\rangle\langle n|\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\hat{n} = \sum_{n=-\infty}^{\infty} n\,|n\rangle\langle n|\)</span>.</p>
 <section id="Hcpb-class">
 <h2>Hcpb class<a class="headerlink" href="#Hcpb-class" title="Link to this heading">¶</a></h2>
 <p>Hamiltonian-model Cooper pair box (Hcpb) class.</p>
@@ -570,7 +570,7 @@ energy:</p>
 
 <span class="c1"># For a given value of offset charge (ng, represented by x) we will calculate the CPB Hamiltonian using the previously assigned values of E_J and E_C. Then we calculate the eigenvalue for a given value of m.</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-    <span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
     <span class="n">E0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">)</span>
     <span class="n">E1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">)</span>
     <span class="n">E2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="p">)</span>
@@ -583,18 +583,25 @@ energy:</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E2</span> <span class="o">-</span> <span class="n">floor</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"m=2"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"ng"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Em/E01"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Energy Level:"</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"upper right"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Energy Level:"</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"upper left"</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.02</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x16652ba90&gt;
+&lt;matplotlib.legend.Legend at 0x7f96df50e660&gt;
 </pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_10_1.png" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_10_1.png" />
+</div>
 </div>
 </section>
 <section id="Comparing-with-the-Analytic-Expressions-for-Energy">
@@ -634,12 +641,13 @@ Error: 3.2554285453597023e-14
 </section>
 <section id="Wavefunctions">
 <h3>Wavefunctions<a class="headerlink" href="#Wavefunctions" title="Link to this heading">¶</a></h3>
-<p>Let’s define a new Hamiltonian, this time with <span class="math notranslate nohighlight">\(E_{J} &gt;&gt; E_{C}\)</span> and an offset charge of <span class="math notranslate nohighlight">\(ng=0.001\)</span>. We can calculate the transition energy between the lowest two states as well as the anharmonicity with the following:</p>
+<p>Let’s define a new Hamiltonian, this time with <span class="math notranslate nohighlight">\(E_{J} &gt;&gt; E_{C}\)</span> and an offset charge of <span class="math notranslate nohighlight">\(ng=0.001\)</span>. We can calculate the transition energy between the lowest two states as well as the anharmonicity with the following. <code class="docutils literal notranslate"><span class="pre">nlevels</span></code> sets the charge-basis cutoff: the Hamiltonian is built on the <span class="math notranslate nohighlight">\(2\,n_\mathrm{levels}+1\)</span> charge states <span class="math notranslate nohighlight">\(n = -n_\mathrm{levels}, \dots, n_\mathrm{levels}\)</span>. At <span class="math notranslate nohighlight">\(E_J/E_C \approx 47\)</span> the low-lying states spread over several charge states, and the
+cutoff must include them all: <code class="docutils literal notranslate"><span class="pre">nlevels=15</span></code> (the default) is converged (any <code class="docutils literal notranslate"><span class="pre">nlevels</span></code> <span class="math notranslate nohighlight">\(\geq 8\)</span> agrees to 1 kHz), while <code class="docutils literal notranslate"><span class="pre">nlevels=3</span></code> would give <span class="math notranslate nohighlight">\(\omega_{01}/2\pi \approx 5604\)</span> MHz and <span class="math notranslate nohighlight">\(\alpha/2\pi \approx +11\)</span> MHz, artifacts of the truncation.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="mf">13971.3</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">295.2</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="mf">13971.3</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="mf">295.2</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"""</span>
 <span class="s2">Transmon frequencies</span>
 
@@ -657,8 +665,8 @@ Error: 3.2554285453597023e-14
 
 Transmon frequencies
 
- ω01/2π =   5604 MHz
-   α/2π =     11 MHz
+ ω01/2π =   5431 MHz
+   α/2π =   -341 MHz
 
 </pre></div></div>
 </div>
@@ -681,14 +689,21 @@ Transmon frequencies
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x1763343d0&gt;
+&lt;matplotlib.legend.Legend at 0x7f96dd37cf50&gt;
 </pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_20_1.png" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_20_1.png" />
+</div>
 </div>
 </section>
 <section id="Verifying-Orthonormality-of-the-Wavefunctions">
@@ -709,7 +724,7 @@ Transmon frequencies
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(-2.235479468332647e-09-7.858047694112449e-17j)
+(-4.335351955903066e-12-2.240584357216512e-17j)
 </pre></div></div>
 </div>
 <p>Indeed, we see that the dot product is essentially zero (within numerical precision.) Next, let’s take the inner product of the first eigenstate with itself, checking that we get an output of unity:</p>
@@ -727,8 +742,8 @@ Transmon frequencies
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(0.999999999999998+8.068442187513458e-21j)
-(0.9999999999999996+1.2387650562750623e-20j)
+(0.9999999999999999+0j)
+(0.9999999999999997+0j)
 </pre></div></div>
 </div>
 <p>Indeed we see that the dot products are essentially equal to unity, confirming that the states are appropriately normalized.</p>
@@ -791,14 +806,21 @@ Transmon frequencies
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x176e968d0&gt;
+&lt;matplotlib.legend.Legend at 0x7f96dd205d10&gt;
 </pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_34_1.png" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_34_1.png" />
+</div>
 </div>
 </section>
 <section id="Energy-Level-Differences">
@@ -842,18 +864,25 @@ Transmon frequencies
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">E30</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"m=3"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Ej/Ec"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Em0/Ec"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Energy Levels"</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"upper right"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Energy Levels"</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"upper left"</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.02</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x176b2ced0&gt;
+&lt;matplotlib.legend.Legend at 0x7f96dd1d7250&gt;
 </pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_41_1.png" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_41_1.png" />
+</div>
 </div>
 </section>
 <section id="Anharmonicity">
@@ -876,14 +905,16 @@ anharmonicity is defined as <span class="math notranslate nohighlight">\(\alpha_
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-    <span class="n">H_anharm</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">alpha</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H_anharm</span><span class="o">.</span><span class="n">anharm</span><span class="p">())</span>
-    <span class="n">alpha_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H_anharm</span><span class="o">.</span><span class="n">anharm</span><span class="p">()</span> <span class="o">/</span> <span class="n">H_anharm</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># E01 = 0 at Ej/Ec = 0 and ng = 1/2, so alpha_r is undefined at the first point.</span>
+<span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+        <span class="n">H_anharm</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">alpha</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H_anharm</span><span class="o">.</span><span class="n">anharm</span><span class="p">())</span>
+        <span class="n">alpha_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H_anharm</span><span class="o">.</span><span class="n">anharm</span><span class="p">()</span> <span class="o">/</span> <span class="n">H_anharm</span><span class="o">.</span><span class="n">fij</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<p>Note we get a warning here because the relative anharmonicity blows up as Ej/Ec goes to zero. Then we can plot the results:</p>
+<p>At <span class="math notranslate nohighlight">\(E_{J}/E_{C} = 0\)</span> and <span class="math notranslate nohighlight">\(n_{g} = 0.5\)</span> the two lowest charge states are degenerate, so <span class="math notranslate nohighlight">\(E_{01} = 0\)</span> and the relative anharmonicity diverges at the first point (<code class="docutils literal notranslate"><span class="pre">np.errstate</span></code> above silences numpy’s divide-by-zero warning). Then we can plot the results:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -901,7 +932,7 @@ anharmonicity is defined as <span class="math notranslate nohighlight">\(\alpha_
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
@@ -910,7 +941,14 @@ anharmonicity is defined as <span class="math notranslate nohighlight">\(\alpha_
 Text(0, 0.5, &#39;alpha_r&#39;)
 </pre></div></div>
 </div>
-<p>Indeed we see that the anharmonicity decays with the inverse of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> for small values of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> before reaching a minimum just before <span class="math notranslate nohighlight">\(E_{J}/E_{C} \approx 20.0\)</span>, then changing sign and approaching zero as <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> approaches infinity. This matches very closely to the results found in Figure 5 of Phys. Rev. A 76, 042319 (2007).</p>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_48_1.png" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_48_1.png" />
+</div>
+</div>
+<p>The anharmonicity is large and positive for small <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span>, changes sign near <span class="math notranslate nohighlight">\(E_{J}/E_{C} \approx 9\)</span>, and the relative anharmonicity reaches its most negative value, <span class="math notranslate nohighlight">\(\alpha_{r} \approx -0.10\)</span>, near <span class="math notranslate nohighlight">\(E_{J}/E_{C} \approx 17.5\)</span>. Beyond that <span class="math notranslate nohighlight">\(\alpha_{r}\)</span> approaches zero from below as <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> grows, while <span class="math notranslate nohighlight">\(\alpha\)</span> itself tends to <span class="math notranslate nohighlight">\(-E_{C}\)</span> (here <span class="math notranslate nohighlight">\(-100\)</span> MHz). This matches Figure 5 of Phys. Rev. A 76, 042319 (2007).</p>
 </section>
 <section id="Dephasing-Time-(T2)">
 <h3>Dephasing Time (T2)<a class="headerlink" href="#Dephasing-Time-(T2)" title="Link to this heading">¶</a></h3>
@@ -924,7 +962,7 @@ Text(0, 0.5, &#39;alpha_r&#39;)
 </pre></div>
 </div>
 </div>
-<p>Next, we’ll just calculate the T2 time as a function of <span class="math notranslate nohighlight">\(E_{J}/E_C{}\)</span>, noting that the output of the Hcpb eigenvalue caluclation is in units of E/h ~ MHz (1E6 Hz). So our calculation simplifies to: <span class="math notranslate nohighlight">\(T_{2} = \frac{1.0}{2*(1E-4)*(1E6) |\epsilon_{1}|}\)</span> where <span class="math notranslate nohighlight">\(\epsilon_{1}\)</span> is the direct output of the Hcpb eigenvalue calculation:</p>
+<p>Next, we’ll just calculate the T2 time as a function of <span class="math notranslate nohighlight">\(E_{J}/E_C{}\)</span>, noting that the output of the Hcpb eigenvalue caluclation is in units of E/h ~ MHz (1E6 Hz). With <span class="math notranslate nohighlight">\(\epsilon_{1} = h \times (10^{6}\,\mathrm{Hz}) \times \epsilon\)</span>, where <span class="math notranslate nohighlight">\(\epsilon\)</span> is the direct output of the Hcpb eigenvalue calculation in MHz, and <span class="math notranslate nohighlight">\(\hbar / h = 1/2\pi\)</span>, our calculation simplifies to: <span class="math notranslate nohighlight">\(T_{2} = \frac{1}{2\pi^{2} \times 10^{-4} \times 10^{6}\,|\epsilon|}\)</span> seconds:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
@@ -934,7 +972,7 @@ Text(0, 0.5, &#39;alpha_r&#39;)
     <span class="n">H_half</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
     <span class="n">H_zero</span> <span class="o">=</span> <span class="n">Hcpb</span><span class="p">(</span><span class="n">nlevels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ej</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="n">E_c</span><span class="p">,</span> <span class="n">Ec</span><span class="o">=</span><span class="n">E_c</span><span class="p">,</span> <span class="n">ng</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
     <span class="n">eps</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">H_half</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_zero</span><span class="o">.</span><span class="n">evalue_k</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">T2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1e-4</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1e6</span><span class="p">)</span> <span class="o">*</span> <span class="n">eps</span><span class="p">))</span>
+    <span class="n">T2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">1e-4</span> <span class="o">*</span> <span class="mf">1e6</span> <span class="o">*</span> <span class="n">eps</span><span class="p">))</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T2</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span>
@@ -943,7 +981,7 @@ Text(0, 0.5, &#39;alpha_r&#39;)
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
@@ -951,6 +989,13 @@ Text(0, 0.5, &#39;alpha_r&#39;)
 <div class="highlight"><pre>
 Text(0, 0.5, &#39;T2 (sec)&#39;)
 </pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_54_1.png" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_54_1.png" />
+</div>
 </div>
 <p>Indeed, we see that the dephasing time increases exponentially with increasing <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span>, which is one of the critical features of the transmon qubit. By increasing the <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> ratio, we reduce sensitivity to charge noise without sacrificing too much anharmonicity, resulting in greatly improved dephasing time. This plot matches very closely to Fig. 5(c) in Phys. Rev. A 76, 042319 (2007).</p>
 </section>
@@ -997,7 +1042,7 @@ Quantum object: dims=[[6], [6]], shape=(6, 6), type='oper', dtype=Dense, isherm=
 <div class="output_area docutils container">
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
-Quantum object: dims=[[6], [6]], shape=(6, 6), type='oper', dtype=Dense, isherm=True$$\left(\begin{array}{cc}0 &amp; 1.424 &amp; 6.054\times10^{ -16 } &amp; 0.029 &amp; 5.617\times10^{ -16 } &amp; 0.001\\1.424 &amp; 0 &amp; 1.979 &amp; 3.419\times10^{ -16 } &amp; 0.060 &amp; 3.542\times10^{ -16 }\\6.054\times10^{ -16 } &amp; 1.979 &amp; 0 &amp; 2.379 &amp; 5.365\times10^{ -16 } &amp; 0.100\\0.029 &amp; 3.142\times10^{ -16 } &amp; 2.379 &amp; 0 &amp; 2.690 &amp; 1.849\times10^{ -16 }\\5.617\times10^{ -16 } &amp; 0.060 &amp; 5.365\times10^{ -16 } &amp; 2.690 &amp; 0 &amp; 2.936\\0.001 &amp; 2.431\times10^{ -16 } &amp; 0.100 &amp; 1.849\times10^{ -16 } &amp; 2.936 &amp; 0\end{array}\right)$$</div></div>
+Quantum object: dims=[[6], [6]], shape=(6, 6), type='oper', dtype=Dense, isherm=True$$\left(\begin{array}{cc}0 &amp; 1.424 &amp; 1.124\times10^{ -15 } &amp; 0.029 &amp; -2.325\times10^{ -17 } &amp; 0.001\\1.424 &amp; 0 &amp; 1.979 &amp; -3.295\times10^{ -17 } &amp; 0.060 &amp; 2.544\times10^{ -16 }\\1.127\times10^{ -15 } &amp; 1.979 &amp; 0 &amp; 2.379 &amp; 2.065\times10^{ -17 } &amp; 0.100\\0.029 &amp; -2.178\times10^{ -17 } &amp; 2.379 &amp; 0 &amp; 2.690 &amp; 3.248\times10^{ -15 }\\4.170\times10^{ -17 } &amp; 0.060 &amp; -1.043\times10^{ -16 } &amp; 2.690 &amp; 0 &amp; 2.936\\0.001 &amp; 3.940\times10^{ -16 } &amp; 0.100 &amp; 3.269\times10^{ -15 } &amp; 2.936 &amp; 0\end{array}\right)$$</div></div>
 </div>
 </div>
 <p>We can use these matrices to perform some additional analysis. As an example, we can plot the fluctuation in the number of Cooper pairs as a function of <span class="math notranslate nohighlight">\(E_{J} / E_{C}\)</span> for the first three energy levels. This requires calculating the variance in the number of Cooper pairs, defined as: <span class="math notranslate nohighlight">\(\sqrt{&lt;n^2&gt; - &lt;n&gt;^2 }\)</span> where <span class="math notranslate nohighlight">\(n\)</span> is calculated for a given energy level m.</p>
@@ -1042,18 +1087,25 @@ Quantum object: dims=[[6], [6]], shape=(6, 6), type='oper', dtype=Dense, isherm=
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">var2</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"m=2"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Ej/Ec"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Variance"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Energy Levels"</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"upper right"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Energy Levels"</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"upper left"</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.02</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x176f4f310&gt;
+&lt;matplotlib.legend.Legend at 0x7f96dcd89310&gt;
 </pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_66_1.png" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_66_1.png" />
+</div>
 </div>
 <p>Physically, the above plot demonstrates that the variations in the number of Cooper pairs is on the order of 1-2 for gorund and first excited states of the CPB operated in the transmon regime.</p>
 <p>We can also investigate how the off-diagonal matrix elements of the CPB Hamiltonian evolve as a function of the <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> ratio. Let’s create four empty lists (<span class="math notranslate nohighlight">\(m_{10}\)</span>, <span class="math notranslate nohighlight">\(m_{20}\)</span>, <span class="math notranslate nohighlight">\(m_{30}\)</span> and <span class="math notranslate nohighlight">\(m_{21}\)</span>) where <span class="math notranslate nohighlight">\(m_{ij} = &lt;i | n | j&gt;\)</span>. Then we can loop over the ratio of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span> and at each value, we calculate the off-diagonal matrix element:</p>
@@ -1087,25 +1139,32 @@ Quantum object: dims=[[6], [6]], shape=(6, 6), type='oper', dtype=Dense, isherm=
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">m21</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"&lt;2|n|1&gt;"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Ej/Ec"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"&lt;i|n|j&gt;"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Energy Levels"</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"upper right"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Energy Levels"</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"upper left"</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.02</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x176efac10&gt;
+&lt;matplotlib.legend.Legend at 0x7f96dcc15bd0&gt;
 </pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_71_1.png" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_71_1.png" />
+</div>
 </div>
 <p>We see that the above plot closely matches Fig. 7 of Koch et al. (2007) PRA. Physically, we see that the coupling between adjacent transmon states (<span class="math notranslate nohighlight">\(&lt;1|n|0&gt;\)</span> and <span class="math notranslate nohighlight">\(&lt;2|n|1&gt;\)</span>) is the only significant coupling in the <span class="math notranslate nohighlight">\(E_{J} &gt;&gt; E_{C}\)</span> regime. The coupling between non-adjacent states (like m=0 and m=2) is essentially zero at all values of <span class="math notranslate nohighlight">\(E_{J}/E_{C}\)</span>.</p>
 </section>
 </section>
 <section id="Experimental">
 <h2>Experimental<a class="headerlink" href="#Experimental" title="Link to this heading">¶</a></h2>
-<p>Let’s use the “params_from_spectrum” function to calculate the target Ej and Ec values for a desired transmon frequency and anharmonicity. We’ll use values of Ej=13971.3 MHz and Ec=295.2 MHz.</p>
+<p>Let’s use the <code class="docutils literal notranslate"><span class="pre">params_from_spectrum</span></code> function to calculate the target Ej and Ec values for a desired transmon frequency and anharmonicity. As targets we take <span class="math notranslate nohighlight">\(\omega_{01}/2\pi = 5431\)</span> MHz and <span class="math notranslate nohighlight">\(\alpha/2\pi = -341\)</span> MHz, the rounded values of the transmon above (Ej = 13971.3 MHz, Ec = 295.2 MHz at <span class="math notranslate nohighlight">\(n_g = 0.001\)</span>). Note that <code class="docutils literal notranslate"><span class="pre">H</span></code> is now the last Hamiltonian of the loop above, at <span class="math notranslate nohighlight">\(n_g = 0.5\)</span>; the fit keeps that <span class="math notranslate nohighlight">\(n_g\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
@@ -1123,10 +1182,11 @@ Quantum object: dims=[[6], [6]], shape=(6, 6), type='oper', dtype=Dense, isherm=
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[13952.85838241   295.62150486]
-transmon frequency: 5430.998862440552 anharmonicity: -341.001148518254
+[13952.89933312   295.62065529]
+transmon frequency: 5431.000000000001 anharmonicity: -340.99999999999545
 </pre></div></div>
 </div>
+<p>The fit reproduces the targets, but returns Ej ≈ 13953 MHz and Ec ≈ 295.6 MHz rather than 13971.3 and 295.2 MHz: at <span class="math notranslate nohighlight">\(n_g = 0.5\)</span> the transmon above has <span class="math notranslate nohighlight">\(\alpha/2\pi = -340.4\)</span> MHz (its charge dispersion shifts <span class="math notranslate nohighlight">\(\alpha\)</span> by about 0.6 MHz at this <span class="math notranslate nohighlight">\(E_J/E_C \approx 47\)</span>), and the targets are rounded. With that transmon’s own <span class="math notranslate nohighlight">\(n_g = 0.5\)</span> values of <span class="math notranslate nohighlight">\(\omega_{01}\)</span> and <span class="math notranslate nohighlight">\(\alpha\)</span> as targets the fit returns 13971.3 and 295.2 MHz.</p>
 <p>We can also calculate the value of Ej given the value of Ec and the transmon frequency:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
@@ -1142,10 +1202,10 @@ transmon frequency: 5430.998862440552 anharmonicity: -341.001148518254
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Ej: 14424.68223617939
+Ej: 13971.730305104767
 </pre></div></div>
 </div>
-<p>We see that this is close to the starting vaue of 13971.3 MHz that we began with.</p>
+<p>We see that this is close to the starting value of 13971.3 MHz that we began with; the small difference comes from the rounded Ec (295.17 MHz) and target frequency.</p>
 </section>
 <section id="New-section-on-integrating-sc_qubits.">
 <h2>New section on integrating sc_qubits.<a class="headerlink" href="#New-section-on-integrating-sc_qubits." title="Link to this heading">¶</a></h2>
@@ -1154,7 +1214,19 @@ Ej: 14424.68223617939
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scqubits</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">scq</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib_inline.backend_inline</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_matplotlib_formats</span>
+
+<span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+    <span class="c1"># scqubits 4.3 has an invalid escape sequence in one module (SyntaxWarning</span>
+    <span class="c1"># when it is first compiled); unrelated to this tutorial.</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="ne">SyntaxWarning</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">scqubits</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">scq</span>
+
+<span class="c1"># keep the stored outputs free of progress bars</span>
+<span class="n">scq</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">PROGRESSBAR_DISABLED</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s2">"png"</span><span class="p">)</span>  <span class="c1"># scqubits switches inline figures to pdf + svg</span>
 </pre></div>
 </div>
 </div>
@@ -1194,7 +1266,7 @@ alpha = -341 MHz
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
@@ -1212,8 +1284,22 @@ array([[1889.24005846,   -6.98562051,    0.        , ...,    0.        ,
        [   0.        ,    0.        ,    0.        , ...,   -6.98562051,
         1795.77694133,   -6.98562051],
        [   0.        ,    0.        ,    0.        , ...,    0.        ,
-          -6.98562051, 1889.0511439 ]])
+          -6.98562051, 1889.0511439 ]], shape=(81, 81))
 </pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_83_1.png" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_83_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_83_2.png" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_83_2.png" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
@@ -1230,7 +1316,8 @@ array([[1889.24005846,   -6.98562051,    0.        , ...,    0.        ,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "8513bc12da2b4d72a9c67067edb1770c", "version_major": 2, "version_minor": 0}</script></div>
+<img alt="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_84_0.png" src="../../_images/tut_4-Analysis_4.34-Transmon-qubit-CPB-hamiltonian-charge-basis_84_0.png" />
+</div>
 </div>
 </section>
 <section id="Transmon-and-the-Oscillator">

@@ -21,6 +21,7 @@ DesignPlanar
    .. autoattribute:: DesignPlanar.qgeometry
    .. autoattribute:: DesignPlanar.qnet
    .. autoattribute:: DesignPlanar.renderers
+   .. autoattribute:: DesignPlanar.skipped_renderers
    .. autoattribute:: DesignPlanar.template_options
    .. autoattribute:: DesignPlanar.template_renderer_options
    .. autoattribute:: DesignPlanar.variables

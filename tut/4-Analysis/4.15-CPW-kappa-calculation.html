@@ -499,12 +499,10 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">metal</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">designs</span><span class="p">,</span> <span class="n">draw</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetalGUI</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">open_docs</span>
 </pre></div>
 </div>
 </div>
-<p>Next, let’s import the function “kappa_in” located in the file kappa_calculation.py. This function calculates the photon loss of a CPW resonator which is capacitively coupled to an input transmission line.</p>
+<p>Next, let’s import the function “kappa_in” located in the file kappa_calculation.py. This function calculates the photon loss of a CPW resonator which is capacitively coupled to an input transmission line. It returns <span class="math notranslate nohighlight">\(\kappa/2\pi\)</span> in Hz, the full width at half maximum of the resonance (multiply by <span class="math notranslate nohighlight">\(2\pi\)</span> for the energy decay rate in 1/s).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -515,21 +513,21 @@
 </div>
 </div>
 <p>The function “kappa_in” takes either three or six arguments, depending on how the lowest resonant frequency of the resonator is handled. In the first case, the resonant frequency of the CPW resonator is calculated numerically (using HFSS, for example) and passed as a floating-point input along with the frequency of interest and the capacitance between the resonator and the transmission line. In the second case, the lowest resonant frequency of the CPW resonator can be estimated by assuming an
-ideal resonator, in which case some additional inputs are required (1/2 or 1/4 depending on the type of resonator, the resonator length, width of resonator trace, width of resonator gap.)</p>
-<p>Here’s a quick sanity check to verify that we only get numerical output from this function in the cases of N=3 or N=6 arguments:</p>
+ideal resonator, in which case some additional inputs are required (the resonator length, width of resonator trace and width of resonator gap, in meters, and <span class="math notranslate nohighlight">\(\eta = 2\)</span> for a half-wave or <span class="math notranslate nohighlight">\(\eta = 4\)</span> for a quarter-wave resonator.)</p>
+<p>Here’s a quick sanity check to verify that we only get numerical output from this function in the cases of N=3 or N=6 arguments; any other number of arguments returns <code class="docutils literal notranslate"><span class="pre">None</span></code> with a warning, of which we print the first:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SANITY CHECK #1</span>
 <span class="c1"># Let's check that output is only given for three and six arguments</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=1 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=2 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=3 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=4 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=5 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=6 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Output for N=7 Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">(</span><span class="n">record</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">caught</span><span class="p">:</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">"always"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">n_args</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Output for N=</span><span class="si">{</span><span class="n">n_args</span><span class="si">}</span><span class="s2"> Args:"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_args</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">caught</span><span class="p">)</span><span class="si">}</span><span class="s2"> warnings, e.g.: </span><span class="si">{</span><span class="n">caught</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -540,25 +538,27 @@ ideal resonator, in which case some additional inputs are required (1/2 or 1/4 d
 <div class="highlight"><pre>
 Output for N=1 Args: None
 Output for N=2 Args: None
-Output for N=3 Args: 1591.5494309189535
+Output for N=3 Args: 62831.85307179587
 Output for N=4 Args: None
 Output for N=5 Args: None
-Output for N=6 Args: 3234.721973158391
+Output for N=6 Args: 3195941423719.1504
 Output for N=7 Args: None
+
+5 warnings, e.g.: kappa_in takes 3 (freq, C_in, freq_res) or 6 (freq, C_in, length, res_width, res_gap, eta) arguments, got 1; returning None.
 </pre></div></div>
 </div>
-<p>Now, let’s actually calculate the photon loss for a representative CPW resonator with realistic values of input parameters. Here we’ll assume a resonant frequency of 5 GHz, capacitive coupling of 30fF and a CPW resonant frequency of 4 GHz. The calculated value of kappa is the range of 0-1 MHz, as expected.</p>
+<p>Now, let’s actually calculate the photon loss for a representative CPW resonator with realistic values of input parameters. Here we evaluate kappa at 5 GHz for a resonator with a resonance frequency of 4.5 GHz and a coupling capacitance of 30 fF. The result, <span class="math notranslate nohighlight">\(\kappa/2\pi \approx 6.4\)</span> MHz, is a strongly coupled resonator; since <span class="math notranslate nohighlight">\(\kappa \propto C_\mathrm{in}^2\)</span>, a 10 fF coupler would give about 0.7 MHz.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SANITY CHECK #2</span>
 <span class="c1"># Let's check that the magnitude of the output is what we would expect for 3 arguments:</span>
-<span class="c1"># Input #1: omega = 5GHz = 5E9 Hertz</span>
+<span class="c1"># Input #1: freq = 5 GHz = 5E9 Hertz</span>
 <span class="c1"># Input #2: C_in = 30fF = 30E-15 Farads</span>
-<span class="c1"># Input #3: omega_n = 4GHz = 4.5E9 Hertz</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Calculated kappa (in Hz):"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">5.0e9</span><span class="p">,</span> <span class="mf">30.0e-15</span><span class="p">,</span> <span class="mf">4.5e9</span><span class="p">),</span> <span class="s2">"Hz"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Calculated kappa (in MHz):"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">5.0e9</span><span class="p">,</span> <span class="mf">30.0e-15</span><span class="p">,</span> <span class="mf">4.5e9</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1.0e6</span><span class="p">,</span> <span class="s2">"MHz"</span><span class="p">)</span>
+<span class="c1"># Input #3: freq_res = 4.5 GHz = 4.5E9 Hertz</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Calculated kappa/2pi (in Hz):"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">5.0e9</span><span class="p">,</span> <span class="mf">30.0e-15</span><span class="p">,</span> <span class="mf">4.5e9</span><span class="p">),</span> <span class="s2">"Hz"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Calculated kappa/2pi (in MHz):"</span><span class="p">,</span> <span class="n">kappa_in</span><span class="p">(</span><span class="mf">5.0e9</span><span class="p">,</span> <span class="mf">30.0e-15</span><span class="p">,</span> <span class="mf">4.5e9</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1.0e6</span><span class="p">,</span> <span class="s2">"MHz"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -567,8 +567,8 @@ Output for N=7 Args: None
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Calculated kappa (in Hz): 161144.37988054403 Hz
-Calculated kappa (in MHz): 0.16114437988054403 MHz
+Calculated kappa/2pi (in Hz): 6361725.123519329 Hz
+Calculated kappa/2pi (in MHz): 6.36172512351933 MHz
 </pre></div></div>
 </div>
 </section>

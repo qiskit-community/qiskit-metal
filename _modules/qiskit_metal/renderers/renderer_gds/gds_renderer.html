@@ -518,6 +518,7 @@
 <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">is_building_docs</span><span class="p">():</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python.utility_functions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
         <span class="n">can_write_to_path</span><span class="p">,</span>
+        <span class="n">concat_tables</span><span class="p">,</span>
         <span class="n">get_range_of_vertex_to_not_fillet</span><span class="p">,</span>
     <span class="p">)</span>
 
@@ -1181,11 +1182,13 @@
                 <span class="n">copy_no_subtract</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_no</span><span class="p">[</span><span class="n">item_no</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">]</span> <span class="o">==</span> <span class="n">chip_layer</span><span class="p">]</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="n">chip_layer</span><span class="p">][</span><span class="s2">"all_subtract_true"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">copy_subtract</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+                <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">concat_tables</span><span class="p">(</span><span class="n">copy_subtract</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
             <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="n">chip_layer</span><span class="p">][</span><span class="s2">"all_subtract_false"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">copy_no_subtract</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+                <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span>
+                    <span class="n">concat_tables</span><span class="p">(</span><span class="n">copy_no_subtract</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="p">)</span>
             <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span><span class="n">chip_name</span><span class="p">][</span><span class="n">chip_layer</span><span class="p">][</span><span class="s2">"all_subtract_true"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chip_info</span><span class="p">[</span>

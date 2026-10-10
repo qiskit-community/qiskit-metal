@@ -617,11 +617,17 @@
         <span class="c1"># the renderer would have been already registered within the design object</span>
         <span class="n">renderer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">renderer_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">renderer</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">renderers_to_load</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">renderer_name</span><span class="p">):</span>
+            <span class="n">skipped</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">,</span> <span class="s2">"skipped_renderers"</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">if</span> <span class="n">renderer_name</span> <span class="ow">in</span> <span class="n">skipped</span><span class="p">:</span>
+                <span class="n">reason</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"it is configured but was not started for this design: "</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">skipped</span><span class="p">[</span><span class="n">renderer_name</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">renderers_to_load</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">renderer_name</span><span class="p">):</span>
                 <span class="n">reason</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s2">"it is configured but was not started for this design, usually "</span>
-                    <span class="s2">"because an optional dependency is not installed (see the log "</span>
-                    <span class="s2">"from creating the design; e.g. `pip install quantum-metal[ansys]` "</span>
+                    <span class="s2">"because an optional dependency is not installed (see "</span>
+                    <span class="s2">"design.skipped_renderers; e.g. `pip install quantum-metal[ansys]` "</span>
                     <span class="s2">"for hfss / q3d)"</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>

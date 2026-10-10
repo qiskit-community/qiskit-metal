@@ -1068,9 +1068,9 @@ Total components: 52
 <span class="n">gds_renderer</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">gds</span>
 <span class="n">gds_renderer</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">short_segments_to_not_fillet</span> <span class="o">=</span> <span class="s2">"False"</span>
 
-<span class="c1"># The renderer logs notes on cheesing and on its sample junction cell</span>
-<span class="c1"># (Fake_Junctions.GDS, which this notebook does not use); show errors only</span>
-<span class="c1"># while exporting.</span>
+<span class="c1"># The renderer logs notes on cheesing, and that no junction GDS file is set</span>
+<span class="c1"># (options.path_filename defaults to None, so the junctions are left out of</span>
+<span class="c1"># the mask); show errors only while exporting.</span>
 <span class="n">level</span> <span class="o">=</span> <span class="n">qm</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">level</span>
 <span class="n">qm</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
 <span class="k">try</span><span class="p">:</span>

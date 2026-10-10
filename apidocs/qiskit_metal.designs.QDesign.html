@@ -643,6 +643,15 @@ QComponent.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="qiskit_metal.designs.QDesign.skipped_renderers">
+<span class="sig-name descname"><span class="pre">skipped_renderers</span></span><a class="headerlink" href="#qiskit_metal.designs.QDesign.skipped_renderers" title="Link to this definition">¶</a></dt>
+<dd><p>Renderers in <code class="docutils literal notranslate"><span class="pre">config.renderers_to_load</span></code> that were not started for
+this design because an optional dependency is missing, mapped to the
+reason. On a lite install these are logged at DEBUG only; this is the
+place to look when a renderer is not in <code class="docutils literal notranslate"><span class="pre">renderers</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="qiskit_metal.designs.QDesign.template_options">
 <span class="sig-name descname"><span class="pre">template_options</span></span><a class="headerlink" href="#qiskit_metal.designs.QDesign.template_options" title="Link to this definition">¶</a></dt>
 <dd><p>Return default_options dictionary, which contain default options
@@ -1321,6 +1330,7 @@ other keys will be unaffected.</p>
 <li><a class="reference internal" href="#qiskit_metal.designs.QDesign.qgeometry"><code class="docutils literal notranslate"><span class="pre">QDesign.qgeometry</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.designs.QDesign.qnet"><code class="docutils literal notranslate"><span class="pre">QDesign.qnet</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.designs.QDesign.renderers"><code class="docutils literal notranslate"><span class="pre">QDesign.renderers</span></code></a></li>
+<li><a class="reference internal" href="#qiskit_metal.designs.QDesign.skipped_renderers"><code class="docutils literal notranslate"><span class="pre">QDesign.skipped_renderers</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.designs.QDesign.template_options"><code class="docutils literal notranslate"><span class="pre">QDesign.template_options</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.designs.QDesign.template_renderer_options"><code class="docutils literal notranslate"><span class="pre">QDesign.template_renderer_options</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.designs.QDesign.variables"><code class="docutils literal notranslate"><span class="pre">QDesign.variables</span></code></a></li>

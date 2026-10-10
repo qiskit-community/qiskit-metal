@@ -1608,6 +1608,23 @@
 <span class="sd">            takes advantage of the scQbuits package (https://scqubits.readthedocs.io).</span>
 <span class="sd">            Consequently, the default options correspond to the default options of</span>
 <span class="sd">            the qubit classes in scQubits</span>
+
+<span class="sd">    Single-mode model:</span>
+<span class="sd">        The line is represented by its loaded fundamental only (one</span>
+<span class="sd">        oscillator). arXiv:2103.10344 Eq. 18 expands the line in all its modes</span>
+<span class="sd">        m; the modes m &gt;= 2 are left out here. Through a line with one node</span>
+<span class="sd">        on each end, mode m couples the two ends with the sign of</span>
+<span class="sd">        u_m(0) u_m(L), i.e. (-1)^m, so the omitted modes reduce a</span>
+<span class="sd">        bus-mediated exchange coupling that the fundamental gives. In the</span>
+<span class="sd">        #1219 circuit (two linearized transmons at 5.58 GHz, each coupled</span>
+<span class="sd">        with 4 fF to one end of a 6.15 GHz bus) the single-mode J is 1.03 MHz</span>
+<span class="sd">        against 0.89 MHz for the exact linear circuit (+15 %), and 3.82</span>
+<span class="sd">        against 3.64 MHz (+5 %) with 0.3 fF of direct capacitance between</span>
+<span class="sd">        the qubits. Keeping N modes converges to the exact value with</span>
+<span class="sd">        alternating sign (N = 2: 0.80, N = 3: 1.00, N = 40: 0.88,</span>
+<span class="sd">        N = 640: 0.893 MHz). The loading of the qubits by the line is</span>
+<span class="sd">        missing in the same way (here the qubits come out ~6 MHz high).</span>
+<span class="sd">        ``tests/test_lom_loaded_tl.py`` pins these numbers.</span>
 <span class="sd">    """</span>
 
     <span class="n">system_type</span> <span class="o">=</span> <span class="s2">"TL_RESONATOR"</span>
@@ -2105,8 +2122,12 @@
             <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ii</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_subsystems</span><span class="p">):</span>
                 <span class="n">sub2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subsystems</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
                 <span class="n">sub2_nodes</span> <span class="o">=</span> <span class="n">sub2</span><span class="o">.</span><span class="n">nodes</span>
-                <span class="k">for</span> <span class="n">node1</span> <span class="ow">in</span> <span class="n">sub1_nodes</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">node2</span> <span class="ow">in</span> <span class="n">sub2_nodes</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">kk</span><span class="p">,</span> <span class="n">node1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sub1_nodes</span><span class="p">):</span>
+                    <span class="c1"># Two nodes of the same subsystem (the two ends of a</span>
+                    <span class="c1"># TL_RESONATOR): 1/2 Q^T C_k^-1 Q holds</span>
+                    <span class="c1"># C^-1_12 Q_1 Q_2 once, so take each unordered pair once</span>
+                    <span class="c1"># (#1219). Pairs across subsystems are unordered already.</span>
+                    <span class="k">for</span> <span class="n">node2</span> <span class="ow">in</span> <span class="n">sub2_nodes</span><span class="p">[</span><span class="n">kk</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span> <span class="k">if</span> <span class="n">ii</span> <span class="o">==</span> <span class="n">jj</span> <span class="k">else</span> <span class="n">sub2_nodes</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">node1</span> <span class="o">==</span> <span class="n">node2</span><span class="p">:</span>
                             <span class="k">continue</span>
 

@@ -21,6 +21,7 @@ DesignFlipChip
    .. autoattribute:: DesignFlipChip.qgeometry
    .. autoattribute:: DesignFlipChip.qnet
    .. autoattribute:: DesignFlipChip.renderers
+   .. autoattribute:: DesignFlipChip.skipped_renderers
    .. autoattribute:: DesignFlipChip.template_options
    .. autoattribute:: DesignFlipChip.template_renderer_options
    .. autoattribute:: DesignFlipChip.variables

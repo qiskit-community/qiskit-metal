@@ -503,11 +503,27 @@
 summarizes what each solver computes, how to install it, and which tutorials use it.</p>
 </div></blockquote>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">scqubits</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">scq</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib_inline.backend_inline</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_matplotlib_formats</span>
+
+<span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+    <span class="c1"># scqubits 4.3 has an invalid escape sequence in one module (SyntaxWarning</span>
+    <span class="c1"># when it is first compiled); unrelated to this tutorial.</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="ne">SyntaxWarning</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">scqubits</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">scq</span>
+
+<span class="c1"># keep the stored outputs free of progress bars</span>
+<span class="n">scq</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">PROGRESSBAR_DISABLED</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="c1"># t1 methods sum up- and down-rates (scqubits' default); skip its notice about that</span>
+<span class="n">scq</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">T1_DEFAULT_WARNING</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># LOM energies are in MHz; set the scqubits unit before creating any qubit</span>
+<span class="n">scq</span><span class="o">.</span><span class="n">set_units</span><span class="p">(</span><span class="s2">"MHz"</span><span class="p">)</span>
+<span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s2">"png"</span><span class="p">)</span>  <span class="c1"># scqubits switches inline figures to pdf + svg</span>
 
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.quantization.lumped_capacitive</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -528,11 +544,11 @@ summarizes what each solver computes, how to install it, and which tutorials use
 <section id="1.-load-fluxonium-cell-Q3d-simulation-results">
 <h2>1. load fluxonium cell Q3d simulation results<a class="headerlink" href="#1.-load-fluxonium-cell-Q3d-simulation-results" title="Link to this heading">¶</a></h2>
 <p>Loading the Maxwell capacitance matrices for the design as shown in the screenshot below:</p>
-<p><img alt="6075e9b8419a42e0b94b0fe354a6f539" class="no-scaled-link" height="600" src="../../_images/fluxonium_transmon_coupled.png" width="600" /></p>
+<p><img alt="095b7a56186745bbbd512aab48c8f9bf" class="no-scaled-link" height="600" src="../../_images/fluxonium_transmon_coupled.png" width="600" /></p>
 <p>where we have a transmon coupled to a fluxonium through a direct coupler.</p>
 <p>For a simple introduction on Maxwell capacitance matrix, check out the following resources: <a class="reference external" href="https://www.fastfieldsolvers.com/Papers/The_Maxwell_Capacitance_Matrix_WP110301_R02.pdf">https://www.fastfieldsolvers.com/Papers/The_Maxwell_Capacitance_Matrix_WP110301_R02.pdf</a></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="s2">"./Fluxonium_8p5MHz_cmat.txt"</span>
@@ -554,109 +570,109 @@ Imported capacitance matrix with UNITS: [fF] now converted to USER UNITS:[fF]   
 </div>
 <div class="output_area rendered_html docutils container">
 <style type="text/css">
-#T_8dbf9_row0_col0 {
+#T_bebec_row0_col0 {
   width: 10em;
   background: linear-gradient(90deg, transparent 19.2%, #5fba7d 19.2%, #5fba7d 100.0%, transparent 100.0%);
 }
-#T_8dbf9_row0_col1 {
+#T_bebec_row0_col1 {
   width: 10em;
   background: linear-gradient(90deg, #5fba7d 37.8%, transparent 37.8%);
 }
-#T_8dbf9_row0_col2 {
+#T_bebec_row0_col2 {
   width: 10em;
   background: linear-gradient(90deg, #5fba7d 43.2%, transparent 43.2%);
 }
-#T_8dbf9_row0_col3 {
+#T_bebec_row0_col3 {
   width: 10em;
   background: linear-gradient(90deg, #5fba7d 43.4%, transparent 43.4%);
 }
-#T_8dbf9_row1_col0 {
+#T_bebec_row1_col0 {
   width: 10em;
   background: linear-gradient(90deg, transparent 6.0%, #5fba7d 6.0%, #5fba7d 19.2%, transparent 19.2%);
 }
-#T_8dbf9_row1_col1 {
+#T_bebec_row1_col1 {
   width: 10em;
   background: linear-gradient(90deg, transparent 37.8%, #5fba7d 37.8%, #5fba7d 100.0%, transparent 100.0%);
 }
-#T_8dbf9_row1_col2 {
+#T_bebec_row1_col2 {
   width: 10em;
   background: linear-gradient(90deg, transparent 34.8%, #5fba7d 34.8%, #5fba7d 43.2%, transparent 43.2%);
 }
-#T_8dbf9_row1_col3 {
+#T_bebec_row1_col3 {
   width: 10em;
   background: linear-gradient(90deg, transparent 33.0%, #5fba7d 33.0%, #5fba7d 43.4%, transparent 43.4%);
 }
-#T_8dbf9_row2_col0 {
+#T_bebec_row2_col0 {
   width: 10em;
   background: linear-gradient(90deg, transparent 4.1%, #5fba7d 4.1%, #5fba7d 19.2%, transparent 19.2%);
 }
-#T_8dbf9_row2_col1 {
+#T_bebec_row2_col1 {
   width: 10em;
   background: linear-gradient(90deg, transparent 29.4%, #5fba7d 29.4%, #5fba7d 37.8%, transparent 37.8%);
 }
-#T_8dbf9_row2_col2 {
+#T_bebec_row2_col2 {
   width: 10em;
   background: linear-gradient(90deg, transparent 43.2%, #5fba7d 43.2%, #5fba7d 100.0%, transparent 100.0%);
 }
-#T_8dbf9_row2_col3 {
+#T_bebec_row2_col3 {
   width: 10em;
   background: linear-gradient(90deg, transparent 41.9%, #5fba7d 41.9%, #5fba7d 43.4%, transparent 43.4%);
 }
-#T_8dbf9_row3_col0 {
+#T_bebec_row3_col0 {
   width: 10em;
   background: linear-gradient(90deg, #5fba7d 19.2%, transparent 19.2%);
 }
-#T_8dbf9_row3_col1 {
+#T_bebec_row3_col1 {
   width: 10em;
   background: linear-gradient(90deg, transparent 24.6%, #5fba7d 24.6%, #5fba7d 37.8%, transparent 37.8%);
 }
-#T_8dbf9_row3_col2 {
+#T_bebec_row3_col2 {
   width: 10em;
   background: linear-gradient(90deg, transparent 41.3%, #5fba7d 41.3%, #5fba7d 43.2%, transparent 43.2%);
 }
-#T_8dbf9_row3_col3 {
+#T_bebec_row3_col3 {
   width: 10em;
   background: linear-gradient(90deg, transparent 43.4%, #5fba7d 43.4%, #5fba7d 100.0%, transparent 100.0%);
 }
 </style>
-<table id="T_8dbf9">
+<table id="T_bebec">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_8dbf9_level0_col0" class="col_heading level0 col0" >ground_main_plane</th>
-      <th id="T_8dbf9_level0_col1" class="col_heading level0 col1" >pad_bot_Q1</th>
-      <th id="T_8dbf9_level0_col2" class="col_heading level0 col2" >pad_top_Q1</th>
-      <th id="T_8dbf9_level0_col3" class="col_heading level0 col3" >coupling_pad_Q1</th>
+      <th id="T_bebec_level0_col0" class="col_heading level0 col0" >ground_main_plane</th>
+      <th id="T_bebec_level0_col1" class="col_heading level0 col1" >pad_bot_Q1</th>
+      <th id="T_bebec_level0_col2" class="col_heading level0 col2" >pad_top_Q1</th>
+      <th id="T_bebec_level0_col3" class="col_heading level0 col3" >coupling_pad_Q1</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_8dbf9_level0_row0" class="row_heading level0 row0" >ground_main_plane</th>
-      <td id="T_8dbf9_row0_col0" class="data row0 col0" >149.81</td>
-      <td id="T_8dbf9_row0_col1" class="data row0 col1" >-24.45</td>
-      <td id="T_8dbf9_row0_col2" class="data row0 col2" >-27.87</td>
-      <td id="T_8dbf9_row0_col3" class="data row0 col3" >-35.54</td>
+      <th id="T_bebec_level0_row0" class="row_heading level0 row0" >ground_main_plane</th>
+      <td id="T_bebec_row0_col0" class="data row0 col0" >149.81</td>
+      <td id="T_bebec_row0_col1" class="data row0 col1" >-24.45</td>
+      <td id="T_bebec_row0_col2" class="data row0 col2" >-27.87</td>
+      <td id="T_bebec_row0_col3" class="data row0 col3" >-35.54</td>
     </tr>
     <tr>
-      <th id="T_8dbf9_level0_row1" class="row_heading level0 row1" >pad_bot_Q1</th>
-      <td id="T_8dbf9_row1_col0" class="data row1 col0" >-24.45</td>
-      <td id="T_8dbf9_row1_col1" class="data row1 col1" >40.31</td>
-      <td id="T_8dbf9_row1_col2" class="data row1 col2" >-5.38</td>
-      <td id="T_8dbf9_row1_col3" class="data row1 col3" >-8.51</td>
+      <th id="T_bebec_level0_row1" class="row_heading level0 row1" >pad_bot_Q1</th>
+      <td id="T_bebec_row1_col0" class="data row1 col0" >-24.45</td>
+      <td id="T_bebec_row1_col1" class="data row1 col1" >40.31</td>
+      <td id="T_bebec_row1_col2" class="data row1 col2" >-5.38</td>
+      <td id="T_bebec_row1_col3" class="data row1 col3" >-8.51</td>
     </tr>
     <tr>
-      <th id="T_8dbf9_level0_row2" class="row_heading level0 row2" >pad_top_Q1</th>
-      <td id="T_8dbf9_row2_col0" class="data row2 col0" >-27.87</td>
-      <td id="T_8dbf9_row2_col1" class="data row2 col1" >-5.38</td>
-      <td id="T_8dbf9_row2_col2" class="data row2 col2" >36.66</td>
-      <td id="T_8dbf9_row2_col3" class="data row2 col3" >-1.23</td>
+      <th id="T_bebec_level0_row2" class="row_heading level0 row2" >pad_top_Q1</th>
+      <td id="T_bebec_row2_col0" class="data row2 col0" >-27.87</td>
+      <td id="T_bebec_row2_col1" class="data row2 col1" >-5.38</td>
+      <td id="T_bebec_row2_col2" class="data row2 col2" >36.66</td>
+      <td id="T_bebec_row2_col3" class="data row2 col3" >-1.23</td>
     </tr>
     <tr>
-      <th id="T_8dbf9_level0_row3" class="row_heading level0 row3" >coupling_pad_Q1</th>
-      <td id="T_8dbf9_row3_col0" class="data row3 col0" >-35.54</td>
-      <td id="T_8dbf9_row3_col1" class="data row3 col1" >-8.51</td>
-      <td id="T_8dbf9_row3_col2" class="data row3 col2" >-1.23</td>
-      <td id="T_8dbf9_row3_col3" class="data row3 col3" >46.36</td>
+      <th id="T_bebec_level0_row3" class="row_heading level0 row3" >coupling_pad_Q1</th>
+      <td id="T_bebec_row3_col0" class="data row3 col0" >-35.54</td>
+      <td id="T_bebec_row3_col1" class="data row3 col1" >-8.51</td>
+      <td id="T_bebec_row3_col2" class="data row3 col2" >-1.23</td>
+      <td id="T_bebec_row3_col3" class="data row3 col3" >46.36</td>
     </tr>
   </tbody>
 </table></div>
@@ -665,7 +681,7 @@ Imported capacitance matrix with UNITS: [fF] now converted to USER UNITS:[fF]   
 <section id="load-transmon-cell-Q3d-simulation-results">
 <h2>load transmon cell Q3d simulation results<a class="headerlink" href="#load-transmon-cell-Q3d-simulation-results" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="s2">"./Transmon_5p5GHz_fQ_cmat.txt"</span>
@@ -687,109 +703,109 @@ Imported capacitance matrix with UNITS: [fF] now converted to USER UNITS:[fF]   
 </div>
 <div class="output_area rendered_html docutils container">
 <style type="text/css">
-#T_24e74_row0_col0 {
+#T_83c27_row0_col0 {
   width: 10em;
   background: linear-gradient(90deg, transparent 19.7%, #5fba7d 19.7%, #5fba7d 100.0%, transparent 100.0%);
 }
-#T_24e74_row0_col1 {
+#T_83c27_row0_col1 {
   width: 10em;
   background: linear-gradient(90deg, #5fba7d 29.4%, transparent 29.4%);
 }
-#T_24e74_row0_col2 {
+#T_83c27_row0_col2 {
   width: 10em;
   background: linear-gradient(90deg, #5fba7d 35.2%, transparent 35.2%);
 }
-#T_24e74_row0_col3 {
+#T_83c27_row0_col3 {
   width: 10em;
   background: linear-gradient(90deg, #5fba7d 38.2%, transparent 38.2%);
 }
-#T_24e74_row1_col0 {
+#T_83c27_row1_col0 {
   width: 10em;
   background: linear-gradient(90deg, transparent 2.7%, #5fba7d 2.7%, #5fba7d 19.7%, transparent 19.7%);
 }
-#T_24e74_row1_col1 {
+#T_83c27_row1_col1 {
   width: 10em;
   background: linear-gradient(90deg, transparent 29.4%, #5fba7d 29.4%, #5fba7d 100.0%, transparent 100.0%);
 }
-#T_24e74_row1_col2 {
+#T_83c27_row1_col2 {
   width: 10em;
   background: linear-gradient(90deg, transparent 10.0%, #5fba7d 10.0%, #5fba7d 35.2%, transparent 35.2%);
 }
-#T_24e74_row1_col3 {
+#T_83c27_row1_col3 {
   width: 10em;
   background: linear-gradient(90deg, transparent 18.0%, #5fba7d 18.0%, #5fba7d 38.2%, transparent 38.2%);
 }
-#T_24e74_row2_col0 {
+#T_83c27_row2_col0 {
   width: 10em;
   background: linear-gradient(90deg, #5fba7d 19.7%, transparent 19.7%);
 }
-#T_24e74_row2_col1 {
+#T_83c27_row2_col1 {
   width: 10em;
   background: linear-gradient(90deg, transparent 5.0%, #5fba7d 5.0%, #5fba7d 29.4%, transparent 29.4%);
 }
-#T_24e74_row2_col2 {
+#T_83c27_row2_col2 {
   width: 10em;
   background: linear-gradient(90deg, transparent 35.2%, #5fba7d 35.2%, #5fba7d 100.0%, transparent 100.0%);
 }
-#T_24e74_row2_col3 {
+#T_83c27_row2_col3 {
   width: 10em;
   background: linear-gradient(90deg, transparent 35.7%, #5fba7d 35.7%, #5fba7d 38.2%, transparent 38.2%);
 }
-#T_24e74_row3_col0 {
+#T_83c27_row3_col0 {
   width: 10em;
   background: linear-gradient(90deg, transparent 3.5%, #5fba7d 3.5%, #5fba7d 19.7%, transparent 19.7%);
 }
-#T_24e74_row3_col1 {
+#T_83c27_row3_col1 {
   width: 10em;
   background: linear-gradient(90deg, transparent 14.6%, #5fba7d 14.6%, #5fba7d 29.4%, transparent 29.4%);
 }
-#T_24e74_row3_col2 {
+#T_83c27_row3_col2 {
   width: 10em;
   background: linear-gradient(90deg, transparent 33.3%, #5fba7d 33.3%, #5fba7d 35.2%, transparent 35.2%);
 }
-#T_24e74_row3_col3 {
+#T_83c27_row3_col3 {
   width: 10em;
   background: linear-gradient(90deg, transparent 38.2%, #5fba7d 38.2%, #5fba7d 100.0%, transparent 100.0%);
 }
 </style>
-<table id="T_24e74">
+<table id="T_83c27">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_24e74_level0_col0" class="col_heading level0 col0" >ground_main_plane</th>
-      <th id="T_24e74_level0_col1" class="col_heading level0 col1" >pad_bot_Q2</th>
-      <th id="T_24e74_level0_col2" class="col_heading level0 col2" >pad_top_Q2</th>
-      <th id="T_24e74_level0_col3" class="col_heading level0 col3" >coupling_pad_Q2</th>
+      <th id="T_83c27_level0_col0" class="col_heading level0 col0" >ground_main_plane</th>
+      <th id="T_83c27_level0_col1" class="col_heading level0 col1" >pad_bot_Q2</th>
+      <th id="T_83c27_level0_col2" class="col_heading level0 col2" >pad_top_Q2</th>
+      <th id="T_83c27_level0_col3" class="col_heading level0 col3" >coupling_pad_Q2</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_24e74_level0_row0" class="row_heading level0 row0" >ground_main_plane</th>
-      <td id="T_24e74_row0_col0" class="data row0 col0" >179.08</td>
-      <td id="T_24e74_row0_col1" class="data row0 col1" >-38.07</td>
-      <td id="T_24e74_row0_col2" class="data row0 col2" >-44.06</td>
-      <td id="T_24e74_row0_col3" class="data row0 col3" >-36.24</td>
+      <th id="T_83c27_level0_row0" class="row_heading level0 row0" >ground_main_plane</th>
+      <td id="T_83c27_row0_col0" class="data row0 col0" >179.08</td>
+      <td id="T_83c27_row0_col1" class="data row0 col1" >-38.07</td>
+      <td id="T_83c27_row0_col2" class="data row0 col2" >-44.06</td>
+      <td id="T_83c27_row0_col3" class="data row0 col3" >-36.24</td>
     </tr>
     <tr>
-      <th id="T_24e74_level0_row1" class="row_heading level0 row1" >pad_bot_Q2</th>
-      <td id="T_24e74_row1_col0" class="data row1 col0" >-38.07</td>
-      <td id="T_24e74_row1_col1" class="data row1 col1" >91.64</td>
-      <td id="T_24e74_row1_col2" class="data row1 col2" >-31.54</td>
-      <td id="T_24e74_row1_col3" class="data row1 col3" >-19.11</td>
+      <th id="T_83c27_level0_row1" class="row_heading level0 row1" >pad_bot_Q2</th>
+      <td id="T_83c27_row1_col0" class="data row1 col0" >-38.07</td>
+      <td id="T_83c27_row1_col1" class="data row1 col1" >91.64</td>
+      <td id="T_83c27_row1_col2" class="data row1 col2" >-31.54</td>
+      <td id="T_83c27_row1_col3" class="data row1 col3" >-19.11</td>
     </tr>
     <tr>
-      <th id="T_24e74_level0_row2" class="row_heading level0 row2" >pad_top_Q2</th>
-      <td id="T_24e74_row2_col0" class="data row2 col0" >-44.06</td>
-      <td id="T_24e74_row2_col1" class="data row2 col1" >-31.54</td>
-      <td id="T_24e74_row2_col2" class="data row2 col2" >81.23</td>
-      <td id="T_24e74_row2_col3" class="data row2 col3" >-2.32</td>
+      <th id="T_83c27_level0_row2" class="row_heading level0 row2" >pad_top_Q2</th>
+      <td id="T_83c27_row2_col0" class="data row2 col0" >-44.06</td>
+      <td id="T_83c27_row2_col1" class="data row2 col1" >-31.54</td>
+      <td id="T_83c27_row2_col2" class="data row2 col2" >81.23</td>
+      <td id="T_83c27_row2_col3" class="data row2 col3" >-2.32</td>
     </tr>
     <tr>
-      <th id="T_24e74_level0_row3" class="row_heading level0 row3" >coupling_pad_Q2</th>
-      <td id="T_24e74_row3_col0" class="data row3 col0" >-36.24</td>
-      <td id="T_24e74_row3_col1" class="data row3 col1" >-19.11</td>
-      <td id="T_24e74_row3_col2" class="data row3 col2" >-2.32</td>
-      <td id="T_24e74_row3_col3" class="data row3 col3" >58.75</td>
+      <th id="T_83c27_level0_row3" class="row_heading level0 row3" >coupling_pad_Q2</th>
+      <td id="T_83c27_row3_col0" class="data row3 col0" >-36.24</td>
+      <td id="T_83c27_row3_col1" class="data row3 col1" >-19.11</td>
+      <td id="T_83c27_row3_col2" class="data row3 col2" >-2.32</td>
+      <td id="T_83c27_row3_col3" class="data row3 col3" >58.75</td>
     </tr>
   </tbody>
 </table></div>
@@ -803,7 +819,7 @@ Imported capacitance matrix with UNITS: [fF] now converted to USER UNITS:[fF]   
 <p>The following three parameters, <code class="docutils literal notranslate"><span class="pre">ind_dict</span></code>, <code class="docutils literal notranslate"><span class="pre">jj_dict</span></code>, <code class="docutils literal notranslate"><span class="pre">cj_dict</span></code>, all have the same structure. Each is a dictionary where the keys are tuples, giving the nodes that a junction is in between, and the values specifying the relevant values associated with the junction. <code class="docutils literal notranslate"><span class="pre">ind_dict</span></code> lets you specify the junction inductance in nH; <code class="docutils literal notranslate"><span class="pre">jj_dict</span></code> specifies the Josephson junction name (you can give the junction any name you wish; just need to be consistent with the name); <code class="docutils literal notranslate"><span class="pre">cj_dict</span></code> specifies the
 junction capacitance in fF. In the case of the fluxonium, we will set <span class="math notranslate nohighlight">\(E_j\)</span> and <span class="math notranslate nohighlight">\(E_l\)</span> directly later instead of deriving from the junction inductance; and since we are only concerned with capacitive coupling here (what’s currently supported), <code class="docutils literal notranslate"><span class="pre">ind_dict</span></code> can just be a placeholder whose actual value is not important.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cell 1</span>
@@ -838,7 +854,7 @@ junction capacitance in fF. In the case of the fluxonium, we will set <span clas
 <p><code class="docutils literal notranslate"><span class="pre">Subsystem</span></code> takes three required arguments. The four currently supported system types are <code class="docutils literal notranslate"><span class="pre">TRANSMON</span></code>, <code class="docutils literal notranslate"><span class="pre">FLUXONIUM</span></code>, <code class="docutils literal notranslate"><span class="pre">TL_RESONATOR</span></code> (transmission line resonator) and <code class="docutils literal notranslate"><span class="pre">LUMPED_RESONATOR</span></code>. <code class="docutils literal notranslate"><span class="pre">nodes</span></code> lets you specify which node the subsystem should be mapped to in the cells. They should be consistent with the node names you have given previously. <code class="docutils literal notranslate"><span class="pre">q_opts</span></code> lets specify any optional parameters you want to give. For example, for the fluxonium, you can provide <code class="docutils literal notranslate"><span class="pre">scqubits</span></code> parameters such as
 <code class="docutils literal notranslate"><span class="pre">EJ</span></code>, <code class="docutils literal notranslate"><span class="pre">EL</span></code> and <code class="docutils literal notranslate"><span class="pre">flux</span></code> here.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># subsystem 1: fluxonium</span>
@@ -865,7 +881,7 @@ junction capacitance in fF. In the case of the fluxonium, we will set <span clas
 <section id="4.-Creat-the-composite-system-from-the-cells-and-the-subsystems">
 <h2>4. Creat the composite system from the cells and the subsystems<a class="headerlink" href="#4.-Creat-the-composite-system-from-the-cells-and-the-subsystems" title="Link to this heading">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">composite_sys</span> <span class="o">=</span> <span class="n">CompositeSystem</span><span class="p">(</span>
@@ -879,7 +895,7 @@ junction capacitance in fF. In the case of the fluxonium, we will set <span clas
 <p>The <code class="docutils literal notranslate"><span class="pre">circuitGraph</span></code> object encapsulates the lumped model circuit analysis (i.e., LOM analysis) and contain the intermediate as well as final L and C matrices, their inverses needed to construct the Hamiltonian of the composite system. For more details on the meaning and calculation of these matrices, check out <a class="reference external" href="https://arxiv.org/pdf/2103.10344.pdf">https://arxiv.org/pdf/2103.10344.pdf</a>.</p>
 <p>Just to note that you can use the analysis without needing to know any detail about this object.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cg</span> <span class="o">=</span> <span class="n">composite_sys</span><span class="o">.</span><span class="n">circuitGraph</span><span class="p">()</span>
@@ -925,7 +941,7 @@ j2  -0.249771  58.195757
 <h2>5. Generate the hilberspace from the composite system, leveraging the scqubits package<a class="headerlink" href="#5.-Generate-the-hilberspace-from-the-composite-system,-leveraging-the-scqubits-package" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">add_interaction()</span></code> adds the interaction terms between the subsystems. Currently, capacitive coupling is supported (which is extracted by from off-diagonal elements in the C matrices, see <em>eqn 12, 13</em> in <a class="reference external" href="https://arxiv.org/pdf/2103.10344.pdf">https://arxiv.org/pdf/2103.10344.pdf</a> ) and contribute to the interaction.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hilbertspace</span> <span class="o">=</span> <span class="n">composite_sys</span><span class="o">.</span><span class="n">create_hilbertspace</span><span class="p">()</span>
@@ -954,7 +970,7 @@ Fluxonium-----------| [Fluxonium_2]
 
 
 Transmon------------| [Transmon_2]
-                    | EJ: 13268.052221700449
+                    | EJ: 13278.758046925639
                     | EC: 332.86246955931534
                     | ng: 0.001
                     | ncut: 150
@@ -967,7 +983,7 @@ Transmon------------| [Transmon_2]
 HilbertSpace:  interaction terms
 --------------------------------
 InteractionTerm----------| [Interaction_1]
-                         | g_strength: 30.55305654441268
+                         | g_strength: np.float64(30.55305654441268)
                          | operator_list: [(0, array([[ 0.+0.j        , -0.-0.44731161j,  0. ...
                          | add_hc: False
 
@@ -980,7 +996,7 @@ InteractionTerm----------| [Interaction_1]
 <p>Print the calculated Hamiltonian parameters from diagonalized composite system Hamiltonian.</p>
 <p>The diagonal elements of the <span class="math notranslate nohighlight">\(\chi\)</span> matrix are the anharmonicities of the respective subsystems and the off-diagonal the dispersive shifts between them.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hamiltonian_results</span> <span class="o">=</span> <span class="n">composite_sys</span><span class="o">.</span><span class="n">hamiltonian_results</span><span class="p">(</span><span class="n">hilbertspace</span><span class="p">,</span> <span class="n">evals_count</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
@@ -995,17 +1011,17 @@ InteractionTerm----------| [Interaction_1]
 
 system frequencies in GHz:
 --------------------------
-{&#39;fluxonium&#39;: 0.3601817511883073, &#39;transmon&#39;: 5.588755492262991}
+{&#39;fluxonium&#39;: np.float64(0.36018174779890705), &#39;transmon&#39;: np.float64(5.591162359654254)}
 
 Chi matrices in MHz
 --------------------------
              fluxonium    transmon
-fluxonium  3293.889799    0.450799
-transmon      0.450799 -391.691365
+fluxonium  3293.889951    0.451842
+transmon      0.451842 -391.649928
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hamiltonian_results</span><span class="p">[</span><span class="s2">"chi_in_MHz"</span><span class="p">]</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
@@ -1013,7 +1029,7 @@ transmon      0.450799 -391.691365
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1042,13 +1058,13 @@ transmon      0.450799 -391.691365
   <tbody>
     <tr>
       <th>fluxonium</th>
-      <td>3293.889799</td>
-      <td>0.450799</td>
+      <td>3293.889951</td>
+      <td>0.451842</td>
     </tr>
     <tr>
       <th>transmon</th>
-      <td>0.450799</td>
-      <td>-391.691365</td>
+      <td>0.451842</td>
+      <td>-391.649928</td>
     </tr>
   </tbody>
 </table>
@@ -1056,7 +1072,7 @@ transmon      0.450799 -391.691365
 </div>
 <p>The <span class="math notranslate nohighlight">\(\chi\)</span>’s between the subsystems are based on the coupling strengths, <span class="math notranslate nohighlight">\(\it{g}\)</span>’s between them (which are computed using the coupling capacitance (currently capacitive coupling is supported) and zero point fluctuations of the subsystem’s charge operator at the coupling location)</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">composite_sys</span><span class="o">.</span><span class="n">compute_gs</span><span class="p">()</span>
@@ -1064,7 +1080,7 @@ transmon      0.450799 -391.691365
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1075,7 +1091,7 @@ j2  30.553057   0.000000
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fluxonium</span><span class="o">.</span><span class="n">h_params</span>
@@ -1083,14 +1099,14 @@ j2  30.553057   0.000000
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 defaultdict(dict,
             {&#39;j1&#39;: {&#39;EJ&#39;: 4860,
-              &#39;EC&#39;: 889.8446188934637,
+              &#39;EC&#39;: np.float64(889.8446188934637),
               &#39;EL&#39;: 1140,
               &#39;flux&#39;: 0.5,
               &#39;Q_zpf&#39;: 3.20435314e-19,
@@ -1106,11 +1122,12 @@ defaultdict(dict,
                      [ 0.+0.j        ,  0.+0.j        ,  0.+0.j        , ...,
                        0.+4.64859865j,  0.+0.j        , -0.-4.67007035j],
                      [ 0.+0.j        ,  0.+0.j        ,  0.+0.j        , ...,
-                       0.+0.j        ,  0.+4.67007035j,  0.+0.j        ]]), add_hc=False)}})
+                       0.+0.j        ,  0.+4.67007035j,  0.+0.j        ]],
+                    shape=(110, 110)), add_hc=False)}})
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transmon</span><span class="o">.</span><span class="n">h_params</span>
@@ -1118,14 +1135,14 @@ defaultdict(dict,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 defaultdict(dict,
-            {&#39;j2&#39;: {&#39;EJ&#39;: 13268.052221700449,
-              &#39;EC&#39;: 332.86246955931534,
+            {&#39;j2&#39;: {&#39;EJ&#39;: np.float64(13278.758046925639),
+              &#39;EC&#39;: np.float64(332.86246955931534),
               &#39;Q_zpf&#39;: 3.20435314e-19,
               &#39;default_charge_op&#39;: Operator(op=array([[-150,    0,    0, ...,    0,    0,    0],
                      [   0, -149,    0, ...,    0,    0,    0],
@@ -1133,7 +1150,7 @@ defaultdict(dict,
                      ...,
                      [   0,    0,    0, ...,  148,    0,    0],
                      [   0,    0,    0, ...,    0,  149,    0],
-                     [   0,    0,    0, ...,    0,    0,  150]]), add_hc=False)}})
+                     [   0,    0,    0, ...,    0,    0,  150]], shape=(301, 301)), add_hc=False)}})
 </pre></div></div>
 </div>
 </section>
@@ -1141,10 +1158,10 @@ defaultdict(dict,
 <h2>7. let’s sweep some parameters now<a class="headerlink" href="#7.-let's-sweep-some-parameters-now" title="Link to this heading">¶</a></h2>
 <p>Let’s sweep the flux from 0 to 1 in a grid of 100 points in unit of flux quantum using <code class="docutils literal notranslate"><span class="pre">scQubits</span></code>’s sweeping library.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_sys</span> <span class="o">=</span> <span class="n">hilbertspace</span><span class="o">.</span><span class="n">subsys_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># fluxonium</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_sys</span> <span class="o">=</span> <span class="n">hilbertspace</span><span class="o">.</span><span class="n">subsystem_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># fluxonium</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">update_hilbertspace</span><span class="p">(</span><span class="n">param_val</span><span class="p">):</span>
@@ -1154,13 +1171,19 @@ defaultdict(dict,
 <span class="n">param_name</span> <span class="o">=</span> <span class="s2">"flux"</span>
 <span class="n">param_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
 
-<span class="n">sweep</span> <span class="o">=</span> <span class="n">scq</span><span class="o">.</span><span class="n">ParameterSweep</span><span class="p">(</span>
-    <span class="n">paramvals_by_name</span><span class="o">=</span><span class="p">{</span><span class="n">param_name</span><span class="p">:</span> <span class="n">param_vals</span><span class="p">},</span>
-    <span class="n">evals_count</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-    <span class="n">hilbertspace</span><span class="o">=</span><span class="n">hilbertspace</span><span class="p">,</span>
-    <span class="n">subsys_update_info</span><span class="o">=</span><span class="p">{</span><span class="n">param_name</span><span class="p">:</span> <span class="p">[</span><span class="n">_sys</span><span class="p">]},</span>
-    <span class="n">update_hilbertspace</span><span class="o">=</span><span class="n">update_hilbertspace</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+    <span class="c1"># scqubits warns that the coupling operators are fixed matrices. They are</span>
+    <span class="c1"># the charge operators in each qubit's own basis (harmonic-oscillator basis</span>
+    <span class="c1"># for the fluxonium, charge basis for the transmon), which do not depend on</span>
+    <span class="c1"># the external flux, so a flux sweep is not affected.</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"The interactions specified"</span><span class="p">)</span>
+    <span class="n">sweep</span> <span class="o">=</span> <span class="n">scq</span><span class="o">.</span><span class="n">ParameterSweep</span><span class="p">(</span>
+        <span class="n">paramvals_by_name</span><span class="o">=</span><span class="p">{</span><span class="n">param_name</span><span class="p">:</span> <span class="n">param_vals</span><span class="p">},</span>
+        <span class="n">evals_count</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="n">hilbertspace</span><span class="o">=</span><span class="n">hilbertspace</span><span class="p">,</span>
+        <span class="n">subsys_update_info</span><span class="o">=</span><span class="p">{</span><span class="n">param_name</span><span class="p">:</span> <span class="p">[</span><span class="n">_sys</span><span class="p">]},</span>
+        <span class="n">update_hilbertspace</span><span class="o">=</span><span class="n">update_hilbertspace</span><span class="p">,</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1169,8 +1192,8 @@ defaultdict(dict,
 <p>0-&gt;1 transition for the transmon</p>
 <p>0-&gt;1 transition for the fluxonium</p>
 <p>0-&gt;2 transition for the fluxonium</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wq_t</span> <span class="o">=</span> <span class="n">sweep</span><span class="o">.</span><span class="n">transitions</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="p">[],</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -1195,11 +1218,27 @@ defaultdict(dict,
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x7fb8665d1e80&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.04-New-LOM-and-Fluxonium-Example_28_1.png" src="../../_images/tut_4-Analysis_4.04-New-LOM-and-Fluxonium-Example_28_1.png" />
+</div>
+</div>
 </section>
 <section id="The-dispersive-shift,-\chi-between-the-two-qubits-as-a-function-of-the-flux">
 <h3>The dispersive shift, <span class="math notranslate nohighlight">\(\chi\)</span> between the two qubits as a function of the flux<a class="headerlink" href="#The-dispersive-shift,-\chi-between-the-two-qubits-as-a-function-of-the-flux" title="Link to this heading">¶</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wq_f</span> <span class="o">=</span> <span class="n">sweep</span><span class="o">.</span><span class="n">transitions</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="p">[],</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -1218,15 +1257,21 @@ defaultdict(dict,
 <span class="c1"># plt.ylim([5550, 5650])</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.04-New-LOM-and-Fluxonium-Example_30_0.png" src="../../_images/tut_4-Analysis_4.04-New-LOM-and-Fluxonium-Example_30_0.png" />
 </div>
 </div>
 </section>
 <section id="Zooming-on-the-fluxonium-sweet-spot:-its-0-&gt;1-transition-as-a-function-of-the-flux">
 <h3>Zooming on the fluxonium sweet spot: its 0-&gt;1 transition as a function of the flux<a class="headerlink" href="#Zooming-on-the-fluxonium-sweet-spot:-its-0->1-transition-as-a-function-of-the-flux" title="Link to this heading">¶</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wq_f</span> <span class="o">=</span> <span class="n">sweep</span><span class="o">.</span><span class="n">transitions</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="p">[],</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -1242,37 +1287,92 @@ defaultdict(dict,
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"fluxonium freq (MHz)"</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.04-New-LOM-and-Fluxonium-Example_32_0.png" src="../../_images/tut_4-Analysis_4.04-New-LOM-and-Fluxonium-Example_32_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scq</span><span class="o">.</span><span class="n">get_units</span><span class="p">()</span>
-<span class="n">scq</span><span class="o">.</span><span class="n">set_units</span><span class="p">(</span><span class="s2">"MHz"</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scq</span><span class="o">.</span><span class="n">get_units</span><span class="p">()</span>  <span class="c1"># set to MHz at the top of the notebook</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;MHz&#39;
+</pre></div></div>
 </div>
 </section>
 <section id="Coherences-of-the-fluxonium-as-a-function-of-the-flux">
 <h3>Coherences of the fluxonium as a function of the flux<a class="headerlink" href="#Coherences-of-the-fluxonium-as-a-function-of-the-flux" title="Link to this heading">¶</a></h3>
 <p>For more information on their calculations and assumptions made, check out <code class="docutils literal notranslate"><span class="pre">scqubits</span></code> documentations: <a class="reference external" href="https://scqubits.readthedocs.io/en/latest/guide/guide-noise.html">https://scqubits.readthedocs.io/en/latest/guide/guide-noise.html</a></p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_sys</span><span class="o">.</span><span class="n">plot_t1_effective_vs_paramvals</span><span class="p">(</span><span class="n">param_name</span><span class="o">=</span><span class="s2">"flux"</span><span class="p">,</span> <span class="n">param_vals</span><span class="o">=</span><span class="n">param_vals</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;Figure size 640x480 with 1 Axes&gt;,
+ &lt;Axes: title={&#39;center&#39;: &#39;t1_effective&#39;}, xlabel=&#39;flux&#39;, ylabel=&#39;$\\mu s$&#39;&gt;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.04-New-LOM-and-Fluxonium-Example_35_1.png" src="../../_images/tut_4-Analysis_4.04-New-LOM-and-Fluxonium-Example_35_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_sys</span><span class="o">.</span><span class="n">plot_coherence_vs_paramvals</span><span class="p">(</span><span class="n">param_name</span><span class="o">=</span><span class="s2">"flux"</span><span class="p">,</span> <span class="n">param_vals</span><span class="o">=</span><span class="n">param_vals</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;Figure size 800x1200 with 8 Axes&gt;,
+ array([[&lt;Axes: title={&#39;center&#39;: &#39;tphi_1_over_f_cc&#39;}, xlabel=&#39;flux&#39;, ylabel=&#39;$\\mu s$&#39;&gt;,
+         &lt;Axes: title={&#39;center&#39;: &#39;tphi_1_over_f_flux&#39;}, xlabel=&#39;flux&#39;, ylabel=&#39;$\\mu s$&#39;&gt;],
+        [&lt;Axes: title={&#39;center&#39;: &#39;t1_capacitive&#39;}, xlabel=&#39;flux&#39;, ylabel=&#39;$\\mu s$&#39;&gt;,
+         &lt;Axes: title={&#39;center&#39;: &#39;t1_charge_impedance&#39;}, xlabel=&#39;flux&#39;, ylabel=&#39;$\\mu s$&#39;&gt;],
+        [&lt;Axes: title={&#39;center&#39;: &#39;t1_flux_bias_line&#39;}, xlabel=&#39;flux&#39;, ylabel=&#39;$\\mu s$&#39;&gt;,
+         &lt;Axes: title={&#39;center&#39;: &#39;t1_inductive&#39;}, xlabel=&#39;flux&#39;, ylabel=&#39;$\\mu s$&#39;&gt;],
+        [&lt;Axes: title={&#39;center&#39;: &#39;t1_quasiparticle_tunneling&#39;}, xlabel=&#39;flux&#39;, ylabel=&#39;$\\mu s$&#39;&gt;,
+         &lt;Axes: &gt;]], dtype=object))
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_4.04-New-LOM-and-Fluxonium-Example_36_1.png" src="../../_images/tut_4-Analysis_4.04-New-LOM-and-Fluxonium-Example_36_1.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">

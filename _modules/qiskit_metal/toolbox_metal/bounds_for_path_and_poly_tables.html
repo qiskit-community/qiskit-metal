@@ -486,6 +486,8 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_python.pandas_tables</span><span class="w"> </span><span class="kn">import</span> <span class="n">concat_tables</span>
+
 
 <div class="viewcode-block" id="determine_larger_box">
 <a class="viewcode-back" href="../../../apidocs/qiskit_metal.toolbox_metal.determine_larger_box.html#qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.determine_larger_box">[docs]</a>
@@ -608,8 +610,8 @@
 
             <span class="c1"># Concat the frames and then determine the total bounds of all the geometries.</span>
             <span class="c1"># maybe, change name to package_cavity</span>
-            <span class="n">path_and_poly_with_valid_comps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">path_poly_and_junction_valid_comps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+            <span class="n">path_and_poly_with_valid_comps</span> <span class="o">=</span> <span class="n">concat_tables</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">path_poly_and_junction_valid_comps</span> <span class="o">=</span> <span class="n">concat_tables</span><span class="p">(</span>
                 <span class="n">frames_with_jj</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
             <span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
@@ -641,8 +643,8 @@
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># Incorporate all the chip sizes.</span>
             <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">path_dataframe</span><span class="p">,</span> <span class="n">poly_dataframe</span><span class="p">]</span>
             <span class="n">frames_with_jj</span> <span class="o">=</span> <span class="p">[</span><span class="n">path_dataframe</span><span class="p">,</span> <span class="n">poly_dataframe</span><span class="p">,</span> <span class="n">junction_dataframe</span><span class="p">]</span>
-            <span class="n">path_and_poly_with_valid_comps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">path_poly_and_junction_valid_comps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+            <span class="n">path_and_poly_with_valid_comps</span> <span class="o">=</span> <span class="n">concat_tables</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">path_poly_and_junction_valid_comps</span> <span class="o">=</span> <span class="n">concat_tables</span><span class="p">(</span>
                 <span class="n">frames_with_jj</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="p">(</span>

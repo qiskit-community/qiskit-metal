@@ -21,6 +21,7 @@ QDesign
    .. autoattribute:: QDesign.qgeometry
    .. autoattribute:: QDesign.qnet
    .. autoattribute:: QDesign.renderers
+   .. autoattribute:: QDesign.skipped_renderers
    .. autoattribute:: QDesign.template_options
    .. autoattribute:: QDesign.template_renderer_options
    .. autoattribute:: QDesign.variables

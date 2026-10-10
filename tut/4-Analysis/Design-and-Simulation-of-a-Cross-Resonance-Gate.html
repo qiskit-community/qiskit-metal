@@ -494,320 +494,469 @@
 <section id="The-Cross-Resonance-(CR)-Gate">
 <h1>The Cross Resonance (CR) Gate<a class="headerlink" href="#The-Cross-Resonance-(CR)-Gate" title="Link to this heading">¶</a></h1>
 <blockquote>
+<div><p>💡 <strong>What you need.</strong> The simulation (sections 1–5) needs only QuTiP, NumPy and matplotlib and runs in a few seconds. The physical design (section 6) opens the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>; see the callout below for running it without Qt.</p>
+</div></blockquote>
+<blockquote>
 <div><p>💡 <strong>Using this tutorial without the Qt GUI</strong></p>
 <p>This tutorial uses the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>. To follow along on Colab, Binder, JupyterHub, or any environment where Qt isn’t available, <strong>replace any ``gui.rebuild()`` / ``gui.screenshot()`` call with ``qm.view(design)``</strong> — it renders the design to a matplotlib <code class="docutils literal notranslate"><span class="pre">Figure</span></code> you can display inline or save with <code class="docutils literal notranslate"><span class="pre">fig.savefig(...)</span></code>.</p>
 <p>See <a class="reference external" href="https://qiskit-community.github.io/qiskit-metal/tut/1-Overview/1.1-Quick-start.html">1.1 Quick start</a> for a complete runnable walkthrough and <code class="docutils literal notranslate"><span class="pre">`docs/headless-usage.rst</span></code> &lt;<a class="reference external" href="https://qiskit-community.github.io/qiskit-metal/headless-usage.html">https://qiskit-community.github.io/qiskit-metal/headless-usage.html</a>&gt;`__ for the full reference.</p>
 </div></blockquote>
 <p>Here’s what we’ll work through in this tutorial notebook:</p>
 <ul class="simple">
-<li><p>Introduce and describe the basic operation of the cross-resonance (CR) gate</p></li>
-<li><p>Construct the time-dependent Hamiltonian of a representative CR gate consisting of two qubits coupled via a CPW resonator.</p></li>
-<li><p>Look at the time-evolution of the two qubits in a CR gate</p></li>
-<li><p>Show how to build a representative physical design of a CR gate using qiskit metal.</p></li>
+<li><p>what the cross-resonance (CR) gate is, and why it is conditional;</p></li>
+<li><p>a model of two coupled transmons (three levels each) with the control driven at the <em>dressed</em> frequency of the target;</p></li>
+<li><p>the time evolution of the target qubit for the control in <span class="math notranslate nohighlight">\(|0\rangle\)</span> and in <span class="math notranslate nohighlight">\(|1\rangle\)</span>: the target rotates at two different rates;</p></li>
+<li><p>the effective <span class="math notranslate nohighlight">\(ZX\)</span>, <span class="math notranslate nohighlight">\(IX\)</span> and <span class="math notranslate nohighlight">\(ZI\)</span> rates, extracted numerically and compared with the standard perturbative formulas;</p></li>
+<li><p>a physical layout of the two qubits and their bus in Qiskit Metal.</p></li>
 </ul>
-<section id="What-is-the-CR-Gate?">
-<h2>What is the CR Gate?<a class="headerlink" href="#What-is-the-CR-Gate?" title="Link to this heading">¶</a></h2>
-<p>The cross-resonance (CR) gate consists of two fixed-frequency qubits connected via a resonator. One of the qubits (the “control” qubit) is driven at the transition frequency of the second qubit (the “target” qubit) which results in Rabi oscillations in the target qubit.</p>
-<p>Some helpful background papers on the CR gate:</p>
-<ul class="simple">
-<li><ol class="upperalpha simple" start="3">
-<li><p>Rigetti and M. Devoret, Phys. Rev. B 81, 134507 (2010)</p></li>
-</ol>
+<section id="1.-What-is-the-CR-gate?">
+<h2>1. What is the CR gate?<a class="headerlink" href="#1.-What-is-the-CR-gate?" title="Link to this heading">¶</a></h2>
+<p>The cross-resonance gate couples two fixed-frequency qubits with microwaves alone. The two transmons are coupled, here through a bus resonator. One of them, the <em>control</em>, is driven at the transition frequency of the other, the <em>target</em>. The drive is off-resonant for the control, but through the coupling a small part of it reaches the target and makes it Rabi-oscillate.</p>
+<p>The point of the gate is that the size of that leaked drive depends on the state of the control. The control’s <span class="math notranslate nohighlight">\(|0\rangle\to|1\rangle\)</span> and <span class="math notranslate nohighlight">\(|1\rangle\to|2\rangle\)</span> transitions both hybridise with the target, by different amounts. So the target rotates about <span class="math notranslate nohighlight">\(X\)</span> at one rate when the control is in <span class="math notranslate nohighlight">\(|0\rangle\)</span> and at another when it is in <span class="math notranslate nohighlight">\(|1\rangle\)</span>. The difference is a <span class="math notranslate nohighlight">\(Z\otimes X\)</span> (”<span class="math notranslate nohighlight">\(ZX\)</span>”) interaction, and a <span class="math notranslate nohighlight">\(ZX\)</span> rotation by <span class="math notranslate nohighlight">\(\pi/2\)</span> is
+equivalent to a CNOT up to single-qubit gates.</p>
+</section>
+<section id="2.-The-model">
+<h2>2. The model<a class="headerlink" href="#2.-The-model" title="Link to this heading">¶</a></h2>
+<p>We use the Hamiltonian of two Duffing oscillators (transmons) with an exchange coupling <span class="math notranslate nohighlight">\(J\)</span>, and a drive on the control (qubit 1):</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\frac{H}{\hbar} = \sum_{k=1,2}\Big[\omega_k\, b_k^\dagger b_k + \frac{\alpha_k}{2}\, b_k^\dagger b_k^\dagger b_k b_k\Big] + J\big(b_1^\dagger b_2 + b_1 b_2^\dagger\big) + \Omega\cos(\omega_d t)\,\big(b_1 + b_1^\dagger\big).\]</div>
+</div>
+<p>A few choices are worth spelling out.</p>
+<ul>
+<li><p><strong>Three levels per transmon.</strong> The control’s second excited state is not a detail. It sets both the size of <span class="math notranslate nohighlight">\(ZX\)</span> and the size of the unwanted <span class="math notranslate nohighlight">\(IX\)</span> term (section 4). Two-level qubits would give a different answer.</p></li>
+<li><p><strong>A direct :math:`J` instead of the bus.</strong> The bus in section 6 is a <span class="math notranslate nohighlight">\(\lambda/2\)</span> resonator about 0.75 GHz above the qubits, coupled to each with <span class="math notranslate nohighlight">\(g \approx 45\)</span> MHz. Since <span class="math notranslate nohighlight">\(g \ll |\omega_k - \omega_r|\)</span>, the bus stays in its ground state, and eliminating it gives an exchange coupling between the qubits [6]</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[J = \frac{g_1 g_2}{2}\Big(\frac{1}{\omega_1-\omega_r} + \frac{1}{\omega_2-\omega_r}\Big).\]</div>
+</div>
+<p>We check in section 5 that keeping the bus explicitly gives the same rates.</p>
 </li>
-<li><ol class="upperalpha simple" start="13">
-<li><p>Malekakhlagh et al., Phys. Rev. A 102, 042605 (2020)</p></li>
-</ol>
-</li>
-<li><ol class="upperalpha simple" start="5">
-<li><p>Magesan and J.M. Gambetta, Phys. Rev. A 101, 052308 (2020)</p></li>
-</ol>
+<li><p><strong>The rotating frame.</strong> In a frame rotating at the drive frequency <span class="math notranslate nohighlight">\(\omega_d\)</span> for both transmons, and dropping terms that oscillate at <span class="math notranslate nohighlight">\(2\omega_d\)</span> (the rotating-wave approximation), the Hamiltonian becomes time independent:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\frac{\tilde H}{\hbar} = \sum_k\Big[(\omega_k-\omega_d)\, b_k^\dagger b_k + \frac{\alpha_k}{2}\, b_k^\dagger b_k^\dagger b_k b_k\Big] + J\big(b_1^\dagger b_2 + b_1 b_2^\dagger\big) + \frac{\Omega}{2}\big(b_1 + b_1^\dagger\big).\]</div>
+</div>
+<p>All the Bloch vectors below are in this frame.</p>
 </li>
 </ul>
-</section>
-<section id="What-does-the-Hamiltonian-of-the-CR-gate-look-like?">
-<h2>What does the Hamiltonian of the CR gate look like?<a class="headerlink" href="#What-does-the-Hamiltonian-of-the-CR-gate-look-like?" title="Link to this heading">¶</a></h2>
-<p>We can composite Hamiltonian of the CR gate consists of the non-interacting Hamiltonians of the two qubits, a coupling term between the two qubits and the drive term applied to the control qubit:</p>
-<p>$H = H_{Q1} + H_{Q2} + H_{Coupling} + H_{Drive} $</p>
-<p>where <span class="math notranslate nohighlight">\(H_{Coupling}\)</span> is the coupling between qubit 1 and qubit 2, and <span class="math notranslate nohighlight">\(H_{Drive}\)</span> is the driving microwave signal applies to qubit 1 (at the frequency of qubit 2). The first three terms are time-independent while the drive term has time-dependence in the form a cosine wave.</p>
-<p>In a simplistic approach using Pauli matrices ($:nbsphinx-math:<cite>sigma</cite>_z = a^{+}a $ , $:nbsphinx-math:<cite>sigma</cite>_x = a + a^{+} $) for each qubit, we can write the individual components as follows:</p>
-<p>$H_{Q1} = 0.5 <span class="math">\omega</span>_1 <span class="math">\sigma</span>_1^{z} $</p>
-<p>$H_{Q2} = 0.5 <span class="math">\omega</span>_2 <span class="math">\sigma</span>_2^{z} $</p>
-<p><span class="math notranslate nohighlight">\(H_{Coupling} = 0.5 \omega_{xx} \sigma_1^{x} \sigma_2^{x}\)</span></p>
-<p>$H_{Drive} = <span class="math">\Omega `cos(:nbsphinx-math:</span>omega`_1^{RF} t + <span class="math">\phi</span>) <span class="math">\sigma</span>_1^{x} $</p>
-<p>By setting <span class="math notranslate nohighlight">\(\omega_1^{RF} = \omega_2\)</span>, we are driving qubit 1 at the frequency of qubit 2.</p>
-<p>The full Hamiltonian can thus be written as:</p>
-<p>$H = 0.5 <span class="math">\omega</span>_1 <span class="math">\sigma</span>_1^{z} + 0.5 <span class="math">\omega</span>_2 <span class="math">\sigma</span><em>2^{z} + 0.5 :nbsphinx-math:`omega`</em>{xx} <span class="math">\sigma</span>_1^{x} <span class="math">\sigma</span>_2^{x} + <span class="math">\Omega `cos(:nbsphinx-math:</span>omega`_1^{RF} t + <span class="math">\phi</span>) <span class="math">\sigma</span>_1^{x} $</p>
-</section>
-<section id="Constructing-the-CR-Gate-Hamiltonian-Using-QuTiP-&amp;-Qiskit-Metal">
-<h2>Constructing the CR Gate Hamiltonian Using QuTiP &amp; Qiskit Metal<a class="headerlink" href="#Constructing-the-CR-Gate-Hamiltonian-Using-QuTiP-&-Qiskit-Metal" title="Link to this heading">¶</a></h2>
-<p>Let’s start by loading the required modules:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<p>The numbers are representative of fixed-frequency transmons; tutorials 4.0x and 4.1x show how to get them for a real layout. Frequencies are in GHz and times in ns, so we multiply by <span class="math notranslate nohighlight">\(2\pi\)</span> when building Hamiltonians.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.hamiltonian.transmon_charge_basis</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hcpb</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qutip</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-</pre></div>
-</div>
-</div>
-<p>The CR gate uses fixed-frequency qubits, so we’ll define the two qubit frequencies as well as the coupling strength between them. We’ll use similar values to those published in the original CR gate paper from Rigetti &amp; Devoret:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w1</span> <span class="o">=</span> <span class="mf">12.8</span>
-<span class="n">w2</span> <span class="o">=</span> <span class="mf">16.1</span>
-<span class="n">g</span> <span class="o">=</span> <span class="mf">0.13</span>
-</pre></div>
-</div>
-</div>
-<p>Now, let’s define the initial states of the two qubits and then construct the tensor product for the composite wavefunction of the initial state. We’ll consider two states for each qubit, hence we’ll use “basis(2,N)” where N represents the index of the state.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initial States of Qubit1 and Qubit2</span>
-<span class="n">Psi1_initial</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># ground state of qubit 1</span>
-<span class="n">Psi2_initial</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># excited state of qubit 2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">qutip</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qt</span>
 
-<span class="c1"># Tensor Product of Composite Initial Wavefunction</span>
-<span class="n">Psi0</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">Psi1_initial</span><span class="p">,</span> <span class="n">Psi2_initial</span><span class="p">)</span>
+<span class="n">TWO_PI</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># levels kept per transmon</span>
+<span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="mf">4.90</span><span class="p">,</span> <span class="mf">5.00</span>  <span class="c1"># control and target frequencies (GHz)</span>
+<span class="n">alpha1</span><span class="p">,</span> <span class="n">alpha2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.33</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.33</span>  <span class="c1"># anharmonicities (GHz)</span>
+<span class="n">Delta</span> <span class="o">=</span> <span class="n">w1</span> <span class="o">-</span> <span class="n">w2</span>  <span class="c1"># control-target detuning (GHz)</span>
+
+<span class="c1"># The bus of section 6: a 10.5 mm half-wave CPW on silicon.</span>
+<span class="n">eps_eff</span> <span class="o">=</span> <span class="p">(</span><span class="mf">11.45</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># quasi-static effective permittivity of a CPW on Si</span>
+<span class="n">wr</span> <span class="o">=</span> <span class="mi">299792458</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">10.5e-3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">eps_eff</span><span class="p">))</span> <span class="o">/</span> <span class="mf">1e9</span>  <span class="c1"># bus frequency (GHz)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="mf">0.045</span>  <span class="c1"># qubit-bus coupling (GHz), the same for both qubits</span>
+<span class="n">J</span> <span class="o">=</span> <span class="n">g</span> <span class="o">*</span> <span class="n">g</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">w1</span> <span class="o">-</span> <span class="n">wr</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">w2</span> <span class="o">-</span> <span class="n">wr</span><span class="p">))</span>  <span class="c1"># bus-mediated exchange (GHz)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"bus frequency     w_r/2pi = </span><span class="si">{</span><span class="n">wr</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> GHz"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"exchange coupling   J/2pi = </span><span class="si">{</span><span class="n">J</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MHz"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"detuning        Delta/2pi = </span><span class="si">{</span><span class="n">Delta</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> MHz  (J/Delta = </span><span class="si">{</span><span class="n">J</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Delta</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+bus frequency     w_r/2pi = 5.72 GHz
+exchange coupling   J/2pi = -2.63 MHz
+detuning        Delta/2pi = -100 MHz  (J/Delta = 0.026)
+</pre></div></div>
+</div>
+<section id="Operators-and-the-dressed-frequencies">
+<h3>Operators and the dressed frequencies<a class="headerlink" href="#Operators-and-the-dressed-frequencies" title="Link to this heading">¶</a></h3>
+<p>The coupling shifts the levels slightly, so the target’s transition frequency is not <span class="math notranslate nohighlight">\(\omega_2\)</span> any more. We find the <em>dressed</em> states by diagonalising the undriven Hamiltonian and labelling each eigenstate by the bare state it overlaps most. The drive goes at the dressed target frequency with the control in <span class="math notranslate nohighlight">\(|0\rangle\)</span>, <span class="math notranslate nohighlight">\(\tilde\omega_2 = E_{\widetilde{01}} - E_{\widetilde{00}}\)</span>. The same diagonalisation gives the static <span class="math notranslate nohighlight">\(ZZ\)</span> shift
+<span class="math notranslate nohighlight">\(\zeta = E_{\widetilde{11}} - E_{\widetilde{10}} - E_{\widetilde{01}} + E_{\widetilde{00}}\)</span>, which we compare with the perturbative <span class="math notranslate nohighlight">\(\zeta = 2J^2(\alpha_1+\alpha_2)/[(\Delta+\alpha_1)(\Delta-\alpha_2)]\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b1</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">destroy</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">qt</span><span class="o">.</span><span class="n">qeye</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>  <span class="c1"># control</span>
+<span class="n">b2</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">qeye</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">qt</span><span class="o">.</span><span class="n">destroy</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>  <span class="c1"># target</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">H_undriven</span><span class="p">(</span><span class="n">wd</span><span class="p">):</span>
+    <span class="c1"># Undriven Hamiltonian (rad/ns) in the frame rotating at wd (GHz).</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">J</span> <span class="o">*</span> <span class="p">(</span><span class="n">b1</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">b2</span> <span class="o">+</span> <span class="n">b1</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">dag</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">((</span><span class="n">b1</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">),</span> <span class="p">(</span><span class="n">b2</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">alpha2</span><span class="p">)):</span>
+        <span class="n">H</span> <span class="o">+=</span> <span class="p">(</span><span class="n">w</span> <span class="o">-</span> <span class="n">wd</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">b</span> <span class="o">+</span> <span class="n">a</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">b</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">b</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">b</span> <span class="o">*</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">TWO_PI</span> <span class="o">*</span> <span class="n">H</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ket</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">qt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">basis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">qt</span><span class="o">.</span><span class="n">basis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+
+
+<span class="n">COMPUTATIONAL</span> <span class="o">=</span> <span class="p">[</span><span class="n">ket</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">ket</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ket</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">ket</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dressed</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">bare_kets</span><span class="p">):</span>
+    <span class="c1"># Eigenvalues (GHz) and eigenvectors (columns) that overlap most with each bare ket.</span>
+    <span class="n">E</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">full</span><span class="p">())</span>
+    <span class="n">energies</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">bare_kets</span><span class="p">:</span>
+        <span class="n">overlap</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">full</span><span class="p">()</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span> <span class="o">@</span> <span class="n">V</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">overlap</span><span class="p">))</span>
+        <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">E</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">TWO_PI</span><span class="p">)</span>
+        <span class="n">vectors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">V</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">overlap</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span>  <span class="c1"># fix the phase</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">energies</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+
+<span class="p">(</span><span class="n">E00</span><span class="p">,</span> <span class="n">E01</span><span class="p">,</span> <span class="n">E10</span><span class="p">,</span> <span class="n">E11</span><span class="p">),</span> <span class="n">_</span> <span class="o">=</span> <span class="n">dressed</span><span class="p">(</span><span class="n">H_undriven</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">COMPUTATIONAL</span><span class="p">)</span>
+<span class="n">wd</span> <span class="o">=</span> <span class="n">E01</span> <span class="o">-</span> <span class="n">E00</span>  <span class="c1"># dressed target frequency, control in |0&gt;</span>
+<span class="n">zeta</span> <span class="o">=</span> <span class="n">E11</span> <span class="o">-</span> <span class="n">E10</span> <span class="o">-</span> <span class="n">E01</span> <span class="o">+</span> <span class="n">E00</span>
+<span class="n">zeta_formula</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">J</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha1</span> <span class="o">+</span> <span class="n">alpha2</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="n">Delta</span> <span class="o">+</span> <span class="n">alpha1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">Delta</span> <span class="o">-</span> <span class="n">alpha2</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"dressed target frequency = </span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> GHz  (bare </span><span class="si">{</span><span class="n">w2</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> GHz)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"static ZZ  zeta/2pi = </span><span class="si">{</span><span class="n">zeta</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kHz   (formula </span><span class="si">{</span><span class="n">zeta_formula</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kHz)"</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dressed target frequency = 5.000069 GHz  (bare 5.000000 GHz)
+static ZZ  zeta/2pi = 92.6 kHz   (formula 92.7 kHz)
+</pre></div></div>
+</div>
+<p>The shift of the target is only <span class="math notranslate nohighlight">\(\approx J^2/\Delta\)</span>, tens of kHz here, small compared with the CR rates below, but driving at the bare frequency would add a slow <span class="math notranslate nohighlight">\(Z\)</span> rotation to the target. The static <span class="math notranslate nohighlight">\(ZZ\)</span> is the always-on conditional phase that every fixed-coupling architecture lives with.</p>
 </section>
-<section id="Time-independent-Hamiltonian">
-<h2>Time-independent Hamiltonian<a class="headerlink" href="#Time-independent-Hamiltonian" title="Link to this heading">¶</a></h2>
-<p>Now let’s build the operators that will go into the Hamiltonian. Notice that the two tensor products below have the location of the identity matrix (“qeye”) swapped, since in the first case we’re writing the operator for qubit 1 in the basis of qubit 2, and the second case we’re writing the operator for qubit 2 in the basis of qubit 1.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ladder operator for qubit 1 ("a")</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">destroy</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">qeye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-
-<span class="c1"># ladder operator for qubit 2 ("b")</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">qeye</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">destroy</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<p>Now let’s construct the tensor products for occupation probability operators (for n=0 and n=1) for each qubit.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># QUBIT 1</span>
-
-<span class="c1"># this defines the ground state |n=0&gt;</span>
-<span class="n">c0</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="c1"># now take the product |n=0&gt;&lt;n=0|</span>
-<span class="n">n0_qubit1</span> <span class="o">=</span> <span class="n">c0</span> <span class="o">*</span> <span class="n">c0</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>
-<span class="c1"># and lastly the tensor product in the basis of qubit 2</span>
-<span class="n">n0_qubit1</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">n0_qubit1</span><span class="p">,</span> <span class="n">qeye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-
-<span class="c1"># this defines the first excited state |n=1&gt;</span>
-<span class="n">c1</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="c1"># take the product |n=1&gt;&lt;n=1|</span>
-<span class="n">n1_qubit1</span> <span class="o">=</span> <span class="n">c1</span> <span class="o">*</span> <span class="n">c1</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>
-<span class="c1"># and lastly the tensor product in the basis of qubit 2</span>
-<span class="n">n1_qubit1</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">n1_qubit1</span><span class="p">,</span> <span class="n">qeye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-
-<span class="c1"># QUBIT 2</span>
-<span class="c1"># (same operations as above)</span>
-
-<span class="n">c0</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">n0_qubit2</span> <span class="o">=</span> <span class="n">c0</span> <span class="o">*</span> <span class="n">c0</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>
-<span class="n">n0_qubit2</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">qeye</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">n0_qubit2</span><span class="p">)</span>
-
-<span class="n">c1</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">n1_qubit2</span> <span class="o">=</span> <span class="n">c1</span> <span class="o">*</span> <span class="n">c1</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>
-<span class="n">n1_qubit2</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">qeye</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">n1_qubit2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<p>Now we can build the time-independent Hamiltonian of the two-qubit system and verify that it is a 4x4 matrix describing two qubits each with their own 2x2 non-interacting Hamiltonians:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># time independent Hamiltonian</span>
-<span class="n">H0</span> <span class="o">=</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">b</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">b</span> <span class="o">+</span> <span class="n">g</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">dag</span><span class="p">())</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="n">dag</span><span class="p">())</span>
-<span class="n">H0</span>
-</pre></div>
-</div>
-</div>
 </section>
-<section id="Time-Evolution-of-the-Time-Independent-Hamiltonian">
-<h2>Time Evolution of the Time-Independent Hamiltonian<a class="headerlink" href="#Time-Evolution-of-the-Time-Independent-Hamiltonian" title="Link to this heading">¶</a></h2>
-<p>Even though our Hamiltonian is time-independent (missing the time-dependent driving term), the interaction term between the two qubits will still give some non-trivial time evoluation.</p>
-<p>We can use the master equation solver in QuTiP to solve for the time evolution, giving Hamiltonian H0 and initial state Psi0 that we’ve defined above. As output, we’ll calculate the occupation probabilities of each qubit at each timestep.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<section id="3.-Driving-the-control-at-the-target-frequency">
+<h2>3. Driving the control at the target frequency<a class="headerlink" href="#3.-Driving-the-control-at-the-target-frequency" title="Link to this heading">¶</a></h2>
+<p>Now we turn on the drive, <span class="math notranslate nohighlight">\(\Omega/2\pi = 40\)</span> MHz at <span class="math notranslate nohighlight">\(\omega_d = \tilde\omega_2\)</span>, and evolve the target from <span class="math notranslate nohighlight">\(|0\rangle\)</span> twice: once with the control in <span class="math notranslate nohighlight">\(|0\rangle\)</span> and once with the control in <span class="math notranslate nohighlight">\(|1\rangle\)</span>. We record the three Bloch components of the target, <span class="math notranslate nohighlight">\(\langle X\rangle\)</span>, <span class="math notranslate nohighlight">\(\langle Y\rangle\)</span>, <span class="math notranslate nohighlight">\(\langle Z\rangle\)</span>, using Pauli operators on its two lowest levels.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tlist</span> <span class="o">=</span> <span class="n">tlist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>  <span class="c1"># time between t=0 and t=25 with 101 increments</span>
-<span class="n">dissipation</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># no dissipation</span>
-<span class="c1"># output = mesolve(H0, Psi0, tlist, c_ops, [n0_qubit1, n1_qubit1, n0_qubit2, n1_qubit2]) # time evolution</span>
-<span class="n">output</span> <span class="o">=</span> <span class="n">mesolve</span><span class="p">(</span>
-    <span class="n">H0</span><span class="p">,</span> <span class="n">Psi0</span><span class="p">,</span> <span class="n">tlist</span><span class="p">,</span> <span class="n">dissipation</span><span class="p">,</span> <span class="n">e_ops</span><span class="o">=</span><span class="p">[</span><span class="n">n0_qubit1</span><span class="p">,</span> <span class="n">n1_qubit1</span><span class="p">,</span> <span class="n">n0_qubit2</span><span class="p">,</span> <span class="n">n1_qubit2</span><span class="p">]</span>
-<span class="p">)</span>  <span class="c1"># time evolution</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Omega</span> <span class="o">=</span> <span class="mf">0.040</span>  <span class="c1"># drive amplitude (GHz)</span>
+<span class="n">H_drive</span> <span class="o">=</span> <span class="n">TWO_PI</span> <span class="o">*</span> <span class="n">Omega</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">b1</span> <span class="o">+</span> <span class="n">b1</span><span class="o">.</span><span class="n">dag</span><span class="p">())</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">H_undriven</span><span class="p">(</span><span class="n">wd</span><span class="p">)</span> <span class="o">+</span> <span class="n">H_drive</span>
 
-<span class="n">n0_qubit1</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">n1_qubit1</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">n0_qubit2</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">n1_qubit2</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<p>Let’s plot the occupation probabilities for the n=0 and n=1 states of each qubit.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">n0_qubit1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"n=0"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">n1_qubit1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"n=1"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Time"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Occupation Probability"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Qubit1"</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">n0_qubit2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"n=0"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">n1_qubit2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"n=1"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Time"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Occupation Probability"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Qubit2"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_target</span><span class="p">(</span><span class="n">op2</span><span class="p">):</span>
+    <span class="c1"># A 2x2 operator on the target's two lowest levels, identity on the control.</span>
+    <span class="n">op</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="nb">complex</span><span class="p">)</span>
+    <span class="n">op</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">op2</span>
+    <span class="k">return</span> <span class="n">qt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">qeye</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">qt</span><span class="o">.</span><span class="n">Qobj</span><span class="p">(</span><span class="n">op</span><span class="p">))</span>
+
+
+<span class="n">sx</span> <span class="o">=</span> <span class="n">on_target</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="n">sy</span> <span class="o">=</span> <span class="n">on_target</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="n">sz</span> <span class="o">=</span> <span class="n">on_target</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+
+<span class="n">tlist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1001</span><span class="p">)</span>  <span class="c1"># ns</span>
+<span class="n">bloch</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">sesolve</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">ket</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">tlist</span><span class="p">,</span> <span class="n">e_ops</span><span class="o">=</span><span class="p">[</span><span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">,</span> <span class="n">sz</span><span class="p">])</span>
+    <span class="n">bloch</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">expect</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s2">"X"</span><span class="p">,</span> <span class="s2">"Y"</span><span class="p">,</span> <span class="s2">"Z"</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="s2">"C0"</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"C3"</span><span class="p">)):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">bloch</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">k</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"control in $|</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="se">\\</span><span class="s2">rangle$"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">"target $</span><span class="se">\\</span><span class="s2">langle </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\\</span><span class="s2">rangle$"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.05</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">"upper right"</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"time (ns)"</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"Target Bloch components, control driven at </span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> GHz, $</span><span class="se">\\</span><span class="s2">Omega/2</span><span class="se">\\</span><span class="s2">pi$ = </span><span class="si">{</span><span class="n">Omega</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> MHz"</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">P1_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">bloch</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">bloch</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]))</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"largest difference in target |1&gt; population between the two control states: </span><span class="si">{</span><span class="n">P1_diff</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<p>We see that qubit1 is in the ground state (n=0) while qubit 2 is the first excited state (n=1) just as we had defined earlier. Note the the slight oscillations in occupation probability, which would be absent without the coupling term in the Hamiltonian.</p>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+largest difference in target |1&gt; population between the two control states: 0.90
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_Design-and-Simulation-of-a-Cross-Resonance-Gate_10_1.png" src="../../_images/tut_4-Analysis_Design-and-Simulation-of-a-Cross-Resonance-Gate_10_1.png" />
+</div>
+</div>
+<p>The conditionality is plain to see. With the control in <span class="math notranslate nohighlight">\(|0\rangle\)</span> the target rotates about <span class="math notranslate nohighlight">\(X\)</span> quickly, with the control in <span class="math notranslate nohighlight">\(|1\rangle\)</span> slowly and in the opposite sense (compare the signs of <span class="math notranslate nohighlight">\(\langle Y\rangle\)</span>). With the control in <span class="math notranslate nohighlight">\(|0\rangle\)</span>, <span class="math notranslate nohighlight">\(\langle X\rangle\)</span> stays at zero: the drive is exactly on resonance and acts along <span class="math notranslate nohighlight">\(X\)</span>. With the control in <span class="math notranslate nohighlight">\(|1\rangle\)</span> the target is detuned by the static <span class="math notranslate nohighlight">\(ZZ\)</span> shift <span class="math notranslate nohighlight">\(\zeta\)</span>, so its rotation
+axis tilts slightly out of the <span class="math notranslate nohighlight">\(YZ\)</span> plane and <span class="math notranslate nohighlight">\(\langle X\rangle\)</span> drifts away from zero. The small fast ripple is the off-resonant drive on the control.</p>
 </section>
-<section id="Adding-Time-Dependence-to-the-Hamiltonian">
-<h2>Adding Time-Dependence to the Hamiltonian<a class="headerlink" href="#Adding-Time-Dependence-to-the-Hamiltonian" title="Link to this heading">¶</a></h2>
-<p>Now we will add the time-dependent term to the Hamiltonian representing the operation of a CR gate. We will add a drive term to qubit 1, driving at the frequency of qubit 2. Recall that the drive term has the form:</p>
-<p>$H_{Drive} = <span class="math">\Omega `cos(:nbsphinx-math:</span>omega`_1^{RF} t + <span class="math">\phi</span>) <span class="math">\sigma</span>_1^{x} $</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<section id="4.-The-effective-Hamiltonian">
+<h2>4. The effective Hamiltonian<a class="headerlink" href="#4.-The-effective-Hamiltonian" title="Link to this heading">¶</a></h2>
+<p>Restricted to the computational states, and with the control’s off-resonant dynamics averaged out, the driven system behaves as</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\frac{H_\mathrm{eff}}{\hbar} = \frac{\omega_{ZX}}{2}\, Z\otimes X + \frac{\omega_{IX}}{2}\, I\otimes X + \frac{\omega_{ZI}}{2}\, Z\otimes I + \dots,\]</div>
+</div>
+<p>so the target rotates at <span class="math notranslate nohighlight">\(\omega_{IX}+\omega_{ZX}\)</span> when the control is in <span class="math notranslate nohighlight">\(|0\rangle\)</span> and at <span class="math notranslate nohighlight">\(\omega_{IX}-\omega_{ZX}\)</span> when it is in <span class="math notranslate nohighlight">\(|1\rangle\)</span>. <span class="math notranslate nohighlight">\(\omega_{ZI}\)</span> is the Stark shift of the control by its own drive.</p>
+<p><strong>Where the rates come from.</strong> To first order in <span class="math notranslate nohighlight">\(J\)</span>, the dressed states mix the control’s excitation into the target’s: <span class="math notranslate nohighlight">\(|\widetilde{01}\rangle \approx |01\rangle - \frac{J}{\Delta}|10\rangle\)</span>, and <span class="math notranslate nohighlight">\(|\widetilde{11}\rangle\)</span> picks up <span class="math notranslate nohighlight">\(|20\rangle\)</span> through the control’s <span class="math notranslate nohighlight">\(1\to2\)</span> transition. The drive operator <span class="math notranslate nohighlight">\(b_1\)</span> therefore flips the target with amplitude <span class="math notranslate nohighlight">\(-J/\Delta\)</span> when the control is in <span class="math notranslate nohighlight">\(|0\rangle\)</span>, and <span class="math notranslate nohighlight">\(J/\Delta - 2J/(\Delta+\alpha_1)\)</span> when
+it is in <span class="math notranslate nohighlight">\(|1\rangle\)</span>. Half the sum and half the difference, times the drive <span class="math notranslate nohighlight">\(\Omega/2\)</span>, give the leading-order rates derived by Magesan and Gambetta [5] (see also Tripathi <em>et al.</em> [4]), here in the conventions of this notebook:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\omega_{ZX} = -\frac{J\Omega}{\Delta}\,\frac{\alpha_1}{\Delta+\alpha_1}, \qquad
+\omega_{IX} = -\frac{J\Omega}{\Delta+\alpha_1}, \qquad
+\omega_{ZI} = -\frac{\Omega^2}{2}\,\frac{\alpha_1}{\Delta(\Delta+\alpha_1)}.\]</div>
+</div>
+<p>Two consequences: both <span class="math notranslate nohighlight">\(ZX\)</span> and <span class="math notranslate nohighlight">\(IX\)</span> scale with <span class="math notranslate nohighlight">\(J\Omega\)</span>, and <span class="math notranslate nohighlight">\(IX\)</span> vanishes only for a two-level control (<span class="math notranslate nohighlight">\(\alpha_1\to\infty\)</span>). For a transmon it is always there, which is why practical CR gates use an echo or a cancellation tone on the target [3].</p>
+<p><strong>Numerically, without perturbation theory.</strong> <span class="math notranslate nohighlight">\(\tilde H\)</span> is time independent, so we can diagonalise it exactly and <em>block-diagonalise</em> it with respect to the control: the two eigenstates closest to <span class="math notranslate nohighlight">\(\{|\widetilde{00}\rangle,|\widetilde{01}\rangle\}\)</span> form one block, those closest to <span class="math notranslate nohighlight">\(\{|\widetilde{10}\rangle,|\widetilde{11}\rangle\}\)</span> the other. The rotation that maps each block back onto its dressed states with the least change (the unitary part of the overlap matrix) gives
+<span class="math notranslate nohighlight">\(H_\mathrm{eff}\)</span> exactly, and its Pauli components are the rates.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">amp</span> <span class="o">=</span> <span class="mf">0.5</span>  <span class="c1"># amplitude of driving force (Omega)</span>
-<span class="n">phi</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># set the phase equal to zero</span>
-
-<span class="n">H_drive</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">dag</span><span class="p">())</span>  <span class="c1"># this is the time-independent part of the driving term</span>
-
-
-<span class="c1"># add the explicit time-dependence here:</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">H_time</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">w2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">phi</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">PAULIS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"I"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+    <span class="s2">"X"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span>
+    <span class="s2">"Y"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span>
+    <span class="s2">"Z"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]),</span>
+<span class="p">}</span>
 
 
-<span class="c1"># combine time-independent and time-dependent terms:</span>
-<span class="n">H</span> <span class="o">=</span> <span class="p">[</span><span class="n">H0</span><span class="p">,</span> <span class="p">[</span><span class="n">H_drive</span><span class="p">,</span> <span class="n">H_time</span><span class="p">]]</span>
-</pre></div>
-</div>
-</div>
-<p>Since we already defined, populated and plotted the occupation operators in the time-independent analysis above, let’s re-define them here:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Re-define our occupation probability operators</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cr_rates</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">H0</span><span class="p">,</span> <span class="n">comp_kets</span><span class="p">):</span>
+    <span class="c1"># Pauli rates (GHz) of the effective Hamiltonian of H, block-diagonal in the control.</span>
+    <span class="c1"># H0: the same system undriven, which defines the dressed computational states.</span>
+    <span class="c1"># comp_kets: bare kets of |00&gt;, |01&gt;, |10&gt;, |11&gt; (control first).</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">dressed</span><span class="p">(</span><span class="n">H0</span><span class="p">,</span> <span class="n">comp_kets</span><span class="p">)</span>
+    <span class="n">E</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">full</span><span class="p">())</span>
+    <span class="n">H_eff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="nb">complex</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)):</span>
+        <span class="n">Pb</span> <span class="o">=</span> <span class="n">P</span><span class="p">[:,</span> <span class="n">block</span><span class="p">]</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Pb</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">V</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+        <span class="n">U</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">Wh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">Pb</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">V</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">])</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">Wh</span>  <span class="c1"># unitary part of the overlap matrix</span>
+        <span class="n">H_eff</span><span class="p">[</span><span class="n">block</span><span class="p">,</span> <span class="n">block</span><span class="p">]</span> <span class="o">=</span> <span class="n">R</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">E</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="o">@</span> <span class="n">R</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">PAULIS</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">PAULIS</span><span class="p">[</span><span class="n">b</span><span class="p">])</span> <span class="o">@</span> <span class="n">H_eff</span><span class="p">)</span><span class="o">.</span><span class="n">real</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">TWO_PI</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="s2">"IZ"</span>
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="s2">"IXYZ"</span>
+    <span class="p">}</span>
 
-<span class="n">c0</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">n0_qubit1</span> <span class="o">=</span> <span class="n">c0</span> <span class="o">*</span> <span class="n">c0</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>
-<span class="n">n0_qubit1</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">n0_qubit1</span><span class="p">,</span> <span class="n">qeye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 
-<span class="n">c1</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">n1_qubit1</span> <span class="o">=</span> <span class="n">c1</span> <span class="o">*</span> <span class="n">c1</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>
-<span class="n">n1_qubit1</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">n1_qubit1</span><span class="p">,</span> <span class="n">qeye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">formulas</span><span class="p">(</span><span class="n">Om</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"ZX"</span><span class="p">:</span> <span class="o">-</span><span class="n">J</span> <span class="o">*</span> <span class="n">Om</span> <span class="o">/</span> <span class="n">Delta</span> <span class="o">*</span> <span class="n">alpha1</span> <span class="o">/</span> <span class="p">(</span><span class="n">Delta</span> <span class="o">+</span> <span class="n">alpha1</span><span class="p">),</span>
+        <span class="s2">"IX"</span><span class="p">:</span> <span class="o">-</span><span class="n">J</span> <span class="o">*</span> <span class="n">Om</span> <span class="o">/</span> <span class="p">(</span><span class="n">Delta</span> <span class="o">+</span> <span class="n">alpha1</span><span class="p">),</span>
+        <span class="s2">"ZI"</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">Om</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">alpha1</span> <span class="o">/</span> <span class="p">(</span><span class="n">Delta</span> <span class="o">*</span> <span class="p">(</span><span class="n">Delta</span> <span class="o">+</span> <span class="n">alpha1</span><span class="p">)),</span>
+    <span class="p">}</span>
 
-<span class="n">c0</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">n0_qubit2</span> <span class="o">=</span> <span class="n">c0</span> <span class="o">*</span> <span class="n">c0</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>
-<span class="n">n0_qubit2</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">qeye</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">n0_qubit2</span><span class="p">)</span>
 
-<span class="n">c1</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">n1_qubit2</span> <span class="o">=</span> <span class="n">c1</span> <span class="o">*</span> <span class="n">c1</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span>
-<span class="n">n1_qubit2</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">(</span><span class="n">qeye</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">n1_qubit2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<p>Now let’s solve the master equation again for the time-dependent Hamiltonian:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tlist</span> <span class="o">=</span> <span class="n">tlist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
-    <span class="mi">0</span><span class="p">,</span> <span class="mi">201</span><span class="p">,</span> <span class="mi">101</span>
-<span class="p">)</span>  <span class="c1"># time between t=0 and t=201 with 101 increments</span>
-<span class="n">c_ops</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># dissipation terms; none</span>
-<span class="n">output</span> <span class="o">=</span> <span class="n">mesolve</span><span class="p">(</span>
-    <span class="n">H</span><span class="p">,</span>
-    <span class="n">Psi0</span><span class="p">,</span>
-    <span class="n">tlist</span><span class="p">,</span>
-    <span class="n">c_ops</span><span class="p">,</span>
-    <span class="n">e_ops</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">n0_qubit1</span><span class="p">,</span>
-        <span class="n">n1_qubit1</span><span class="p">,</span>
-        <span class="n">a</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">a</span><span class="p">,</span>
-        <span class="n">a</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">dag</span><span class="p">(),</span>
-        <span class="n">n0_qubit2</span><span class="p">,</span>
-        <span class="n">n1_qubit2</span><span class="p">,</span>
-        <span class="n">b</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">b</span><span class="p">,</span>
-        <span class="n">b</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="n">dag</span><span class="p">(),</span>
-    <span class="p">],</span>
-<span class="p">)</span>  <span class="c1"># time evolution</span>
+<span class="n">H0</span> <span class="o">=</span> <span class="n">H_undriven</span><span class="p">(</span><span class="n">wd</span><span class="p">)</span>
+<span class="n">rates0</span> <span class="o">=</span> <span class="n">cr_rates</span><span class="p">(</span><span class="n">H0</span><span class="p">,</span> <span class="n">H0</span><span class="p">,</span> <span class="n">COMPUTATIONAL</span><span class="p">)</span>
+<span class="n">rates</span> <span class="o">=</span> <span class="n">cr_rates</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">H0</span><span class="p">,</span> <span class="n">COMPUTATIONAL</span><span class="p">)</span>
+<span class="n">rates</span><span class="p">[</span><span class="s2">"ZI"</span><span class="p">]</span> <span class="o">-=</span> <span class="n">rates0</span><span class="p">[</span><span class="s2">"ZI"</span><span class="p">]</span>  <span class="c1"># keep only the drive-induced part of ZI</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">formulas</span><span class="p">(</span><span class="n">Omega</span><span class="p">)</span>
 
-<span class="c1"># expectation values</span>
-<span class="n">n_qubit1</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">m_qubit1</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">ham_qubit1</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">num_qubit1</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-
-<span class="n">n_qubit2</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-<span class="n">m_qubit2</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
-<span class="n">ham_qubit2</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
-<span class="n">num_qubit2</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">expect</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Omega/2pi = </span><span class="si">{</span><span class="n">Omega</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> MHz      numerical    formula   (MHz)"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"ZX"</span><span class="p">,</span> <span class="s2">"IX"</span><span class="p">,</span> <span class="s2">"ZI"</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   omega_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">/2pi        </span><span class="si">{</span><span class="n">rates</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">9.4f</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">f</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">9.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"   largest Y term       |omega_ZY|, |omega_IY| &lt; </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">rates</span><span class="p">[</span><span class="s1">'ZY'</span><span class="p">]),</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">rates</span><span class="p">[</span><span class="s1">'IY'</span><span class="p">]))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.0e</span><span class="si">}</span><span class="s2"> MHz"</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"ZX(pi/2) gate time at this drive: </span><span class="si">{</span><span class="mi">1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">4</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">rates</span><span class="p">[</span><span class="s1">'ZX'</span><span class="p">]))</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> ns"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<p>And now let’s plot the results again:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Omega/2pi = 40 MHz      numerical    formula   (MHz)
+   omega_ZX/2pi          -0.7611    -0.8088
+   omega_IX/2pi          -0.2438    -0.2451
+   omega_ZI/2pi           5.9466     6.1395
+   largest Y term       |omega_ZY|, |omega_IY| &lt; 6e-17 MHz
+ZX(pi/2) gate time at this drive: 328 ns
+</pre></div></div>
+</div>
+<p>The <span class="math notranslate nohighlight">\(Y\)</span> terms vanish because the drive has a single, real phase and no classical crosstalk reaches the target directly. At this drive the numerical <span class="math notranslate nohighlight">\(ZX\)</span> is already about 6 % below the first-order formula, while <span class="math notranslate nohighlight">\(IX\)</span> still agrees. Sweeping the drive amplitude shows where the formulas hold:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">n_qubit1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"n=0"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">m_qubit1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"n=1"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Time"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Occupation Probability"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Qubit1"</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Omegas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.002</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="n">sweep</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"ZX"</span><span class="p">,</span> <span class="s2">"IX"</span><span class="p">,</span> <span class="s2">"ZI"</span><span class="p">)}</span>
+<span class="k">for</span> <span class="n">Om</span> <span class="ow">in</span> <span class="n">Omegas</span><span class="p">:</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">cr_rates</span><span class="p">(</span><span class="n">H0</span> <span class="o">+</span> <span class="n">TWO_PI</span> <span class="o">*</span> <span class="n">Om</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">b1</span> <span class="o">+</span> <span class="n">b1</span><span class="o">.</span><span class="n">dag</span><span class="p">()),</span> <span class="n">H0</span><span class="p">,</span> <span class="n">COMPUTATIONAL</span><span class="p">)</span>
+    <span class="n">r</span><span class="p">[</span><span class="s2">"ZI"</span><span class="p">]</span> <span class="o">-=</span> <span class="n">rates0</span><span class="p">[</span><span class="s2">"ZI"</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">sweep</span><span class="p">:</span>
+        <span class="n">sweep</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">n_qubit2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"n=0"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tlist</span><span class="p">,</span> <span class="n">m_qubit2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"n=1"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Time"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Occupation Probability"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Qubit2"</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">keys</span> <span class="ow">in</span> <span class="p">((</span><span class="n">ax1</span><span class="p">,</span> <span class="p">(</span><span class="s2">"ZX"</span><span class="p">,</span> <span class="s2">"IX"</span><span class="p">)),</span> <span class="p">(</span><span class="n">ax2</span><span class="p">,</span> <span class="p">(</span><span class="s2">"ZI"</span><span class="p">,))):</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"ZX"</span><span class="p">:</span> <span class="s2">"C3"</span><span class="p">,</span> <span class="s2">"IX"</span><span class="p">:</span> <span class="s2">"C0"</span><span class="p">,</span> <span class="s2">"ZI"</span><span class="p">:</span> <span class="s2">"C2"</span><span class="p">}[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">Omegas</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sweep</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="s2">"o"</span><span class="p">,</span>
+            <span class="n">ms</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"$</span><span class="se">\\</span><span class="s2">omega_</span><span class="se">{{</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="se">}}</span><span class="s2">$ numerical"</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">Omegas</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="n">formulas</span><span class="p">(</span><span class="n">Omegas</span><span class="p">)[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span>
+            <span class="s2">"-"</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"$</span><span class="se">\\</span><span class="s2">omega_</span><span class="se">{{</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="se">}}</span><span class="s2">$ formula"</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">Omega</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"0.7"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">":"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"drive amplitude $</span><span class="se">\\</span><span class="s2">Omega/2</span><span class="se">\\</span><span class="s2">pi$ (MHz)"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"rate / $2</span><span class="se">\\</span><span class="s2">pi$ (MHz)"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"conditional ($ZX$) and unconditional ($IX$) drive on the target"</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Stark shift of the control ($ZI$)"</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">slope</span> <span class="o">=</span> <span class="n">cr_rates</span><span class="p">(</span>
+    <span class="n">H0</span> <span class="o">+</span> <span class="n">TWO_PI</span> <span class="o">*</span> <span class="mf">0.0005</span> <span class="o">*</span> <span class="p">(</span><span class="n">b1</span> <span class="o">+</span> <span class="n">b1</span><span class="o">.</span><span class="n">dag</span><span class="p">()),</span> <span class="n">H0</span><span class="p">,</span> <span class="n">COMPUTATIONAL</span>
+<span class="p">)</span>  <span class="c1"># Omega/2pi = 1 MHz</span>
+<span class="n">f1</span> <span class="o">=</span> <span class="n">formulas</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">"ratio numerical / formula at Omega/2pi = 1 MHz:"</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">"ZX </span><span class="si">{</span><span class="n">slope</span><span class="p">[</span><span class="s1">'ZX'</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">f1</span><span class="p">[</span><span class="s1">'ZX'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, IX </span><span class="si">{</span><span class="n">slope</span><span class="p">[</span><span class="s1">'IX'</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">f1</span><span class="p">[</span><span class="s1">'IX'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, "</span>
+    <span class="sa">f</span><span class="s2">"ZI </span><span class="si">{</span><span class="p">(</span><span class="n">slope</span><span class="p">[</span><span class="s1">'ZI'</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">rates0</span><span class="p">[</span><span class="s1">'ZI'</span><span class="p">])</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">f1</span><span class="p">[</span><span class="s1">'ZI'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<p>Here we can see that by applying a driving force to the first qubit, we observe an inversion in the occupation probability of the second qubit. This highlights the basic operational principle of the CR gate.</p>
-<section id="Physical-Design-of-the-CR-Gate">
-<h3>Physical Design of the CR Gate<a class="headerlink" href="#Physical-Design-of-the-CR-Gate" title="Link to this heading">¶</a></h3>
-<p>The physical design of a CR gate consists simply of two qubits connected via a bus resonator. For a concrete example of what this design may look like, we can use the example in H. Park et al. Proc. IEEE IEDM (2020).</p>
-<p>Link: <a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/9371955?casa_token=V3vN91zwr4EAAAAA:OwS7ixnZTFZlL0mnIf5idc5l0P_sufOJAnEh0TLxPZ7HB6EJAwS2Y-XVrW3j5R3-gifZrX6JF63Azg">https://ieeexplore.ieee.org/abstract/document/9371955?casa_token=V3vN91zwr4EAAAAA:OwS7ixnZTFZlL0mnIf5idc5l0P_sufOJAnEh0TLxPZ7HB6EJAwS2Y-XVrW3j5R3-gifZrX6JF63Azg</a></p>
-<p>This paper shows show different designs for a CR-gate. We’ll construct a design very similar to the first one.</p>
-<p>Let’s open up the qiskit metal design GUI:</p>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+ratio numerical / formula at Omega/2pi = 1 MHz: ZX 0.9987, IX 0.9996, ZI 0.9982
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tut_4-Analysis_Design-and-Simulation-of-a-Cross-Resonance-Gate_14_1.png" src="../../_images/tut_4-Analysis_Design-and-Simulation-of-a-Cross-Resonance-Gate_14_1.png" />
+</div>
+</div>
+<p>At weak drive the exact rates and the formulas agree to 0.2 % or better, the size of the <span class="math notranslate nohighlight">\((J/\Delta)^2\)</span> corrections the formulas leave out. As the drive grows, <span class="math notranslate nohighlight">\(\omega_{ZX}\)</span> saturates below the linear law: the drive starts to populate the control’s second excited state, which the leading-order theory treats only perturbatively [4, 5].</p>
+<p>As a last check, the effective Hamiltonian should reproduce the time evolution of section 3, the way an experiment would test it: by measuring the target’s Rabi frequency for each control state. For the control in <span class="math notranslate nohighlight">\(|0\rangle\)</span> or <span class="math notranslate nohighlight">\(|1\rangle\)</span>, <span class="math notranslate nohighlight">\(H_\mathrm{eff}\)</span> is a rotation of the target about <span class="math notranslate nohighlight">\(X\)</span> at <span class="math notranslate nohighlight">\(\omega_{IX}\pm\omega_{ZX}\)</span>, plus a small <span class="math notranslate nohighlight">\(Z\)</span> term <span class="math notranslate nohighlight">\(\omega_{IZ}\pm\omega_{ZZ}\)</span>: zero for the control in <span class="math notranslate nohighlight">\(|0\rangle\)</span>, where we tuned the drive, and the
+static <span class="math notranslate nohighlight">\(ZZ\)</span> shift for the control in <span class="math notranslate nohighlight">\(|1\rangle\)</span>. So the target should oscillate at <span class="math notranslate nohighlight">\(\sqrt{(\omega_{IX}\pm\omega_{ZX})^2 + (\omega_{IZ}\pm\omega_{ZZ})^2}\)</span>. We fit a cosine to <span class="math notranslate nohighlight">\(\langle Z\rangle(t)\)</span> of the full simulation:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">curve_fit</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cosine</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">TWO_PI</span> <span class="o">*</span> <span class="n">f</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="n">B</span>
+
+
+<span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">sign</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
+    <span class="n">f_x</span> <span class="o">=</span> <span class="n">rates</span><span class="p">[</span><span class="s2">"IX"</span><span class="p">]</span> <span class="o">+</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">rates</span><span class="p">[</span><span class="s2">"ZX"</span><span class="p">]</span>
+    <span class="n">f_z</span> <span class="o">=</span> <span class="n">rates</span><span class="p">[</span><span class="s2">"IZ"</span><span class="p">]</span> <span class="o">+</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">rates</span><span class="p">[</span><span class="s2">"ZZ"</span><span class="p">]</span>
+    <span class="n">f_heff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">f_x</span><span class="p">,</span> <span class="n">f_z</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">f_fit</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="n">_</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">cosine</span><span class="p">,</span> <span class="n">tlist</span><span class="p">,</span> <span class="n">bloch</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">p0</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">f_heff</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"control in |</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">&gt;:  H_eff </span><span class="si">{</span><span class="n">f_heff</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> MHz,  fit to the simulation </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">f_fit</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> MHz"</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+control in |0&gt;:  H_eff 1.0048 MHz,  fit to the simulation 1.0033 MHz
+control in |1&gt;:  H_eff 0.5249 MHz,  fit to the simulation 0.5250 MHz
+</pre></div></div>
+</div>
+<p>The two agree to a fraction of a per cent; the small difference comes from the fast ripple, which <span class="math notranslate nohighlight">\(H_\mathrm{eff}\)</span> averages out by construction.</p>
+</section>
+<section id="5.-Does-eliminating-the-bus-matter?">
+<h2>5. Does eliminating the bus matter?<a class="headerlink" href="#5.-Does-eliminating-the-bus-matter?" title="Link to this heading">¶</a></h2>
+<p>Finally, we put the bus back: three modes (the bus as a harmonic oscillator, three levels), each qubit coupled to it with <span class="math notranslate nohighlight">\(g\)</span>, and no direct qubit-qubit coupling. The computational states are now those with the bus in its ground state, and the dressed target frequency is recomputed for this model.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">qeye</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">qt</span><span class="o">.</span><span class="n">qeye</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">qt</span><span class="o">.</span><span class="n">destroy</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>  <span class="c1"># bus</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">destroy</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">qt</span><span class="o">.</span><span class="n">qeye</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">qt</span><span class="o">.</span><span class="n">qeye</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>  <span class="c1"># control</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">qt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">qeye</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">qt</span><span class="o">.</span><span class="n">destroy</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">qt</span><span class="o">.</span><span class="n">qeye</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>  <span class="c1"># target</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">H_bus</span><span class="p">(</span><span class="n">wd</span><span class="p">):</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="p">(</span><span class="n">wr</span> <span class="o">-</span> <span class="n">wd</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">a</span>
+    <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">al</span> <span class="ow">in</span> <span class="p">((</span><span class="n">c1</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">),</span> <span class="p">(</span><span class="n">c2</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">alpha2</span><span class="p">)):</span>
+        <span class="n">H</span> <span class="o">+=</span> <span class="p">(</span><span class="n">w</span> <span class="o">-</span> <span class="n">wd</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">b</span> <span class="o">+</span> <span class="n">al</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">b</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">b</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">b</span> <span class="o">*</span> <span class="n">b</span>
+        <span class="n">H</span> <span class="o">+=</span> <span class="n">g</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">dag</span><span class="p">()</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">dag</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">TWO_PI</span> <span class="o">*</span> <span class="n">H</span>
+
+
+<span class="n">kets3</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">qt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">qt</span><span class="o">.</span><span class="n">basis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">qt</span><span class="o">.</span><span class="n">basis</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">qt</span><span class="o">.</span><span class="n">basis</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="p">]</span>
+<span class="p">(</span><span class="n">F00</span><span class="p">,</span> <span class="n">F01</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="n">_</span> <span class="o">=</span> <span class="n">dressed</span><span class="p">(</span><span class="n">H_bus</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">kets3</span><span class="p">)</span>
+<span class="n">H0_bus</span> <span class="o">=</span> <span class="n">H_bus</span><span class="p">(</span><span class="n">F01</span> <span class="o">-</span> <span class="n">F00</span><span class="p">)</span>
+<span class="n">r_bus0</span> <span class="o">=</span> <span class="n">cr_rates</span><span class="p">(</span><span class="n">H0_bus</span><span class="p">,</span> <span class="n">H0_bus</span><span class="p">,</span> <span class="n">kets3</span><span class="p">)</span>
+<span class="n">r_bus</span> <span class="o">=</span> <span class="n">cr_rates</span><span class="p">(</span><span class="n">H0_bus</span> <span class="o">+</span> <span class="n">TWO_PI</span> <span class="o">*</span> <span class="n">Omega</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">c1</span> <span class="o">+</span> <span class="n">c1</span><span class="o">.</span><span class="n">dag</span><span class="p">()),</span> <span class="n">H0_bus</span><span class="p">,</span> <span class="n">kets3</span><span class="p">)</span>
+<span class="n">r_bus</span><span class="p">[</span><span class="s2">"ZI"</span><span class="p">]</span> <span class="o">-=</span> <span class="n">r_bus0</span><span class="p">[</span><span class="s2">"ZI"</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Omega/2pi = </span><span class="si">{</span><span class="n">Omega</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> MHz   with bus   direct J   (MHz)"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"ZX"</span><span class="p">,</span> <span class="s2">"IX"</span><span class="p">,</span> <span class="s2">"ZI"</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"   omega_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">/2pi     </span><span class="si">{</span><span class="n">r_bus</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">8.4f</span><span class="si">}</span><span class="s2">   </span><span class="si">{</span><span class="n">rates</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">8.4f</span><span class="si">}</span><span class="s2">   ratio </span><span class="si">{</span><span class="n">r_bus</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">rates</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"2 (w1 - wr) / (w1 + w2 - 2 wr) = </span><span class="si">{</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">w1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">wr</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">w1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">w2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">wr</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Omega/2pi = 40 MHz   with bus   direct J   (MHz)
+   omega_ZX/2pi      -0.8053    -0.7611   ratio 1.058
+   omega_IX/2pi      -0.2584    -0.2438   ratio 1.060
+   omega_ZI/2pi       5.9429     5.9466   ratio 0.999
+2 (w1 - wr) / (w1 + w2 - 2 wr) = 1.065
+</pre></div></div>
+</div>
+<p>The Stark shift is unchanged, but with the bus <span class="math notranslate nohighlight">\(ZX\)</span> and <span class="math notranslate nohighlight">\(IX\)</span> both come out about 6 % larger. The difference is not in <span class="math notranslate nohighlight">\(J\)</span>, which sets the level shifts correctly, but in how the drive reaches the target. With a direct coupling, the target’s dressed state contains <span class="math notranslate nohighlight">\(J/(\omega_2-\omega_1)\)</span> of the control. With a bus, that admixture is <span class="math notranslate nohighlight">\(g^2/[(\omega_2-\omega_1)(\omega_2-\omega_r)]\)</span>, which differs from the direct-<span class="math notranslate nohighlight">\(J\)</span> value by the factor
+<span class="math notranslate nohighlight">\(2(\omega_1-\omega_r)/(\omega_1+\omega_2-2\omega_r)\)</span> printed above whenever the two qubits sit at different detunings from the bus. So the direct-<span class="math notranslate nohighlight">\(J\)</span> model is enough to understand the gate, and its formulas give the rates to within a few per cent; a design study keeps the bus, with <span class="math notranslate nohighlight">\(g\)</span> and <span class="math notranslate nohighlight">\(\omega_r\)</span> taken from simulations of the layout below.</p>
+</section>
+<section id="6.-Physical-design-of-the-CR-gate">
+<h2>6. Physical design of the CR gate<a class="headerlink" href="#6.-Physical-design-of-the-CR-gate" title="Link to this heading">¶</a></h2>
+<p>The physical design of a CR gate consists simply of two qubits connected via a bus resonator. For a concrete example of what this design may look like, we can use the example in H. Park <em>et al.</em>, Proc. IEEE IEDM (2020) [7], which shows several designs for a CR gate. We’ll construct one very similar to the first.</p>
+<p>Let’s open up the Qiskit Metal design GUI:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -839,7 +988,7 @@
 </pre></div>
 </div>
 </div>
-<p>For each of the two transmon qubits, we’ll include two capacitively coupled pads (“readout” and “bus”). We’ll put one of htem at (-1,0) and the other at (1,0) with the second one being rotated 90 degrees relative to the first.</p>
+<p>For each of the two transmon qubits, we’ll include two capacitively coupled pads: <code class="docutils literal notranslate"><span class="pre">bus_01</span></code>, which the bus resonator will join, and <code class="docutils literal notranslate"><span class="pre">readout</span></code>, left free for a readout resonator. We’ll put one qubit at (-1,0) and the other at (1,0), the second rotated by 90 degrees relative to the first.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -853,8 +1002,8 @@
         <span class="n">pad_width</span><span class="o">=</span><span class="s2">"425 um"</span><span class="p">,</span>
         <span class="n">pocket_height</span><span class="o">=</span><span class="s2">"650um"</span><span class="p">,</span>
         <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span> <span class="n">pad_gap</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
-            <span class="n">bus_01</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span> <span class="n">pad_gap</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
+            <span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span> <span class="n">pad_gap</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
+            <span class="n">bus_01</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span> <span class="n">pad_gap</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
         <span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
@@ -869,8 +1018,8 @@
         <span class="n">pad_width</span><span class="o">=</span><span class="s2">"425 um"</span><span class="p">,</span>
         <span class="n">pocket_height</span><span class="o">=</span><span class="s2">"650um"</span><span class="p">,</span>
         <span class="n">connection_pads</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span> <span class="n">pad_gap</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
-            <span class="n">bus_01</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span> <span class="n">pad_gap</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
+            <span class="n">readout</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span> <span class="n">pad_gap</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
+            <span class="n">bus_01</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">loc_W</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc_H</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span> <span class="n">pad_gap</span><span class="o">=</span><span class="s2">"50um"</span><span class="p">),</span>
         <span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
@@ -890,15 +1039,12 @@
 </pre></div>
 </div>
 </div>
-<p>Now we just have to connect these two transmon qubits with a CPW. We’ll use the RouteMeader to do this, connecting the “readout” island of the first qubit to the “readout” island of the second qubit. We’ll also specify a series of left-hand and right-hand turns in order to mimc the shape of the CPW resonator that we see in the paper:</p>
+<p>Now we just have to connect these two transmon qubits with a CPW. We’ll use <code class="docutils literal notranslate"><span class="pre">RouteMeander</span></code> to join the <code class="docutils literal notranslate"><span class="pre">bus_01</span></code> pad of the first qubit to the <code class="docutils literal notranslate"><span class="pre">bus_01</span></code> pad of the second. A series of left-hand and right-hand turns mimics the shape of the resonator in the paper, and <code class="docutils literal notranslate"><span class="pre">total_length=&quot;10.5mm&quot;</span></code> makes it a half-wave resonator near 5.7 GHz, the bus frequency used in section 2:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.analyses.em.cpw_calculations</span><span class="w"> </span><span class="kn">import</span> <span class="n">guided_wavelength</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.meandered</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteMeander</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.pathfinder</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoutePathfinder</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.anchored_path</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteAnchors</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.qlibrary.tlines.meandered</span><span class="w"> </span><span class="kn">import</span> <span class="n">RouteMeander</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
 
@@ -915,17 +1061,14 @@
 <span class="n">jogs_start</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"L"</span><span class="p">,</span> <span class="s2">"1800um"</span><span class="p">]</span>
 <span class="n">jogs_start</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"L"</span><span class="p">,</span> <span class="s2">"2500um"</span><span class="p">]</span>
 
-<span class="n">jogs_end</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-<span class="n">jogs_end</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"R"</span><span class="p">,</span> <span class="s2">"200um"</span><span class="p">]</span>
-
 <span class="n">bus_01</span> <span class="o">=</span> <span class="n">RouteMeander</span><span class="p">(</span>
     <span class="n">design</span><span class="p">,</span>
     <span class="s2">"Coupler"</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
         <span class="n">hfss_wire_bonds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">pin_inputs</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
-            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"readout"</span><span class="p">),</span>
-            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q2"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"readout"</span><span class="p">),</span>
+            <span class="n">start_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q1"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"bus_01"</span><span class="p">),</span>
+            <span class="n">end_pin</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"Q2"</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="s2">"bus_01"</span><span class="p">),</span>
         <span class="p">),</span>
         <span class="n">lead</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span>
             <span class="n">start_straight</span><span class="o">=</span><span class="s2">"100um"</span><span class="p">,</span>  <span class="c1">#'125um',</span>
@@ -934,7 +1077,7 @@
         <span class="p">),</span>
         <span class="n">meander</span><span class="o">=</span><span class="n">Dict</span><span class="p">(</span><span class="n">asymmetry</span><span class="o">=</span><span class="s2">"0um"</span><span class="p">),</span>  <span class="c1">#'1305um'),</span>
         <span class="n">fillet</span><span class="o">=</span><span class="s2">"99um"</span><span class="p">,</span>
-        <span class="n">total_length</span><span class="o">=</span><span class="s2">"10mm"</span><span class="p">,</span>
+        <span class="n">total_length</span><span class="o">=</span><span class="s2">"10.5mm"</span><span class="p">,</span>
     <span class="p">),</span>
 <span class="p">)</span>
 <span class="n">gui</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
@@ -952,8 +1095,82 @@
 </pre></div>
 </div>
 </div>
-<p>Voila! Now you know not only how a CR gate behaves physically but what it looks like in physical design!</p>
 </section>
+<section id="Summary">
+<h2>Summary<a class="headerlink" href="#Summary" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>this notebook</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>model</p></td>
+<td><p>two three-level transmons, exchange <span class="math notranslate nohighlight">\(J\)</span> from a dispersive bus</p></td>
+</tr>
+<tr class="row-odd"><td><p>drive</p></td>
+<td><p>control at the dressed target frequency, in the rotating frame</p></td>
+</tr>
+<tr class="row-even"><td><p>what makes it a gate</p></td>
+<td><p>the target’s Rabi rate depends on the control state: <span class="math notranslate nohighlight">\(\omega_{IX}\pm\omega_{ZX}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>check of the rates</p></td>
+<td><p>exact block-diagonalisation vs leading-order formulas [5]: within 0.2 % at <span class="math notranslate nohighlight">\(\Omega/2\pi\)</span> = 1 MHz; at 40 MHz <span class="math notranslate nohighlight">\(IX\)</span> within 1 %, <span class="math notranslate nohighlight">\(ZX\)</span> 6 % below the linear law</p></td>
+</tr>
+<tr class="row-even"><td><p>check of the bus elimination</p></td>
+<td><p>explicit bus vs direct <span class="math notranslate nohighlight">\(J\)</span>: same <span class="math notranslate nohighlight">\(ZI\)</span>; <span class="math notranslate nohighlight">\(ZX\)</span> and <span class="math notranslate nohighlight">\(IX\)</span> 6 % larger with the bus</p></td>
+</tr>
+<tr class="row-odd"><td><p>layout</p></td>
+<td><p>two <code class="docutils literal notranslate"><span class="pre">TransmonPocket6</span></code> qubits, <code class="docutils literal notranslate"><span class="pre">bus_01</span></code> pads joined by a 10.5 mm <code class="docutils literal notranslate"><span class="pre">RouteMeander</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="Where-to-go-next">
+<h2>Where to go next<a class="headerlink" href="#Where-to-go-next" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Add the echo: split the pulse in two halves with opposite sign and a <span class="math notranslate nohighlight">\(\pi\)</span> pulse on the control in between [3]. <span class="math notranslate nohighlight">\(IX\)</span> and <span class="math notranslate nohighlight">\(ZI\)</span> cancel, <span class="math notranslate nohighlight">\(ZX\)</span> stays.</p></li>
+<li><p>Move the control into the <em>straddling regime</em> <span class="math notranslate nohighlight">\(0 &lt; \Delta &lt; -\alpha_1\)</span> (for example <code class="docutils literal notranslate"><span class="pre">w1</span> <span class="pre">=</span> <span class="pre">5.15</span></code>): <span class="math notranslate nohighlight">\(\omega_{ZX}\)</span> grows and takes the opposite sign to <span class="math notranslate nohighlight">\(\omega_{IX}\)</span>. Near <span class="math notranslate nohighlight">\(\Delta = -\alpha_1\)</span> the formulas diverge; compare them with the numerical rates there.</p></li>
+<li><p>Replace the guessed <span class="math notranslate nohighlight">\(g\)</span> and <span class="math notranslate nohighlight">\(\omega_r\)</span> by values from a simulation of the layout (tutorials 4.01–4.13), and the transmon parameters by those of tutorial 4.33.</p></li>
+</ul>
+</section>
+<section id="References">
+<h2>References<a class="headerlink" href="#References" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><ol class="upperalpha simple" start="3">
+<li><p>Rigetti and M. Devoret, Phys. Rev. B <strong>81</strong>, 134507 (2010), <a class="reference external" href="https://doi.org/10.1103/PhysRevB.81.134507">doi:10.1103/PhysRevB.81.134507</a>.</p></li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="10">
+<li><ol class="upperalpha simple" start="13">
+<li><p>Chow <em>et al.</em>, Phys. Rev. Lett. <strong>107</strong>, 080502 (2011), <a class="reference external" href="https://doi.org/10.1103/PhysRevLett.107.080502">doi:10.1103/PhysRevLett.107.080502</a>.</p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="19">
+<li><p>Sheldon <em>et al.</em>, Phys. Rev. A <strong>93</strong>, 060302(R) (2016), <a class="reference external" href="https://doi.org/10.1103/PhysRevA.93.060302">doi:10.1103/PhysRevA.93.060302</a>.</p></li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="22">
+<li><p>Tripathi <em>et al.</em>, Phys. Rev. A <strong>100</strong>, 012301 (2019), <a class="reference external" href="https://doi.org/10.1103/PhysRevA.100.012301">doi:10.1103/PhysRevA.100.012301</a>.</p></li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="5">
+<li><p>Magesan and J. M. Gambetta, Phys. Rev. A <strong>101</strong>, 052308 (2020), <a class="reference external" href="https://doi.org/10.1103/PhysRevA.101.052308">doi:10.1103/PhysRevA.101.052308</a>.</p></li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="13">
+<li><p>Malekakhlagh, E. Magesan and D. C. McKay, Phys. Rev. A <strong>102</strong>, 042605 (2020), <a class="reference external" href="https://doi.org/10.1103/PhysRevA.102.042605">doi:10.1103/PhysRevA.102.042605</a>.</p></li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="8">
+<li><p>Park <em>et al.</em>, Proc. IEEE IEDM (2020), <a class="reference external" href="https://ieeexplore.ieee.org/document/9371955">ieeexplore 9371955</a>.</p></li>
+</ol>
+</li>
+</ol>
 </section>
 </section>
 <br><br>
@@ -1042,15 +1259,18 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">The Cross Resonance (CR) Gate</a><ul>
-<li><a class="reference internal" href="#What-is-the-CR-Gate?">What is the CR Gate?</a></li>
-<li><a class="reference internal" href="#What-does-the-Hamiltonian-of-the-CR-gate-look-like?">What does the Hamiltonian of the CR gate look like?</a></li>
-<li><a class="reference internal" href="#Constructing-the-CR-Gate-Hamiltonian-Using-QuTiP-&amp;-Qiskit-Metal">Constructing the CR Gate Hamiltonian Using QuTiP &amp; Qiskit Metal</a></li>
-<li><a class="reference internal" href="#Time-independent-Hamiltonian">Time-independent Hamiltonian</a></li>
-<li><a class="reference internal" href="#Time-Evolution-of-the-Time-Independent-Hamiltonian">Time Evolution of the Time-Independent Hamiltonian</a></li>
-<li><a class="reference internal" href="#Adding-Time-Dependence-to-the-Hamiltonian">Adding Time-Dependence to the Hamiltonian</a><ul>
-<li><a class="reference internal" href="#Physical-Design-of-the-CR-Gate">Physical Design of the CR Gate</a></li>
+<li><a class="reference internal" href="#1.-What-is-the-CR-gate?">1. What is the CR gate?</a></li>
+<li><a class="reference internal" href="#2.-The-model">2. The model</a><ul>
+<li><a class="reference internal" href="#Operators-and-the-dressed-frequencies">Operators and the dressed frequencies</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#3.-Driving-the-control-at-the-target-frequency">3. Driving the control at the target frequency</a></li>
+<li><a class="reference internal" href="#4.-The-effective-Hamiltonian">4. The effective Hamiltonian</a></li>
+<li><a class="reference internal" href="#5.-Does-eliminating-the-bus-matter?">5. Does eliminating the bus matter?</a></li>
+<li><a class="reference internal" href="#6.-Physical-design-of-the-CR-gate">6. Physical design of the CR gate</a></li>
+<li><a class="reference internal" href="#Summary">Summary</a></li>
+<li><a class="reference internal" href="#Where-to-go-next">Where to go next</a></li>
+<li><a class="reference internal" href="#References">References</a></li>
 </ul>
 </li>
 </ul>
