@@ -205,7 +205,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analysis_lumped_ic_from_lj(self):
         """Test the Ic_from_Lj function in lumped_capacitives.py."""
         self.assertAlmostEqualRel(
-            lumped_capacitive.Ic_from_Lj(5e9), 6.579465347418954e-26, rel_tol=1e-26
+            lumped_capacitive.Ic_from_Lj(5e9), 6.582119256283279e-26, rel_tol=1e-26
         )
 
     def test_analysis_lumped_ic_from_ej(self):
@@ -217,51 +217,51 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
     def test_analyses_lumped_transmon_props(self):
         """Test the functionality of lumped_transmon_props in
         lumped_capacitives.py."""
-        # Setup expected test results
+        # Setup expected test results (phinot = h/2e, #1207)
         expected = [
             (
-                3.2897326737094774e-12,
-                311949615351887.6,
-                0.00018137620223473302,
+                3.291059628141639e-12,
+                312075444094147.0,
+                0.00018141277871587874,
                 1.2170673260260538,
-                55134023.405734204,
-                55134024.62280153,
+                55122907.27253576,
+                55122908.48960309,
                 0.0,
             ),
             (
-                3.2897326737094773e-13,
-                3119496153518876.0,
-                1.81376202234733e-05,
+                3.2910596281416393e-13,
+                3120754440941469.5,
+                1.8141277871587876e-05,
                 0.12170673260260537,
-                55134024.501094796,
-                55134024.62280153,
+                55122908.367896356,
+                55122908.48960309,
                 0.0,
             ),
             (
-                3.289732673709477e-14,
-                3.1194961535188764e16,
-                1.8137620223473303e-06,
+                3.291059628141639e-14,
+                3.1207544409414696e16,
+                1.8141277871587876e-06,
                 0.012170673260260537,
-                55134024.610630855,
-                55134024.62280153,
+                55122908.477432415,
+                55122908.48960309,
                 0.0,
             ),
             (
-                3.2897326737094773e-16,
-                3.119496153518876e18,
-                1.8137620223473303e-08,
+                3.2910596281416393e-16,
+                3.1207544409414697e18,
+                1.8141277871587876e-08,
                 0.00012170673260260537,
-                55134024.62267982,
-                55134024.62280153,
+                55122908.48948138,
+                55122908.48960309,
                 0.0,
             ),
             (
-                3.289732673709477e-17,
-                3.1194961535188763e19,
-                1.8137620223473302e-09,
+                3.291059628141639e-17,
+                3.12075444094147e19,
+                1.8141277871587875e-09,
                 1.2170673260260537e-05,
-                55134024.62278935,
-                55134024.62280153,
+                55122908.48959091,
+                55122908.48960309,
                 0.0,
             ),
         ]
@@ -277,7 +277,7 @@ class TestAnalyses(unittest.TestCase, AssertionsMixin):
         # Test all elements of the result data against expected data
         self.assertEqual(len(expected), len(result))
         for x, _ in enumerate(expected):
-            self.assertAlmostEqual(_, result[x])
+            np.testing.assert_allclose(result[x], _, rtol=1e-12, atol=0)
 
     def test_analyses_lumped_chi(self):
         """Test the functionality of chi in lumped_capacitives.py."""
