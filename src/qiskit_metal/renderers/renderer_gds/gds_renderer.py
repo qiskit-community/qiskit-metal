@@ -36,6 +36,7 @@ from qiskit_metal.toolbox_metal.parsing import is_true
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import (
         can_write_to_path,
+        concat_tables,
         get_range_of_vertex_to_not_fillet,
     )
 
@@ -694,11 +695,13 @@ class QGDSRenderer(QRenderer):
                 copy_no_subtract[i] = item_no[item_no["layer"] == chip_layer]
 
             self.chip_info[chip_name][chip_layer]["all_subtract_true"] = (
-                geopandas.GeoDataFrame(pd.concat(copy_subtract, ignore_index=False))
+                geopandas.GeoDataFrame(concat_tables(copy_subtract, ignore_index=False))
             )
 
             self.chip_info[chip_name][chip_layer]["all_subtract_false"] = (
-                geopandas.GeoDataFrame(pd.concat(copy_no_subtract, ignore_index=False))
+                geopandas.GeoDataFrame(
+                    concat_tables(copy_no_subtract, ignore_index=False)
+                )
             )
 
             self.chip_info[chip_name][chip_layer]["all_subtract_true"] = self.chip_info[
