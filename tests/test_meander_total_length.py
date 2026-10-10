@@ -189,5 +189,96 @@ class TestLengthMismatchIsReported(unittest.TestCase):
         )
 
 
+def _cross_resonance_coupler(total):
+    """The ``Coupler`` route of the cross-resonance tutorial
+    (docs/tut/4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate):
+    an 11-jog start lead of about 9.75 mm, leaving the meander a span of
+    about 0.3 mm between the lead ends."""
+    from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
+
+    design = designs.DesignPlanar()
+
+    def pads(w):
+        return dict(loc_W=w, pad_width="100um", pad_gap="50um")
+
+    for name, x, w, orientation in (("Q1", "-1mm", 1, 0), ("Q2", "1mm", -1, -90)):
+        TransmonPocket6(
+            design,
+            name,
+            options=dict(
+                pos_x=x,
+                pos_y="0mm",
+                orientation=orientation,
+                pad_width="425 um",
+                pocket_height="650um",
+                connection_pads=dict(
+                    readout=dict(loc_H=-1, **pads(w)),
+                    bus_01=dict(loc_H=1, **pads(w)),
+                ),
+            ),
+        )
+    jogs = [
+        ["R", "1200um"],
+        ["R", "200um"],
+        ["R", "700um"],
+        ["L", "200um"],
+        ["L", "700um"],
+        ["R", "200um"],
+        ["R", "750um"],
+        ["L", "200um"],
+        ["L", "1200um"],
+        ["L", "1800um"],
+        ["L", "2500um"],
+    ]
+    return RouteMeander(
+        design,
+        "Coupler",
+        options=dict(
+            pin_inputs=Dict(
+                start_pin=Dict(component="Q1", pin="readout"),
+                end_pin=Dict(component="Q2", pin="readout"),
+            ),
+            lead=Dict(
+                start_straight="100um",
+                start_jogged_extension=OrderedDict(enumerate(jogs)),
+                end_straight="100um",
+            ),
+            meander=Dict(asymmetry="0um"),
+            fillet="99um",
+            total_length=total,
+        ),
+    )
+
+
+class TestCrossResonanceCoupler(unittest.TestCase):
+    """A regression in the first #1225/#1234 fix: at total_length=10mm the
+    meander target (total_length minus the straight-line lead lengths, 0.15
+    mm) is below the 0.3 mm span between the lead ends, because the leads'
+    13 filleted corners are counted at full length. The fix returned no
+    meander for length_excess <= 0 and skipped the refit, drawing 9.653 mm
+    where v0.9.0 drew 9.778 mm. With the meander.spacing default, the drawn
+    length stays at 9.778 mm for every target up to ~0.7 mm and then jumps
+    to 10.19 mm, so 10 mm cannot be reached; 10.5 mm can."""
+
+    MAIN_LENGTH_10MM = 9.7776  # drawn by v0.9.0 for total_length=10mm
+
+    def test_10mm_not_worse_than_before_and_no_overshoot(self):
+        with self.assertLogs("metal", level="WARNING") as cm:
+            route = _cross_resonance_coupler("10mm")
+        self.assertEqual(route.status, "good")
+        self.assertGreaterEqual(route.length, self.MAIN_LENGTH_10MM - 1e-4)
+        self.assertLessEqual(route.length, 10.0 + RouteMeander.LENGTH_TOLERANCE)
+        self.assertTrue(
+            [m for m in cm.output if "differs from total_length=10mm" in m],
+            cm.output,
+        )
+
+    def test_reachable_lengths_are_reached(self):
+        for total in ("10.2mm", "10.5mm", "11mm"):
+            with self.subTest(total=total):
+                route = _cross_resonance_coupler(total)
+                self.assertAlmostEqual(route.length, _mm(total), delta=1e-5)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
