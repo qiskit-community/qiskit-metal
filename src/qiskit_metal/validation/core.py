@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import enum
 import itertools
+import math
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Iterable, Sequence
 
@@ -302,7 +303,9 @@ def _row_chip(row) -> str:
     """The chip a qgeometry row is on (``"main"`` if the column is absent)."""
     chip = row.get("chip", None)
     return (
-        "main" if chip is None or (isinstance(chip, float) and chip != chip) else chip
+        "main"
+        if chip is None or (isinstance(chip, float) and math.isnan(chip))
+        else chip
     )
 
 

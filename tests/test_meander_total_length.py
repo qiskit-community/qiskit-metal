@@ -26,8 +26,8 @@
 
 import logging
 import unittest
+import unittest.mock
 from collections import OrderedDict
-from unittest import mock
 
 from qiskit_metal import Dict, designs
 from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
@@ -114,7 +114,7 @@ class TestJoggedLeadsReachTotalLength(unittest.TestCase):
         geometry is exactly what it was before the refit existed."""
         for total in ("5mm", "7mm"):
             with self.subTest(total=total):
-                with mock.patch.object(
+                with unittest.mock.patch.object(
                     RouteMeander,
                     "_build_meander",
                     autospec=True,
