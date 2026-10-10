@@ -18,7 +18,10 @@ import gdstk
 import numpy as np
 import shapely
 
-from qiskit_metal.renderers.renderer_gds.gds_boolean import subtract_in_strips
+from qiskit_metal.renderers.renderer_gds.gds_boolean import (
+    remove_cell,
+    subtract_in_strips,
+)
 
 
 class Cheesing:
@@ -319,7 +322,7 @@ class Cheesing:
             (c for c in self.lib.cells if c.name == cheese_one_hole_cell_name), None
         )
         if cheese_one_hole_cell:
-            self.lib.remove(cheese_one_hole_cell)
+            remove_cell(self.lib, cheese_one_hole_cell)
 
     def _subtract_from_ground_and_move_under_top_chip_layer(
         self, diff_holes_cell: gdstk.Cell
@@ -474,7 +477,7 @@ class Cheesing:
         cell_name = f"TOP_{self.chip_name}_{self.layer}_Cheese_diff"
         cell = next((c for c in self.lib.cells if c.name == cell_name), None)
         if cell:
-            self.lib.remove(cell)
+            remove_cell(self.lib, cell)
 
     def _remove_ground_chip_layer(self):
         """[For a lib, chip and layer, remove the ground cell
@@ -483,4 +486,4 @@ class Cheesing:
         cell_name = f"ground_{self.chip_name}_{self.layer}"
         cell = next((c for c in self.lib.cells if c.name == cell_name), None)
         if cell:
-            self.lib.remove(cell)
+            remove_cell(self.lib, cell)
