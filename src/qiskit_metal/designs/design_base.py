@@ -193,6 +193,8 @@ class QDesign:
 
         # Instantiate and register renderers to Qdesign.renderers
         self._renderers = Dict()
+        # Renderers that could not be started, and why (see skipped_renderers)
+        self._skipped_renderers = {}
         if enable_renderers:
             self._start_renderers()
 
@@ -252,6 +254,14 @@ class QDesign:
         """Return a Dict of all the renderers registered within QDesign."""
 
         return self._renderers
+
+    @property
+    def skipped_renderers(self) -> dict:
+        """Renderers in ``config.renderers_to_load`` that were not started for
+        this design because an optional dependency is missing, mapped to the
+        reason. On a lite install these are logged at DEBUG only; this is the
+        place to look when a renderer is not in ``renderers``."""
+        return dict(self._skipped_renderers)
 
     @property
     def chips(self) -> Dict:
@@ -976,6 +986,15 @@ class QDesign:
 
     ######### Renderers ###############################################################
 
+    def _skip_renderer(self, renderer_key: str, reason: str):
+        """Record a renderer that cannot start for lack of an optional
+        dependency. Logged at DEBUG: on a lite install this is expected, and
+        at INFO every new design printed one line per renderer (#1229). The
+        reason stays available in ``skipped_renderers`` and in the error
+        raised when an analysis asks for the renderer."""
+        self._skipped_renderers[renderer_key] = reason
+        self.logger.debug(f"Renderer={renderer_key} skipped: {reason}.")
+
     def _start_renderers(self):
         """Start the renderers.
 
@@ -1022,13 +1041,13 @@ class QDesign:
             try:
                 module = importlib.import_module(path_name)
             except (ImportError, OSError) as e:  # OSError: native lib failed to load
-                self.logger.info(
-                    f"Renderer={renderer_key} skipped: "
+                self._skip_renderer(
+                    renderer_key,
                     f"an optional dependency for {path_name} is not "
                     f"installed ({e}). Install the corresponding extra "
                     f"(e.g. `pip install quantum-metal[mesh]` for gmsh, "
                     f"`pip install quantum-metal[ansys]` for pyaedt) "
-                    f"to enable it."
+                    f"to enable it",
                 )
                 continue
 
@@ -1044,9 +1063,8 @@ class QDesign:
                     # actual heavy dep (pyEPR / pyaedt / gmsh) isn't
                     # installed. Same outcome as a missing module:
                     # skip + log + keep going.
-                    self.logger.info(
-                        f"Renderer={renderer_key} skipped: "
-                        f"runtime dependency not installed ({e})."
+                    self._skip_renderer(
+                        renderer_key, f"runtime dependency not installed ({e})"
                     )
                     continue
 

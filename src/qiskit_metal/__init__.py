@@ -131,13 +131,20 @@ def setup_qt_backend():
 
 ## Setup logging
 from qiskit_metal import config
+import logging as _logging
+
 from qiskit_metal.toolbox_python._logging import setup_logger
 
 # Leave ``logging.captureWarnings`` alone: it is process-global, and with
 # it on, every ``warnings.warn`` in the process (numpy, shapely, user code)
 # goes to the handler-less ``py.warnings`` logger and is never shown (#1229).
-logger = setup_logger("metal", config.log.format, config.log.datefmt)  # type: logging.Logger
-del setup_logger
+# The ``metal`` logger is at INFO (it was DEBUG); for debug messages, e.g.
+# the renderers a design skipped for lack of an optional dependency, use
+# ``qiskit_metal.logger.setLevel(logging.DEBUG)`` (#1229).
+logger = setup_logger(
+    "metal", config.log.format, config.log.datefmt, level_base=_logging.INFO
+)  # type: logging.Logger
+del setup_logger, _logging
 
 ###########################################################################
 ### User-accessible scope
