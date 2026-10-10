@@ -20,9 +20,10 @@ Key References:
 
 """
 
-from scipy.special import mathieu_a
 import numpy as np
 import matplotlib.pyplot as plt
+
+from qiskit_metal.analyses.hamiltonian.transmon_CPB_analytic import mathieu_level
 
 __all__ = ["kidx", "kidx_raw", "plot_eigenvalues", "transmon_eigenvalue"]
 
@@ -74,22 +75,31 @@ RATIO = 1.0
 E_C = 1.0
 
 
-def transmon_eigenvalue(m, my_ng):
+def transmon_eigenvalue(m, my_ng, Ej=None, Ec=None):
     """
     This function calculate the energy eigenvalue of the transmon qubit for a given
-    energy level (m) and offset charge (my_ng). The input values are first used to
-    calculate the index using the function defined above, and then the calculated
-    index is used to calculate the energy eigenvalue using Mathieu's characteristic values.
+    energy level (m) and offset charge (my_ng), from Mathieu characteristic values
+    (Koch et al. Eq. 2.11), via
+    :func:`~qiskit_metal.analyses.hamiltonian.transmon_CPB_analytic.mathieu_level`:
+    even levels use the even (``a``) and odd levels the odd (``b``) characteristic
+    value at integer order, and non-integer orders (any ``my_ng`` other than 0 or
+    1/2 modulo 1) are computed from the Hill matrix.
 
         Args:
             m (int): The energy level of the qubit (m=0,1,2,3,etc.)
-            ng (float): the offset charge of the Josephjunction island (in units of 2e)
+            my_ng (float): the offset charge of the Josephjunction island (in units of 2e)
+            Ej (float): Josephson energy. Defaults to ``RATIO * E_C`` (module
+                constants).
+            Ec (float): Charging energy. Defaults to the module constant ``E_C``.
 
         Returns:
             float: the calculated energy eigenvalue.
     """
-    index = kidx(m, my_ng)
-    return (E_C) * mathieu_a(index, -0.5 * RATIO)
+    if Ec is None:
+        Ec = E_C
+    if Ej is None:
+        Ej = RATIO * Ec
+    return mathieu_level(m, my_ng, Ej, Ec)
 
 
 # extremely coarse grid: only three points from -0.5 to 0.5. This so that only integer values

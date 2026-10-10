@@ -79,70 +79,83 @@ class QSimulation(QAnalysis):
 
     def select_renderer(self, renderer_name: str):
         """Makes sure the renderer exists in qiskit-metal. If yes it sets the analysis
-        class variables to be able to reach it easily. Else it throws an error.
+        class variables to be able to reach it easily. Else it raises an error.
 
         Args:
             renderer_name (str): Name of the renderer you intend to use.
 
         Returns:
             (QRenderer): The renderer to be used in the analysis.
+
+        Raises:
+            ValueError: If the renderer is unknown, misconfigured, or was not
+                started for the design (usually because an optional dependency
+                is not installed). The message names the available renderers.
         """
-        try:
-            if self.design is None:
-                # we want to setup a renderer from scratch
+        if self.design is None:
+            # we want to setup a renderer from scratch
 
-                # renderer_ref will be {} if renderer_name does not exist
-                renderer_ref = config.renderers_to_load[renderer_name]
-                if not renderer_ref:
-                    raise KeyError  # needed because this is a Dict, not a dict
-                if not (renderer_ref.path_name and renderer_ref.class_name):
-                    self.logger.error(
-                        f"The renderer={renderer_name} is not properly configured in"
-                        " config.renderers_to_load. Please add the missing information"
-                        " (Tip: needs to have both a path_name and a class_name keys)."
-                    )
-                    return None
+            # renderer_ref is None if renderer_name does not exist
+            renderer_ref = config.renderers_to_load.get(renderer_name)
+            if not renderer_ref:
+                self._raise_renderer_unavailable(
+                    renderer_name, "it is not in config.renderers_to_load"
+                )
+            if not (renderer_ref.path_name and renderer_ref.class_name):
+                self._raise_renderer_unavailable(
+                    renderer_name,
+                    "it is not properly configured in config.renderers_to_load "
+                    "(it needs both a path_name and a class_name key)",
+                )
 
-                # if the path_name exists, grab the class
-                if importlib.util.find_spec(renderer_ref.path_name):
-                    class_renderer = getattr(
-                        importlib.import_module(renderer_ref.path_name),
-                        renderer_ref.class_name,
-                        None,
-                    )
-
-                    # if the class_name exists, then create the renderer object.
-                    # initiate=False, as for renderers registered with a design:
-                    # the connection is made by start() / run_sim(), not here.
-                    if class_renderer is not None:
-                        renderer = class_renderer(None, initiate=False)
-                    else:
-                        self.logger.warning(
-                            f"Could not find the class={renderer_ref.class_name} "
-                            f"in the renderer={renderer_name}"
-                        )
-                        return None
-                else:
-                    self.logger.warning(
-                        f"Could not find the renderer={renderer_name} "
-                        f"at the path={renderer_ref.path_name}."
-                    )
-                    return None
-
-            else:
-                # the renderer would have been already registered within the design object
-                renderer = self.design.renderers[renderer_name]
-                if not renderer:
-                    self.design.logger.error(
-                        f'Cannot find the renderer "{renderer_name}" registered with qiskit-metal'
-                    )
-                    return None
-        except KeyError:
-            self.logger.error(
-                f"Cannot find a renderer {renderer_name} registered with qiskit-metal"
+            # if the path_name exists, grab the class
+            if not importlib.util.find_spec(renderer_ref.path_name):
+                self._raise_renderer_unavailable(
+                    renderer_name, f"the module {renderer_ref.path_name} was not found"
+                )
+            class_renderer = getattr(
+                importlib.import_module(renderer_ref.path_name),
+                renderer_ref.class_name,
+                None,
             )
-            return None
+            if class_renderer is None:
+                self._raise_renderer_unavailable(
+                    renderer_name,
+                    f"the class {renderer_ref.class_name} was not found in "
+                    f"{renderer_ref.path_name}",
+                )
+            # initiate=False, as for renderers registered with a design:
+            # the connection is made by start() / run_sim(), not here.
+            return class_renderer(None, initiate=False)
+
+        # the renderer would have been already registered within the design object
+        renderer = self.design.renderers.get(renderer_name)
+        if not renderer:
+            if config.renderers_to_load.get(renderer_name):
+                reason = (
+                    "it is configured but was not started for this design, usually "
+                    "because an optional dependency is not installed (see the log "
+                    "from creating the design; e.g. `pip install quantum-metal[ansys]` "
+                    "for hfss / q3d)"
+                )
+            else:
+                reason = "it is not in config.renderers_to_load"
+            self._raise_renderer_unavailable(renderer_name, reason)
         return renderer
+
+    def _raise_renderer_unavailable(self, renderer_name: str, reason: str):
+        """Raise ``ValueError`` for a renderer that cannot be used (#1230)."""
+        if self.design is not None:
+            available = sorted(self.design.renderers.keys())
+            where = "started for this design"
+        else:
+            available = sorted(config.renderers_to_load.keys())
+            where = "configured"
+        raise ValueError(
+            f'Renderer "{renderer_name}" is not available for '
+            f"{self.__class__.__name__}: {reason}. Renderers {where}: "
+            f"{', '.join(available) or 'none'}."
+        )
 
     def _check_backend(self):
         """Raise a clear error, before anything is rendered, when the renderer

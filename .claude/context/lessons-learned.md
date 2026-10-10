@@ -173,6 +173,30 @@ etc.).
 - `tests/test_solution_types.py`
 - pyEPR PRs #172, #176
 
+### PySide6 6.12.0: `deallocating None` abort on Python < 3.12
+
+**Symptom**: GUI tests whose child builds a `MetalGUI` abort (`rc=-6` on
+Linux, `0xC0000005` on Windows) on the Python 3.10/3.11 CI jobs only.
+faulthandler prints `Fatal Python error: none_dealloc: deallocating None`
+from inside `app.processEvents`. Locally everything passes.
+
+**Cause**: PySide6 6.12.0 releases one reference to `None` too many while
+the GUI runs. From Python 3.12 `None` is immortal, so newer jobs never see
+it. `uv.lock` pinned 6.10.1, but the tox test jobs resolve the newest
+PySide6 allowed by `pyproject.toml`, so CI picked up 6.12.0 the day it was
+released while local `uv run` stayed on the lock. The frame differs from
+run to run, which made it look like the #1048 use-after-free family.
+
+**Fix**: `pyside6>=6.8,!=6.12.0` in the `[gui]`/`[full]` extras (and
+`environment.yml`). Diagnose with a Python 3.11 venv and
+`sys.getrefcount(None)` around `processEvents`: it falls steadily on
+6.12.0 and stays flat on 6.11.2. Check whether a newer PySide6 fixes it
+before lifting the exclusion.
+
+**Also**: the left-dock test printed only the last 2000 characters of the
+child's stderr, which for a native crash is faulthandler's extension-module
+list; it now prints from the crash report on.
+
 ### `numpy<2` pin: root cause and removal
 
 **Symptom**: pairing numpy 2 with older compiled dependencies fails on
