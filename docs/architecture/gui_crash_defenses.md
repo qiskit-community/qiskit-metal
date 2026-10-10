@@ -294,6 +294,7 @@ test and a platform but have different causes.
 | C | **macOS**, Python 3.14; `test_gui_left_dock_min_width` (#1235 at 0930684) | `rc=-11`; C stack in CoreGraphics glyph rendering: `render_glyph_list` → `ripc_GetColor` → `CGColorTransformConvertColorComponents` → `CGCMSConverterCreate` → `__NSArrayM dealloc` → `__NSDictionaryI dealloc`, during `processEvents` after `RESIZED` | Unknown. This head had the app-wide Python style (B's hazard) back in place (586db23), so it may be B in another form; or failure mode 5's use-after-free. | **Open.** Watch whether it recurs after #1238. |
 | D | **macOS** CI (`main` at 7a8d9d4, #1235 at 0930684) and **Linux offscreen locally on every run** (main and branch alike); `test_gui_nudge::TestRealClickAndKeyDelivery::test_click_then_arrows_move_the_component` | `AssertionError: focus/nudge contract not proven: MARKER_SELECTED missing` | Not a crash: the synthetic click does not select the component. Deterministic under local offscreen, intermittent on macOS CI. Probably click/focus delivery to the canvas. | **Open.** |
 | E | Local, Linux offscreen, Python 3.13 | Segfault at exit, 3/3, in `_teardown_qt_widgets` (`main_window.py:172`); gdb: null-vtable call in `QMenuBar::eventFilter` while the deferred-delete drain runs | A second `MetalGUI` built in one process after an application stylesheet was set (`gui.set_font_size(11)`) | **Open**; failure mode 1's mechanism under a new trigger. |
+| F | **macOS**, Python 3.14, PySide6 6.11.2; `test_gui_nudge::TestRealClickAndKeyDelivery` (#1238 at fb1d30e) | Reported as `MARKER_SELECTED missing`, but stderr shows `Fatal Python error: Segmentation fault` at child line 23 (startup, before any marker). C stack: `-[NSMenuItem font]` ← `-[NSMenuItem _effectiveFont]` ← `-[NSMenuItemView _effectiveFont]` ← `-[NSMenuBarItemView _effectiveFontRespectingPreferredParameters:]` ← `_ensureValidLineCache` ← `-[NSMenuBarItemView idealWidth]` | Native crash while AppKit lays out the native menu bar for the new window: a freed `NSMenuItem` (or its Qt-side `QAction`/`QMenu`) is read. Same family as failure mode 1 (menu-bar teardown, `QMenuBar::eventFilter`) and E. So at least some of D's macOS failures are this crash, not a selection failure. | **Open.** Check whether the test builds more than one `MetalGUI` / menu bar per process, and whether a previous window's `QMenuBar` is still being deleted. |
 
 Local reproduction without system packages: extract Ubuntu's `libegl1`
 `.deb` into a scratch directory, point `LD_LIBRARY_PATH` at it and use
@@ -307,7 +308,7 @@ extension-module list).
 
 ## Still open
 
-- Crashes C, D and E in the October 2026 CI crash log above.
+- Crashes C, D, E and F in the October 2026 CI crash log above (D, E and F may share the menu-bar teardown mechanism of failure mode 1).
 - Failure mode (4), the GC teardown segfault, on all versions —
   **substantially narrowed** by the deferred-callback discipline and the
   completed atexit teardown (explicit `QApplication` destruction, step 4
