@@ -74,7 +74,8 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: dict[str, float], shorted=False):
         vp (float): phase velocity in m/s
         Z0 (float): characteristic impedance of the TL in ohm
         cap_loading (dict): a dictionary of the loading capacitors; the keys
-            are the names of the nodes; the values the capacitances in fF
+            are the names of the nodes; the values the capacitances in fF.
+            The dict is not modified.
         shorted (boolean): default false; true if the other end of the TL is shorted false otherwise
 
     Returns:
@@ -93,6 +94,9 @@ def analyze_loaded_tl(fr, vp, Z0, cap_loading: dict[str, float], shorted=False):
     # long as it's close to zero and not infinity since it's energy participation
     # of the other (loaded with finite capacitance) end that matters.
     _POS_INFTY = 1e30
+    # work on a copy: the values are converted to farads and a stand-in node
+    # is added below, which must not leak into the caller's dict
+    cap_loading = dict(cap_loading)
     # Convert to SI
     wr = fr * MHzRad
     if cap_loading == {}:

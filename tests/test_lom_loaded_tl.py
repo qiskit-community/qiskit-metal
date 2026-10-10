@@ -51,5 +51,26 @@ class TestLoadedTLModeLength(unittest.TestCase):
         self.assertAlmostEqual(L / (_VP / (fr * 1e6) / 4), 1.0, places=6)
 
 
+class TestLoadedTLInputUnchanged(unittest.TestCase):
+    """The caller's ``cap_loading`` dict is left alone (#1232)."""
+
+    def _check(self, loading, shorted):
+        original = dict(loading)
+        first = analyze_loaded_tl(6000.0, _VP, 50.0, loading, shorted=shorted)
+        self.assertEqual(loading, original)
+        second = analyze_loaded_tl(6000.0, _VP, 50.0, loading, shorted=shorted)
+        self.assertEqual(first[0], second[0])
+        self.assertEqual(first[3], second[3])
+
+    def test_single_open(self):
+        self._check({"Q": 50.0}, shorted=False)
+
+    def test_single_shorted(self):
+        self._check({"Q": 50.0}, shorted=True)
+
+    def test_two_nodes(self):
+        self._check({"a": 20.0, "b": 30.0}, shorted=False)
+
+
 if __name__ == "__main__":
     unittest.main()
