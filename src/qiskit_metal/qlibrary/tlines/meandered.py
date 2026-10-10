@@ -95,14 +95,20 @@ class RouteMeander(QRoute):
         )
 
         # The first build misses total_length when adjust_length cannot place
-        # the remaining slack -- e.g. the fillet shortening of jogged-lead
-        # corners when the first and last wiggles are blocked (#1234). Feed
-        # the miss back into the meander's target length and keep the
-        # closest build. Routes the first build gets right are not rebuilt.
-        if abs(best["error"]) > self.LENGTH_TOLERANCE and best["n_meander_pts"]:
-            best = self._fit_meander_length(
+        # the remaining slack. The meander target above counts the leads at
+        # their straight-line length, while QRoute.length takes
+        # (2 - pi/2) * fillet off every corner, including the corners of
+        # jogged leads, so the target is too small by that amount (#1234). Feed
+        # the miss back into the meander's target length, also try the route
+        # without a meander, and keep the best build (see _pick_build). Routes
+        # the first build gets right are not rebuilt.
+        if abs(best["error"]) > self.LENGTH_TOLERANCE:
+            candidates = [best]
+            candidates += self._fit_meander_length(
                 best, meander_start_point, meander_end_point
             )
+            candidates.append(self._build_without_meander())
+            best = self._pick_build(candidates)
         self._length_segment = best["length_segment"]
         self.intermediate_pts = best["pts"]
         for message in best["messages"]:
@@ -154,24 +160,56 @@ class RouteMeander(QRoute):
 
     def _fit_meander_length(
         self, first: dict, start_pt: QRoutePoint, end_pt: QRoutePoint
-    ) -> dict:
+    ) -> list:
         """Secant iteration on the meander's target length so that the drawn
-        length reaches ``total_length``. Returns the closest build."""
-        best = first
+        length reaches ``total_length``. Returns every trial build.
+
+        The drawn length is piecewise in the target length: it can stay flat
+        (wiggles snapped to the leads by ``prevent_short_edges``) and then
+        jump, so the iteration can stall or step over ``total_length``; the
+        caller picks among the trials.
+        """
+        trials = []
         x0, f0 = first["length_segment"], first["error"]
         x1 = x0 - f0
         for _ in range(8):
             try:
                 trial = self._build_meander(x1, start_pt, end_pt)
-            except Exception:  # an extreme trial; keep the best so far
+            except Exception:  # an extreme trial; keep the ones so far
                 break
-            if abs(trial["error"]) < abs(best["error"]):
-                best = trial
+            trials.append(trial)
             f1 = trial["error"]
             if abs(f1) <= 1e-2 * self.LENGTH_TOLERANCE or f1 == f0:
                 break
             x0, f0, x1 = x1, f1, x1 - f1 * (x1 - x0) / (f1 - f0)
-        return best
+        return trials
+
+    def _build_without_meander(self) -> dict:
+        """The shortest route: the leads joined directly, no meander."""
+        pts = np.empty((0, 2), float)
+        self.intermediate_pts = pts
+        return dict(
+            length_segment=self._length_segment,
+            pts=pts,
+            error=self.length - self.p.total_length,
+            messages=[],
+            n_meander_pts=0,
+        )
+
+    def _pick_build(self, candidates: list) -> dict:
+        """Choose among builds; ``candidates[0]`` is the first build.
+
+        Never farther from ``total_length`` than the first build (which is
+        what ``make`` drew before the refit existed). Among those, prefer a
+        build that does not overshoot ``total_length``; overshoot only if
+        every eligible build does.
+        """
+        tol = self.LENGTH_TOLERANCE
+        first = candidates[0]
+        eligible = [c for c in candidates if abs(c["error"]) <= abs(first["error"])]
+        not_over = [c for c in eligible if c["error"] <= tol]
+        pool = not_over or eligible
+        return min(pool, key=lambda c: abs(c["error"]))
 
     def _warn_length_mismatch(self, n_meander_pts: int):
         """Warn when the drawn length differs from ``total_length`` (#1225)."""
@@ -310,16 +348,9 @@ class RouteMeander(QRoute):
 
         # length to distribute on the meanders (excess w.r.t a straight line between start and end)
         length_excess = length_meander - length_direct - 2 * abs(asymmetry)
-        if length_excess <= 0:
-            # The requested length leaves nothing to meander with: the
-            # shortest route is the best that can be drawn. (A zero-amplitude
-            # meander here used to crash with an IndexError, #1225.) The
-            # caller reports the length mismatch.
-            self.logger.info(
-                f"{self.name}: no length left for a meander "
-                f"(length_excess={length_excess:.4g})"
-            )
-            return np.empty((0, 2), float)
+        # A length_excess <= 0 gives a zero-amplitude meander here, which
+        # adjust_length may still widen; RouteMeander.make also tries the route
+        # without a meander and keeps the closer one.
         # how much meander offset from center-line is needed to accommodate the length_excess (perpendicular length)
         length_perp = max(0, length_excess / (meander_number * 2.0))
 
