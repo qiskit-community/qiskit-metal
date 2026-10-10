@@ -3,7 +3,8 @@ import warnings
 
 from numpy import size
 import geopandas as gpd
-import pandas as pd
+
+from qiskit_metal.toolbox_python.utility_functions import concat_tables
 
 _DEPRECATION_MESSAGE = (
     "QDesignCheck is deprecated and will be removed in a future release. "
@@ -61,7 +62,7 @@ class QDesignCheck:
             # Get the GeoSeries tables separately for polys and paths, then combine.
             poly = self.design._components[unique_int].qgeometry_table("poly")
             path = self.design._components[unique_int].qgeometry_table("path")
-            combined = gpd.GeoDataFrame(pd.concat([poly, path], ignore_index=True))
+            combined = gpd.GeoDataFrame(concat_tables([poly, path], ignore_index=True))
             combined_geo = combined["geometry"]
 
             # loop within a loop to calculate distance between components
@@ -80,7 +81,7 @@ class QDesignCheck:
                         "path"
                     )
                     combined_inner = gpd.GeoDataFrame(
-                        pd.concat([poly_inner, path_inner], ignore_index=True)
+                        concat_tables([poly_inner, path_inner], ignore_index=True)
                     )
                     combined_geo_inner = combined_inner["geometry"]
 

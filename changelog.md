@@ -38,6 +38,7 @@ changes*.
 - **GDS:** `fabricate=True` with cheesing no longer leaves dangling cell references (#1218).
 - **Validation:** `ShortSegmentRule` has a float tolerance and reports each path once (#1213).
 - **`draw.buffer`** passes `quad_segs` to shapely (no DeprecationWarning on shapely ≥ 2.1) (#1228).
+- **No pandas `FutureWarning` ("DataFrame concatenation with empty or all-NA entries is deprecated") from building a design, GDS export, `metal_geometry_table`, the chip-bounds helper or `QDesignCheck`** (seen after #1229 stopped hiding warnings). The qgeometry tables are concatenated with a new `toolbox_python.utility_functions.concat_tables`, which gives the pandas 2 dtypes on pandas 2 and 3. Results are unchanged on pandas 2; on pandas 3 the `fillet` column of the `path` table and of the tables built from it is float64 again (it became object).
 - **Connection pads added after construction** (`options.connection_pads.new = ...`) rebuild correctly (#1226); `to_python_script()` no longer writes a spurious `options_connection_pads` warning for every qubit (#1227).
 - **`sequencing`** missing now raises an `ImportError` that says how to install it; the package (last release 2022) needs qutip 4 (#1231).
 - **Tutorials:** example 52's readout resonators are quarter-wave (`open_termination=False`) (#1217); the CR-gate and Jaynes-Cummings tutorials pass `e_ops` by keyword for qutip 5.3 (#1216); tutorial 2.24 shows that an airbridge over an uncut crossing still reports, and how to cut and wire through it or waive it (#1215).

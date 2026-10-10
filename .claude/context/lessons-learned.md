@@ -128,6 +128,29 @@ route had a lead segment shorter than the fillet radius, so it reached
 Regression test: `tests/test_gds_short_segments.py` (exports a short-lead
 meander and checks the area matches a low-fillet control).
 
+### pandas 2.1+: concat with empty or all-NA columns (FutureWarning, changes in pandas 3)
+
+**Symptom**: `FutureWarning: The behavior of DataFrame concatenation with
+empty or all-NA entries is deprecated` from `qgeometries_handler.py`,
+`gds_renderer.py`, `bounds_for_path_and_poly_tables.py`, `nets.py` and
+`design_check.py` on every build and GDS export. Hidden until #1229 stopped
+`captureWarnings`. On pandas 3 the `path` table's `fillet` column silently
+became `object` instead of `float64`.
+
+**Cause**: pandas 2 leaves a column that is empty or all-NA in one frame out
+when it picks the result dtype, but only when the chosen dtype can hold NA
+(float, object, datetime, extension); for int and bool it keeps the column
+as is (an empty `object` column next to an int one gives `object`). pandas
+3 always includes it. The `poly` table's `fillet` is an all-NA `object`
+column, `path`'s is `float64`, and each table starts empty. Dropping empty
+frames before the concat (the warning's advice) is not enough and changes
+the result: it loses the columns and dtypes that only the empty frame has.
+
+**Fix**: `toolbox_python.utility_functions.concat_tables` casts such
+columns to the dtype of the frames with values (when it can hold NA) before
+`pd.concat`. The pandas 2 results are reproduced exactly on both versions.
+Test: `tests/test_concat_tables.py`.
+
 ### qutip 5: `np.array([Qobj, ...])` no longer stacks
 
 **Symptom**: Code that worked under qutip 4 returns an object-dtype
