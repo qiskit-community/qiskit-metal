@@ -413,5 +413,29 @@ class TestHeadlessAndDesignState(unittest.TestCase):
         )
 
 
+class TestNoSpuriousMissingArgWarning(unittest.TestCase):
+    """Issue #1227 — ``options_connection_pads`` is merged into
+    ``options.connection_pads`` and must not be reported as missing."""
+
+    def test_qubit_with_pads_has_no_warning(self):
+        from qiskit_metal.qlibrary.qubits.transmon_cross import TransmonCross
+
+        design = designs.DesignPlanar()
+        TransmonPocket(
+            design, "Q1", options=dict(connection_pads=dict(a=dict(loc_W=1)))
+        )
+        TransmonCross(
+            design,
+            "Q2",
+            options=dict(pos_x="2mm"),
+            options_connection_pads=dict(b=dict(connector_location="90")),
+        )
+        script = design.to_python_script()
+        self.assertNotIn("failed to have a value", script)
+        self.assertNotIn("# WARNING", script)
+        # The pads passed through options_connection_pads are still written.
+        self.assertIn("'connector_location': '90'", script)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
