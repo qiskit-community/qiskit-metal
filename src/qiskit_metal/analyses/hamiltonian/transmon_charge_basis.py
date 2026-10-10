@@ -17,10 +17,27 @@ get the Ej, Ec or use input Ej, Ec to find the spectrum of the Cooper Pair Box.
 @author: Christopher Warren (Chalmers University of Technology), updated by Zlatko K. Minev (IBM Quantum)
 """
 
+import warnings
+
 import numpy as np
 import qutip as qt
 from scipy import linalg
 import scipy.optimize as opt
+
+# Relative miss (of the target frequency) above which the inverse solvers warn.
+_INVERSE_RTOL = 1e-6
+
+
+def _warn_if_missed(name, res, f01):
+    """Warn when an inverse fit did not reproduce its target."""
+    miss = np.max(np.abs(res.fun))
+    if miss > _INVERSE_RTOL * abs(f01):
+        warnings.warn(
+            f"Hcpb.{name} did not reach the target: residual {np.asarray(res.fun)} "
+            f"(same units as f01) at x = {res.x}; solver status {res.status}: "
+            f"{res.message}",
+            stacklevel=3,
+        )
 
 
 class Hcpb:
@@ -289,26 +306,38 @@ class Hcpb:
     def params_from_freq_fixEC(self, f01: float, Ec: float, **kwargs):
         """Find transmon Ej given a fixed EC and frequency.
 
+        Solves ``fij(0, 1) == f01`` for Ej at the given Ec (and the current
+        ``ng``). With Ec fixed the anharmonicity is not a free parameter, so
+        only the frequency enters the fit.
+
         Args:
             f01 (float): Desired qubit frequency
             Ec (float): Qubit EC (4ECn^2) in same units as f01
 
+        Keyword Args:
+            Passed to ``scipy.optimize.least_squares``.
+
         Returns:
             float: Ej in same units
+
+        Warns:
+            UserWarning: if the solver does not reproduce ``f01`` (for
+            instance, the target is outside the search bounds).
         """
 
         def fun(x):
             self.Ej = x[0]
             self.Ec = Ec
-            # the 15 on the anharmonicity allows faster convergnce, see Minev
-            return (self.fij(0, 1) - f01) ** 2 + 15 * (self.anharm() - Ec) ** 2
+            # Residual vector (least_squares squares it itself).
+            return [self.fij(0, 1) - f01]
 
-        x0 = [(f01 - Ec) ** 2 / (8 * (Ec))]
-        # can converge slowly if cost function not set up well, or alpha<<freq
-        ops = dict(bounds=[(0,), (x0[0] * 3,)], f_scale=1 / x0[0], max_nfev=2000)
+        # Initial guess from f01 ~ sqrt(8*Ej*Ec) - Ec
+        x0 = [(f01 + Ec) ** 2 / (8 * Ec)]
+        ops = dict(bounds=[(0,), (x0[0] * 3,)], max_nfev=2000, xtol=1e-12, ftol=1e-12)
         res = opt.least_squares(fun, x0, **{**ops, **kwargs})
         self.Ej = res.x[0]
         self.Ec = Ec
+        _warn_if_missed("params_from_freq_fixEC", res, f01)
         return res.x[0]
 
     @property

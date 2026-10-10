@@ -14,11 +14,31 @@
 numerical reference rather than against pinned outputs."""
 
 import unittest
+import warnings
 
 import numpy as np
 from scipy.integrate import trapezoid
+from scipy.optimize import brentq
 
 from qiskit_metal.analyses.hamiltonian.HO_wavefunctions import wavefunction
+from qiskit_metal.analyses.hamiltonian.transmon_charge_basis import Hcpb
+
+NCUT = 30
+
+
+def ref_levels(Ej, Ec, ng, nlev=6):
+    """Reference transmon levels: dense diagonalization of
+    4 Ec (n - ng)^2 - (Ej/2)(|n><n+1| + h.c.) for |n| <= 30."""
+    n = np.arange(-NCUT, NCUT + 1)
+    H = np.diag(4 * Ec * (n - ng) ** 2) - 0.5 * Ej * (
+        np.eye(len(n), k=1) + np.eye(len(n), k=-1)
+    )
+    return np.linalg.eigvalsh(H)[:nlev]
+
+
+def ref_f01(Ej, Ec, ng):
+    E = ref_levels(Ej, Ec, ng, 2)
+    return E[1] - E[0]
 
 
 class TestHOWavefunction(unittest.TestCase):
@@ -68,6 +88,39 @@ class TestHOWavefunction(unittest.TestCase):
     def test_negative_level_raises(self):
         with self.assertRaises(ValueError):
             wavefunction(1.0, 1.0, -1, 0.0)
+
+
+class TestParamsFromFreqFixEC(unittest.TestCase):
+    """#1203: Ej at fixed Ec must reproduce f01."""
+
+    def test_reproduces_f01_against_reference(self):
+        Ec = 295.2
+        for ratio in (20.0, 47.33, 70.0, 100.0):
+            for ng in (0.5, 0.0):
+                f01 = ref_f01(ratio * Ec, Ec, ng)
+                # Independent inverse: root find on the dense reference.
+                Ej_ref = brentq(lambda e: ref_f01(e, Ec, ng) - f01, 1.0, 1e6)
+                h = Hcpb(nlevels=15, Ej=1.0, Ec=Ec, ng=ng)
+                with warnings.catch_warnings():
+                    warnings.simplefilter("error")
+                    Ej = h.params_from_freq_fixEC(f01, Ec)
+                self.assertAlmostEqual(Ej / Ej_ref, 1.0, places=7)
+                self.assertAlmostEqual(h.Ej, Ej)
+                self.assertLess(abs(ref_f01(Ej, Ec, ng) - f01), 1e-3)
+
+    def test_tutorial_4_34_numbers(self):
+        """Tutorial 4.34: Ej = 13971.3, Ec = 295.2 (used to return 14424)."""
+        Ec = 295.2
+        f01 = Hcpb(nlevels=15, Ej=13971.3, Ec=Ec, ng=0.5).fij(0, 1)
+        Ej = Hcpb(nlevels=15, Ej=1, Ec=Ec, ng=0.5).params_from_freq_fixEC(f01, Ec)
+        self.assertAlmostEqual(Ej, 13971.3, delta=1e-3)
+
+    def test_unreachable_target_warns(self):
+        # At ng = 0, f01 >= ~4 Ec for every Ej >= 0, so 100 is unreachable.
+        self.assertGreater(min(ref_f01(e, 300.0, 0.0) for e in (0, 300, 1e3, 1e4)), 100)
+        h = Hcpb(nlevels=15, Ej=1.0, Ec=300.0, ng=0.0)
+        with self.assertWarns(UserWarning):
+            h.params_from_freq_fixEC(100.0, 300.0)
 
 
 if __name__ == "__main__":
