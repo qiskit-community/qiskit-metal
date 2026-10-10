@@ -1050,6 +1050,23 @@ through nodes (e.g. along a junction line) leaves white gaps.
 
 **Fix**: offset the plane slightly (1.51 mm instead of 1.5 mm).
 
+### gmsh on Colab: `OSError: libGLU.so.1: cannot open shared object file`
+
+**Symptom**: after `pip install "quantum-metal[skfem]"` (or `[mesh]`) on
+Google Colab, the first gmsh call fails with `libGLU.so.1` missing.
+
+**Cause**: the PyPI gmsh wheel is built with its GUI and links against
+system libraries pip cannot install. For gmsh 4.15.2 (`libgmsh.so`,
+`DT_NEEDED`): libGLU, libGL, libX11, libXext, libXrender, libXcursor,
+libXfixes, libXft, libXinerama, libfontconfig, libgomp. Colab's image lacks
+at least libGLU.
+
+**Fix**: in the notebook's Colab install cell, before pip:
+`!apt-get -qq update && apt-get -qq install -y libglu1-mesa libgl1
+libxcursor1 libxft2 libxinerama1 libxfixes3 libxrender1 libxext6
+libfontconfig1` (packages already present are no-ops), marked Colab only.
+Tutorials 3.5, 4.19, 4.41–4.45, A.4 and 54 carry it. Verified on Colab.
+
 ### The impedance fit finds one pole where there are two
 
 **Symptom**: `fit_impedance` raises "found 1 of 2 poles" for a weakly

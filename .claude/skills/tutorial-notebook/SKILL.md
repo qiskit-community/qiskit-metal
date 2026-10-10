@@ -43,6 +43,10 @@ the run time) in its first notebook, and a module README.
   code (the formula being taught) in the notebook itself.
 - Each notebook finds it relative to itself and falls back to downloading
   it from the repository's `main` branch (for Colab).
+- The Colab install cell must cover system libraries too: pip cannot
+  install them, and gmsh's wheel needs libGLU and a few X11 libraries
+  (`lessons-learned.md`, "gmsh on Colab"). Try the notebook in Colab once
+  before announcing it.
 - Put the reference numbers you compare against (a paper's values) in the
   module as data, so every notebook prints "ours vs reference" from one
   source.
