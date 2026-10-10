@@ -80,6 +80,56 @@ class TestFitTransmission(unittest.TestCase):
         np.testing.assert_allclose(values[0], mag * np.exp(1j * arg))
         model = notch(f, mag, arg, delay, Qr, Qc, fr, phi0)
         self.assertLess(np.max(np.abs(s - model)), 1e-6)
+        p, _ = _fit(f, s)
+        self.assertNotIn("baseline_slope", p)
+
+
+class TestBaselineSlope(unittest.TestCase):
+    """baseline_slope=True: a tilted |S21| baseline (#1209 follow-up)."""
+
+    def data(self, tilt, half_span_linewidths, tau):
+        half = half_span_linewidths * FR / QL
+        f = np.linspace(FR - half, FR + half, 801)
+        k = tilt / (2 * half)  # relative change of |S21| across the span
+        return f, k, notch(f, 0.8, 0.4, tau, QL, QC, FR, 0.3) * (1 + k * (f - FR))
+
+    def test_default_is_biased_by_a_tilt(self):
+        f, _, s = self.data(0.05, 6, 0.0)
+        p, _ = _fit(f, s)
+        self.assertGreater(p["Qr"] / QL - 1, 2e-3)
+
+    def test_slope_recovers_q(self):
+        for tilt in (0.02, 0.05):
+            for n, tau in ((6, 0.0), (50, 40e-9)):
+                with self.subTest(tilt=tilt, linewidths=n, tau=tau):
+                    f, k, s = self.data(tilt, n, tau)
+                    p, _ = _fit(f, s, baseline_slope=True)
+                    self.assertLess(abs(p["Qr"] / QL - 1), 1e-4)
+                    self.assertLess(abs(p["Qc"] / QC - 1), 1e-4)
+                    self.assertLess(abs(p["fr"] / FR - 1), 1e-8)
+                    self.assertAlmostEqual(abs(p["amplitude_complex"]), 0.8, places=5)
+                    self.assertAlmostEqual(p["delay"] * 1e9, tau * 1e9, places=4)
+                    self.assertLess(abs(p["baseline_slope"] / k - 1), 1e-3)
+
+    def test_detrend_false(self):
+        f, k, s = self.data(0.02, 6, 0.0)
+        p, _ = _fit(f, s, baseline_slope=True, detrend=False)
+        self.assertLess(abs(p["Qr"] / QL - 1), 1e-4)
+        self.assertLess(abs(p["baseline_slope"] / k - 1), 1e-3)
+
+    def test_full_output_layout(self):
+        f, _, s = self.data(0.05, 50, 30e-9)
+        values, _, raw, cov = _fit(f, s, baseline_slope=True, full_output=True)
+        self.assertEqual(values.shape, (7,))
+        self.assertEqual(raw.shape, (8,))
+        self.assertEqual(cov.shape, (8, 8))
+        mag, arg, Qr, Qc, fr, phi0, delay, k = raw
+        np.testing.assert_allclose(values[0], mag * np.exp(1j * arg))
+        self.assertEqual(values[-1], k)
+        # The slope is referenced to fr
+        model = notch(f, mag, arg, delay, Qr, Qc, fr, phi0) * (1 + k * (f - fr))
+        self.assertLess(np.max(np.abs(s - model)), 1e-6)
+        self.assertTrue(np.all(np.isfinite(cov)))
 
 
 if __name__ == "__main__":
