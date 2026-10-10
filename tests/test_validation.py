@@ -372,6 +372,44 @@ class TestAirbridgeLayerSeparation(unittest.TestCase):
             f"report as shorts against the CPW they cross: {crossings}",
         )
 
+    def test_bridge_over_uncut_crossing_still_reports(self):
+        """#1215 / tutorial 2.24: a bridge drawn over two crossing lines does
+        not change the base-layer overlap; cutting one line and wiring the cut
+        ends through pins a and b does."""
+        from qiskit_metal.qlibrary.tlines.airbridge import Airbridge
+
+        bridge = dict(pos_x="0mm", pos_y="0mm", crossover_length="30um")
+
+        design = _design()
+        _route(design, "h", ("-0.7mm", "0mm"), ("0.7mm", "0mm"), "180", "0")
+        _route(design, "v", ("0mm", "-0.6mm"), ("0mm", "0.6mm"), "270", "90")
+        Airbridge(design, "AB", options=bridge)
+        design.rebuild()
+        overlaps = list(MetalOverlapRule().check(design))
+        self.assertEqual([set(f.components) for f in overlaps], [{"h", "v"}])
+
+        design = _design()
+        _route(design, "v", ("0mm", "-0.6mm"), ("0mm", "0.6mm"), "270", "90")
+        OpenToGround(design, "h_W", options=dict(pos_x="-0.7mm", orientation="180"))
+        OpenToGround(design, "h_E", options=dict(pos_x="0.7mm", orientation="0"))
+        Airbridge(design, "AB", options=bridge)
+        for name, start, end in [
+            ("h_west", ("h_W", "open"), ("AB", "a")),
+            ("h_east", ("AB", "b"), ("h_E", "open")),
+        ]:
+            RouteStraight(
+                design,
+                name,
+                options=Dict(
+                    pin_inputs=Dict(
+                        start_pin=Dict(component=start[0], pin=start[1]),
+                        end_pin=Dict(component=end[0], pin=end[1]),
+                    )
+                ),
+            )
+        design.rebuild()
+        self.assertEqual(list(MetalOverlapRule().check(design)), [])
+
 
 class TestGroundContinuityRule(unittest.TestCase):
     """A CPW that reaches both chip edges cuts the ground plane in two."""
