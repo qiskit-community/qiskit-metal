@@ -106,7 +106,6 @@ print("MARKER_DONE", flush=True)
 def test_tree_model_view_teardown_in_subprocess():
     env = dict(os.environ)
     env.pop("QISKIT_METAL_HEADLESS", None)
-    env.setdefault("QT_QPA_PLATFORM", "offscreen")
     proc = subprocess.run(
         [sys.executable, "-X", "faulthandler", "-c", _SNIPPET],
         capture_output=True,
