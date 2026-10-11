@@ -502,8 +502,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.toolbox_metal.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">QiskitMetalDesignError</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">unary_union</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">CAP_STYLE</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">CAP_STYLE</span><span class="p">,</span> <span class="n">GeometryCollection</span><span class="p">,</span> <span class="n">MultiPolygon</span><span class="p">,</span> <span class="n">Polygon</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">intersecting</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -655,17 +654,34 @@
             <span class="p">)</span>
         <span class="c1"># merge all the polygons</span>
         <span class="n">polygons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component_name</span><span class="p">]</span><span class="o">.</span><span class="n">qgeometry_list</span><span class="p">(</span><span class="s2">"poly"</span><span class="p">)</span>
-        <span class="n">boundary</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">(</span><span class="n">unary_union</span><span class="p">(</span><span class="n">polygons</span> <span class="o">+</span> <span class="n">paths_converted</span><span class="p">))</span>
-        <span class="n">boundary_coords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">boundary</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">exterior</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-            <span class="n">intersecting</span><span class="p">(</span>
-                <span class="n">segment</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">segment</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">boundary_coords</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">boundary_coords</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">boundary_coords</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="p">):</span>
-            <span class="c1"># At least 1 intersection with the actual component contour; do not proceed!</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="c1"># All clear, no intersections</span>
+        <span class="c1"># GeoSeries.exterior is None unless the union is a single Polygon, so a</span>
+        <span class="c1"># MultiPolygon or GeometryCollection (disjoint buffered paths) raised</span>
+        <span class="c1"># AttributeError on .coords. Walk each polygonal exterior instead.</span>
+        <span class="n">merged</span> <span class="o">=</span> <span class="n">unary_union</span><span class="p">(</span><span class="n">polygons</span> <span class="o">+</span> <span class="n">paths_converted</span><span class="p">)</span>
+        <span class="n">pieces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pending</span> <span class="o">=</span> <span class="p">[</span><span class="n">merged</span><span class="p">]</span>
+        <span class="k">while</span> <span class="n">pending</span><span class="p">:</span>
+            <span class="n">geom</span> <span class="o">=</span> <span class="n">pending</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">geom</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">geom</span><span class="o">.</span><span class="n">is_empty</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">Polygon</span><span class="p">):</span>
+                <span class="n">pieces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="p">(</span><span class="n">MultiPolygon</span><span class="p">,</span> <span class="n">GeometryCollection</span><span class="p">)):</span>
+                <span class="n">pending</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">geoms</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">piece</span> <span class="ow">in</span> <span class="n">pieces</span><span class="p">:</span>
+            <span class="n">exterior</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">exterior</span>
+            <span class="k">if</span> <span class="n">exterior</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">boundary_coords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+                <span class="n">intersecting</span><span class="p">(</span>
+                    <span class="n">segment</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">segment</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">boundary_coords</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">boundary_coords</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">boundary_coords</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="c1"># At least 1 intersection with the actual component contour; do not proceed!</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="c1"># All clear, no intersections (or the union had no exterior ring)</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
