@@ -85,9 +85,13 @@ class ResonatorCoilRect(QComponent):
 
         spiral_list = []
 
-        # Formulat to determine the size of the spiral based on inputed length.
-        x_n = (p.length / (2 * n)) - (
-            p.height + 2 * (p.gap + p.line_width) * (2 * n - 1)
+        # Size the spiral so its centre line is p.length long. Turn k
+        # (k = 0..n-1) draws 2 * (x_n + height) + 2 * (4k + 1) * (gap + line_width),
+        # and the last segment stops line_width / 2 short, at the etch edge.
+        x_n = (
+            (p.length + p.line_width / 2) / (2 * n)
+            - p.height
+            - (2 * n - 1) * (p.gap + p.line_width)
         )
 
         if x_n <= p.gap + p.line_width:
