@@ -296,7 +296,12 @@ class TransmonPocketTeeth(BaseQubit):
                     [0, pad_height],
                     [
                         0,
-                        (p.pocket_width / 2 - p.pad_height - p.pad_gap / 2 - pc.pad_gap)
+                        (
+                            p.pocket_height / 2
+                            - p.pad_height
+                            - p.pad_gap / 2
+                            - pc.pad_gap
+                        )
                         + cpw_extend,
                     ],
                 ]
