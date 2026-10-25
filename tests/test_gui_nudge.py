@@ -183,6 +183,13 @@ try:
     for _ in range(20):
         app.processEvents()
 
+    def _focused(app):
+        # QTest.keyClick asserts (aborts the process) on a widget with no
+        # window; fail the test with a message instead.
+        widget = app.focusWidget()
+        assert widget is not None, "no widget has keyboard focus"
+        return widget
+
     canvas = gui.canvas
     # Start focus somewhere else, matching the real bug report: focus
     # stays on whatever dock last had it until proven otherwise.
@@ -223,7 +230,7 @@ try:
             # A full rebuild (the R shortcut) between presses: selection,
             # highlight, and canvas focus must all survive it, so the
             # user can keep arrowing without re-clicking the component.
-            QTest.keyClick(app.focusWidget(), Qt.Key_R)
+            QTest.keyClick(_focused(app), Qt.Key_R)
             for _ in range(30):
                 app.processEvents()
             assert gui.selected_component == "Q1", (
@@ -231,7 +238,7 @@ try:
             )
             print("MARKER_REBUILD_KEPT_SELECTION", flush=True)
         before = design.components["Q1"].options.pos_x
-        QTest.keyClick(app.focusWidget(), Qt.Key_Right)
+        QTest.keyClick(_focused(app), Qt.Key_Right)
         for _ in range(20):
             app.processEvents()
         after = design.components["Q1"].options.pos_x
