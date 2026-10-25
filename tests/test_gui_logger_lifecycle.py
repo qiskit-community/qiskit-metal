@@ -247,7 +247,14 @@ class TestGUILoggerLifecycle(unittest.TestCase):
 
         gui = self._new_gui()
         main_window = gui.main_window
-        expected = len([t for t in main_window.findChildren(QTimer) if t.isActive()])
+        # Pollers only: pending one-shot timers legitimately fire and vanish.
+        expected = len(
+            [
+                t
+                for t in main_window.findChildren(QTimer)
+                if t.isActive() and not t.isSingleShot()
+            ]
+        )
 
         main_window.force_close = True
         main_window.close()
@@ -255,7 +262,13 @@ class TestGUILoggerLifecycle(unittest.TestCase):
         main_window.show()
         self.app.processEvents()
 
-        running = len([t for t in main_window.findChildren(QTimer) if t.isActive()])
+        running = len(
+            [
+                t
+                for t in main_window.findChildren(QTimer)
+                if t.isActive() and not t.isSingleShot()
+            ]
+        )
         self.assertEqual(
             running,
             expected,

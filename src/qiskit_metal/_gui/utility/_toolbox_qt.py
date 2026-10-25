@@ -70,6 +70,12 @@ def single_shot(parent: QObject, ms: int, callback) -> QTimer:
     timer = QTimer(parent)
     timer.setSingleShot(True)
     timer.timeout.connect(callback)
+    # Once fired the timer has no further use. Left alive it is a child of
+    # ``parent`` that ``findChildren(QTimer)`` still finds, and the main
+    # window's ``showEvent`` restarts every inactive timer it finds -- which
+    # replayed every past one-shot (focus-stealing ``_raise`` included) on
+    # each show/un-minimize.
+    timer.timeout.connect(timer.deleteLater)
     timer.start(ms)
     return timer
 
