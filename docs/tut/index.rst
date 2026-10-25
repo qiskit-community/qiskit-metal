@@ -1,164 +1,78 @@
 .. _tutorials-overview:
 
-=========
-Tutorials
-=========
+=====
+Learn
+=====
 
-Overview
-========
-
-
-.. nbgallery::
-    :glob:
-
-    1-Overview/*
-
+The tutorial course, in four parts. Each part lists its notebooks in the
+order to read them. New here? Start with the :doc:`../quickstart` page, then
+Part 1.
 
 Featured: package modes and qubit couplings
 ===========================================
 
-Five notebooks reproduce R. Molavi *et al.*, `arXiv:2609.22442
+Six notebooks follow R. Molavi *et al.*, `arXiv:2609.22442
 <https://arxiv.org/abs/2609.22442>`_: the couplings of a 10 × 10 transmon array
 to the modes of its metal package. They go from an analytic estimate (4.41) to
-a full-wave model of the whole package (4.45), with gmsh and a scikit-fem
-Maxwell solver in place of HFSS (``pip install "quantum-metal[skfem]"``).
+a full-wave model of the whole package (4.45); 4.46 then looks inside that
+model term by term. They use gmsh and a scikit-fem Maxwell solver in place of HFSS (``pip install "quantum-metal[skfem]"``).
+The notebooks are listed on the :doc:`../research` page.
 
-.. nbgallery::
-    :glob:
+.. nblinkgallery::
 
-    4-Analysis/4.4*
-
-
-Components
-==========
-
------------------
-Using QComponents
------------------
-
-.. nbgallery::
-    :glob:
-
-    2-From-components-to-chip/2.0*
+    4-Analysis/4.41-The-package-mode-on-paper
+    4-Analysis/4.42-Four-ways-to-measure-a-coupling
+    4-Analysis/4.43-Mesh-and-solve-the-10x10-processor
+    4-Analysis/4.44-Every-coupling-from-one-eigenmode
+    4-Analysis/4.45-Four-methods-one-full-wave-model
+    4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling
 
 
----------------------------
-Routing between QComponents
----------------------------
+The four parts
+==============
 
-.. nbgallery::
-    :glob:
+.. grid:: 1 2 2 4
+    :gutter: 2
 
-    2-From-components-to-chip/2.1*
+    .. grid-item-card:: Part 1: First steps
+        :link: first-steps
+        :link-type: doc
 
+        Place a component, build a four-qubit chip, save it, iterate on it.
+        (5 notebooks)
 
----------------------------------
-My first full quantum chip design
----------------------------------
+    .. grid-item-card:: Part 2: From components to chip
+        :link: components-to-chip
+        :link-type: doc
 
-.. nbgallery::
-    :glob:
+        QComponents, routing, a full chip, and your own QComponent.
+        (16 notebooks)
 
-    2-From-components-to-chip/2.2*
-    2-From-components-to-chip/FlipChip-design-tutorial
+    .. grid-item-card:: Part 3: Render and export
+        :link: render-and-export
+        :link-type: doc
 
+        Export to GDS, mesh with gmsh, render to Ansys, write a renderer.
+        (5 notebooks)
 
-----------------------------------
-How do I make my custom QComponent
-----------------------------------
+    .. grid-item-card:: Part 4: Simulate and analyze
+        :link: simulate-and-analyze
+        :link-type: doc
 
-.. nbgallery::
-    :glob:
+        Open-source and Ansys simulation, then circuits to Hamiltonians.
+        (26 notebooks)
 
-    2-From-components-to-chip/2.3*
+Also: :doc:`../circuit-examples/index` (components and reference designs to
+copy) and :doc:`../research` (published devices and results).
 
+.. toctree::
+    :maxdepth: 1
+    :hidden:
 
-Renderers
-=========
-
-
-.. nbgallery::
-    :glob:
-
-    3-Renderers/*
-
-
-Analysis
-========
-
---------------------------
-Core - EM and quantization
---------------------------
-
-.. nbgallery::
-    :glob:
-
-    4-Analysis/4.0*
-
-
------------------
-Analysis examples
------------------
-
-.. nbgallery::
-    :glob:
-
-    4-Analysis/4.1*
-
-
------------------
-Parametric sweeps
------------------
-
-.. nbgallery::
-    :glob:
-
-    4-Analysis/4.2*
-
-
------------------------------------------
-MultiPlanar designs in Ansys with pyaedt
------------------------------------------
-
-.. nbgallery::
-    :glob:
-
-    4-Analysis/pyaedt-multiplanar/*
-
-
-------------------
-Hamiltonian models
-------------------
-
-.. nbgallery::
-    :glob:
-
-    4-Analysis/4.3*
-    4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate
-    4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model
-
-
-Full-Chip Design Examples
-=========================
-
-End-to-end reference layouts built from stock Quantum Metal components,
-adapted with attribution from the open-source `SQDMetal
-<https://github.com/sqdlab/SQDMetal>`_ benchmark devices
-(`arXiv:2511.01220 <https://arxiv.org/abs/2511.01220>`_).
-
-.. nbgallery::
-    :glob:
-
-    full-design-examples/*
-
-
-Quick Topics
-============
-
-.. nbgallery::
-    :glob:
-
-    quick-topics/*
+    first-steps
+    components-to-chip
+    render-and-export
+    simulate-and-analyze
 
 
 .. raw:: html

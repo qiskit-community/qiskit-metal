@@ -520,3 +520,20 @@ comes after the v0.9.0 release. The stage-1 modules it imports
 `toolbox_metal/nets.py`, `renderer_gmsh/groups.py`) then need a deprecation
 policy. How the plugin registers (on import, or through entry points) is
 decided when it is built.
+
+## 2026-10-24 — docs navigation: Learn, Examples, Research
+
+Navigation is now Learn (`docs/tut/index.rst`, four parts), Examples
+(`docs/circuit-examples/index.rst`, component gallery, component examples,
+reference designs), and Research (`docs/research.rst`). Notebook files and
+URLs are unchanged; only `.rst` pages and `docs/conf.py` changed.
+
+- Each notebook has one home: an explicit `nbgallery` entry on one page, no
+  globs. Other pages use `nblinkgallery`, which adds no toctree entry. The
+  previous layout listed 1.1, 2.22 and A.4 twice, so Sphinx chose their
+  previous/next parent by alphabetical order.
+- No sidebar node under Learn, Examples or Research has more than 16 children
+  (the previous Tutorials node had 66).
+- `tut/index.html`, `circuit-examples/index.html` and `workflow.html` keep their
+  URLs, so no redirect extension is installed. Section anchors on the two
+  index pages other than "Featured: package modes and qubit couplings" are gone.

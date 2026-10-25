@@ -61,6 +61,18 @@ execute notebooks (`nbsphinx_execute = "never"` unless
 and re-execute it when the code changes what it prints or draws (in a scratch
 copy, so files the notebook writes stay out of the repo).
 
+**Navigation.** The sidebar does not follow the folders. `docs/tut/index.rst`
+(Learn) lists four part pages (`first-steps`, `components-to-chip`,
+`render-and-export`, `simulate-and-analyze`, plus `simulate-ansys` and
+`circuits-to-hamiltonians` under Part 4). `docs/circuit-examples/index.rst`
+(Examples) lists the component gallery, `component-examples.rst` and
+`reference-designs.rst`. `docs/research.rst` homes the reproductions of
+published devices. `docs/archive.rst` homes retired notebooks. Every notebook
+is listed in exactly one toctree (`nbgallery`) on one of these pages, with an
+explicit entry and no globs; other pages link to it with `nblinkgallery`.
+Moving a notebook between pages changes no URL. A notebook that is in no
+toctree triggers Sphinx's "not included in any toctree" warning.
+
 Notebooks that are kept but not on the site are listed in `exclude_patterns`
 in `docs/conf.py`. Colab/Binder badges and raw-download URLs point at the
 notebook's own `docs/` path.
