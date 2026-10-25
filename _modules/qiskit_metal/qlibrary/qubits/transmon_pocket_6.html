@@ -742,7 +742,12 @@
                     <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">pad_height</span><span class="p">],</span>
                     <span class="p">[</span>
                         <span class="mi">0</span><span class="p">,</span>
-                        <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pocket_width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_gap</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">pc</span><span class="o">.</span><span class="n">pad_gap</span><span class="p">)</span>
+                        <span class="p">(</span>
+                            <span class="n">p</span><span class="o">.</span><span class="n">pocket_height</span> <span class="o">/</span> <span class="mi">2</span>
+                            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_height</span>
+                            <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">pad_gap</span> <span class="o">/</span> <span class="mi">2</span>
+                            <span class="o">-</span> <span class="n">pc</span><span class="o">.</span><span class="n">pad_gap</span>
+                        <span class="p">)</span>
                         <span class="o">+</span> <span class="n">cpw_extend</span><span class="p">,</span>
                     <span class="p">],</span>
                 <span class="p">]</span>
