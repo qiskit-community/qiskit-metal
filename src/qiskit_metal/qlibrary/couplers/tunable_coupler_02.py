@@ -124,11 +124,11 @@ class TunableCoupler02(BaseQubit):
         )
         # draw the circular charge pads
         left_pad = draw.Point(
-            -0.5 * p.JJ_length - p.bus_width - p.bus_inner_length - 0.5 * p.pad_radius,
+            -0.5 * p.JJ_length - p.bus_width - p.bus_inner_length - p.pad_radius,
             0.5 * p.bus_width,
         ).buffer(p.pad_radius)
         right_pad = draw.Point(
-            0.5 * p.JJ_length + p.bus_width + p.bus_inner_length + 0.5 * p.pad_radius,
+            0.5 * p.JJ_length + p.bus_width + p.bus_inner_length + p.pad_radius,
             0.5 * p.bus_width,
         ).buffer(p.pad_radius)
         # draw the flux bias line
