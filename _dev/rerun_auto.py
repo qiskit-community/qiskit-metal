@@ -101,7 +101,9 @@ def run_one(
             display makes every notebook fail, not silently fall back.
     """
     t0 = time.monotonic()
-    env = {**os.environ, "MPLBACKEND": "Agg"}
+    # No MPLBACKEND: the kernel's inline backend stores a PNG for each
+    # plt.show(); Agg stores none, which stripped figures from the notebooks.
+    env = {k: v for k, v in os.environ.items() if k != "MPLBACKEND"}
     if qt_display:
         # Deliberately do NOT set QISKIT_METAL_HEADLESS here: that is what
         # forces qm.gui(design) to the headless matplotlib viewer instead of
