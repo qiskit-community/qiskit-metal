@@ -92,6 +92,7 @@ docs/tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling.ipynb
 #   docs/tut/4-Analysis/4.43-Mesh-and-solve-the-10x10-processor.ipynb
 #   docs/tut/4-Analysis/4.44-Every-coupling-from-one-eigenmode.ipynb
 #   docs/tut/4-Analysis/4.45-Four-methods-one-full-wave-model.ipynb
+#   docs/tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.ipynb
 #
 # Cross-Resonance + cQED — the layout cells open the desktop MetalGUI (Qt):
 #   docs/tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.ipynb
