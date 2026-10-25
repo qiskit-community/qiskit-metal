@@ -1,6 +1,6 @@
 """Package modes and qubit couplings: the paper's device, for tutorials 4.41-4.45.
 
-Tutorials 4.41-4.45 reproduce
+Tutorials 4.41-4.45 follow
 
     R. Molavi, E. Forati, Y. Zhang, A. R. Klots, J. Atalaya, B. W. Langley,
     D. A. Timucin, M. Nazari, G. Khan, Z. K. Minev, A. N. Korotkov and

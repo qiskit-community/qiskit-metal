@@ -1,6 +1,6 @@
 # `package_modes` — solver for tutorials 4.41–4.46
 
-Shared code for the notebooks in `docs/tut/4-Analysis/4.4*`. Five of them reproduce
+Shared code for the notebooks in `docs/tut/4-Analysis/4.4*`. Five of them follow
 R. Molavi *et al.*, *Extracting electromagnetic bare mode couplings in large
 superconducting quantum processors*, [arXiv:2609.22442](https://arxiv.org/abs/2609.22442) (2026):
 the couplings of a 10 × 10 transmon array to the modes of its metal package,
