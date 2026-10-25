@@ -898,6 +898,29 @@ class TestDraw(unittest.TestCase, AssertionsMixin):
                         actual[i][j][k], expected[i][j][k], rel_tol=1e-3
                     )
 
+    def test_draw_vec3d_two_points_described_call_forms(self):
+        """Old positional/keyword forms agree; missing plane raises ValueError."""
+        pts = [[1, 0, 2], [1, 0, 4]]
+        plane = [0, 1, 0, 0]
+        pos = Vec3D.two_points_described(pts, plane)
+        kw = Vec3D.two_points_described(pts, user_plane=plane)
+        kw2 = Vec3D.two_points_described(points3D=pts, user_plane=plane)
+        for a, b in zip(pos, kw):
+            self.assertTrue((a == b).all())
+        for a, b in zip(pos, kw2):
+            self.assertTrue((a == b).all())
+        # Single-argument call (the Vector arity) is accepted by the signature
+        # but a plane is mandatory.
+        with self.assertRaises(ValueError):
+            Vec3D.two_points_described(pts)
+        with self.assertRaises(ValueError):
+            Vec3D.two_points_described(pts, None)
+        # Existing validation unchanged.
+        with self.assertRaises(ValueError):
+            Vec3D.two_points_described(pts, [0, 1, 0])
+        with self.assertRaises(ValueError):
+            Vec3D.two_points_described(pts, [1, 0, 0, 0])
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
