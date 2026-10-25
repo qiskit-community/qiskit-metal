@@ -199,7 +199,7 @@ component, which is too slow for a hot docs-build path).
 
 ## Testing & CI quick reference
 
-- Full suite: `QISKIT_METAL_HEADLESS=1 uv run pytest tests/` (~30s)
+- Full suite: `QISKIT_METAL_HEADLESS=1 uv run pytest tests/` (~30s). The crash-prone GUI modules (`test_gui_nudge`, `test_gui_init`, `test_gui_left_dock_min_width`; #1048) are skipped unless you pass `--run-crashy-gui` (or `QISKIT_METAL_RUN_CRASHY_GUI_TESTS=1`); run them locally when `_gui/` is touched. The `tests-gui-display` CI jobs and the pre-push hook opt in.
 - Lint: `uvx ruff check src` (clean, 0 findings — see Status snapshot)
 - Format: `uvx ruff format src`
 - Docs build: `tox -e docs`

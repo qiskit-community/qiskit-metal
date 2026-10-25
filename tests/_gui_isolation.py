@@ -183,7 +183,7 @@ def isolate_modules(items):
     kept, groups, order = [], {}, []
     for item in items:
         name = item.path.name
-        if name not in ISOLATED_MODULES:
+        if name not in ISOLATED_MODULES or item.get_closest_marker("skip"):
             kept.append(item)
             continue
         if name not in groups:

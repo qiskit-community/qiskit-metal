@@ -481,7 +481,7 @@ jobs:
         # initialization branch of #1048 / #1109; ``test_gui_teardown.py``
         # already guards the exit segfault PR #1104 fixed.
         run: |
-          xvfb-run -a .venv/bin/python -m pytest \
+          xvfb-run -a .venv/bin/python -m pytest --run-crashy-gui \
             tests/test_gui_basic.py \
             tests/test_gui_teardown.py \
             tests/test_gui_init.py \
@@ -528,7 +528,7 @@ jobs:
         # the kernel-death symptom fires here, we have a deterministic
         # reproducer for the first time.
         run: |
-          .venv\Scripts\python -m pytest tests/test_gui_basic.py tests/test_gui_teardown.py tests/test_gui_init.py -v
+          .venv\Scripts\python -m pytest --run-crashy-gui tests/test_gui_basic.py tests/test_gui_teardown.py tests/test_gui_init.py -v
 
   coverage:
     name: coverage
