@@ -204,11 +204,14 @@ class TestMeanderFilletFit(unittest.TestCase):
     def test_reduction_warning_logged_for_tight_case(self):
         design = designs.DesignPlanar()
         design.overwrite_enabled = True
+        # 2.1mm, not 2.4mm: since #1234 make() refits the meander length when
+        # the first build misses total_length, and at 2.4mm the refitted
+        # build has room for all wiggles, so no reduction is left to report.
         with self.assertLogs("metal", level="WARNING") as cm:
             self._route(
                 design,
                 "tight_logged",
-                total_length="2.4mm",
+                total_length="2.1mm",
                 spacing="450um",
                 fillet="100um",
                 pos_a=("0mm", "0mm"),

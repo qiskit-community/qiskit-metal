@@ -30,6 +30,13 @@ class DesignFlipChip(QDesign):
     Typically assumed to have some CPW geometries.
 
     Inherits QDesign class.
+
+    The two chips are ``C_chip`` (device side at z = 0, extending to negative
+    z) and ``Q_chip`` (device side at ``chips["Q_chip"]["size"]["center_z"]``,
+    extending to positive z). The default gap between them, ``center_z =
+    "20 um"``, is a placeholder: set it to the bump height of the stack being
+    modelled (bump-bonded stacks are typically a few micrometres apart), e.g.
+    ``design.chips["Q_chip"]["size"]["center_z"] = "8 um"``.
     """
 
     def __init__(

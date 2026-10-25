@@ -96,6 +96,22 @@ class TestPhysicalConstantsMeaning(unittest.TestCase):
         ratio = C.phinot / C.phi0
         self.assertCloseRel(ratio, 2 * math.pi, rel_tol=1e-6, msg="phinot / phi0")
 
+    def test_precision_matches_codata(self):
+        """The module docstring promises ~1e-7 relative to SI 2019; the
+        loose REL_TOL above let a truncated phinot = 2.067e-15 (4e-4 low,
+        E_J 8e-4 low) through (#1207)."""
+        for name, ref in (
+            ("e", _E_REF),
+            ("h", _H_REF),
+            ("hbar", _HBAR_REF),
+            ("phinot", _PHI_FULL_REF),
+            ("phi0", _PHI_REDUCED_REF),
+        ):
+            with self.subTest(name=name):
+                self.assertCloseRel(getattr(C, name), ref, rel_tol=1e-7, msg=name)
+        # phi0 = hbar / 2e as used directly in lumped_capacitive
+        self.assertCloseRel(C.phi0, C.hbar / (2 * C.e), rel_tol=1e-7, msg="phi0")
+
 
 class TestVendoredJosephsonHelpers(unittest.TestCase):
     """The ``Ic_from_Lj`` / ``Ej_from_Lj`` / ``Ec_from_Cs`` helpers

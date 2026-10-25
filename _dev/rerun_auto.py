@@ -247,7 +247,7 @@ def main() -> int:
             "\nThis is a real signal. If a notebook in the whitelist no longer\n"
             "runs under the lite install, either fix the notebook or move its\n"
             "entry into the External-gated comment block at the bottom of\n"
-            "_dev/auto-runnable-notebooks.txt.\n"
+            "_dev/notebooks-auto-refresh.txt.\n"
         )
         return 1
     return 0

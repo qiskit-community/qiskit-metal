@@ -32,6 +32,7 @@ import pandas as pd
 
 from qiskit_metal import draw
 from qiskit_metal.toolbox_metal.parsing import parse_value
+from qiskit_metal.toolbox_python.pandas_tables import concat_tables
 
 if TYPE_CHECKING:
     from qiskit_metal.designs import QDesign
@@ -179,7 +180,7 @@ def metal_geometry_table(
 
     path_table = design.qgeometry.tables["path"]
     poly_table = design.qgeometry.tables["poly"]
-    table = pd.concat(
+    table = concat_tables(
         [path_table[mask(path_table)], poly_table[mask(poly_table)]],
         ignore_index=True,
     )

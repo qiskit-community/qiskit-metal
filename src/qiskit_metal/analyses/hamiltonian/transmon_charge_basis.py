@@ -17,10 +17,54 @@ get the Ej, Ec or use input Ej, Ec to find the spectrum of the Cooper Pair Box.
 @author: Christopher Warren (Chalmers University of Technology), updated by Zlatko K. Minev (IBM Quantum)
 """
 
+import warnings
+
 import numpy as np
 import qutip as qt
 from scipy import linalg
 import scipy.optimize as opt
+
+# Relative miss (of the target frequency) above which the inverse solvers warn.
+_INVERSE_RTOL = 1e-6
+
+
+def _warn_if_missed(name, res, f01):
+    """Warn when an inverse fit did not reproduce its target."""
+    miss = np.max(np.abs(res.fun))
+    if miss > _INVERSE_RTOL * abs(f01):
+        warnings.warn(
+            f"Hcpb.{name} did not reach the target: residual {np.asarray(res.fun)} "
+            f"(same units as f01) at x = {res.x}; solver status {res.status}: "
+            f"{res.message}",
+            stacklevel=3,
+        )
+
+
+def _fix_phases(evecs, n_op):
+    """Fix the sign of each (real) eigenvector, in place and returned.
+
+    ``eigh_tridiagonal`` returns each eigenvector with an arbitrary sign. The
+    convention used here: the largest-magnitude charge component of the
+    ground state is positive, and every following state is signed so that
+    ``<k|n|k+1> > 0`` along the ladder. A link with ``|<k|n|k+1>| < 1e-12``
+    gives no sign; that state then has its largest-magnitude component
+    positive instead.
+    """
+    nstates = evecs.shape[1]
+
+    def largest_positive(k):
+        v = evecs[:, k]
+        if v[np.argmax(np.abs(v))] < 0:
+            evecs[:, k] = -v
+
+    largest_positive(0)
+    for k in range(nstates - 1):
+        link = np.dot(evecs[:, k], n_op * evecs[:, k + 1])
+        if abs(link) < 1e-12:
+            largest_positive(k + 1)
+        elif link < 0:
+            evecs[:, k + 1] = -evecs[:, k + 1]
+    return evecs
 
 
 class Hcpb:
@@ -109,7 +153,7 @@ class Hcpb:
         ham_off = -(self._Ej / 2.0) * self._off
         evals, evecs = linalg.eigh_tridiagonal(ham_diag, ham_off)
         self.evals = np.real(np.array(evals))
-        self.evecs = np.array(evecs)
+        self.evecs = _fix_phases(np.array(evecs), self._diag)
 
     def evalue_k(self, k: int):
         """Return the eigenvalue of the Hamiltonian for level k.
@@ -129,7 +173,10 @@ class Hcpb:
             k (int): Index of eigenvector
 
         Returns:
-            array: Eigenvector of the \|k> level of the CPB Hamiltonian
+            array: Eigenvector of the \|k> level of the CPB Hamiltonian, in
+            the charge basis ``n = -nlevels ... nlevels``. Real, with the sign
+            convention ``<k|n|k+1> > 0`` (the ground state has its
+            largest-magnitude component positive).
         """
         return self.evecs[:, k]
 
@@ -187,6 +234,15 @@ class Hcpb:
         r"""Compute the value of the number operator for coupling elements
         together in the energy eigen-basis.
 
+        The eigenvectors are real (the Hamiltonian is real symmetric for every
+        ``ng``), and their signs follow a fixed convention: ``n_ij(k, k+1) > 0``
+        for every ``k`` (see ``evec_k``). The other elements carry the sign
+        that follows, so ``n_ij(j, i) == n_ij(i, j)`` and gauge-invariant
+        products such as ``n_ij(0, 1) * n_ij(1, 2) * n_ij(2, 0)`` (negative
+        at ``ng = 0.25``) come out right. Up to 0.9.0 this returned
+        ``|<i|n|j>|``, which is gauge-equivalent to the signed matrix only
+        at ``ng = 0`` or ``ng = 1/2``.
+
         Args:
             i (int): \|i> Index of the transmon
             j (int): \|j> Index of the transmon
@@ -194,12 +250,10 @@ class Hcpb:
         Returns:
             float: Matrix element corresponding to the
             number operator in the transmon basis
-            `n_ij = |<i|n|j>|`
+            `n_ij = <i|n|j>` (real, signed)
         """
         n_op = np.arange(-self._nlevels, self._nlevels + 1)
-        n_ij = np.conj(self.evec_k(i)) * n_op * self.evec_k(j)
-        n_ij = np.abs(np.sum(n_ij))
-        return n_ij
+        return float(np.dot(self.evec_k(i), n_op * self.evec_k(j)))
 
     def h0_to_qutip(self, n_transmon: int):
         """Wrapper around Qutip to output the diagonalized Hamiltonian
@@ -225,13 +279,15 @@ class Hcpb:
             n_transmon (int): Number of energy levels to consider
             thresh (float): Threshold for keeping small values
                             in the number operator i.e `n_{i,i+2}`
-                            terms drop off exponentially. If None
+                            terms drop off exponentially. Elements with
+                            ``|n_ij| < thresh`` are set to zero. If None
                             retain all terms. Defaults to None
 
         Returns:
             Qobj: Returns a Qutip Qobj corresponding to the
             number operator for defining couplings in the
-            energy eigen-basis.
+            energy eigen-basis. The off-diagonal elements are the signed
+            ``n_ij`` (real symmetric matrix); the diagonal is set to zero.
         """
         n_op = np.zeros((n_transmon, n_transmon))
         for i in range(n_transmon):
@@ -241,7 +297,7 @@ class Hcpb:
                 else:
                     val = self.n_ij(i, j)
                     if thresh is not None:
-                        if val < thresh:
+                        if abs(val) < thresh:
                             val = 0
                     n_op[i, j] = val
         return qt.Qobj(n_op)
@@ -263,6 +319,11 @@ class Hcpb:
             (float, float): Ej and Ec of the transmon Hamiltonian
             corresponding to the f01 and anharmonicty
             of the device
+
+        Warns:
+            UserWarning: if the returned (Ej, Ec) do not reproduce
+            (f01, anharm), for instance when the target is outside the
+            search bounds.
         """
         # Anharmonicty should be negative for the Transmon
         if anharm > 0:
@@ -271,44 +332,59 @@ class Hcpb:
         def fun(x):
             self.Ej = x[0]
             self.Ec = x[1]
-            # the 10 on the anharmonicity allows faster convergnce, see Minev
-            return (self.fij(0, 1) - f01) ** 2 + 10 * (self.anharm() - anharm) ** 2
+            # Residual vector (least_squares squares it itself).
+            return [self.fij(0, 1) - f01, self.anharm() - anharm]
 
         # Initial guesses from
         # f01 ~ sqrt(8*Ej*Ec) - Ec
         #  eta ~ -Ec
         x0 = [(f01 - anharm) ** 2 / (8 * (-anharm)), -anharm]
-        # can converge slowly if cost function not set up well, or alpha<<freq
         ops = dict(
-            bounds=[(0, 0), (x0[0] * 3, x0[1] * 3)], f_scale=1 / x0[0], max_nfev=2000
+            bounds=[(0, 0), (x0[0] * 3, x0[1] * 3)],
+            max_nfev=2000,
+            xtol=1e-12,
+            ftol=1e-12,
         )
         res = opt.least_squares(fun, x0, **{**ops, **kwargs})
         self.Ej, self.Ec = res.x
+        _warn_if_missed("params_from_spectrum", res, f01)
         return res.x
 
     def params_from_freq_fixEC(self, f01: float, Ec: float, **kwargs):
         """Find transmon Ej given a fixed EC and frequency.
 
+        Solves ``fij(0, 1) == f01`` for Ej at the given Ec (and the current
+        ``ng``). With Ec fixed the anharmonicity is not a free parameter, so
+        only the frequency enters the fit.
+
         Args:
             f01 (float): Desired qubit frequency
             Ec (float): Qubit EC (4ECn^2) in same units as f01
 
+        Keyword Args:
+            Passed to ``scipy.optimize.least_squares``.
+
         Returns:
             float: Ej in same units
+
+        Warns:
+            UserWarning: if the solver does not reproduce ``f01`` (for
+            instance, the target is outside the search bounds).
         """
 
         def fun(x):
             self.Ej = x[0]
             self.Ec = Ec
-            # the 15 on the anharmonicity allows faster convergnce, see Minev
-            return (self.fij(0, 1) - f01) ** 2 + 15 * (self.anharm() - Ec) ** 2
+            # Residual vector (least_squares squares it itself).
+            return [self.fij(0, 1) - f01]
 
-        x0 = [(f01 - Ec) ** 2 / (8 * (Ec))]
-        # can converge slowly if cost function not set up well, or alpha<<freq
-        ops = dict(bounds=[(0,), (x0[0] * 3,)], f_scale=1 / x0[0], max_nfev=2000)
+        # Initial guess from f01 ~ sqrt(8*Ej*Ec) - Ec
+        x0 = [(f01 + Ec) ** 2 / (8 * Ec)]
+        ops = dict(bounds=[(0,), (x0[0] * 3,)], max_nfev=2000, xtol=1e-12, ftol=1e-12)
         res = opt.least_squares(fun, x0, **{**ops, **kwargs})
         self.Ej = res.x[0]
         self.Ec = Ec
+        _warn_if_missed("params_from_freq_fixEC", res, f01)
         return res.x[0]
 
     @property

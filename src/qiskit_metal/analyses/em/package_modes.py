@@ -36,6 +36,7 @@ is :mod:`qiskit_metal.analyses.fem`.
 
 from __future__ import annotations
 
+import warnings
 from dataclasses import dataclass
 
 import numpy as np
@@ -116,6 +117,9 @@ class LSMMode:
 def lsm_mode(a, b, Lx, Ly, Lz, t, eps_r, Em=1.0):
     """Solve the transcendental equation (E3) for the lowest LSM_ab0 mode.
 
+    The lowest mode is the root with ``kz_si * t < pi/2``, below the first
+    pole of ``ks tan(ks t)``.
+
     ``Lx``, ``Ly``, ``Lz`` (the box) and ``t`` (the slab) are in mm; the
     returned mode is in SI units, normalized to mode energy ``Em`` joules.
     """
@@ -130,8 +134,12 @@ def lsm_mode(a, b, Lx, Ly, Lz, t, eps_r, Em=1.0):
         ks, ka = kz(w)
         return ks * np.tan(ks * t) - eps_r * ka * np.tanh(ka * (Lz - t))
 
+    # The lowest root has ks t < pi/2; ks tan(ks t) has a pole at ks t = pi/2,
+    # which lies inside (c gamma / sqrt(eps_r), c gamma) for small boxes or
+    # thick slabs. Stop the bracket just below it.
     lo = C0 * gamma / np.sqrt(eps_r) * (1 + 1e-12)
-    hi = C0 * gamma * (1 - 1e-12)
+    w_pole = C0 * np.sqrt(gamma**2 + (np.pi / (2 * t)) ** 2) / np.sqrt(eps_r)
+    hi = min(C0 * gamma * (1 - 1e-12), w_pole * (1 - 1e-9))
     w = opt.brentq(residual, lo, hi, xtol=1e-6)
     ks, ka = kz(w)
 
@@ -153,14 +161,28 @@ def lsm_mode(a, b, Lx, Ly, Lz, t, eps_r, Em=1.0):
 
 
 def lsm_mode_approx(a, b, Lx, Ly, Lz, t, eps_r, Em=1.0):
-    """The closed-form approximations at the end of Appendix E (SI units)."""
+    """The closed-form approximations at the end of Appendix E (SI units).
+
+    They assume a thin slab, ``kz_si * t << 1``. A ``UserWarning`` is issued
+    when the approximate ``kz_si * t`` exceeds 0.5, where the frequency is
+    off by about 1 % or more (small boxes or thick slabs); use
+    :func:`lsm_mode` there.
+    """
     Lx, Ly, Lz, t = [1e-3 * v for v in (Lx, Ly, Lz, t)]
     gamma = np.hypot(a * np.pi / Lx, b * np.pi / Ly)
     eps_eff = 1 / (t / Lz / eps_r + (1 - t / Lz))
     V = Lx * Ly * Lz
+    kz_si = gamma * np.sqrt((eps_r - 1) * (1 - t / Lz))
+    if kz_si * t > 0.5:
+        warnings.warn(
+            f"lsm_mode_approx: kz_si * t = {kz_si * t:.2f} > 0.5, outside the "
+            "thin-slab validity of the closed-form approximation (frequency "
+            "error ~1 % or more); use lsm_mode.",
+            stacklevel=2,
+        )
     return dict(
         f=C0 * gamma / np.sqrt(eps_eff) / (2 * np.pi),
-        kz_si=gamma * np.sqrt((eps_r - 1) * (1 - t / Lz)),
+        kz_si=kz_si,
         kz_air=gamma * np.sqrt(1 - 1 / eps_eff),
         E0x=(eps_r - 1)
         * np.pi

@@ -1,5 +1,22 @@
 from typing import Dict, Any
-import sequencing as seq
+
+try:
+    import sequencing as seq
+except ImportError as exc:
+    # ``sequencing`` is not a dependency of Quantum Metal or of any of its
+    # extras (#1231). Its last release (1.2.0) is written for qutip 4;
+    # ``_sequencing_compat`` adapts it to qutip 5 below.
+    raise ImportError(
+        "The LOM-to-Sequencing bridge (lom_extensions, lom_time_evolution_sim) "
+        "needs the third-party `sequencing` package, which Quantum Metal does "
+        "not install: `pip install sequencing`. sequencing 1.2.0 is written "
+        "for qutip 4; Quantum Metal adapts its solver calls to qutip 5 when "
+        "this module is imported."
+    ) from exc
+
+from qiskit_metal.analyses.quantization import _sequencing_compat
+
+_sequencing_compat.apply()
 
 from qiskit_metal.analyses.quantization.lom_core_analysis import Subsystem
 

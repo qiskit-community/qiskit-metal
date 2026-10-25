@@ -30,6 +30,7 @@ from qiskit_metal.draw.utility import round_coordinate_sequence
 
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import (
+        concat_tables,
         data_frame_empty_typed,
         get_range_of_vertex_to_not_fillet,
     )
@@ -537,7 +538,7 @@ class QGeometryTables:
         df = df.assign(**options)
 
         # Set new table. Unfortunately, this creates a new instance. Can just direct append
-        self.tables[kind] = pd.concat(
+        self.tables[kind] = concat_tables(
             [table, df],
             axis=0,
             join="outer",

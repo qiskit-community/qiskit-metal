@@ -428,7 +428,8 @@ def buffer(
     Args:
         qgeometry (Dict, List, Tuple or BaseGeometry): Set of objects.
         distance (float): Distance.
-        resolution (int): How many points.  Defaults to None.
+        resolution (int): Segments per quarter circle, passed to shapely
+            as ``quad_segs``.  Defaults to None (``buffer_resolution``).
         cap_style (shapely.geometry.CAP_STYLE): Cap style.  Defaults to CAP_STYLE.falt.
         join_style (shapely.geometry.JOIN_STYLE): Join style.  Defaults to JOIN_STYLE.mitre.
         mitre_limit (double): Mitre limit.  Defaults to None.
@@ -480,7 +481,8 @@ def buffer(
         buffer_me,
         qgeometry,
         distance,
-        resolution=resolution,
+        # shapely >= 2.0 names this quad_segs; resolution= is deprecated in 2.1
+        quad_segs=int(resolution),
         cap_style=cap_style,
         join_style=join_style,
         mitre_limit=mitre_limit,

@@ -149,6 +149,11 @@ class QComponent:
     All options should have string keys and preferrable string values.
     """
 
+    _to_script_folded_args: tuple = ()
+    """Names of ``__init__`` arguments that are merged into ``options`` and not
+    stored on the instance. ``to_script`` skips them instead of reporting them
+    as missing."""
+
     # Dummy private attribute used to check if an instantiated object is
     # indeed a QComponent class. The problem is that the `isinstance`
     # built-in method fails when this module is reloaded.
@@ -622,6 +627,9 @@ gui = MetalGUI(design)
         ## setting up component-specific args
         # get init from child?
         to_ignore = {"self", "name", "design", "make", "kwargs", "options", "args"}
+        # Constructor arguments a subclass merges into ``self.options`` (and
+        # does not store); their content is already in ``options=`` above.
+        to_ignore |= set(self._to_script_folded_args)
         class_signature = signature(self.__class__.__init__)
 
         failed = set()

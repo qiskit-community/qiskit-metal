@@ -36,6 +36,7 @@ from qiskit_metal.toolbox_metal.parsing import is_true
 if not config.is_building_docs():
     from qiskit_metal.toolbox_python.utility_functions import (
         can_write_to_path,
+        concat_tables,
         get_range_of_vertex_to_not_fillet,
     )
 
@@ -85,7 +86,7 @@ class QGDSRenderer(QRenderer):
         * tolerance: '0.00001'
         * precision: '0.000000001'
         * width_LineString: '10um'
-        * path_filename: '../resources/Fake_Junctions.GDS'
+        * path_filename: None
         * junction_pad_overlap: '5um'
         * max_points: '199'
         * fabricate: 'False'
@@ -179,7 +180,10 @@ class QGDSRenderer(QRenderer):
         # into gds Metal output without being edited. The name of the cell can
         # be placed as options for a component, i.e. placing within a qubit.
         # During export, the cell will NOT be edited, just imported.
-        path_filename="../resources/Fake_Junctions.GDS",
+        # None (default): no junction file, so junction cells are not placed
+        # and the junction geometry is left out of the export. The tutorials
+        # ship an example file at docs/tut/resources/Fake_Junctions.GDS.
+        path_filename=None,
         # For junction table, when cell from default_options.path_filename does
         # not fit into linestring, QGDSRender will create two pads and add to
         # junction to fill the location of lineString.  The junction_pad_overlap
@@ -306,6 +310,8 @@ class QGDSRenderer(QRenderer):
 
         # if imported, hold the path to file name, otherwise None.
         self.imported_junction_gds: Union[str, None] = None  # track only once
+        # True once this export has logged that no junction file is set.
+        self._warned_no_junction_file = False
 
         QGDSRenderer.load()
 
@@ -689,11 +695,13 @@ class QGDSRenderer(QRenderer):
                 copy_no_subtract[i] = item_no[item_no["layer"] == chip_layer]
 
             self.chip_info[chip_name][chip_layer]["all_subtract_true"] = (
-                geopandas.GeoDataFrame(pd.concat(copy_subtract, ignore_index=False))
+                geopandas.GeoDataFrame(concat_tables(copy_subtract, ignore_index=False))
             )
 
             self.chip_info[chip_name][chip_layer]["all_subtract_false"] = (
-                geopandas.GeoDataFrame(pd.concat(copy_no_subtract, ignore_index=False))
+                geopandas.GeoDataFrame(
+                    concat_tables(copy_no_subtract, ignore_index=False)
+                )
             )
 
             self.chip_info[chip_name][chip_layer]["all_subtract_true"] = self.chip_info[
@@ -1911,7 +1919,7 @@ class QGDSRenderer(QRenderer):
             message_str = (
                 f'Not able to find file:"{self.options.path_filename}".  '
                 f"Not used to replace junction."
-                f' Checked directory:"{directory_name}".'
+                f' Checked:"{os.path.abspath(self.options.path_filename)}".'
             )
             self.logger.warning(message_str)
             return False
@@ -1984,6 +1992,23 @@ class QGDSRenderer(QRenderer):
                                                 just chip_name.
             layers_in_chip (list):  List of all layers in chip.
         """
+
+        junction_table = self.chip_info[chip_name]["junction"]
+        if junction_table is None or len(junction_table) == 0:
+            return
+        if not self.options.path_filename:
+            # No junction file: nothing to place. Say so once per export.
+            if not self._warned_no_junction_file:
+                self._warned_no_junction_file = True
+                self.logger.warning(
+                    "QGDSRenderer: no junction GDS file set "
+                    "(options.path_filename is None), so junction geometry is "
+                    "left out of the export. Set "
+                    "`gds.options.path_filename` to a GDS file containing the "
+                    "cells named by each junction's gds_cell_name; the tutorials "
+                    "ship an example at docs/tut/resources/Fake_Junctions.GDS."
+                )
+            return
 
         # Make sure the file exists, before trying to read it.
         _, directory_name = can_write_to_path(self.options.path_filename)
@@ -2265,6 +2290,7 @@ class QGDSRenderer(QRenderer):
 
         # if imported, hold the path to file name, otherwise None.
         self.imported_junction_gds = None
+        self._warned_no_junction_file = False
 
         max_points = int(self.parse_value(self.options.max_points))
 

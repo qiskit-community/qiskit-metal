@@ -12,6 +12,7 @@
 """The base class of all QDesigns in Qiskit Metal."""
 
 import importlib
+import pprint
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, Iterable, List, Optional, Union
 from typing import Dict as Dict_
@@ -192,6 +193,8 @@ class QDesign:
 
         # Instantiate and register renderers to Qdesign.renderers
         self._renderers = Dict()
+        # Renderers that could not be started, and why (see skipped_renderers)
+        self._skipped_renderers = {}
         if enable_renderers:
             self._start_renderers()
 
@@ -251,6 +254,14 @@ class QDesign:
         """Return a Dict of all the renderers registered within QDesign."""
 
         return self._renderers
+
+    @property
+    def skipped_renderers(self) -> dict:
+        """Renderers in ``config.renderers_to_load`` that were not started for
+        this design because an optional dependency is missing, mapped to the
+        reason. On a lite install these are logged at DEBUG only; this is the
+        place to look when a renderer is not in ``renderers``."""
+        return dict(self._skipped_renderers)
 
     @property
     def chips(self) -> Dict:
@@ -975,6 +986,15 @@ class QDesign:
 
     ######### Renderers ###############################################################
 
+    def _skip_renderer(self, renderer_key: str, reason: str):
+        """Record a renderer that cannot start for lack of an optional
+        dependency. Logged at DEBUG: on a lite install this is expected, and
+        at INFO every new design printed one line per renderer (#1229). The
+        reason stays available in ``skipped_renderers`` and in the error
+        raised when an analysis asks for the renderer."""
+        self._skipped_renderers[renderer_key] = reason
+        self.logger.debug(f"Renderer={renderer_key} skipped: {reason}.")
+
     def _start_renderers(self):
         """Start the renderers.
 
@@ -1021,13 +1041,13 @@ class QDesign:
             try:
                 module = importlib.import_module(path_name)
             except (ImportError, OSError) as e:  # OSError: native lib failed to load
-                self.logger.info(
-                    f"Renderer={renderer_key} skipped: "
+                self._skip_renderer(
+                    renderer_key,
                     f"an optional dependency for {path_name} is not "
                     f"installed ({e}). Install the corresponding extra "
                     f"(e.g. `pip install quantum-metal[mesh]` for gmsh, "
                     f"`pip install quantum-metal[ansys]` for pyaedt) "
-                    f"to enable it."
+                    f"to enable it",
                 )
                 continue
 
@@ -1043,9 +1063,8 @@ class QDesign:
                     # actual heavy dep (pyEPR / pyaedt / gmsh) isn't
                     # installed. Same outcome as a missing module:
                     # skip + log + keep going.
-                    self.logger.info(
-                        f"Renderer={renderer_key} skipped: "
-                        f"runtime dependency not installed ({e})."
+                    self._skip_renderer(
+                        renderer_key, f"runtime dependency not installed ({e})"
                     )
                     continue
 
@@ -1174,26 +1193,61 @@ class QDesign:
         Generates a python script from current chip
 
         The script is self-contained: it imports ``qiskit_metal`` and every
-        component class it uses, rebuilds the design in a ``MetalGUI``, and --
-        when run standalone (``python my_chip_design.py``) -- starts the Qt
-        event loop so the window stays open. The event loop is guarded on
+        component class it uses, creates a design of the same class, restores
+        ``design.chips`` and ``design.variables``, and rebuilds the components.
+        The viewer is created with :func:`qiskit_metal.gui`, which returns the
+        Qt ``MetalGUI`` where PySide6 and a display are available and the
+        headless ``MetalGUIHeadless`` otherwise, so the script also runs on a
+        lite install (no ``[gui]`` extra). Run standalone
+        (``python my_chip_design.py``) with the Qt GUI, it starts the Qt event
+        loop so the window stays open. The event loop is guarded on
         ``__name__ == "__main__"`` and on a live ``QApplication``, so importing
         the script, or running it where a Qt loop already exists (Jupyter with
         ``%gui qt``) or where no display is available, does not block or raise.
 
         Args:
+            thin (bool): If True, only component options that differ from the
+                defaults are written.
             printout (bool): Whether to print the script
 
         Returns:
             str: Python script for current chip
         """
-        header = """
+        from qiskit_metal import designs as designs_package
+
+        pp = pprint.PrettyPrinter(width=41, compact=False)
+
+        def plain(value):
+            # addict.Dict -> dict, recursively, so pprint output is a literal.
+            if isinstance(value, dict):
+                return {k: plain(v) for k, v in value.items()}
+            return value
+
+        design_cls = type(self)
+        design_import = ""
+        if getattr(designs_package, design_cls.__name__, None) is design_cls:
+            design_ctor = f"designs.{design_cls.__name__}"
+        else:
+            design_import = (
+                f"from {design_cls.__module__} import {design_cls.__name__}\n"
+            )
+            design_ctor = design_cls.__name__
+
+        header = f"""
 import qiskit_metal
-from qiskit_metal import designs, MetalGUI
+from qiskit_metal import designs, Dict
+{design_import}
+design = {design_ctor}()
 
-design = designs.DesignPlanar()
+# Chips and design variables as they were when this script was written.
+design.chips.clear()
+design.chips.update(Dict({pp.pformat(plain(self.chips))}))
+design.variables.clear()
+design.variables.update({pp.pformat(plain(self.variables))})
 
-gui = MetalGUI(design)
+# qiskit_metal.gui() opens the Qt MetalGUI when PySide6 and a display are
+# available and falls back to the headless viewer otherwise.
+gui = qiskit_metal.gui(design)
 """
         footer = """
 gui.rebuild()
@@ -1205,9 +1259,10 @@ gui.autoscale()
 #
 # Guarded on __main__ so that importing this file -- or executing it inside a
 # session that already runs a Qt loop (Jupyter/IPython with ``%gui qt``) --
-# does not block the caller. ``gui.qApp`` may be None if no QApplication could
-# be created (e.g. a headless machine), so check before calling into it.
-if __name__ == "__main__" and gui.qApp is not None:
+# does not block the caller. The headless viewer has no ``qApp``, and
+# ``gui.qApp`` may be None if no QApplication could be created, so check
+# before calling into it.
+if __name__ == "__main__" and getattr(gui, "qApp", None) is not None:
     gui.qApp.exec()
 """
         # all imports at front

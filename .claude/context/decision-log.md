@@ -43,6 +43,43 @@ this file is for choices we made on purpose.
 
 ---
 
+## 2026-10-10 — follow-ups to #1209 and #1229, pandas concat dtypes
+
+### `fit_transmission` baseline slope: real, multiplicative, opt-in
+
+`baseline_slope=True` multiplies the Probst et al. (2015) notch model by
+`(1 + k (f - fr))` with real `k`. A complex `k` was not used: its imaginary
+part is, to first order, the same as the cable delay, so the two would be
+degenerate. Referencing it to `fr` makes `|A|` the off-resonant level at the
+resonance, which is what normalises the circle diameter (Qc). The fit
+references it to the span centre and converts at the end, so the Jacobian
+does not couple `k` and `fr`. Off by default: the 7-parameter layout of
+`full_output` is unchanged, and an extra free parameter costs precision when
+the baseline is flat. Not done: a higher-order or complex polynomial
+baseline.
+
+### Skipped renderers: DEBUG plus a record, not once per process at INFO
+
+A renderer that cannot start for lack of an optional dependency is logged at
+DEBUG on every design and recorded in `QDesign.skipped_renderers`; the
+`ValueError` an analysis raises for it includes the recorded reason. Logging
+once per process at INFO would still print on the first design of every
+lite-install session, and DEBUG once per process would hide the line from
+anyone who turns DEBUG on later. The `metal` logger is at INFO. The GUI log
+handler takes the logger's level when it is created, so the GUI log shows
+INFO and above. To show DEBUG there, call
+`qiskit_metal.logger.setLevel(logging.DEBUG)`; if the GUI is already
+open, also pick the log widget's Debug filter.
+
+### `concat_tables` casts columns, it does not drop frames
+
+The pandas warning suggests excluding empty or all-NA entries before
+`pd.concat`. Dropping the empty frames changes the result: columns and
+dtypes that only the empty frame has are lost or change. `concat_tables`
+instead casts the empty or all-NA column of a frame to the dtype of the
+frames with values, and only when that dtype can hold NA, as pandas 2 does.
+The result is the pandas 2 result on pandas 2.2 to 3.
+
 ## 2026-09-27 — numpy 2 reach, test guards and notebook lists before v0.9.0
 
 ### scqubits aliases restored on `import qiskit_metal`, not only for LOM 2.0

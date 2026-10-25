@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import enum
 import itertools
+import math
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Iterable, Sequence
 
@@ -298,11 +299,30 @@ def _rows(design: "QDesign", table: str):
     yield from tables[table].iterrows()
 
 
+def _row_chip(row) -> str:
+    """The chip a qgeometry row is on (``"main"`` if the column is absent)."""
+    chip = row.get("chip", None)
+    return (
+        "main"
+        if chip is None or (isinstance(chip, float) and math.isnan(chip))
+        else chip
+    )
+
+
+def geometry_chips(
+    design: "QDesign", tables: Sequence[str] = ("path", "poly")
+) -> list[str]:
+    """Sorted names of the chips that hold any qgeometry in ``tables``."""
+    chips = {_row_chip(row) for table in tables for _, row in _rows(design, table)}
+    return sorted(chips)
+
+
 def component_geometry(
     design: "QDesign",
     *,
     subtract: bool | None = False,
     tables: Sequence[str] = ("path", "poly"),
+    chip: str | None = None,
 ) -> dict[str, MultiPolygon]:
     """Union each component's qgeometry into one polygon per component.
 
@@ -313,6 +333,8 @@ def component_geometry(
             etched footprint (a CPW's trace + both gaps, a qubit's pocket).
             ``None`` keeps everything.
         tables (Sequence[str]): which qgeometry tables to read.
+        chip (str): keep only rows on this chip. ``None`` (default) keeps
+            every chip.
 
     Returns:
         dict: component name -> unioned geometry. Components contributing
@@ -323,6 +345,8 @@ def component_geometry(
     for table in tables:
         for _, row in _rows(design, table):
             if subtract is not None and bool(row["subtract"]) != subtract:
+                continue
+            if chip is not None and _row_chip(row) != chip:
                 continue
             geom = row["geometry"]
             if geom is None or geom.is_empty:
@@ -341,6 +365,7 @@ def component_geometry_by_layer(
     *,
     subtract: bool | None = False,
     tables: Sequence[str] = ("path", "poly"),
+    chip: str | None = None,
 ) -> dict[int, dict[str, MultiPolygon]]:
     """Like :func:`component_geometry`, but keyed by layer first.
 
@@ -348,7 +373,9 @@ def component_geometry_by_layer(
     meaningful within a single layer. An airbridge span (layer 30) passing
     over a CPW (layer 1) overlaps in projection and is the whole point of
     an airbridge; comparing across layers reports every one of them as a
-    short.
+    short. The same holds across chips: layer 1 of two facing chips of a
+    flip-chip design is two separate planes, so pass ``chip`` (see
+    :func:`geometry_chips`) to compare one chip at a time.
 
     Returns:
         dict: layer -> {component name -> unioned geometry}.
@@ -358,6 +385,8 @@ def component_geometry_by_layer(
     for table in tables:
         for _, row in _rows(design, table):
             if subtract is not None and bool(row["subtract"]) != subtract:
+                continue
+            if chip is not None and _row_chip(row) != chip:
                 continue
             geom = row["geometry"]
             if geom is None or geom.is_empty:

@@ -21,7 +21,10 @@ from qiskit_metal.analyses.quantization.constants import Ic_from_Lj
 from qiskit_metal import Dict, config
 
 if not config.is_building_docs():
-    from .lumped_capacitive import extract_transmon_coupled_Noscillator
+    from .lumped_capacitive import (
+        _purcell_columns_last,
+        extract_transmon_coupled_Noscillator,
+    )
 
 
 # TODO: eliminate every reference to "renderer" in this file
@@ -35,6 +38,15 @@ class LOManalysis(QAnalysis):
         * freq_readout (float): Coupling readout frequency (in GHz).
         * freq_bus (Union[list, float]): Coupling bus frequencies (in GHz).
             * freq_bus can be a list with the order they appear in the capMatrix.
+        * Q_res (list or None): Loaded quality factors of the resonators, in
+          the order [readout, bus1, bus2, ...], for the Purcell times ``T1`` and
+          ``T1bus``. None (default) uses placeholder Q's and logs a warning.
+        * Z0 (float): Characteristic impedance of the resonators in ohm
+          (default 50).
+        * res_L4_corr (list or None): Per coupling pad, in the order
+          [readout, bus1, bus2, ...], 1 if that resonator is a quarter-wave
+          (lambda/4) line and 0 if it is a half-wave (lambda/2) line. None
+          (default) treats all resonators as lambda/2.
 
     Data Labels:
         * lumped_oscillator (pd.DataFrame): Lumped oscillator result at the last simulation pass
@@ -44,7 +56,12 @@ class LOManalysis(QAnalysis):
     """
 
     default_setup = Dict(
-        junctions=Dict(Lj=12, Cj=2), freq_readout=7.0, freq_bus=[6.0, 6.2]
+        junctions=Dict(Lj=12, Cj=2),
+        freq_readout=7.0,
+        freq_bus=[6.0, 6.2],
+        res_L4_corr=None,
+        Q_res=None,
+        Z0=50.0,
     )
     """Default setup."""
 
@@ -179,6 +196,7 @@ class LOManalysis(QAnalysis):
 
         # get the LOM for every pass
         all_res = {}
+        last_pass = list(self.sim.capacitance_all_passes)[-1]
         for idx_cmat, df_cmat in self.sim.capacitance_all_passes.items():
             res = extract_transmon_coupled_Noscillator(
                 df_cmat,
@@ -187,8 +205,13 @@ class LOManalysis(QAnalysis):
                 num_cpads,
                 fbus,
                 fread,
+                res_L4_corr=s.get("res_L4_corr"),
                 g_scale=1,
                 print_info=bool(idx_cmat == len(self.sim.capacitance_all_passes)),
+                Q_res=s.get("Q_res"),
+                Z0=s.get("Z0", 50.0),
+                # warn about placeholder Q's once, not once per pass
+                _warn_placeholder_q=bool(idx_cmat == last_pass),
             )
             all_res[idx_cmat] = res
         self.lumped_oscillator = all_res[len(self.sim.capacitance_all_passes)]
@@ -204,7 +227,7 @@ class LOManalysis(QAnalysis):
 
         all_res["χr MHz"] = abs(all_res["chi_in_MHz"].apply(_first))
         all_res["gr MHz"] = abs(all_res["gbus"].apply(_first))
-        self.lumped_oscillator_all = all_res
+        self.lumped_oscillator_all = _purcell_columns_last(all_res)
         return self.lumped_oscillator_all
 
     def plot_convergence(self, *args, **kwargs):

@@ -128,6 +128,29 @@ route had a lead segment shorter than the fillet radius, so it reached
 Regression test: `tests/test_gds_short_segments.py` (exports a short-lead
 meander and checks the area matches a low-fillet control).
 
+### pandas 2.1+: concat with empty or all-NA columns (FutureWarning, changes in pandas 3)
+
+**Symptom**: `FutureWarning: The behavior of DataFrame concatenation with
+empty or all-NA entries is deprecated` from `qgeometries_handler.py`,
+`gds_renderer.py`, `bounds_for_path_and_poly_tables.py`, `nets.py` and
+`design_check.py` on every build and GDS export. Hidden until #1229 stopped
+`captureWarnings`. On pandas 3 the `path` table's `fillet` column silently
+became `object` instead of `float64`.
+
+**Cause**: pandas 2 leaves a column that is empty or all-NA in one frame out
+when it picks the result dtype, but only when the chosen dtype can hold NA
+(float, object, datetime, extension); for int and bool it keeps the column
+as is (an empty `object` column next to an int one gives `object`). pandas
+3 always includes it. The `poly` table's `fillet` is an all-NA `object`
+column, `path`'s is `float64`, and each table starts empty. Dropping empty
+frames before the concat (the warning's advice) is not enough and changes
+the result: it loses the columns and dtypes that only the empty frame has.
+
+**Fix**: `toolbox_python.utility_functions.concat_tables` casts such
+columns to the dtype of the frames with values (when it can hold NA) before
+`pd.concat`. The pandas 2 results are reproduced exactly on both versions.
+Test: `tests/test_concat_tables.py`.
+
 ### qutip 5: `np.array([Qobj, ...])` no longer stacks
 
 **Symptom**: Code that worked under qutip 4 returns an object-dtype
@@ -172,6 +195,38 @@ etc.).
 - `src/qiskit_metal/renderers/renderer_ansys/solution_types.py`
 - `tests/test_solution_types.py`
 - pyEPR PRs #172, #176
+
+### PySide6 6.12.0: `deallocating None` abort on Python < 3.12
+
+**Symptom**: GUI tests whose child builds a `MetalGUI` abort (`rc=-6` on
+Linux, `0xC0000005` on Windows) on the Python 3.10/3.11 CI jobs only.
+faulthandler prints `Fatal Python error: none_dealloc: deallocating None`
+from inside `app.processEvents`. Locally everything passes.
+
+**Cause**: PySide6 6.12.0 releases one reference to `None` too many while
+the GUI runs. From Python 3.12 `None` is immortal, so newer jobs never see
+it. `uv.lock` pinned 6.10.1, but the tox test jobs resolve the newest
+PySide6 allowed by `pyproject.toml`, so CI picked up 6.12.0 the day it was
+released while local `uv run` stayed on the lock. The frame differs from
+run to run, which made it look like the #1048 use-after-free family.
+
+**Fix**: `pyside6>=6.8,!=6.12.0` in the `[gui]`/`[full]` extras (and
+`environment.yml`). Diagnose with a Python 3.11 venv and
+`sys.getrefcount(None)` around `processEvents`: it falls steadily on
+6.12.0 and stays flat on 6.11.2. Check whether a newer PySide6 fixes it
+before lifting the exclusion.
+
+**Not the same crash**: on Windows the same test also died with an access
+violation inside the test's own Python `QProxyStyle.styleHint`, under
+PySide6 6.11.2. That one is the test installing a Python style
+application-wide before `MetalGUI` is built (failure mode 5 in
+`docs/architecture/gui_crash_defenses.md`); the test now sets the style on
+the built tab bars only. Check the installed PySide6 version in the job log
+before attributing a GUI crash to either cause.
+
+**Also**: the left-dock test printed only the last 2000 characters of the
+child's stderr, which for a native crash is faulthandler's extension-module
+list; it now prints from the crash report on.
 
 ### `numpy<2` pin: root cause and removal
 
@@ -953,6 +1008,22 @@ dependency combination the lock does not produce, build a scratch venv
 `tests/test_lom_core_hamiltonian.py` there; the repo's pytest config needs
 `-p no:rich -o addopts=""` without the dev extras.
 
+### `sequencing` 1.2.0 on qutip 5: two places, not one
+
+`sequencing` (optional, used by the LOM bridge and tutorial
+4.05-with-sequence) fails on qutip 5 first at `options.max_step = ...`:
+`qutip.Options()` still exists in qutip 5.2 but returns a `dict`. Fixing only
+that is not enough: `System.couplings` / `H0` / `c_ops` filter operators with
+`Qobj.data.nnz`, which no qutip 5 data layer (`CSR`, `Dia`, `Dense`) has.
+`analyses/quantization/_sequencing_compat.py` replaces the two solver calls and
+wraps the three methods (calling the originals with `clean=False`). With it,
+104 of sequencing's 112 own tests pass on qutip 5.2.2; the rest are
+`benchmarking.py` (`np.trace` of a `Qobj`), one ket-dims expectation, and a
+5e-9 run-vs-propagator check that qutip 5's default tolerances miss (6e-8).
+qutip 5's `propagator` returns its states, so it needs `store_states=True`,
+or it returns an empty list. To test, build a scratch venv
+(`uv pip install -e . sequencing==1.2.0`) and run `tests/test_lom_sequencing_import.py`.
+
 ## Open FEM: gmsh + scikit-fem
 
 From the solver behind tutorials 4.41–4.45
@@ -1025,6 +1096,23 @@ slab top = substrate), not through the fragment output map.
 through nodes (e.g. along a junction line) leaves white gaps.
 
 **Fix**: offset the plane slightly (1.51 mm instead of 1.5 mm).
+
+### gmsh on Colab: `OSError: libGLU.so.1: cannot open shared object file`
+
+**Symptom**: after `pip install "quantum-metal[skfem]"` (or `[mesh]`) on
+Google Colab, the first gmsh call fails with `libGLU.so.1` missing.
+
+**Cause**: the PyPI gmsh wheel is built with its GUI and links against
+system libraries pip cannot install. For gmsh 4.15.2 (`libgmsh.so`,
+`DT_NEEDED`): libGLU, libGL, libX11, libXext, libXrender, libXcursor,
+libXfixes, libXft, libXinerama, libfontconfig, libgomp. Colab's image lacks
+at least libGLU.
+
+**Fix**: in the notebook's Colab install cell, before pip:
+`!apt-get -qq update && apt-get -qq install -y libglu1-mesa libgl1
+libxcursor1 libxft2 libxinerama1 libxfixes3 libxrender1 libxext6
+libfontconfig1` (packages already present are no-ops), marked Colab only.
+Tutorials 3.5, 4.19, 4.41–4.45, A.4 and 54 carry it. Verified on Colab.
 
 ### The impedance fit finds one pole where there are two
 

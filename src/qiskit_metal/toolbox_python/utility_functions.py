@@ -25,6 +25,7 @@ import pandas as pd
 
 from qiskit_metal.draw import Vector
 from qiskit_metal.toolbox_metal.exceptions import InputError
+from qiskit_metal.toolbox_python.pandas_tables import concat_tables  # noqa: F401  (re-export)
 
 if TYPE_CHECKING:
     from qiskit_metal import logger
@@ -35,6 +36,7 @@ __all__ = [
     "can_write_to_path_with_warning",
     "clean_name",
     "compress_vertex_list",
+    "concat_tables",
     "copy_update",
     "data_frame_empty_typed",
     "dict_start_with",

@@ -7,7 +7,7 @@ them:
 
 ## 🟢 Auto-runnable — `_dev/rerun_auto.py`
 
-Everything listed in `_dev/auto-runnable-notebooks.txt` (a comment-friendly
+Everything listed in `_dev/notebooks-auto-refresh.txt` (a comment-friendly
 whitelist) re-executes against the **lite install** (`pip install
 quantum-metal[gui]`, no Ansys / gmsh) on every PR via the
 `tests-lite → Execute whitelisted tutorial notebooks` CI job.
@@ -34,7 +34,7 @@ is rare; the latter is what this gate exists for.
 Notebooks needing Ansys HFSS/Q3D, gmsh, KLayout, or a real fab GDS file
 are **not** in the whitelist. They keep their committed outputs from the
 maintainer's last manual run. The reference list lives at the bottom of
-`_dev/auto-runnable-notebooks.txt` in the "External-gated" comment block.
+`_dev/notebooks-auto-refresh.txt` in the "External-gated" comment block.
 
 When one of those tools changes (Ansys version bump, gmsh upgrade, etc.):
 

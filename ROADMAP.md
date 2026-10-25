@@ -730,6 +730,52 @@ Full background and remediation options are in PR #1085's discussion.
 
 ---
 
+## Open items after the #1202–#1234 batch (October 2026) `[planned]`
+
+Left over from #1235 and #1236. Each line says where to start.
+
+**CI / GUI**
+
+- `pyside6!=6.12.0` (in `pyproject.toml` `[gui]`/`[full]` and
+  `environment.yml`): 6.12.0 aborts a `MetalGUI` process with
+  `none_dealloc: deallocating None` on Python < 3.12. Lift the exclusion
+  once a PySide6 release fixes it; check with Python 3.11 and
+  `sys.getrefcount(None)` around `processEvents` (see lessons-learned).
+- Intermittent macOS GUI test failures remain: `test_gui_nudge`
+  (`MARKER_SELECTED` missing, also on `main` at 7a8d9d4) and a CoreGraphics
+  segfault in `test_gui_left_dock_min_width` (glyph rendering after
+  `resizeDocks`). Tracked with #1048 / #1200.
+- Building a second `MetalGUI` in one process after an application
+  stylesheet is set (`gui.set_font_size(...)`) segfaults at exit in
+  `_teardown_qt_widgets` (`QMenuBar::eventFilter`, failure mode 1 in
+  `docs/architecture/gui_crash_defenses.md`). Reproducible 3/3; not fixed.
+
+**Analysis**
+
+- LOM 2.0 `TL_RESONATOR` keeps one mode. Through a two-node bus the
+  omitted modes enter with alternating sign, so an `n_modes` option needs
+  many modes or an analytic tail correction (numbers in the
+  `TLResonatorBuilder` docstring, #1219).
+- LOM paper (arXiv:2103.10344) Eq. 13a writes 1/C_eff = 2 C⁻¹, a factor 2
+  relative to Eq. 8; the code uses 1. Confirm the paper's convention.
+- `Hcpb.nlevels` setter calls `__init__`, which resets `Ej`/`Ec` to `None`.
+- `hamiltonian_results` prints `np.float64(...)` in its frequency dict
+  under numpy 2 (visible in tutorial 4.04).
+- `fit_transmission(detrend=False)` with a large cable delay still starts
+  from zero delay.
+
+**Tutorials that need Qt or Ansys to refresh**
+
+- FlipChip tutorial (Layers dock screenshot; Ansys cells after the
+  `ReadoutResFC` layer change, #1224).
+- Full-Physical-Design-of-iSWAP-Gates: `tline` `total_length` 4.75 mm is
+  below its 4.957 mm minimum route and now warns.
+- A.4–A.7 and 2.21: stored `gds.options` prints and cheese counts
+  (#1214, #1223); A.4 `Read_Q_Main` figures (#1225).
+- LOM 1.0 notebooks 4.01, 4.11, 4.13, 4.21, A.4, A.6: E_J +0.08 % (#1207),
+  bus–bus g about 1.6× (#1222), new `T1`/`T1bus` columns.
+- The CR-gate notebook's `MetalGUI` cells.
+
 ## Known bug-triage queue `[needs re-verification]`
 
 10 issues triaged on 2026-05-22 (now ~2.5 months stale against the current
