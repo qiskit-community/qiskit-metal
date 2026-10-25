@@ -17,48 +17,72 @@ No Qt required — works headlessly in any Jupyter notebook or plain Python scri
 .. grid:: 1 2 2 4
    :gutter: 2
 
-   .. grid-item-card:: 🚀 Install
+   .. grid-item-card:: 🚀 Quick start
       :class-header: sd-bg-primary sd-text-light
 
-      .. button-ref:: installation
+      .. button-ref:: quickstart
          :ref-type: doc
          :color: primary
          :outline:
          :expand:
 
-         Get started in 60 seconds
+         Install and place a qubit
 
-   .. grid-item-card:: 📚 Tutorials
+   .. grid-item-card:: 🔬 Research showcase
       :class-header: sd-bg-secondary sd-text-light
+
+      .. button-ref:: research
+         :ref-type: doc
+         :color: secondary
+         :outline:
+         :expand:
+
+         Published devices and results, reproduced
+
+   .. grid-item-card:: 📚 Learn
+      :class-header: sd-bg-primary sd-text-light
 
       .. button-ref:: tut/index
          :ref-type: doc
-         :color: secondary
-         :outline:
-         :expand:
-
-         Hands-on notebooks
-
-   .. grid-item-card:: 🧩 Component Gallery
-      :class-header: sd-bg-primary sd-text-light
-
-      .. button-ref:: qcomponents-gallery
-         :ref-type: doc
          :color: primary
          :outline:
          :expand:
 
-         Browse every QComponent visually
+         The tutorial course, in order
 
-   .. grid-item-card:: 💬 Community
+   .. grid-item-card:: 🧩 Examples
       :class-header: sd-bg-secondary sd-text-light
 
-      .. button-link:: https://discord.gg/FPNybyfpxd
+      .. button-ref:: circuit-examples/index
+         :ref-type: doc
          :color: secondary
          :outline:
          :expand:
 
-         Join the Discord
+         Components and reference designs
+
+.. rubric:: Research showcase: published devices and results, reproduced
+
+Six notebooks (4.41-4.46) follow the package-mode couplings of a 10 × 10
+transmon array (R. Molavi *et al.*, `arXiv:2609.22442
+<https://arxiv.org/abs/2609.22442>`_), from an analytic estimate to a
+full-wave model. Further notebooks build the 17-qubit surface-code chip of the
+Wallraff group (ETH Zurich) with a meshed two-qubit cell, the 5-qubit Xmon
+processor of Barends *et al.*, and three published iSWAP gates.
+Notebook list, sources and requirements: :doc:`research`.
+
+.. nblinkgallery::
+
+    tut/4-Analysis/4.41-The-package-mode-on-paper
+    tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling
+    tut/4-Analysis/4.43-Mesh-and-solve-the-10x10-processor
+    tut/4-Analysis/4.44-Every-coupling-from-one-eigenmode
+    tut/4-Analysis/4.45-Four-methods-one-full-wave-model
+    tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling
+    circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode
+    circuit-examples/F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh
+    circuit-examples/F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor
+    circuit-examples/F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates
 
 .. rubric:: What is Quantum Metal?
 
@@ -178,19 +202,18 @@ in a simple, open, community-driven framework.
     :caption: Get Started
     :hidden:
 
+    Quick Start<quickstart>
     Installing Quantum Metal<installation>
-    Quick Start<tut/1-Overview/1.1-Quick-start>
-    Built on / with Quantum Metal<ecosystem>
+    Choose Your Path<choose-your-path>
 
 .. toctree::
-    :maxdepth: 1
-    :caption: Tutorials & Examples
+    :maxdepth: 2
+    :caption: Showcase & Learn
     :hidden:
 
-    Tutorials<tut/index>
-    Example Designs<circuit-examples/index>
-    QComponent Gallery<qcomponents-gallery>
-    Videos & Education<videoseducation>
+    Research Showcase<research>
+    Learn<tut/index>
+    Examples<circuit-examples/index>
 
 .. toctree::
     :maxdepth: 1
@@ -224,12 +247,15 @@ in a simple, open, community-driven framework.
     Roadmap<roadmap>
     Frequently Asked Questions<faq>
     Migrating to v0.7.0<migration-to-v0.7.0>
+    Archived Notebooks<archive>
 
 .. toctree::
     :maxdepth: 2
     :caption: Community & Contributing
     :hidden:
 
+    Built on / with Quantum Metal<ecosystem>
+    Videos & Education<videoseducation>
     Contributor Guide<contributor-guide>
     Architecture<architecture>
     Using Quantum Metal without Qt<headless-usage>

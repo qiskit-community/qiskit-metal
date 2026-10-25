@@ -37,18 +37,6 @@ Qiskit Metal Overview
      - Description
    * - :doc:`BaseQubit <apidocs/qiskit_metal.qlibrary.BaseQubit>`
      - Qubit base class. Use to subscript, not to generate directly.  Has connection lines that can be added.
-   * - :doc:`CircleCaterpillar <apidocs/qiskit_metal.qlibrary.CircleCaterpillar>`
-     - A single configurable circle.
-   * - :doc:`CircleRaster <apidocs/qiskit_metal.qlibrary.CircleRaster>`
-     - A single configurable circle.
-   * - :doc:`LaunchpadWirebond <apidocs/qiskit_metal.qlibrary.LaunchpadWirebond>`
-     - Launch pad to feed/read signals to/from the chip.
-   * - :doc:`LaunchpadWirebondCoupled <apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled>`
-     - Launch pad to feed/read signals to/from the chip.
-   * - :doc:`NGon <apidocs/qiskit_metal.qlibrary.NGon>`
-     - A n-gon polygon.
-   * - :doc:`NSquareSpiral <apidocs/qiskit_metal.qlibrary.NSquareSpiral>`
-     - A n count square spiral.
    * - :doc:`ParsedDynamicAttributes_Component <apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component>`
      - Provides a parsing view of the component options
    * - :doc:`QComponent <apidocs/qiskit_metal.qlibrary.QComponent>`
@@ -59,32 +47,8 @@ Qiskit Metal Overview
      - A convenience wrapper class to define an point with orientation, with a 2D position and a 2D direction (XY plane). All values stored as np.ndarray of parsed floats.
    * - :doc:`QRoute <apidocs/qiskit_metal.qlibrary.QRoute>`
      - Super-class implementing routing methods that are valid irrespective of the number of pins (>=1). The route is stored in a n array of planar points (x,y coordinates) and one direction, which is that of the last point in the array Values are stored as np.ndarray of parsed floats or np.array float pair.
-   * - :doc:`Rectangle <apidocs/qiskit_metal.qlibrary.Rectangle>`
-     - A single configurable square.
-   * - :doc:`RectangleHollow <apidocs/qiskit_metal.qlibrary.RectangleHollow>`
-     - A single configurable square.
-   * - :doc:`ResonatorCoilRect <apidocs/qiskit_metal.qlibrary.ResonatorCoilRect>`
-     - A rectangular spiral resonator based on length input. The X dimension is modified by the code based on the total length inputed.
-   * - :doc:`RouteAnchors <apidocs/qiskit_metal.qlibrary.RouteAnchors>`
-     - Creates and connects a series of anchors through which the Route passes.
-   * - :doc:`RouteFramed <apidocs/qiskit_metal.qlibrary.RouteFramed>`
-     - A non-meandered basic CPW that is auto-generated between 2 components. Designed to avoid self-collisions and collisions with components it is attached to.
-   * - :doc:`RouteMeander <apidocs/qiskit_metal.qlibrary.RouteMeander>`
-     - The base CPW meandered class.  Implements a simple CPW, with a single meander
-   * - :doc:`RouteMixed <apidocs/qiskit_metal.qlibrary.RouteMixed>`
-     - The comprehensive Routing class Inherits RoutePathfinder, RouteMeander class, thus also QRoute and RouteAnchors.  Implements fully featured Routing, allowing different type of connections between anchors.
-   * - :doc:`RoutePathfinder <apidocs/qiskit_metal.qlibrary.RoutePathfinder>`
-     - Non-meandered CPW class that combines A* pathfinding algorithm with simple 1-, 2-, or S-shaped segment checks and user-specified anchor points. 1. A* heap modified to prioritize paths with shortest length_travelled + Manhattan distance to destination. 2. Checks if connect_simple is valid each time we pop from the heap. If so, use it, otherwise proceed with A*. 3. Tweaks connect_simple to account for end anchor direction in determining which CPW (elbow or S-segment) to use.
-   * - :doc:`RouteStraight <apidocs/qiskit_metal.qlibrary.RouteStraight>`
-     - Draw a straight Route connecting two pins.
-   * - :doc:`TransmonConcentric <apidocs/qiskit_metal.qlibrary.TransmonConcentric>`
-     - The base TrasmonConcentric class.  Metal transmon object consisting of a circle surrounding by a concentric ring. There are two Josephson Junction connecting the circle to the ring; one at the south end and one at the north end. There is a readout resonator.
-   * - :doc:`TransmonCross <apidocs/qiskit_metal.qlibrary.TransmonCross>`
-     - The base TransmonCross class.  Simple Metal Transmon Cross object. Creates the A cross-shaped island, the “junction” on the south end, and up to 3 connectors on the remaining arms (claw or gap).
-   * - :doc:`TransmonPocket <apidocs/qiskit_metal.qlibrary.TransmonPocket>`
-     - The base TransmonPocket class.  Create a standard pocket transmon qubit for a ground plane, with two pads connected by a junction (see drawing below).  Connector lines can be added using the connection_pads dictionary. Each connector pad has a name and a list of default properties.
-   * - :doc:`TransmonPocketCL <apidocs/qiskit_metal.qlibrary.TransmonPocketCL>`
-     - The base TransmonPocketCL class.  Create a standard pocket transmon qubit for a ground plane, with two pads connected by a junction (see drawing below).  Connector lines can be added using the connection_pads dictionary. Each connector line has a name and a list of default properties.
+   * - :doc:`Component gallery <qcomponents-gallery>`
+     - Every other component class shipped with Quantum Metal (qubits, couplers, routes, resonators, terminations, lumped elements), with a thumbnail and links to its API page and example notebook.
 
 
 **QGeometryTables**

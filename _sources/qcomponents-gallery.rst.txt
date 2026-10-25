@@ -10,6 +10,8 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
    Adding a new ``QComponent``? Run    ``uv run python _dev/generate_qlibrary_thumbnails.py    --write --inject-docstrings`` and then    ``uv run python _dev/generate_qcomponent_gallery.py --write``    to refresh this page.
 
+Cards with an **Example** or **Tutorial** link point to a notebook that uses the component. All component notebooks are listed under :doc:`circuit-examples/component-examples`.
+
 🧬 Qubits
 ============
 
@@ -31,6 +33,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
       .. rubric:: ``jj_dolan``
 
+      +++
+      :doc:`Example </circuit-examples/A.Qubits/08-JJ-Dolan>` | :doc:`Tutorial </tut/quick-topics/JJ-Demo-Notebook>`
+
 
    .. grid-item-card:: Josephson Junction Manhattan
       :link: apidocs/qiskit_metal.qlibrary.jj_manhattan
@@ -46,6 +51,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
       Manhattan-style Josephson junction.
 
       .. rubric:: ``jj_manhattan``
+
+      +++
+      :doc:`Example </circuit-examples/A.Qubits/09-JJ-Manhattan>` | :doc:`Tutorial </tut/quick-topics/JJ-Demo-Notebook>`
 
 
    .. grid-item-card:: SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement)
@@ -95,6 +103,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
       .. rubric:: ``StarQubit``
 
+      +++
+      :doc:`Example </circuit-examples/A.Qubits/11-Star_shaped_qubit>`
+
 
    .. grid-item-card:: Transmon Concentric
       :link: apidocs/qiskit_metal.qlibrary.TransmonConcentric
@@ -110,6 +121,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
       Metal transmon object consisting of a circle surrounding by a concentric
 
       .. rubric:: ``TransmonConcentric``
+
+      +++
+      :doc:`Example </circuit-examples/A.Qubits/03-concentric_transmon>`
 
 
    .. grid-item-card:: Transmon Concentric Type 2
@@ -143,6 +157,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
       .. rubric:: ``TransmonCross``
 
+      +++
+      :doc:`Example </circuit-examples/A.Qubits/01-Transmon_cross>`
+
 
    .. grid-item-card:: Transmon Cross Flux Line
       :link: apidocs/qiskit_metal.qlibrary.TransmonCrossFL
@@ -158,6 +175,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
       Description
 
       .. rubric:: ``TransmonCrossFL``
+
+      +++
+      :doc:`Example </circuit-examples/A.Qubits/05-Transmon_cross_fl>`
 
 
    .. grid-item-card:: Transmon Interdigitated
@@ -175,6 +195,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
       .. rubric:: ``TransmonInterdigitated``
 
+      +++
+      :doc:`Example </circuit-examples/A.Qubits/04-Interdigitated_Transmon>` | :doc:`Tutorial </tut/quick-topics/QComponent-Interdigitated-transmon>`
+
 
    .. grid-item-card:: Transmon Pocket
       :link: apidocs/qiskit_metal.qlibrary.TransmonPocket
@@ -190,6 +213,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
       Create a standard pocket transmon qubit for a ground plane,
 
       .. rubric:: ``TransmonPocket``
+
+      +++
+      :doc:`Example </circuit-examples/A.Qubits/02-Transmon_floating>`
 
 
    .. grid-item-card:: Transmon Pocket 6
@@ -207,6 +233,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
       .. rubric:: ``TransmonPocket6``
 
+      +++
+      :doc:`Example </circuit-examples/A.Qubits/06-Transmon_floating_6>`
+
 
    .. grid-item-card:: Transmon Pocket Charge Line
       :link: apidocs/qiskit_metal.qlibrary.TransmonPocketCL
@@ -223,6 +252,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
       .. rubric:: ``TransmonPocketCL``
 
+      +++
+      :doc:`Example </circuit-examples/E.Input-output-coupling/43-TransmonPocketCL>`
+
 
    .. grid-item-card:: Transmon Pocket Teeth
       :link: apidocs/qiskit_metal.qlibrary.TransmonPocketTeeth
@@ -238,6 +270,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
       Transmon pocket with 'Teeth' connection pads.
 
       .. rubric:: ``TransmonPocketTeeth``
+
+      +++
+      :doc:`Example </circuit-examples/A.Qubits/10-Transmon_floating_teeth>`
 
 
    .. grid-item-card:: Transmon Star
@@ -363,6 +398,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
       .. rubric:: ``Airbridge``
 
+      +++
+      :doc:`Tutorial </tut/2-From-components-to-chip/2.15-Airbridges>`
+
 
    .. grid-item-card:: CPW along an explicit list of points
       :link: apidocs/qiskit_metal.qlibrary.PolylineCPW
@@ -427,6 +465,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
       .. rubric:: ``RouteMeander``
 
+      +++
+      :doc:`Example </circuit-examples/B.Resonators/11-Resonator_Meander>`
+
 
    .. grid-item-card:: Route Mixed
       :link: apidocs/qiskit_metal.qlibrary.RouteMixed
@@ -442,6 +483,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
       Implements fully featured Routing, allowing different type of
 
       .. rubric:: ``RouteMixed``
+
+      +++
+      :doc:`Tutorial </tut/2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute>`
 
 
    .. grid-item-card:: Route Pathfinder
@@ -551,6 +595,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
 
       .. rubric:: ``LaunchpadWirebondCoupled``
 
+      +++
+      :doc:`Example </circuit-examples/E.Input-output-coupling/41-LaunchPad>`
+
 
    .. grid-item-card:: Launchpad Wirebond Driven
       :link: apidocs/qiskit_metal.qlibrary.LaunchpadWirebondDriven
@@ -620,6 +667,9 @@ Every component shipped with Quantum Metal at a glance — click a card to jump 
       Create a three finger planar capacitor with a ground pocket cuttout.
 
       .. rubric:: ``Cap3Interdigital``
+
+      +++
+      :doc:`Tutorial </tut/quick-topics/QComponent-3-fingers-capacitor>`
 
 
    .. grid-item-card:: CapFingerInFrame

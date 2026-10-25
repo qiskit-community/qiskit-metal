@@ -112,6 +112,7 @@ QHFSSRenderer
    .. automethod:: QHFSSRenderer.render_element_poly
    .. automethod:: QHFSSRenderer.render_junction_inductor
    .. automethod:: QHFSSRenderer.render_junction_port
+   .. automethod:: QHFSSRenderer.render_junction_rotated
    .. automethod:: QHFSSRenderer.render_tables
    .. automethod:: QHFSSRenderer.save_screenshot
    .. automethod:: QHFSSRenderer.set_mode
