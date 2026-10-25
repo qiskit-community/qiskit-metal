@@ -204,6 +204,7 @@ in a simple, open, community-driven framework.
 
     Quick Start<quickstart>
     Installing Quantum Metal<installation>
+    Choose Your Path<choose-your-path>
 
 .. toctree::
     :maxdepth: 2

@@ -82,6 +82,10 @@ for _mod in _MOCKED_MODULES:
 import qiskit_metal
 import qiskit_sphinx_theme
 
+# Learning paths (data module next to this file).
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import qm_paths
+
 """
 Sphinx documentation builder
 """
@@ -132,6 +136,9 @@ qm_archived = {
     ),
 }
 
+# docname -> RST lines for the "Learning path" box, from ``qm_paths.py``.
+qm_paths_by_doc = qm_paths.by_doc()
+
 nbsphinx_prolog = """
 {% set docname = env.doc2path(env.docname, base=None) %}
 
@@ -142,6 +149,15 @@ nbsphinx_prolog = """
     {{ archived[0] }} Use {{ archived[1] }} instead.
     This page is kept at its URL and is not part of the
     :doc:`learning path </tut/index>`; see :doc:`/archive`.
+{% endif %}
+
+{% set path_lines = env.config.qm_paths_by_doc.get(env.docname, []) %}
+{% if path_lines %}
+.. admonition:: Learning path
+
+{% for line in path_lines %}
+    - {{ line }}
+{% endfor %}
 {% endif %}
 
 .. only:: html
@@ -419,8 +435,21 @@ def _regenerate_qlibrary_assets(app):
                 shutil.copyfile(png, target)
 
 
+def _fill_choose_your_path(app, docname, source):
+    """Replace the ``{{ QM_PATHS }}`` token with the generated path sections."""
+    if docname == "choose-your-path":
+        source[0] = source[0].replace("{{ QM_PATHS }}", qm_paths.page_body())
+
+
+def _check_paths(app):
+    qm_paths.check(app.srcdir)
+
+
 def setup(app):
     app.add_config_value("qm_archived", {}, "env")
+    app.add_config_value("qm_paths_by_doc", {}, "env")
+    app.connect("builder-inited", _check_paths)
+    app.connect("source-read", _fill_choose_your_path)
     app.connect("builder-inited", _regenerate_qlibrary_assets)
 
 

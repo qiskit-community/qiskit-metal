@@ -6,7 +6,7 @@ Learn
 
 The tutorial course, in four parts. Each part lists its notebooks in the
 order to read them. New here? Start with the :doc:`../quickstart` page, then
-Part 1.
+Part 1, or pick a goal on :doc:`../choose-your-path`.
 
 Featured: package modes and qubit couplings
 ===========================================
