@@ -70,6 +70,52 @@ CATEGORY_LABELS = {
     "sample_shapes": "🔺 Sample shapes",
 }
 
+# Class name -> notebooks that use it, as ``(docname, link text)``. Docnames
+# are relative to ``docs/`` without the ``.ipynb`` suffix. Each card gets an
+# "Example" link per entry; ``_check_example_docnames`` fails the run when a
+# docname does not exist.
+EXAMPLES = {
+    "TransmonCross": [("circuit-examples/A.Qubits/01-Transmon_cross", "Example")],
+    "TransmonPocket": [("circuit-examples/A.Qubits/02-Transmon_floating", "Example")],
+    "TransmonConcentric": [
+        ("circuit-examples/A.Qubits/03-concentric_transmon", "Example")
+    ],
+    "TransmonInterdigitated": [
+        ("circuit-examples/A.Qubits/04-Interdigitated_Transmon", "Example"),
+        ("tut/quick-topics/QComponent-Interdigitated-transmon", "Tutorial"),
+    ],
+    "TransmonCrossFL": [("circuit-examples/A.Qubits/05-Transmon_cross_fl", "Example")],
+    "TransmonPocket6": [
+        ("circuit-examples/A.Qubits/06-Transmon_floating_6", "Example")
+    ],
+    "TransmonPocketCL": [
+        ("circuit-examples/E.Input-output-coupling/43-TransmonPocketCL", "Example")
+    ],
+    "jj_dolan": [
+        ("circuit-examples/A.Qubits/08-JJ-Dolan", "Example"),
+        ("tut/quick-topics/JJ-Demo-Notebook", "Tutorial"),
+    ],
+    "jj_manhattan": [
+        ("circuit-examples/A.Qubits/09-JJ-Manhattan", "Example"),
+        ("tut/quick-topics/JJ-Demo-Notebook", "Tutorial"),
+    ],
+    "TransmonPocketTeeth": [
+        ("circuit-examples/A.Qubits/10-Transmon_floating_teeth", "Example")
+    ],
+    "StarQubit": [("circuit-examples/A.Qubits/11-Star_shaped_qubit", "Example")],
+    "RouteMeander": [("circuit-examples/B.Resonators/11-Resonator_Meander", "Example")],
+    "RouteMixed": [
+        ("tut/2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute", "Tutorial")
+    ],
+    "Airbridge": [("tut/2-From-components-to-chip/2.15-Airbridges", "Tutorial")],
+    "LaunchpadWirebondCoupled": [
+        ("circuit-examples/E.Input-output-coupling/41-LaunchPad", "Example")
+    ],
+    "Cap3Interdigital": [
+        ("tut/quick-topics/QComponent-3-fingers-capacitor", "Tutorial")
+    ],
+}
+
 IMG_REF_RE = re.compile(r"\.\. image::[\r\n]+\s*(\S+)")
 META_DESC_RE = re.compile(r"\.\. meta::\s*\n\s*:description:\s*([^\n]+)")
 
@@ -172,7 +218,7 @@ def _group_by_category():
     return groups
 
 
-@functools.lru_cache(maxsize=None)
+@functools.cache
 def _autosummary_registry() -> frozenset[str]:
     """Class names Sphinx autosummary registers as
     ``qiskit_metal.qlibrary.<Name>`` (each gets a per-class apidoc page at
@@ -224,6 +270,24 @@ def _apidoc_doc_target(cls) -> str:
     return "apidocs/qlibrary"
 
 
+def _check_example_docnames() -> None:
+    """Fail when an ``EXAMPLES`` entry points at a notebook that is missing."""
+    missing = [
+        doc
+        for entries in EXAMPLES.values()
+        for doc, _ in entries
+        if not (DOCS / f"{doc}.ipynb").is_file()
+    ]
+    if missing:
+        raise SystemExit(f"EXAMPLES refers to missing notebooks: {sorted(missing)}")
+
+
+def _example_links(cls) -> str:
+    """Footer text of ``:doc:`` links for a card, or an empty string."""
+    entries = EXAMPLES.get(cls.__name__, [])
+    return " | ".join(f":doc:`{label} </{doc}>`" for doc, label in entries)
+
+
 def _render_card(cls, copied_img: str) -> str:
     """One ``grid-item-card`` block for the gallery."""
     display = _meta_display_name(cls)
@@ -250,6 +314,9 @@ def _render_card(cls, copied_img: str) -> str:
     if desc:
         lines += [f"      {desc}", ""]
     lines += [f"      .. rubric:: ``{cls.__name__}``", ""]
+    examples = _example_links(cls)
+    if examples:
+        lines += ["      +++", f"      {examples}", ""]
     return "\n".join(lines)
 
 
@@ -273,6 +340,10 @@ def _emit_gallery_rst(groups, copied_lookup):
         "   --write --inject-docstrings`` and then "
         "   ``uv run python _dev/generate_qcomponent_gallery.py --write`` "
         "   to refresh this page.",
+        "",
+        "Cards with an **Example** or **Tutorial** link point to a notebook "
+        "that uses the component. All component notebooks are listed under "
+        ":doc:`circuit-examples/component-examples`.",
         "",
     ]
     # Stable category order
@@ -352,6 +423,7 @@ def main():
     )
     args = parser.parse_args()
 
+    _check_example_docnames()
     groups = _group_by_category()
     print(
         f"Found {sum(len(v) for v in groups.values())} components across "

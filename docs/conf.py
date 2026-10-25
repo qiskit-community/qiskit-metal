@@ -255,6 +255,7 @@ nitpick_ignore = [
 #   notebook code that has unicode quirks; harmless.
 
 html_static_path = ["_static"]
+html_css_files = ["qm-gallery.css"]
 templates_path = ["_templates"]
 
 exclude_patterns = [
