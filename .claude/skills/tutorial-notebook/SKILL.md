@@ -16,8 +16,11 @@ come from the five-notebook series `docs/tut/4-Analysis/4.41`–`4.45`.
 - Notebooks live once, under `docs/tut/<section>/` (numbered, hyphenated
   names) or `docs/circuit-examples/` — see "Tutorial notebooks" in
   `CLAUDE.md`. Shared helper code and input files: `docs/tut/resources/`.
-- Register new notebooks: an `nbgallery` entry or glob in
-  `docs/tut/index.rst`; pure-Python ones (no Ansys, gmsh, Elmer; < 3 min)
+- Register new notebooks: one explicit `nbgallery` entry (no glob) on the
+  page that is its home: a part page under `docs/tut/` for a lesson,
+  `docs/circuit-examples/component-examples.rst` or `reference-designs.rst`
+  for a design to copy, `docs/research.rst` for a reproduction of a
+  published device. Other pages link with `nblinkgallery`. Pure-Python ones (no Ansys, gmsh, Elmer; < 3 min)
   on `_dev/notebooks-auto-refresh.txt`, the others in its external-gated
   comment block; one line in `changelog.md` under Unreleased.
 - If another agent is editing the repository, work in your own git

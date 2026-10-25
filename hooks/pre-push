@@ -87,7 +87,7 @@ if [[ -n "$gui_touched" ]] || [[ -z "$remote_sha" ]] || [[ "$remote_sha" == "000
     # gate spawns render without stealing focus from whatever the
     # developer is working on (macOS AA_PluginApplication). Local-hook
     # convenience only -- CI runs the default activation path.
-    if ! QISKIT_METAL_GUI_NO_ACTIVATE=1 uv run --quiet pytest tests/test_gui_init.py tests/test_gui_teardown.py -q > /tmp/.qm-prepush-gui.log 2>&1; then
+    if ! QISKIT_METAL_GUI_NO_ACTIVATE=1 uv run --quiet pytest --run-crashy-gui tests/test_gui_init.py tests/test_gui_teardown.py -q > /tmp/.qm-prepush-gui.log 2>&1; then
         echo "  ✗ on-screen GUI lifecycle tests failed:"
         cat /tmp/.qm-prepush-gui.log | tail -25
         fail=1

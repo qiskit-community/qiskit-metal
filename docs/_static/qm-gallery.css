@@ -1,0 +1,6 @@
+/* Links inside a gallery card footer stay clickable above the card's
+   stretched link. */
+.sd-card-footer a {
+  position: relative;
+  z-index: 2;
+}

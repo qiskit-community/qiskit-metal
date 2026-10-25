@@ -11,6 +11,8 @@
 # that they have been altered from the originals.
 """This module has a QRenderer to export QDesign to a GDS file."""
 
+from __future__ import annotations
+
 import math
 import os
 from collections import defaultdict
@@ -19,7 +21,9 @@ from operator import itemgetter
 from typing import TYPE_CHECKING, Literal, Optional, Tuple, Union
 from typing import Dict as DictType
 
-import gdstk
+from qiskit_metal.toolbox_python._lazy import LazyModule
+
+gdstk = LazyModule("gdstk")
 import geopandas
 import numpy as np
 import pandas as pd
@@ -297,8 +301,9 @@ class QGDSRenderer(QRenderer):
             render_options=render_options,
         )
 
-        self.lib: Union[gdstk.Library, None] = None
-        self.new_gds_library()
+        # Created on first use (see ``lib``) so building a design does not
+        # import gdstk.
+        self._lib: Union[gdstk.Library, None] = None
 
         self.dict_bounds: dict[str, Dict] = Dict()
 
@@ -1080,6 +1085,17 @@ class QGDSRenderer(QRenderer):
 
     # To export the data.
 
+    @property
+    def lib(self) -> gdstk.Library:
+        """The GDS library, created on first access."""
+        if self._lib is None:
+            self.new_gds_library()
+        return self._lib
+
+    @lib.setter
+    def lib(self, value):
+        self._lib = value
+
     def new_gds_library(self) -> gdstk.Library:
         """Creates a new GDS Library. Deletes the old. Create a new GDS library
         file. It can contains multiple cells.
@@ -1090,10 +1106,10 @@ class QGDSRenderer(QRenderer):
 
         self._update_units()
 
-        if self.lib:
+        if self._lib:
             # Clear old cells from the library
-            for c in list(self.lib.cells):
-                self.lib.remove(c)
+            for c in list(self._lib.cells):
+                self._lib.remove(c)
 
         # Create a new GDS library file. It can contains multiple cells.
         self.lib = gdstk.Library(

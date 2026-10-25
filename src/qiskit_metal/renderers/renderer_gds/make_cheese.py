@@ -11,10 +11,14 @@
 # that they have been altered from the originals.
 """For GDS export, separate the logic for cheesing."""
 
+from __future__ import annotations
+
 import logging
 from typing import Union
 
-import gdstk
+from qiskit_metal.toolbox_python._lazy import LazyModule
+
+gdstk = LazyModule("gdstk")
 import numpy as np
 import shapely
 

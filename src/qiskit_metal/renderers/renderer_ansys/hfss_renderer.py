@@ -48,6 +48,12 @@ from qiskit_metal.renderers.renderer_ansys.solution_types import (
 )
 
 
+def _is_axis_aligned(x0: float, y0: float, x1: float, y1: float, tol: float = 1e-6):
+    """True if the line (x0, y0) -> (x1, y1) runs along x or y."""
+    dx, dy = abs(x1 - x0), abs(y1 - y0)
+    return min(dx, dy) <= tol * max(dx, dy)
+
+
 class QHFSSRenderer(QAnsysRenderer):
     """Subclass of QAnsysRenderer for running HFSS simulations.
 
@@ -236,36 +242,70 @@ class QHFSSRenderer(QAnsysRenderer):
             endpoints_3d = to_vec3D(endpoints, qc_chip_z)
             x0, y0 = endpoints_3d[0][:2]
             x1, y1 = endpoints_3d[1][:2]
-            if abs(y1 - y0) > abs(x1 - x0):
-                # Junction runs vertically up/down
-                x_min, x_max = x0 - width / 2, x0 + width / 2
-                y_min, y_max = min(y0, y1), max(y0, y1)
-            else:
-                # Junction runs horizontally left/right
-                x_min, x_max = min(x0, x1), max(x0, x1)
-                y_min, y_max = y0 - width / 2, y0 + width / 2
+            if _is_axis_aligned(x0, y0, x1, y1):
+                if abs(y1 - y0) > abs(x1 - x0):
+                    # Junction runs vertically up/down
+                    x_min, x_max = x0 - width / 2, x0 + width / 2
+                    y_min, y_max = min(y0, y1), max(y0, y1)
+                else:
+                    # Junction runs horizontally left/right
+                    x_min, x_max = min(x0, x1), max(x0, x1)
+                    y_min, y_max = y0 - width / 2, y0 + width / 2
 
-            # Draw rectangle
-            self.logger.debug(f"Drawing a rectangle: {port_name}")
-            poly_ansys = self.modeler.draw_rect_corner(
-                [x_min, y_min, qc_chip_z],
-                x_max - x_min,
-                y_max - y_min,
-                0,
-                **dict(transparency=0.0),
-            )
-            axis = "x" if abs(x1 - x0) > abs(y1 - y0) else "y"
-            if not is_eigenmode(self.pinfo.design.solution_type):
-                poly_ansys.make_lumped_port(
-                    axis, z0=str(impedance) + "ohm", name=f"LumpPort_{qcomp}_{pin}"
+                # Draw rectangle
+                self.logger.debug(f"Drawing a rectangle: {port_name}")
+                poly_ansys = self.modeler.draw_rect_corner(
+                    [x_min, y_min, qc_chip_z],
+                    x_max - x_min,
+                    y_max - y_min,
+                    0,
+                    **dict(transparency=0.0),
                 )
-                self.modeler.rename_obj(poly_ansys, port_name)
+                axis = "x" if abs(x1 - x0) > abs(y1 - y0) else "y"
+                if not is_eigenmode(self.pinfo.design.solution_type):
+                    poly_ansys.make_lumped_port(
+                        axis, z0=str(impedance) + "ohm", name=f"LumpPort_{qcomp}_{pin}"
+                    )
+                    self.modeler.rename_obj(poly_ansys, port_name)
+                else:
+                    poly_ansys.make_rlc_boundary(
+                        axis,
+                        r=str(impedance) + "ohm",
+                        name=f"RLCBoundary_{qcomp}_{pin}",
+                    )
+                    self.modeler.rename_obj(poly_ansys, port_name)
+                    self.assign_port_mesh.append(port_name)
+
             else:
-                poly_ansys.make_rlc_boundary(
-                    axis, r=str(impedance) + "ohm", name=f"RLCBoundary_{qcomp}_{pin}"
+                # Off-axis pin: a sheet along the pin's own line, and an
+                # explicit terminal line, since pyEPR's axis-based helpers
+                # can only describe a line along x or y.
+                self.logger.debug(f"Drawing a rotated sheet: {port_name}")
+                poly_ansys, start, end = self._draw_rotated_sheet(
+                    (x0, y0), (x1, y1), -width / 2, width / 2, qc_chip_z
                 )
-                self.modeler.rename_obj(poly_ansys, port_name)
-                self.assign_port_mesh.append(port_name)
+                obj_arr = ["Objects:=", [poly_ansys]]
+                if not is_eigenmode(self.pinfo.design.solution_type):
+                    self.modeler._make_lumped_port(
+                        start,
+                        end,
+                        obj_arr,
+                        z0=str(impedance) + "ohm",
+                        name=f"LumpPort_{qcomp}_{pin}",
+                    )
+                    self.modeler.rename_obj(poly_ansys, port_name)
+                else:
+                    self.modeler._make_lumped_rlc(
+                        str(impedance) + "ohm",
+                        0,
+                        0,
+                        start,
+                        end,
+                        obj_arr,
+                        name=f"RLCBoundary_{qcomp}_{pin}",
+                    )
+                    self.modeler.rename_obj(poly_ansys, port_name)
+                    self.assign_port_mesh.append(port_name)
 
             # Draw line
             lump_line = self.modeler.draw_polyline(
@@ -304,6 +344,11 @@ class QHFSSRenderer(QAnsysRenderer):
             endpoints_3d = to_vec3D(endpoints, qc_chip_z)
             x0, y0, z0 = endpoints_3d[0]
             x1, y1, z0 = endpoints_3d[1]
+            if not _is_axis_aligned(x0, y0, x1, y1):
+                self.render_junction_rotated(
+                    qgeom, (x0, y0), (x1, y1), qc_width, qc_chip_z
+                )
+                return
             if abs(y1 - y0) > abs(x1 - x0):
                 # Junction runs vertically up/down
                 axis = "y"
@@ -348,6 +393,108 @@ class QHFSSRenderer(QAnsysRenderer):
                 self.render_junction_inductor(
                     qgeom, x_min, x_max, y_min, y_max, qc_chip_z, axis
                 )
+
+    def _draw_rotated_sheet(
+        self,
+        p0: tuple,
+        p1: tuple,
+        lat_lo: float,
+        lat_hi: float,
+        z: float,
+    ):
+        """Draw a closed sheet along the line p0 -> p1, spanning the lateral
+        offsets lat_lo..lat_hi (signed, perpendicular to the line).
+
+        Returns:
+            tuple: the sheet, and the start and end of its centre line, which
+            is the terminal line of the boundary or port assigned to it.
+        """
+        (x0, y0), (x1, y1) = p0, p1
+        length = float(np.hypot(x1 - x0, y1 - y0))
+        nx, ny = -(y1 - y0) / length, (x1 - x0) / length
+
+        def point(x, y, lat):
+            return [x + lat * nx, y + lat * ny, z]
+
+        corners = [
+            point(x0, y0, lat_lo),
+            point(x1, y1, lat_lo),
+            point(x1, y1, lat_hi),
+            point(x0, y0, lat_hi),
+        ]
+        sheet = self.modeler.draw_polyline(
+            corners, closed=True, **dict(transparency=0.0)
+        )
+        mid = (lat_lo + lat_hi) / 2
+        return sheet, point(x0, y0, mid), point(x1, y1, mid)
+
+    def render_junction_rotated(
+        self, qgeom: pd.Series, p0: tuple, p1: tuple, width: float, z: float
+    ):
+        """Render a junction whose line is not along x or y, as a port, an
+        inductor, or both side by side, like the axis-aligned path does.
+
+        The sheets are drawn along the junction's own line, and the boundary or
+        port is given the junction's endpoints as its terminal line.
+
+        Args:
+            qgeom (pd.Series): GeoSeries of element properties.
+            p0 (tuple): (x, y) of the first endpoint.
+            p1 (tuple): (x, y) of the second endpoint.
+            width (float): Junction width.
+            z (float): z coordinate
+        """
+        qcomp = self.design._components[qgeom["component"]].name
+        qc_elt = get_clean_name(qgeom["name"])
+        half = width / 2
+        port_span = ind_span = None
+        if (qcomp, qc_elt) in self.jj_lumped_ports:
+            if self.jj_lumped_ports[(qcomp, qc_elt)][1]:
+                gap = parse_units(self.hfss_options["port_inductor_gap"])
+                port_span, ind_span = (gap / 2, half), (-half, -gap / 2)
+            else:
+                port_span = (-half, half)
+        else:
+            ind_span = (-half, half)
+
+        if port_span:
+            port_name = f"Port_{qcomp}_{qc_elt}"
+            impedance = self.jj_lumped_ports[(qcomp, qc_elt)][0]
+            self.logger.debug(f"Drawing a rotated sheet: {port_name}")
+            sheet, start, end = self._draw_rotated_sheet(p0, p1, *port_span, z)
+            self.modeler._make_lumped_port(
+                start,
+                end,
+                ["Objects:=", [sheet]],
+                z0=str(impedance) + "ohm",
+                name=f"LumpPort_{qcomp}_{qc_elt}",
+            )
+            self.modeler.rename_obj(sheet, port_name)
+            lump_line = self.modeler.draw_polyline(
+                [start, end], closed=False, **dict(color=(128, 0, 128))
+            )
+            lump_line = lump_line.rename(f"voltage_line_{port_name}")
+            lump_line.show_direction = True
+        if ind_span:
+            inductor_name = f"Lj_{qcomp}{QAnsysRenderer.NAME_DELIM}{qc_elt}"
+            self.logger.debug(f"Drawing a rotated sheet: {inductor_name}")
+            sheet, start, end = self._draw_rotated_sheet(p0, p1, *ind_span, z)
+            self.modeler._make_lumped_rlc(
+                qgeom["hfss_resistance"],
+                qgeom["hfss_inductance"],
+                qgeom["hfss_capacitance"],
+                start,
+                end,
+                ["Objects:=", [sheet]],
+                name="Lj_" + inductor_name,
+            )
+            self.modeler.rename_obj(sheet, "JJ_rect_" + inductor_name)
+            self.assign_mesh.append("JJ_rect_" + inductor_name)
+            induc_line = self.modeler.draw_polyline(
+                [start, end], closed=False, **dict(color=(128, 0, 128))
+            )
+            induc_line = induc_line.rename("JJ_" + inductor_name + "_")
+            induc_line.show_direction = True
 
     def render_junction_port(
         self,

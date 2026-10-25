@@ -61,6 +61,18 @@ execute notebooks (`nbsphinx_execute = "never"` unless
 and re-execute it when the code changes what it prints or draws (in a scratch
 copy, so files the notebook writes stay out of the repo).
 
+**Navigation.** The sidebar does not follow the folders. `docs/tut/index.rst`
+(Learn) lists four part pages (`first-steps`, `components-to-chip`,
+`render-and-export`, `simulate-and-analyze`, plus `simulate-ansys` and
+`circuits-to-hamiltonians` under Part 4). `docs/circuit-examples/index.rst`
+(Examples) lists the component gallery, `component-examples.rst` and
+`reference-designs.rst`. `docs/research.rst` homes the reproductions of
+published devices. `docs/archive.rst` homes retired notebooks. Every notebook
+is listed in exactly one toctree (`nbgallery`) on one of these pages, with an
+explicit entry and no globs; other pages link to it with `nblinkgallery`.
+Moving a notebook between pages changes no URL. A notebook that is in no
+toctree triggers Sphinx's "not included in any toctree" warning.
+
 Notebooks that are kept but not on the site are listed in `exclude_patterns`
 in `docs/conf.py`. Colab/Binder badges and raw-download URLs point at the
 notebook's own `docs/` path.
@@ -199,7 +211,7 @@ component, which is too slow for a hot docs-build path).
 
 ## Testing & CI quick reference
 
-- Full suite: `QISKIT_METAL_HEADLESS=1 uv run pytest tests/` (~30s)
+- Full suite: `QISKIT_METAL_HEADLESS=1 uv run pytest tests/` (~30s). The crash-prone GUI modules (`test_gui_nudge`, `test_gui_init`, `test_gui_left_dock_min_width`; #1048) are skipped unless you pass `--run-crashy-gui` (or `QISKIT_METAL_RUN_CRASHY_GUI_TESTS=1`); run them locally when `_gui/` is touched. The `tests-gui-display` CI jobs and the pre-push hook opt in.
 - Lint: `uvx ruff check src` (clean, 0 findings — see Status snapshot)
 - Format: `uvx ruff format src`
 - Docs build: `tox -e docs`

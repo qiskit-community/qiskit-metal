@@ -82,6 +82,10 @@ for _mod in _MOCKED_MODULES:
 import qiskit_metal
 import qiskit_sphinx_theme
 
+# Learning paths (data module next to this file).
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import qm_paths
+
 """
 Sphinx documentation builder
 """
@@ -99,8 +103,62 @@ rst_prolog = f"""
 
 """
 
+# Archived notebooks: docname -> (reason, replacement as RST). They keep their
+# URLs and are listed on ``archive.rst``; ``nbsphinx_prolog`` shows a banner.
+qm_archived = {
+    "tut/quick-topics/Testing-QComponents-for-overlap-and-collisions": (
+        "It is deprecated in favor of ``qiskit_metal.validation``.",
+        ":doc:`2.24 Design rule checking </tut/2-From-components-to-chip/2.24-Design-rule-checking>`",
+    ),
+    "tut/4-Analysis/4.33-Transmon-analytics": (
+        "It plots the same eigenvalue figure as 4.32.",
+        ":doc:`4.32 </tut/4-Analysis/4.32-Transmon-analytics-HCPB>`",
+    ),
+    "circuit-examples/full-design-flow-examples/A.5-Launch-video-example": (
+        "It follows the same Ansys LOM/EPR pattern as A.7.",
+        ":doc:`A.7 </circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop>`",
+    ),
+    "circuit-examples/full-design-flow-examples/A.6-Hackathon-exercise-South-Korea-2020": (
+        "It follows the same pattern as A.7.",
+        ":doc:`A.7 </circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop>`",
+    ),
+    "circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip": (
+        "It covers the same four-qubit layout as A.3 and 2.21.",
+        ":doc:`A.3 </tut/full-design-examples/A.3-Four-qubit-multiplexed-readout>`",
+    ),
+    "circuit-examples/A.Qubits/07-Transmon_floating_cl": (
+        "It demonstrates the same class as the Charge Line example.",
+        ":doc:`Charge Line </circuit-examples/E.Input-output-coupling/43-TransmonPocketCL>`",
+    ),
+    "tut/quick-topics/Opening-documentation": (
+        "Its content is in the FAQ.",
+        ":ref:`FAQ <docs>`",
+    ),
+}
+
+# docname -> RST lines for the "Learning path" box, from ``qm_paths.py``.
+qm_paths_by_doc = qm_paths.by_doc()
+
 nbsphinx_prolog = """
 {% set docname = env.doc2path(env.docname, base=None) %}
+
+{% if env.docname in env.config.qm_archived %}
+{% set archived = env.config.qm_archived[env.docname] %}
+.. admonition:: Archived notebook
+
+    {{ archived[0] }} Use {{ archived[1] }} instead.
+    This page is kept at its URL and is not part of the
+    :doc:`learning path </tut/index>`; see :doc:`/archive`.
+{% endif %}
+
+{% set path_lines = env.config.qm_paths_by_doc.get(env.docname, []) %}
+{% if path_lines %}
+.. admonition:: Learning path
+
+{% for line in path_lines %}
+    - {{ line }}
+{% endfor %}
+{% endif %}
 
 .. only:: html
 
@@ -255,6 +313,7 @@ nitpick_ignore = [
 #   notebook code that has unicode quirks; harmless.
 
 html_static_path = ["_static"]
+html_css_files = ["qm-gallery.css"]
 templates_path = ["_templates"]
 
 exclude_patterns = [
@@ -376,7 +435,21 @@ def _regenerate_qlibrary_assets(app):
                 shutil.copyfile(png, target)
 
 
+def _fill_choose_your_path(app, docname, source):
+    """Replace the ``{{ QM_PATHS }}`` token with the generated path sections."""
+    if docname == "choose-your-path":
+        source[0] = source[0].replace("{{ QM_PATHS }}", qm_paths.page_body())
+
+
+def _check_paths(app):
+    qm_paths.check(app.srcdir)
+
+
 def setup(app):
+    app.add_config_value("qm_archived", {}, "env")
+    app.add_config_value("qm_paths_by_doc", {}, "env")
+    app.connect("builder-inited", _check_paths)
+    app.connect("source-read", _fill_choose_your_path)
     app.connect("builder-inited", _regenerate_qlibrary_assets)
 
 
