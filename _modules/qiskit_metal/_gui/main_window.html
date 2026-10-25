@@ -542,6 +542,7 @@
     <span class="n">clear_dock_error_badge</span><span class="p">,</span>
     <span class="n">doShowHighlighWidget</span><span class="p">,</span>
     <span class="n">doToggleDockWidget</span><span class="p">,</span>
+    <span class="n">qt_alive</span><span class="p">,</span>
     <span class="n">single_shot</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal._gui.widgets.all_components.table_model_all_components</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -923,14 +924,22 @@
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">force_close</span> <span class="o">=</span> <span class="n">ison</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_refresh_timers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_refresh_timers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_single_shot</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Every periodic model-refresh timer belonging to this window.</span>
 
 <span class="sd">        Three are reachable through the widget tree. The components-table</span>
 <span class="sd">        model is parented to the ``MetalGUI`` handler rather than into the</span>
 <span class="sd">        tree, so ``findChildren`` misses it and it is collected explicitly.</span>
 <span class="sd">        """</span>
-        <span class="n">timers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QTimer</span><span class="p">))</span>
+        <span class="c1"># ``include_single_shot=False`` (the show path) restarts pollers</span>
+        <span class="c1"># only: a pending one-shot (``single_shot``) is stopped on close but</span>
+        <span class="c1"># must never be restarted by ``showEvent``, or every past one-shot</span>
+        <span class="c1"># (focus-stealing ``_raise`` included) replays on each show.</span>
+        <span class="n">timers</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">t</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QTimer</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">include_single_shot</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">t</span><span class="o">.</span><span class="n">isSingleShot</span><span class="p">()</span>
+        <span class="p">]</span>
 
         <span class="n">proxy</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="p">,</span> <span class="s2">"proxyModel"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">proxy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -950,7 +959,7 @@
 <span class="sd">        one-way trip: closing and reopening the same MetalGUI must leave the</span>
 <span class="sd">        tables auto-refreshing as before (issue #1048).</span>
 <span class="sd">        """</span>
-        <span class="k">for</span> <span class="n">timer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_timers</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">timer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_timers</span><span class="p">(</span><span class="n">include_single_shot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">timer</span><span class="o">.</span><span class="n">isActive</span><span class="p">():</span>
                     <span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -1198,6 +1207,18 @@
         <span class="n">_trace_init</span><span class="p">(</span><span class="s2">"_setup_net_list_widget"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_net_list_widget</span><span class="p">()</span>
 
+        <span class="c1"># Re-sweep the dock tab bars (scroll buttons) whenever any dock is</span>
+        <span class="c1"># re-tabbed or moved. Connected here, after every dock exists, so the</span>
+        <span class="c1"># late-created Chips/Layers/Log docks are covered too; the first</span>
+        <span class="c1"># sweep runs in showEvent.</span>
+        <span class="k">for</span> <span class="n">dock</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QDockWidget</span><span class="p">):</span>
+            <span class="n">dock</span><span class="o">.</span><span class="n">dockLocationChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">_schedule_dock_tab_scrolling</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">tabifiedDockWidgetActivated</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">_schedule_dock_tab_scrolling</span>
+        <span class="p">)</span>
+
         <span class="c1"># Show and raise — single call after all docks are wired.</span>
         <span class="n">_trace_init</span><span class="p">(</span><span class="s2">"main_window.show()"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1308,9 +1329,23 @@
         <span class="c1"># ``set_design`` can be called on a partially built GUI.</span>
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"chips_model"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">chips_model</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"chips_window"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">chips_window</span><span class="o">.</span><span class="n">expandAll</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">chips_window</span><span class="o">.</span><span class="n">autoresize_columns</span><span class="p">()</span>
+            <span class="n">chips_window</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"chips_window"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">chips_window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Deferred, not inline: ``set_design`` runs inside</span>
+                <span class="c1"># ``__init__`` before the window is shown, and ``expandAll``</span>
+                <span class="c1"># there drives per-row sizing (``resize_on_expand`` -&gt;</span>
+                <span class="c1"># model ``index``/``data`` with raw internal pointers) on a</span>
+                <span class="c1"># never-painted view. That is where a Windows CI crash</span>
+                <span class="c1"># landed (access violation, ``resize_on_expand`` from</span>
+                <span class="c1"># ``set_design``). The model's own poll tick re-expands</span>
+                <span class="c1"># ~500 ms later anyway; this just avoids a blank pane until</span>
+                <span class="c1"># then, once the event loop is running.</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">_expand_chips</span><span class="p">(</span><span class="n">view</span><span class="o">=</span><span class="n">chips_window</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">qt_alive</span><span class="p">(</span><span class="n">view</span><span class="p">):</span>
+                        <span class="n">view</span><span class="o">.</span><span class="n">expandAll</span><span class="p">()</span>
+                        <span class="n">view</span><span class="o">.</span><span class="n">autoresize_columns</span><span class="p">()</span>
+
+                <span class="n">single_shot</span><span class="p">(</span><span class="n">chips_window</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">_expand_chips</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"layers_window"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">layers_window</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
 
@@ -1385,21 +1420,6 @@
         <span class="c1"># (``dockDesign``) is only useful once components exist; raising</span>
         <span class="c1"># it first showed a near-empty pane on first open.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="o">.</span><span class="n">raise_</span><span class="p">()</span>
-        <span class="c1"># Re-sweep the dock tab bars (scroll buttons) whenever a dock is</span>
-        <span class="c1"># re-tabbed; the first sweep runs in showEvent.</span>
-        <span class="k">for</span> <span class="n">dock</span> <span class="ow">in</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockComponent</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockLibrary</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockConnectors</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockVariables</span><span class="p">,</span>
-        <span class="p">):</span>
-            <span class="n">dock</span><span class="o">.</span><span class="n">dockLocationChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">_schedule_dock_tab_scrolling</span>
-            <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">tabifiedDockWidgetActivated</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">_schedule_dock_tab_scrolling</span>
-        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">resizeDocks</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dockDesign</span><span class="p">],</span> <span class="p">[</span><span class="mi">350</span><span class="p">],</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
 
         <span class="c1"># These four are tabified together, so the tab bar already names each</span>
