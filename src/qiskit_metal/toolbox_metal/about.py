@@ -25,7 +25,6 @@ from pathlib import Path
 from typing import Union
 
 import numpy
-import qutip
 
 from qiskit_metal.toolbox_python.display import Color, style_colon_list
 
@@ -50,6 +49,7 @@ def about():
         PYSIDE_VERSION_STR = "Not installed"
 
     import matplotlib
+    import qutip
 
     try:
         from sip import SIP_VERSION_STR

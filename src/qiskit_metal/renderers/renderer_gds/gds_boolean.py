@@ -11,11 +11,15 @@
 # that they have been altered from the originals.
 """Boolean operations for GDS export that stay correct on whole chips."""
 
+from __future__ import annotations
+
 import contextlib
 import os
 import sys
 
-import gdstk
+from qiskit_metal.toolbox_python._lazy import LazyModule
+
+gdstk = LazyModule("gdstk")
 import numpy as np
 import shapely
 from shapely.geometry import Polygon, box

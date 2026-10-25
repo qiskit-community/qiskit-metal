@@ -18,8 +18,10 @@ from typing import Dict as Dict_
 from typing import List
 
 import numpy as np
-import qutip
-from qutip import Qobj
+
+from qiskit_metal.toolbox_python._lazy import LazyModule
+
+qutip = LazyModule("qutip")
 
 
 def basis_state_on(mode_size: list[int], excitations: dict[int, int]):
@@ -129,10 +131,10 @@ def extract_energies(
     # number of target states. `.full()` converts the Qobj product to a numpy
     # array; required for qutip>=5 where Qobj no longer supports np.absolute.
     overlap_single = np.absolute(
-        (Qobj(evecs_dag_mat) * Qobj(single_excitation_states_mat)).full()
+        (qutip.Qobj(evecs_dag_mat) * qutip.Qobj(single_excitation_states_mat)).full()
     )
     overlap_double = np.absolute(
-        (Qobj(evecs_dag_mat) * Qobj(double_excitation_states_mat)).full()
+        (qutip.Qobj(evecs_dag_mat) * qutip.Qobj(double_excitation_states_mat)).full()
     )
 
     # find the index of the eigenvector that is closest to each target state

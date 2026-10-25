@@ -20,7 +20,6 @@ get the Ej, Ec or use input Ej, Ec to find the spectrum of the Cooper Pair Box.
 import warnings
 
 import numpy as np
-import qutip as qt
 from scipy import linalg
 import scipy.optimize as opt
 
@@ -268,6 +267,8 @@ class Hcpb:
             transmon
         """
         ham = np.diag(self.evals[:n_transmon] - self.evals[0])
+        import qutip as qt
+
         return qt.Qobj(ham)
 
     def n_to_qutip(self, n_transmon: int, thresh=None):
@@ -300,6 +301,8 @@ class Hcpb:
                         if abs(val) < thresh:
                             val = 0
                     n_op[i, j] = val
+        import qutip as qt
+
         return qt.Qobj(n_op)
 
     def params_from_spectrum(self, f01: float, anharm: float, **kwargs):
