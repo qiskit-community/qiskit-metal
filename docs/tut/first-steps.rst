@@ -13,4 +13,3 @@ Place a component, build a four-qubit chip, save the design, and compare variant
     1-Overview/1.3-Build-a-4-qubit-chip
     1-Overview/1.4-Saving-Your-Chip-Design
     1-Overview/1.5-Parametric-design---iterate-and-compare
-    quick-topics/Opening-documentation

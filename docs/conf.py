@@ -99,8 +99,50 @@ rst_prolog = f"""
 
 """
 
+# Archived notebooks: docname -> (reason, replacement as RST). They keep their
+# URLs and are listed on ``archive.rst``; ``nbsphinx_prolog`` shows a banner.
+qm_archived = {
+    "tut/quick-topics/Testing-QComponents-for-overlap-and-collisions": (
+        "It is deprecated in favor of ``qiskit_metal.validation``.",
+        ":doc:`2.24 Design rule checking </tut/2-From-components-to-chip/2.24-Design-rule-checking>`",
+    ),
+    "tut/4-Analysis/4.33-Transmon-analytics": (
+        "It plots the same eigenvalue figure as 4.32.",
+        ":doc:`4.32 </tut/4-Analysis/4.32-Transmon-analytics-HCPB>`",
+    ),
+    "circuit-examples/full-design-flow-examples/A.5-Launch-video-example": (
+        "It follows the same Ansys LOM/EPR pattern as A.7.",
+        ":doc:`A.7 </circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop>`",
+    ),
+    "circuit-examples/full-design-flow-examples/A.6-Hackathon-exercise-South-Korea-2020": (
+        "It follows the same pattern as A.7.",
+        ":doc:`A.7 </circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop>`",
+    ),
+    "circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip": (
+        "It covers the same four-qubit layout as A.3 and 2.21.",
+        ":doc:`A.3 </tut/full-design-examples/A.3-Four-qubit-multiplexed-readout>`",
+    ),
+    "circuit-examples/A.Qubits/07-Transmon_floating_cl": (
+        "It demonstrates the same class as the Charge Line example.",
+        ":doc:`Charge Line </circuit-examples/E.Input-output-coupling/43-TransmonPocketCL>`",
+    ),
+    "tut/quick-topics/Opening-documentation": (
+        "Its content is in the FAQ.",
+        ":ref:`FAQ <docs>`",
+    ),
+}
+
 nbsphinx_prolog = """
 {% set docname = env.doc2path(env.docname, base=None) %}
+
+{% if env.docname in env.config.qm_archived %}
+{% set archived = env.config.qm_archived[env.docname] %}
+.. admonition:: Archived notebook
+
+    {{ archived[0] }} Use {{ archived[1] }} instead.
+    This page is kept at its URL and is not part of the
+    :doc:`learning path </tut/index>`; see :doc:`/archive`.
+{% endif %}
 
 .. only:: html
 
@@ -378,6 +420,7 @@ def _regenerate_qlibrary_assets(app):
 
 
 def setup(app):
+    app.add_config_value("qm_archived", {}, "env")
     app.connect("builder-inited", _regenerate_qlibrary_assets)
 
 

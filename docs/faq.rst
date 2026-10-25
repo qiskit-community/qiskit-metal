@@ -243,6 +243,14 @@ You can resolve other warnings by deleting the following directories and rebuild
    * ``docs/build``
    * ``docs/stubs``
 
+**Q: How do I open the documentation from Python, or build it myself?**
+
+**A:** The documentation is at `<https://qiskit-community.github.io/qiskit-metal/>`_.
+``from qiskit_metal import open_docs; open_docs()`` opens that address in a web
+browser. To build the documentation locally, run ``tox -e docs`` from the
+repository root (about 15 minutes with notebooks executed, much less
+otherwise); the HTML ends up in ``docs/_build/html``.
+
 **Q: How do I download a tutorial?**
 
 **A:** All tutorial notebooks live under
