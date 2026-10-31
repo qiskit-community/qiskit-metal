@@ -63,7 +63,9 @@ class TransmonPocketTeeth(BaseQubit):
         * pocket_rise    - How far up or down relative to the center of the transmon should we
           elevate the cpw connection point on the ground plane
         * loc_W / H      - which 'quadrant' of the pocket the connector is set to, +/- 1 (check
-          if diagram is correct)
+          if diagram is correct). loc_W=0 puts the connector at the centre. With loc_H=+1
+          it sits above the top pad, which then gets the teeth. Numbers and strings such
+          as "0" and "+1" both work
 
 
     Sketch:
@@ -194,12 +196,11 @@ class TransmonPocketTeeth(BaseQubit):
             +coupled_pad_height / 2.0 + pad_height + pad_gap / 2.0 - pad_height / 2,
         )
         pad_top_tmp = draw.union([circ_left_top, pad_top, circ_right_top])
-        # The coupler pads are only created if low_W=0 and low_H=+1
+        # The coupler pads are only created if loc_W=0 and loc_H=+1.
+        # Compare as numbers: the defaults are the strings "+1".
         for name in self.options.connection_pads:
-            if (
-                self.options.connection_pads[name]["loc_W"] == 0
-                and self.options.connection_pads[name]["loc_H"] == +1
-            ):
+            pc = p.connection_pads[name]
+            if float(pc.loc_W) == 0 and float(pc.loc_H) == +1:
                 pad_top_tmp = draw.union(
                     [
                         circ_left_top,
