@@ -6,6 +6,12 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Unreleased
+
+### Fixed
+
+- **`mathieu_level` at ng = 0 and ng = 1/2** (#1252). It called `scipy.special.mathieu_a`/`mathieu_b`, which up to scipy 1.18.1 return the characteristic value of another order in narrow windows of q (scipy#4479, scipy#14526): for example E_5 came out equal to E_3 at Ej/Ec = 41.8, ng = 1/2. It now uses the Hill-matrix eigenvalue for every ng, which matches a charge-basis diagonalization for all 207,620 levels in a scan of Ej/Ec from 1 to 520 (ng in {0, 1/2}, m = 0..9). Affects `Hcpb_analytic.evalue_k` (default ng = 1/2) and `transmon_analytics.transmon_eigenvalue`. Reported, with the fix, by @robertolocatelli81-dev.
+
 ## Quantum Metal v0.10.0 (Python 3.11+, analysis and geometry fixes, docs overhaul)
 
 Minor release. Python 3.11 is now the minimum (3.10 reached end of life in

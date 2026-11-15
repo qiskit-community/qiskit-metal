@@ -22,21 +22,8 @@ Key References:
 
 import numpy as np
 from scipy import linalg
-from scipy.special import mathieu_a, mathieu_b
 
 __all__ = ["Hcpb_analytic", "mathieu_level"]
-
-
-def _koch_index(m, ng):
-    """2 [ng + k(m, ng)] of Koch Eq. (2.11), for -1/2 <= ng <= 1/2."""
-    if ng == 0:
-        return m + 1.0 - ((m + 1.0) % 2.0)
-    return (
-        m
-        + 1.0
-        - ((m + 1.0) % 2.0)
-        + 2.0 * ng * ((-1.0) ** (m - 0.5 * (np.sign(ng) - 1.0)))
-    )
 
 
 def mathieu_level(m: int, ng: float, Ej: float, Ec: float) -> float:
@@ -46,15 +33,15 @@ def mathieu_level(m: int, ng: float, Ej: float, Ec: float) -> float:
     :math:`q = -E_J/2E_C`, where :math:`a_\nu` is the characteristic value
     of real order :math:`\nu`.
 
-    * At integer order (``ng`` = 0 or 1/2 modulo 1) the even and odd
-      solutions are degenerate in the index: even ``m`` uses
-      ``scipy.special.mathieu_a`` and odd ``m`` uses ``mathieu_b`` of the
-      same order (ng = 0: :math:`a_m`, :math:`b_{m+1}`; ng = 1/2:
-      :math:`a_{m+1}`, :math:`b_m`).
-    * scipy has no characteristic values of non-integer order, so for other
-      ``ng`` the value is computed from the Hill (Fourier) matrix of
-      Mathieu's equation with Floquet exponent :math:`2 n_g`, whose
-      ``m``-th eigenvalue is :math:`a_{2[n_g + k(m, n_g)]}(q)`.
+    The value is the ``m``-th eigenvalue of the Hill (Fourier) matrix of
+    Mathieu's equation with Floquet exponent :math:`2 n_g`, which is
+    :math:`a_{2[n_g + k(m, n_g)]}(q)` for every ``ng``, integer orders
+    included (ng = 0: :math:`a_0, b_2, a_2, \dots`; ng = 1/2:
+    :math:`a_1, b_1, a_3, \dots`). ``scipy.special.mathieu_a`` and
+    ``mathieu_b`` are not used: up to scipy 1.18.1 they return the value of
+    another order in narrow windows of ``q`` (scipy#4479, scipy#14526, fixed
+    on scipy main by scipy#25128), e.g. ``mathieu_b(5, -20.9)`` equals
+    ``mathieu_b(3, -20.9)`` (#1252).
 
     ``ng`` is reduced modulo 1 into [-1/2, 1/2] first (the spectrum has
     period 1 in ``ng``).
@@ -71,23 +58,17 @@ def mathieu_level(m: int, ng: float, Ej: float, Ec: float) -> float:
     m = int(m)
     ng = ((float(ng) + 0.5) % 1.0) - 0.5
     q = -0.5 * Ej / Ec
-    index = _koch_index(m, ng)
-    order = round(index)
-    if abs(index - order) < 1e-12:
-        order = abs(int(order))
-        value = mathieu_a(order, q) if m % 2 == 0 else mathieu_b(order, q)
-    else:
-        # Hill matrix: diag (2 (n - ng))^2, off-diagonal q, n in [-N, N].
-        ncut = 30 + m
-        n = np.arange(-ncut, ncut + 1)
-        evals = linalg.eigh_tridiagonal(
-            (2.0 * (n - ng)) ** 2,
-            q * np.ones(2 * ncut),
-            select="i",
-            select_range=(m, m),
-            eigvals_only=True,
-        )
-        value = evals[0]
+    # Hill matrix: diag (2 (n - ng))^2, off-diagonal q, n in [-N, N].
+    ncut = 30 + m
+    n = np.arange(-ncut, ncut + 1)
+    evals = linalg.eigh_tridiagonal(
+        (2.0 * (n - ng)) ** 2,
+        q * np.ones(2 * ncut),
+        select="i",
+        select_range=(m, m),
+        eigvals_only=True,
+    )
+    value = evals[0]
     return Ec * value
 
 
