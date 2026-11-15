@@ -1,14 +1,56 @@
 .. _headless-usage:
 
 ==========================================
-Using Quantum Metal without the Qt GUI
+Desktop GUI or headless
 ==========================================
 
-You do not need the desktop Qt GUI (``MetalGUI``) to use Quantum
-Metal. The full API — designs, components, renderers, analyses — works
-headlessly in a plain Python interpreter, a Jupyter notebook, or a
-cloud notebook environment (Colab, Binder, JupyterLab on a shared
-server). The Qt GUI is one *interface* to the API, not a requirement.
+Quantum Metal has two ways to look at a design. Both use the same Python
+API (designs, components, renderers, analyses); they differ only in where
+the picture appears.
+
+* **The desktop GUI** (``MetalGUI``) is a Qt window with a component
+  library, an options editor, a log and a live plot. Pick this when you
+  work at a laptop or workstation and want to click on, edit and rebuild
+  components interactively. It needs the optional ``[gui]`` install (PySide6).
+* **Headless** means no Qt window. ``qm.view(design)`` returns a matplotlib
+  figure, and ``qm.gui(design)`` returns an inline viewer with the same
+  ``rebuild()``, ``screenshot()`` and ``edit_component(...)`` methods. It
+  runs in a plain script, a Jupyter notebook, a CI job, Colab or Binder,
+  and it is what ``pip install quantum-metal`` gives you by default.
+
+.. grid:: 1 1 2 2
+   :gutter: 3
+   :class-container: qm-pair
+
+   .. grid-item::
+
+      .. figure:: _static/workflow/design-gui.png
+         :alt: The Quantum Metal desktop GUI: component library and options editor on the left, a plot of one transmon qubit in the center, a log at the bottom.
+         :width: 100%
+
+         Desktop GUI: ``gui = qm.gui(design)`` opens this window.
+
+   .. grid-item::
+
+      .. figure:: images/headless-view.png
+         :alt: A matplotlib plot of the same transmon qubit, two blue pads inside a gray pocket, with plain axes and no toolbar or panels.
+         :width: 100%
+
+         Headless: ``qm.view(design)`` draws the same layout inline.
+
+What you give up without the GUI is the point-and-click editing: the
+dockable panels and the interactive pan/zoom toolbar. Everything else is
+identical. Designs, GDS export, renderers and analyses do not depend on Qt.
+
+How ``qm.gui(design)`` chooses
+==============================
+
+``qm.gui(design)`` returns the desktop ``MetalGUI`` when Qt and a display
+are available, and the inline ``MetalGUIHeadless`` otherwise: no PySide6
+installed, a Linux session without ``DISPLAY``, Colab, Binder, or
+``QISKIT_METAL_HEADLESS=1``. ``qm.gui(design, force_headless=True)`` forces
+the inline viewer for one call. A tutorial written with ``qm.gui(design)``
+therefore runs unchanged on a laptop and in the cloud.
 
 .. rubric:: Run the tutorials in your browser
 
@@ -20,17 +62,12 @@ server). The Qt GUI is one *interface* to the API, not a requirement.
    :target: https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=docs%2Ftut%2F1-Overview%2F1.1-Quick-start.ipynb
    :alt: Open Quick Start in Binder
 
-In Colab / Binder the first cell installs the lite wheel
-(``pip install -q quantum-metal``). The tutorial then calls
-``gui = qm.gui(design)`` — a factory that returns the desktop
-``MetalGUI`` when a display is available and a Qt-free
-``MetalGUIHeadless`` (inline matplotlib renderer with the same
-``gui.rebuild()`` / ``gui.screenshot()`` / ``gui.edit_component(...)``
-surface) when it isn't. The same notebook runs in both environments
-unchanged.
+In Colab and Binder the first cell installs the lite wheel
+(``pip install -q quantum-metal``), and the tutorial's ``qm.gui(design)``
+call picks the inline viewer.
 
-Quick start
-===========
+Render without Qt
+=================
 
 The shortest path to rendering a design without Qt:
 

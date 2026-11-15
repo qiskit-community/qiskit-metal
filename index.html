@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="_static/nbsphinx-gallery.css?v=26227f6e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=7cf023f8" />
+    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=6ae7c48f" />
     
     
 
@@ -193,7 +193,6 @@
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Quantum Metal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="choose-your-path.html">Choose Your Path</a></li>
-<li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Running Without the Desktop GUI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="orchestration.html">Scripting and Agent Use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on Quantum Metal</a></li>
 </ul>
@@ -317,6 +316,7 @@
 <li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization Methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simulation-pathways.html">Simulation Pathways</a></li>
 <li class="toctree-l1"><a class="reference internal" href="klayout.html">GDS in KLayout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Desktop GUI or Headless</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
@@ -497,18 +497,52 @@
           <section id="qiskit-metal-is-now-quantum-metal">
 <h1>Qiskit Metal is now Quantum Metal<a class="headerlink" href="#qiskit-metal-is-now-quantum-metal" title="Link to this heading">¶</a></h1>
 <div class="qm-hero docutils container">
-<img alt="Quantum Metal logo" class="qm-hero-logo" src="_images/logo1.png" />
-<p><strong>Design superconducting quantum chips in Python, then simulate them.</strong></p>
+<div class="qm-hero-art" aria-hidden="true">
+<svg viewBox="0 0 1200 380" preserveAspectRatio="xMidYMid slice" focusable="false">
+  <g>
+    <path class="pad" d="M140 140h20v-20h20v20h20v20h-20v20h-20v-20h-20z"/>
+    <path class="tr" pathLength="1" style="--i:0" d="M140 140h20v-20h20v20h20v20h-20v20h-20v-20h-20z"/>
+    <path class="tr" pathLength="1" style="--i:1" d="M170 180v90h140"/>
+    <path class="tr" pathLength="1" style="--i:2" d="M-20 300h330h30v-90h40v90h40v-90h40v90h40v-90h40v90h30h140"/>
+    <path class="tr" pathLength="1" style="--i:3" d="M60 60h60v40M60 60v-40"/>
+    <path class="pad" d="M40 4h40v32h-40z"/>
+    <path class="tr" pathLength="1" style="--i:4" d="M700 330h520"/>
+    <path class="tr" pathLength="1" style="--i:5" d="M780 330v-70h40v70m40 0v-70h40v70m40 0v-70h40v70"/>
+    <path class="tr" pathLength="1" style="--i:6" d="M1100 250h20v-20h20v20h20v20h-20v20h-20v-20h-20z"/>
+    <path class="pad" d="M1100 250h20v-20h20v20h20v20h-20v20h-20v-20h-20z"/>
+  </g>
+  <g>
+    <circle class="sph" cx="1000" cy="120" r="64"/>
+    <ellipse class="sph sph-dash" cx="1000" cy="120" rx="64" ry="20"/>
+    <ellipse class="sph sph-dash" cx="1000" cy="120" rx="20" ry="64"/>
+    <path class="vec" d="M1000 120v-64"/>
+    <circle class="tip" r="4.5" cx="0" cy="0"/>
+  </g>
+</svg>
+</div><p><strong>Design superconducting quantum chips in Python, then simulate them.</strong></p>
 <p>Open source and community-maintained. One Python API, with an optional desktop GUI,
-takes a chip from layout to Hamiltonian. No Qt required: it runs in a notebook
-or a plain script.</p>
+takes a chip from layout to Hamiltonian.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 qm-hero-buttons docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-column docutils">
+<p><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-primary sd-shadow-sm reference internal" href="quickstart.html"><span>Quick start</span></a></span></p>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<p><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference internal" href="tut/index.html"><span>Learn: the tutorial course</span></a></span></p>
+</div>
+</div>
+</div>
+<div class="qm-hero-shot docutils container">
+<a class="reference internal image-reference" href="_images/logo1.webp"><img alt="Quantum Metal: the desktop GUI showing a chip layout, with capacitance, eigenmode and S-parameter analysis panels." src="_images/logo1.webp" style="width: 1800px; height: 931px;" />
+</a>
+</div>
 </div>
 <div class="qm-section docutils container">
 <p class="qm-h2 rubric">What is Quantum Metal?</p>
 <p>Designing quantum devices is a multi-step process that connects traditionally
 disparate worlds. Quantum Metal automates it, from layout to Hamiltonian, in
 a simple, open, community-driven framework.</p>
-<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 qm-steps4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-4 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
@@ -556,54 +590,6 @@ Analyze</div>
 <a class="reference internal" href="ecosystem.html"><span class="doc">SQuADDS, SQDMetal, QDesignOptimizer and more</span></a>.</p>
 </div>
 <div class="qm-section docutils container">
-<p class="qm-h2 rubric">Community</p>
-<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
-<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-4 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Community Discord</div>
-<p class="sd-card-text">Fastest way to reach maintainers and the broader community.</p>
-<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference external" href="https://discord.gg/FPNybyfpxd"><span>Join Discord</span></a></span></p>
-</div>
-</div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Qiskit Slack #metal</div>
-<p class="sd-card-text">Former main community workspace, being replaced by Discord.</p>
-<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference external" href="https://qiskit.slack.com/archives/C01R8KP5WP7"><span>Join #metal on Slack</span></a></span></p>
-</div>
-</div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Quantum Device Workshop (QDW)</div>
-<p class="sd-card-text">Annual workshop hosted at UCLA/USC.</p>
-<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference external" href="https://qdc-qcsa.org/qdw/2026/info"><span>QDW 2026 information</span></a></span></p>
-</div>
-</div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Quantum Device Consortium (QDC)</div>
-<p class="sd-card-text">Community organization stewarding Quantum Metal.</p>
-<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference external" href="https://qdc-qcsa.vercel.app"><span>QDC website</span></a></span></p>
-<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-secondary reference external" href="https://discord.gg/FPNybyfpxd"><span>QDC Discord</span></a></span></p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="qm-section docutils container">
 <p class="qm-h2 rubric">Devices designed with Quantum Metal</p>
 <p>Chips designed or rebuilt with Quantum Metal, from community fabrication to
 published processors. More device images, papers and theses are on
@@ -633,26 +619,27 @@ published processors. More device images, papers and theses are on
 </a>
 </div>
 </div>
-<div class="sd-container-fluid sd-sphinx-override sd-mb-4 qm-hero-buttons docutils">
-<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-3 sd-row-cols-lg-3 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
-<div class="sd-col sd-d-flex-column docutils">
-<p><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-primary sd-shadow-sm reference internal" href="quickstart.html"><span>Quick start</span></a></span></p>
-</div>
-<div class="sd-col sd-d-flex-column docutils">
-<p><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference internal" href="built-with-metal.html"><span>Devices and papers</span></a></span></p>
-</div>
-<div class="sd-col sd-d-flex-column docutils">
-<p><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference internal" href="tut/index.html"><span>Learn: the tutorial course</span></a></span></p>
+<div class="qm-cta docutils container">
+<p><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference internal" href="built-with-metal.html"><span>Devices and papers</span></a></p>
 </div>
 </div>
+<div class="qm-section docutils container">
+<p class="qm-h2 rubric">Community</p>
+<p>Questions, ideas and bug reports are welcome.</p>
+<div class="qm-chips docutils container">
+<ul class="simple">
+<li><p><a class="reference external" href="https://discord.gg/FPNybyfpxd">Discord</a></p></li>
+<li><p><a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues">GitHub issues</a></p></li>
+<li><p><a class="reference external" href="https://qdc-qcsa.org/qdw/2026/info">Quantum Device Workshop</a></p></li>
+<li><p><a class="reference external" href="https://qdc-qcsa.vercel.app">Quantum Device Consortium</a></p></li>
+</ul>
 </div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><strong>Rebrand in progress: Qiskit Metal → Quantum Metal.</strong>
 The PyPI package is <code class="docutils literal notranslate"><span class="pre">quantum-metal</span></code> (v0.5+).
-A future release will rename the import path from <code class="docutils literal notranslate"><span class="pre">qiskit_metal</span></code>
-to <code class="docutils literal notranslate"><span class="pre">quantum_metal</span></code>; no version has been set for that yet.
+A future release will rename the import path from <code class="docutils literal notranslate"><span class="pre">qiskit_metal</span></code> to <code class="docutils literal notranslate"><span class="pre">quantum_metal</span></code>; no version has been set for that yet.
 See <a class="reference internal" href="installation.html"><span class="doc">Installation</span></a>.</p>
 </div>
 <div class="toctree-wrapper compound">

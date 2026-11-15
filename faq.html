@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fc6d6d93" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=7cf023f8" />
+    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=6ae7c48f" />
     
     
 
@@ -192,7 +192,6 @@
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Quantum Metal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="choose-your-path.html">Choose Your Path</a></li>
-<li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Running Without the Desktop GUI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="orchestration.html">Scripting and Agent Use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on Quantum Metal</a></li>
 </ul>
@@ -316,6 +315,7 @@
 <li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization Methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simulation-pathways.html">Simulation Pathways</a></li>
 <li class="toctree-l1"><a class="reference internal" href="klayout.html">GDS in KLayout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Desktop GUI or Headless</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
@@ -502,7 +502,7 @@
 macOS 10.14, pre-v0.5 <code class="docutils literal notranslate"><span class="pre">qiskit-metal</span></code> PyPI package). The current supported
 stack is <strong>Python 3.11–3.14</strong> with <strong>PySide6</strong> (only when the <code class="docutils literal notranslate"><span class="pre">[gui]</span></code>
 extra is installed). If you hit a problem on the current stack and don’t
-see it here, check <a class="reference internal" href="installation.html"><span class="doc">Installation</span></a>, <a class="reference internal" href="headless-usage.html"><span class="doc">Using Quantum Metal without the Qt GUI</span></a>, or open an
+see it here, check <a class="reference internal" href="installation.html"><span class="doc">Installation</span></a>, <a class="reference internal" href="headless-usage.html"><span class="doc">Desktop GUI or headless</span></a>, or open an
 issue on <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues">GitHub</a>.</p>
 </div>
 <section id="setting-up-environment">
@@ -577,7 +577,7 @@ Then open the applicable settings.json in your VS Code. (See how to open command
 <p><strong>A:</strong> it has been observed for pip installation on fresh conda environments that this error might show up: <code class="docutils literal notranslate"><span class="pre">Could</span> <span class="pre">not</span> <span class="pre">load</span> <span class="pre">the</span> <span class="pre">Qt</span> <span class="pre">platform</span> <span class="pre">plugin</span> <span class="pre">&quot;xcb&quot;</span> <span class="pre">in</span> <span class="pre">&quot;&quot;</span> <span class="pre">even</span> <span class="pre">though</span> <span class="pre">it</span> <span class="pre">was</span> <span class="pre">found.</span></code></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>These errors come from PySide6 / Qt starting up — they only fire if you instantiate <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> or import code that pulls Qt. If you’re on the lite install (v0.7.0+ <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code> without <code class="docutils literal notranslate"><span class="pre">[gui]</span></code>) and you see one of these, you either need <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;quantum-metal[gui]&quot;</span></code> or you should switch to the headless <code class="docutils literal notranslate"><span class="pre">qm.view(design)</span></code> path — see <a class="reference internal" href="headless-usage.html"><span class="doc">Using Quantum Metal without the Qt GUI</span></a>.</p>
+<p>These errors come from PySide6 / Qt starting up — they only fire if you instantiate <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> or import code that pulls Qt. If you’re on the lite install (v0.7.0+ <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code> without <code class="docutils literal notranslate"><span class="pre">[gui]</span></code>) and you see one of these, you either need <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;quantum-metal[gui]&quot;</span></code> or you should switch to the headless <code class="docutils literal notranslate"><span class="pre">qm.view(design)</span></code> path — see <a class="reference internal" href="headless-usage.html"><span class="doc">Desktop GUI or headless</span></a>.</p>
 </div>
 <p>For <code class="docutils literal notranslate"><span class="pre">xcb</span></code>: based on <a class="reference external" href="https://forum.qt.io/topic/93247/qt-qpa-plugin-could-not-load-the-qt-platform-plugin-xcb-in-even-though-it-was-found">this source</a>, you might be able to resolve this error by installing the dependency with <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libxcb-xinerama0</span></code>.</p>
 <p>For <code class="docutils literal notranslate"><span class="pre">windows</span></code>: this error intermittently shows in conda environments. It was found that the problem resolves if PySide6 is installed manually through conda: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">pyside6</span></code>.</p>
@@ -607,7 +607,7 @@ crashes); opt out on healthy hardware with
 </ul>
 <p>If the GUI is unusable on your machine, everything except interactive
 editing works without Qt: <code class="docutils literal notranslate"><span class="pre">qm.view(design)</span></code> renders any design
-headlessly — see <a class="reference internal" href="headless-usage.html"><span class="doc">Using Quantum Metal without the Qt GUI</span></a>.</p>
+headlessly — see <a class="reference internal" href="headless-usage.html"><span class="doc">Desktop GUI or headless</span></a>.</p>
 <p><strong>Q: Why am I not able to start Jupyter Lab in the new environment?</strong></p>
 <p><strong>A:</strong> Based on: <a class="reference external" href="https://anaconda.org/conda-forge/jupyterlab">this</a>, install Jupyter lab by</p>
 <p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">jupyterlab</span></code></p>
@@ -631,7 +631,7 @@ Python). Resources for learning PySide6 / Qt:</p>
 <li><p><a class="reference external" href="https://realpython.com/python-pyqt-gui-calculator/">Real Python — PyQt/PySide GUI tutorial</a> (PyQt; concepts transfer to PySide6)</p></li>
 </ul>
 <p>If you’re working on the lite install (no Qt), see the headless workflow at
-<a class="reference internal" href="headless-usage.html"><span class="doc">Using Quantum Metal without the Qt GUI</span></a> instead — a Jupyter-widgets-based viewer is planned as
+<a class="reference internal" href="headless-usage.html"><span class="doc">Desktop GUI or headless</span></a> instead — a Jupyter-widgets-based viewer is planned as
 a lighter alternative to the desktop GUI (see
 <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/blob/main/ROADMAP.md">ROADMAP.md</a>).</p>
 <p><strong>Q: The GUI opens and closes immediately when I run my script with</strong>

@@ -3,16 +3,16 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="apple-touch-icon" href="_static/apple-touch-icon.png"><link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Scripting Quantum Metal and agent use" href="orchestration.html"><link rel="prev" title="Choose your path" href="choose-your-path.html">
+<link rel="apple-touch-icon" href="_static/apple-touch-icon.png"><link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="GUI Navigation &amp; Shortcuts" href="gui-shortcuts.html"><link rel="prev" title="Viewing and checking GDS in KLayout" href="klayout.html">
 
     <link rel="shortcut icon" href="_static/favicon.ico"><!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 -->
-        <title>Using Quantum Metal without the Qt GUI - Quantum Metal 0.10.0</title>
+        <title>Desktop GUI or headless - Quantum Metal 0.10.0</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fc6d6d93" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=7cf023f8" />
+    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=6ae7c48f" />
     
     
 
@@ -188,11 +188,10 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Quantum Metal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="choose-your-path.html">Choose Your Path</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Running Without the Desktop GUI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="orchestration.html">Scripting and Agent Use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on Quantum Metal</a></li>
 </ul>
@@ -311,11 +310,12 @@
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">How It Works</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization Methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simulation-pathways.html">Simulation Pathways</a></li>
 <li class="toctree-l1"><a class="reference internal" href="klayout.html">GDS in KLayout</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Desktop GUI or Headless</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
@@ -493,28 +493,66 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="using-quantum-metal-without-the-qt-gui">
-<span id="headless-usage"></span><h1>Using Quantum Metal without the Qt GUI<a class="headerlink" href="#using-quantum-metal-without-the-qt-gui" title="Link to this heading">¶</a></h1>
-<p>You do not need the desktop Qt GUI (<code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>) to use Quantum
-Metal. The full API — designs, components, renderers, analyses — works
-headlessly in a plain Python interpreter, a Jupyter notebook, or a
-cloud notebook environment (Colab, Binder, JupyterLab on a shared
-server). The Qt GUI is one <em>interface</em> to the API, not a requirement.</p>
+          <section id="desktop-gui-or-headless">
+<span id="headless-usage"></span><h1>Desktop GUI or headless<a class="headerlink" href="#desktop-gui-or-headless" title="Link to this heading">¶</a></h1>
+<p>Quantum Metal has two ways to look at a design. Both use the same Python
+API (designs, components, renderers, analyses); they differ only in where
+the picture appears.</p>
+<ul class="simple">
+<li><p><strong>The desktop GUI</strong> (<code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>) is a Qt window with a component
+library, an options editor, a log and a live plot. Pick this when you
+work at a laptop or workstation and want to click on, edit and rebuild
+components interactively. It needs the optional <code class="docutils literal notranslate"><span class="pre">[gui]</span></code> install (PySide6).</p></li>
+<li><p><strong>Headless</strong> means no Qt window. <code class="docutils literal notranslate"><span class="pre">qm.view(design)</span></code> returns a matplotlib
+figure, and <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> returns an inline viewer with the same
+<code class="docutils literal notranslate"><span class="pre">rebuild()</span></code>, <code class="docutils literal notranslate"><span class="pre">screenshot()</span></code> and <code class="docutils literal notranslate"><span class="pre">edit_component(...)</span></code> methods. It
+runs in a plain script, a Jupyter notebook, a CI job, Colab or Binder,
+and it is what <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code> gives you by default.</p></li>
+</ul>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 qm-pair docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="_images/design-gui.png"><img alt="The Quantum Metal desktop GUI: component library and options editor on the left, a plot of one transmon qubit in the center, a log at the bottom." src="_images/design-gui.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Desktop GUI: <code class="docutils literal notranslate"><span class="pre">gui</span> <span class="pre">=</span> <span class="pre">qm.gui(design)</span></code> opens this window.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-default" id="id2">
+<a class="reference internal image-reference" href="_images/headless-view.png"><img alt="A matplotlib plot of the same transmon qubit, two blue pads inside a gray pocket, with plain axes and no toolbar or panels." src="_images/headless-view.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Headless: <code class="docutils literal notranslate"><span class="pre">qm.view(design)</span></code> draws the same layout inline.</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>What you give up without the GUI is the point-and-click editing: the
+dockable panels and the interactive pan/zoom toolbar. Everything else is
+identical. Designs, GDS export, renderers and analyses do not depend on Qt.</p>
+<section id="how-qm-gui-design-chooses">
+<h2>How <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> chooses<a class="headerlink" href="#how-qm-gui-design-chooses" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> returns the desktop <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> when Qt and a display
+are available, and the inline <code class="docutils literal notranslate"><span class="pre">MetalGUIHeadless</span></code> otherwise: no PySide6
+installed, a Linux session without <code class="docutils literal notranslate"><span class="pre">DISPLAY</span></code>, Colab, Binder, or
+<code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_HEADLESS=1</span></code>. <code class="docutils literal notranslate"><span class="pre">qm.gui(design,</span> <span class="pre">force_headless=True)</span></code> forces
+the inline viewer for one call. A tutorial written with <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code>
+therefore runs unchanged on a laptop and in the cloud.</p>
 <p class="rubric">Run the tutorials in your browser</p>
 <a class="reference external image-reference" href="https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs/tut/1-Overview/1.1-Quick-start.ipynb"><img alt="Open Quick Start in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" />
 </a>
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=docs%2Ftut%2F1-Overview%2F1.1-Quick-start.ipynb"><img alt="Open Quick Start in Binder" src="https://mybinder.org/badge_logo.svg" />
 </a>
-<p>In Colab / Binder the first cell installs the lite wheel
-(<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-q</span> <span class="pre">quantum-metal</span></code>). The tutorial then calls
-<code class="docutils literal notranslate"><span class="pre">gui</span> <span class="pre">=</span> <span class="pre">qm.gui(design)</span></code> — a factory that returns the desktop
-<code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> when a display is available and a Qt-free
-<code class="docutils literal notranslate"><span class="pre">MetalGUIHeadless</span></code> (inline matplotlib renderer with the same
-<code class="docutils literal notranslate"><span class="pre">gui.rebuild()</span></code> / <code class="docutils literal notranslate"><span class="pre">gui.screenshot()</span></code> / <code class="docutils literal notranslate"><span class="pre">gui.edit_component(...)</span></code>
-surface) when it isn’t. The same notebook runs in both environments
-unchanged.</p>
-<section id="quick-start">
-<h2>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading">¶</a></h2>
+<p>In Colab and Binder the first cell installs the lite wheel
+(<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-q</span> <span class="pre">quantum-metal</span></code>), and the tutorial’s <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code>
+call picks the inline viewer.</p>
+</section>
+<section id="render-without-qt">
+<h2>Render without Qt<a class="headerlink" href="#render-without-qt" title="Link to this heading">¶</a></h2>
 <p>The shortest path to rendering a design without Qt:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qm</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.designs</span><span class="w"> </span><span class="kn">import</span> <span class="n">DesignPlanar</span>
@@ -622,23 +660,23 @@ it)</p></li>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="orchestration.html">
+          <a class="next-page" href="gui-shortcuts.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Scripting Quantum Metal and agent use</div>
+                <div class="title">GUI Navigation &amp; Shortcuts</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="choose-your-path.html">
+          <a class="prev-page" href="klayout.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Choose your path</div>
+                <div class="title">Viewing and checking GDS in KLayout</div>
                 
               </div>
             </a>
@@ -673,8 +711,9 @@ it)</p></li>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Using Quantum Metal without the Qt GUI</a><ul>
-<li><a class="reference internal" href="#quick-start">Quick start</a></li>
+<li><a class="reference internal" href="#">Desktop GUI or headless</a><ul>
+<li><a class="reference internal" href="#how-qm-gui-design-chooses">How <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> chooses</a></li>
+<li><a class="reference internal" href="#render-without-qt">Render without Qt</a></li>
 <li><a class="reference internal" href="#what-works-headlessly">What works headlessly</a></li>
 <li><a class="reference internal" href="#what-requires-the-qt-gui">What requires the Qt GUI</a></li>
 <li><a class="reference internal" href="#installing-without-qt">Installing without Qt</a></li>
