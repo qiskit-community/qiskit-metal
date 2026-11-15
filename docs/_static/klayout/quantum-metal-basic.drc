@@ -1,0 +1,30 @@
+# Starter KLayout DRC deck for GDS exported by Quantum Metal (QGDSRenderer).
+#
+# Run it from the command line:
+#   klayout -b -r quantum-metal-basic.drc -rd input=my_chip.gds -rd report=drc_report.lyrdb
+# or open the GDS in KLayout and use Tools > DRC > Run script.
+#
+# These checks are generic: they flag shapes that are very small or very close.
+# The thresholds below are PLACEHOLDERS. Replace them with the design rules of
+# your fab before using the result for anything. Edit LAYER if your design uses a
+# different design layer than 1.
+
+# Each value can also be set on the command line, for example -rd min_width=2.
+LAYER      = ($layer     || 1).to_i      # Quantum Metal design layer to check
+MIN_WIDTH  = ($min_width || 1.0).to_f    # um, smallest allowed metal feature
+MIN_SPACE  = ($min_space || 1.0).to_f    # um, smallest allowed gap between metal features
+MIN_AREA   = ($min_area  || 4.0).to_f    # um^2, smallest allowed metal island
+
+source($input) if $input
+report("Quantum Metal basic checks", $report || "quantum-metal-basic.lyrdb")
+verbose(false)
+
+# datatype 10 holds polygons and the ground-plane outline, 11 holds CPW paths;
+# datatype 100 holds cheese holes, which are subtracted from the metal.
+metal  = input(LAYER, 10) + input(LAYER, 11)
+cheese = input(LAYER, 100)
+metal  = metal - cheese if cheese.count > 0
+
+metal.width(MIN_WIDTH.um).output("min_width", "Metal narrower than #{MIN_WIDTH} um")
+metal.space(MIN_SPACE.um).output("min_space", "Metal gap narrower than #{MIN_SPACE} um")
+metal.with_area(0, MIN_AREA.um2).output("min_area", "Metal island smaller than #{MIN_AREA} um^2")
