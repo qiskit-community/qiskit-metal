@@ -593,7 +593,9 @@
 <span class="sd">        * pocket_rise    - How far up or down relative to the center of the transmon should we</span>
 <span class="sd">          elevate the cpw connection point on the ground plane</span>
 <span class="sd">        * loc_W / H      - which 'quadrant' of the pocket the connector is set to, +/- 1 (check</span>
-<span class="sd">          if diagram is correct)</span>
+<span class="sd">          if diagram is correct). loc_W=0 puts the connector at the centre. With loc_H=+1</span>
+<span class="sd">          it sits above the top pad, which then gets the teeth. Numbers and strings such</span>
+<span class="sd">          as "0" and "+1" both work</span>
 
 
 <span class="sd">    Sketch:</span>
@@ -729,12 +731,11 @@
             <span class="o">+</span><span class="n">coupled_pad_height</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">pad_height</span> <span class="o">+</span> <span class="n">pad_gap</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">pad_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">pad_top_tmp</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">union</span><span class="p">([</span><span class="n">circ_left_top</span><span class="p">,</span> <span class="n">pad_top</span><span class="p">,</span> <span class="n">circ_right_top</span><span class="p">])</span>
-        <span class="c1"># The coupler pads are only created if low_W=0 and low_H=+1</span>
+        <span class="c1"># The coupler pads are only created if loc_W=0 and loc_H=+1.</span>
+        <span class="c1"># Compare as numbers: the defaults are the strings "+1".</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">"loc_W"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">"loc_H"</span><span class="p">]</span> <span class="o">==</span> <span class="o">+</span><span class="mi">1</span>
-            <span class="p">):</span>
+            <span class="n">pc</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">connection_pads</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">loc_W</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">float</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">loc_H</span><span class="p">)</span> <span class="o">==</span> <span class="o">+</span><span class="mi">1</span><span class="p">:</span>
                 <span class="n">pad_top_tmp</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">union</span><span class="p">(</span>
                     <span class="p">[</span>
                         <span class="n">circ_left_top</span><span class="p">,</span>
