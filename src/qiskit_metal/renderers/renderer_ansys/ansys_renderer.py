@@ -116,8 +116,13 @@ def get_clean_name(name: str) -> str:
     # Remove invalid characters
     name = re.sub("[^0-9a-zA-Z_]", "", name)
     # Remove leading characters until we find a letter or underscore
-    name = re.sub("^[^a-zA-Z_]+", "", name)
-    return name
+    stripped = re.sub("^[^a-zA-Z_]+", "", name)
+    # A digits-only name (e.g. the key 0 in ``{0: jj_line}``) would become
+    # empty, so a poly and a path keyed 0 in one component got the same
+    # element name. Keep the digits behind an underscore instead.
+    if not stripped and name:
+        return "_" + name
+    return stripped
 
 
 class QAnsysRenderer(QRendererAnalysis):

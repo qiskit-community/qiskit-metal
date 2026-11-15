@@ -412,6 +412,10 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(ansys_renderer.get_clean_name("name12"), "name12")
         self.assertEqual(ansys_renderer.get_clean_name("12name12"), "name12")
         self.assertEqual(ansys_renderer.get_clean_name("name!"), "name")
+        # Digits-only names keep their digits instead of becoming empty.
+        self.assertEqual(ansys_renderer.get_clean_name("0"), "_0")
+        self.assertEqual(ansys_renderer.get_clean_name("12"), "_12")
+        self.assertEqual(ansys_renderer.get_clean_name("!"), "")
 
     def test_renderer_ansys_renderer_name_delim(self):
         """Test NAME_DELIM in QAnsysRenderer."""
