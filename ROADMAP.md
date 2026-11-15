@@ -92,9 +92,6 @@ listed in the [ecosystem page](https://github.com/qiskit-community/qiskit-metal/
   AEDT license.
 
 **API**
-- `[planned]` #1166: give `Vec3D.two_points_described` the same one-argument
-  call form as `Vector.two_points_described` by making `user_plane` optional;
-  existing calls keep working.
 - `[research]` Rename the import path `qiskit_metal` → `quantum_metal` to
   match the PyPI name. No release has been set.
 

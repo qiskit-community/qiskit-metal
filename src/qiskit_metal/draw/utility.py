@@ -893,7 +893,7 @@ class Vec3D(Vector):
 
     @staticmethod
     def two_points_described(
-        points3D: list[np.ndarray], user_plane: np.ndarray
+        points3D: list[np.ndarray], user_plane: np.ndarray = None
     ) -> tuple[np.ndarray]:
         """Get the distance, units and tangents.
 
@@ -901,13 +901,24 @@ class Vec3D(Vector):
             points3D (List[np.ndarray]): 3D list of points
             user_plane (np.ndarray): 2D plane containing the input points and
                                     defined by coefficients A,B,C,D in
-                                    equation (Ax + By + Cz + D = 0)
+                                    equation (Ax + By + Cz + D = 0).
+                                    Required: the tangent is only defined
+                                    relative to a plane. The default of None
+                                    exists so the signature accepts the same
+                                    single-argument call as
+                                    ``Vector.two_points_described``; omitting
+                                    it raises ValueError.
 
         Returns:
             tuple: (distance_vec, dist_unit_vec, tangent_vec) -- Each is a vector np.array
         """
         if len(points3D) != 2:
             raise ValueError(f"Expected only 2 points, found {len(points3D)}.")
+        if user_plane is None:
+            raise ValueError(
+                "Vec3D.two_points_described requires `user_plane` (A,B,C,D); "
+                "a 3D tangent is undefined without a plane."
+            )
         if len(user_plane) != 4:
             raise ValueError(
                 f"""Expected all four coefficients A,B,C,D for the plane.
