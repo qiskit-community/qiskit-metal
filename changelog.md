@@ -8,6 +8,11 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ## Unreleased
 
+### Added
+
+- **Scripting and agent guide** (docs: *Scripting and Agent Use*) with a tested headless script that builds, checks, exports and analyzes a chip (`docs/examples/headless_chip.py`), the design-rule check as a pass/fail gate, and what to rely on across runs.
+- **Repeatable GDS export.** If `SOURCE_DATE_EPOCH` is set, `QGDSRenderer` stores that time in the GDS file, so two exports of one design are identical byte for byte. Without it the file records the current time, as before.
+
 ### Fixed
 
 - **Ansys renderers: digits-only geometry names** (for example the key `0` in `{0: jj_line}`) become `_0` instead of an empty string, so a poly and a path keyed `0` in one component no longer get the same HFSS element name. Names that start with letters, or with digits followed by letters, are unchanged. Checked offline, not in AEDT.

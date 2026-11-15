@@ -156,12 +156,12 @@ ground regions. GDS-level DRC stays with KLayout.
 exported GDS, a Metal → KLayout how-to, and a starter KLayout DRC deck for
 superconducting basics that PDK authors can extend.
 
-**Scriptable and agent-driven use** `[research]`. An orchestration guide (a
-design built, checked, exported and analyzed in a short headless script); a
+**Scriptable and agent-driven use** `[research]`. The orchestration guide
+(*Scripting and Agent Use*) and repeatable GDS export have shipped. Open: a
 documented stable public API for `QDesign`, `QComponent` and the renderer
-bases; deterministic geometry construction so two runs give the same
-artifact; vendor-neutral task definitions that let a coding assistant drive
-Metal, with DRC as the success signal.
+bases, with deprecation rules written down; deterministic ordering for every
+solver export; vendor-neutral task definitions that let a coding assistant
+drive Metal, with the design-rule check as the success signal.
 
 **Architecture** `[research]`. PEP 561 type hints across the core classes;
 entry-point discovery for third-party renderers and component libraries
