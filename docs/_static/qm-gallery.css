@@ -152,3 +152,25 @@ img.qm-diagram, .qm-diagram img {
   outline: 3px solid currentColor;
   outline-offset: 2px;
 }
+
+/* Dark mode: lift text and sidebar contrast closer to the light theme. */
+body[data-theme="dark"] {
+  --color-foreground-primary: #e6e7e9;
+  --color-foreground-secondary: #b9bdc2;
+  --color-foreground-muted: #a0a6ad;
+  --color-sidebar-link-text: #c4c8cd;
+  --color-sidebar-link-text--top-level: #dcdfe3;
+  --color-sidebar-caption-text: #a8aeb5;
+  --color-background-border: #3a3d42;
+}
+@media (prefers-color-scheme: dark) {
+  body:not([data-theme="light"]) {
+    --color-foreground-primary: #e6e7e9;
+    --color-foreground-secondary: #b9bdc2;
+    --color-foreground-muted: #a0a6ad;
+    --color-sidebar-link-text: #c4c8cd;
+    --color-sidebar-link-text--top-level: #dcdfe3;
+    --color-sidebar-caption-text: #a8aeb5;
+    --color-background-border: #3a3d42;
+  }
+}
