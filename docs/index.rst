@@ -186,6 +186,7 @@ Qiskit Metal is now Quantum Metal
     Installing Quantum Metal<installation>
     Choose Your Path<choose-your-path>
     Running Without the Desktop GUI<headless-usage>
+    Scripting and Agent Use<orchestration>
     Built on Quantum Metal<ecosystem>
 
 .. toctree::
