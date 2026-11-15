@@ -137,7 +137,7 @@ protocol. Each is its own project; we wrap, we don't fork.
    * - `QTCAD <https://docs.nanoacademic.com/qtcad/>`_
        (Nanoacademic)
      - Semiconductor / quantum-device TCAD. Adaptive-mesh capacitance
-       extraction from Metal geometry. Commercial licence.
+       extraction from Metal geometry. Commercial license.
      - Community integration — see below
 
 
@@ -211,7 +211,7 @@ For viewing simulation outputs (Palace / Elmer field data, mesh files):
 - `PyVista <https://github.com/pyvista/pyvista>`_ — Python ParaView wrapper, MIT.
 - `ParaView <https://www.paraview.org/>`_ — the underlying renderer, BSD.
 
-The ``[mesh]`` extra and Palace renderers emit ``.vtu`` / ``.pvtu``
+The ``[mesh]`` extra emits ``.vtu`` / ``.pvtu``
 files these tools open natively.
 
 
@@ -229,7 +229,7 @@ A typical workflow walks through several of these projects:
    open-FEM via ``[mesh]`` + Elmer, or AWS Palace via SQDMetal /
    pypalace (coordination underway — see `ROADMAP.md
    <https://github.com/qiskit-community/qiskit-metal/blob/main/ROADMAP.md>`_).
-4. **Analyse** — EPR (``pyEPR``), LOM (``LOManalysis``), spectra
+4. **Analyze** — EPR (``pyEPR``), LOM (``LOManalysis``), spectra
    (``scqubits``), dynamics (``QuTiP``).
 5. **Export** to GDS via the built-in ``QGDSRenderer``; view in KLayout
    or hand off to fab. For end-to-end pipelines all the way through

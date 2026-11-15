@@ -48,7 +48,7 @@ The shortest path to rendering a design without Qt:
     fig.savefig("q1.png")          # save to file
     # or, in a Jupyter notebook, just `fig` displays inline.
 
-``qm.view`` accepts options for customising the output:
+``qm.view`` accepts options for customizing the output:
 
 .. code-block:: python
 
@@ -68,7 +68,7 @@ The shortest path to rendering a design without Qt:
     qm.view(design, figsize=(10, 8))
 
 The returned :class:`matplotlib.figure.Figure` can be saved
-(``fig.savefig``), embedded in a larger figure, or further customised
+(``fig.savefig``), embedded in a larger figure, or further customized
 with the standard matplotlib API.
 
 What works headlessly
@@ -123,6 +123,7 @@ Install extras
 * ``pip install "quantum-metal[gui]"`` — + PySide6 + qdarkstyle
 * ``pip install "quantum-metal[ansys]"`` — + pyaedt + pyEPR-quantum
 * ``pip install "quantum-metal[mesh]"`` — + gmsh (foundation for Elmer / Palace).
+* ``pip install "quantum-metal[skfem]"`` — ``[mesh]`` + the scikit-fem eigenmode solver (tutorials 4.41–4.46).
   ``[fem]`` is a backward-compatible alias.
 * ``pip install "quantum-metal[full]"`` — all extras (v0.6.x behavior)
 

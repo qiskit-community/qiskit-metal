@@ -14,6 +14,7 @@ RouteMixed
    
    .. rubric:: Attributes
       
+   .. autoattribute:: RouteMixed.LENGTH_TOLERANCE
    .. autoattribute:: RouteMixed.TOOLTIP
    .. autoattribute:: RouteMixed.class_name
    .. autoattribute:: RouteMixed.component_metadata

@@ -14,6 +14,7 @@ RouteMeander
    
    .. rubric:: Attributes
       
+   .. autoattribute:: RouteMeander.LENGTH_TOLERANCE
    .. autoattribute:: RouteMeander.TOOLTIP
    .. autoattribute:: RouteMeander.class_name
    .. autoattribute:: RouteMeander.component_metadata

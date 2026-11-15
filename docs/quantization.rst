@@ -1,69 +1,151 @@
 .. _quantization:
 
-*****************************
-Quantization Methods Overview
-*****************************
+*********************
+Quantization methods
+*********************
 
-We currently support two complementary quantization approaches that cover most day-to-day chip design
-work: a lightweight lumped/ quasi-lumped model and a full-wave, black-box style energy-participation
-ratio (EPR) workflow. Use this section as a quick “why and when” guide before you pick a solver.
+An electromagnetic solver returns fields, capacitances and impedances. To get a
+Hamiltonian (mode frequencies, anharmonicities, dispersive shifts, couplings) the
+result has to be *quantized*. Quantum Metal supports three routes, from a quick
+quasi-static estimate to a full-wave solve. They answer the same question at
+different cost, so it is common to start with the cheapest and check against the
+next.
 
-**What you give us**
-- Your device geometry (from the QComponent library or your own components)
-- A small set of materials/stack assumptions (dielectrics, metal films, boundaries)
-- The excitation/ports you care about (for scattering or eigenmode solves)
+.. image:: _static/diagrams/quantization-landscape.svg
+   :alt: Lumped-oscillator, impedance and eigenmode quantization, ordered from fast quasi-static to full-wave.
+   :class: qm-diagram
+   :width: 100%
 
-**What you get back**
-- Modal frequencies, anharmonicities, and dispersive shifts
-- Coupling strengths and participation matrices you can plug into Hamiltonians
-- Loss estimates tied to specific volumes (dielectrics, conductors, seams) so you can chase the right bottleneck
+.. list-table::
+   :header-rows: 1
+   :widths: 17 24 24 35
 
-Each method balances speed, fidelity, and required setup. Start with the lumped model when you need
-fast iteration and intuitive circuit pictures; switch to EPR when geometry and field participation
-really matter.
+   * - Method
+     - You solve
+     - You get
+     - Use it when
+   * - **Lumped-oscillator model (LOM)**
+     - capacitance (and inductance) of each cell, quasi-static
+     - frequencies, anharmonicities, couplings of a circuit assembled from cells
+     - exploring geometry; routing and first-order couplings; no eigenmode solve needed
+   * - **Energy participation (EPR)**
+     - eigenmodes of the linearized circuit, full-wave
+     - Hamiltonian with field-aware couplings, and a loss budget per volume or interface
+     - layout details matter: packaging, higher modes, seams, substrate loss
+   * - **Impedance**
+     - impedance or scattering matrix versus frequency at the ports
+     - mode frequencies and couplings read from poles and residues
+     - many ports (bus networks, Purcell filters, packages), or as an independent check of EPR
 
-.. image:: images/quantization.png
-   :alt: Missing Image
+Where to run each one:
 
+.. list-table::
+   :header-rows: 1
+   :widths: 20 40 40
 
-|
+   * - Method
+     - In Quantum Metal
+     - Tutorials
+   * - LOM
+     - ``LOManalysis`` and the composite-system classes below; capacitance from Q3D or ElmerFEM
+     - :doc:`4.01 <tut/4-Analysis/4.01-Capacitance-and-LOM>`,
+       :doc:`4.04 <tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example>`,
+       :doc:`4.05 <tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence>`
+   * - EPR
+     - ``EPRanalysis`` with pyEPR and HFSS; the scikit-fem solver implements the same couplings without Ansys
+     - :doc:`4.02 <tut/4-Analysis/4.02-Eigenmode-and-EPR>`,
+       :doc:`4.11 <tut/4-Analysis/4.11-Analyze-and-tune-a-transmon>` to
+       :doc:`4.13 <tut/4-Analysis/4.13-Analyze-transmon-and-resonator>`,
+       :doc:`4.42 <tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling>`
+   * - Impedance
+     - ``ScatteringImpedanceSim`` for the matrices; 4.42 also derives couplings from the impedance matrix
+     - :doc:`4.03 <tut/4-Analysis/4.03-Impedance>`,
+       :doc:`4.14 <tut/4-Analysis/4.14-Analyze-a-double-hanger-resonator>`,
+       :doc:`4.42 <tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling>`
 
------------------------
+Which solver each method needs is compared on :doc:`simulation-pathways`.
+
 Lumped-oscillator model
------------------------
+=======================
 
-In the lumped-oscillator model you treat each component as a compact circuit element whose capacitance
-and inductance can be extracted from fast quasi-static simulations or closed-form formulas. Think of it
-as a guided way to draw a circuit, pull out the C and L values, and then stitch those into a Hamiltonian.
+Treat each part of the chip as a compact circuit element. Cut the device into a
+few cells, extract each cell's capacitance and inductance with a fast
+quasi-static solve, assemble the network, and quantize it. The reduction keeps
+the pairwise couplings, so renormalization and loading are tracked and the
+result is a small Hamiltonian you can iterate on in minutes.
 
-*When to use it.* Early design and parameter sweeps when you want intuition and speed. Routing,
-connector placement, and first-order coupling strengths are often “good enough” here. Because solves are
-cheap, you can explore a lot of geometry/stack variants before moving to heavier solvers.
+.. image:: _static/diagrams/lumped-circuit.svg
+   :alt: A transmon (junction and shunt capacitor) coupled by a capacitor to a resonator (capacitor and inductor).
+   :class: qm-diagram
+   :width: 80%
 
-*How it works.* Partition the device into a handful of cells, solve each one quickly to get effective
-C/L values, then assemble the network and quantize. The reduction step preserves the pairwise couplings
-so you keep track of renormalization and loading. The result is a simple Hamiltonian with parameters you
-can iterate on in minutes.
+Choose it for early design and sweeps, when speed and an intuitive circuit
+picture matter more than field detail. Because each solve is cheap, many
+geometry and stack variants can be compared before a heavier solver is needed.
 
-References:
+* Z. K. Minev, T. G. McConkey, M. Takita, A. D. Corcoles, J. M. Gambetta,
+  `Circuit quantum electrodynamics (cQED) with modular quasi-lumped models
+  <https://arxiv.org/abs/2103.10344>`_ (2021).
 
-* Zlatko K. Minev, Thomas G. McConkey, Maika Takita, Antonio Corcoles, Jay M. Gambetta,
-  Circuit quantum electrodynamics (cQED) with modular quasi-lumped models. (2021)
+Energy-participation ratio (EPR)
+================================
 
-.. image:: images/lump.png
-   :alt: Missing Image
-   :width: 388
+The energy-participation ratio of an element in a mode is the fraction of the
+mode's energy stored in that element, a number between zero and one. The
+participations of the nonlinear (Josephson) elements fix the Hamiltonian, and
+those of the lossy elements fix the loss, whatever the circuit topology. They
+come from one eigenmode simulation of the linearized circuit, so the method
+quantizes multi-junction and 3D circuits without a hand-built circuit model.
 
-.. image:: images/lumped2.png
-   :alt: Missing Image
-   :width: 400
+.. image:: _static/diagrams/epr-participation.svg
+   :alt: Bars showing the share of one mode's energy in the junction, the substrate, interfaces and other elements.
+   :class: qm-diagram
+   :width: 85%
 
-|
+Choose it when layout details matter: packaging, higher modes, junction
+placement, seams and substrate loss. Draw the design, set materials and
+boundaries, place the junction ports, and run one eigenmode solve; pyEPR reads
+the fields and returns frequencies, dispersive shifts, anharmonicities and loss
+budgets. It is best tested for weakly anharmonic circuits such as transmons
+coupled to resonators.
+
+* Z. K. Minev, Z. Leghtas, S. O. Mundhada, L. Christakis, I. M. Pop,
+  M. H. Devoret, `Energy-participation quantization of Josephson circuits
+  <https://arxiv.org/abs/2010.00620>`_, npj Quantum Information 7, 131 (2021).
+* Z. K. Minev et al., `pyEPR <https://github.com/zlatko-minev/pyEPR>`_
+  (`documentation <https://pyepr-docs.readthedocs.io>`_).
+* Z. K. Minev, Ph.D. dissertation, Yale University (2018), chapter 4,
+  `arXiv:1902.10355 <https://arxiv.org/abs/1902.10355>`_.
+
+Impedance
+=========
+
+The impedance route starts from the frequency-dependent impedance (or
+scattering) matrix at the ports, the same quantity a network analyzer measures.
+The modes appear as poles, and their frequencies, couplings and nonlinear
+participation follow from the pole and residue structure. It shares the
+fields-first philosophy of EPR, and is the natural handle for layouts with many
+ports or modes: bus networks, Purcell filters and chip-package assemblies. It is
+also an independent check of EPR couplings.
+
+Define ports at the junctions or pins, run a driven or eigenmode solve to get
+the matrix versus frequency, and sample around the modes of interest.
+
+* S. E. Nigg, H. Paik, B. Vlastakis, G. Kirchmair, S. Shankar, L. Frunzio,
+  M. H. Devoret, R. J. Schoelkopf, S. M. Girvin, `Black-box superconducting
+  circuit quantization <https://arxiv.org/abs/1204.0587>`_,
+  Phys. Rev. Lett. 108, 240502 (2012).
+
+Next
+====
+
+Run the methods side by side in the 4.4x tutorials (:doc:`tut/simulate-and-analyze`), or see
+:doc:`simulation-pathways` for the solvers behind them. The class reference follows.
 
 .. _lom-composite-api:
 
-Composite-system API: ``Cell`` / ``Subsystem`` / ``CompositeSystem``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Reference: ``Cell`` / ``Subsystem`` / ``CompositeSystem``
+=========================================================
 
 The lumped-oscillator model is assembled from three classes in
 :mod:`qiskit_metal.analyses.quantization.lom_core_analysis`. A **Cell** holds
@@ -94,71 +176,3 @@ including any custom builder you add.
 .. autoclass:: QuantumSystemRegistry
    :members:
 
-|
-
----------------------------------------------------
-Energy: The energy-participation-ratio (EPR) method
----------------------------------------------------
-
-The energy-participation-ratio (EPR) method is a general (black-box) quantization method.
-Based on the Quantum Metal integration with `pyEPR <https://github.com/zlatko-minev/pyEPR>`_,
-one can automate the design and quantization of Josephson quantum circuits,
-and even 3D circuits.
-
-The EPR method is based on the energy-participation ratio (EPR) of a dissipative or nonlinear
-element in an electromagnetic mode. The EPR, a number between zero and one, quantifies how much
-of the energy of a mode is stored in each element. It obeys universal constraints—valid
-regardless of the circuit topology and nature of the nonlinear elements.
-The EPR of the elements are calculated from a unique, efficient electromagnetic eigenmode
-simulation of the linearized circuit, including lossy elements.
-Their set is the key input to the determination of the quantum Hamiltonian of the system.
-The method provides an intuitive and simple-to-use tool to quantize multi-junction circuits.
-It is especially well-suited for finding the Hamiltonian and dissipative parameters of weakly
-anharmonic systems, such as transmon qubits coupled to resonators, or Josephson transmission lines.
-The EPR method is experimentally tested on a variety of Josephson circuits, and demonstrated
-high agreement for nonlinear couplings and modal Hamiltonian parameters, over many order of
-magnitude in energy.
-
-*When to use it.* When layout details matter: packaging effects, higher-mode participation, junction
-placement, seams, or substrate losses. EPR gives you a field-aware Hamiltonian and ties every loss
-number to a physical volume, so you know which lever to pull next.
-
-*What you set up.* Draw your design, define materials and boundaries, place ports, and run a single
-eigenmode solve on the linearized circuit. pyEPR reads the fields, computes participations for every
-nonlinear/lossy element, and hands back frequencies, dispersive shifts, anharmonicities, and loss
-budgets. Because it is black-box, it scales to multi-mode, multi-junction systems with minimal
-hand-tuning.
-
-References:
-
-* Minev, Z. K., Leghtas, Z., Mudhada, S. O., Reinhold, P., Diringer, A., & Devoret, M. H. (2018). `pyEPR: The energy-participation-ratio (EPR) open-source framework for quantum device design. <https://github.com/zlatko-minev/pyEPR/blob/master/pyEPR.bib>`_
-* Minev, Z. K., Leghtas, Z., Mundhada, S. O., Christakis, L., Pop, I. M., & Devoret, M. H. (2020). Energy-participation quantization of Josephson circuits. ArXiv. Retrieved from `http://arxiv.org/abs/2010.00620 <http://arxiv.org/abs/2010.00620>`_ (2020)
-* Z.K. Minev, Ph.D. Dissertation, Yale University (2018), Chapter 4. `arXiv:1902.10355 <https://arxiv.org/abs/1902.10355>`_  (2018)
-* `pyEPR docs <https://pyepr-docs.readthedocs.io>`_
-
-
-----------------------------------------------------------
-Impedance: impedance-based black-box quantization (BBQ)
-----------------------------------------------------------
-
-The impedance formulation of black-box quantization builds the Hamiltonian directly from the
-frequency-dependent impedance seen between nonlinear elements and ground. It shares the “full-wave
-fields first, circuit later” philosophy of EPR, but works in the impedance domain: from a port-defined
-impedance matrix you extract effective mode frequencies, participation factors, and couplings.
-
-*When to use it.* For strongly multi-port/multi-mode layouts where port impedances are the most natural
-handle (e.g., rich bus networks, Purcell filters, or chip-package assemblies). It is also a good cross
-check to EPR when you want to validate couplings via an independent pipeline.
-
-*What you set up.* Define ports at the locations of junctions or pins, run an eigenmode or driven solve
-to obtain the impedance matrix versus frequency, then sample around the modes of interest. The resulting
-impedances map to effective inductive/capacitive participations and give you the Hamiltonian parameters.
-
-*Outputs.* Mode frequencies, nonlinear participation, and cross-Kerr rates derived from the impedance
-matrix, plus a clear picture of how design changes move those impedances. Use it to tune Purcell filters,
-set coupling windows, or debug unexpected mode crowding.
-
-.. image:: images/epr.png
-   :alt: Missing Image
-
-|

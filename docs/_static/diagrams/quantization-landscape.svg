@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 326" role="img" aria-label="Quantization methods from fast quasi-static lumped models to full-wave eigenmode analysis"><title>Quantization methods from fast quasi-static lumped models to full-wave eigenmode analysis</title><style>
+text{font-family:-apple-system,BlinkMacSystemFont,"IBM Plex Sans","Segoe UI",Helvetica,Arial,sans-serif;fill:#1f2430}
+.h{font-size:19px;font-weight:600}.t{font-size:14.5px}.s{font-size:13px;fill:#586175}.c{text-anchor:middle}.e{text-anchor:end}
+.box{fill:#f3f5fa;stroke:#c3cadb;stroke-width:1.5}
+.acc{fill:#e6efff;stroke:#4589ff;stroke-width:2}
+.pur{fill:#f0e9ff;stroke:#8a3ffc;stroke-width:2}
+.ln{stroke:#586175;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.arr{stroke:#4589ff;stroke-width:2.6;fill:none;marker-end:url(#a)}
+.arr2{stroke:#8a3ffc;stroke-width:2.2;fill:none;stroke-dasharray:6 5;marker-end:url(#b)}
+.mk{fill:#4589ff}.mk2{fill:#8a3ffc}
+.bar{fill:#4589ff}.bar2{fill:#8a3ffc}.bar3{fill:#0e9f8a}.track{fill:#e3e7f0}
+.curve{stroke:#4589ff;stroke-width:2.4;fill:none}
+.jj{fill:#f0e9ff;stroke:#8a3ffc;stroke-width:2}
+@media (prefers-color-scheme:dark){
+text{fill:#e4e6ea}.s{fill:#a2abbd}
+.box{fill:#1c2028;stroke:#3b4252}.acc{fill:#18294a;stroke:#78a9ff}.pur{fill:#271a45;stroke:#be95ff}
+.ln{stroke:#a2abbd}.arr{stroke:#78a9ff}.arr2{stroke:#be95ff}.mk{fill:#78a9ff}.mk2{fill:#be95ff}
+.bar{fill:#78a9ff}.bar2{fill:#be95ff}.bar3{fill:#3ddbd9}.track{fill:#2a303c}.curve{stroke:#78a9ff}.jj{fill:#271a45;stroke:#be95ff}}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="mk" d="M0 0L10 5L0 10z"/></marker>
+<marker id="b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="mk2" d="M0 0L10 5L0 10z"/></marker></defs><text class="s" x="20" y="30">quasi-static</text><text class="s" x="360" y="30">full-wave</text><path class="ln" d="M20 40H320M350 40H980" stroke-dasharray="2 6"/><rect class="acc" x="20" y="58" width="300" height="196" rx="16"/><text class="h c" x="170" y="92">Lumped-oscillator model</text><rect class="jj" x="105" y="136" width="28" height="28" rx="3"/><path class="ln" d="M111 143l16 14M127 143l-16 14"/><path class="ln" d="M133 150h20M153 132v36M165 132v36M165 150h24M189 138v24M189 150h40"/><path class="ln" d="M229 136q10 7 0 14q10 7 0 14"/><text class="s c" x="170" y="228">capacitance and inductance of each cell</text><text class="s c" x="170" y="246">from a quasi-static solve</text><rect class="box" x="350" y="58" width="300" height="196" rx="16"/><text class="h c" x="500" y="92">Impedance</text><path class="ln" d="M435 186V114M435 154H565"/><path class="curve" d="M443 152Q465 152 475 116M476 186Q479 156 515 155Q523 154 527 116M528 186Q532 158 559 156"/><text class="s c" x="500" y="228">impedance or scattering matrix</text><text class="s c" x="500" y="246">at the ports versus frequency</text><rect class="pur" x="680" y="58" width="300" height="196" rx="16"/><text class="h c" x="830" y="92">Energy participation (EPR)</text><path class="ln" d="M765 184H895"/><path class="curve" d="M765 184Q797 106 830 184T895 184"/><text class="s c" x="830" y="228">eigenmode fields of the</text><text class="s c" x="830" y="246">linearized circuit</text><path class="arr" d="M30 282H960"/><text class="t" x="30" y="312">fast, intuitive</text><text class="t e" x="970" y="312">more geometry, accuracy and compute</text></svg>

@@ -19,6 +19,7 @@ QGDSRenderer
    .. autoattribute:: QGDSRenderer.element_extensions
    .. autoattribute:: QGDSRenderer.element_table_data
    .. autoattribute:: QGDSRenderer.element_table_docs
+   .. autoattribute:: QGDSRenderer.lib
    .. autoattribute:: QGDSRenderer.logger
    .. autoattribute:: QGDSRenderer.name
    .. autoattribute:: QGDSRenderer.options

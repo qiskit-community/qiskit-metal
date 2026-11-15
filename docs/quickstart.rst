@@ -4,6 +4,55 @@
 Quick start
 ***********
 
+.. button-link:: https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs/tut/1-Overview/1.1-Quick-start.ipynb
+    :color: primary
+    :shadow:
+    :expand:
+
+    Open the quick start in Colab (no install)
+
+Three ways to work
+==================
+
+The same design object works in all three. Pick one, or switch later.
+
+.. grid:: 1 1 3 3
+    :gutter: 2
+
+    .. grid-item-card:: Headless
+        :class-header: sd-bg-primary sd-text-light
+
+        Python scripts, notebooks, Colab, servers. No Qt, no display.
+        ``qm.view(design)`` draws the layout with matplotlib; every
+        component, renderer and analysis is available.
+
+    .. grid-item-card:: Desktop GUI
+        :class-header: sd-bg-secondary sd-text-light
+
+        ``MetalGUI``: dockable window with component library, option
+        editor and layer view. Needs ``pip install "quantum-metal[gui]"``
+        and a display. See :doc:`gui-shortcuts`.
+
+    .. grid-item-card:: Both
+        :class-header: sd-bg-primary sd-text-light
+
+        Build and script in a notebook or script, open the same design in
+        ``MetalGUI`` to inspect and adjust it by hand. ``qm.gui(design)``
+        picks the GUI when it can and the inline viewer otherwise.
+
+Details of the Qt-free path: :doc:`headless-usage`.
+
+.. admonition:: Want a result fast?
+    :class: tip
+
+    - :doc:`1.3 Build a 4-qubit chip <tut/1-Overview/1.3-Build-a-4-qubit-chip>`:
+      four transmons joined by meander CPWs, with shared variables.
+    - :doc:`2.21 Design a 4 qubit full chip <tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip>`:
+      a complete chip, exported to GDS.
+
+Install
+=======
+
 Install the lite package (no Qt, no Ansys):
 
 .. code-block:: bash
@@ -11,6 +60,9 @@ Install the lite package (no Qt, no Ansys):
     pip install quantum-metal
 
 Extras, conda and source installs are described in :doc:`installation`.
+
+First design
+============
 
 Place a transmon and change one option. The code below is taken from the
 cells of the notebook :doc:`1.1 Quick start <tut/1-Overview/1.1-Quick-start>`.
@@ -49,26 +101,10 @@ without a GUI object.
 
     Output of the last cell, as stored in notebook 1.1.
 
-.. grid:: 1 2 2 2
-    :gutter: 2
+.. button-ref:: tut/index
+    :ref-type: doc
+    :color: secondary
+    :outline:
+    :expand:
 
-    .. grid-item-card:: Run it in a notebook
-        :class-header: sd-bg-primary sd-text-light
-
-        .. button-link:: https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs/tut/1-Overview/1.1-Quick-start.ipynb
-            :color: primary
-            :outline:
-            :expand:
-
-            Open 1.1 in Colab
-
-    .. grid-item-card:: Continue
-        :class-header: sd-bg-secondary sd-text-light
-
-        .. button-ref:: tut/index
-            :ref-type: doc
-            :color: secondary
-            :outline:
-            :expand:
-
-            Continue: the learning path
+    Continue: the learning path

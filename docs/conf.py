@@ -23,6 +23,7 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
+from html import escape as html_escape
 
 # Let Metal know we are building the docs.
 # Environment variables are per-process, not global
@@ -85,6 +86,7 @@ import qiskit_sphinx_theme
 # Learning paths (data module next to this file).
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import qm_paths
+import qm_showcase
 
 """
 Sphinx documentation builder
@@ -181,6 +183,10 @@ nbsphinx_epilog = """
 
     .. raw:: html
 
+        <!--qm-nb-nav-->
+
+    .. raw:: html
+
         <br><br>
         <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
         <div style="border:solid 1 px #990000;">
@@ -215,7 +221,7 @@ nbsphinx_epilog = """
 
 # -- Project information -----------------------------------------------------
 project = "Quantum Metal"  # {version}
-copyright = "Quantum Metal Community; 2019-2025 Qiskit Development Team"
+copyright = "Quantum Metal Community; 2019-2026 Qiskit Development Team"
 author = qiskit_metal.__author__
 # -- General configuration ---------------------------------------------------
 
@@ -441,6 +447,71 @@ def _fill_choose_your_path(app, docname, source):
         source[0] = source[0].replace("{{ QM_PATHS }}", qm_paths.page_body())
 
 
+def _fill_home_showcase(app, docname, source):
+    """Fill the community-image strip of the home page (empty without gallery data)."""
+    if docname == "index":
+        strip = qm_showcase.fabricated_rst(limit=4)
+        strip = "\n".join("   " + ln if ln else ln for ln in strip.splitlines())
+        source[0] = source[0].replace("{{ QM_FABRICATED:4 }}", strip)
+
+
+def _fill_showcase(app, docname, source):
+    """Fill the papers lists and the fabricated-device gallery of ``built-with-metal``."""
+    if docname == "built-with-metal":
+        text = source[0]
+        for sel in qm_showcase.SELECTIONS:
+            text = text.replace("{{ QM_PAPERS:%s }}" % sel, qm_showcase.papers_rst(sel))
+        text = text.replace("{{ QM_FABRICATED }}", qm_showcase.fabricated_rst())
+        source[0] = text
+
+
+def _nb_nav(app, pagename, templatename, context, doctree):
+    """Add a full-width "Next" button and an "Examples" button to notebook pages.
+
+    The next page is the one that follows in the toctree order (the same order
+    as the theme's previous/next links). A target outside the tutorials and
+    examples falls back to the parent page.
+    """
+    env = app.env
+    marker = "<!--qm-nb-nav-->"
+    body = context.get("body", "")
+    if marker not in body or pagename in env.config.qm_archived:
+        return
+    parent, _prev, nxt = env.collect_relations().get(pagename, (None, None, None))
+    examples = "circuit-examples/index"
+
+    def allowed(doc):
+        if doc is None or doc == "tut/index":
+            return False
+        return (
+            doc == examples
+            or doc.startswith("tut/")
+            or os.fspath(env.doc2path(doc)).endswith(".ipynb")
+        )
+
+    def title(doc):
+        return env.titles[doc].astext()
+
+    def href(doc):
+        return app.builder.get_relative_uri(pagename, doc)
+
+    buttons = []
+    if allowed(nxt):
+        buttons.append(
+            f'<a class="qm-nb-next" href="{href(nxt)}">Next: {html_escape(title(nxt))}</a>'
+        )
+    elif parent:
+        buttons.append(
+            f'<a class="qm-nb-next" href="{href(parent)}">Back to {html_escape(title(parent))}</a>'
+        )
+    if nxt != examples and not (not allowed(nxt) and parent == examples):
+        buttons.append(
+            f'<a class="qm-nb-examples" href="{href(examples)}">Examples</a>'
+        )
+    nav = '<div class="qm-nb-nav">' + "".join(buttons) + "</div>"
+    context["body"] = body.replace(marker, nav, 1)
+
+
 def _check_paths(app):
     qm_paths.check(app.srcdir)
 
@@ -450,6 +521,9 @@ def setup(app):
     app.add_config_value("qm_paths_by_doc", {}, "env")
     app.connect("builder-inited", _check_paths)
     app.connect("source-read", _fill_choose_your_path)
+    app.connect("source-read", _fill_showcase)
+    app.connect("source-read", _fill_home_showcase)
+    app.connect("html-page-context", _nb_nav)
     app.connect("builder-inited", _regenerate_qlibrary_assets)
 
 

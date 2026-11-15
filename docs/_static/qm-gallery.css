@@ -4,3 +4,151 @@
   position: relative;
   z-index: 2;
 }
+
+/* Fabricated-device gallery on the Research showcase page. */
+.qm-fab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+.qm-fab-grid figure {
+  margin: 0;
+}
+.qm-fab-grid img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #fff;
+  object-fit: contain;
+  border-radius: 4px;
+}
+.qm-fab-grid figcaption {
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+}
+.qm-fab-credit {
+  opacity: 0.7;
+  font-size: 0.8rem;
+}
+
+/* Full-width "Next" button under notebook pages. */
+.qm-nb-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 2.5rem 0 1.5rem 0;
+}
+.qm-nb-nav a {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 1.1rem 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 6px;
+  border: 2px solid var(--qm-nb-accent, #4589ff);
+}
+.qm-nb-nav a.qm-nb-next {
+  font-size: 1.35rem;
+  background: var(--qm-nb-accent, #4589ff);
+  color: #fff;
+}
+.qm-nb-nav a.qm-nb-next:hover {
+  filter: brightness(0.9);
+}
+.qm-nb-nav a.qm-nb-examples {
+  font-size: 1.1rem;
+}
+
+/* Home page: more air, larger section headings, card polish. */
+.qm-hero {
+  text-align: center;
+  padding: 2rem 0 3rem 0;
+  font-size: 1.15rem;
+}
+.qm-hero .qm-hero-logo {
+  max-width: 100%;
+  margin-bottom: 1.5rem;
+}
+.qm-hero .qm-hero-buttons {
+  max-width: 52rem;
+  margin: 2rem auto 0 auto;
+}
+.qm-section {
+  margin: 4.5rem 0;
+}
+.qm-section p {
+  max-width: 46rem;
+  line-height: 1.7;
+}
+.qm-section .rubric.qm-h2,
+p.rubric.qm-h2 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+.qm-section .sd-card,
+.bd-content .sd-card {
+  border-radius: 10px;
+}
+.qm-section .sd-card-body {
+  padding: 1.25rem 1.4rem;
+}
+.qm-section .sd-btn {
+  margin-top: 1.5rem;
+}
+
+/* Devices and papers lists. */
+ul.qm-papers {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 2rem 0;
+}
+ul.qm-papers li {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+}
+.qm-paper-title {
+  display: block;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.qm-paper-meta,
+.qm-paper-note {
+  display: block;
+  font-size: 0.88rem;
+  opacity: 0.8;
+  margin-top: 0.15rem;
+}
+
+/* Diagrams: standalone SVGs follow prefers-color-scheme themselves. */
+img.qm-diagram, .qm-diagram img {
+  display: block;
+  width: 100%;
+  max-width: 62rem;
+  margin: 2rem auto;
+  background: none;
+}
+.qm-steps .sd-card-img-top {
+  object-fit: contain;
+  height: 14rem;
+  background: #fff;
+  padding: 0.5rem;
+}
+
+/* Wide diagrams scroll sideways on a phone instead of shrinking the text. */
+@media (max-width: 640px) {
+  p:has(> img.qm-diagram), .qm-diagram-wrap {
+    overflow-x: auto;
+  }
+  img.qm-diagram {
+    width: 40rem;
+    max-width: none;
+  }
+}
+
+.qm-nb-nav a:focus-visible,
+.sd-btn:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
