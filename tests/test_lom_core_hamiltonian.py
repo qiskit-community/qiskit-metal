@@ -84,6 +84,11 @@ class TestHamiltonianResults(unittest.TestCase):
         self.assertAlmostEqual(f_q, e1 - e0, delta=5)
         self.assertAlmostEqual(alpha, e2 - 2 * e1 + e0, delta=5)
 
+    def test_frequencies_are_plain_floats_so_they_print_cleanly(self):
+        """numpy 2 prints np.float64(5.4) inside a dict; the results should not."""
+        for name, f in self.results["fQ_in_Ghz"].items():
+            self.assertIs(type(f), float, name)
+
     def test_readout_stays_near_its_bare_frequency(self):
         self.assertAlmostEqual(self.results["fQ_in_Ghz"]["readout"], 7.0, delta=0.1)
 

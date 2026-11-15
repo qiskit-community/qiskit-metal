@@ -672,15 +672,6 @@ wheels = [
 ]
 
 [[package]]
-name = "doit"
-version = "0.37.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/35/f6/3a817d438799bda4d4e5fd136175cf7c328c074fadc1422dec3b374907e7/doit-0.37.0.tar.gz", hash = "sha256:d3c72e0e46a8fa1ddabea8f830762402dee090caf33c30c2295ac7010db8f09c", size = 1450967, upload-time = "2026-02-09T07:02:15.578Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/9c/38/3d6dcbf8379cb86d71a2325210ca3469a33767d8254b74d8c343db26ce87/doit-0.37.0-py3-none-any.whl", hash = "sha256:a9f181566aa90faac515e276f85e6526019554ed7e13c12cf9dc094ffecf3e1b", size = 85780, upload-time = "2026-02-09T07:02:10.155Z" },
-]
-
-[[package]]
 name = "executing"
 version = "2.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1377,50 +1368,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/26/2d/ef58fed122b268c69c0aa099da20bc67657cdfb2e222688d5731bd5b971d/jupyterlab_widgets-3.0.16.tar.gz", hash = "sha256:423da05071d55cf27a9e602216d35a3a65a3e41cdf9c5d3b643b814ce38c19e0", size = 897423, upload-time = "2025-11-01T21:11:29.724Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ab/b5/36c712098e6191d1b4e349304ef73a8d06aed77e56ceaac8c0a306c7bda1/jupyterlab_widgets-3.0.16-py3-none-any.whl", hash = "sha256:45fa36d9c6422cf2559198e4db481aa243c7a32d9926b500781c830c80f7ecf8", size = 914926, upload-time = "2025-11-01T21:11:28.008Z" },
-]
-
-[[package]]
-name = "jupyterlite-core"
-version = "0.8.4"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "doit", marker = "python_full_version >= '3.11.5'" },
-    { name = "jupyter-core", marker = "python_full_version >= '3.11.5'" },
-    { name = "pycparser", marker = "python_full_version >= '3.11.5' and platform_python_implementation == 'PyPy'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/1e/89/762a30c0f7ba639e2766785b865cc8782370fc81009dcb15d1855ac25163/jupyterlite_core-0.8.4.tar.gz", hash = "sha256:49434d4cbe759eda96d94e04bd1ecc1f976888ee3110f96f408edf9ac1b69a99", size = 15801891, upload-time = "2026-09-22T08:46:05.101Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/1c/6f/b8ddff4b5c3fe36e72cb2fc26d0a50f43097a418573ae20dd112e9cd67e8/jupyterlite_core-0.8.4-py3-none-any.whl", hash = "sha256:ea8f5371b367a373978fe9b230f60481420f2b62811782e492093416fbc9e552", size = 15815614, upload-time = "2026-09-22T08:46:01.951Z" },
-]
-
-[[package]]
-name = "jupyterlite-pyodide-kernel"
-version = "0.8.6"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "jupyterlite-core", marker = "python_full_version >= '3.11.5'" },
-    { name = "pkginfo", marker = "python_full_version >= '3.11.5'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/e5/d8/ee2e0ce2dbe1a3d4efe4af38aee3f3a7fcef832d9b064c786c7e9acec7aa/jupyterlite_pyodide_kernel-0.8.6.tar.gz", hash = "sha256:ef53c638b1034473d72549642feb2fb9b8bfded970c7d5908551896c2b9b1268", size = 209172, upload-time = "2026-09-10T14:02:14.396Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/3c/59/95d3f962ea620eea8e0ad8fbcde3e66745be6afc0f864c5534c9c53979e7/jupyterlite_pyodide_kernel-0.8.6-py3-none-any.whl", hash = "sha256:c9e698420e7f95f156c09c1474898ee6727b35b1740b369cb5f5aaa59ea73d3f", size = 222455, upload-time = "2026-09-10T14:02:12.218Z" },
-]
-
-[[package]]
-name = "jupyterlite-sphinx"
-version = "0.23.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "docutils", marker = "python_full_version >= '3.11.5'" },
-    { name = "jupyter-server", marker = "python_full_version >= '3.11.5'" },
-    { name = "jupyterlab-server", marker = "python_full_version >= '3.11.5'" },
-    { name = "jupyterlite-core", marker = "python_full_version >= '3.11.5'" },
-    { name = "nbformat", marker = "python_full_version >= '3.11.5'" },
-    { name = "sphinx", marker = "python_full_version >= '3.11.5'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/e0/83/126ee5976104fe5d61306a53206c8f3cc36a6dd71947ed8308273c61e294/jupyterlite_sphinx-0.23.0.tar.gz", hash = "sha256:ac7d4af5bda5b72ad728b74e343e4210e3517c8ba45c639e67185e5ab27079af", size = 20728, upload-time = "2026-08-11T08:38:49.274Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/f4/3f/7a8adf65a70048ceed48053b53703a5ee4ec718d27e51326803dac5adcb4/jupyterlite_sphinx-0.23.0-py3-none-any.whl", hash = "sha256:da3095eacadd31042864799b737cfef3cb025679a79c8f0355abe12837f616cf", size = 23230, upload-time = "2026-08-11T08:38:47.742Z" },
 ]
 
 [[package]]
@@ -2190,15 +2137,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/5f/74/bc3f671997158aef171194c3c4041e549946f4784b8690baa0626a0a164b/pint-0.25.2.tar.gz", hash = "sha256:85a45d1da8fe9c9f7477fed8aef59ad2b939af3d6611507e1a9cbdacdcd3450a", size = 254467, upload-time = "2025-11-06T22:08:09.184Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ab/88/550d41e81e6d43335603a960cd9c75c1d88f9cf01bc9d4ee8e86290aba7d/pint-0.25.2-py3-none-any.whl", hash = "sha256:ca35ab1d8eeeb6f7d9942b3cb5f34ca42b61cdd5fb3eae79531553dcca04dda7", size = 306762, upload-time = "2025-11-06T22:08:07.745Z" },
-]
-
-[[package]]
-name = "pkginfo"
-version = "1.12.1.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/24/03/e26bf3d6453b7fda5bd2b84029a426553bb373d6277ef6b5ac8863421f87/pkginfo-1.12.1.2.tar.gz", hash = "sha256:5cd957824ac36f140260964eba3c6be6442a8359b8c48f4adf90210f33a04b7b", size = 451828, upload-time = "2025-02-19T15:27:37.188Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/fa/3d/f4f2ba829efb54b6cd2d91349c7463316a9cc55a43fc980447416c88540f/pkginfo-1.12.1.2-py3-none-any.whl", hash = "sha256:c783ac885519cab2c34927ccfa6bf64b5a704d7c69afaea583dd9b7afe969343", size = 32717, upload-time = "2025-02-19T15:27:33.071Z" },
 ]
 
 [[package]]
@@ -3007,8 +2945,6 @@ skfem = [
 docs = [
     { name = "ipython", marker = "python_full_version >= '3.11.5'" },
     { name = "ipywidgets", marker = "python_full_version >= '3.11.5'" },
-    { name = "jupyterlite-pyodide-kernel", marker = "python_full_version >= '3.11.5'" },
-    { name = "jupyterlite-sphinx", marker = "python_full_version >= '3.11.5'" },
     { name = "myst-parser", marker = "python_full_version >= '3.11.5'" },
     { name = "nbsphinx", marker = "python_full_version >= '3.11.5'" },
     { name = "numpydoc", marker = "python_full_version >= '3.11.5'" },
@@ -3072,8 +3008,6 @@ provides-extras = ["gui", "ansys", "mesh", "fem", "skfem", "full"]
 docs = [
     { name = "ipython", specifier = ">=8.0" },
     { name = "ipywidgets", specifier = ">=8.1" },
-    { name = "jupyterlite-pyodide-kernel", specifier = ">=0.4.0" },
-    { name = "jupyterlite-sphinx", specifier = ">=0.16.0" },
     { name = "myst-parser", specifier = ">=4.0" },
     { name = "nbsphinx", specifier = ">=0.9.8" },
     { name = "numpydoc", specifier = ">=1.5.0" },

@@ -1680,7 +1680,7 @@ class CompositeSystem:
 
         f01s, chi_mat = extract_energies(esys_array, mode_size=hamiltonian_mat.dims[0])
         f01s = f01s / 1000
-        ham_res["fQ_in_Ghz"] = dict(zip(names, f01s))
+        ham_res["fQ_in_Ghz"] = {name: float(f) for name, f in zip(names, f01s)}
         ham_res["chi_in_MHz"] = LabeledNdarray(chi_mat, names)
 
         if print_info:

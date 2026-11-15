@@ -152,9 +152,9 @@ CPW runs, minimum feature width); per-PDK rule sets loaded from a file;
 cross-layer `ground-continuity` that treats an airbridge as connecting two
 ground regions. GDS-level DRC stays with KLayout.
 
-**KLayout handoff** `[planned]`. Ship a `.lyp` layer-property file for
-exported GDS, a Metal → KLayout how-to, and a starter KLayout DRC deck for
-superconducting basics that PDK authors can extend.
+**KLayout handoff** `[shipped]`. A `.lyp` layer-property file, a how-to page and
+a starter KLayout DRC deck ship in the docs (*GDS in KLayout*). Still open:
+per-process rule decks from fab design rules, which need a partner process.
 
 **Scriptable and agent-driven use** `[research]`. The orchestration guide
 (*Scripting and Agent Use*) and repeatable GDS export have shipped. Open: a
@@ -169,10 +169,13 @@ entry-point discovery for third-party renderers and component libraries
 beside the class hierarchy; JAX-differentiable parametric components,
 starting with `TransmonPocket`.
 
-**In the browser** `[research]`. Bundle the notebooks that need no external
-solver into the JupyterLite site (`jupyterlite_contents` in `docs/conf.py`
-still points at a missing `tutorials/` folder); a read-only web design
-viewer.
+**In the browser** `[research]`. Run tutorials in the browser through
+JupyterLite with Pyodide. The docs site once built an empty JupyterLite
+instance (no notebooks were bundled), so it was removed. A real one needs a
+Pyodide-installable core: `gdstk`, `qutip` and `scqubits` are base
+dependencies today and have no Pyodide wheels. Also open: a read-only web
+design viewer. Colab and Binder badges cover trying a notebook without an
+install.
 
 ### Needs re-verification
 

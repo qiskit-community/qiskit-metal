@@ -207,6 +207,7 @@ Quantum Metal (formerly Qiskit Metal)
     Quantum Metal Workflow<workflow>
     Quantization Methods<quantization>
     Simulation Pathways<simulation-pathways>
+    GDS in KLayout<klayout>
     GUI Navigation & Shortcuts<gui-shortcuts>
 
 .. toctree::
