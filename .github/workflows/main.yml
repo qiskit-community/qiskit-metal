@@ -30,19 +30,15 @@ jobs:
           - macos-15
           - windows-2025
         python-version:
-          - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
           - "3.14"
         # All versions on Linux; oldest + newest on macOS/Windows keeps
-        # platform coverage at both ends with the same 9-job count as
-        # the old 3x3 matrix.
+        # platform coverage at both ends.
         exclude:
-          - { os: macos-15, python-version: "3.11" }
           - { os: macos-15, python-version: "3.12" }
           - { os: macos-15, python-version: "3.13" }
-          - { os: windows-2025, python-version: "3.11" }
           - { os: windows-2025, python-version: "3.12" }
           - { os: windows-2025, python-version: "3.13" }
     steps:
@@ -388,7 +384,7 @@ jobs:
             python: "3.12"
             install: "uv pip install -e '.[full]' 'pandas>=3'"
           - bound: lowest
-            python: "3.10"
+            python: "3.11"
             install: "uv pip install --resolution lowest-direct -e '.[full]'"
     steps:
       - uses: actions/checkout@v6
