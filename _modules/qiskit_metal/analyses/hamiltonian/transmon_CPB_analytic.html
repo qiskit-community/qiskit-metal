@@ -511,21 +511,8 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">linalg</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">mathieu_a</span><span class="p">,</span> <span class="n">mathieu_b</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hcpb_analytic"</span><span class="p">,</span> <span class="s2">"mathieu_level"</span><span class="p">]</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_koch_index</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ng</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""2 [ng + k(m, ng)] of Koch Eq. (2.11), for -1/2 &lt;= ng &lt;= 1/2."""</span>
-    <span class="k">if</span> <span class="n">ng</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">m</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">((</span><span class="n">m</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span>
-        <span class="n">m</span>
-        <span class="o">+</span> <span class="mf">1.0</span>
-        <span class="o">-</span> <span class="p">((</span><span class="n">m</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">%</span> <span class="mf">2.0</span><span class="p">)</span>
-        <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">ng</span> <span class="o">*</span> <span class="p">((</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">ng</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)))</span>
-    <span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">mathieu_level</span><span class="p">(</span><span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ng</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Ej</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Ec</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -535,15 +522,15 @@
 <span class="sd">    :math:`q = -E_J/2E_C`, where :math:`a_\nu` is the characteristic value</span>
 <span class="sd">    of real order :math:`\nu`.</span>
 
-<span class="sd">    * At integer order (``ng`` = 0 or 1/2 modulo 1) the even and odd</span>
-<span class="sd">      solutions are degenerate in the index: even ``m`` uses</span>
-<span class="sd">      ``scipy.special.mathieu_a`` and odd ``m`` uses ``mathieu_b`` of the</span>
-<span class="sd">      same order (ng = 0: :math:`a_m`, :math:`b_{m+1}`; ng = 1/2:</span>
-<span class="sd">      :math:`a_{m+1}`, :math:`b_m`).</span>
-<span class="sd">    * scipy has no characteristic values of non-integer order, so for other</span>
-<span class="sd">      ``ng`` the value is computed from the Hill (Fourier) matrix of</span>
-<span class="sd">      Mathieu's equation with Floquet exponent :math:`2 n_g`, whose</span>
-<span class="sd">      ``m``-th eigenvalue is :math:`a_{2[n_g + k(m, n_g)]}(q)`.</span>
+<span class="sd">    The value is the ``m``-th eigenvalue of the Hill (Fourier) matrix of</span>
+<span class="sd">    Mathieu's equation with Floquet exponent :math:`2 n_g`, which is</span>
+<span class="sd">    :math:`a_{2[n_g + k(m, n_g)]}(q)` for every ``ng``, integer orders</span>
+<span class="sd">    included (ng = 0: :math:`a_0, b_2, a_2, \dots`; ng = 1/2:</span>
+<span class="sd">    :math:`a_1, b_1, a_3, \dots`). ``scipy.special.mathieu_a`` and</span>
+<span class="sd">    ``mathieu_b`` are not used: up to scipy 1.18.1 they return the value of</span>
+<span class="sd">    another order in narrow windows of ``q`` (scipy#4479, scipy#14526, fixed</span>
+<span class="sd">    on scipy main by scipy#25128), e.g. ``mathieu_b(5, -20.9)`` equals</span>
+<span class="sd">    ``mathieu_b(3, -20.9)`` (#1252).</span>
 
 <span class="sd">    ``ng`` is reduced modulo 1 into [-1/2, 1/2] first (the spectrum has</span>
 <span class="sd">    period 1 in ``ng``).</span>
@@ -560,23 +547,17 @@
     <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
     <span class="n">ng</span> <span class="o">=</span> <span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">ng</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">%</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span>
     <span class="n">q</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">Ej</span> <span class="o">/</span> <span class="n">Ec</span>
-    <span class="n">index</span> <span class="o">=</span> <span class="n">_koch_index</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ng</span><span class="p">)</span>
-    <span class="n">order</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">index</span> <span class="o">-</span> <span class="n">order</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">:</span>
-        <span class="n">order</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">order</span><span class="p">))</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">mathieu_a</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="k">if</span> <span class="n">m</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">mathieu_b</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Hill matrix: diag (2 (n - ng))^2, off-diagonal q, n in [-N, N].</span>
-        <span class="n">ncut</span> <span class="o">=</span> <span class="mi">30</span> <span class="o">+</span> <span class="n">m</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">ncut</span><span class="p">,</span> <span class="n">ncut</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">evals</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eigh_tridiagonal</span><span class="p">(</span>
-            <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">ng</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="n">q</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ncut</span><span class="p">),</span>
-            <span class="n">select</span><span class="o">=</span><span class="s2">"i"</span><span class="p">,</span>
-            <span class="n">select_range</span><span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">),</span>
-            <span class="n">eigvals_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">evals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># Hill matrix: diag (2 (n - ng))^2, off-diagonal q, n in [-N, N].</span>
+    <span class="n">ncut</span> <span class="o">=</span> <span class="mi">30</span> <span class="o">+</span> <span class="n">m</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">ncut</span><span class="p">,</span> <span class="n">ncut</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">evals</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eigh_tridiagonal</span><span class="p">(</span>
+        <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">ng</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">q</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ncut</span><span class="p">),</span>
+        <span class="n">select</span><span class="o">=</span><span class="s2">"i"</span><span class="p">,</span>
+        <span class="n">select_range</span><span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">),</span>
+        <span class="n">eigvals_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">evals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">Ec</span> <span class="o">*</span> <span class="n">value</span>
 
 
