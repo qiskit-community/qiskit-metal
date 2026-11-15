@@ -437,6 +437,15 @@ def _fill_showcase(app, docname, source):
         source[0] = text
 
 
+def _touch_icon(app, pagename, templatename, context, doctree):
+    """Link the home-screen icon (the favicon itself is ``html_favicon``)."""
+    link = (
+        '<link rel="apple-touch-icon" '
+        f'href="{context["pathto"]("_static/apple-touch-icon.png", 1)}">'
+    )
+    context["metatags"] = context.get("metatags", "") + link
+
+
 def _nb_nav(app, pagename, templatename, context, doctree):
     """Add a full-width "Next" button and an "Examples" button to notebook pages.
 
@@ -496,6 +505,7 @@ def setup(app):
     app.connect("source-read", _fill_showcase)
     app.connect("source-read", _fill_home_showcase)
     app.connect("html-page-context", _nb_nav)
+    app.connect("html-page-context", _touch_icon)
     app.connect("builder-inited", _regenerate_qlibrary_assets)
 
 
@@ -576,5 +586,7 @@ modindex_common_prefix = ["qiskit_metal."]
 
 html_theme = "qiskit-ecosystem"
 html_title = f"{project} {release}"
+# The icon is the Bloch-sphere mark from the GUI (``_gui/_imgs/metal_logo.png``).
+html_favicon = "_static/favicon.ico"
 
 html_last_updated_fmt = "%Y/%m/%d"
