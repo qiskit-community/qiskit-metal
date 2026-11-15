@@ -60,22 +60,196 @@
   font-size: 1.1rem;
 }
 
-/* Home page: more air, larger section headings, card polish. */
-.qm-hero {
-  text-align: center;
-  padding: 2rem 0 3rem 0;
-  font-size: 1.15rem;
+/* ------------------------------------------------------------------
+   Design tokens for the home page and cards (light by default).
+   Text on a surface is at least 4.5:1; card borders against the page
+   are at least 3:1 (WCAG 1.4.3 and 1.4.11).
+   ------------------------------------------------------------------ */
+body {
+  --qm-surface: #f4f6fb;
+  --qm-surface-hi: #ffffff;
+  --qm-border: #76809a;
+  --qm-border-soft: #c3c9d6;
+  --qm-text: #131a27;
+  --qm-muted: #434d60;
+  --qm-accent: #4a20b4;
+  --qm-accent-2: #0b6a84;
+  --qm-trace: #4a20b4;
+  --qm-glow-a: rgba(105, 41, 196, 0.16);
+  --qm-glow-b: rgba(0, 157, 186, 0.14);
+  --qm-shadow: 0 1px 2px rgba(19, 26, 39, 0.08), 0 8px 24px -12px rgba(19, 26, 39, 0.25);
+  --qm-shadow-hi: 0 2px 4px rgba(19, 26, 39, 0.1), 0 16px 32px -14px rgba(74, 32, 180, 0.4);
+  /* sphinx-design reads these for every card on the site */
+  --sd-color-card-border: var(--qm-border);
+  --sd-color-card-border-hover: var(--qm-accent);
+  --sd-color-card-background: var(--qm-surface);
+  --sd-color-card-text: var(--qm-text);
 }
-.qm-hero .qm-hero-logo {
-  max-width: 100%;
-  margin-bottom: 1.5rem;
+
+/* ---------------- Hero ---------------- */
+section:has(> .qm-hero) > h1 {
+  text-align: center;
+  font-size: clamp(1.9rem, 5.2vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  margin: 0.5rem 0 0 0;
+}
+.qm-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  text-align: center;
+  margin: 1.25rem 0 0 0;
+  padding: clamp(2rem, 6vw, 4rem) clamp(1rem, 4vw, 3rem) 0 clamp(1rem, 4vw, 3rem);
+  border-radius: 20px;
+  background: linear-gradient(180deg, var(--qm-surface) 0%, rgba(0, 0, 0, 0) 100%);
+  border: 1px solid var(--qm-border-soft);
+}
+/* Two soft glows that drift slowly; transform-only, so no repaint. */
+.qm-hero::before,
+.qm-hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 60%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(40px);
+  pointer-events: none;
+}
+.qm-hero::before {
+  left: -12%;
+  top: -35%;
+  background: radial-gradient(closest-side, var(--qm-glow-a), transparent);
+  animation: qm-drift 22s ease-in-out infinite alternate;
+}
+.qm-hero::after {
+  right: -12%;
+  top: -20%;
+  background: radial-gradient(closest-side, var(--qm-glow-b), transparent);
+  animation: qm-drift 26s ease-in-out -9s infinite alternate-reverse;
+}
+@keyframes qm-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(8%, 10%, 0) scale(1.12); }
+}
+
+/* Decorative chip motif behind the text. */
+.qm-hero-art {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 50%;
+  width: max(100%, 62rem);
+  height: 24rem;
+  transform: translateX(-50%);
+  pointer-events: none;
+  color: var(--qm-trace);
+  -webkit-mask-image: radial-gradient(ellipse 42% 55% at 50% 45%, transparent 55%, #000 100%);
+  mask-image: radial-gradient(ellipse 42% 55% at 50% 45%, transparent 55%, #000 100%);
+}
+.qm-hero-art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.qm-hero-art .tr {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.75;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: qm-draw 2.6s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 0.28s);
+}
+.qm-hero-art .pad {
+  fill: currentColor;
+  opacity: 0.16;
+  animation: qm-fade 1.6s ease-out 1.4s backwards;
+}
+.qm-hero-art .sph {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  opacity: 0.5;
+}
+.qm-hero-art .sph-dash {
+  stroke-dasharray: 4 5;
+  opacity: 0.35;
+}
+.qm-hero-art .vec {
+  fill: none;
+  stroke: var(--qm-accent-2);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+.qm-hero-art .tip {
+  fill: var(--qm-accent-2);
+  offset-path: path("M940 118 a60 20 0 1 0 120 0 a60 20 0 1 0 -120 0 Z");
+  offset-rotate: 0deg;
+  animation: qm-orbit 14s linear infinite;
+}
+@keyframes qm-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes qm-fade {
+  from { opacity: 0; }
+}
+@keyframes qm-orbit {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+
+.qm-hero p {
+  max-width: 40rem;
+  margin: 0 auto;
+  color: var(--qm-text);
+}
+.qm-hero p strong {
+  display: block;
+  font-size: clamp(1.25rem, 3.2vw, 1.75rem);
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+}
+.qm-hero p:not(:has(strong)) {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--qm-muted);
 }
 .qm-hero .qm-hero-buttons {
-  max-width: 52rem;
-  margin: 2rem auto 0 auto;
+  max-width: 34rem;
+  margin: 1.75rem auto 2.25rem auto;
 }
+.qm-hero .qm-hero-buttons .sd-btn {
+  margin-top: 0;
+}
+.qm-hero .qm-hero-shot {
+  margin: 0 auto;
+  max-width: 62rem;
+  border-radius: 14px 14px 0 0;
+  overflow: hidden;
+  border: 1px solid var(--qm-border);
+  border-bottom: 0;
+  box-shadow: var(--qm-shadow);
+  line-height: 0;
+}
+.qm-hero .qm-hero-shot img {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1800 / 931;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+/* ---------------- Sections ---------------- */
 .qm-section {
-  margin: 4.5rem 0;
+  margin: 4rem 0;
 }
 .qm-section p {
   max-width: 46rem;
@@ -83,19 +257,208 @@
 }
 .qm-section .rubric.qm-h2,
 p.rubric.qm-h2 {
-  font-size: 1.9rem;
+  font-size: clamp(1.5rem, 3.6vw, 1.9rem);
   font-weight: 700;
+  letter-spacing: -0.005em;
   margin: 0 0 1rem 0;
 }
-.qm-section .sd-card,
-.bd-content .sd-card {
-  border-radius: 10px;
+.qm-section a:not(.sd-btn):not(.sd-stretched-link) {
+  color: var(--qm-accent);
+}
+
+/* ---------------- Cards (all sphinx-design cards) ---------------- */
+:not(#qm-id).sd-card {
+  border: 1px solid var(--qm-border);
+  border-radius: 14px !important;
+  background: var(--qm-surface);
+  color: var(--qm-text);
+  box-shadow: var(--qm-shadow) !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+:not(#qm-id).sd-card.sd-card-hover:hover {
+  border-color: var(--qm-accent);
+  box-shadow: var(--qm-shadow-hi) !important;
+  transform: translateY(-2px);
+}
+.sd-card .sd-card-title,
+.sd-card .sd-card-text {
+  color: var(--qm-text);
 }
 .qm-section .sd-card-body {
-  padding: 1.25rem 1.4rem;
+  padding: 1.25rem 1.4rem 1.4rem 1.4rem;
 }
-.qm-section .sd-btn {
-  margin-top: 1.5rem;
+
+/* The four-step pipeline: numbered cards. */
+.qm-steps4 {
+  counter-reset: qm-step;
+}
+.qm-steps4 :not(#qm-id).sd-card {
+  counter-increment: qm-step;
+  border-top: 3px solid var(--qm-accent);
+}
+.qm-steps4 .sd-card-title::before {
+  content: "0" counter(qm-step);
+  display: block;
+  font: 600 0.8rem/1 var(--font-stack--monospace, monospace);
+  letter-spacing: 0.08em;
+  color: var(--qm-accent);
+  margin-bottom: 0.6rem;
+}
+.qm-steps4 .sd-card-title {
+  font-size: 1.15rem;
+}
+.qm-steps4 .sd-card-text {
+  color: var(--qm-muted);
+  line-height: 1.55;
+}
+
+/* ---------------- Community chips ---------------- */
+.qm-chips ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1rem 0 0 0;
+  padding: 0;
+}
+.qm-chips li {
+  margin: 0;
+  padding: 0;
+}
+.qm-chips li p {
+  margin: 0;
+  max-width: none;
+}
+.qm-chips li a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--qm-border);
+  border-radius: 999px;
+  background: var(--qm-surface);
+  color: var(--qm-text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.qm-chips li a:hover {
+  border-color: var(--qm-accent);
+  background: var(--qm-surface-hi);
+  color: var(--qm-accent);
+}
+.qm-chips li a:focus-visible {
+  outline: 3px solid var(--qm-accent);
+  outline-offset: 2px;
+}
+
+/* ---------------- Device strip and notebook gallery ---------------- */
+.qm-section .qm-fab-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 13.5rem), 1fr));
+  margin: 1.5rem 0 1rem 0;
+}
+.qm-section .qm-fab-grid figure {
+  border: 1px solid var(--qm-border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--qm-surface);
+  box-shadow: var(--qm-shadow);
+}
+.qm-section .qm-fab-grid img {
+  border-radius: 0;
+  aspect-ratio: 4 / 3;
+  border-bottom: 1px solid var(--qm-border-soft);
+}
+.qm-section .qm-fab-grid figcaption {
+  padding: 0.7rem 0.85rem 0.85rem 0.85rem;
+  color: var(--qm-text);
+  line-height: 1.45;
+  font-size: 0.82rem;
+}
+.qm-fab-credit {
+  color: var(--qm-muted);
+  opacity: 1;
+  font-size: 0.78rem;
+}
+.qm-fab-credit a {
+  color: var(--qm-accent);
+}
+.nbsphinx-gallery {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 13.5rem), 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.nbsphinx-gallery > a.reference {
+  display: block;
+  padding: 0.75rem;
+  border: 1px solid var(--qm-border);
+  border-radius: 14px;
+  background: var(--qm-surface);
+  color: var(--qm-text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  box-shadow: var(--qm-shadow);
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+.nbsphinx-gallery > a.reference:hover {
+  border-style: solid;
+  border-color: var(--qm-accent);
+  transform: translateY(-2px);
+}
+.nbsphinx-gallery > a > div:first-child {
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.35rem;
+  box-sizing: border-box;
+  height: 130px;
+}
+
+.qm-cta {
+  margin: 2rem 0 0 0;
+}
+
+/* Motion: everything above is decorative, so reduced motion gets the
+   static, fully drawn image. */
+@media (prefers-reduced-motion: reduce) {
+  .qm-hero::before,
+  .qm-hero::after,
+  .qm-hero-art .tr,
+  .qm-hero-art .pad,
+  .qm-hero-art .tip {
+    animation: none;
+  }
+  :not(#qm-id).sd-card,
+  .nbsphinx-gallery > a.reference {
+    transition: none;
+  }
+  :not(#qm-id).sd-card.sd-card-hover:hover,
+  .nbsphinx-gallery > a.reference:hover {
+    transform: none;
+  }
+}
+@media (max-width: 640px) {
+  .qm-section .qm-fab-grid,
+  .nbsphinx-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+  .qm-hero-art {
+    height: 20rem;
+    left: 0;
+    width: 62rem;
+    transform: none;
+    opacity: 0.28;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .qm-hero::before,
+  .qm-hero::after {
+    filter: blur(24px);
+  }
+  .qm-section {
+    margin: 3rem 0;
+  }
 }
 
 /* Devices and papers lists. */
@@ -162,6 +525,19 @@ body[data-theme="dark"] {
   --color-sidebar-link-text--top-level: #dcdfe3;
   --color-sidebar-caption-text: #a8aeb5;
   --color-background-border: #3a3d42;
+  --qm-surface: #1a1f2b;
+  --qm-surface-hi: #232a39;
+  --qm-border: #7a8499;
+  --qm-border-soft: #3a4252;
+  --qm-text: #eef0f5;
+  --qm-muted: #b8c0cf;
+  --qm-accent: #bba6ff;
+  --qm-accent-2: #5fd3ee;
+  --qm-trace: #a58bff;
+  --qm-glow-a: rgba(140, 100, 255, 0.28);
+  --qm-glow-b: rgba(40, 190, 220, 0.2);
+  --qm-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 8px 24px -12px rgba(0, 0, 0, 0.7);
+  --qm-shadow-hi: 0 2px 4px rgba(0, 0, 0, 0.5), 0 16px 32px -14px rgba(160, 130, 255, 0.45);
 }
 @media (prefers-color-scheme: dark) {
   body:not([data-theme="light"]) {
@@ -172,5 +548,18 @@ body[data-theme="dark"] {
     --color-sidebar-link-text--top-level: #dcdfe3;
     --color-sidebar-caption-text: #a8aeb5;
     --color-background-border: #3a3d42;
+    --qm-surface: #1a1f2b;
+    --qm-surface-hi: #232a39;
+    --qm-border: #7a8499;
+    --qm-border-soft: #3a4252;
+    --qm-text: #eef0f5;
+    --qm-muted: #b8c0cf;
+    --qm-accent: #bba6ff;
+    --qm-accent-2: #5fd3ee;
+    --qm-trace: #a58bff;
+    --qm-glow-a: rgba(140, 100, 255, 0.28);
+    --qm-glow-b: rgba(40, 190, 220, 0.2);
+    --qm-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 8px 24px -12px rgba(0, 0, 0, 0.7);
+    --qm-shadow-hi: 0 2px 4px rgba(0, 0, 0, 0.5), 0 16px 32px -14px rgba(160, 130, 255, 0.45);
   }
 }

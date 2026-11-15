@@ -4,15 +4,67 @@ Qiskit Metal is now Quantum Metal
 
 .. container:: qm-hero
 
-   .. image:: images/logo1.png
-      :alt: Quantum Metal logo
-      :class: qm-hero-logo
+   .. raw:: html
+
+      <div class="qm-hero-art" aria-hidden="true">
+      <svg viewBox="0 0 1200 380" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <g>
+          <path class="pad" d="M140 140h20v-20h20v20h20v20h-20v20h-20v-20h-20z"/>
+          <path class="tr" pathLength="1" style="--i:0" d="M140 140h20v-20h20v20h20v20h-20v20h-20v-20h-20z"/>
+          <path class="tr" pathLength="1" style="--i:1" d="M170 180v90h140"/>
+          <path class="tr" pathLength="1" style="--i:2" d="M-20 300h330h30v-90h40v90h40v-90h40v90h40v-90h40v90h30h140"/>
+          <path class="tr" pathLength="1" style="--i:3" d="M60 60h60v40M60 60v-40"/>
+          <path class="pad" d="M40 4h40v32h-40z"/>
+          <path class="tr" pathLength="1" style="--i:4" d="M700 330h520"/>
+          <path class="tr" pathLength="1" style="--i:5" d="M780 330v-70h40v70m40 0v-70h40v70m40 0v-70h40v70"/>
+          <path class="tr" pathLength="1" style="--i:6" d="M1100 250h20v-20h20v20h20v20h-20v20h-20v-20h-20z"/>
+          <path class="pad" d="M1100 250h20v-20h20v20h20v20h-20v20h-20v-20h-20z"/>
+        </g>
+        <g>
+          <circle class="sph" cx="1000" cy="120" r="64"/>
+          <ellipse class="sph sph-dash" cx="1000" cy="120" rx="64" ry="20"/>
+          <ellipse class="sph sph-dash" cx="1000" cy="120" rx="20" ry="64"/>
+          <path class="vec" d="M1000 120v-64"/>
+          <circle class="tip" r="4.5" cx="0" cy="0"/>
+        </g>
+      </svg>
+      </div>
 
    **Design superconducting quantum chips in Python, then simulate them.**
 
    Open source and community-maintained. One Python API, with an optional desktop GUI,
-   takes a chip from layout to Hamiltonian. No Qt required: it runs in a notebook
-   or a plain script.
+   takes a chip from layout to Hamiltonian.
+
+   .. grid:: 1 2 2 2
+      :gutter: 2
+      :class-container: qm-hero-buttons
+
+      .. grid-item::
+
+         .. button-ref:: quickstart
+            :ref-type: doc
+            :color: primary
+            :shadow:
+            :expand:
+
+            Quick start
+
+      .. grid-item::
+
+         .. button-ref:: tut/index
+            :ref-type: doc
+            :color: primary
+            :outline:
+            :expand:
+
+            Learn: the tutorial course
+
+   .. container:: qm-hero-shot
+
+      .. image:: images/logo1.webp
+         :alt: Quantum Metal: the desktop GUI showing a chip layout, with capacitance, eigenmode and S-parameter analysis panels.
+         :width: 1800px
+         :height: 931px
 
 .. container:: qm-section
 
@@ -25,6 +77,7 @@ Qiskit Metal is now Quantum Metal
 
    .. grid:: 1 2 2 4
       :gutter: 3
+      :class-container: qm-steps4
 
       .. grid-item-card:: Design
          :link: qdesign
@@ -61,65 +114,6 @@ Qiskit Metal is now Quantum Metal
 
 .. container:: qm-section
 
-   .. rubric:: Community
-      :class: qm-h2
-
-   .. grid:: 1 2 2 4
-      :gutter: 3
-
-      .. grid-item-card:: Community Discord
-
-         Fastest way to reach maintainers and the broader community.
-
-         .. button-link:: https://discord.gg/FPNybyfpxd
-            :color: primary
-            :outline:
-            :expand:
-
-            Join Discord
-
-      .. grid-item-card:: Qiskit Slack #metal
-
-         Former main community workspace, being replaced by Discord.
-
-         .. button-link:: https://qiskit.slack.com/archives/C01R8KP5WP7
-            :color: primary
-            :outline:
-            :expand:
-
-            Join #metal on Slack
-
-      .. grid-item-card:: Quantum Device Workshop (QDW)
-
-         Annual workshop hosted at UCLA/USC.
-
-         .. button-link:: https://qdc-qcsa.org/qdw/2026/info
-            :color: primary
-            :outline:
-            :expand:
-
-            QDW 2026 information
-
-      .. grid-item-card:: Quantum Device Consortium (QDC)
-
-         Community organization stewarding Quantum Metal.
-
-         .. button-link:: https://qdc-qcsa.vercel.app
-            :color: primary
-            :outline:
-            :expand:
-
-            QDC website
-
-         .. button-link:: https://discord.gg/FPNybyfpxd
-            :color: secondary
-            :outline:
-            :expand:
-
-            QDC Discord
-
-.. container:: qm-section
-
    .. rubric:: Devices designed with Quantum Metal
       :class: qm-h2
 
@@ -136,45 +130,33 @@ Qiskit Metal is now Quantum Metal
        circuit-examples/F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates
        tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip
 
-   .. grid:: 1 2 3 3
-      :gutter: 3
-      :class-container: qm-hero-buttons
+   .. container:: qm-cta
 
-      .. grid-item::
+      .. button-ref:: built-with-metal
+         :ref-type: doc
+         :color: primary
+         :outline:
 
-         .. button-ref:: quickstart
-            :ref-type: doc
-            :color: primary
-            :shadow:
-            :expand:
+         Devices and papers
 
-            Quick start
+.. container:: qm-section
 
-      .. grid-item::
+   .. rubric:: Community
+      :class: qm-h2
 
-         .. button-ref:: built-with-metal
-            :ref-type: doc
-            :color: primary
-            :outline:
-            :expand:
+   Questions, ideas and bug reports are welcome.
 
-            Devices and papers
+   .. container:: qm-chips
 
-      .. grid-item::
-
-         .. button-ref:: tut/index
-            :ref-type: doc
-            :color: primary
-            :outline:
-            :expand:
-
-            Learn: the tutorial course
+      * `Discord <https://discord.gg/FPNybyfpxd>`__
+      * `GitHub issues <https://github.com/qiskit-community/qiskit-metal/issues>`__
+      * `Quantum Device Workshop <https://qdc-qcsa.org/qdw/2026/info>`__
+      * `Quantum Device Consortium <https://qdc-qcsa.vercel.app>`__
 
 .. note::
     **Rebrand in progress: Qiskit Metal → Quantum Metal.**
     The PyPI package is ``quantum-metal`` (v0.5+).
-    A future release will rename the import path from ``qiskit_metal``
-    to ``quantum_metal``; no version has been set for that yet.
+    A future release will rename the import path from ``qiskit_metal`` to ``quantum_metal``; no version has been set for that yet.
     See :doc:`installation`.
 
 .. toctree::
@@ -185,7 +167,6 @@ Qiskit Metal is now Quantum Metal
     Quick Start<quickstart>
     Installing Quantum Metal<installation>
     Choose Your Path<choose-your-path>
-    Running Without the Desktop GUI<headless-usage>
     Scripting and Agent Use<orchestration>
     Built on Quantum Metal<ecosystem>
 
@@ -208,6 +189,7 @@ Qiskit Metal is now Quantum Metal
     Quantization Methods<quantization>
     Simulation Pathways<simulation-pathways>
     GDS in KLayout<klayout>
+    Desktop GUI or Headless<headless-usage>
     GUI Navigation & Shortcuts<gui-shortcuts>
 
 .. toctree::
