@@ -605,8 +605,13 @@
     <span class="c1"># Remove invalid characters</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"[^0-9a-zA-Z_]"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="c1"># Remove leading characters until we find a letter or underscore</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"^[^a-zA-Z_]+"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">name</span>
+    <span class="n">stripped</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"^[^a-zA-Z_]+"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="c1"># A digits-only name (e.g. the key 0 in ``{0: jj_line}``) would become</span>
+    <span class="c1"># empty, so a poly and a path keyed 0 in one component got the same</span>
+    <span class="c1"># element name. Keep the digits behind an underscore instead.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">stripped</span> <span class="ow">and</span> <span class="n">name</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="n">stripped</span>
 
 
 <div class="viewcode-block" id="QAnsysRenderer">
