@@ -10,8 +10,6 @@
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fc6d6d93" />
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=7cf023f8" />
@@ -316,6 +314,7 @@
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">Quantum Metal Workflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization Methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simulation-pathways.html">Simulation Pathways</a></li>
+<li class="toctree-l1"><a class="reference internal" href="klayout.html">GDS in KLayout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
@@ -668,9 +667,9 @@ openEMS as a lighter open-FEM option once Palace lands.</p>
 CPW runs, minimum feature width); per-PDK rule sets loaded from a file;
 cross-layer <code class="docutils literal notranslate"><span class="pre">ground-continuity</span></code> that treats an airbridge as connecting two
 ground regions. GDS-level DRC stays with KLayout.</p>
-<p><strong>KLayout handoff</strong> <code class="docutils literal notranslate"><span class="pre">[planned]</span></code>. Ship a <code class="docutils literal notranslate"><span class="pre">.lyp</span></code> layer-property file for
-exported GDS, a Metal → KLayout how-to, and a starter KLayout DRC deck for
-superconducting basics that PDK authors can extend.</p>
+<p><strong>KLayout handoff</strong> <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code>. A <code class="docutils literal notranslate"><span class="pre">.lyp</span></code> layer-property file, a how-to page and
+a starter KLayout DRC deck ship in the docs (<em>GDS in KLayout</em>). Still open:
+per-process rule decks from fab design rules, which need a partner process.</p>
 <p><strong>Scriptable and agent-driven use</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>. An orchestration guide (a
 design built, checked, exported and analyzed in a short headless script); a
 documented stable public API for <code class="docutils literal notranslate"><span class="pre">QDesign</span></code>, <code class="docutils literal notranslate"><span class="pre">QComponent</span></code> and the renderer
@@ -682,10 +681,13 @@ entry-point discovery for third-party renderers and component libraries
 (and a reference PDK package that uses it); a functional component API
 beside the class hierarchy; JAX-differentiable parametric components,
 starting with <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>.</p>
-<p><strong>In the browser</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>. Bundle the notebooks that need no external
-solver into the JupyterLite site (<code class="docutils literal notranslate"><span class="pre">jupyterlite_contents</span></code> in <code class="docutils literal notranslate"><span class="pre">docs/conf.py</span></code>
-still points at a missing <code class="docutils literal notranslate"><span class="pre">tutorials/</span></code> folder); a read-only web design
-viewer.</p>
+<p><strong>In the browser</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>. Run tutorials in the browser through
+JupyterLite with Pyodide. The docs site once built an empty JupyterLite
+instance (no notebooks were bundled), so it was removed. A real one needs a
+Pyodide-installable core: <code class="docutils literal notranslate"><span class="pre">gdstk</span></code>, <code class="docutils literal notranslate"><span class="pre">qutip</span></code> and <code class="docutils literal notranslate"><span class="pre">scqubits</span></code> are base
+dependencies today and have no Pyodide wheels. Also open: a read-only web
+design viewer. Colab and Binder badges cover trying a notebook without an
+install.</p>
 <section id="needs-re-verification">
 <h3>Needs re-verification<a class="headerlink" href="#needs-re-verification" title="Link to this heading">¶</a></h3>
 <p>Recorded earlier and not checked against v0.10.0:</p>
@@ -798,7 +800,6 @@ and the open Ansys issues above.</p></li>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
-    <script src="_static/jupyterlite_sphinx.js?v=96e329c5"></script>
     <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="_static/design-tabs.js?v=fcb327ea"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
