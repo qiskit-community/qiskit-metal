@@ -18,7 +18,7 @@ part of the learning path because another notebook covers the same ground.
       - Marked deprecated in its first cell in favor of ``qiskit_metal.validation``; no stored outputs.
       - :doc:`2.24 Design rule checking <tut/2-From-components-to-chip/2.24-Design-rule-checking>`
     * - :doc:`4.33 Transmon Analytics <tut/4-Analysis/4.33-Transmon-analytics>`
-      - Plots the same eigenvalue figure as 4.32 with a fixed script (Ej/Ec = 1); no stored output.
+      - Plots the same eigenvalue figure as 4.32 with a fixed script (Ej/Ec = 1).
       - :doc:`4.32 <tut/4-Analysis/4.32-Transmon-analytics-HCPB>`
     * - :doc:`A.5 Launch video example <circuit-examples/full-design-flow-examples/A.5-Launch-video-example>`
       - Written for a 2020 launch video; follows the same Ansys LOM/EPR pattern as A.7.

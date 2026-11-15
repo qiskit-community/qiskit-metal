@@ -18,7 +18,7 @@ come from the five-notebook series `docs/tut/4-Analysis/4.41`–`4.45`.
   `CLAUDE.md`. Shared helper code and input files: `docs/tut/resources/`.
 - Register new notebooks: one explicit `nbgallery` entry (no glob) on the
   page that is its home: a part page under `docs/tut/` for a lesson,
-  `docs/circuit-examples/component-examples.rst` or `reference-designs.rst`
+  `docs/circuit-examples/index.rst` (one flat page; pick its section)
   for a design to copy, `docs/research.rst` for a reproduction of a
   published device. Other pages link with `nblinkgallery`. Pure-Python ones (no Ansys, gmsh, Elmer; < 3 min)
   on `_dev/notebooks-auto-refresh.txt`, the others in its external-gated

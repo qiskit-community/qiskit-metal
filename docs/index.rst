@@ -2,193 +2,173 @@
 Quantum Metal (formerly Qiskit Metal)
 ##############################################################
 
-Quantum Device Design & Analysis (Q-EDA)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. container:: qm-hero
 
-.. image:: images/logo1.png
-   :alt: Quantum Metal logo
+   .. image:: images/logo1.png
+      :alt: Quantum Metal logo
+      :class: qm-hero-logo
 
-**Quantum Metal | Open source · Community-maintained quantum EDA**
+   **Design superconducting quantum chips in Python, then simulate them.**
 
-Design and analyze superconducting quantum chips with a Python API + optional GUI
-that plugs into your favourite EDA tools.
-No Qt required — works headlessly in any Jupyter notebook or plain Python script.
+   Open source and community-maintained. One Python API, with an optional desktop GUI,
+   takes a chip from layout to Hamiltonian. No Qt required: it runs in a notebook
+   or a plain script.
 
-.. grid:: 1 2 2 4
-   :gutter: 2
+.. container:: qm-section
 
-   .. grid-item-card:: 🚀 Quick start
-      :class-header: sd-bg-primary sd-text-light
+   .. rubric:: What is Quantum Metal?
+      :class: qm-h2
 
-      .. button-ref:: quickstart
-         :ref-type: doc
-         :color: primary
-         :outline:
-         :expand:
+   Designing quantum devices is a multi-step process that connects traditionally
+   disparate worlds. Quantum Metal automates it, from layout to Hamiltonian, in
+   a simple, open, community-driven framework.
 
-         Install and place a qubit
+   .. grid:: 1 2 2 4
+      :gutter: 3
 
-   .. grid-item-card:: 🔬 Research showcase
-      :class-header: sd-bg-secondary sd-text-light
+      .. grid-item-card:: Design
+         :link: qdesign
+         :link-type: ref
 
-      .. button-ref:: research
-         :ref-type: doc
-         :color: secondary
-         :outline:
-         :expand:
+         Chips as Python objects: parametric layout, pins, routing, design rules.
 
-         Published devices and results, reproduced
+      .. grid-item-card:: Components
+         :link: qcomponents-gallery
+         :link-type: doc
 
-   .. grid-item-card:: 📚 Learn
-      :class-header: sd-bg-primary sd-text-light
+         Every transmon, coupler, route, resonator, termination and lumped
+         element shipped with Quantum Metal.
 
-      .. button-ref:: tut/index
-         :ref-type: doc
-         :color: primary
-         :outline:
-         :expand:
+      .. grid-item-card:: Render
+         :link: qrenderer
+         :link-type: ref
 
-         The tutorial course, in order
+         Export to GDS, gmsh meshes, Ansys and ElmerFEM.
 
-   .. grid-item-card:: 🧩 Examples
-      :class-header: sd-bg-secondary sd-text-light
+      .. grid-item-card:: Analyze
+         :link: qanalysis
+         :link-type: ref
 
-      .. button-ref:: circuit-examples/index
-         :ref-type: doc
-         :color: secondary
-         :outline:
-         :expand:
+         Capacitance, eigenmodes, energy participation, Hamiltonians.
 
-         Components and reference designs
+.. container:: qm-section
 
-.. rubric:: Research showcase: published devices and results, reproduced
+   .. rubric:: Built on Quantum Metal
+      :class: qm-h2
 
-Six notebooks (4.41-4.46) follow the package-mode couplings of a 10 × 10
-transmon array (R. Molavi *et al.*, `arXiv:2609.22442
-<https://arxiv.org/abs/2609.22442>`_), from an analytic estimate to a
-full-wave model. Further notebooks build the 17-qubit surface-code chip of the
-Wallraff group (ETH Zurich) with a meshed two-qubit cell, the 5-qubit Xmon
-processor of Barends *et al.*, and three published iSWAP gates.
-Notebook list, sources and requirements: :doc:`research`.
+   Tools from the community that use it as their design layer:
+   :doc:`SQuADDS, SQDMetal, QDesignOptimizer and more <ecosystem>`.
 
-.. nblinkgallery::
+.. container:: qm-section
 
-    tut/4-Analysis/4.41-The-package-mode-on-paper
-    tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling
-    tut/4-Analysis/4.43-Mesh-and-solve-the-10x10-processor
-    tut/4-Analysis/4.44-Every-coupling-from-one-eigenmode
-    tut/4-Analysis/4.45-Four-methods-one-full-wave-model
-    tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling
-    circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode
-    circuit-examples/F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh
-    circuit-examples/F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor
-    circuit-examples/F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates
+   .. rubric:: Community
+      :class: qm-h2
 
-.. rubric:: What is Quantum Metal?
+   .. grid:: 1 2 2 4
+      :gutter: 3
 
-Designing quantum devices is the bedrock of the quantum ecosystem, but it is a
-difficult, multi-step process that connects traditionally disparate worlds.
-Quantum Metal automates and streamlines this process — from layout to Hamiltonian —
-in a simple, open, community-driven framework.
+      .. grid-item-card:: Community Discord
 
-.. grid:: 2 2 2 4
-   :gutter: 1
+         Fastest way to reach maintainers and the broader community.
 
-   .. grid-item-card:: Quantum Device Design
-      :class-header: sd-bg-primary sd-text-light
-      :link: qdesign
-      :link-type: ref
+         .. button-link:: https://discord.gg/FPNybyfpxd
+            :color: primary
+            :outline:
+            :expand:
 
-      :ref:`qdesign`
+            Join Discord
 
-   .. grid-item-card:: Quantum Device Components
-      :class-header: sd-bg-secondary sd-text-light
-      :link: qcomponents-gallery
-      :link-type: doc
+      .. grid-item-card:: Qiskit Slack #metal
 
-      Visual catalog: every transmon, coupler, route, resonator,
-      termination, and lumped element shipped with Quantum Metal.
+         Former main community workspace, being replaced by Discord.
 
-   .. grid-item-card:: Quantum Renderer
-      :class-header: sd-bg-primary sd-text-light
-      :link: qrenderer
-      :link-type: ref
+         .. button-link:: https://qiskit.slack.com/archives/C01R8KP5WP7
+            :color: primary
+            :outline:
+            :expand:
 
-      :ref:`qrenderer`
+            Join #metal on Slack
 
-   .. grid-item-card:: Quantum Analysis
-      :class-header: sd-bg-secondary sd-text-light
-      :link: qanalysis
-      :link-type: ref
+      .. grid-item-card:: Quantum Device Workshop (QDW)
 
-      :ref:`qanalysis`
+         Annual workshop hosted at UCLA/USC.
 
-.. rubric:: Community
+         .. button-link:: https://qdc-qcsa.org/qdw/2026/info
+            :color: primary
+            :outline:
+            :expand:
 
-.. grid:: 1 2 2 4
-   :gutter: 1
+            QDW 2026 information
 
-   .. grid-item-card:: Community Discord
-      :class-header: sd-bg-secondary sd-text-light
+      .. grid-item-card:: Quantum Device Consortium (QDC)
 
-      Fastest way to reach maintainers and the broader community.
+         Community organization stewarding Quantum Metal.
 
-      .. button-link:: https://discord.gg/FPNybyfpxd
-         :color: primary
-         :outline:
-         :expand:
+         .. button-link:: https://qdc-qcsa.vercel.app
+            :color: primary
+            :outline:
+            :expand:
 
-         Join Discord
+            QDC website
 
-   .. grid-item-card:: Qiskit Slack #metal
-      :class-header: sd-bg-primary sd-text-light
+         .. button-link:: https://discord.gg/FPNybyfpxd
+            :color: secondary
+            :outline:
+            :expand:
 
-      Former main community workspace, being replaced by Discord.
+            QDC Discord
 
-      .. button-link:: https://qiskit.slack.com/archives/C01R8KP5WP7
-         :color: primary
-         :outline:
-         :expand:
+.. container:: qm-section
 
-         Join #metal on Slack
+   .. rubric:: Devices designed with Quantum Metal
+      :class: qm-h2
 
-   .. grid-item-card:: Quantum Device Workshop (QDW)
-      :class-header: sd-bg-secondary sd-text-light
+   Chips designed or rebuilt with Quantum Metal, from community fabrication to
+   published processors. More device images, papers and theses are on
+   :doc:`built-with-metal`.
 
-      Annual workshop hosted at UCLA/USC.
+{{ QM_FABRICATED:4 }}
 
-      .. button-link:: https://qdw-ucla.squarespace.com/
-         :color: primary
-         :outline:
-         :expand:
+   .. nblinkgallery::
 
-         QDW site
+       circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode
+       circuit-examples/F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor
+       circuit-examples/F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates
+       tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip
 
-      .. button-link:: https://qdw-ucla.squarespace.com/qdw2026
-         :color: secondary
-         :outline:
-         :expand:
+   .. grid:: 1 2 3 3
+      :gutter: 3
+      :class-container: qm-hero-buttons
 
-         Sign for 2026
+      .. grid-item::
 
-   .. grid-item-card:: Quantum Device Consortium (QDC)
-      :class-header: sd-bg-primary sd-text-light
+         .. button-ref:: quickstart
+            :ref-type: doc
+            :color: primary
+            :shadow:
+            :expand:
 
-      Community organization stewarding Quantum Metal.
+            Quick start
 
-      .. button-link:: https://qdc-qcsa.vercel.app
-         :color: primary
-         :outline:
-         :expand:
+      .. grid-item::
 
-         QDC website
+         .. button-ref:: built-with-metal
+            :ref-type: doc
+            :color: primary
+            :outline:
+            :expand:
 
-      .. button-link:: https://discord.gg/FPNybyfpxd
-         :color: secondary
-         :outline:
-         :expand:
+            Devices and papers
 
-         QDC Discord
+      .. grid-item::
+
+         .. button-ref:: tut/index
+            :ref-type: doc
+            :color: primary
+            :outline:
+            :expand:
+
+            Learn: the tutorial course
 
 .. note::
     **Rebrand in progress: Qiskit Metal → Quantum Metal.**
@@ -205,13 +185,15 @@ in a simple, open, community-driven framework.
     Quick Start<quickstart>
     Installing Quantum Metal<installation>
     Choose Your Path<choose-your-path>
+    Built on Quantum Metal<ecosystem>
 
 .. toctree::
     :maxdepth: 2
     :caption: Showcase & Learn
     :hidden:
 
-    Research Showcase<research>
+    Device Images and Papers<built-with-metal>
+    Reproduced Devices (Notebooks)<research>
     Learn<tut/index>
     Examples<circuit-examples/index>
 
@@ -254,8 +236,6 @@ in a simple, open, community-driven framework.
     :caption: Community & Contributing
     :hidden:
 
-    Built on / with Quantum Metal<ecosystem>
-    Videos & Education<videoseducation>
     Contributor Guide<contributor-guide>
     Architecture<architecture>
     Using Quantum Metal without Qt<headless-usage>

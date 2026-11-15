@@ -1,15 +1,22 @@
 .. _research:
 
-============================================================
-Research showcase: published devices and results, reproduced
-============================================================
+==========================================
+Reproduced devices and results (notebooks)
+==========================================
 
-Notebooks that reproduce a published device or result. Each is listed once
-here; the table at the end gives the source, what is reproduced, and what it
-needs.
+Notebooks that reproduce published devices and results with Quantum Metal.
 
-Featured: package modes and qubit couplings
--------------------------------------------
+.. button-ref:: built-with-metal
+    :ref-type: doc
+    :color: secondary
+    :outline:
+
+    Looking for device images, papers and projects? See Devices and papers
+
+Each notebook is listed once here; the table at the end gives the source, what
+is reproduced, and what it needs.
+
+.. rubric:: Featured: package modes and qubit couplings
 
 Six notebooks follow R. Molavi *et al.*, `arXiv:2609.22442
 <https://arxiv.org/abs/2609.22442>`_: the couplings of a 10 × 10 transmon array
@@ -26,8 +33,7 @@ model term by term. They use gmsh and a scikit-fem Maxwell solver in place of HF
     tut/4-Analysis/4.45-Four-methods-one-full-wave-model
     tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling
 
-Published devices
------------------
+.. rubric:: Published devices
 
 .. nbgallery::
 
@@ -36,8 +42,7 @@ Published devices
     circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode
     circuit-examples/F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh
 
-Summary
--------
+.. rubric:: Summary
 
 .. list-table::
     :header-rows: 1
@@ -47,7 +52,7 @@ Summary
       - Level
       - Needs
     * - 4.41 to 4.46
-      - R. Molavi *et al.*, `arXiv:2609.22442 <https://arxiv.org/abs/2609.22442>`_
+      - R. Molavi *et al.*, `arXiv:2609.22442 <https://arxiv.org/abs/2609.22442>`_ (4.46 goes beyond the paper)
       - analytic estimate to full-wave model
       - lite (4.41, 4.42); ``[skfem]`` and gmsh (4.43 to 4.46; 4.46 also ``pymetis``)
     * - 52 Barends

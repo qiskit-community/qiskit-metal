@@ -1,0 +1,1204 @@
+{
+ "entries": [
+  {
+   "group": "Papers, theses and books",
+   "title": "QDesignOptimizer based on ANMod: an automated, physics-guided, multi-parameter design optimizer for superconducting quantum devices",
+   "authors": "Axel M. Eriksson, Lukas J. Splitthoff, Simone Gasparinetti, et al.",
+   "venue": "Quantum Sci. Technol. 11, 035024 (2026)",
+   "year": "2026",
+   "url": "https://arxiv.org/abs/2508.18027",
+   "note": "Qubit design optimized with Qiskit Metal and pyEPR, then fabricated and characterized at 20 mK.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Component-Level Inverse Design of Transmon Qubits Using Neural Networks",
+   "authors": "Olivia Seidel, Firas Abouzahr, Abhishek Chakraborty, Sadman Shanto et al.",
+   "venue": "Research Square / arXiv (2026)",
+   "year": "2026",
+   "url": "https://arxiv.org/abs/2607.20795",
+   "note": "Neural network predicts Quantum Metal layout parameters from target transmon Hamiltonian parameters.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Superconducting qubits for particle detection and fundamental tests of quantum mechanics",
+   "authors": "Olivia Seidel",
+   "venue": "OSTI report (2026)",
+   "year": "2026",
+   "url": "https://doi.org/10.2172/3011980",
+   "note": "Qubit-design loop that guesses Qiskit Metal parameters, simulates with an EM solver, and predicts parameters with a neural network.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Energy-participation-ratio analysis for very anharmonic superconducting circuits",
+   "authors": "Figen YILMAZ, Siddharth Singh, Martijn F. S. Zwanenburg, Jinlun Hu et al.",
+   "venue": "Physical Review Applied",
+   "year": "2026",
+   "url": "https://arxiv.org/abs/2411.15039",
+   "note": "Fluxonium designed with Qiskit Metal and rendered into Ansys HFSS for energy-participation-ratio analysis.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Multimode Duffing–Jaynes–Cummings Hamiltonian modeling of a coupled transmon chip layout",
+   "authors": "Nongmeikapam Brajabidhu Singh, Joseph L. Pachuau, Anish Kumar Saha",
+   "venue": "IEEE AIEI 2026",
+   "year": "2026",
+   "url": "https://doi.org/10.1109/aiei69164.2026.11497215",
+   "note": "Coupled-transmon layout designed and parameterized in Qiskit Metal and analyzed with 3D eigenmode simulations in HFSS.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Co-Design of a Quantum Circuit using QGHNN for High Separate Fidelity and Maximum Grover Algorithm Accuracy",
+   "authors": "Mahdi Esmaeili, Katayoun Emadzadeh, M. Hossein Eskandari, Muhamad. B Barfar et al.",
+   "venue": "Research Square preprint (2026)",
+   "year": "2026",
+   "url": "https://doi.org/10.21203/rs.3.rs-9995106/v1",
+   "note": "Optimized circuit parameters implemented as a Qiskit Metal layout and checked with EPR analysis.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "SQChip-EM: A Qiskit-Metal-Based Layout-to-EM Simulation Dataset for Superconducting Quantum Chips",
+   "authors": "Yu Peng, Junyu Chen, Yuhan Chen, Shenglong Zhang et al.",
+   "venue": "ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD)",
+   "year": "2026",
+   "url": "https://dl.acm.org/doi/10.1145/3770855.3817558",
+   "note": "Open dataset linking Qiskit Metal layouts to HFSS and Q3D electromagnetic simulation results.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "A review of design concerns in superconducting quantum circuits",
+   "authors": "Eli M. Levenson-Falk, Sadman Shanto",
+   "venue": "Materials for Quantum Technology 5 (2025)",
+   "year": "2025",
+   "url": "https://arxiv.org/abs/2411.16967",
+   "note": "Review that walks through a superconducting-circuit design flow using KLayout and Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Open-Source Highly Parallel Electromagnetic Simulations for Superconducting Circuits",
+   "authors": "Sommers, David, Zachary Degnan, Gautam, Divita, Yi‐Hsun Chen et al.",
+   "venue": "arXiv (Cornell University)",
+   "year": "2025",
+   "url": "https://arxiv.org/abs/2511.01220",
+   "note": "Python API integrating Qiskit Metal, Gmsh, Palace and Paraview into an open-source simulation workflow.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Superconducting Qubits Underground",
+   "authors": "Olivia Seidel, Unlisted, Sara Sussman, A. Colón Cesaní et al.",
+   "venue": "OSTI report (2025)",
+   "year": "2025",
+   "url": "https://doi.org/10.2172/2553019",
+   "note": "Device design and simulation with Qiskit Metal and SQuADDS before fabrication; devices tested in an underground facility.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Transmon Qubit Modeling and Characterization for Dark Matter Search",
+   "authors": "Roberto Moretti, Danilo Labranca, Pietro Campana, Rodolfo Carobene et al.",
+   "venue": "IEEE Transactions on Quantum Engineering",
+   "year": "2025",
+   "url": "https://arxiv.org/abs/2409.05988",
+   "note": "Fabricated and characterized transmon circuit designed with Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Benchmarking Quantum Gates and Circuits",
+   "authors": "Vinay Tripathi, Daria Kowsari, Kumar Saurav, Haimeng Zhang et al.",
+   "venue": "Chemical Reviews",
+   "year": "2025",
+   "url": "https://arxiv.org/abs/2407.09942",
+   "note": "Review that describes a superconducting qubit device whose layout was created with Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Analysis of a 3D Integrated Superconducting Quantum Chip Structure",
+   "authors": "James Saslow, Hiu Yung Wong",
+   "venue": "IEEE International Conference on Quantum Computing and Engineering (QCE)",
+   "year": "2025",
+   "url": "https://arxiv.org/abs/2505.02263",
+   "note": "Uses Qiskit Metal 0.1.5 for circuit layout, with HFSS and pyEPR, to analyze a 3D integrated chip structure.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Superconducting Quantum Chip Design and Simulation",
+   "authors": "James F. Saslow",
+   "venue": "San Jose State University MS thesis (2025)",
+   "year": "2025",
+   "url": "https://scholarworks.sjsu.edu/etd_theses/5666/",
+   "note": "Planar qubit layout designed with Qiskit Metal and taped out for fabrication.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Modeling realistic multilayer devices for superconducting quantum electronic circuits",
+   "authors": "Giuseppe Colletta, Susan Johny, Jonathan A. Collins, A. Casaburi et al.",
+   "venue": "Applied Physics Letters (2025); arXiv:2411.02178",
+   "year": "2025",
+   "url": "https://doi.org/10.1063/5.0251879",
+   "note": "Phase-basis Hamiltonian for multilayer devices incorporated into scqubits and Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "End-to-End Design Flow for 4-Qubit Superconducting Quantum Chip with Alternative Coupling Architectures",
+   "authors": "Fahim Shahriar Anim, Md. Saifur Rahman",
+   "venue": "IEEE QPAIN 2025",
+   "year": "2025",
+   "url": "https://doi.org/10.1109/qpain66474.2025.11171660",
+   "note": "Four-qubit chip designed with Qiskit Metal and Ansys Electronics; parameters tuned and verified with LOM and EPR analysis.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Exploring graph cuts in quantum approximate optimization algorithm",
+   "authors": "Nongmeikapam Brajabidhu Singh, Anish Kumar Saha",
+   "venue": "Physica Scripta (2025)",
+   "year": "2025",
+   "url": "https://doi.org/10.1088/1402-4896/ae1906",
+   "note": "Layout design and eigenmode simulations in Qiskit Metal and Ansys for a QAOA graph-cut hardware study.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Material-Driven Optimization of Transmon Qubits for Scalable and Efficient Quantum Architectures",
+   "authors": "Jonnalagadda et al.",
+   "venue": "arXiv",
+   "year": "2025",
+   "url": "https://arxiv.org/abs/2508.05339",
+   "note": "Four- and eight-qubit transmon layouts created with Qiskit Metal and simulated with COMSOL.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "QPlacer: Frequency-Aware Component Placement for Superconducting Quantum Computers",
+   "authors": "Junyao Zhang, Hanrui Wang, Qi Ding, Jiaqi Gu et al.",
+   "venue": "Proceedings - International Symposium on Computer Architecture/Proceedings",
+   "year": "2025",
+   "url": "https://arxiv.org/abs/2401.17450",
+   "note": "Uses Qiskit Metal to simulate parasitic capacitance and follows its routing configurations for qubit component placement.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Superconducting Qubit Design Using Qiskit Metal",
+   "authors": "Subhojit Halder, Kinjal A. Chauhan, Muhamad Bagher Barfar, Srinjoy Ganguly et al.",
+   "venue": "Apress eBooks",
+   "year": "2025",
+   "url": "https://link.springer.com/book/10.1007/979-8-8688-1504-1",
+   "note": "Book on superconducting qubit design with Qiskit Metal, with accompanying code.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Energy-Participation Ratio Method for Quantization and Analysis",
+   "authors": "Subhojit Halder, Kinjal A. Chauhan, Muhamad Bagher Barfar, Srinjoy Ganguly et al.",
+   "venue": "Apress eBooks",
+   "year": "2025",
+   "url": "https://doi.org/10.1007/979-8-8688-1504-1_6",
+   "note": "Book chapter on the energy-participation-ratio method with emphasis on its implementation in Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "SQuADDS: A validated design database and simulation workflow for superconducting qubit design",
+   "authors": "Sadman Shanto, Andre Kuo, Clark Miyamoto, Haimeng Zhang et al.",
+   "venue": "Quantum 8, 1465 (2024)",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2312.13483",
+   "note": "Device layout produced with Qiskit Metal, fabricated, with measured Hamiltonian parameters compared against simulation.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Design and Simulation of a Transmon Qubit Chip for Axion Detection",
+   "authors": "Roberto Moretti, Hervè Atsè Corti, Danilo Labranca, F. Ahrens et al.",
+   "venue": "IEEE Transactions on Applied Superconductivity",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2310.05238",
+   "note": "Transmon chip circuit designed with Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Entanglement Assisted Probe of the Non-Markovian to Markovian Transition in Open Quantum System Dynamics",
+   "authors": "Chandrashekhar Gaikwad, Daria Kowsari, Carson Brame, Xingrui Song et al.",
+   "venue": "Physical Review Letters",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2401.13735",
+   "note": "Qubit layout designed with Qiskit Metal and simulated in Ansys; device measured experimentally.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Signal Crosstalk in a Flip-Chip Quantum Processor",
+   "authors": "Sandoko Kosen, Hang-Xi Li, Marcus Rommel, Robert Rehammar et al.",
+   "venue": "PRX Quantum",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2403.00285",
+   "note": "Flip-chip processor layout designed in Qiskit Metal; 240 flux-crosstalk pairs measured.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Characterization of broadband Purcell filters with compact footprint for fast multiplexed superconducting qubit readout",
+   "authors": "Seong Hyeon Park, Gahyun Choi, Gyunghun Kim, Jaehyeong Jo et al.",
+   "venue": "Applied Physics Letters",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2310.13282",
+   "note": "Broadband Purcell filters designed with Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Efficiently Building and Characterizing Electromagnetic Models of Multi-Qubit Superconducting Circuits",
+   "authors": "Fadi Wassaf",
+   "venue": "arXiv (thesis-style, 2024)",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2406.04351",
+   "note": "Uses Ansys HFSS and Qiskit Metal for part of the device modeling.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "A Framework for the Design and Realization of Alternative Superconducting Quantum Architectures",
+   "authors": "Jagatheesan Kunasaikaran, Kevin Mato, Robert Wille",
+   "venue": "Proceedings/Proceedings - International Symposium on Multiple-Valued Logic",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2305.07052",
+   "note": "Uses Qiskit Metal to render physical designs and run LOM-type analyses for alternative superconducting architectures.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Quasiparticle Dynamics in Epitaxial Al - InAs Planar Josephson Junctions",
+   "authors": "Bassel Heiba Elfeky, William M. Strickland, Jaewoo Lee, James T. Farmer et al.",
+   "venue": "PRX Quantum",
+   "year": "2023",
+   "url": "https://arxiv.org/abs/2303.04784",
+   "note": "Chip design constructed in Qiskit Metal and rendered into HFSS.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Simulating Quantum Hardware using Qiskit Metal",
+   "authors": "Siri Shivashankar Revant, Satyadhan Chickerur",
+   "venue": "IEEE IC2E 2023",
+   "year": "2023",
+   "url": "https://doi.org/10.1109/ic2e357697.2023.10262633",
+   "note": "Simulates quantum hardware with Qiskit Metal and Ansys Electronics Desktop.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Machine Learning-Based Predictive Modeling for Designing Transmon Superconducting Qubits",
+   "authors": "Ferris Prima Nugraha, Qiming Shao",
+   "venue": "IEEE International Conference on Quantum Computing and Engineering (QCE)",
+   "year": "2023",
+   "url": "https://doi.org/10.1109/qce57702.2023.00154",
+   "note": "Machine-learning models for transmon design trained on simulation data collected with Qiskit Metal and Ansys Electronics.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "First design of a superconducting qubit for the QUB-IT experiment",
+   "authors": "Danilo Labranca, Hervè Atsè Corti, Leonardo Banchi, Alessandro Cidronali et al.",
+   "venue": "Nuclear Instruments and Methods in Physics Research Section A Accelerators Spectrometers Detectors and Associated Equipment",
+   "year": "2022",
+   "url": "https://arxiv.org/abs/2207.09290",
+   "note": "Xmon qubit with quarter-wave resonator laid out in Qiskit Metal for first fabrication.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Qiskit Metal: An Open-Source Framework for Quantum Device Design & Analysis",
+   "authors": "Minev, McConkey, Drysdale, Shah, Wang, Facchini, Harper, Blair, Zhang, Lanzillo, Mukesh, Shanks, Warren, Gambetta",
+   "venue": "Zenodo (software)",
+   "year": "2021",
+   "url": "https://doi.org/10.5281/zenodo.4618153",
+   "tier": "mention",
+   "note": "The software record, with the canonical citation."
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Circuit quantum electrodynamics (cQED) with modular quasi-lumped models",
+   "authors": "Zlatko K. Minev, Thomas G. McConkey, Maika Takita, Antonio D. Corcoles et al.",
+   "venue": "arXiv (Minev, McConkey, Takita, Corcoles, Gambetta; IBM)",
+   "year": "2021",
+   "url": "https://arxiv.org/abs/2103.10344",
+   "note": "Describes a quasi-lumped-oscillator model whose qubit-cell Maxwell-matrix extraction is automated with Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Physical Design Automation for Planar Superconducting Quantum Chips",
+   "authors": "Michael Feldmeier, Marcel Walter, Gerhard B. P. Huber, Anirban Bhattacharjee et al.",
+   "venue": "arXiv (Cornell University)",
+   "year": "2026",
+   "url": "https://arxiv.org/abs/2610.08580",
+   "note": "Reviews Quantum Metal as a baseline for planar superconducting chip design automation.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Method for the numerical analysis of hybrid lumped-distributed superconducting quantum circuits",
+   "authors": "Simona Zaccaria, Antonio Gnudi",
+   "venue": "APS Open Science (2026); arXiv:2509.03651",
+   "year": "2026",
+   "url": "https://arxiv.org/abs/2509.03651",
+   "note": "Compares against a Qiskit Metal, HFSS and pyEPR workflow; test structure taken from the Qiskit Metal tutorials.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Quantum Chip Paradigm Framework",
+   "authors": "Cai, Ling Qiao, B Yang, Fumin Luo et al.",
+   "venue": "arXiv (Cornell University)",
+   "year": "2026",
+   "url": "https://arxiv.org/abs/2606.17899",
+   "note": "Mentions Qiskit Metal among tools for parameterized layout generation.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "SPICE-Q and Large-Scale Quantum Chip Production",
+   "authors": "Cai, Ling Qiao, B Yang, Fumin Luo et al.",
+   "venue": "arXiv (Cornell University)",
+   "year": "2026",
+   "url": "https://arxiv.org/abs/2606.17907",
+   "note": "States that Qiskit Metal can perform parameterized layout generation.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Fabless Quantum Chip Design and Commercial Production",
+   "authors": "Cai, Ling Qiao, B Yang, Fumin Luo et al.",
+   "venue": "arXiv (Cornell University)",
+   "year": "2026",
+   "url": "https://arxiv.org/abs/2606.17956",
+   "note": "Cites Qiskit Metal as part of the chip design toolstack.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "From GDSII to Wafer: EDA Design Flow and Data Conversion for Wafer-Scale Manufacturing of Superconducting Quantum Chips",
+   "authors": "Ling Qiao, Fumin Luo, Qinglang Guo",
+   "venue": "arXiv (Cornell University)",
+   "year": "2026",
+   "url": "https://arxiv.org/abs/2604.11379",
+   "note": "Describes Qiskit Metal as focused on front-end design and simulation.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Review of Superconducting Qubit Devices and Their Large-Scale Integration",
+   "authors": "Hiu Yung Wong",
+   "venue": "IEEE Electron Devices Reviews (2026)",
+   "year": "2026",
+   "url": "https://arxiv.org/abs/2602.04831",
+   "note": "Review stating Qiskit Metal is a commonly used platform; includes a layout built in Metal.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Utilizing discrete variable representations for decoherence-accurate numerical simulation of superconducting circuits",
+   "authors": "Brittany Richman, Christopher J. Lobb, Jacob M. Taylor",
+   "venue": "Phys. Rev. B (2026)",
+   "year": "2026",
+   "url": "https://arxiv.org/abs/2503.10607",
+   "note": "Cites the Qiskit Metal software record.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "When AI meets quantum information: A comprehensive review",
+   "authors": "Min Chen, Yu Gan, Xin Jin, Yuqing Li et al.",
+   "venue": "arXiv (Cornell University)",
+   "year": "2026",
+   "url": "https://arxiv.org/abs/2607.00365",
+   "note": "Review mentioning machine learning on Qiskit Metal and Ansys data and Metal-generated SQuADDS designs.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "In Situ Tunable Interaction with an Invertible Sign between a Fluxonium and a Post Cavity",
+   "authors": "D.G. Atanasova, Ian Yang, T. Hönigl-Decrinis, Daria Gusenkova et al.",
+   "venue": "PRX Quantum",
+   "year": "2025",
+   "url": "https://arxiv.org/abs/2409.07612",
+   "note": "Notes that HFSS with BBQ or the Qiskit Metal extension pyEPR could not simulate highly anharmonic fluxonium-type qubits.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "EDA-Q: Electronic Design Automation for Superconducting Quantum Chip",
+   "authors": "Bo Zhao, Zhihang Li, Xiaohan Yu et al.",
+   "venue": "arXiv:2502.15386",
+   "year": "2025",
+   "url": "https://arxiv.org/abs/2502.15386",
+   "note": "Compares EDA-Q with Qiskit Metal in a feature table.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Quantum Design Automation: Foundations, Challenges, and the Road Ahead",
+   "authors": "Feng Wu, Guo, Jingzhe, Tian Xia, Kong, Linghang et al.",
+   "venue": "arXiv (Cornell University)",
+   "year": "2025",
+   "url": "https://arxiv.org/abs/2511.10479",
+   "note": "Survey listing Qiskit Metal as a representative quantum design tool with layout, quantization and Hamiltonian analysis.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "A scalable routing method for superconducting quantum processor",
+   "authors": "Tian Yang, Chen Liang, Weilong Wang, Bo Zhao et al.",
+   "venue": "EPJ Quantum Technology (2025)",
+   "year": "2025",
+   "url": "https://doi.org/10.1140/epjqt/s40507-025-00320-x",
+   "note": "Benchmarks a new routing method against the A-star routing in Qiskit Metal.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Optimizing Superconducting Qubit Performance: A Theoretical Framework for Design, Analysis, and Calibration",
+   "authors": "Ram, Sirshi S, Muralikrishna Molli, Vamshi M. Katukuri, Bharadwaj Chowdary Mummaneni",
+   "venue": "arXiv (2025)",
+   "year": "2025",
+   "url": "https://arxiv.org/abs/2501.17825",
+   "note": "Cites the Qiskit Metal software record and APS abstract.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Open hardware solutions in quantum technology",
+   "authors": "Nathan Shammah, Anurag Saha Roy, Carmen G. Almudéver, Sébastien Bourdeauducq et al.",
+   "venue": "APL Quantum",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2309.17233",
+   "note": "Lists Qiskit Metal and pyEPR among open chip-design projects.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Lecture Notes on Quantum Electrical Circuits",
+   "authors": "Alessandro Ciani, David Peter Divincenzo, Barbara M. Terhal",
+   "venue": "Lecture notes (2024)",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2312.05329",
+   "note": "Lecture notes describing Qiskit Metal as software implementing the EPR method.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "A Review of Quantum Scientific Computing Algorithms for Engineering Problems",
+   "authors": "Osama M. Raisuddin, Suvranu De",
+   "venue": "arXiv (Cornell University)",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2408.13943",
+   "note": "Mentions the Qiskit Metal library for hardware design.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Microarchitectures for Heterogeneous Superconducting Quantum Computers",
+   "authors": "Stein, Samuel, Sara Sussman, Teague Tomesh, Charles R. Guinn et al.",
+   "venue": "arXiv (MICRO 2023 version: HetArch)",
+   "year": "2023",
+   "url": "https://arxiv.org/abs/2305.03243",
+   "note": "Maps an architecture to a physical layout using existing frameworks such as Qiskit Metal.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "QuantumPro: An Integrated Workflow for the Design of Superconducting Qubits Using PathWave Advanced Design System (ADS)",
+   "authors": "Jungu Choi, Mohamed Ismail Abdelrahman, Derek Slater, Tom Parker et al.",
+   "venue": "IEEE International Conference on Quantum Computing and Engineering (QCE)",
+   "year": "2023",
+   "url": "https://doi.org/10.1109/qce57702.2023.10264",
+   "note": "Validates a commercial design workflow against the two-coupled-transmons example from Qiskit Metal.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Is there a Moore's law for quantum computing?",
+   "authors": "Olivier Ezratty",
+   "venue": "arXiv (Cornell University)",
+   "year": "2023",
+   "url": "https://arxiv.org/abs/2303.15547",
+   "note": "Mentions Qiskit Metal as a tool for designing superconducting chipsets.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "CircuitQ: an open-source toolbox for superconducting circuits",
+   "authors": "Philipp Aumann, Tim Menke, William D. Oliver, Wolfgang Lechner",
+   "venue": "New Journal of Physics",
+   "year": "2022",
+   "url": "https://arxiv.org/abs/2106.05342",
+   "note": "Cites Qiskit Metal as a related circuit toolbox.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Integrating quantum processor device and control optimization in a gradient-based framework",
+   "authors": "Xiaotong Ni, Hui‐Hai Zhao, Lei Wang, Feng Wu et al.",
+   "venue": "npj Quantum Information",
+   "year": "2022",
+   "url": "https://arxiv.org/abs/2112.12509",
+   "note": "Cites the Qiskit Metal software record.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "A Framework for Quantum Device Design—Project Qiskit Metal",
+   "authors": "Dennis Y.Q. Wang, Priti Shah, Marco Facchini, J. M. Blair",
+   "venue": "Bull. Am. Phys. Soc. (APS March Meeting 2021)",
+   "year": "2021",
+   "url": "https://openalex.org/W3159408565",
+   "note": "APS March Meeting 2021 abstract by the Metal team announcing the Qiskit Metal project.",
+   "tier": "mention"
+  },
+  {
+   "group": "Papers, theses and books",
+   "title": "Energy-participation quantization of Josephson circuits",
+   "authors": "Zlatko K. Minev, Zaki Leghtas, Serge Rosenblum, Michel H. Devoret",
+   "venue": "npj Quantum Information",
+   "year": "2021",
+   "url": "https://arxiv.org/abs/2010.00620",
+   "tier": "mention",
+   "note": "Presents the pyEPR method and cites Qiskit Metal, which wraps pyEPR."
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "SQuDO (Superconducting Qubit Design Optimizer)",
+   "authors": "qismib",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/qismib/SQuDO",
+   "note": "Qubit design optimizer that takes design variables from a Qiskit Metal design.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "QDW 2026 workshop materials",
+   "authors": "quantum-device-consortium",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/quantum-device-consortium/qdw26-workshop-materials",
+   "note": "Workshop materials with a shared environment including Quantum Metal, SQDMetal, SQuADDS, scqubits and PyPalace.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "Nanoacademic fork (QTCAD renderer)",
+   "authors": "nanoacademic",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/nanoacademic/quantum-metal",
+   "note": "Fork of Quantum Metal adding a QTCAD-driven renderer.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "SQChip-EM",
+   "authors": "Secbrain",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/Secbrain/SQChip-EM",
+   "note": "Qiskit Metal scripts and layout-to-electromagnetic-simulation dataset for one- to eight-qubit chips.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "QuantaMind",
+   "authors": "gql1993",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/gql1993/QuantaMind",
+   "note": "Scripts importing Qiskit Metal designs and MetalGUI, with a wrapper for LOM and EPR analysis and GDS export.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "cQED_Gen",
+   "authors": "QC4HEP-BO",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/QC4HEP-BO/cQED_Gen",
+   "note": "Graph-neural-network inverse design whose output is translated into a Qiskit Metal layout.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "AgentQ",
+   "authors": "tyh0123",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/tyh0123/AgentQ",
+   "note": "Pipeline from a SQuADDS database query to a Qiskit Metal GDS layout, driven by an LLM through MCP.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "Qubit-measure",
+   "authors": "Axelisme",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/Axelisme/Qubit-measure",
+   "note": "Lists quantum-metal as a dependency of its design environment, used with the Ansys stack.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "ansatz-integrations",
+   "authors": "AnsatzAI",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/AnsatzAI/ansatz-integrations",
+   "note": "Ansatz solver integration used through Quantum Metal's lumped-element and LOM analysis interfaces.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "quantum-metal-extension",
+   "authors": "Vorobusheg",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/Vorobusheg/quantum-metal-extension",
+   "note": "Extension for Quantum Metal with new circuit elements and PyAEDT scripts.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "metal-flow",
+   "authors": "recursion2612",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/recursion2612/metal-flow",
+   "note": "Installs quantum-metal with mesh support alongside SQDMetal.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "qpd (Quantum Parity Detectors)",
+   "authors": "WashU-Astroparticle-Lab",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/WashU-Astroparticle-Lab/qpd",
+   "note": "Documentation cites Qiskit Metal functions for computing bare Hamiltonian parameters.",
+   "tier": "mention"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "QDesignOptimizer",
+   "authors": "202Q-lab (Chalmers)",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/202Q-lab/QDesignOptimizer",
+   "note": "Automated design optimization that integrates with Qiskit Metal and HFSS.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "QDW 2025 materials (LF Lab)",
+   "authors": "LFL-Lab",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/LFL-Lab/QDW2025",
+   "note": "Workshop materials using SQuADDS and SQDMetal, which require Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "pyPalace (PyPI: pypalace)",
+   "authors": "FirasAbouzahr",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/FirasAbouzahr/pyPalace",
+   "note": "Includes an example simulating a Quantum Metal design with Palace.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "qiskit-metal-palace fork",
+   "authors": "kpezeshki",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/kpezeshki/qiskit-metal-palace",
+   "note": "Patched version of Qiskit Metal supporting 2D metal export to AWS Palace.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "cqed-design-ai (MCP servers)",
+   "authors": "kpezeshki",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/kpezeshki/cqed-design-ai",
+   "note": "MCP servers for LLM-driven CAD generation through Qiskit Metal with frequency and kappa targeting.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "ML_qubit_design",
+   "authors": "CosmiQuantum",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/CosmiQuantum/ML_qubit_design",
+   "note": "Notebooks predicting Quantum Metal design parameters from Hamiltonian quantities with a neural network.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "Qiskit-Metal-to-Litho",
+   "authors": "Onri Jay Benally",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/OJB-Quantum/Qiskit-Metal-to-Litho",
+   "note": "Demonstrates a path from Qiskit Metal design to a lithography-written pattern.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "QPlacer",
+   "authors": "JJJayyyy",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/JJJayyyy/QPlacer",
+   "note": "Qubit placement tool that imports qiskit_metal.designs.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "EDA-Q",
+   "authors": "gql1993",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/gql1993/EDA-Q",
+   "note": "Design automation tool that uses Qiskit Metal style layout assets and imports qiskit_metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "Qubit_Design",
+   "authors": "Harrbit",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/Harrbit/Qubit_Design",
+   "note": "Automation module importing Qiskit Metal's EPR analysis.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "Qiskit_Metal-KLayout-Blender",
+   "authors": "InderpalSuthar",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/InderpalSuthar/Qiskit_Metal-KLayout-Blender",
+   "note": "Renders a quantum chip in Blender using Qiskit Metal and KLayout.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "MQT DASQA",
+   "authors": "TUM Chair for Design Automation",
+   "venue": "GitHub",
+   "year": "2024",
+   "url": "https://github.com/cda-tum/mqt-dasqa",
+   "note": "Maps architectures to Qiskit Metal layouts and subclasses a Metal transmon component.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "SQDPalace",
+   "authors": "DavidSomm",
+   "venue": "GitHub",
+   "year": "2024",
+   "url": "https://github.com/DavidSomm/SQDPalace",
+   "note": "API integrating Qiskit Metal, Gmsh and Palace.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "cavity_sweeps",
+   "authors": "LFL-Lab",
+   "venue": "GitHub",
+   "year": "2024",
+   "url": "https://github.com/LFL-Lab/cavity_sweeps",
+   "note": "Code importing qiskit_metal for LOM parameter sweeps.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "design_schema_WM1",
+   "authors": "LFL-Lab",
+   "venue": "GitHub",
+   "year": "2024",
+   "url": "https://github.com/LFL-Lab/design_schema_WM1",
+   "note": "Notebook importing qiskit_metal QComponent and MetalGUI.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "SQuADDS",
+   "authors": "LFL-Lab (USC)",
+   "venue": "GitHub",
+   "year": "2023",
+   "url": "https://github.com/LFL-Lab/SQuADDS",
+   "note": "Design database and simulation workflow built on Quantum Metal and pyEPR.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "SQDMetal",
+   "authors": "SQDLab (UQ)",
+   "venue": "GitHub",
+   "year": "2023",
+   "url": "https://github.com/sqdlab/SQDMetal",
+   "note": "Python API wrapping Qiskit Metal, Gmsh and Palace for electromagnetic simulation.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "metal-library",
+   "authors": "LFL-Lab",
+   "venue": "GitHub",
+   "year": "2023",
+   "url": "https://github.com/LFL-Lab/metal-library",
+   "note": "Library of pre-simulated superconducting quantum components built on Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "QubitPresimulated",
+   "authors": "LFL-Lab",
+   "venue": "GitHub",
+   "year": "2023",
+   "url": "https://github.com/LFL-Lab/QubitPresimulated",
+   "note": "Library of premade qubits made in Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "QubitCavityFeedline",
+   "authors": "LFL-Lab",
+   "venue": "GitHub",
+   "year": "2023",
+   "url": "https://github.com/LFL-Lab/QubitCavityFeedline",
+   "note": "Automatic characterization of qubit-cavity-feedline systems simulated with Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "TransmonCavitySim",
+   "authors": "clarkmiyamoto",
+   "venue": "GitHub",
+   "year": "2023",
+   "url": "https://github.com/clarkmiyamoto/TransmonCavitySim",
+   "note": "Uses Qiskit Metal to simulate Hamiltonian parameters of a transmon coupled to a readout cavity.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "anvil",
+   "authors": "ambhudia",
+   "venue": "GitHub",
+   "year": "2021",
+   "url": "https://github.com/ambhudia/anvil",
+   "note": "Utilities for Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "qiskit-metal conda-forge feedstock",
+   "authors": "conda-forge",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/conda-forge/qiskit-metal-feedstock",
+   "note": "conda-forge feedstock packaging qiskit-metal.",
+   "tier": "mention"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "QC-Hardware-How-To",
+   "authors": "OJB-Quantum",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/OJB-Quantum/QC-Hardware-How-To",
+   "note": "Curated resource list that includes Qiskit Metal.",
+   "tier": "mention"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "qiskit-metal-docker",
+   "authors": "Dpbm",
+   "venue": "GitHub",
+   "year": "2024",
+   "url": "https://github.com/Dpbm/qiskit-metal-docker",
+   "note": "Docker setup for running Qiskit Metal in a container.",
+   "tier": "mention"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "qcsa-at-ucla fork",
+   "authors": "qcsa-at-ucla",
+   "venue": "GitHub",
+   "year": "2024",
+   "url": "https://github.com/qcsa-at-ucla/qiskit-metal",
+   "note": "Fork of Qiskit Metal under the UCLA QCSA organization.",
+   "tier": "mention"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "qiskit-metal-textbook",
+   "authors": "clarkmiyamoto",
+   "venue": "GitHub",
+   "year": "2023",
+   "url": "https://github.com/clarkmiyamoto/qiskit-metal-textbook",
+   "note": "Introduction to Qiskit Metal written for new research-group members.",
+   "tier": "mention"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "local-metal-webapp",
+   "authors": "obrienpja",
+   "venue": "GitHub",
+   "year": "2022",
+   "url": "https://github.com/obrienpja/local-metal-webapp",
+   "note": "Installer and runner for a local version of the Qiskit Metal web app.",
+   "tier": "mention"
+  },
+  {
+   "group": "Software built on or for Quantum Metal",
+   "title": "2022 Qiskit Metal Study (Qiskit Korea)",
+   "authors": "GyeonghunKim",
+   "venue": "GitHub",
+   "year": "2022",
+   "url": "https://github.com/GyeonghunKim/2022-Feb-Qiskit-Metal-Study",
+   "note": "Study materials for a Qiskit Korea study on Qiskit Metal, February 2022.",
+   "tier": "mention"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Alexandria Quantum Hackathon 2026: 5-qubit layout optimizer (Pocket-X)",
+   "authors": "fthyco",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/fthyco/5QubitsChip",
+   "note": "Geometric layout optimizer for a five-qubit chip built in Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Alexandria Quantum Hackathon 2026: linear vs star 5-qubit chip (Parachute)",
+   "authors": "Siwarx3",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/Siwarx3/quantum-hackathon-2026-parachute",
+   "note": "Compares linear-chain and star topologies for a five-qubit transmon processor designed in Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Dual-transmon readout chip with feedline S21 (BurhanCalik)",
+   "authors": "BurhanCalik",
+   "venue": "GitHub",
+   "year": "2026",
+   "url": "https://github.com/BurhanCalik/Quantum-Processing-Unit",
+   "note": "Dual-transmon readout design in Qiskit Metal with feedline-coupled S21.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Fabricated and measured qubit from QDesignOptimizer workflow (Chalmers)",
+   "authors": "Eriksson et al.",
+   "venue": "arXiv:2508.18027",
+   "year": "2025",
+   "url": "https://arxiv.org/abs/2508.18027",
+   "note": "Qubit designed with Qiskit Metal and pyEPR optimization, then fabricated and characterized at 20 mK.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Dark-matter-search transmon chip (flux-tunable pair)",
+   "authors": "Moretti et al.",
+   "venue": "IEEE TQE",
+   "year": "2025",
+   "url": "https://arxiv.org/abs/2409.05988",
+   "note": "Fabricated and characterized transmon circuit designed with Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "SJSU planar qubit chip (taped out)",
+   "authors": "J. Saslow",
+   "venue": "SJSU MS thesis",
+   "year": "2025",
+   "url": "https://scholarworks.sjsu.edu/etd_theses/5666/",
+   "note": "Planar qubit layout designed with Qiskit Metal and taped out for fabrication.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "QUIET underground cryostat qubit chips (Seidel)",
+   "authors": "O. Seidel et al.",
+   "venue": "OSTI 2553019",
+   "year": "2025",
+   "url": "https://doi.org/10.2172/2553019",
+   "note": "Device design and simulation with Qiskit Metal and SQuADDS before fabrication; devices tested in an underground facility.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "400-transmon patterned demo chip (Metal to e-beam litho)",
+   "authors": "Onri Jay Benally",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/OJB-Quantum/Qiskit-Metal-to-Litho",
+   "note": "Demonstrates a path from Qiskit Metal design to a lithography-written pattern.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Four-qubit chip analysis (uday-0702)",
+   "authors": "uday-0702",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/uday-0702/Four-Qubit-Quantum-Chip-Analysis",
+   "note": "Four-qubit superconducting chip designed in Qiskit Metal, with analyses.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Undergraduate thesis: 4-qubit chip in Qiskit Metal and Ansys",
+   "authors": "AnimFs",
+   "venue": "GitHub",
+   "year": "2025",
+   "url": "https://github.com/AnimFs/Undergraduate-Thesis",
+   "note": "Design and tuning of a four-qubit chip using Qiskit Metal and Ansys.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "SQuADDS validated six-xmon chip (MIT-LL SQUILL fabrication)",
+   "authors": "Shanto et al.",
+   "venue": "Quantum 8, 1465",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2312.13483",
+   "note": "Device layout produced with Qiskit Metal, fabricated, with measured Hamiltonian parameters compared against simulation.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Axion-detection transmon chip",
+   "authors": "Moretti et al.",
+   "venue": "IEEE TAS",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2310.05238",
+   "note": "Transmon chip circuit designed with Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Chalmers flip-chip QPU (signal-crosstalk study)",
+   "authors": "Kosen et al.",
+   "venue": "PRX Quantum 5, 030350",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2403.00285",
+   "note": "Flip-chip processor layout designed in Qiskit Metal; 240 flux-crosstalk pairs measured.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Xmon three-qubit device for non-Markovian probe",
+   "authors": "Gaikwad et al.",
+   "venue": "PRL 132, 200401",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2401.13735",
+   "note": "Three-qubit Xmon device laid out with Qiskit Metal and simulated in Ansys; device measured experimentally.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Compact broadband Purcell-filter chip",
+   "authors": "Park et al.",
+   "venue": "Appl. Phys. Lett.",
+   "year": "2024",
+   "url": "https://arxiv.org/abs/2310.13282",
+   "note": "Broadband Purcell filters designed with Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Al-InAs planar JJ transmon chip",
+   "authors": "Elfeky et al.",
+   "venue": "PRX Quantum 4, 030339",
+   "year": "2023",
+   "url": "https://arxiv.org/abs/2303.04784",
+   "note": "Chip design constructed in Qiskit Metal and rendered into HFSS.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "4-qubit design for Qiskit Metal Korea Hackathon 2022",
+   "authors": "AbeerVaishnav13",
+   "venue": "GitHub",
+   "year": "2022",
+   "url": "https://github.com/AbeerVaishnav13/4-qubit-design",
+   "note": "Four-qubit sample design for a Qiskit Metal Korea hackathon study group.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "QUB-IT first transmon chip design",
+   "authors": "Labranca et al.",
+   "venue": "NIM A",
+   "year": "2022",
+   "url": "https://arxiv.org/abs/2207.09290",
+   "note": "Xmon qubit with quarter-wave resonator laid out in Qiskit Metal for first fabrication.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "6-qubit computer designed in Qiskit Metal",
+   "authors": "Northerneye",
+   "venue": "GitHub",
+   "year": "2022",
+   "url": "https://github.com/Northerneye/Q6-Qiskit-Metal",
+   "note": "Six-qubit superconducting quantum computer designed in Qiskit Metal.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Chalmers 8-qubit test chip designed with Qiskit Metal",
+   "authors": "C. Warren, Amr Osman et al. (Chalmers)",
+   "venue": "Qiskit blog (archived copy)",
+   "year": "2021",
+   "url": "https://web.archive.org/web/2021/https://medium.com/qiskit/starting-today-anyone-can-design-quantum-hardware-with-qiskit-metal-4fd5dcf4c7cf",
+   "note": "Eight-qubit chip designed by a Chalmers team with Qiskit Metal; spectroscopy of the fabricated device shown.",
+   "tier": "design"
+  },
+  {
+   "group": "Chips and designs",
+   "title": "Qiskit Hackathon Korea 2021: two qubit chips designed in Metal in two days",
+   "authors": "Qiskit Korea / IBM",
+   "venue": "Qiskit blog (archived copy)",
+   "year": "2021",
+   "url": "https://web.archive.org/web/2021/https://medium.com/qiskit/starting-today-anyone-can-design-quantum-hardware-with-qiskit-metal-4fd5dcf4c7cf",
+   "note": "One of two qubit chips designed by hackathon teams with Qiskit Metal in a two-day event.",
+   "tier": "design"
+  }
+ ]
+}

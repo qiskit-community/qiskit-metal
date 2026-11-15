@@ -21,7 +21,7 @@
 
 <p align="center"><sub><a href="./scripts/make_hero_gif.py">Regenerate this GIF</a> · <a href="./docs/tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.ipynb">Full tutorial: 2.21</a></sub></p>
 
-**New in v0.8.1:** the desktop GUI canvas is now directly editable — click a
+**Since v0.8.1:** the desktop GUI canvas is now directly editable — click a
 component to select it, move and rotate it with the keyboard, rebuild to
 re-route connected CPWs (selection survives). See the
 [GUI Navigation & Shortcuts](https://qiskit-community.github.io/qiskit-metal/gui-shortcuts.html)
@@ -57,6 +57,7 @@ Pick the install command that matches your workflow:
 | **🖥️ GUI** `pip install "quantum-metal[gui]"` | + `MetalGUI` desktop app (PySide6, qdarkstyle) | Interactive design work |
 | **🧲 Ansys** `pip install "quantum-metal[ansys]"` | + HFSS / Q3D renderers, EPR analyses (pyaedt, pyEPR-quantum) | HFSS / Q3D simulation (Windows + Ansys AEDT license) |
 | **🔺 Open FEM mesher** `pip install "quantum-metal[mesh]"` | + gmsh meshing (foundation for Elmer / Palace) | Open-source FEM (no Ansys license). `[fem]` is a backward-compat alias. |
+| **🧮 Open Maxwell solver** `pip install "quantum-metal[skfem]"` | `[mesh]` + the scikit-fem eigenmode solver (add `pymetis` for tutorial 4.46) | Open-source eigenmodes and couplings without Ansys (tutorials 4.41–4.46). |
 | **📦 Full** `pip install "quantum-metal[full]"` | All of the above | Migrating from v0.6.x, want zero behavior change |
 
 Extras compose: `pip install "quantum-metal[gui,ansys]"` works.
@@ -163,7 +164,7 @@ covering the full API) or the
 - 🔜 **Repository rename to `quantum-metal`** — will keep redirects so existing
   clones and links continue to work
 - 🔜 **Python import path rename** (`qiskit_metal` → `quantum_metal`) — planned,
-  no release set. `import qiskit_metal` emits a `FutureWarning` today.
+  no release set. `import qiskit_metal` stays valid until then.
 
 </details>
 
@@ -208,11 +209,11 @@ discovery. **Full map: [docs.../ecosystem](https://qiskit-community.github.io/qi
 
 ### Community organization & events
 
-- **[Quantum Device Workshop (QDW)](https://qdw-ucla.squarespace.com/)** — annual
+- **[Quantum Device Workshop (QDW)](https://qdc-qcsa.org/qdw/2026/info)** — annual
   workshop at UCLA/USC with invited leaders in the field. Recent speakers:
   *Michel Devoret, Andreas Wallraff, Zlatko Minev, Eli Levenson-Falk.*
   [Video recordings](https://www.youtube.com/@uclaqcsa) ·
-  [Sign for 2026](https://qdw-ucla.squarespace.com/qdw2026).
+  [Sign for 2026](https://qdc-qcsa.org/qdw/2026/info).
 - **[Quantum Device Consortium (QDC)](https://qdc-qcsa.vercel.app)** — the
   community organization stewarding Quantum Metal alongside the tools above.
   [Join the QDC Discord](https://discord.gg/FPNybyfpxd).
