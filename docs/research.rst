@@ -60,7 +60,9 @@ model term by term. They use gmsh and a scikit-fem Maxwell solver in place of HF
       - layout
       - lite
     * - iSWAP
-      - three published iSWAP devices
+      - Caldwell *et al.*, `Phys. Rev. Applied 10, 034050 (2018) <https://doi.org/10.1103/PhysRevApplied.10.034050>`_;
+        Ganzhorn *et al.*, `Phys. Rev. Research 2, 033447 (2020) <https://doi.org/10.1103/PhysRevResearch.2.033447>`_;
+        Sung *et al.*, `Phys. Rev. X 11, 021058 (2021) <https://doi.org/10.1103/PhysRevX.11.021058>`_: three iSWAP devices
       - layout
       - see the notebook
     * - 53 Wallraff
