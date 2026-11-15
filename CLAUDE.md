@@ -230,11 +230,11 @@ py3.11 and 3.14 on macos/windows) + `lint` + `env-consistency` + `coverage` +
 `tests-lite` (including notebook-execute) + `tests-deps-pandas3` /
 `tests-deps-lowest` (dependency bounds outside `uv.lock`).
 
-## Status snapshot (as of v0.9.0, September 2026)
+## Status snapshot (as of v0.10.0, November 2026)
 
-- Latest release: **v0.9.0** (September 2026) — Python 3.13/3.14, numpy
-  2 support with raised dependency minimums, and analysis/renderer/tutorial
-  fixes. v0.8.1 was GUI stability and interactive editing; v0.8.0 added
+- Latest release: **v0.10.0** (November 2026) — Python 3.11 minimum,
+  analysis and geometry fixes (#1202–#1253), docs overhaul. v0.9.0 added
+  Python 3.13/3.14, numpy 2 and the open-source FEM path. v0.8.1 was GUI stability and interactive editing; v0.8.0 added
   design-rule checking (`qiskit_metal.validation`, #1169) and the
   `QMplRenderer` die outline. (**Note:** a `v0.7.7`
   tag/GitHub Release exist on `a7efeeb1` but were never published to

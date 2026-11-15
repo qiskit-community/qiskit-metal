@@ -6,12 +6,21 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
-## Unreleased
+## Quantum Metal v0.10.0 (Python 3.11+, analysis and geometry fixes, docs overhaul)
 
-Fixes for issues #1202–#1234: analytic formulas (transmon, LOM, kappa, chi,
-package modes, resonator fitting), GDS export, design-rule checks, routing,
-and tutorials. Several fixes change numbers or geometry; see *Behaviour
-changes*.
+Minor release. Python 3.11 is now the minimum (3.10 reached end of life in
+October 2026), which lets the lock use the patched Pillow, tornado and
+soupsieve. Fixes for issues #1202–#1234 and #1242–#1253: analytic formulas
+(transmon, LOM, kappa, chi, package modes, resonator fitting), GDS export,
+design-rule checks, routing, components and tutorials. Several fixes change
+numbers or geometry; see *Behaviour changes*. The documentation site has a new
+home page and navigation.
+
+### Added
+
+- **Tutorial 4.46: beyond the dipole.** Expands the qubit–package-mode coupling of 4.41–4.45 in electric and magnetic multipoles: moments of the qubit's charge and current from second-order electrostatics and a sheet-current model, the terms of the series in the finite-element and analytic mode fields, the dressed mode with every paddle present against the induced-EMF coupling, qubits with broken symmetry, a vertical current element and a mode with $B_z \ne 0$, and mesh refinement, a mesh ensemble and fit variants as a measured noise floor for every small term. Helper module `docs/tut/resources/package_modes/multipoles.py`. Needs the `[skfem]` extra.
+- **Documentation site:** a new home page; Learn, Examples and Showcase sections; a *Devices and papers* page (device images with credits, and the papers, theses and software that use Quantum Metal); a *Reproduced devices* page; a Part 3 (render and export) hub; rewritten workflow and quantization pages. Old page URLs redirect (#1255).
+- **Colab and Binder badges** on the notebooks that run without Ansys; they call `qm.gui(design)`, which falls back to the inline viewer without the `[gui]` extra (#1255).
 
 ### Behaviour changes
 
@@ -35,6 +44,8 @@ changes*.
 
 ### Fixed
 
+- **GDS export with an empty subtract or no-subtract table on a layer** no longer passes the table's column names to the boolean step (#1253).
+- **Desktop GUI:** the chips tree expands after the window is shown, `single_shot` timers no longer leak, and in-process Qt tests run isolated in child processes (#1200). The three GUI test modules that can still crash on macOS (#1048) are opt-in with `--run-crashy-gui`.
 - **gmsh tutorials on Google Colab.** The PyPI gmsh wheel links against system graphics libraries that Colab lacks, so the first gmsh call failed with `OSError: libGLU.so.1`. The Colab install cells of 3.5, 4.19, 4.41–4.45, A.4 and the two-qubit cell notebook now include a Colab-only `apt-get` line for them; 3.5, 4.19 and 4.42 gained the Colab install cell they lacked.
 - **`RouteMixed` with `avoid_collision` no longer crashes on a multi-part obstacle.** `RouteAnchors.unobstructed_close_up` read `GeoSeries.exterior`, which is `None` unless the buffered union is a single polygon, and then raised `'NoneType' object has no attribute 'coords'` while building a route between `LineTee` pins. The outline is now the exterior of each polygonal piece of that union. (#1010)
 - **Transmon analytics:** `HO_wavefunctions.wavefunction` uses ω = 1/√(LC), is normalized and works for any n (#1202); `Hcpb.params_from_freq_fixEC` returns an Ej that reproduces f01 (#1203); `Hcpb.params_from_spectrum` fits a residual vector and warns when the target is unreachable (#1221); `Hcpb_analytic` and `transmon_analytics` use `mathieu_b` for odd levels and handle any ng (#1220).
@@ -86,7 +97,6 @@ fixes. The dependency minimums move up (see *Upgrade notes*). No API removals.
 - **HTML views for a design and its component list** (`design._repr_html_`, `design.components._repr_html_`), and `design["Q1"]` / `"Q1" in design` as shorthand for `design.components`.
 - **Simulation pathways page** (`docs/simulation-pathways.rst`): what Ansys HFSS/Q3D, gmsh + ElmerFEM and the gmsh + scikit-fem solver each compute, how to install them and which tutorials use them; AWS Palace through SQDMetal, with the native integration tracked in sqdlab/SQDMetal#67. Every tutorial that runs a solver links to it from a short callout (markdown only; stored outputs unchanged).
 - **Tutorials 4.41–4.45: package modes and qubit couplings.** Reproduces R. Molavi *et al.*, arXiv:2609.22442: a 10 × 10 transmon array in a metal package, its LSM package modes, and the qubit–mode couplings extracted four ways (avoided crossing, energy participation, induced EMF, impedance-matrix fit). The design is a `MultiPlanar` Quantum Metal design, meshed with gmsh; the eigenmode, driven and electrostatic solves use the scikit-fem finite-element solver in `qiskit_metal.analyses.fem` (lowest-order Nédélec elements, a port reduced-order model for junction sweeps and impedance matrices). 4.41 and 4.42 need only NumPy and SciPy; 4.43–4.45 need the `[skfem]` extra (and optionally `pymetis`). The series is featured after the Overview on the tutorials page.
-- **Tutorial 4.46: beyond the dipole.** Expands the qubit–package-mode coupling of 4.41–4.45 in electric and magnetic multipoles: moments of the qubit's charge and current from second-order electrostatics and a sheet-current model, the terms of the series in the finite-element and analytic mode fields, the dressed mode with every paddle present against the induced-EMF coupling, qubits with broken symmetry, a vertical current element and a mode with $B_z \ne 0$, and mesh refinement, a mesh ensemble and fit variants as a measured noise floor for every small term. Helper module `docs/tut/resources/package_modes/multipoles.py`. Needs the `[skfem]` extra.
 - **Two-qubit cell notebook:** a cell of the 17-qubit chip (two qubits and their coupler) built as its own cropped design and meshed with gmsh; the ElmerFEM capacitance step runs where `ElmerSolver` is installed.
 - **DRC waivers:** `validate(..., waivers=[Waiver(...)])` accepts named exceptions with a reason and an optional bound; waived findings are reported separately.
 - **Example designs:** a 17-qubit distance-3 surface-code chip (Wallraff group, ETH Zurich; Krinner *et al.*, Nature 2022) built stage by stage with a design-rule check after each stage, GUI or headless; and a 5-qubit Xmon processor (Barends *et al.*, Nature 2014), adapted from a Quantum Device Workshop 2026 project by Murat Can Sarihan.
