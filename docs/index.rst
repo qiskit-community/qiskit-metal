@@ -1,5 +1,5 @@
 ##############################################################
-Quantum Metal (formerly Qiskit Metal)
+Qiskit Metal is now Quantum Metal
 ##############################################################
 
 .. container:: qm-hero
