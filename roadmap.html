@@ -193,6 +193,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Quantum Metal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="choose-your-path.html">Choose Your Path</a></li>
 <li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Running Without the Desktop GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orchestration.html">Scripting and Agent Use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on Quantum Metal</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Showcase &amp; Learn</span></p>
@@ -670,12 +671,12 @@ ground regions. GDS-level DRC stays with KLayout.</p>
 <p><strong>KLayout handoff</strong> <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code>. A <code class="docutils literal notranslate"><span class="pre">.lyp</span></code> layer-property file, a how-to page and
 a starter KLayout DRC deck ship in the docs (<em>GDS in KLayout</em>). Still open:
 per-process rule decks from fab design rules, which need a partner process.</p>
-<p><strong>Scriptable and agent-driven use</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>. An orchestration guide (a
-design built, checked, exported and analyzed in a short headless script); a
+<p><strong>Scriptable and agent-driven use</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>. The orchestration guide
+(<em>Scripting and Agent Use</em>) and repeatable GDS export have shipped. Open: a
 documented stable public API for <code class="docutils literal notranslate"><span class="pre">QDesign</span></code>, <code class="docutils literal notranslate"><span class="pre">QComponent</span></code> and the renderer
-bases; deterministic geometry construction so two runs give the same
-artifact; vendor-neutral task definitions that let a coding assistant drive
-Metal, with DRC as the success signal.</p>
+bases, with deprecation rules written down; deterministic ordering for every
+solver export; vendor-neutral task definitions that let a coding assistant
+drive Metal, with the design-rule check as the success signal.</p>
 <p><strong>Architecture</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>. PEP 561 type hints across the core classes;
 entry-point discovery for third-party renderers and component libraries
 (and a reference PDK package that uses it); a functional component API
