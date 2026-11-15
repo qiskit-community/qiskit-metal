@@ -15,6 +15,7 @@ changes*.
 
 ### Behaviour changes
 
+- **Python 3.11 is the minimum version** (Python 3.10 reached end of life in October 2026). The patched releases of Pillow (13.0), tornado (6.6) and soupsieve (3.0.2 and 4.0) require Python 3.11 or newer, so the lock kept vulnerable versions for 3.10.
 - **`RouteMeander` now reaches `total_length` when its leads are jogged or its fillet/spacing pair left it short** (#1225, #1234). `make()` refits the meander (up to 8 secant steps) when the first build misses by more than 1e-4 design units, and warns with both lengths when it still cannot. A `total_length` shorter than the shortest possible route draws that route and warns with its length, where it raised `IndexError` before. Routes that already reached `total_length` are unchanged bit for bit; routes that were short change shape on existing chips.
 - **`ReadoutResFC` etches on its own layer** (#1224). `layer_subtract` now defaults to `""` (same as `layer`); it defaulted to `"2"`, so the GDS ground ended up on layer 2 while the trace was on layer 1. `layer_subtract="2"` gives the old output.
 - **GDS cheesing drops holes that cross the no-cheese region** instead of trimming them into slivers narrower than the spacing rule (#1214). Fewer holes along the keep-out edge; holes that only touch it are kept.

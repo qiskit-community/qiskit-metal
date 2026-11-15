@@ -10,7 +10,7 @@ Frequently asked questions.
 
    **Some answers below cover legacy environments** (PySide2, Python 3.7–3.9,
    macOS 10.14, pre-v0.5 ``qiskit-metal`` PyPI package). The current supported
-   stack is **Python 3.10–3.14** with **PySide6** (only when the ``[gui]``
+   stack is **Python 3.11–3.14** with **PySide6** (only when the ``[gui]``
    extra is installed). If you hit a problem on the current stack and don't
    see it here, check :doc:`installation`, :doc:`headless-usage`, or open an
    issue on `GitHub <https://github.com/qiskit-community/qiskit-metal/issues>`_.
@@ -65,7 +65,7 @@ If you cannot use conda, modern ``geopandas`` (>=1.0) for Python 3.10+ ships wit
 
 **Q: Why is my installation complaining about missing ``geos_c.dll``?**
 
-**A:** This was a known bug with very old ``shapely`` (<1.8). On the current stack (Python 3.10–3.14 with shapely 2.x) the issue should not occur. If you see it, upgrade shapely: ``pip install -U shapely``, or use the conda package: ``conda install -c conda-forge shapely``.
+**A:** This was a known bug with very old ``shapely`` (<1.8). On the current stack (Python 3.11–3.14 with shapely 2.x) the issue should not occur. If you see it, upgrade shapely: ``pip install -U shapely``, or use the conda package: ``conda install -c conda-forge shapely``.
 
 **Q: Why do I have an invalid active developer path on MacOs?**
 
