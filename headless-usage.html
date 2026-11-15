@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="prev" title="Architecture" href="architecture.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="The Quantum Metal Ecosystem" href="ecosystem.html"><link rel="prev" title="Choose your path" href="choose-your-path.html">
 
     <!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 -->
         <title>Using Quantum Metal without the Qt GUI - Quantum Metal 0.10.0</title>
@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=b32f9225" />
+    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=7cf023f8" />
     
     
 
@@ -190,10 +190,11 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Quantum Metal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="choose-your-path.html">Choose Your Path</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Running Without the Desktop GUI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on Quantum Metal</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Showcase &amp; Learn</span></p>
@@ -450,24 +451,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="archive.html">Archived Notebooks</a><input aria-label="Toggle navigation of Archived Notebooks" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Testing-QComponents-for-overlap-and-collisions.html">Demo Notebook Demonstrating How to Test for Component/CPW Overlap</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.33-Transmon-analytics.html">4.33 Transmon Analytics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.5-Launch-video-example.html">A.5 Launch video example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.6-Hackathon-exercise-South-Korea-2020.html">A.6 Hackathon exercise — South Korea 2020</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.html">Four Qubit Chip Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/07-Transmon_floating_cl.html">Single Transmon - Floating with charge lines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Opening-documentation.html">Opening the documentation</a></li>
-</ul>
-</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Community &amp; Contributing</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="contributor-guide.html">Contributor Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Using Quantum Metal without Qt</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 </ul>
 
@@ -594,14 +582,17 @@ Jupyter)</p></li>
 PySide6 or the Qt stack. The base install is headless by default —
 no GUI, no Qt surprises.</p>
 <p>If you have the <code class="docutils literal notranslate"><span class="pre">[gui]</span></code> extra installed and want to suppress Qt
-initialisation at runtime (e.g. in a script that runs headlessly),
+initialization at runtime (e.g. in a script that runs headlessly),
 set the <code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_HEADLESS</span></code> environment variable:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">QISKIT_METAL_HEADLESS</span><span class="o">=</span><span class="m">1</span>
 python<span class="w"> </span>my_script.py
 </pre></div>
 </div>
 <p>This prevents matplotlib from switching to the <code class="docutils literal notranslate"><span class="pre">QtAgg</span></code> backend
-during import. The Qt packages stay installed but are never touched.</p>
+during import. The Qt packages stay installed but are never touched.
+<code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> then returns the inline viewer; <code class="docutils literal notranslate"><span class="pre">qm.gui(design,</span>
+<span class="pre">force_headless=True)</span></code> does the same for one call, and
+<code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_HEADLESS_QUIET=1</span></code> hides the one-time notice it prints.</p>
 </section>
 <section id="install-extras">
 <h2>Install extras<a class="headerlink" href="#install-extras" title="Link to this heading">¶</a></h2>
@@ -612,22 +603,9 @@ during import. The Qt packages stay installed but are never touched.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;quantum-metal[mesh]&quot;</span></code> — + gmsh (foundation for Elmer / Palace).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;quantum-metal[skfem]&quot;</span></code> — <code class="docutils literal notranslate"><span class="pre">[mesh]</span></code> + the scikit-fem eigenmode solver (tutorials 4.41–4.46).
 <code class="docutils literal notranslate"><span class="pre">[fem]</span></code> is a backward-compatible alias.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;quantum-metal[full]&quot;</span></code> — all extras (v0.6.x behavior)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;quantum-metal[full]&quot;</span></code> — all extras</p></li>
 </ul>
-<p>See <a class="reference internal" href="installation.html"><span class="doc">Installation</span></a> for the full feature matrix and
-<a class="reference internal" href="migration-to-v0.7.0.html"><span class="doc">Migrating to v0.7.0 (lite-by-default install)</span></a> for per-persona migration recipes.</p>
-</section>
-<section id="roadmap-a-richer-in-notebook-viewer">
-<h2>Roadmap: a richer in-notebook viewer<a class="headerlink" href="#roadmap-a-richer-in-notebook-viewer" title="Link to this heading">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">qm.view</span></code> covers the <strong>viewing</strong> workflow: render a design to an
-inline image. A richer interactive viewer — pan, zoom, click-to-select
-components, edit option values inline — is planned as a future
-project. The likely direction is Jupyter widgets + Plotly or
-<code class="docutils literal notranslate"><span class="pre">ipympl</span></code>, both of which give us a no-Qt interactive surface that
-works in Colab, Binder, and JupyterLab without setup gymnastics.</p>
-<p>This will be tracked as its own initiative once the basic headless
-rendering path (this page) is stable. In the meantime, <code class="docutils literal notranslate"><span class="pre">qm.view</span></code> is
-the supported way to display designs in notebooks.</p>
+<p>See <a class="reference internal" href="installation.html"><span class="doc">Installation</span></a> for the full feature matrix.</p>
 </section>
 <section id="see-also">
 <h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
@@ -644,15 +622,23 @@ it)</p></li>
       <footer>
         
         <div class="related-pages">
-          
-          <a class="prev-page" href="architecture.html">
+          <a class="next-page" href="ecosystem.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">The Quantum Metal Ecosystem</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="choose-your-path.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Architecture</div>
+                <div class="title">Choose your path</div>
                 
               </div>
             </a>
@@ -693,7 +679,6 @@ it)</p></li>
 <li><a class="reference internal" href="#what-requires-the-qt-gui">What requires the Qt GUI</a></li>
 <li><a class="reference internal" href="#installing-without-qt">Installing without Qt</a></li>
 <li><a class="reference internal" href="#install-extras">Install extras</a></li>
-<li><a class="reference internal" href="#roadmap-a-richer-in-notebook-viewer">Roadmap: a richer in-notebook viewer</a></li>
 <li><a class="reference internal" href="#see-also">See also</a></li>
 </ul>
 </li>

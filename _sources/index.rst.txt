@@ -175,7 +175,7 @@ Quantum Metal (formerly Qiskit Metal)
     The PyPI package is ``quantum-metal`` (v0.5+).
     A future release will rename the import path from ``qiskit_metal``
     to ``quantum_metal``; no version has been set for that yet.
-    See :doc:`installation` and :doc:`migration-to-v0.7.0`.
+    See :doc:`installation`.
 
 .. toctree::
     :maxdepth: 2
@@ -185,6 +185,7 @@ Quantum Metal (formerly Qiskit Metal)
     Quick Start<quickstart>
     Installing Quantum Metal<installation>
     Choose Your Path<choose-your-path>
+    Running Without the Desktop GUI<headless-usage>
     Built on Quantum Metal<ecosystem>
 
 .. toctree::
@@ -228,8 +229,6 @@ Quantum Metal (formerly Qiskit Metal)
 
     Roadmap<roadmap>
     Frequently Asked Questions<faq>
-    Migrating to v0.7.0<migration-to-v0.7.0>
-    Archived Notebooks<archive>
 
 .. toctree::
     :maxdepth: 2
@@ -238,7 +237,6 @@ Quantum Metal (formerly Qiskit Metal)
 
     Contributor Guide<contributor-guide>
     Architecture<architecture>
-    Using Quantum Metal without Qt<headless-usage>
     Code of Conduct<https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md>
 
 .. Per-class autodoc stubs in ``apidocs/`` are reached via the

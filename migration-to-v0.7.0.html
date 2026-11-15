@@ -3,10 +3,11 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Archived notebooks" href="archive.html"><link rel="prev" title="FAQ’s" href="faq.html">
+<meta content="0; url=installation.html" http-equiv="refresh" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html">
 
     <!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 -->
-        <title>Migrating to v0.7.0 (lite-by-default install) - Quantum Metal 0.10.0</title>
+        <title>Migrating to v0.7.0 - Quantum Metal 0.10.0</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fc6d6d93" />
@@ -14,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=b32f9225" />
+    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=7cf023f8" />
     
     
 
@@ -169,7 +170,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
@@ -194,6 +195,7 @@
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Quantum Metal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="choose-your-path.html">Choose Your Path</a></li>
+<li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Running Without the Desktop GUI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on Quantum Metal</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Showcase &amp; Learn</span></p>
@@ -447,27 +449,14 @@
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Project</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Migrating to v0.7.0 (lite-by-default install)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="archive.html">Archived Notebooks</a><input aria-label="Toggle navigation of Archived Notebooks" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Testing-QComponents-for-overlap-and-collisions.html">Demo Notebook Demonstrating How to Test for Component/CPW Overlap</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.33-Transmon-analytics.html">4.33 Transmon Analytics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.5-Launch-video-example.html">A.5 Launch video example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.6-Hackathon-exercise-South-Korea-2020.html">A.6 Hackathon exercise — South Korea 2020</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.html">Four Qubit Chip Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/07-Transmon_floating_cl.html">Single Transmon - Floating with charge lines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Opening-documentation.html">Opening the documentation</a></li>
-</ul>
-</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Community &amp; Contributing</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributor-guide.html">Contributor Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
-<li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Using Quantum Metal without Qt</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 </ul>
 
@@ -500,327 +489,16 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="migrating-to-v0-7-0-lite-by-default-install">
-<span id="migration-to-v0-7-0"></span><h1>Migrating to v0.7.0 (lite-by-default install)<a class="headerlink" href="#migrating-to-v0-7-0-lite-by-default-install" title="Link to this heading">¶</a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><strong>v0.7.0 is released.</strong> <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code> now installs
-the lite-by-default configuration described below. See the
-<a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/blob/main/changelog.md">changelog</a>
-for the full list of changes.</p>
-</div>
-<nav class="contents local" id="contents">
-<ul class="simple">
-<li><p><a class="reference internal" href="#tl-dr" id="id1">TL;DR</a></p></li>
-<li><p><a class="reference internal" href="#who-is-affected" id="id2">Who is affected</a></p></li>
-<li><p><a class="reference internal" href="#what-changed" id="id3">What changed</a></p></li>
-<li><p><a class="reference internal" href="#migration-recipes" id="id4">Migration recipes</a></p>
-<ul>
-<li><p><a class="reference internal" href="#i-am-a-desktop-gui-user" id="id5">I am a desktop GUI user</a></p></li>
-<li><p><a class="reference internal" href="#i-run-hfss-q3d-analyses" id="id6">I run HFSS / Q3D analyses</a></p></li>
-<li><p><a class="reference internal" href="#i-use-the-gmsh-elmer-fem-path" id="id7">I use the gmsh / Elmer FEM path</a></p></li>
-<li><p><a class="reference internal" href="#i-want-the-v0-6-x-all-batteries-included-install" id="id8">I want the v0.6.x all-batteries-included install</a></p></li>
-<li><p><a class="reference internal" href="#i-am-driving-quantum-metal-from-an-ai-agent-orchestrator" id="id9">I am driving Quantum Metal from an AI agent / orchestrator</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#common-errors-and-fixes" id="id10">Common errors and fixes</a></p>
-<ul>
-<li><p><a class="reference internal" href="#modulenotfounderror-no-module-named-pyside6" id="id11"><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'PySide6'</span></code></a></p></li>
-<li><p><a class="reference internal" href="#modulenotfounderror-no-module-named-pyepr" id="id12"><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'pyEPR'</span></code></a></p></li>
-<li><p><a class="reference internal" href="#modulenotfounderror-no-module-named-gmsh" id="id13"><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'gmsh'</span></code></a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#why-this-change" id="id14">Why this change</a></p></li>
-</ul>
-</nav>
-<section id="tl-dr">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">TL;DR</a><a class="headerlink" href="#tl-dr" title="Link to this heading">¶</a></h2>
-<p>In v0.7.0, <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code> no longer pulls
-PySide6, qdarkstyle, pyaedt, pyEPR-quantum, or gmsh. Those
-move into opt-in extras.</p>
-<p>The fastest migration is one of:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Want everything? Restore the v0.6.x experience:</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[full]"</span>
-
-<span class="c1"># Just MetalGUI?</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[gui]"</span>
-
-<span class="c1"># Just HFSS / Q3D / EPR (no GUI)?</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[ansys]"</span>
-
-<span class="c1"># Just gmsh meshing (for Elmer / Palace / open FEM)?</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[mesh]"</span>
-<span class="c1"># ``[fem]`` is a backward-compatible alias of ``[mesh]``.</span>
-
-<span class="c1"># Headless designs, GDS export, qm.view, no heavy deps?</span>
-pip<span class="w"> </span>install<span class="w"> </span>quantum-metal<span class="w">      </span><span class="c1"># base install — much smaller</span>
-</pre></div>
-</div>
-</section>
-<section id="who-is-affected">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Who is affected</a><a class="headerlink" href="#who-is-affected" title="Link to this heading">¶</a></h2>
-<p>You <strong>need to do something</strong> if any of these describe your
-v0.6.x install:</p>
-<ul class="simple">
-<li><p>You run <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> (the desktop Qt GUI)</p></li>
-<li><p>You import or use the HFSS / Q3D renderers
-(<code class="docutils literal notranslate"><span class="pre">QAnsysRenderer</span></code>, <code class="docutils literal notranslate"><span class="pre">QHFSSPyaedt</span></code>, <code class="docutils literal notranslate"><span class="pre">QQ3DPyaedt</span></code>,
-<code class="docutils literal notranslate"><span class="pre">QHFSSDrivenmodalPyaedt</span></code>, <code class="docutils literal notranslate"><span class="pre">QHFSSEigenmodePyaedt</span></code>)</p></li>
-<li><p>You import or use the EPR analyses
-(<code class="docutils literal notranslate"><span class="pre">LOManalysis</span></code>, <code class="docutils literal notranslate"><span class="pre">LumpedElementsSim</span></code>,
-<code class="docutils literal notranslate"><span class="pre">EigenmodeSim</span></code>, <code class="docutils literal notranslate"><span class="pre">extract_transmon_coupled_Noscillator</span></code>)</p></li>
-<li><p>You import or use the gmsh / Elmer renderers
-(<code class="docutils literal notranslate"><span class="pre">QGmshRenderer</span></code>, <code class="docutils literal notranslate"><span class="pre">Vec3DArray</span></code>, the
-<code class="docutils literal notranslate"><span class="pre">renderer_elmer</span></code> module)</p></li>
-</ul>
-<p>You <strong>probably don’t need to do anything</strong> if your workflow is:</p>
-<ul class="simple">
-<li><p>Build a design (<code class="docutils literal notranslate"><span class="pre">DesignPlanar</span></code>, <code class="docutils literal notranslate"><span class="pre">DesignFlipChip</span></code>, …)</p></li>
-<li><p>Add components from <code class="docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code></p></li>
-<li><p>View it inline with <code class="docutils literal notranslate"><span class="pre">qm.view(design)</span></code></p></li>
-<li><p>Export to GDS via <code class="docutils literal notranslate"><span class="pre">QGDSRenderer</span></code></p></li>
-<li><p>Run pure-Python analyses that don’t touch
-<code class="docutils literal notranslate"><span class="pre">quantization/</span></code> or <code class="docutils literal notranslate"><span class="pre">simulation/</span></code> modules</p></li>
-</ul>
-<p>The lite install covers the second list out of the box.</p>
-</section>
-<section id="what-changed">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">What changed</a><a class="headerlink" href="#what-changed" title="Link to this heading">¶</a></h2>
-<p>Base <code class="docutils literal notranslate"><span class="pre">dependencies</span></code> (the v0.7.0 <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code>
-slim install):</p>
-<ul class="simple">
-<li><p>All current base deps <strong>except</strong> PySide6, qdarkstyle, pyaedt,
-pyEPR-quantum, and gmsh.</p></li>
-</ul>
-<p>New <code class="docutils literal notranslate"><span class="pre">optional-dependencies</span></code> (extras you opt in to):</p>
-<div class="table-wrapper docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Extra</p></th>
-<th class="head"><p>Pulls</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[gui]</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">pyside6</span></code>, <code class="docutils literal notranslate"><span class="pre">qdarkstyle</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[ansys]</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">pyaedt</span></code>, <code class="docutils literal notranslate"><span class="pre">pyEPR-quantum</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[mesh]</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">gmsh</span></code> (foundation for Elmer / Palace / open FEM)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[fem]</span></code></p></td>
-<td><p>alias of <code class="docutils literal notranslate"><span class="pre">[mesh]</span></code> — kept for v0.7.x compatibility</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[full]</span></code></p></td>
-<td><p>all of the above — v0.6.x compatibility set</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>The Python API surface itself is <strong>unchanged</strong>. <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>,
-<code class="docutils literal notranslate"><span class="pre">QHFSSPyaedt</span></code>, <code class="docutils literal notranslate"><span class="pre">QGmshRenderer</span></code>, <code class="docutils literal notranslate"><span class="pre">LOManalysis</span></code> still exist
-in the same import paths. They just raise a clear
-<code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError</span></code> at <em>use</em> time if you didn’t install the
-extra they need.</p>
-</section>
-<section id="migration-recipes">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Migration recipes</a><a class="headerlink" href="#migration-recipes" title="Link to this heading">¶</a></h2>
-<section id="i-am-a-desktop-gui-user">
-<h3><a class="toc-backref" href="#id5" role="doc-backlink">I am a desktop GUI user</a><a class="headerlink" href="#i-am-a-desktop-gui-user" title="Link to this heading">¶</a></h3>
-<p>If your workflow opens <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> and edits designs visually:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[gui]"</span>
-</pre></div>
-</div>
-<p>You’re done. Nothing else changes.</p>
-</section>
-<section id="i-run-hfss-q3d-analyses">
-<h3><a class="toc-backref" href="#id6" role="doc-backlink">I run HFSS / Q3D analyses</a><a class="headerlink" href="#i-run-hfss-q3d-analyses" title="Link to this heading">¶</a></h3>
-<p>Your workflow uses <code class="docutils literal notranslate"><span class="pre">QHFSSPyaedt</span></code> or any of the AEDT-based
-renderers, or the EPR analyses
-(<code class="docutils literal notranslate"><span class="pre">LOManalysis</span></code>, <code class="docutils literal notranslate"><span class="pre">EigenmodeSim</span></code>, <code class="docutils literal notranslate"><span class="pre">LumpedElementsSim</span></code>):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[ansys]"</span>
-</pre></div>
-</div>
-<p>If you also use <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>, install both:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[gui,ansys]"</span>
-</pre></div>
-</div>
-</section>
-<section id="i-use-the-gmsh-elmer-fem-path">
-<h3><a class="toc-backref" href="#id7" role="doc-backlink">I use the gmsh / Elmer FEM path</a><a class="headerlink" href="#i-use-the-gmsh-elmer-fem-path" title="Link to this heading">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[mesh]"</span><span class="w">     </span><span class="c1"># or [fem] (alias)</span>
-</pre></div>
-</div>
-<p>Note that gmsh on Apple Silicon Macs still needs the brew
-<code class="docutils literal notranslate"><span class="pre">gmsh</span></code> package — see <code class="docutils literal notranslate"><span class="pre">README_Open_FEM_Stack.md</span></code>.
-ElmerFEM itself is an <strong>external CLI binary</strong> — it does not
-ship with the extra and must be installed separately.</p>
-</section>
-<section id="i-want-the-v0-6-x-all-batteries-included-install">
-<h3><a class="toc-backref" href="#id8" role="doc-backlink">I want the v0.6.x all-batteries-included install</a><a class="headerlink" href="#i-want-the-v0-6-x-all-batteries-included-install" title="Link to this heading">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[full]"</span>
-</pre></div>
-</div>
-<p>This is the no-think migration — the install is bit-for-bit
-the same dep set you had on v0.6.x.</p>
-</section>
-<section id="i-am-driving-quantum-metal-from-an-ai-agent-orchestrator">
-<h3><a class="toc-backref" href="#id9" role="doc-backlink">I am driving Quantum Metal from an AI agent / orchestrator</a><a class="headerlink" href="#i-am-driving-quantum-metal-from-an-ai-agent-orchestrator" title="Link to this heading">¶</a></h3>
-<p>This is the workflow v0.7.0 was designed for. The base install
-is now what you want:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>quantum-metal
-</pre></div>
-</div>
-<p>You get the design builders, all of <code class="docutils literal notranslate"><span class="pre">qlibrary</span></code>, all
-pure-Python analyses, GDS export, and the headless
-<code class="docutils literal notranslate"><span class="pre">qm.view(design)</span></code> viewer in a few dozen MB instead of ~1 GB.</p>
-<p>If your orchestrator dispatches to a specific backend, install
-only that extra at the dispatch layer:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Worker pod handling HFSS jobs</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[ansys]"</span>
-
-<span class="c1"># Worker pod handling gmsh-based meshing</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[mesh]"</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="common-errors-and-fixes">
-<h2><a class="toc-backref" href="#id10" role="doc-backlink">Common errors and fixes</a><a class="headerlink" href="#common-errors-and-fixes" title="Link to this heading">¶</a></h2>
-<section id="modulenotfounderror-no-module-named-pyside6">
-<h3><a class="toc-backref" href="#id11" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'PySide6'</span></code></a><a class="headerlink" href="#modulenotfounderror-no-module-named-pyside6" title="Link to this heading">¶</a></h3>
-<p>You instantiated <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> on a lite install. Fix:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[gui]"</span>
-</pre></div>
-</div>
-</section>
-<section id="modulenotfounderror-no-module-named-pyepr">
-<h3><a class="toc-backref" href="#id12" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'pyEPR'</span></code></a><a class="headerlink" href="#modulenotfounderror-no-module-named-pyepr" title="Link to this heading">¶</a></h3>
-<p>You called an EPR-using analysis (<code class="docutils literal notranslate"><span class="pre">LOManalysis.run_lom</span></code>,
-<code class="docutils literal notranslate"><span class="pre">extract_transmon_coupled_Noscillator</span></code>, or any of the
-HFSS/Q3D renderers’ simulation methods) on a lite install.
-Fix:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[ansys]"</span>
-</pre></div>
-</div>
-</section>
-<section id="modulenotfounderror-no-module-named-gmsh">
-<h3><a class="toc-backref" href="#id13" role="doc-backlink"><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'gmsh'</span></code></a><a class="headerlink" href="#modulenotfounderror-no-module-named-gmsh" title="Link to this heading">¶</a></h3>
-<p>You instantiated <code class="docutils literal notranslate"><span class="pre">QGmshRenderer</span></code> or the Elmer renderer on
-a lite install. Fix:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"quantum-metal[mesh]"</span><span class="w">     </span><span class="c1"># or [fem] (alias)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">Could</span> <span class="pre">not</span> <span class="pre">load</span> <span class="pre">the</span> <span class="pre">Qt</span> <span class="pre">platform</span> <span class="pre">plugin</span> <span class="pre">'xcb'</span></code> (and similar
-<code class="docutils literal notranslate"><span class="pre">QPA</span></code>-style errors)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
-<p>These come from PySide6 starting up. On a lite install they
-shouldn’t fire at all. If they do, you’re either running
-<code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> directly or you have a stray
-<code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">PySide6</span></code> in your own code. See <a class="reference internal" href="headless-usage.html"><span class="doc">Using Quantum Metal without the Qt GUI</span></a>
-for the Qt-free workflow.</p>
-</section>
-</section>
-<section id="why-this-change">
-<h2><a class="toc-backref" href="#id14" role="doc-backlink">Why this change</a><a class="headerlink" href="#why-this-change" title="Link to this heading">¶</a></h2>
-<p>Three forces drove it:</p>
-<ul class="simple">
-<li><p><strong>AI orchestration</strong>. Increasingly, Quantum Metal is used
-inside LLM-driven design loops and multi-backend solver
-pipelines. None of those need a desktop Qt GUI; they want
-a fast, predictable, scriptable Python library.</p></li>
-<li><p><strong>Cloud / Colab / Binder</strong>. Hundreds of MB of Qt + AEDT in
-the base install is friction every notebook environment
-has to work around. Many just give up and pin an older
-version.</p></li>
-<li><p><strong>Academic and educational use</strong>. Users without an Ansys
-license shouldn’t be forced to install pyaedt + pyEPR
-to import <code class="docutils literal notranslate"><span class="pre">qiskit_metal</span></code>.</p></li>
-</ul>
-<p>The Qt-free path was added in v0.6.0 (<code class="docutils literal notranslate"><span class="pre">qm.view(design)</span></code>,
-lazy Qt initialization). The v0.7.0 flip completes the
-story by making the lite install the <strong>default</strong>, with
-extras for the heavy backends.</p>
-<p>See <a class="reference internal" href="headless-usage.html"><span class="doc">Using Quantum Metal without the Qt GUI</span></a> for what the lite install gives
-you today, and <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/blob/main/ROADMAP.md">ROADMAP.md</a>
-for what’s coming next.</p>
-</section>
-</section>
-<section id="v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">
-<h1>v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code><a class="headerlink" href="#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design" title="Link to this heading">¶</a></h1>
-<p>v0.7.2 introduces a factory, <code class="xref py py-func docutils literal notranslate"><span class="pre">qiskit_metal.gui()</span></code>, that returns
-the right viewer for the current environment. Tutorial code written
-against the factory works unchanged in three places:</p>
-<ul class="simple">
-<li><p><strong>Local desktop</strong> with <code class="docutils literal notranslate"><span class="pre">quantum-metal[gui]</span></code> installed → returns
-the Qt-based <code class="xref py py-class docutils literal notranslate"><span class="pre">MetalGUI</span></code>.</p></li>
-<li><p><strong>Colab / Binder / headless servers / Linux without DISPLAY</strong> →
-returns the new <code class="xref py py-class docutils literal notranslate"><span class="pre">MetalGUIHeadless</span></code>, which mirrors the
-tutorial-facing surface of <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> (<code class="docutils literal notranslate"><span class="pre">gui.rebuild()</span></code>,
-<code class="docutils literal notranslate"><span class="pre">gui.screenshot()</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.edit_component(...)</span></code>,
-<code class="docutils literal notranslate"><span class="pre">gui.highlight_components(...)</span></code>, <code class="docutils literal notranslate"><span class="pre">gui.zoom_on_components(...)</span></code>,
-<code class="docutils literal notranslate"><span class="pre">gui.main_window</span></code>) and renders inline via matplotlib.</p></li>
-<li><p><strong>Plain Python scripts</strong> → <code class="docutils literal notranslate"><span class="pre">MetalGUIHeadless</span></code> by default; pass
-<code class="docutils literal notranslate"><span class="pre">force_headless=True</span></code> to skip the Qt detection entirely.</p></li>
-</ul>
-<p>What to change in your notebooks:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Before</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetalGUI</span>
-<span class="n">gui</span> <span class="o">=</span> <span class="n">MetalGUI</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
-
-<span class="c1"># After</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_metal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qm</span>
-<span class="n">gui</span> <span class="o">=</span> <span class="n">qm</span><span class="o">.</span><span class="n">gui</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>   <span class="c1"># Qt locally; inline matplotlib in Colab/Binder</span>
-</pre></div>
-</div>
-<p>The direct <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code> construction still works when the
-<code class="docutils literal notranslate"><span class="pre">[gui]</span></code> extras are installed — nothing is deprecated. The factory
-is purely additive; it just removes the need for every notebook to
-hand-roll Qt-vs-headless detection.</p>
-<p>Why switch:</p>
-<ul class="simple">
-<li><p>One tutorial cell works in every environment. No more “set
-<code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_HEADLESS=1</span></code> first” instructions, no more
-separate-but-equal Colab vs desktop walkthroughs.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">qm.MetalGUI</span></code> is now a lazy attribute: <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">qiskit_metal</span></code>
-no longer pulls in PySide6. The factory triggers the Qt import
-only when it decides to return <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>.</p></li>
-<li><p>If your Colab / Binder users hit
-<code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">PySide6</span></code> on <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code>, the factory
-gives them an inline renderer with the same API instead of an
-error.</p></li>
-</ul>
-<section id="environment-variable-overrides">
-<h2>Environment-variable overrides<a class="headerlink" href="#environment-variable-overrides" title="Link to this heading">¶</a></h2>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_HEADLESS=1</span></code> — force the headless path even when
-PySide6 is installed. Useful on CI runners that have Qt but no
-display server.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_HEADLESS_QUIET=1</span></code> — suppress the one-time
-“headless viewer active” notice on first <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> call.</p></li>
-</ul>
-</section>
-<section id="reporting-issues">
-<h2>Reporting issues<a class="headerlink" href="#reporting-issues" title="Link to this heading">¶</a></h2>
-<p>If the migration recipe for your scenario isn’t covered
-above, please open an issue at
-<a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues">https://github.com/qiskit-community/qiskit-metal/issues</a> with
-the label <code class="docutils literal notranslate"><span class="pre">v0.7.0-migration</span></code>. Include:</p>
-<ul class="simple">
-<li><p>Your previous install command (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">...</span></code>)</p></li>
-<li><p>Which Python entry points / classes you use</p></li>
-<li><p>The error message you hit</p></li>
-</ul>
-<p>We’ll add your case to this doc so the next person hits a
-search result instead of a wall.</p>
-</section>
+          <section id="migrating-to-v0-7-0">
+<h1>Migrating to v0.7.0<a class="headerlink" href="#migrating-to-v0-7-0" title="Link to this heading">¶</a></h1>
+<p>This page was retired. <a class="reference internal" href="installation.html"><span class="doc">Installation</span></a> lists every install extra, and the
+<a class="reference internal" href="faq.html"><span class="doc">FAQ</span></a> covers the <code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError</span></code> for an extra that is not
+installed.</p>
 </section>
 
         </article>
@@ -828,26 +506,8 @@ search result instead of a wall.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="archive.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">Archived notebooks</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="faq.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">FAQ’s</div>
-                
-              </div>
-            </a>
+          
+          
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -867,49 +527,8 @@ search result instead of a wall.</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
       
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">Migrating to v0.7.0 (lite-by-default install)</a><ul>
-<li><a class="reference internal" href="#tl-dr">TL;DR</a></li>
-<li><a class="reference internal" href="#who-is-affected">Who is affected</a></li>
-<li><a class="reference internal" href="#what-changed">What changed</a></li>
-<li><a class="reference internal" href="#migration-recipes">Migration recipes</a><ul>
-<li><a class="reference internal" href="#i-am-a-desktop-gui-user">I am a desktop GUI user</a></li>
-<li><a class="reference internal" href="#i-run-hfss-q3d-analyses">I run HFSS / Q3D analyses</a></li>
-<li><a class="reference internal" href="#i-use-the-gmsh-elmer-fem-path">I use the gmsh / Elmer FEM path</a></li>
-<li><a class="reference internal" href="#i-want-the-v0-6-x-all-batteries-included-install">I want the v0.6.x all-batteries-included install</a></li>
-<li><a class="reference internal" href="#i-am-driving-quantum-metal-from-an-ai-agent-orchestrator">I am driving Quantum Metal from an AI agent / orchestrator</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#common-errors-and-fixes">Common errors and fixes</a><ul>
-<li><a class="reference internal" href="#modulenotfounderror-no-module-named-pyside6"><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'PySide6'</span></code></a></li>
-<li><a class="reference internal" href="#modulenotfounderror-no-module-named-pyepr"><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'pyEPR'</span></code></a></li>
-<li><a class="reference internal" href="#modulenotfounderror-no-module-named-gmsh"><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'gmsh'</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#why-this-change">Why this change</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a><ul>
-<li><a class="reference internal" href="#environment-variable-overrides">Environment-variable overrides</a></li>
-<li><a class="reference internal" href="#reporting-issues">Reporting issues</a></li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
       
       
     </aside>

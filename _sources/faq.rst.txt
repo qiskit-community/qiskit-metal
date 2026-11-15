@@ -52,6 +52,21 @@ If jupyter notebook/lab is still unable to find qiskit_metal, you might need to 
 
 You can completely prevent the ModuleNotFoundError by installing `jupyter` or `jupyterlab` inside the environment, instead of using a pre-existing installation.
 
+**Q: Why do I get** ``ModuleNotFoundError`` **for PySide6, pyEPR or gmsh?**
+
+**A:** ``pip install quantum-metal`` installs the lite core, without the desktop
+GUI, Ansys or the meshers. Each of those comes with an extra:
+
+- ``No module named 'PySide6'``: you created ``MetalGUI`` directly. Use
+  ``qm.gui(design)``, which falls back to an inline viewer, or install the GUI with
+  ``pip install "quantum-metal[gui]"``.
+- ``No module named 'pyEPR'``: an EPR or Ansys analysis needs
+  ``pip install "quantum-metal[ansys]"``.
+- ``No module named 'gmsh'``: the gmsh and Elmer renderers need
+  ``pip install "quantum-metal[mesh]"``; the scikit-fem solver needs ``[skfem]``.
+
+:doc:`installation` lists every extra.
+
 **Q: Why is the pip installation asking to install geopandas? Or why is it asking for a path to gdal-config?**
 
 **A:** If you see *"A GDAL API version must be specified. Provide a path to gdal-config..."* on Windows, this is a known limitation of the Windows wheels for ``gdal`` and ``fiona``. The simplest fix is to use **conda** for these packages:

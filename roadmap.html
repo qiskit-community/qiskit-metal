@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=b32f9225" />
+    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=7cf023f8" />
     
     
 
@@ -194,6 +194,7 @@
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Quantum Metal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="choose-your-path.html">Choose Your Path</a></li>
+<li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Running Without the Desktop GUI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on Quantum Metal</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Showcase &amp; Learn</span></p>
@@ -450,24 +451,11 @@
 <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="archive.html">Archived Notebooks</a><input aria-label="Toggle navigation of Archived Notebooks" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Testing-QComponents-for-overlap-and-collisions.html">Demo Notebook Demonstrating How to Test for Component/CPW Overlap</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.33-Transmon-analytics.html">4.33 Transmon Analytics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.5-Launch-video-example.html">A.5 Launch video example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.6-Hackathon-exercise-South-Korea-2020.html">A.6 Hackathon exercise — South Korea 2020</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.html">Four Qubit Chip Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/07-Transmon_floating_cl.html">Single Transmon - Floating with charge lines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Opening-documentation.html">Opening the documentation</a></li>
-</ul>
-</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Community &amp; Contributing</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributor-guide.html">Contributor Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
-<li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Using Quantum Metal without Qt</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 </ul>
 
@@ -507,33 +495,34 @@
         <article role="main" id="furo-main-content">
           <span class="target" id="roadmap"></span><section id="quantum-metal-roadmap">
 <h1>Quantum Metal — Roadmap<a class="headerlink" href="#quantum-metal-roadmap" title="Link to this heading">¶</a></h1>
-<p>This file describes the direction Quantum Metal is heading.
-Items are grouped by status: what we’re working on now,
-what’s planned next, and what we’re researching with no
-firm timeline. Linked PRs and issues are the source of truth
-for “is this done yet.”</p>
-<p>If something here matters to your work, open an issue or
-ping us on Discord — the order and emphasis below shift
-based on user demand and contributor availability.</p>
+<p>Where Quantum Metal is heading, as of November 2026. Linked issues and pull
+requests are the source of truth for whether an item is done; release notes
+are in <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/blob/main/changelog.md"><code class="docutils literal notranslate"><span class="pre">changelog.md</span></code></a> and on the
+<a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/releases">releases page</a>.
+If an item matters to your work, say so on its issue or open a new one: the
+order below shifts with user demand and contributor time.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>Symbol</p></th>
+<tr class="row-odd"><th class="head"><p>Status</p></th>
 <th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[shipped]</span></code></p></td>
-<td><p>Released, in current <code class="docutils literal notranslate"><span class="pre">main</span></code>.</p></td>
+<td><p>Released.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[in-progress]</span></code></p></td>
-<td><p>Active development. PR open or imminent.</p></td>
+<td><p>Active development; a pull request is open or imminent.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[planned]</span></code></p></td>
-<td><p>Scoped, on the queue. Will be picked up in the indicated release.</p></td>
+<td><p>Scoped and queued.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[research]</span></code></p></td>
-<td><p>Direction set, design not finalized. Help wanted.</p></td>
+<td><p>Direction set, design open. Help wanted.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[needs</span> <span class="pre">re-verification]</span></code></p></td>
+<td><p>Status unclear against the current release.</p></td>
 </tr>
 </tbody>
 </table>
@@ -541,1158 +530,196 @@ based on user demand and contributor availability.</p>
 <hr class="docutils" />
 <section id="vision">
 <h2>Vision<a class="headerlink" href="#vision" title="Link to this heading">¶</a></h2>
-<p>Quantum Metal is the open-source <strong>chip-design layer</strong> for
-superconducting quantum hardware: a Python library where
-you build a chip from <code class="docutils literal notranslate"><span class="pre">QComponent</span></code>s, attach analyses, and
-hand the result to whichever solver / fab / orchestrator
-you want. The library itself is solver-agnostic; the
-renderers are the integration layer with the outside world
-(GDS, HFSS, Q3D, gmsh, Elmer, AWS Palace, …).</p>
-<p>We sit inside a broader open-source ecosystem — design
-discovery (<a class="reference external" href="https://github.com/LFL-Lab/SQuADDS">SQuADDS</a>),
-Palace simulation wrappers (<a class="reference external" href="https://github.com/sqdlab/SQDMetal">SQDMetal</a>,
-<a class="reference external" href="https://pypalace.readthedocs.io/">pypalace</a>),
-mesh utilities, quantization tools. Full map:
-<a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/blob/main/docs/ecosystem.rst">Ecosystem doc</a>
-(rendered on the docs site). Items below are about Metal’s own
-direction; ecosystem-level coordination is tracked
-alongside.</p>
-<p>Two things shape the next year:</p>
+<p>Quantum Metal is an open-source chip-design layer for superconducting quantum
+hardware: you build a chip from <code class="docutils literal notranslate"><span class="pre">QComponent</span></code>s, check it, analyze it, and hand
+it to the solver, fab flow or orchestrator of your choice. The core stays
+<strong>lite by default</strong>: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code> imports quickly and assumes
+no Qt, Ansys, gmsh or Palace; heavy backends are opt-in extras. The API
+should be <strong>scriptable and orchestration-friendly</strong>, so that a script, an
+optimizer or an AI agent can generate a design, run design-rule checks,
+dispatch it to one or more solvers and iterate, with no GUI prompts and no
+hidden state. Analysis should not require a commercial license: open solvers
+sit beside Ansys behind one interface. Related open-source projects are
+listed in the <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/blob/main/docs/ecosystem.rst">ecosystem page</a>.</p>
+</section>
+<hr class="docutils" />
+<section id="recently-shipped-shipped">
+<h2>Recently shipped <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code><a class="headerlink" href="#recently-shipped-shipped" title="Link to this heading">¶</a></h2>
+<p><strong>v0.8.0: airbridges and design-rule checking</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">qiskit_metal.validation.validate(design)</span></code> with seven configurable,
+layer- and net-aware rules and <code class="docutils literal notranslate"><span class="pre">strict=True</span></code> as a build gate (#1169);
+tutorial 2.24. <code class="docutils literal notranslate"><span class="pre">QDesignCheck</span></code> is deprecated.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Airbridge</span></code> component and <code class="docutils literal notranslate"><span class="pre">route_airbridges</span></code> auto-placement (#1138, #1142);
+experimental 3D airbridges with an Elmer capacitance path (#1144, #1150).</p></li>
+<li><p>The viewer draws the die outline (#1168).</p></li>
+</ul>
+<p><strong>v0.8.1: GUI stability</strong></p>
+<ul class="simple">
+<li><p>Fixes for the GUI crash family (#1048) and interactive canvas editing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TransmonCross</span></code> <code class="docutils literal notranslate"><span class="pre">connector_location='270'</span></code> fix; angles wrap mod 360
+(#1173, closes #1052).</p></li>
+</ul>
+<p><strong>v0.9.0 (September 2026): open-source FEM solver</strong></p>
+<ul class="simple">
+<li><p>The gmsh + scikit-fem Maxwell solver (<code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses.fem</span></code>, extra
+<code class="docutils literal notranslate"><span class="pre">[skfem]</span></code>) and tutorials 4.41–4.45, reproducing a published HFSS
+package-mode study.</p></li>
+<li><p>First shared solver-backend abstractions in <code class="docutils literal notranslate"><span class="pre">QGmshRenderer</span></code>: ports,
+<code class="docutils literal notranslate"><span class="pre">group_map</span></code>, <code class="docutils literal notranslate"><span class="pre">mesh_spec</span></code>; simulation classes check renderer capabilities.</p></li>
+<li><p>Shape rules in the design-rule check (self-intersection, sharp turn,
+fillet starvation, pin alignment; dangling ends opt-in) and waivers.</p></li>
+<li><p>Python 3.13 and 3.14; numpy 2; raised dependency minimums.</p></li>
+<li><p>New components (<code class="docutils literal notranslate"><span class="pre">PolylineCPW</span></code>, <code class="docutils literal notranslate"><span class="pre">CapFingerInFrame</span></code>, <code class="docutils literal notranslate"><span class="pre">TransmonStar</span></code>), a
+17-qubit surface-code example chip, and every notebook in one tree under
+<code class="docutils literal notranslate"><span class="pre">docs/</span></code>.</p></li>
+</ul>
+<p><strong>v0.10.0 (November 2026): fixes and docs</strong></p>
+<ul class="simple">
+<li><p>Python 3.11 is the minimum.</p></li>
+<li><p>Fixes for #1202–#1234 and #1242–#1253: transmon, LOM, kappa, chi,
+package-mode and resonator-fit formulas; GDS export; design-rule checks;
+routing; components. Several change numbers or geometry (see the
+changelog).</p></li>
+<li><p>New documentation home page and navigation (#1255); tutorial 4.46 on
+multipole qubit–mode coupling.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">qiskit_metal</span></code> no longer imports <code class="docutils literal notranslate"><span class="pre">gdstk</span></code> or <code class="docutils literal notranslate"><span class="pre">qutip</span></code>.</p></li>
+<li><p>The legacy HFSS renderer places junction boundaries along off-axis
+junction lines (#1242); checked against stubs only, not in AEDT.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="now-and-next">
+<h2>Now and next<a class="headerlink" href="#now-and-next" title="Link to this heading">¶</a></h2>
+<p><strong>Desktop GUI</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in-progress]</span></code> macOS teardown crash family (#1048). Three GUI test modules
+are opt-in with <code class="docutils literal notranslate"><span class="pre">--run-crashy-gui</span></code>. A second <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> built in one process
+after an application stylesheet is set still segfaults at exit (failure
+mode 1 in <code class="docutils literal notranslate"><span class="pre">docs/architecture/gui_crash_defenses.md</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[planned]</span></code> Lift the <code class="docutils literal notranslate"><span class="pre">pyside6!=6.12.0</span></code> exclusion once a PySide6 release
+fixes the <code class="docutils literal notranslate"><span class="pre">none_dealloc</span></code> abort on Python &lt; 3.12.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[planned]</span></code> Open GUI issues #1178 and #1103.</p></li>
+</ul>
+<p><strong>Ansys renderers</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[planned]</span></code> Validate in AEDT the renderer fixes made in v0.9.0 and v0.10.0,
+which are tested only with mocks or stubs. Needs a contributor with an
+AEDT license.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[planned]</span></code> Open issues that need an Ansys run or more information from the
+reporter: #1041, #1019, #1017, #1015, #1005, #996, #995, #992.</p></li>
+</ul>
+<p><strong>API</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[planned]</span></code> #1166: the <code class="docutils literal notranslate"><span class="pre">Vec3D.two_points_described</span></code> signature change needs
+a deprecation path before it lands (public signatures do not break without
+one).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[research]</span></code> Rename the import path <code class="docutils literal notranslate"><span class="pre">qiskit_metal</span></code> → <code class="docutils literal notranslate"><span class="pre">quantum_metal</span></code> to
+match the PyPI name. No release has been set.</p></li>
+</ul>
+<p><strong>Tutorials</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[planned]</span></code> Follow-up notebook 55, which needs the scikit-fem backend to
+read the <code class="docutils literal notranslate"><span class="pre">QGmshRenderer.group_map</span></code> scope.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[planned]</span></code> Refresh stored outputs that need Qt or Ansys: the flip-chip
+tutorial, the iSWAP full chips, A.4–A.7, 2.21, the LOM 1.0 notebooks after
+#1207 and #1222, and the CR-gate notebook’s <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> cells.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[planned]</span></code> An execution harness: run every runnable notebook in a scratch
+copy, grouped by the extras it needs, with a time budget and a report of
+errors and missing outputs. Stored outputs stay the reference answers and
+are refreshed only in separate, reviewed changes.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="research-and-help-wanted">
+<h2>Research and help wanted<a class="headerlink" href="#research-and-help-wanted" title="Link to this heading">¶</a></h2>
+<p><strong>Solver backends</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>. Goal: an analysis tutorial runs on Ansys,
+ElmerFEM, scikit-fem or AWS Palace by changing the renderer name, and each
+solver is checked against the others. The design and gap analysis are in
+<code class="docutils literal notranslate"><span class="pre">docs/architecture/solver_backends.md</span></code>; the user-facing summary is
+<code class="docutils literal notranslate"><span class="pre">docs/simulation-pathways.rst</span></code>.</p>
 <ol class="arabic simple">
-<li><p><strong>Lite-by-default.</strong> <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">qiskit_metal</span></code> should be
-fast, dependency-light, and never assume Qt / AEDT / gmsh
-/ Palace are present. Heavy backends are opt-in extras.</p></li>
-<li><p><strong>Orchestration-friendly.</strong> Quantum Metal is increasingly
-used inside AI-driven design loops where an LLM or
-optimization agent generates designs, dispatches them to
-one or more backend solvers, and iterates on the result.
-The library’s surface should be predictable, scriptable,
-and minimal — no GUI prompts, no hidden state, no
-“did you remember to install AEDT” surprises.</p></li>
+<li><p><strong>Shared abstractions in core</strong> <code class="docutils literal notranslate"><span class="pre">[in-progress]</span></code>: ports, mesh-size
+control, named physical groups, boundary conditions, materials from the
+layer stack, net naming and sign convention for capacitance matrices,
+backend-neutral solve setups, and declared capabilities. Ports,
+<code class="docutils literal notranslate"><span class="pre">group_map</span></code>, <code class="docutils literal notranslate"><span class="pre">mesh_spec</span></code> and capability checks shipped in v0.9.0.</p></li>
+<li><p><strong>scikit-fem and ElmerFEM</strong> on those abstractions: scikit-fem reads its
+geometry from <code class="docutils literal notranslate"><span class="pre">group_map</span></code> and <code class="docutils literal notranslate"><span class="pre">mesh_spec</span></code> and becomes a
+<code class="docutils literal notranslate"><span class="pre">renderer_name=&quot;skfem&quot;</span></code> backend for eigenmode and capacitance; ElmerFEM
+gains eigenmodes with lumped junctions, cross-checked against
+scikit-fem. ElmerFEM still hard-codes materials and labels nets
+differently from Q3D.</p></li>
+<li><p><strong>AWS Palace</strong> as a downstream <code class="docutils literal notranslate"><span class="pre">quantum-metal-palace</span></code> plugin, following
+the RFC in <a class="reference external" href="https://github.com/sqdlab/SQDMetal/issues/67">sqdlab/SQDMetal#67</a>.
+First slice: transmon + launchpad + CPW → gmsh → Palace eigenmode with one
+lumped port, checked against an HFSS reference. Tested locally (MPI).</p></li>
+<li><p><strong>Ansys HFSS / Q3D</strong>, a separate track gated on AEDT validation: make the
+pyaedt renderers drivable by the simulation classes, fill the Q3D
+capacitance stub and keep mutual-capacitance signs, reconcile the COM and
+pyaedt conventions (voltage-line direction, sample-holder options), and
+move the EPR step to pyEPR’s gRPC path (<code class="docutils literal notranslate"><span class="pre">PyaedtDistributedAnalysis</span></code>)
+after checking it covers surface and dielectric loss.</p></li>
+<li><p><strong>The renderer contract written down</strong>: which calls each solve type
+needs and how capabilities are reported, for every backend.</p></li>
+<li><p><strong>Testing without losing the stored answers</strong>: reference numbers
+extracted from stored notebook outputs into version-controlled files;
+analytic and tiny scikit-fem checks in CI, larger runs opt-in, ElmerFEM,
+Palace and Ansys local only.</p></li>
 </ol>
-</section>
-<hr class="docutils" />
-<section id="recently-shipped-through-v0-8-0-august-2026-shipped">
-<h2>Recently shipped — through v0.8.0 (August 2026) <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code><a class="headerlink" href="#recently-shipped-through-v0-8-0-august-2026-shipped" title="Link to this heading">¶</a></h2>
-<p>A maintenance + community-PR cycle on top of v0.7.4, followed by the
-v0.8.0 release (#1168): design-rule checking, the die outline, and a
-hero-gif refresh — no breaking changes. Linked PRs are the source of
-truth.</p>
+<p><strong>Open FEM, further out</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>. A gmsh API audit ahead of gmsh 5;
+openEMS as a lighter open-FEM option once Palace lands.</p>
+<p><strong>Design-rule checking</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>. More rules (airbridge spacing on long
+CPW runs, minimum feature width); per-PDK rule sets loaded from a file;
+cross-layer <code class="docutils literal notranslate"><span class="pre">ground-continuity</span></code> that treats an airbridge as connecting two
+ground regions. GDS-level DRC stays with KLayout.</p>
+<p><strong>KLayout handoff</strong> <code class="docutils literal notranslate"><span class="pre">[planned]</span></code>. Ship a <code class="docutils literal notranslate"><span class="pre">.lyp</span></code> layer-property file for
+exported GDS, a Metal → KLayout how-to, and a starter KLayout DRC deck for
+superconducting basics that PDK authors can extend.</p>
+<p><strong>Scriptable and agent-driven use</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>. An orchestration guide (a
+design built, checked, exported and analyzed in a short headless script); a
+documented stable public API for <code class="docutils literal notranslate"><span class="pre">QDesign</span></code>, <code class="docutils literal notranslate"><span class="pre">QComponent</span></code> and the renderer
+bases; deterministic geometry construction so two runs give the same
+artifact; vendor-neutral task definitions that let a coding assistant drive
+Metal, with DRC as the success signal.</p>
+<p><strong>Architecture</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>. PEP 561 type hints across the core classes;
+entry-point discovery for third-party renderers and component libraries
+(and a reference PDK package that uses it); a functional component API
+beside the class hierarchy; JAX-differentiable parametric components,
+starting with <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>.</p>
+<p><strong>In the browser</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>. Bundle the notebooks that need no external
+solver into the JupyterLite site (<code class="docutils literal notranslate"><span class="pre">jupyterlite_contents</span></code> in <code class="docutils literal notranslate"><span class="pre">docs/conf.py</span></code>
+still points at a missing <code class="docutils literal notranslate"><span class="pre">tutorials/</span></code> folder); a read-only web design
+viewer.</p>
+<section id="needs-re-verification">
+<h3>Needs re-verification<a class="headerlink" href="#needs-re-verification" title="Link to this heading">¶</a></h3>
+<p>Recorded earlier and not checked against v0.10.0:</p>
 <ul class="simple">
-<li><p>✅ <strong>Design-rule-check (DRC) validation stage</strong> (#1169, v0.8.0) — see
-the dedicated section below.</p></li>
-<li><p>✅ <strong>RouteMeander sharp-kink geometry fix</strong> (commit <code class="docutils literal notranslate"><span class="pre">541ddf667</span></code>,
-closes #1086) — shipped as part of the v0.8.0 bump.</p></li>
-<li><p>✅ <strong>TransmonCross <code class="docutils literal notranslate"><span class="pre">connector_location='270'</span></code> fix</strong> (closes #1052,
-hardened further by #1174) — the rotation chain now wraps mod 360;
-out-of-range angles no longer land arbitrarily.</p></li>
-<li><p>✅ <strong>Reference design notebooks</strong> (#1108) — three executed,
-headless-rendered full-chip examples (single transmon + readout
-resonator, two coupled transmons, 4-qubit multiplexed readout)
-under <strong>Tutorials → Full-Chip Design Examples</strong> on the docs site.
-Adapted with attribution from the
-<a class="reference external" href="https://github.com/sqdlab/SQDMetal">SQDMetal</a> benchmark devices
-(arXiv:2511.01220). First entries of the long-planned
-“design examples” gallery.</p></li>
-<li><p>✅ <strong>Component-gallery card fix</strong> (#1108) — cards deep-link to each
-component’s own API page with real descriptions; registry-aware so
-new components self-link.</p></li>
-<li><p>✅ <strong>#1036 routing-collision fix</strong> (#1113) —
-<code class="docutils literal notranslate"><span class="pre">RouteAnchors.unobstructed()</span></code> no longer reports a clear path when a
-segment lies fully inside a non-rectangular component’s bounding
-box; regression test added. Reimplements community fix #1038 by
-&#64;Jinyuan426.</p></li>
-<li><p>✅ <strong>#1042 export fix</strong> (#1043, by &#64;saschabuehrle) — exported
-<code class="docutils literal notranslate"><span class="pre">.metal.py</span></code> scripts now include <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">numpy</span> <span class="pre">import</span> <span class="pre">array</span></code>.</p></li>
-<li><p>✅ <strong>TransmonCross non-uniform claws</strong> (#1115) — optional
-<code class="docutils literal notranslate"><span class="pre">claw_width_back</span></code> / <code class="docutils literal notranslate"><span class="pre">ground_spacing_back</span></code>; defaults unchanged so
-existing designs render byte-identically. Reimplements #957 by
-&#64;clarkmiyamoto.</p></li>
-<li><p>✅ <strong>Windows MetalGUI init safety</strong> (#1110) — defensive
-<code class="docutils literal notranslate"><span class="pre">QSystemTrayIcon</span></code> / <code class="docutils literal notranslate"><span class="pre">show()</span></code>-ordering guards, a
-<code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_DEBUG_INIT</span></code> trace, and a <code class="docutils literal notranslate"><span class="pre">tests-gui-display-windows</span></code>
-CI job targeting the still-open on-screen init crash (#1048).
-Defensive, not yet a confirmed fix — awaiting reporter validation.</p></li>
-<li><p>✅ <strong>Security + CI hardening</strong> — 10 Dependabot advisories cleared in
-the dev/docs toolchain (#1111); CI <code class="docutils literal notranslate"><span class="pre">apt</span></code> setup hardened against
-flaky third-party runner sources that were failing jobs before any
-test ran (#1112).</p></li>
+<li><p>Ansys 2025R1 reports #1046 and the AEDT spot-check request #1079.</p></li>
+<li><p>Airbridge follow-ups: overlap and off-chip warnings, adjacent-CPW handling.</p></li>
+<li><p>LOM 2.0 <code class="docutils literal notranslate"><span class="pre">TL_RESONATOR</span></code> keeps one mode (#1219 docstring); the LOM paper’s
+Eq. 13a factor of 2; <code class="docutils literal notranslate"><span class="pre">Hcpb.nlevels</span></code> resetting <code class="docutils literal notranslate"><span class="pre">Ej</span></code>/<code class="docutils literal notranslate"><span class="pre">Ec</span></code>;
+<code class="docutils literal notranslate"><span class="pre">hamiltonian_results</span></code> printing <code class="docutils literal notranslate"><span class="pre">np.float64(...)</span></code> under numpy 2;
+<code class="docutils literal notranslate"><span class="pre">fit_transmission(detrend=False)</span></code> starting from zero cable delay.</p></li>
+<li><p>pyEPR packaging: <code class="docutils literal notranslate"><span class="pre">pywin32</span></code> declared only in its <code class="docutils literal notranslate"><span class="pre">[pyaedt]</span></code> extra (a fix in
+pyEPR, not here).</p></li>
 </ul>
 </section>
-<hr class="docutils" />
-<section id="near-term-priorities-planned">
-<h2>Near-term priorities <code class="docutils literal notranslate"><span class="pre">[planned]</span></code><a class="headerlink" href="#near-term-priorities-planned" title="Link to this heading">¶</a></h2>
-<p>A rough priority order for the next cycle — shifts with user demand
-and contributor availability. Most items expand on dedicated sections
-below.</p>
-<ol class="arabic simple">
-<li><p><strong>Re-verify the bug-triage queue against v0.7.x</strong> (see “Known
-bug-triage queue”). Several 0.5.x-era reports — especially the
-Ansys 2025R1 cluster (#1041, #1046) on the old COM path — may
-already be fixed by the <code class="docutils literal notranslate"><span class="pre">renderer_ansys_pyaedt</span></code> migration and just
-need closing. Cheapest way to shrink the open-issue count.</p></li>
-<li><p><strong>Downstream ecosystem rollout</strong> — file the migration issues for
-SQuADDS / SQDMetal / pypalace against <code class="docutils literal notranslate"><span class="pre">quantum-metal&gt;=0.7.1</span></code>.</p></li>
-<li><p><strong>KLayout handoff</strong> — ship the <code class="docutils literal notranslate"><span class="pre">.lyp</span></code> layer file + Metal→KLayout
-how-to (high-impact, low-effort: ~half a day total).</p></li>
-<li><p><strong>AI-orchestration docs</strong> — <code class="docutils literal notranslate"><span class="pre">docs/orchestration.rst</span></code> + the
-“Built for AI agents” page; the lite flip already removed the
-dependency blockers, so this is mostly writing.</p></li>
-<li><p><strong>Palace plugin, eigenmode first</strong> — a downstream package on the
-solver-backend abstractions, after v0.9.0 (see “Solver backends”).
-Larger effort; external help wanted.</p></li>
-<li><p><strong>Design-rule-check (DRC) validation stage</strong> (#1169, shipped v0.8.0) —
-more rules and per-PDK rule sets remain. See the dedicated section
-below.</p></li>
-<li><p><strong>Extend the design-examples gallery</strong> — more patterns
-(e.g. surface-code patch) now that the notebook pattern exists.</p></li>
-</ol>
-</section>
-<hr class="docutils" />
-<section id="lite-by-default-flip-v0-7-0-shipped">
-<h2>Lite-by-default flip (v0.7.0) <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code><a class="headerlink" href="#lite-by-default-flip-v0-7-0-shipped" title="Link to this heading">¶</a></h2>
-<p>The v0.6.x line shipped every heavy dependency in <code class="docutils literal notranslate"><span class="pre">[project.dependencies]</span></code>,
-so <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code> pulled hundreds of MB and assumed Qt was
-welcome. <strong>v0.7.0 flipped this</strong>: heavies moved into opt-in extras
-(<code class="docutils literal notranslate"><span class="pre">[gui]</span></code> / <code class="docutils literal notranslate"><span class="pre">[ansys]</span></code> / <code class="docutils literal notranslate"><span class="pre">[mesh]</span></code> / <code class="docutils literal notranslate"><span class="pre">[full]</span></code>) and the base install became
-the orchestration-friendly minimal surface.</p>
-<p>Items shipped under this initiative (across v0.6.1 → v0.7.1):</p>
-<ul class="simple">
-<li><p>✅ Eager-import audit + lazification of <code class="docutils literal notranslate"><span class="pre">pyside6</span></code>, <code class="docutils literal notranslate"><span class="pre">gmsh</span></code>, <code class="docutils literal notranslate"><span class="pre">pyaedt</span></code>,
-<code class="docutils literal notranslate"><span class="pre">pyEPR-quantum</span></code>. Module top-level imports moved into functions or
-<code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> shims; friendly <code class="docutils literal notranslate"><span class="pre">ImportError</span></code>s point users at the right
-extra.</p></li>
-<li><p>✅ Test-suite skip-cleanliness via <code class="docutils literal notranslate"><span class="pre">pytest.importorskip</span></code> so the full
-suite passes on a lite install (with skips, not failures).</p></li>
-<li><p>✅ <code class="docutils literal notranslate"><span class="pre">tests-lite</span></code> and <code class="docutils literal notranslate"><span class="pre">tests-extras</span></code> CI matrices — both run cleanly on
-every PR. <code class="docutils literal notranslate"><span class="pre">tests-extras</span></code> runs <code class="docutils literal notranslate"><span class="pre">gui</span></code> / <code class="docutils literal notranslate"><span class="pre">ansys</span></code> / <code class="docutils literal notranslate"><span class="pre">mesh</span></code> / <code class="docutils literal notranslate"><span class="pre">fem</span></code>
-independently.</p></li>
-<li><p>✅ <code class="docutils literal notranslate"><span class="pre">v0.6.2</span></code> deprecation release with <code class="docutils literal notranslate"><span class="pre">FutureWarning</span></code> advertising the
-upcoming flip + the <code class="docutils literal notranslate"><span class="pre">[full]</span></code> opt-in path for stay-the-same users.</p></li>
-<li><p>✅ <code class="docutils literal notranslate"><span class="pre">v0.7.0</span></code> the actual flip — heavies out of base deps. README, install
-matrix, migration guide all updated.</p></li>
-<li><p>✅ <code class="docutils literal notranslate"><span class="pre">v0.7.1</span></code> cleanup — added <code class="docutils literal notranslate"><span class="pre">[mesh]</span></code> as the canonical name for the
-gmsh extra (<code class="docutils literal notranslate"><span class="pre">[fem]</span></code> kept as a backward-compatible alias); the
-<code class="docutils literal notranslate"><span class="pre">README_Open_FEM_Stack.md</span></code> rename; ElmerFEM error-message UX fix.</p></li>
-</ul>
-</section>
-<hr class="docutils" />
-<section id="downstream-ecosystem-rollout-in-progress">
-<h2>Downstream ecosystem rollout <code class="docutils literal notranslate"><span class="pre">[in-progress]</span></code><a class="headerlink" href="#downstream-ecosystem-rollout-in-progress" title="Link to this heading">¶</a></h2>
-<p>The v0.7.0 / 0.7.1 lite flip changed the install surface
-downstream packages depend on (extras-by-default, lazified
-Qt / pyaedt / gmsh, friendlier <code class="docutils literal notranslate"><span class="pre">ImportError</span></code> UX, the
-<code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> → <code class="docutils literal notranslate"><span class="pre">qm.view()</span></code> headless path). To finish the
-rollout, each downstream package needs install instructions,
-lockfiles, and pins updated against <code class="docutils literal notranslate"><span class="pre">quantum-metal&gt;=0.7.1</span></code>.</p>
-<p>Coordination plan: file an issue on each downstream repo
-with a recipe for the upgrade, link to
-<code class="docutils literal notranslate"><span class="pre">docs/migration-to-v0.7.0.rst</span></code>, and point at a worked
-example.</p>
-<p>Worked example to point at:
-<a class="reference external" href="https://github.com/quantum-device-consortium/qdw26-workshop-materials/pull/1">qdw26-workshop PR #1</a>
-swapped a forked-Metal pin for mainline
-<code class="docutils literal notranslate"><span class="pre">quantum-metal[full]&gt;=0.7.1</span></code> and includes the Apple-Silicon
-Docker pin, <code class="docutils literal notranslate"><span class="pre">schemdraw</span></code> addition, and palace auto-discovery
-fixes — a full migration in one diff.</p>
-<p>Per-issue contents:</p>
-<ol class="arabic simple">
-<li><p>New install command (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal[ansys]</span></code>,
-<code class="docutils literal notranslate"><span class="pre">[mesh]</span></code>, <code class="docutils literal notranslate"><span class="pre">[full]</span></code>, etc. — whichever extras that
-downstream actually uses).</p></li>
-<li><p>Any lazy-import / <code class="docutils literal notranslate"><span class="pre">ImportError</span></code> UX changes that affect
-their code paths.</p></li>
-<li><p>Link to <code class="docutils literal notranslate"><span class="pre">docs/migration-to-v0.7.0.rst</span></code>.</p></li>
-<li><p>Reminder about the planned <code class="docutils literal notranslate"><span class="pre">qiskit_metal</span></code> →
-<code class="docutils literal notranslate"><span class="pre">quantum_metal</span></code> import-path rename, so they can plan
-import updates. No release has been set for it.</p></li>
-</ol>
-<p>Known downstream packages:</p>
-<ul class="simple">
-<li><p><strong><a class="reference external" href="https://github.com/LFL-Lab/SQuADDS">SQuADDS</a></strong>
-(LFL-Lab &#64; USC) — design-discovery database, consumes
-Metal <code class="docutils literal notranslate"><span class="pre">QDesign</span></code> objects. <strong><code class="docutils literal notranslate"><span class="pre">[planned]</span></code></strong> — issue to file.</p></li>
-<li><p><strong><a class="reference external" href="https://github.com/sqdlab/SQDMetal">SQDMetal</a></strong>
-(SQDLab &#64; UQ) — Palace simulation wrapper. <strong><code class="docutils literal notranslate"><span class="pre">[in</span> <span class="pre">progress]</span></code></strong>
-— Palace integration coordinated in
-<a class="reference external" href="https://github.com/sqdlab/SQDMetal/issues/67">sqdlab/SQDMetal#67</a>;
-same migration plus the <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> → <code class="docutils literal notranslate"><span class="pre">qm.view()</span></code> story for
-headless Docker / Brev contexts.</p></li>
-<li><p><strong><a class="reference external" href="https://pypalace.readthedocs.io/">pypalace</a></strong>
-(Northwestern) — Palace wrapper. <strong><code class="docutils literal notranslate"><span class="pre">[planned]</span></code></strong> —
-issue to file.</p></li>
-<li><p><strong><a class="reference external" href="https://github.com/zlatko-minev/pyEPR">pyEPR</a></strong> —
-<strong><code class="docutils literal notranslate"><span class="pre">[shipped]</span></code></strong> — co-maintained, compatibility through
-v0.7.1 verified.</p></li>
-<li><p><strong><a class="reference external" href="https://github.com/quantum-device-consortium/qdw26-workshop-materials">QDW 2026 workshop materials</a></strong>
-— <strong><code class="docutils literal notranslate"><span class="pre">[shipped]</span></code></strong>, PR #1 merged; the canonical worked
-example referenced above.</p></li>
-</ul>
-<p>If you maintain a package that depends on Metal and we
-haven’t listed it, please open an issue here so we can
-add it (and help with the upgrade).</p>
-</section>
-<hr class="docutils" />
-<section id="next-ai-orchestration-profile">
-<h2>Next — AI-orchestration profile<a class="headerlink" href="#next-ai-orchestration-profile" title="Link to this heading">¶</a></h2>
-<p>Once the lite flip lands, <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code>
-becomes the recommended entry point for agents, optimizers,
-and any non-interactive workflow. This section ships
-explicit support for that use case:</p>
-<ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">docs/orchestration.rst</span></code></strong> <code class="docutils literal notranslate"><span class="pre">[planned,</span> <span class="pre">v0.7.x]</span></code>
-End-to-end recipe: instantiate a design, build geometry,
-export GDS, run analyses, all in &lt;50 LOC, all without
-Qt or AEDT. Includes the “what extras do I need for
-what backend” matrix.</p></li>
-<li><p><strong>Stable programmatic API contract</strong> <code class="docutils literal notranslate"><span class="pre">[planned,</span> <span class="pre">v0.7.x]</span></code>
-Document which methods / attributes on <code class="docutils literal notranslate"><span class="pre">QDesign</span></code>,
-<code class="docutils literal notranslate"><span class="pre">QComponent</span></code>, and the renderer base classes are
-considered public and stable for downstream
-orchestrators. Internal-only helpers get an <code class="docutils literal notranslate"><span class="pre">_</span></code> prefix
-or a <code class="docutils literal notranslate"><span class="pre">&#64;_internal</span></code> marker where they aren’t already.</p></li>
-<li><p><strong>Determinism guarantees</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>
-Identify and fix sources of non-determinism in design
-→ geometry construction (dict ordering, float
-comparisons, random IDs), so that two runs of the same
-design produce the same artifact. Important for diffing
-agent outputs.</p></li>
-<li><p><strong>Renderer dispatch by string name</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>
-Currently most code paths assume the GUI or the user
-knows which renderer to call. A
-<code class="docutils literal notranslate"><span class="pre">design.render(backend=&quot;palace&quot;)</span></code>-style dispatch makes
-orchestrators much easier to write.</p></li>
-<li><p><strong>Packaged task definitions for assistant-driven design</strong>
-<code class="docutils literal notranslate"><span class="pre">[requested,</span> <span class="pre">research]</span></code>
-Requested feature: ship reusable, machine-readable task
-definitions (“skills”) that let a coding assistant drive
-Metal directly — place components, route, run a DRC pass,
-export — from a natural-language description of the chip.
-Format should be vendor-neutral (plain markdown + a
-declarative manifest, no assistant-specific runtime), so
-the same definitions work across tools. Depends on the
-stable-API contract and determinism items above, and on
-the DRC stage (#1169) for a machine-checkable success
-signal. Scope and format still open.</p></li>
-</ul>
-</section>
-<hr class="docutils" />
-<section id="open-fem-stack-gmsh-elmer-aws-palace-research">
-<h2>Open FEM stack — gmsh + Elmer + AWS Palace <code class="docutils literal notranslate"><span class="pre">[research]</span></code><a class="headerlink" href="#open-fem-stack-gmsh-elmer-aws-palace-research" title="Link to this heading">¶</a></h2>
-<p>Today the only validated analysis path for full-field
-solving is the Ansys HFSS / Q3D bridge. This is excellent
-for industrial users but excludes everyone without an AEDT
-license — and blocks our own CI from validating the
-HFSS-specific bugs in the deferred list (see
-<a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/blob/main/tests/test_qlibrary_pin_sanity.py"><code class="docutils literal notranslate"><span class="pre">KNOWN_INWARD_PINS</span></code></a>
-in the qlibrary pin-sanity test).</p>
-<p>The open FEM stack is the long-term answer. Three pieces:</p>
-<ul class="simple">
-<li><p><strong>gmsh mesher</strong> — <code class="docutils literal notranslate"><span class="pre">renderer_gmsh/</span></code> already exists. The
-next step is tighter mesh control and port / boundary
-tagging that both Elmer and Palace can consume.</p></li>
-<li><p><strong>gmsh version audit</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code> — the pin is now
-<code class="docutils literal notranslate"><span class="pre">gmsh&gt;=4.15.0,&lt;5</span></code> in both <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> and
-<code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> (sub-item (a) ✅ done). The 30 distinct
-<code class="docutils literal notranslate"><span class="pre">gmsh.*</span></code> API entry points we use are all stable core OCC +
-meshing + lifecycle calls, but with gmsh 5 on the horizon we
-still should (b) walk the API call sites against the latest
-4.x release notes to spot anything deprecated, and (c) survey
-newer 4.x APIs (e.g. richer mesh refinement, boundary-tag
-protocol improvements) that would unblock cleaner Palace and
-Elmer integration. Remaining work is a research note for the
-API survey.</p></li>
-<li><p><strong>Elmer eigenmode solver</strong> — <code class="docutils literal notranslate"><span class="pre">renderer_elmer/</span></code> already
-exists. The integration needs a parity-check pass to
-confirm it still works against current Elmer releases,
-plus documentation of its scope (what kinds of designs
-/ analyses it does and doesn’t handle today).</p></li>
-<li><p><strong>AWS Palace</strong> — open-source Maxwell solver from AWS.
-Native MPI, modern CMake build, eigenmode + driven +
-electrostatic. A Palace renderer following the
-<code class="docutils literal notranslate"><span class="pre">QRendererAnalysis</span></code> protocol, shipped as a downstream
-plugin (see “Solver backends”), would unblock
-HFSS-free CI validation of the entire qlibrary, plus
-give academic users a free path to full-field
-analysis.</p></li>
-<li><p><strong>OpenEMS as a third open-FEM option</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code> —
-<a class="reference external" href="https://www.openems.de/">openEMS</a> is easier to build than Palace
-(no MFEM / libCEED) but more limited in capabilities. Could be a
-quick-start FEM path for users who can’t justify the Palace build
-cost. A community
-<a class="reference external" href="https://github.com/OJB-Quantum/Notebooks-for-Ideas/blob/main/OpenEMS_Installation_Script_in_Colab.ipynb">Colab installation script for OpenEMS</a>
-exists. Worth evaluating after Palace lands.</p></li>
-</ul>
-<p>Initial proof-of-concept order:</p>
-<ol class="arabic simple">
-<li><p>Validate <code class="docutils literal notranslate"><span class="pre">renderer_gmsh/</span></code> outputs against current gmsh</p></li>
-<li><p>Build a minimal Palace renderer (the plugin) for eigenmode only</p></li>
-<li><p>Cross-validate one canonical design (e.g.
-<code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>) against a known HFSS result</p></li>
-<li><p>Document the gmsh-tag → Palace-port boundary contract
-so other open solvers can plug in</p></li>
-</ol>
-<p>If you work on Palace, gmsh, or Elmer and want to help
-shape this — please open an issue or reach out on Discord.
-External contributor leverage is enormous here.</p>
-</section>
-<hr class="docutils" />
-<section id="design-rule-check-drc-validation-stage-shipped-v0-8-0">
-<h2>Design-rule-check (DRC) validation stage <code class="docutils literal notranslate"><span class="pre">[shipped,</span> <span class="pre">v0.8.0]</span></code><a class="headerlink" href="#design-rule-check-drc-validation-stage-shipped-v0-8-0" title="Link to this heading">¶</a></h2>
-<p>Tracking issue: #1169, closed. <code class="docutils literal notranslate"><span class="pre">qiskit_metal.validation</span></code> shipped in v0.8.0:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_metal.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">validate</span><span class="p">(</span><span class="n">design</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-<span class="n">result</span><span class="o">.</span><span class="n">raise_if_errors</span><span class="p">()</span>        <span class="c1"># for a build script or CI gate</span>
-</pre></div>
-</div>
-<p>Seven rules, each with a configurable threshold, since process design kits
-differ:</p>
-<div class="table-wrapper colwidths-auto docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Rule</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Severity</p></th>
-<th class="head"><p>Basis</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">metal-overlap</span></code></p></td>
-<td><p>&gt;1 µm² shared</p></td>
-<td><p>error</p></td>
-<td><p>shorted nets</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">metal-spacing</span></code></p></td>
-<td><p>2 µm</p></td>
-<td><p>error</p></td>
-<td><p>min same-layer spacing, arXiv:2604.11379 (R8)</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cpw-gap</span></code></p></td>
-<td><p>3 µm</p></td>
-<td><p>warning</p></td>
-<td><p>TLS-loss floor, arXiv:2604.11379 (R1)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">chip-bounds</span></code></p></td>
-<td><p>on-chip</p></td>
-<td><p>error</p></td>
-<td><p>clipped geometry</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">short-segment</span></code></p></td>
-<td><p>≥ fillet radius</p></td>
-<td><p>warning</p></td>
-<td><p>the #1086 kink family</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">qubit-clearance</span></code></p></td>
-<td><p>3× CPW width</p></td>
-<td><p>warning</p></td>
-<td><p>project heuristic, not literature</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ground-continuity</span></code></p></td>
-<td><p>one connected sheet</p></td>
-<td><p>warning</p></td>
-<td><p>slotline modes, arXiv:2604.11379 (R9)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">ground-continuity</span></code> reports that the ground plane is split, not that a
-piece is floating: it sees one layer, so an airbridge tying two regions
-together is invisible to it. Its optional <code class="docutils literal notranslate"><span class="pre">max_void_size</span></code> check (R9’s
-50 µm parasitic-cavity threshold) is off by default because a transmon
-pocket is a deliberate void far larger than that.</p>
-<p>Rules are layer-aware (an airbridge crossing a CPW is the point of an
-airbridge, not a short) and net-aware (a route abutting the pin it
-connects to is not a short). Both were false positives in the first
-draft, and both are regression-tested.</p>
-<p>Motivated by four defects that shipped through renders unflagged while
-building the README hero chip: resonators crossing their feedline (~283
-µm² of overlapping metal each), resonators running 9 µm from a transmon
-pocket (0.41× a CPW width), launchpads hanging 110 µm off the chip edge
-(which silently clipped a whole corner of ground plane), and route
-segments shorter than their fillet radius. <code class="docutils literal notranslate"><span class="pre">scripts/make_hero_gif.py</span></code>
-now gates every build on <code class="docutils literal notranslate"><span class="pre">validate(...,</span> <span class="pre">strict=True)</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">QMplRenderer</span></code> now draws the die outline, so <code class="docutils literal notranslate"><span class="pre">qm.view</span></code> and the Qt
-<code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> both show where the chip ends. Nothing on screen used to say
-that, which is why launchpads hanging off the edge kept shipping. Off
-via <code class="docutils literal notranslate"><span class="pre">qm.view(design,</span> <span class="pre">chip_outline=False)</span></code> or
-<code class="docutils literal notranslate"><span class="pre">renderer.options.chip_outline</span></code>.</p>
-<p>Tutorial 2.24 walks a design carrying one defect per rule through
-detection, diagnosis and fix, then covers threshold tuning, <code class="docutils literal notranslate"><span class="pre">strict=True</span></code>
-as a build gate, and writing a custom rule.
-<code class="docutils literal notranslate"><span class="pre">tests/test_reference_designs.py</span></code> gates the Appendix A reference designs:
-zero errors, and no warnings beyond a recorded <code class="docutils literal notranslate"><span class="pre">KNOWN_WARNINGS</span></code>
-baseline. Fixing those designs to pass it turned up a real defect —
-both multi-qubit references placed launchpads outside the default 9×6 mm
-die, so a corner of ground plane was being clipped on every render.
-<code class="docutils literal notranslate"><span class="pre">QDesignCheck</span></code> is deprecated in favour of this module (it is
-crossing-only and print-based, so it misses an overlap that stays within
-trace width — which is most of them).</p>
-<p>Remaining, roughly in payoff order:</p>
-<ol class="arabic simple">
-<li><p><strong>More rules</strong>: airbridge spacing below λ/4 on long CPW runs
-(arXiv:2411.16967); unconnected/dangling route pins; minimum feature
-width.</p></li>
-<li><p><strong>Per-PDK rule sets</strong> — a <code class="docutils literal notranslate"><span class="pre">RuleSet</span></code> that can be loaded from a foundry
-file rather than assembled by hand.</p></li>
-<li><p><strong>Cross-layer awareness for <code class="docutils literal notranslate"><span class="pre">ground-continuity</span></code></strong> — treat an airbridge
-spanning two ground regions as connecting them, so the rule can
-distinguish a bridged split from a genuine floating island.</p></li>
-</ol>
-<p>GDS-level DRC (min width/spacing on exported artifacts) stays out of
-scope — KLayout covers it.</p>
-</section>
-<hr class="docutils" />
-<section id="architectural-items-research">
-<h2>Architectural items <code class="docutils literal notranslate"><span class="pre">[research]</span></code><a class="headerlink" href="#architectural-items-research" title="Link to this heading">¶</a></h2>
-<p>Longer-horizon things that aren’t blocking anything today
-but are worth tracking:</p>
-<ul class="simple">
-<li><p><strong>PEP 561 type hints across <code class="docutils literal notranslate"><span class="pre">QComponent</span></code> / <code class="docutils literal notranslate"><span class="pre">QDesign</span></code>
-/ <code class="docutils literal notranslate"><span class="pre">QRenderer</span></code>.</strong> Today the type surface is partial;
-full hints unlock static analysis for orchestrators
-and make the LLM-driven code-generation path more
-reliable.</p></li>
-<li><p><strong>Plugin discovery via entry points</strong> <code class="docutils literal notranslate"><span class="pre">[planned]</span></code>
-External renderers and component libraries currently
-require monkey-patching or vendoring. A
-<code class="docutils literal notranslate"><span class="pre">qiskit_metal.renderers</span></code> and <code class="docutils literal notranslate"><span class="pre">qiskit_metal.qlibrary</span></code>
-entry-point namespace lets the community ship third-party
-packages — and gives lab and community PDKs a clean
-<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&lt;pdk&gt;</span></code> distribution channel without
-requiring any change to Metal itself.</p></li>
-<li><p><strong>Functional component API alongside class hierarchy</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>
-Add a <code class="docutils literal notranslate"><span class="pre">&#64;qm.cell</span></code>-decorator path so a component can be a
-Python function returning a <code class="docutils literal notranslate"><span class="pre">QComponent</span></code>, in parallel to
-the existing class-based subclassing. Doesn’t replace
-the class API. Motivation: LLM / agent codegen is
-measurably more reliable against pure functions returning
-values than against class hierarchies with stateful
-side-effects, so a functional surface is a useful
-on-ramp for the AI-orchestration profile above.</p></li>
-<li><p><strong>JAX-differentiable parametric components</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>
-Inverse-design / qubit-frequency tuning via <code class="docutils literal notranslate"><span class="pre">grad()</span></code> is
-unlocked once a small set of geometric primitives are
-JAX-traceable. Start with <code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code> as a pilot
-(pad width / gap → frequency gradient via an analytical
-capacitance model, no FEM in the loop). Big win for the
-research audience that currently hand-rolls finite-difference
-sweeps; pairs naturally with EPR analysis for
-Hamiltonian-aware optimisation.</p></li>
-<li><p><strong>Docs hosting reassessment.</strong> GH Pages is current
-(years of SEO). Read the Docs config archived at
-<code class="docutils literal notranslate"><span class="pre">docs/_archive/readthedocs/</span></code> — revivable in minutes
-if/when per-PR previews, versioned docs, or the
-rebrand cutover make the switch worth it.</p></li>
-</ul>
-</section>
-<hr class="docutils" />
-<section id="group-and-lab-adoption-pathway">
-<h2>Group and lab adoption pathway<a class="headerlink" href="#group-and-lab-adoption-pathway" title="Link to this heading">¶</a></h2>
-<p>The next-tier adopters for Metal — research groups, university
-labs, multi-PI consortia — evaluate against a recurring set of
-questions: <em>Is it maintained? Can we plug our own PDK in?
-Does the GDS round-trip cleanly through downstream tooling?
-Will it scale to Python-agent-driven design loops?</em> This
-section groups items aimed at those questions. Several
-overlap with the Adoption / DevRel section below; the cut is
-by <em>audience</em> — DevRel is about attracting individual users,
-this section is about clearing the path for groups and labs.</p>
-<p><em>Items in this section reflect open-source community
-direction discussed within the Quantum Device Consortium
-(QDC) and the broader contributor base. They are
-aspirations, not commitments by any individual contributor
-or their employer.</em></p>
-<section id="high-impact-low-effort">
-<h3>High impact, low effort<a class="headerlink" href="#high-impact-low-effort" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p><strong>Ship a Metal <code class="docutils literal notranslate"><span class="pre">.lyp</span></code> layer-property file</strong> <code class="docutils literal notranslate"><span class="pre">[planned,</span> <span class="pre">v0.7.x]</span></code>
-Users who open a Metal-exported GDS in KLayout currently
-see grey-on-grey because no layer colours / names ship
-with our GDS files. A one-page <code class="docutils literal notranslate"><span class="pre">.lyp</span></code> under
-<code class="docutils literal notranslate"><span class="pre">docs/_static/</span></code> (linked from the GDS export docs) gives
-them a named, coloured view out of the box. KLayout is
-the de-facto open-source viewer in the GDS-handoff path;
-making this handoff frictionless removes a real papercut.
-~2 hours.</p></li>
-<li><p><strong>“Metal → KLayout” how-to page</strong> <code class="docutils literal notranslate"><span class="pre">[planned,</span> <span class="pre">v0.7.x]</span></code>
-Document the GDS-export → KLayout-DRC / visual inspection
-flow, paired with the <code class="docutils literal notranslate"><span class="pre">.lyp</span></code> and a starter DRC deck
-(below). Most superconducting-design flows in the
-community already do both — making the combination
-first-class instead of folklore reduces onboarding
-friction. ~3 hours.</p></li>
-<li><p><strong>“Built for AI agents” docs page</strong> <code class="docutils literal notranslate"><span class="pre">[planned,</span> <span class="pre">v0.7.x]</span></code>
-Companion to <code class="docutils literal notranslate"><span class="pre">docs/orchestration.rst</span></code> already on the
-roadmap. The lite-by-default flip and <code class="docutils literal notranslate"><span class="pre">qm.view()</span></code>
-removed the dependency surface that made agent-driven
-workflows painful; this page makes the workflow
-visible. Importantly, position Metal <em>with</em> the
-ecosystem here — design discovery via
-<a class="reference external" href="https://github.com/LFL-Lab/SQuADDS">SQuADDS</a>, solver
-dispatch via <a class="reference external" href="https://github.com/sqdlab/SQDMetal">SQDMetal</a>
-/ <a class="reference external" href="https://pypalace.readthedocs.io/">pypalace</a>,
-quantisation via <a class="reference external" href="https://github.com/zlatko-minev/pyEPR">pyEPR</a>
-and <a class="reference external" href="https://github.com/scqubits/scqubits">scqubits</a> —
-rather than implying Metal does it all. The story is the
-composable open-source stack, not Metal in isolation.
-~3 hours.</p></li>
-</ul>
-</section>
-<section id="high-impact-medium-effort">
-<h3>High impact, medium effort<a class="headerlink" href="#high-impact-medium-effort" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p><strong>Tighten release cadence to monthly minimum</strong> <code class="docutils literal notranslate"><span class="pre">[planned]</span></code>
-Even pure-docs / test-only point releases. Prospective
-adopters check commit + release pulse before committing
-engineering time, and read steady cadence as a
-maintenance signal more strongly than raw feature
-surface. Quarterly is fine for features; monthly is
-cheap and changes the perception.</p></li>
-<li><p><strong>Starter DRC deck for superconducting basics</strong> <code class="docutils literal notranslate"><span class="pre">[planned]</span></code>
-A <code class="docutils literal notranslate"><span class="pre">qm.drc(design,</span> <span class="pre">deck=&quot;sc_basics&quot;)</span></code> helper that shells
-out to KLayout with a minimal rule set: min line width,
-min gap, JJ overlap minimums, ground-plane keep-outs.
-Doesn’t need to be comprehensive — needs to <em>exist</em>, so
-PDK authors and labs have a template to extend instead
-of starting from blank.</p></li>
-<li><p><strong>“When to use Quantum Metal” docs page</strong> <code class="docutils literal notranslate"><span class="pre">[planned]</span></code>
-Use-case-driven framing (not framework-comparison):
-which problems Metal is shaped for (qubit-first design
-with energy-participation analysis, Hamiltonian
-extraction, integration with the open-source SC qubit
-toolchain), which adjacent workflows hand off elsewhere
-(mask-level DRC, process-specific PDK rules, photonics).
-Highly searched by evaluators; framing the fit ourselves
-is more useful to readers than leaving them to
-assemble it.</p></li>
-<li><p><strong>Gallery + thumbnail component icons</strong>
-<code class="docutils literal notranslate"><span class="pre">[promoted</span> <span class="pre">from</span> <span class="pre">research]</span></code>
-Already on the Adoption list and the Wish-list. Promote
-to planned: visual component catalogue is a natural
-strength of the class-based qlibrary and is currently
-under-used. Pairs with the “When to use Metal” page
-above as the visual half of the answer.</p></li>
-<li><p><strong>Airbridge support</strong> <code class="docutils literal notranslate"><span class="pre">[shipped,</span> <span class="pre">#1140/#1142]</span></code>
-CPW crossings need airbridges to tie the ground plane together;
-users used to hand-place them downstream. Shipped as a
-first-class <code class="docutils literal notranslate"><span class="pre">Airbridge</span></code> <code class="docutils literal notranslate"><span class="pre">QComponent</span></code> (on <code class="docutils literal notranslate"><span class="pre">bridge_layer</span></code> /
-<code class="docutils literal notranslate"><span class="pre">pad_layer</span></code>) plus <code class="docutils literal notranslate"><span class="pre">route_airbridges(design,</span> <span class="pre">route,</span> <span class="pre">...)</span></code>
-auto-placement along the route’s filleted centerline
-(<code class="docutils literal notranslate"><span class="pre">bridge_at_corners=True</span></code> guarantees one per bend). Because the
-bridges are real components they render in <code class="docutils literal notranslate"><span class="pre">qm.view</span></code> and export
-through every renderer, not just GDS. Tutorial 2.15.
-The original approach — &#64;clarkmiyamoto’s PR #962
-(<code class="docutils literal notranslate"><span class="pre">_populate_airbridge</span></code> + <code class="docutils literal notranslate"><span class="pre">make_airbridge.py</span></code>, GDS-export-only,
-uniform bridges) — informed this and is now closed.
-Remaining follow-ups: overlap / off-chip warnings, adjacent-CPW
-handling, and the experimental 3D/Ansys span (Phase 4, #1138).</p></li>
-</ul>
-</section>
-<section id="high-impact-high-effort">
-<h3>High impact, high effort<a class="headerlink" href="#high-impact-high-effort" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p><strong>Reference PDK</strong> (<code class="docutils literal notranslate"><span class="pre">metal-pdk-academic</span></code> or similar)
-<code class="docutils literal notranslate"><span class="pre">[research]</span></code>
-Demonstrates the entry-points pattern from a realistic
-angle, so subsequent community PDKs have a worked example
-to follow. Without one, the entry-points hook is
-abstract.</p></li>
-<li><p><strong>Hosted web design viewer</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code>
-Already on the Adoption / Bigger plays list. Flagship
-demo plus a real adoption unlock — closes the “I want
-to look at a Metal design without installing anything”
-gap that today forces evaluators to clone the repo
-before they see a chip.</p></li>
-</ul>
-</section>
-<section id="wish-list">
-<h3>Wish-list<a class="headerlink" href="#wish-list" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p><strong>Salt-style extension marketplace / index page</strong> <code class="docutils literal notranslate"><span class="pre">[wish]</span></code>
-The simpler <code class="docutils literal notranslate"><span class="pre">awesome-quantum-metal</span></code> (already on the
-adoption list) covers most of the need; a richer
-in-app discovery surface is a stretch goal.</p></li>
-<li><p><strong>Format converters to / from adjacent Python design
-libraries</strong> <code class="docutils literal notranslate"><span class="pre">[wish]</span></code>
-Quantum and RF design teams increasingly use multiple
-Python frameworks side by side. Clean component-level
-converters would make Metal a friendly neighbour in
-mixed pipelines. Best owned jointly with the relevant
-project teams if there’s interest.</p></li>
-<li><p><strong>Annual “State of Quantum Metal” report</strong> <code class="docutils literal notranslate"><span class="pre">[wish]</span></code>
-Already on the Adoption list as research. Doubles as
-community visibility for grant proposals and external
-reporting.</p></li>
-</ul>
-</section>
-</section>
-<hr class="docutils" />
-<section id="adoption-devrel-and-onboarding">
-<h2>Adoption, DevRel, and onboarding<a class="headerlink" href="#adoption-devrel-and-onboarding" title="Link to this heading">¶</a></h2>
-<p>Making sure people <em>find</em> the project, <em>try</em> it, and <em>stick with</em> it.
-Ideated post-v0.7.0 lite-by-default flip (which finally made one-click
-trial viable).</p>
-<section id="shipped-v0-7-1">
-<h3>Shipped (v0.7.1)<a class="headerlink" href="#shipped-v0-7-1" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p>✅ <strong>“Open in Colab” button</strong> in the README → tutorial 1.2 Quick Start</p></li>
-<li><p>✅ <strong>“Open in Codespaces” button</strong> in the README</p></li>
-<li><p>✅ <strong><code class="docutils literal notranslate"><span class="pre">CITATION.cff</span></code></strong> — GitHub “Cite this repository” widget on the repo page</p></li>
-<li><p>✅ <strong>Badge row refresh</strong> — PyPI downloads, Python versions, CI, docs, stars, contributors</p></li>
-<li><p>✅ <strong>Repo description + GitHub topics</strong> — punchy one-liner + tags for
-GitHub-search discoverability</p></li>
-<li><p>✅ <strong>Hero animated GIF</strong> — 4-qubit chip built in 5 frames, embedded in README</p></li>
-<li><p>✅ <strong>Issue-template modernization</strong> — Bug / Feature / Docs templates
-refreshed with v0.7.0 install paths, code-block sections for repros and
-tracebacks, and ROADMAP / FAQ pointers. Issues (not Discord) are the
-canonical route for support requests so nothing gets lost in chat
-scrollback. <code class="docutils literal notranslate"><span class="pre">.github/ISSUE_TEMPLATE/config.yml</span></code> surfaces Docs / Roadmap
-/ PyPI links plus Discord as a community-chat link (NOT a support route).</p></li>
-<li><p>✅ <strong>JupyterLite on the docs site</strong> — an in-browser Jupyter (Pyodide
-kernel, zero install) under <code class="docutils literal notranslate"><span class="pre">/lite/</span></code> on the published docs site. No
-notebooks are bundled yet: <code class="docutils literal notranslate"><span class="pre">jupyterlite_contents</span></code> in <code class="docutils literal notranslate"><span class="pre">docs/conf.py</span></code>
-names <code class="docutils literal notranslate"><span class="pre">tutorials/</span></code>, which does not exist under <code class="docutils literal notranslate"><span class="pre">docs/</span></code>. Bundling the
-notebooks that need no external solver or desktop GUI is <code class="docutils literal notranslate"><span class="pre">[planned]</span></code>,
-after checking that the package installs in the Pyodide kernel.</p></li>
-</ul>
-</section>
-<section id="quick-wins-2-hours-each">
-<h3>Quick wins (≤2 hours each)<a class="headerlink" href="#quick-wins-2-hours-each" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p><strong>Open Graph image</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code> — controls how the repo / docs preview
-when shared on Twitter / Slack / Discord. Currently uses the GitHub
-default which is much weaker than a designed image would be.</p></li>
-<li><p><strong>Better Colab onboarding</strong> <code class="docutils literal notranslate"><span class="pre">[shipped,</span> <span class="pre">v0.7.2]</span></code> — every numbered
-tutorial plus every circuit-example carries Colab + Binder badges
-and a commented <code class="docutils literal notranslate"><span class="pre">!pip</span> <span class="pre">install</span> <span class="pre">-q</span> <span class="pre">quantum-metal</span></code> cell at the top.
-The new <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> factory + <code class="docutils literal notranslate"><span class="pre">MetalGUIHeadless</span></code> mean Qt /
-PySide6 friction is gone: the same tutorial code paths render as a
-Qt window locally and as inline matplotlib in Colab/Binder. Headless
-detection covers <code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_HEADLESS=1</span></code>, Google Colab, Binder
-env vars, Linux without <code class="docutils literal notranslate"><span class="pre">DISPLAY</span></code>, and missing PySide6.</p></li>
-</ul>
-</section>
-<section id="medium-effort-half-day-each">
-<h3>Medium effort (~half-day each)<a class="headerlink" href="#medium-effort-half-day-each" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p><strong>QComponent gallery page</strong> (<code class="docutils literal notranslate"><span class="pre">docs/qcomponents-gallery.rst</span></code>)
-<code class="docutils literal notranslate"><span class="pre">[shipped,</span> <span class="pre">v0.7.2]</span></code> — sphinx-design grid of every <code class="docutils literal notranslate"><span class="pre">QComponent</span></code>
-shipped with Quantum Metal, grouped by category (qubits, couplers,
-routes, resonators, terminations, lumped, sample shapes). Each card
-has the thumbnail + a short description + a click-through to the
-autodoc page. Regenerated at every docs build by
-<code class="docutils literal notranslate"><span class="pre">_dev/generate_qcomponent_gallery.py</span></code>; the same thumbnails feed
-the MetalGUI Library pane at runtime. The broader “design examples”
-gallery is now <code class="docutils literal notranslate"><span class="pre">[in-progress]</span></code>: its first three entries — single
-transmon + readout, two coupled transmons, and 4-qubit multiplexed
-readout — shipped in #1108 under <strong>Tutorials → Full-Chip Design
-Examples</strong>. More patterns (e.g. surface-code patch) still <code class="docutils literal notranslate"><span class="pre">[planned]</span></code>.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">SUPPORT.md</span></code> + <code class="docutils literal notranslate"><span class="pre">GOVERNANCE.md</span></code></strong> <code class="docutils literal notranslate"><span class="pre">[planned]</span></code> — currently support info is
-scattered across README / FAQ / contributor-guide. A single <code class="docutils literal notranslate"><span class="pre">SUPPORT.md</span></code>
-consolidates “where to ask, response expectations.” <code class="docutils literal notranslate"><span class="pre">GOVERNANCE.md</span></code>
-matters for institutional adopters (labs, companies) deciding whether to
-commit time.</p></li>
-<li><p><strong>Devcontainer config</strong> (<code class="docutils literal notranslate"><span class="pre">.devcontainer/devcontainer.json</span></code>)
-<code class="docutils literal notranslate"><span class="pre">[planned]</span></code> — one-click cloud dev environment from any GitHub page.
-Pairs with the lite install for a 90-second “open and run.” (Note:
-Codespaces <em>button</em> already shipped in v0.7.1 — this is the
-devcontainer that customizes the env it launches into.)</p></li>
-<li><p><strong>Recipes section in docs</strong> <code class="docutils literal notranslate"><span class="pre">[planned]</span></code> — short focused how-tos
-(“Design a CPW resonator at 5 GHz”, “Sweep transmon pad gap and extract
-frequency”, “Export GDS with custom layer mapping”). Each &lt;50 LOC,
-copy-paste-runnable. Tutorials are deep dives; recipes are the
-Stack-Overflow-style “I just want to do X” entry point.</p></li>
-</ul>
-</section>
-<section id="bigger-plays-multi-day">
-<h3>Bigger plays (multi-day)<a class="headerlink" href="#bigger-plays-multi-day" title="Link to this heading">¶</a></h3>
-<ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">awesome-quantum-metal</span></code> companion repo</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code> — curated list:
-papers using Metal, lab tooling on top of Metal, talks, integrations.
-Community-curated, standard <code class="docutils literal notranslate"><span class="pre">awesome-*</span></code> pattern.</p></li>
-<li><p><strong>“When to use Metal” page</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code> — use-case-driven
-framing of which problems Metal is shaped for and which
-workflows hand off elsewhere. Highly searched by evaluators.
-(Superseded direction for the older “comparison page” idea —
-see the parallel item under “Group and lab adoption pathway”.)</p></li>
-<li><p><strong>Web-based read-only design viewer</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code> — overlaps with the
-Jupyter widget viewer in the renderer roadmap; a web-hosted version on
-the docs site would be a flagship demo.</p></li>
-<li><p><strong>Annual / quarterly community report</strong> <code class="docutils literal notranslate"><span class="pre">[research]</span></code> — “State of Quantum
-Metal 202X” with downloads, contributors, papers citing, new features.
-Community visibility artefact, useful for grant proposals and
-external reporting.</p></li>
-</ul>
-</section>
-</section>
-<hr class="docutils" />
-<section id="tutorials-structure-backend-swappable-analysis-execution-harness-planned">
-<h2>Tutorials: structure, backend-swappable analysis, execution harness <code class="docutils literal notranslate"><span class="pre">[planned]</span></code><a class="headerlink" href="#tutorials-structure-backend-swappable-analysis-execution-harness-planned" title="Link to this heading">¶</a></h2>
-<p>The tutorials and examples are 94 notebooks under <code class="docutils literal notranslate"><span class="pre">docs/tut/</span></code> and
-<code class="docutils literal notranslate"><span class="pre">docs/circuit-examples/</span></code>. CI executes 27 of them under the lite install
-(<code class="docutils literal notranslate"><span class="pre">_dev/rerun_auto.py</span></code> with <code class="docutils literal notranslate"><span class="pre">_dev/notebooks-auto-refresh.txt</span></code> and
-<code class="docutils literal notranslate"><span class="pre">_dev/notebooks-frozen-qt.txt</span></code>); the rest need Ansys, gmsh, ElmerFEM or
-the GUI and run only by hand.</p>
-<ol class="arabic simple">
-<li><p><strong>Structure.</strong> Categories with one suggested learning path; the
-full-chip examples in order; links into the component gallery; later
-notebooks reusing designs built in earlier ones instead of rebuilding
-them; a thumbnail per notebook on the index pages and short feature
-animations on the landing page.</p></li>
-<li><p><strong>Backend-swappable analysis tutorials.</strong> Once <code class="docutils literal notranslate"><span class="pre">renderer_name</span></code> selects
-the solver (see “Solver backends”), an analysis tutorial runs on the
-pip-installable scikit-fem path first and on ElmerFEM where it needs
-more, with the Ansys run and its stored outputs kept as a subsection.
-Stored outputs remain the reference answers.</p></li>
-<li><p><strong>Execution harness.</strong> Extend <code class="docutils literal notranslate"><span class="pre">_dev/rerun_auto.py</span></code> to every runnable
-notebook, grouped by the extras it needs (lite, <code class="docutils literal notranslate"><span class="pre">[skfem]</span></code>, <code class="docutils literal notranslate"><span class="pre">[mesh]</span></code>,
-external solvers). Each notebook executes in a scratch copy with a time
-budget; the report lists errors, cells without outputs and run times.
-Cells that need an external solver are skipped unless enabled, and
-stored outputs under <code class="docutils literal notranslate"><span class="pre">docs/</span></code> are never rewritten by a check run. Run
-locally before each release; the <code class="docutils literal notranslate"><span class="pre">[skfem]</span></code> group can join CI.
-Refreshing a notebook’s stored outputs stays a separate, reviewed
-change, made when its code changes what it prints or draws or when an
-output is known to be stale. Solver results are refreshed only by
-running that solver; the curated GUI screenshots only through the
-manual <code class="docutils literal notranslate"><span class="pre">notebooks-qt-refresh</span></code> workflow.</p></li>
-<li><p><strong>End-to-end renderer checks.</strong> Each registered renderer runs a small
-design end to end at its test tier (see “Testing solvers without losing
-the stored answers” under “Solver backends”): scikit-fem in CI,
-ElmerFEM, Palace and Ansys locally.</p></li>
-</ol>
-</section>
-<hr class="docutils" />
-<section id="docs-build-cleanup-research">
-<h2>Docs build cleanup <code class="docutils literal notranslate"><span class="pre">[research]</span></code><a class="headerlink" href="#docs-build-cleanup-research" title="Link to this heading">¶</a></h2>
-<p>Internal Sphinx fragilities deferred during the May 2026 docs-build pass
-(<a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/pull/1085">PR #1085</a>).
-The build is currently clean (0 warnings), but two latent foot-guns remain
-for future contributors to be aware of:</p>
-<ul class="simple">
-<li><p><strong>Analyses-module alias paths</strong> — classes in <code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses</span></code> are
-reachable through both the <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> re-export and the real submodule
-path; autodoc registers them under both, raising <code class="docutils literal notranslate"><span class="pre">duplicate</span> <span class="pre">object</span> <span class="pre">description</span></code> warnings if toctree structure ever changes.</p></li>
-<li><p><strong>Autosummary code-block leak</strong> — Sphinx’s autosummary scans <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">autosummary::</span></code>
-directives even inside <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">code-block::</span></code> examples, which can generate
-phantom RST files. PR #1085 worked around by escaping directive names in
-the contributor guide.</p></li>
-</ul>
-<p>Full background and remediation options are in PR #1085’s discussion.</p>
-</section>
-<hr class="docutils" />
-<section id="open-items-after-the-1202-1234-batch-october-2026-planned">
-<h2>Open items after the #1202–#1234 batch (October 2026) <code class="docutils literal notranslate"><span class="pre">[planned]</span></code><a class="headerlink" href="#open-items-after-the-1202-1234-batch-october-2026-planned" title="Link to this heading">¶</a></h2>
-<p>Left over from #1235 and #1236. Each line says where to start.</p>
-<p><strong>CI / GUI</strong></p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">pyside6!=6.12.0</span></code> (in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[gui]</span></code>/<code class="docutils literal notranslate"><span class="pre">[full]</span></code> and
-<code class="docutils literal notranslate"><span class="pre">environment.yml</span></code>): 6.12.0 aborts a <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> process with
-<code class="docutils literal notranslate"><span class="pre">none_dealloc:</span> <span class="pre">deallocating</span> <span class="pre">None</span></code> on Python &lt; 3.12. Lift the exclusion
-once a PySide6 release fixes it; check with Python 3.11 and
-<code class="docutils literal notranslate"><span class="pre">sys.getrefcount(None)</span></code> around <code class="docutils literal notranslate"><span class="pre">processEvents</span></code> (see lessons-learned).</p></li>
-<li><p>Intermittent macOS GUI test failures remain: <code class="docutils literal notranslate"><span class="pre">test_gui_nudge</span></code>
-(<code class="docutils literal notranslate"><span class="pre">MARKER_SELECTED</span></code> missing, also on <code class="docutils literal notranslate"><span class="pre">main</span></code> at 7a8d9d4) and a CoreGraphics
-segfault in <code class="docutils literal notranslate"><span class="pre">test_gui_left_dock_min_width</span></code> (glyph rendering after
-<code class="docutils literal notranslate"><span class="pre">resizeDocks</span></code>). Tracked with #1048 / #1200.</p></li>
-<li><p>Building a second <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> in one process after an application
-stylesheet is set (<code class="docutils literal notranslate"><span class="pre">gui.set_font_size(...)</span></code>) segfaults at exit in
-<code class="docutils literal notranslate"><span class="pre">_teardown_qt_widgets</span></code> (<code class="docutils literal notranslate"><span class="pre">QMenuBar::eventFilter</span></code>, failure mode 1 in
-<code class="docutils literal notranslate"><span class="pre">docs/architecture/gui_crash_defenses.md</span></code>). Reproducible 3/3; not fixed.</p></li>
-</ul>
-<p><strong>Analysis</strong></p>
-<ul class="simple">
-<li><p>LOM 2.0 <code class="docutils literal notranslate"><span class="pre">TL_RESONATOR</span></code> keeps one mode. Through a two-node bus the
-omitted modes enter with alternating sign, so an <code class="docutils literal notranslate"><span class="pre">n_modes</span></code> option needs
-many modes or an analytic tail correction (numbers in the
-<code class="docutils literal notranslate"><span class="pre">TLResonatorBuilder</span></code> docstring, #1219).</p></li>
-<li><p>LOM paper (arXiv:2103.10344) Eq. 13a writes 1/C_eff = 2 C⁻¹, a factor 2
-relative to Eq. 8; the code uses 1. Confirm the paper’s convention.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Hcpb.nlevels</span></code> setter calls <code class="docutils literal notranslate"><span class="pre">__init__</span></code>, which resets <code class="docutils literal notranslate"><span class="pre">Ej</span></code>/<code class="docutils literal notranslate"><span class="pre">Ec</span></code> to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">hamiltonian_results</span></code> prints <code class="docutils literal notranslate"><span class="pre">np.float64(...)</span></code> in its frequency dict
-under numpy 2 (visible in tutorial 4.04).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">fit_transmission(detrend=False)</span></code> with a large cable delay still starts
-from zero delay.</p></li>
-</ul>
-<p><strong>Tutorials that need Qt or Ansys to refresh</strong></p>
-<ul class="simple">
-<li><p>FlipChip tutorial (Layers dock screenshot; Ansys cells after the
-<code class="docutils literal notranslate"><span class="pre">ReadoutResFC</span></code> layer change, #1224).</p></li>
-<li><p>Full-Physical-Design-of-iSWAP-Gates: <code class="docutils literal notranslate"><span class="pre">tline</span></code> <code class="docutils literal notranslate"><span class="pre">total_length</span></code> 4.75 mm is
-below its 4.957 mm minimum route and now warns.</p></li>
-<li><p>A.4–A.7 and 2.21: stored <code class="docutils literal notranslate"><span class="pre">gds.options</span></code> prints and cheese counts
-(#1214, #1223); A.4 <code class="docutils literal notranslate"><span class="pre">Read_Q_Main</span></code> figures (#1225).</p></li>
-<li><p>LOM 1.0 notebooks 4.01, 4.11, 4.13, 4.21, A.4, A.6: E_J +0.08 % (#1207),
-bus–bus g about 1.6× (#1222), new <code class="docutils literal notranslate"><span class="pre">T1</span></code>/<code class="docutils literal notranslate"><span class="pre">T1bus</span></code> columns.</p></li>
-<li><p>The CR-gate notebook’s <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> cells.</p></li>
-</ul>
-</section>
-<section id="known-bug-triage-queue-needs-re-verification">
-<h2>Known bug-triage queue <code class="docutils literal notranslate"><span class="pre">[needs</span> <span class="pre">re-verification]</span></code><a class="headerlink" href="#known-bug-triage-queue-needs-re-verification" title="Link to this heading">¶</a></h2>
-<p>10 issues triaged on 2026-05-22 (now ~2.5 months stale against the current
-v0.8.0 release — two have since been fixed, see below; the rest still need
-a re-triage pass). <strong>All reports are on Metal 0.5.x or earlier</strong>
-(0.1.5 / 0.5.2.post4 / 0.5.3.post1); most not yet re-verified against
-v0.8.x. Before acting on any, reproduce on a current <code class="docutils literal notranslate"><span class="pre">quantum-metal[full]</span></code>
-install — some may have been fixed by the lite-flip / renderer-protocol /
-Qt6 work and just need closing.</p>
-<p><strong>Real bugs with reproducer + community-proposed fix:</strong></p>
-<ul class="simple">
-<li><p>✅ <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code> <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1036">#1036</a>
-<code class="docutils literal notranslate"><span class="pre">RoutePathFinder</span></code> path-penetrates-component — <code class="docutils literal notranslate"><span class="pre">unobstructed()</span></code> returned
-True when both segment endpoints lie inside a component bounding box even
-though the segment intersects the actual contour. <strong>Fixed in #1113</strong>
-(reimplements the community fix #1038 by &#64;Jinyuan426, with a regression
-test).</p></li>
-<li><p>✅ <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code> <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1086">#1086</a>
-<code class="docutils literal notranslate"><span class="pre">RouteMeander</span></code> produces asymmetric geometry for rotated routes. <strong>Fixed
-in commit <code class="docutils literal notranslate"><span class="pre">541ddf667</span></code></strong> (part of the v0.8.0 bump, capping
-<code class="docutils literal notranslate"><span class="pre">meander_number</span></code> in <code class="docutils literal notranslate"><span class="pre">meandered.py</span></code>); <code class="docutils literal notranslate"><span class="pre">scripts/make_hero_gif.py</span></code> still
-references the fix in a comment on its sizing logic.</p></li>
-</ul>
-<p><strong>Easy / small fixes:</strong></p>
-<ul class="simple">
-<li><p>✅ <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code> <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1042">#1042</a>
-<code class="docutils literal notranslate"><span class="pre">design.to_python_script()</span></code> omitted <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">numpy</span> <span class="pre">import</span> <span class="pre">array</span></code> from the
-generated header. <strong>Fixed in #1043</strong> (by &#64;saschabuehrle).</p></li>
-</ul>
-<p><strong>Ansys 2025R1 compatibility cluster</strong> (likely related):</p>
-<ul>
-<li><p><a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1041">#1041</a>
-<code class="docutils literal notranslate"><span class="pre">EPR</span> <span class="pre">Analysis:</span> <span class="pre">TypeError:</span> <span class="pre">tuple</span> <span class="pre">indices</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">integers</span> <span class="pre">or</span> <span class="pre">slices,</span> <span class="pre">not</span> <span class="pre">Quantity</span></code> in pyEPR’s <code class="docutils literal notranslate"><span class="pre">DistributedAnalysis</span></code>.</p></li>
-<li><p><a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1046">#1046</a>
-<code class="docutils literal notranslate"><span class="pre">sim.save_screenshot()</span></code> throws COM/RPC error on Ansys 2025R1.</p>
-<p>Both on Metal 0.5.x + old <code class="docutils literal notranslate"><span class="pre">renderer_ansys</span></code> COM path. Worth re-trying
-with v0.7.x + the new <code class="docutils literal notranslate"><span class="pre">renderer_ansys_pyaedt</span></code> (no COM); may already
-be resolved.</p>
-</li>
-</ul>
-<p><strong>Qt6 / native crashes — <code class="docutils literal notranslate"><span class="pre">qm.view()</span></code> headless alternative now exists:</strong></p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1048">#1048</a>
-<code class="docutils literal notranslate"><span class="pre">[in-progress]</span></code> MetalGUI segfaults at <code class="docutils literal notranslate"><span class="pre">main_window.show()</span></code> on Ubuntu
-24.04 + PySide6 6.11.0. Plain <code class="docutils literal notranslate"><span class="pre">QMainWindow().show()</span></code> works, so it’s a
-Metal-specific Qt6 interaction. v0.7.0’s <code class="docutils literal notranslate"><span class="pre">qm.view()</span></code> is the documented
-headless path for these users; longer-term plan is the Jupyter
-<code class="docutils literal notranslate"><span class="pre">qm.gui()</span></code> widget. <strong>Progress:</strong> the at-exit teardown segfault was
-fixed in #1104 (v0.7.4); #1110 added defensive init guards
-(<code class="docutils literal notranslate"><span class="pre">QSystemTrayIcon</span></code> availability check, single late <code class="docutils literal notranslate"><span class="pre">show()</span></code>), a
-<code class="docutils literal notranslate"><span class="pre">QISKIT_METAL_DEBUG_INIT</span></code> trace, and a <code class="docutils literal notranslate"><span class="pre">tests-gui-display-windows</span></code> CI
-job for the still-open on-screen init crash — not yet confirmed fixed,
-awaiting reporter validation.</p></li>
-</ul>
-<p><strong>Needs reproducer:</strong> (none remaining in this batch — see shipped fixes below)</p>
-<ul class="simple">
-<li><p>✅ <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code> <a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1052">#1052</a>
-<code class="docutils literal notranslate"><span class="pre">TransmonCross</span></code> <code class="docutils literal notranslate"><span class="pre">connector_location='270'</span></code> placed the connector on the
-east arm instead of the south arm — the rotation chain had no branch
-above 225°, so 270 matched the <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">135</span></code> test. <strong>Fixed</strong>, and
-<code class="docutils literal notranslate"><span class="pre">connector_location</span></code> now wraps mod 360 so out-of-range angles no
-longer land arbitrarily (#1174, which also hardened
-<code class="docutils literal notranslate"><span class="pre">TransmonCrossFL</span></code>’s south-arm flux-line warning).</p></li>
-</ul>
-<p><strong>Filed by us (info-only, needs external action):</strong></p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/issues/1079">#1079</a>
-HFSS / Q3D runtime validation needed for the lite-flip lazy-imports
-(PR #1078). Needs someone with an AEDT license to spot-check.</p></li>
-</ul>
-</section>
-<hr class="docutils" />
-<section id="external-workshops-training-reference">
-<h2>External workshops &amp; training <code class="docutils literal notranslate"><span class="pre">[reference]</span></code><a class="headerlink" href="#external-workshops-training-reference" title="Link to this heading">¶</a></h2>
-<p>Curated workshop materials that exercise Metal end-to-end.  Not maintained
-as part of this repo — version pins float independently.</p>
-<ul>
-<li><p><strong>QDW 2025 — <code class="docutils literal notranslate"><span class="pre">tutorials_quantum_device_design</span></code></strong> <code class="docutils literal notranslate"><span class="pre">[frozen,</span> <span class="pre">pre-v0.5]</span></code>
-https://github.com/zlatko-minev/tutorials_quantum_device_design</p>
-<p>4-notebook walkthrough: layout → transmon+resonator → qubit-qubit
-coupling → end-to-end project. Uses <strong>Palace</strong> (open FEM) via
-<strong>SQDMetal</strong>. Pinned to <code class="docutils literal notranslate"><span class="pre">pyepr-quantum==0.8.5.7</span></code> + <code class="docutils literal notranslate"><span class="pre">pyaedt==0.6.46</span></code>,
-Metal pre-v0.5 era. Historical reference — bringing it forward would
-mean re-validating against current SQDMetal + Palace + Metal chain
-(high effort, not planned).</p>
-</li>
-<li><p><strong>QDW 2026 — <code class="docutils literal notranslate"><span class="pre">qdw26-workshop-materials</span></code></strong> <code class="docutils literal notranslate"><span class="pre">[active,</span> <span class="pre">near-mainline]</span></code>
-https://github.com/quantum-device-consortium/qdw26-workshop-materials</p>
-<p>Same 4-notebook progression, now Dockerized with <code class="docutils literal notranslate"><span class="pre">uv</span></code> lockfile.
-Currently pinned to <code class="docutils literal notranslate"><span class="pre">abhishekchak52/qiskit-metal&#64;gui-import-isolation</span></code>
-(a pre-release fork of what is now v0.7.0 lite-flip). <strong>Quick
-follow-up:</strong> swap that pin for mainline <code class="docutils literal notranslate"><span class="pre">quantum-metal&gt;=0.7.1</span></code> from
-PyPI (one-line change, removes the fork dependency).</p>
-</li>
-</ul>
-</section>
-<hr class="docutils" />
-<section id="gui-ux-wishes-wish-list">
-<h2>GUI / UX wishes <code class="docutils literal notranslate"><span class="pre">[wish-list]</span></code><a class="headerlink" href="#gui-ux-wishes-wish-list" title="Link to this heading">¶</a></h2>
-<p>Small UX improvements collected from real use. Lower priority than the
-roadmap items above, but tracked so they don’t get lost.</p>
-<ul class="simple">
-<li><p><strong>Thumbnail icons in the GUI library toolbar</strong> <code class="docutils literal notranslate"><span class="pre">[wish]</span></code> — the left-side
-component browser currently shows a flat text list (<code class="docutils literal notranslate"><span class="pre">TransmonPocket</span></code>,
-<code class="docutils literal notranslate"><span class="pre">TransmonCross</span></code>, …). A small preview icon next to each name would let
-users pick a geometry visually. Applies to both the Qt <code class="docutils literal notranslate"><span class="pre">MetalGUI</span></code> and
-the future Jupyter <code class="docutils literal notranslate"><span class="pre">qm.gui()</span></code> library panel. Implementation can reuse
-the same reproducible-asset pattern as the hero GIF.</p></li>
-</ul>
 </section>
 <hr class="docutils" />
 <section id="how-to-help">
 <h2>How to help<a class="headerlink" href="#how-to-help" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p><strong>Use it and file issues.</strong> Especially: anything that
-bit you when you went off the happy path.</p></li>
-<li><p><strong>Try the lite install</strong> once v0.7.0 ships (or now,
-with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span> <span class="pre">--no-deps</span></code> followed by
-the deps you actually want) and tell us what breaks.</p></li>
-<li><p><strong>Bring a backend.</strong> If you maintain or work with an
-open-source EM solver and want to see it as a
-first-class Quantum Metal target, the renderer
-protocol is documented in
-<a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/blob/main/docs/architecture/renderer_protocol.md"><code class="docutils literal notranslate"><span class="pre">docs/architecture/renderer_protocol.md</span></code></a>.</p></li>
-<li><p><strong>Join the conversation.</strong> Discord:
-https://discord.gg/FPNybyfpxd. QDC governance page:
-https://qdc-qcsa.vercel.app.</p></li>
+<li><p><strong>Use it and file issues</strong>, especially for anything that broke off the
+happy path.</p></li>
+<li><p><strong>Bring a solver.</strong> The renderer protocol is in
+<a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/blob/main/docs/architecture/renderer_protocol.md"><code class="docutils literal notranslate"><span class="pre">docs/architecture/renderer_protocol.md</span></code></a>;
+the backend plan is in
+<a class="reference external" href="https://github.com/qiskit-community/qiskit-metal/blob/main/docs/architecture/solver_backends.md"><code class="docutils literal notranslate"><span class="pre">docs/architecture/solver_backends.md</span></code></a>.</p></li>
+<li><p><strong>Run Ansys.</strong> With an AEDT license you can validate the renderer fixes
+and the open Ansys issues above.</p></li>
+<li><p><strong>Join the conversation</strong> on <a class="reference external" href="https://discord.gg/FPNybyfpxd">Discord</a>.</p></li>
 </ul>
-</section>
-<hr class="docutils" />
-<section id="solver-backends-shared-abstractions-then-scikit-fem-elmerfem-palace-and-ansys-research">
-<h2>Solver backends: shared abstractions, then scikit-fem, ElmerFEM, Palace and Ansys <code class="docutils literal notranslate"><span class="pre">[research]</span></code><a class="headerlink" href="#solver-backends-shared-abstractions-then-scikit-fem-elmerfem-palace-and-ansys-research" title="Link to this heading">¶</a></h2>
-<p>Tutorials 4.41–4.45 (<code class="docutils literal notranslate"><span class="pre">docs/tut/4-Analysis/4.4*</span></code>) run eigenmode, driven
-(impedance) and electrostatic calculations with gmsh + scikit-fem + SciPy,
-from <code class="docutils literal notranslate"><span class="pre">docs/tut/resources/package_modes/</span></code>, and reproduce a published HFSS study
-to within a few percent. The goal is for the analysis tutorials to run on
-Ansys, ElmerFEM, scikit-fem or AWS Palace by changing the renderer name, and
-for each solver to be checked against the others. User-facing summary of the
-paths today: <code class="docutils literal notranslate"><span class="pre">docs/simulation-pathways.rst</span></code>. Design notes for the scikit-fem
-solver: <code class="docutils literal notranslate"><span class="pre">docs/architecture/open_fem_scikit_fem.md</span></code>.</p>
-<p>Today the switch point is <code class="docutils literal notranslate"><span class="pre">renderer_name</span></code> in the simulation classes
-(<code class="docutils literal notranslate"><span class="pre">analyses/simulation/</span></code>), whose contract with a renderer is informal and
-follows the Ansys renderers (<code class="docutils literal notranslate"><span class="pre">initialize_eigenmode</span></code>, <code class="docutils literal notranslate"><span class="pre">analyze_setup</span></code>,
-<code class="docutils literal notranslate"><span class="pre">get_convergences</span></code>, <code class="docutils literal notranslate"><span class="pre">set_mode</span></code> / <code class="docutils literal notranslate"><span class="pre">plot_fields</span></code>, <code class="docutils literal notranslate"><span class="pre">initialize_cap_extract</span></code>,
-<code class="docutils literal notranslate"><span class="pre">get_capacitance_matrix</span></code>). <code class="docutils literal notranslate"><span class="pre">QElmerRenderer</span></code> covers electrostatics through a
-different API (<code class="docutils literal notranslate"><span class="pre">add_solution_setup</span></code>, <code class="docutils literal notranslate"><span class="pre">run</span></code>, <code class="docutils literal notranslate"><span class="pre">capacitance_matrix</span></code>).</p>
-<p>A Palace design exists as an RFC in
-<a class="reference external" href="https://github.com/sqdlab/SQDMetal/issues/67">sqdlab/SQDMetal#67</a>: a
-<code class="docutils literal notranslate"><span class="pre">QPalaceRenderer</span></code> on the <code class="docutils literal notranslate"><span class="pre">QRendererAnalysis</span></code> seam composing <code class="docutils literal notranslate"><span class="pre">QGmshRenderer</span></code>,
-adapting SQDMetal’s Palace pipeline (port vocabulary, gmsh wrappers,
-parsers), with small additive seams in Quantum Metal core. First slice: a
-transmon + launchpad + CPW → gmsh → Palace eigenmode with one lumped port,
-checked against an HFSS / SQDMetal reference.</p>
-<section id="stage-1-shared-abstractions-in-core-lands-first">
-<h3>Stage 1 — shared abstractions in core (lands first)<a class="headerlink" href="#stage-1-shared-abstractions-in-core-lands-first" title="Link to this heading">¶</a></h3>
-<p>Backends differ in what they can do; the aim is to make those differences
-explicit and small, not to hide them. Everything below lives in Quantum Metal
-core, is solver-neutral, and is what each backend reads:</p>
-<ul class="simple">
-<li><p><strong>Ports</strong>: one vocabulary for lumped ports (sheet or line), junctions
-(open, lumped inductor, lumped port) and wave ports, attached to pins or
-explicit geometry.</p></li>
-<li><p><strong>Mesh-size control</strong>: named refinement regions and per-region size fields
-(metal edges, a sphere around each junction, the bulk), a global maximum,
-in physical units.</p></li>
-<li><p><strong>Named physical groups</strong>: a structured map from roles (metal nets,
-dielectrics, ports, boundaries, symmetry faces) to mesh entities, returned
-by <code class="docutils literal notranslate"><span class="pre">QGmshRenderer</span></code>, replacing string matching.</p></li>
-<li><p><strong>Boundary conditions</strong>: perfect conductor, symmetry planes (PEC / PMC),
-absorbing / radiation, surface impedance (e.g. kinetic inductance).</p></li>
-<li><p><strong>Materials</strong> from the layer stack (permittivity, loss tangent).</p></li>
-<li><p><strong>Net naming and sign convention</strong> for capacitance matrices, so
-<code class="docutils literal notranslate"><span class="pre">LOManalysis</span></code> reads every backend the same way.</p></li>
-<li><p><strong>Solve setups</strong>: backend-neutral descriptions of eigenmode, driven and
-electrostatic studies.</p></li>
-<li><p><strong>Capabilities</strong>: each backend declares which solve types, ports,
-boundary conditions and outputs (EPR, convergence history, field plots) it
-supports; the simulation classes check before running and fail with a
-message naming the backends that can do it. The same table feeds
-<code class="docutils literal notranslate"><span class="pre">docs/simulation-pathways.rst</span></code>.</p></li>
-</ul>
-<p>Before building these, a <strong>gap analysis</strong>: SQDMetal’s Palace pipeline,
-pypalace, the Ansys renderers and <code class="docutils literal notranslate"><span class="pre">QGmshRenderer</span></code> / <code class="docutils literal notranslate"><span class="pre">QElmerRenderer</span></code> side by
-side — which of the abstractions above Quantum Metal already has, which it
-lacks, and which the others rely on. Done: the gap tables, the design, the
-decisions taken and the step-by-step sequence are in
-<code class="docutils literal notranslate"><span class="pre">docs/architecture/solver_backends.md</span></code>.</p>
-</section>
-<section id="stage-2-backends-on-the-shared-abstractions">
-<h3>Stage 2 — backends on the shared abstractions<a class="headerlink" href="#stage-2-backends-on-the-shared-abstractions" title="Link to this heading">¶</a></h3>
-<ol class="arabic simple">
-<li><p><strong>scikit-fem</strong> (pip-only, runs in CI).</p>
-<ul class="simple">
-<li><p>Done (September 2026): the solver moved from the tutorial module into
-<code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses.fem</span></code> and <code class="docutils literal notranslate"><span class="pre">qiskit_metal.analyses.em.package_modes</span></code>,
-and <code class="docutils literal notranslate"><span class="pre">package_modes.py</span></code> is a thin wrapper, so 4.41–4.45 run unchanged.
-Install: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;quantum-metal[skfem]&quot;</span></code>.</p></li>
-<li><p>To do:</p>
-<ul>
-<li><p>reading the geometry from <code class="docutils literal notranslate"><span class="pre">QGmshRenderer.group_map</span></code> and <code class="docutils literal notranslate"><span class="pre">mesh_spec</span></code>
-instead of the tutorial mesher;</p></li>
-<li><p>a <code class="docutils literal notranslate"><span class="pre">renderer_name=&quot;skfem&quot;</span></code> backend for the eigenmode and capacitance
-flows.</p></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>ElmerFEM beyond electrostatics</strong>: eigenmodes with lumped junctions from
-Elmer’s electromagnetic-wave solvers; cross-check against scikit-fem (the
-4.19 cell, the 4.43 package).</p></li>
-<li><p><strong>Palace</strong>: a downstream <code class="docutils literal notranslate"><span class="pre">quantum-metal-palace</span></code> plugin as in the RFC,
-after v0.9.0; tested locally first (MPI binary). It reads the stage-1
-abstractions.</p></li>
-<li><p><strong>Ansys HFSS / Q3D</strong>: stays fully supported. In principle the Ansys
-renderers read the same abstractions too, but any change to
-<code class="docutils literal notranslate"><span class="pre">renderer_ansys*</span></code> is gated on validation in AEDT (see “Hard constraints”
-in <code class="docutils literal notranslate"><span class="pre">CLAUDE.md</span></code>) and belongs to the Ansys track below.</p></li>
-</ol>
-</section>
-<section id="stage-3-the-renderer-contract-written-down">
-<h3>Stage 3 — the renderer contract, written down<a class="headerlink" href="#stage-3-the-renderer-contract-written-down" title="Link to this heading">¶</a></h3>
-<p>Which calls each solve type needs (eigenmode, capacitance, driven), how
-“convergence” maps onto single-pass solvers, and how capabilities are
-reported — for all backends, Ansys included.</p>
-</section>
-<section id="ansys-track-separate">
-<h3>Ansys track (separate)<a class="headerlink" href="#ansys-track-separate" title="Link to this heading">¶</a></h3>
-<p>Moving from the COM renderer (<code class="docutils literal notranslate"><span class="pre">renderer_ansys</span></code>) to current pyaedt
-(<code class="docutils literal notranslate"><span class="pre">renderer_ansys_pyaedt</span></code>; pinned <code class="docutils literal notranslate"><span class="pre">&gt;=0.21,&lt;0.24</span></code> below Python 3.14, <code class="docutils literal notranslate"><span class="pre">&gt;=1.0.1</span></code>
-on 3.14) is its own project. It needs an AEDT test environment for every
-step, so it runs on its own track, with the stored HFSS / Q3D tutorial outputs
-as the reference answers until such an environment exists. Related: the
-Ansys 2025R1 issues (#1041, #1046) and the runtime spot-check request (#1079)
-under “Known bug-triage queue”.</p>
-<p>The target is the pyaedt renderers: the COM renderers run only on Windows,
-while pyaedt runs wherever AEDT does. pyEPR already has a pyaedt path
-(<code class="docutils literal notranslate"><span class="pre">PyaedtDistributedAnalysis</span></code>). A pyaedt renderer can implement the stage-1
-neutral protocol directly (<code class="docutils literal notranslate"><span class="pre">docs/architecture/solver_backends.md</span></code>, 3.12)
-instead of the COM track’s informal method list. The locked pyaedt versions
-are 0.23.0 (below Python 3.14) and 1.7.0 (Python 3.14, the latest release).
-Changes to the pyaedt renderers use only calls that both versions have.</p>
-<p><strong>Fixed in September 2026, not yet run in AEDT.</strong> Each fix has a test that
-uses mocks; <code class="docutils literal notranslate"><span class="pre">changelog.md</span></code> has the details.</p>
-<ul class="simple">
-<li><p><strong>pyaedt HFSS input check.</strong> The renderers drew nothing unless both
-<code class="docutils literal notranslate"><span class="pre">port_list</span></code> and <code class="docutils literal notranslate"><span class="pre">jj_to_port</span></code> were given, so the eigenmode renderer never
-drew anything.</p></li>
-<li><p><strong>COM HFSS <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>.</strong> It was raised for ports given without
-<code class="docutils literal notranslate"><span class="pre">open_terminations</span></code>.</p></li>
-<li><p><strong>pyaedt Q3D <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>.</strong> It was raised when <code class="docutils literal notranslate"><span class="pre">open_pins</span></code> was not given.</p></li>
-<li><p><strong>pyaedt eigenmode <code class="docutils literal notranslate"><span class="pre">analyze_setup</span></code>.</strong> For a setup that did not exist yet,
-it called a driven-modal method.</p></li>
-<li><p><strong>Q3D per-pass units.</strong> Per-pass matrices were labeled “fF” but held
-farads.</p></li>
-<li><p><strong>pyaedt HFSS <code class="docutils literal notranslate"><span class="pre">default_setup</span></code>.</strong> It was a one-element tuple.</p></li>
-<li><p><strong>COM HFSS port height.</strong> Port sheets were drawn at z = 0 on raised chips.</p></li>
-<li><p><strong>pyaedt autosave options.</strong> They had no effect, and closing forced AEDT
-autosave on.</p></li>
-<li><p><strong>Setup arguments.</strong> An explicit <code class="docutils literal notranslate"><span class="pre">False</span></code> or <code class="docutils literal notranslate"><span class="pre">0</span></code> was replaced by the
-default.</p></li>
-</ul>
-<p><strong>Open in the Ansys renderers</strong> (found in the solver-backends gap analysis;
-the design note, section 2, has file references):</p>
-<ul class="simple">
-<li><p><strong>pyaedt renderers cannot be driven by the simulation classes.</strong> They lack
-<code class="docutils literal notranslate"><span class="pre">execute_design</span></code>, <code class="docutils literal notranslate"><span class="pre">initialize_*</span></code>, <code class="docutils literal notranslate"><span class="pre">get_convergences</span></code>, <code class="docutils literal notranslate"><span class="pre">set_mode</span></code>,
-<code class="docutils literal notranslate"><span class="pre">plot_fields</span></code> and the <code class="docutils literal notranslate"><span class="pre">epr_*</span></code> methods. The registered <code class="docutils literal notranslate"><span class="pre">aedt_hfss</span></code> defaults
-to <code class="docutils literal notranslate"><span class="pre">renderer_type=&quot;HFSS&quot;</span></code>, which is not one of <code class="docutils literal notranslate"><span class="pre">HFSS_DM</span></code>, <code class="docutils literal notranslate"><span class="pre">HFSS_EM</span></code>, <code class="docutils literal notranslate"><span class="pre">Q3D</span></code>,
-so the tutorials create the eigenmode and driven-modal classes directly.</p></li>
-<li><p><strong>pyaedt eigenmode</strong> refuses <code class="docutils literal notranslate"><span class="pre">port_list</span></code> and <code class="docutils literal notranslate"><span class="pre">jj_to_port</span></code>.</p></li>
-<li><p><strong>pyaedt Q3D.</strong> <code class="docutils literal notranslate"><span class="pre">get_capacitance_matrix</span></code> is a stub, and
-<code class="docutils literal notranslate"><span class="pre">get_capacitance_all_passes</span></code> returns magnitudes, losing the sign of the
-mutual capacitances.</p></li>
-<li><p><strong>pyaedt mesh and wirebonds.</strong> <code class="docutils literal notranslate"><span class="pre">add_mesh</span></code> is empty, so there are no
-junction or port mesh operations. Wirebond rendering is commented out.</p></li>
-<li><p><strong>The two tracks disagree on:</strong></p>
-<ul>
-<li><p>the voltage-line direction: COM runs along the sheet’s axis from the low
-to the high coordinate (pyEPR <code class="docutils literal notranslate"><span class="pre">make_center_line</span></code>), whatever way the pin
-faces, while pyaedt follows the pin normal. Junction EPR signs depend on
-it.</p></li>
-<li><p>the meaning of <code class="docutils literal notranslate"><span class="pre">sample_holder_top</span></code> / <code class="docutils literal notranslate"><span class="pre">sample_holder_bottom</span></code>:
-coordinates in pyaedt, distances in COM.</p></li>
-</ul>
-</li>
-<li><p><strong>Both tracks assume pins along x or y</strong>, for port sheets and endcaps.</p></li>
-<li><p><strong>Not exposed in either track:</strong> absorbing or radiation walls, symmetry
-planes, surface impedance (kinetic inductance), finite conductivity, and
-wave ports.</p></li>
-<li><p><strong>The <code class="docutils literal notranslate"><span class="pre">&lt;renderer&gt;_mesh_kw_jj</span></code> junction column</strong> is written but never read.</p></li>
-<li><p><strong>COM <code class="docutils literal notranslate"><span class="pre">get_convergences</span></code></strong> writes <code class="docutils literal notranslate"><span class="pre">hfss_eig_f_convergence.csv</span></code> into the
-working directory.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">ScatteringImpedanceSim</span></code></strong> never fills its <code class="docutils literal notranslate"><span class="pre">param_z</span></code> / <code class="docutils literal notranslate"><span class="pre">param_y</span></code> /
-<code class="docutils literal notranslate"><span class="pre">param_s</span></code> data labels; results are reached through <code class="docutils literal notranslate"><span class="pre">plot_params</span></code>.</p></li>
-</ul>
-<p><strong>Open in the open-FEM path</strong>, each assigned to a stage-1 step in the design
-note:</p>
-<ul class="simple">
-<li><p>gmsh endcaps assume pins along x or y (step 1.6).</p></li>
-<li><p>The gmsh and ElmerFEM renderers do not read the <code class="docutils literal notranslate"><span class="pre">helper</span></code> column.</p></li>
-<li><p>ElmerFEM:</p>
-<ul>
-<li><p>hard-codes its materials (step 1.7);</p></li>
-<li><p>writes a placeholder ground self-capacitance (300 fF);</p></li>
-<li><p>labels and orders nets differently from Q3D (steps 1.3 and D3).</p></li>
-</ul>
-</li>
-</ul>
-<p><strong>EPR over gRPC, and the pyEPR <code class="docutils literal notranslate"><span class="pre">pywin32</span></code> marker</strong> (noted October 2026, from a
-user report; checked against the local pyEPR 1.0.2 checkout, not run on
-Windows).</p>
-<ul class="simple">
-<li><p><strong>Metal’s EPR step still goes through COM, in both renderers.</strong> The legacy
-<code class="docutils literal notranslate"><span class="pre">renderer_ansys</span></code> and the pyaedt renderer’s <code class="docutils literal notranslate"><span class="pre">run_epr()</span></code> both call
-<code class="docutils literal notranslate"><span class="pre">epr.ProjectInfo()</span></code> and <code class="docutils literal notranslate"><span class="pre">epr.DistributedAnalysis</span></code>. pyEPR 1.0.2 already ships
-<code class="docutils literal notranslate"><span class="pre">pyEPR/ansys_pyaedt.py</span></code> (<code class="docutils literal notranslate"><span class="pre">PyaedtDistributedAnalysis</span></code>, gRPC, no COM), which
-its docstring says was checked against the COM path (<code class="docutils literal notranslate"><span class="pre">p_mj</span> <span class="pre">=</span> <span class="pre">0.9755</span></code>).
-Metal does not use it yet.</p></li>
-<li><p><strong>Packaging bug in pyEPR (one-line fix, there rather than in Metal).</strong> The
-base install imports <code class="docutils literal notranslate"><span class="pre">win32com</span></code> but does not declare <code class="docutils literal notranslate"><span class="pre">pywin32</span></code>; only the
-<code class="docutils literal notranslate"><span class="pre">[pyaedt]</span></code> extra does, although that path needs no COM. Move the
-<code class="docutils literal notranslate"><span class="pre">pywin32;</span> <span class="pre">platform_system</span> <span class="pre">==</span> <span class="pre">&quot;Windows&quot;</span></code> marker to the base requirements and
-drop it from <code class="docutils literal notranslate"><span class="pre">[pyaedt]</span></code>. Metal then gets it through pyEPR unchanged.</p></li>
-<li><p><strong>Severity is low.</strong> It affects only Windows users who connect to Ansys.
-Import works (pyEPR swallows the missing import in <code class="docutils literal notranslate"><span class="pre">ansys.py</span></code>). The legacy
-renderer already raises a friendly message pointing at <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pywin32</span></code>
-(<code class="docutils literal notranslate"><span class="pre">ansys_renderer.py</span></code>). The pyaedt renderer’s <code class="docutils literal notranslate"><span class="pre">epr.ProjectInfo()</span></code> probably
-fails with a bare <code class="docutils literal notranslate"><span class="pre">NameError</span></code> on <code class="docutils literal notranslate"><span class="pre">Dispatch</span></code>; unverified, it needs Windows.</p></li>
-<li><p><strong>Longer term:</strong> switch the pyaedt renderer’s <code class="docutils literal notranslate"><span class="pre">run_epr()</span></code> to
-<code class="docutils literal notranslate"><span class="pre">PyaedtDistributedAnalysis</span></code>, so <code class="docutils literal notranslate"><span class="pre">pywin32</span></code> is needed only by the legacy
-renderer. <strong>Before switching, check feature parity.</strong> The module has volume
-energy (<code class="docutils literal notranslate"><span class="pre">energy_electric(obj)</span></code>), line voltage and <code class="docutils literal notranslate"><span class="pre">analyze()</span></code>; surface and
-dielectric loss (which <code class="docutils literal notranslate"><span class="pre">setup_dielectric_for_epr</span></code> feeds today) were not seen
-there. This needs AEDT, so it belongs on this track.</p></li>
-</ul>
-</section>
-<section id="testing-solvers-without-losing-the-stored-answers">
-<h3>Testing solvers without losing the stored answers<a class="headerlink" href="#testing-solvers-without-losing-the-stored-answers" title="Link to this heading">¶</a></h3>
-<p>The tutorials hold the reference answers: the committed outputs of the
-external-gated notebooks (Ansys, ElmerFEM, the heavier scikit-fem runs) are
-the only record of many of these results, and CI never re-executes those
-notebooks in place. Solver runs are expensive and, on shared runners, risky
-(time, memory, licenses, external binaries). So:</p>
-<ul class="simple">
-<li><p><strong>Reference files.</strong> Extract the key numbers once from the stored notebook
-outputs into version-controlled data (e.g. <code class="docutils literal notranslate"><span class="pre">tests/solver_references/*.json</span></code>:
-value, tolerance, source notebook, solver, mesh settings). Tests compare
-against these; notebooks are never overwritten by a test run (execute into
-a scratch copy). Updating a reference is a reviewed change of its own.</p></li>
-<li><p><strong>Tier 0 — CI, every PR (seconds, no external binaries).</strong> Analytic
-references (box and LSM modes, circuit couplings, the Appendix D fit) and a
-tiny scikit-fem model (an empty box on a coarse mesh) when scikit-fem is
-installed; skipped otherwise.</p></li>
-<li><p><strong>Tier 1 — local or opt-in scheduled (minutes, pip-installable solvers).</strong>
-Small-mesh versions of the tutorial problems against the reference files;
-behind a pytest marker that is not collected by default.</p></li>
-<li><p><strong>Tier 2 — local only (external binaries, MPI, licenses, gigabytes).</strong>
-ElmerFEM, Palace, Ansys, and full-size tutorial runs; enabled per solver by
-an environment variable; never on shared CI runners. Ansys tests need an
-AEDT installation and license; until one is available, compare against the
-stored HFSS / Q3D outputs only.</p></li>
-<li><p><strong>Guardrails for every solver test</strong>: a time and memory budget, a skip when
-the binary or extra is missing, and no writes under <code class="docutils literal notranslate"><span class="pre">docs/</span></code>.</p></li>
-</ul>
-</section>
 </section>
 </section>
 
@@ -1754,43 +781,13 @@ the binary or extra is missing, and no writes under <code class="docutils litera
             <ul>
 <li><a class="reference internal" href="#">Quantum Metal — Roadmap</a><ul>
 <li><a class="reference internal" href="#vision">Vision</a></li>
-<li><a class="reference internal" href="#recently-shipped-through-v0-8-0-august-2026-shipped">Recently shipped — through v0.8.0 (August 2026) <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code></a></li>
-<li><a class="reference internal" href="#near-term-priorities-planned">Near-term priorities <code class="docutils literal notranslate"><span class="pre">[planned]</span></code></a></li>
-<li><a class="reference internal" href="#lite-by-default-flip-v0-7-0-shipped">Lite-by-default flip (v0.7.0) <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code></a></li>
-<li><a class="reference internal" href="#downstream-ecosystem-rollout-in-progress">Downstream ecosystem rollout <code class="docutils literal notranslate"><span class="pre">[in-progress]</span></code></a></li>
-<li><a class="reference internal" href="#next-ai-orchestration-profile">Next — AI-orchestration profile</a></li>
-<li><a class="reference internal" href="#open-fem-stack-gmsh-elmer-aws-palace-research">Open FEM stack — gmsh + Elmer + AWS Palace <code class="docutils literal notranslate"><span class="pre">[research]</span></code></a></li>
-<li><a class="reference internal" href="#design-rule-check-drc-validation-stage-shipped-v0-8-0">Design-rule-check (DRC) validation stage <code class="docutils literal notranslate"><span class="pre">[shipped,</span> <span class="pre">v0.8.0]</span></code></a></li>
-<li><a class="reference internal" href="#architectural-items-research">Architectural items <code class="docutils literal notranslate"><span class="pre">[research]</span></code></a></li>
-<li><a class="reference internal" href="#group-and-lab-adoption-pathway">Group and lab adoption pathway</a><ul>
-<li><a class="reference internal" href="#high-impact-low-effort">High impact, low effort</a></li>
-<li><a class="reference internal" href="#high-impact-medium-effort">High impact, medium effort</a></li>
-<li><a class="reference internal" href="#high-impact-high-effort">High impact, high effort</a></li>
-<li><a class="reference internal" href="#wish-list">Wish-list</a></li>
+<li><a class="reference internal" href="#recently-shipped-shipped">Recently shipped <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code></a></li>
+<li><a class="reference internal" href="#now-and-next">Now and next</a></li>
+<li><a class="reference internal" href="#research-and-help-wanted">Research and help wanted</a><ul>
+<li><a class="reference internal" href="#needs-re-verification">Needs re-verification</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#adoption-devrel-and-onboarding">Adoption, DevRel, and onboarding</a><ul>
-<li><a class="reference internal" href="#shipped-v0-7-1">Shipped (v0.7.1)</a></li>
-<li><a class="reference internal" href="#quick-wins-2-hours-each">Quick wins (≤2 hours each)</a></li>
-<li><a class="reference internal" href="#medium-effort-half-day-each">Medium effort (~half-day each)</a></li>
-<li><a class="reference internal" href="#bigger-plays-multi-day">Bigger plays (multi-day)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#tutorials-structure-backend-swappable-analysis-execution-harness-planned">Tutorials: structure, backend-swappable analysis, execution harness <code class="docutils literal notranslate"><span class="pre">[planned]</span></code></a></li>
-<li><a class="reference internal" href="#docs-build-cleanup-research">Docs build cleanup <code class="docutils literal notranslate"><span class="pre">[research]</span></code></a></li>
-<li><a class="reference internal" href="#open-items-after-the-1202-1234-batch-october-2026-planned">Open items after the #1202–#1234 batch (October 2026) <code class="docutils literal notranslate"><span class="pre">[planned]</span></code></a></li>
-<li><a class="reference internal" href="#known-bug-triage-queue-needs-re-verification">Known bug-triage queue <code class="docutils literal notranslate"><span class="pre">[needs</span> <span class="pre">re-verification]</span></code></a></li>
-<li><a class="reference internal" href="#external-workshops-training-reference">External workshops &amp; training <code class="docutils literal notranslate"><span class="pre">[reference]</span></code></a></li>
-<li><a class="reference internal" href="#gui-ux-wishes-wish-list">GUI / UX wishes <code class="docutils literal notranslate"><span class="pre">[wish-list]</span></code></a></li>
 <li><a class="reference internal" href="#how-to-help">How to help</a></li>
-<li><a class="reference internal" href="#solver-backends-shared-abstractions-then-scikit-fem-elmerfem-palace-and-ansys-research">Solver backends: shared abstractions, then scikit-fem, ElmerFEM, Palace and Ansys <code class="docutils literal notranslate"><span class="pre">[research]</span></code></a><ul>
-<li><a class="reference internal" href="#stage-1-shared-abstractions-in-core-lands-first">Stage 1 — shared abstractions in core (lands first)</a></li>
-<li><a class="reference internal" href="#stage-2-backends-on-the-shared-abstractions">Stage 2 — backends on the shared abstractions</a></li>
-<li><a class="reference internal" href="#stage-3-the-renderer-contract-written-down">Stage 3 — the renderer contract, written down</a></li>
-<li><a class="reference internal" href="#ansys-track-separate">Ansys track (separate)</a></li>
-<li><a class="reference internal" href="#testing-solvers-without-losing-the-stored-answers">Testing solvers without losing the stored answers</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
