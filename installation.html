@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fc6d6d93" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
     <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=f676e775" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=9e28cae6" />
     
@@ -555,8 +555,8 @@ matplotlib viewer with the same API as the desktop <code class="docutils literal
 <p class="sd-card-text"><strong>Basic Installation (PyPI)</strong></p>
 <p class="sd-card-text">Install the current Quantum Metal release from PyPI.</p>
 <ul class="simple">
-<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code></p></li>
-<li><p class="sd-card-text">For most users; matches CI-tested wheels</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quantum-metal</span></code></p></li>
+<li><p>For most users; matches CI-tested wheels</p></li>
 </ul>
 </div>
 </div>
@@ -568,9 +568,9 @@ matplotlib viewer with the same API as the desktop <code class="docutils literal
 <p class="sd-card-text">Install the active Quantum Metal source tree.</p>
 <p class="sd-card-text"><strong>Options:</strong></p>
 <ul class="simple">
-<li><p class="sd-card-text"><strong>Fast path: uv</strong> (recommended)</p></li>
-<li><p class="sd-card-text"><strong>Conda environment setup</strong> (best for Windows / binary-heavy stacks)</p></li>
-<li><p class="sd-card-text"><strong>Without conda</strong> (standard Python <code class="docutils literal notranslate"><span class="pre">venv</span></code>)</p></li>
+<li><p><strong>Fast path: uv</strong> (recommended)</p></li>
+<li><p><strong>Conda environment setup</strong> (best for Windows / binary-heavy stacks)</p></li>
+<li><p><strong>Without conda</strong> (standard Python <code class="docutils literal notranslate"><span class="pre">venv</span></code>)</p></li>
 </ul>
 </div>
 </div>
@@ -580,10 +580,10 @@ matplotlib viewer with the same API as the desktop <code class="docutils literal
 <div class="sd-card-body docutils">
 <p class="sd-card-text"><strong>Other Setup Topics</strong></p>
 <ul class="simple">
-<li><p class="sd-card-text">Optional Jupyter Lab integration</p></li>
-<li><p class="sd-card-text">Installation hints and tips</p></li>
-<li><p class="sd-card-text">Common Issues / FAQ</p></li>
-<li><p class="sd-card-text">Video instructions for legacy package (<code class="docutils literal notranslate"><span class="pre">qiskit-metal</span></code>)</p></li>
+<li><p>Optional Jupyter Lab integration</p></li>
+<li><p>Installation hints and tips</p></li>
+<li><p>Common Issues / FAQ</p></li>
+<li><p>Video instructions for legacy package (<code class="docutils literal notranslate"><span class="pre">qiskit-metal</span></code>)</p></li>
 </ul>
 </div>
 </div>
@@ -596,23 +596,23 @@ matplotlib viewer with the same API as the desktop <code class="docutils literal
 <p>Quantum Metal is available on PyPI (Project page: <a class="reference external" href="https://pypi.org/project/quantum-metal/">https://pypi.org/project/quantum-metal/</a>).</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-0">
-pip install</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-0-content" class="sd-tab-label" for="sd-tab-item-0">
+pip install</label><div class="sd-tab-content docutils" id="sd-tab-item-0-content">
 <p><strong>Note:</strong> If using this method, it is recommended to install inside a virtual environment.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>quantum-metal
 </pre></div>
 </div>
 </div>
 <input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-1">
-Add to a uv workspace (recommended)</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-1-content" class="sd-tab-label" for="sd-tab-item-1">
+Add to a uv workspace (recommended)</label><div class="sd-tab-content docutils" id="sd-tab-item-1-content">
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>add<span class="w"> </span>quantum-metal
 </pre></div>
 </div>
 </div>
 <input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-2">
-Add to a Pixi workspace</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-2-content" class="sd-tab-label" for="sd-tab-item-2">
+Add to a Pixi workspace</label><div class="sd-tab-content docutils" id="sd-tab-item-2-content">
 <p><strong>Note:</strong> This method might fail if your Pixi workspace has dependencies that are not compatible with the Quantum Metal dependencies. In such cases, the error messages might not make it obvious.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>add<span class="w"> </span>--pypi<span class="w"> </span>quantum-metal
 </pre></div>
@@ -837,8 +837,8 @@ out of the box, see <a class="reference internal" href="headless-usage.html"><sp
 <p>Run the following commands in the root of the repository (i.e. the <code class="docutils literal notranslate"><span class="pre">quantum-metal</span></code> directory):</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-3">
-uv (recommended)</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-3-content" class="sd-tab-label" for="sd-tab-item-3">
+uv (recommended)</label><div class="sd-tab-content docutils" id="sd-tab-item-3-content">
 <p><strong>Why:</strong> Fast, modern resolver/installer; typically the least friction for scientific stacks. Use Python 3.10 through 3.14. <code class="docutils literal notranslate"><span class="pre">uv</span></code> installations instruction are available <a class="reference external" href="https://docs.astral.sh/uv/getting-started/installation/">here</a>.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new virtual environment</span>
 uv<span class="w"> </span>venv<span class="w"> </span>--python<span class="w"> </span><span class="m">3</span>.11<span class="w">  </span><span class="c1"># any of 3.10-3.14</span>
@@ -855,8 +855,8 @@ uv<span class="w"> </span>run<span class="w"> </span>python
 </div>
 </div>
 <input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-4">
-Conda (robust, esp. Windows)</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-4-content" class="sd-tab-label" for="sd-tab-item-4">
+Conda (robust, esp. Windows)</label><div class="sd-tab-content docutils" id="sd-tab-item-4-content">
 <p><strong>Why:</strong> Best for binary-heavy dependencies and Windows toolchains.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a fresh env from environment.yml</span>
 conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>&lt;env_name&gt;<span class="w"> </span>-f<span class="w"> </span>environment.yml
@@ -874,8 +874,8 @@ python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </sp
 - If conflicts arise, try a new env.</p>
 </div>
 <input id="sd-tab-item-5" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-5">
-Python venv (lightweight)</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-5-content" class="sd-tab-label" for="sd-tab-item-5">
+Python venv (lightweight)</label><div class="sd-tab-content docutils" id="sd-tab-item-5-content">
 <p><strong>Why:</strong> Simple and familiar if you do not need conda’s binary packages.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>&lt;virtual_env_path&gt;
 
@@ -895,8 +895,8 @@ python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </sp
 <p>Jupyter works with <strong>any</strong> pathway. Install the kernel from inside the environment you plan to use.</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-6" name="sd-tab-set-2" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-6">
-uv / venv</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-6-content" class="sd-tab-label" for="sd-tab-item-6">
+uv / venv</label><div class="sd-tab-content docutils" id="sd-tab-item-6-content">
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w">      </span><span class="c1"># adjust to your venv; Windows: .venv\\Scripts\\activate</span>
 python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>jupyterlab<span class="w"> </span>ipykernel
 python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>--name<span class="w"> </span>quantum-metal-uv<span class="w"> </span>--display-name<span class="w"> </span><span class="s2">"Quantum Metal (uv)"</span>
@@ -904,8 +904,8 @@ python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"
 </div>
 </div>
 <input id="sd-tab-item-7" name="sd-tab-set-2" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-7">
-conda</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-7-content" class="sd-tab-label" for="sd-tab-item-7">
+conda</label><div class="sd-tab-content docutils" id="sd-tab-item-7-content">
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>&lt;env_name&gt;
 conda<span class="w"> </span>install<span class="w"> </span>jupyterlab<span class="w"> </span>ipykernel
 python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>--name<span class="w"> </span>quantum-metal-conda<span class="w"> </span>--display-name<span class="w"> </span><span class="s2">"Quantum Metal (conda)"</span>
@@ -1010,7 +1010,7 @@ Click for YouTube Video</a><br><br>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/10/25</div>
+              Last updated on 2026/11/15</div>
           </div>
           <div class="right-details">
             
@@ -1063,7 +1063,7 @@ Click for YouTube Video</a><br><br>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="_static/jupyterlite_sphinx.js?v=96e329c5"></script>
-    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="_static/design-tabs.js?v=fcb327ea"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
 </html>
