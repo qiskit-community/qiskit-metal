@@ -105,7 +105,7 @@ PySide6 or the Qt stack. The base install is headless by default —
 no GUI, no Qt surprises.
 
 If you have the ``[gui]`` extra installed and want to suppress Qt
-initialisation at runtime (e.g. in a script that runs headlessly),
+initialization at runtime (e.g. in a script that runs headlessly),
 set the ``QISKIT_METAL_HEADLESS`` environment variable:
 
 .. code-block:: bash
@@ -115,6 +115,9 @@ set the ``QISKIT_METAL_HEADLESS`` environment variable:
 
 This prevents matplotlib from switching to the ``QtAgg`` backend
 during import. The Qt packages stay installed but are never touched.
+``qm.gui(design)`` then returns the inline viewer; ``qm.gui(design,
+force_headless=True)`` does the same for one call, and
+``QISKIT_METAL_HEADLESS_QUIET=1`` hides the one-time notice it prints.
 
 Install extras
 ==============
@@ -125,24 +128,9 @@ Install extras
 * ``pip install "quantum-metal[mesh]"`` — + gmsh (foundation for Elmer / Palace).
 * ``pip install "quantum-metal[skfem]"`` — ``[mesh]`` + the scikit-fem eigenmode solver (tutorials 4.41–4.46).
   ``[fem]`` is a backward-compatible alias.
-* ``pip install "quantum-metal[full]"`` — all extras (v0.6.x behavior)
+* ``pip install "quantum-metal[full]"`` — all extras
 
-See :doc:`installation` for the full feature matrix and
-:doc:`migration-to-v0.7.0` for per-persona migration recipes.
-
-Roadmap: a richer in-notebook viewer
-====================================
-
-``qm.view`` covers the **viewing** workflow: render a design to an
-inline image. A richer interactive viewer — pan, zoom, click-to-select
-components, edit option values inline — is planned as a future
-project. The likely direction is Jupyter widgets + Plotly or
-``ipympl``, both of which give us a no-Qt interactive surface that
-works in Colab, Binder, and JupyterLab without setup gymnastics.
-
-This will be tracked as its own initiative once the basic headless
-rendering path (this page) is stable. In the meantime, ``qm.view`` is
-the supported way to display designs in notebooks.
+See :doc:`installation` for the full feature matrix.
 
 See also
 ========

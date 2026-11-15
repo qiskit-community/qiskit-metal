@@ -81,9 +81,8 @@ Extras compose: `pip install "quantum-metal[gui,ansys]"` works.
 
 </details>
 
-Source install, conda, troubleshooting, and per-persona migration recipes:
-[`docs/installation.rst`](./docs/installation.rst) ·
-[`docs/migration-to-v0.7.0.rst`](./docs/migration-to-v0.7.0.rst).
+Source install, conda and troubleshooting:
+[`docs/installation.rst`](./docs/installation.rst).
 
 CI runs on **Python 3.11 / 3.12 / 3.13 / 3.14** across Linux, macOS, and Windows.
 

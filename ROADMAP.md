@@ -1,1133 +1,207 @@
 # Quantum Metal — Roadmap
 
-This file describes the direction Quantum Metal is heading.
-Items are grouped by status: what we're working on now,
-what's planned next, and what we're researching with no
-firm timeline. Linked PRs and issues are the source of truth
-for "is this done yet."
+Where Quantum Metal is heading, as of November 2026. Linked issues and pull
+requests are the source of truth for whether an item is done; release notes
+are in [`changelog.md`](https://github.com/qiskit-community/qiskit-metal/blob/main/changelog.md) and on the
+[releases page](https://github.com/qiskit-community/qiskit-metal/releases).
+If an item matters to your work, say so on its issue or open a new one: the
+order below shifts with user demand and contributor time.
 
-If something here matters to your work, open an issue or
-ping us on Discord — the order and emphasis below shift
-based on user demand and contributor availability.
-
-| Symbol | Meaning |
+| Status | Meaning |
 |---|---|
-| `[shipped]` | Released, in current `main`. |
-| `[in-progress]` | Active development. PR open or imminent. |
-| `[planned]` | Scoped, on the queue. Will be picked up in the indicated release. |
-| `[research]` | Direction set, design not finalized. Help wanted. |
+| `[shipped]` | Released. |
+| `[in-progress]` | Active development; a pull request is open or imminent. |
+| `[planned]` | Scoped and queued. |
+| `[research]` | Direction set, design open. Help wanted. |
+| `[needs re-verification]` | Status unclear against the current release. |
 
 ---
 
 ## Vision
 
-Quantum Metal is the open-source **chip-design layer** for
-superconducting quantum hardware: a Python library where
-you build a chip from `QComponent`s, attach analyses, and
-hand the result to whichever solver / fab / orchestrator
-you want. The library itself is solver-agnostic; the
-renderers are the integration layer with the outside world
-(GDS, HFSS, Q3D, gmsh, Elmer, AWS Palace, ...).
-
-We sit inside a broader open-source ecosystem — design
-discovery ([SQuADDS](https://github.com/LFL-Lab/SQuADDS)),
-Palace simulation wrappers ([SQDMetal](https://github.com/sqdlab/SQDMetal),
-[pypalace](https://pypalace.readthedocs.io/)),
-mesh utilities, quantization tools. Full map:
-[Ecosystem doc](https://github.com/qiskit-community/qiskit-metal/blob/main/docs/ecosystem.rst)
-(rendered on the docs site). Items below are about Metal's own
-direction; ecosystem-level coordination is tracked
-alongside.
-
-Two things shape the next year:
-
-1. **Lite-by-default.** `import qiskit_metal` should be
-   fast, dependency-light, and never assume Qt / AEDT / gmsh
-   / Palace are present. Heavy backends are opt-in extras.
-2. **Orchestration-friendly.** Quantum Metal is increasingly
-   used inside AI-driven design loops where an LLM or
-   optimization agent generates designs, dispatches them to
-   one or more backend solvers, and iterates on the result.
-   The library's surface should be predictable, scriptable,
-   and minimal — no GUI prompts, no hidden state, no
-   "did you remember to install AEDT" surprises.
+Quantum Metal is an open-source chip-design layer for superconducting quantum
+hardware: you build a chip from `QComponent`s, check it, analyze it, and hand
+it to the solver, fab flow or orchestrator of your choice. The core stays
+**lite by default**: `pip install quantum-metal` imports quickly and assumes
+no Qt, Ansys, gmsh or Palace; heavy backends are opt-in extras. The API
+should be **scriptable and orchestration-friendly**, so that a script, an
+optimizer or an AI agent can generate a design, run design-rule checks,
+dispatch it to one or more solvers and iterate, with no GUI prompts and no
+hidden state. Analysis should not require a commercial license: open solvers
+sit beside Ansys behind one interface. Related open-source projects are
+listed in the [ecosystem page](https://github.com/qiskit-community/qiskit-metal/blob/main/docs/ecosystem.rst).
 
 ---
 
-## Recently shipped — through v0.8.0 (August 2026) `[shipped]`
+## Recently shipped `[shipped]`
 
-A maintenance + community-PR cycle on top of v0.7.4, followed by the
-v0.8.0 release (#1168): design-rule checking, the die outline, and a
-hero-gif refresh — no breaking changes. Linked PRs are the source of
-truth.
+**v0.8.0: airbridges and design-rule checking**
+- `qiskit_metal.validation.validate(design)` with seven configurable,
+  layer- and net-aware rules and `strict=True` as a build gate (#1169);
+  tutorial 2.24. `QDesignCheck` is deprecated.
+- `Airbridge` component and `route_airbridges` auto-placement (#1138, #1142);
+  experimental 3D airbridges with an Elmer capacitance path (#1144, #1150).
+- The viewer draws the die outline (#1168).
 
-- ✅ **Design-rule-check (DRC) validation stage** (#1169, v0.8.0) — see
-  the dedicated section below.
-- ✅ **RouteMeander sharp-kink geometry fix** (commit `541ddf667`,
-  closes #1086) — shipped as part of the v0.8.0 bump.
-- ✅ **TransmonCross `connector_location='270'` fix** (closes #1052,
-  hardened further by #1174) — the rotation chain now wraps mod 360;
-  out-of-range angles no longer land arbitrarily.
-- ✅ **Reference design notebooks** (#1108) — three executed,
-  headless-rendered full-chip examples (single transmon + readout
-  resonator, two coupled transmons, 4-qubit multiplexed readout)
-  under **Tutorials → Full-Chip Design Examples** on the docs site.
-  Adapted with attribution from the
-  [SQDMetal](https://github.com/sqdlab/SQDMetal) benchmark devices
-  (arXiv:2511.01220). First entries of the long-planned
-  "design examples" gallery.
-- ✅ **Component-gallery card fix** (#1108) — cards deep-link to each
-  component's own API page with real descriptions; registry-aware so
-  new components self-link.
-- ✅ **#1036 routing-collision fix** (#1113) —
-  `RouteAnchors.unobstructed()` no longer reports a clear path when a
-  segment lies fully inside a non-rectangular component's bounding
-  box; regression test added. Reimplements community fix #1038 by
-  @Jinyuan426.
-- ✅ **#1042 export fix** (#1043, by @saschabuehrle) — exported
-  `.metal.py` scripts now include `from numpy import array`.
-- ✅ **TransmonCross non-uniform claws** (#1115) — optional
-  `claw_width_back` / `ground_spacing_back`; defaults unchanged so
-  existing designs render byte-identically. Reimplements #957 by
-  @clarkmiyamoto.
-- ✅ **Windows MetalGUI init safety** (#1110) — defensive
-  `QSystemTrayIcon` / `show()`-ordering guards, a
-  `QISKIT_METAL_DEBUG_INIT` trace, and a `tests-gui-display-windows`
-  CI job targeting the still-open on-screen init crash (#1048).
-  Defensive, not yet a confirmed fix — awaiting reporter validation.
-- ✅ **Security + CI hardening** — 10 Dependabot advisories cleared in
-  the dev/docs toolchain (#1111); CI `apt` setup hardened against
-  flaky third-party runner sources that were failing jobs before any
-  test ran (#1112).
+**v0.8.1: GUI stability**
+- Fixes for the GUI crash family (#1048) and interactive canvas editing.
+- `TransmonCross` `connector_location='270'` fix; angles wrap mod 360
+  (#1173, closes #1052).
+
+**v0.9.0 (September 2026): open-source FEM solver**
+- The gmsh + scikit-fem Maxwell solver (`qiskit_metal.analyses.fem`, extra
+  `[skfem]`) and tutorials 4.41–4.45, reproducing a published HFSS
+  package-mode study.
+- First shared solver-backend abstractions in `QGmshRenderer`: ports,
+  `group_map`, `mesh_spec`; simulation classes check renderer capabilities.
+- Shape rules in the design-rule check (self-intersection, sharp turn,
+  fillet starvation, pin alignment; dangling ends opt-in) and waivers.
+- Python 3.13 and 3.14; numpy 2; raised dependency minimums.
+- New components (`PolylineCPW`, `CapFingerInFrame`, `TransmonStar`), a
+  17-qubit surface-code example chip, and every notebook in one tree under
+  `docs/`.
+
+**v0.10.0 (November 2026): fixes and docs**
+- Python 3.11 is the minimum.
+- Fixes for #1202–#1234 and #1242–#1253: transmon, LOM, kappa, chi,
+  package-mode and resonator-fit formulas; GDS export; design-rule checks;
+  routing; components. Several change numbers or geometry (see the
+  changelog).
+- New documentation home page and navigation (#1255); tutorial 4.46 on
+  multipole qubit–mode coupling.
+- `import qiskit_metal` no longer imports `gdstk` or `qutip`.
+- The legacy HFSS renderer places junction boundaries along off-axis
+  junction lines (#1242); checked against stubs only, not in AEDT.
 
 ---
 
-## Near-term priorities `[planned]`
+## Now and next
 
-A rough priority order for the next cycle — shifts with user demand
-and contributor availability. Most items expand on dedicated sections
-below.
+**Desktop GUI**
+- `[in-progress]` macOS teardown crash family (#1048). Three GUI test modules
+  are opt-in with `--run-crashy-gui`. A second `MetalGUI` built in one process
+  after an application stylesheet is set still segfaults at exit (failure
+  mode 1 in `docs/architecture/gui_crash_defenses.md`).
+- `[planned]` Lift the `pyside6!=6.12.0` exclusion once a PySide6 release
+  fixes the `none_dealloc` abort on Python < 3.12.
+- `[planned]` Open GUI issues #1178 and #1103.
 
-1. **Re-verify the bug-triage queue against v0.7.x** (see "Known
-   bug-triage queue"). Several 0.5.x-era reports — especially the
-   Ansys 2025R1 cluster (#1041, #1046) on the old COM path — may
-   already be fixed by the `renderer_ansys_pyaedt` migration and just
-   need closing. Cheapest way to shrink the open-issue count.
-2. **Downstream ecosystem rollout** — file the migration issues for
-   SQuADDS / SQDMetal / pypalace against `quantum-metal>=0.7.1`.
-3. **KLayout handoff** — ship the `.lyp` layer file + Metal→KLayout
-   how-to (high-impact, low-effort: ~half a day total).
-4. **AI-orchestration docs** — `docs/orchestration.rst` + the
-   "Built for AI agents" page; the lite flip already removed the
-   dependency blockers, so this is mostly writing.
-5. **Palace plugin, eigenmode first** — a downstream package on the
-   solver-backend abstractions, after v0.9.0 (see "Solver backends").
-   Larger effort; external help wanted.
-6. **Design-rule-check (DRC) validation stage** (#1169, shipped v0.8.0) —
-   more rules and per-PDK rule sets remain. See the dedicated section
-   below.
-7. **Extend the design-examples gallery** — more patterns
-   (e.g. surface-code patch) now that the notebook pattern exists.
+**Ansys renderers**
+- `[planned]` Validate in AEDT the renderer fixes made in v0.9.0 and v0.10.0,
+  which are tested only with mocks or stubs. Needs a contributor with an
+  AEDT license.
+- `[planned]` Open issues that need an Ansys run or more information from the
+  reporter: #1041, #1019, #1017, #1015, #1005, #996, #995, #992.
 
----
+**API**
+- `[planned]` #1166: the `Vec3D.two_points_described` signature change needs
+  a deprecation path before it lands (public signatures do not break without
+  one).
+- `[research]` Rename the import path `qiskit_metal` → `quantum_metal` to
+  match the PyPI name. No release has been set.
 
-## Lite-by-default flip (v0.7.0) `[shipped]`
-
-The v0.6.x line shipped every heavy dependency in `[project.dependencies]`,
-so `pip install quantum-metal` pulled hundreds of MB and assumed Qt was
-welcome. **v0.7.0 flipped this**: heavies moved into opt-in extras
-(`[gui]` / `[ansys]` / `[mesh]` / `[full]`) and the base install became
-the orchestration-friendly minimal surface.
-
-Items shipped under this initiative (across v0.6.1 → v0.7.1):
-
-- ✅ Eager-import audit + lazification of `pyside6`, `gmsh`, `pyaedt`,
-  `pyEPR-quantum`. Module top-level imports moved into functions or
-  `__getattr__` shims; friendly `ImportError`s point users at the right
-  extra.
-- ✅ Test-suite skip-cleanliness via `pytest.importorskip` so the full
-  suite passes on a lite install (with skips, not failures).
-- ✅ `tests-lite` and `tests-extras` CI matrices — both run cleanly on
-  every PR. `tests-extras` runs `gui` / `ansys` / `mesh` / `fem`
-  independently.
-- ✅ `v0.6.2` deprecation release with `FutureWarning` advertising the
-  upcoming flip + the `[full]` opt-in path for stay-the-same users.
-- ✅ `v0.7.0` the actual flip — heavies out of base deps. README, install
-  matrix, migration guide all updated.
-- ✅ `v0.7.1` cleanup — added `[mesh]` as the canonical name for the
-  gmsh extra (`[fem]` kept as a backward-compatible alias); the
-  `README_Open_FEM_Stack.md` rename; ElmerFEM error-message UX fix.
+**Tutorials**
+- `[planned]` Follow-up notebook 55, which needs the scikit-fem backend to
+  read the `QGmshRenderer.group_map` scope.
+- `[planned]` Refresh stored outputs that need Qt or Ansys: the flip-chip
+  tutorial, the iSWAP full chips, A.4–A.7, 2.21, the LOM 1.0 notebooks after
+  #1207 and #1222, and the CR-gate notebook's `MetalGUI` cells.
+- `[planned]` An execution harness: run every runnable notebook in a scratch
+  copy, grouped by the extras it needs, with a time budget and a report of
+  errors and missing outputs. Stored outputs stay the reference answers and
+  are refreshed only in separate, reviewed changes.
 
 ---
 
-## Downstream ecosystem rollout `[in-progress]`
-
-The v0.7.0 / 0.7.1 lite flip changed the install surface
-downstream packages depend on (extras-by-default, lazified
-Qt / pyaedt / gmsh, friendlier `ImportError` UX, the
-`MetalGUI` → `qm.view()` headless path). To finish the
-rollout, each downstream package needs install instructions,
-lockfiles, and pins updated against `quantum-metal>=0.7.1`.
-
-Coordination plan: file an issue on each downstream repo
-with a recipe for the upgrade, link to
-`docs/migration-to-v0.7.0.rst`, and point at a worked
-example.
-
-Worked example to point at:
-[qdw26-workshop PR #1](https://github.com/quantum-device-consortium/qdw26-workshop-materials/pull/1)
-swapped a forked-Metal pin for mainline
-`quantum-metal[full]>=0.7.1` and includes the Apple-Silicon
-Docker pin, `schemdraw` addition, and palace auto-discovery
-fixes — a full migration in one diff.
-
-Per-issue contents:
-
-1. New install command (`pip install quantum-metal[ansys]`,
-   `[mesh]`, `[full]`, etc. — whichever extras that
-   downstream actually uses).
-2. Any lazy-import / `ImportError` UX changes that affect
-   their code paths.
-3. Link to `docs/migration-to-v0.7.0.rst`.
-4. Reminder about the planned `qiskit_metal` →
-   `quantum_metal` import-path rename, so they can plan
-   import updates. No release has been set for it.
-
-Known downstream packages:
-
-- **[SQuADDS](https://github.com/LFL-Lab/SQuADDS)**
-  (LFL-Lab @ USC) — design-discovery database, consumes
-  Metal `QDesign` objects. **`[planned]`** — issue to file.
-- **[SQDMetal](https://github.com/sqdlab/SQDMetal)**
-  (SQDLab @ UQ) — Palace simulation wrapper. **`[in progress]`**
-  — Palace integration coordinated in
-  [sqdlab/SQDMetal#67](https://github.com/sqdlab/SQDMetal/issues/67);
-  same migration plus the `MetalGUI` → `qm.view()` story for
-  headless Docker / Brev contexts.
-- **[pypalace](https://pypalace.readthedocs.io/)**
-  (Northwestern) — Palace wrapper. **`[planned]`** —
-  issue to file.
-- **[pyEPR](https://github.com/zlatko-minev/pyEPR)** —
-  **`[shipped]`** — co-maintained, compatibility through
-  v0.7.1 verified.
-- **[QDW 2026 workshop materials](https://github.com/quantum-device-consortium/qdw26-workshop-materials)**
-  — **`[shipped]`**, PR #1 merged; the canonical worked
-  example referenced above.
-
-If you maintain a package that depends on Metal and we
-haven't listed it, please open an issue here so we can
-add it (and help with the upgrade).
-
----
-
-## Next — AI-orchestration profile
-
-Once the lite flip lands, `pip install quantum-metal`
-becomes the recommended entry point for agents, optimizers,
-and any non-interactive workflow. This section ships
-explicit support for that use case:
-
-- **`docs/orchestration.rst`** `[planned, v0.7.x]`
-  End-to-end recipe: instantiate a design, build geometry,
-  export GDS, run analyses, all in <50 LOC, all without
-  Qt or AEDT. Includes the "what extras do I need for
-  what backend" matrix.
-- **Stable programmatic API contract** `[planned, v0.7.x]`
-  Document which methods / attributes on `QDesign`,
-  `QComponent`, and the renderer base classes are
-  considered public and stable for downstream
-  orchestrators. Internal-only helpers get an `_` prefix
-  or a `@_internal` marker where they aren't already.
-- **Determinism guarantees** `[research]`
-  Identify and fix sources of non-determinism in design
-  → geometry construction (dict ordering, float
-  comparisons, random IDs), so that two runs of the same
-  design produce the same artifact. Important for diffing
-  agent outputs.
-- **Renderer dispatch by string name** `[research]`
-  Currently most code paths assume the GUI or the user
-  knows which renderer to call. A
-  `design.render(backend="palace")`-style dispatch makes
-  orchestrators much easier to write.
-- **Packaged task definitions for assistant-driven design**
-  `[requested, research]`
-  Requested feature: ship reusable, machine-readable task
-  definitions ("skills") that let a coding assistant drive
-  Metal directly — place components, route, run a DRC pass,
-  export — from a natural-language description of the chip.
-  Format should be vendor-neutral (plain markdown + a
-  declarative manifest, no assistant-specific runtime), so
-  the same definitions work across tools. Depends on the
-  stable-API contract and determinism items above, and on
-  the DRC stage (#1169) for a machine-checkable success
-  signal. Scope and format still open.
-
----
-
-## Open FEM stack — gmsh + Elmer + AWS Palace `[research]`
-
-Today the only validated analysis path for full-field
-solving is the Ansys HFSS / Q3D bridge. This is excellent
-for industrial users but excludes everyone without an AEDT
-license — and blocks our own CI from validating the
-HFSS-specific bugs in the deferred list (see
-[`KNOWN_INWARD_PINS`](https://github.com/qiskit-community/qiskit-metal/blob/main/tests/test_qlibrary_pin_sanity.py)
-in the qlibrary pin-sanity test).
-
-The open FEM stack is the long-term answer. Three pieces:
-
-- **gmsh mesher** — `renderer_gmsh/` already exists. The
-  next step is tighter mesh control and port / boundary
-  tagging that both Elmer and Palace can consume.
-- **gmsh version audit** `[research]` — the pin is now
-  `gmsh>=4.15.0,<5` in both `pyproject.toml` and
-  `environment.yml` (sub-item (a) ✅ done). The 30 distinct
-  `gmsh.*` API entry points we use are all stable core OCC +
-  meshing + lifecycle calls, but with gmsh 5 on the horizon we
-  still should (b) walk the API call sites against the latest
-  4.x release notes to spot anything deprecated, and (c) survey
-  newer 4.x APIs (e.g. richer mesh refinement, boundary-tag
-  protocol improvements) that would unblock cleaner Palace and
-  Elmer integration. Remaining work is a research note for the
-  API survey.
-- **Elmer eigenmode solver** — `renderer_elmer/` already
-  exists. The integration needs a parity-check pass to
-  confirm it still works against current Elmer releases,
-  plus documentation of its scope (what kinds of designs
-  / analyses it does and doesn't handle today).
-- **AWS Palace** — open-source Maxwell solver from AWS.
-  Native MPI, modern CMake build, eigenmode + driven +
-  electrostatic. A Palace renderer following the
-  `QRendererAnalysis` protocol, shipped as a downstream
-  plugin (see "Solver backends"), would unblock
-  HFSS-free CI validation of the entire qlibrary, plus
-  give academic users a free path to full-field
-  analysis.
-- **OpenEMS as a third open-FEM option** `[research]` —
-  [openEMS](https://www.openems.de/) is easier to build than Palace
-  (no MFEM / libCEED) but more limited in capabilities. Could be a
-  quick-start FEM path for users who can't justify the Palace build
-  cost. A community
-  [Colab installation script for OpenEMS](https://github.com/OJB-Quantum/Notebooks-for-Ideas/blob/main/OpenEMS_Installation_Script_in_Colab.ipynb)
-  exists. Worth evaluating after Palace lands.
-
-Initial proof-of-concept order:
-1. Validate `renderer_gmsh/` outputs against current gmsh
-2. Build a minimal Palace renderer (the plugin) for eigenmode only
-3. Cross-validate one canonical design (e.g.
-   `TransmonPocket`) against a known HFSS result
-4. Document the gmsh-tag → Palace-port boundary contract
-   so other open solvers can plug in
-
-If you work on Palace, gmsh, or Elmer and want to help
-shape this — please open an issue or reach out on Discord.
-External contributor leverage is enormous here.
-
----
-
-## Design-rule-check (DRC) validation stage `[shipped, v0.8.0]`
-
-Tracking issue: #1169, closed. `qiskit_metal.validation` shipped in v0.8.0:
-
-```python
-from qiskit_metal.validation import validate
-result = validate(design)
-print(result)
-result.raise_if_errors()        # for a build script or CI gate
-```
-
-Seven rules, each with a configurable threshold, since process design kits
-differ:
-
-| Rule | Default | Severity | Basis |
-|------|---------|----------|-------|
-| `metal-overlap` | >1 µm² shared | error | shorted nets |
-| `metal-spacing` | 2 µm | error | min same-layer spacing, arXiv:2604.11379 (R8) |
-| `cpw-gap` | 3 µm | warning | TLS-loss floor, arXiv:2604.11379 (R1) |
-| `chip-bounds` | on-chip | error | clipped geometry |
-| `short-segment` | ≥ fillet radius | warning | the #1086 kink family |
-| `qubit-clearance` | 3× CPW width | warning | project heuristic, not literature |
-| `ground-continuity` | one connected sheet | warning | slotline modes, arXiv:2604.11379 (R9) |
-
-`ground-continuity` reports that the ground plane is split, not that a
-piece is floating: it sees one layer, so an airbridge tying two regions
-together is invisible to it. Its optional `max_void_size` check (R9's
-50 µm parasitic-cavity threshold) is off by default because a transmon
-pocket is a deliberate void far larger than that.
-
-Rules are layer-aware (an airbridge crossing a CPW is the point of an
-airbridge, not a short) and net-aware (a route abutting the pin it
-connects to is not a short). Both were false positives in the first
-draft, and both are regression-tested.
-
-Motivated by four defects that shipped through renders unflagged while
-building the README hero chip: resonators crossing their feedline (~283
-µm² of overlapping metal each), resonators running 9 µm from a transmon
-pocket (0.41× a CPW width), launchpads hanging 110 µm off the chip edge
-(which silently clipped a whole corner of ground plane), and route
-segments shorter than their fillet radius. `scripts/make_hero_gif.py`
-now gates every build on `validate(..., strict=True)`.
-
-`QMplRenderer` now draws the die outline, so `qm.view` and the Qt
-`MetalGUI` both show where the chip ends. Nothing on screen used to say
-that, which is why launchpads hanging off the edge kept shipping. Off
-via `qm.view(design, chip_outline=False)` or
-`renderer.options.chip_outline`.
-
-Tutorial 2.24 walks a design carrying one defect per rule through
-detection, diagnosis and fix, then covers threshold tuning, `strict=True`
-as a build gate, and writing a custom rule.
-`tests/test_reference_designs.py` gates the Appendix A reference designs:
-zero errors, and no warnings beyond a recorded `KNOWN_WARNINGS`
-baseline. Fixing those designs to pass it turned up a real defect —
-both multi-qubit references placed launchpads outside the default 9×6 mm
-die, so a corner of ground plane was being clipped on every render.
-`QDesignCheck` is deprecated in favour of this module (it is
-crossing-only and print-based, so it misses an overlap that stays within
-trace width — which is most of them).
-
-Remaining, roughly in payoff order:
-
-1. **More rules**: airbridge spacing below λ/4 on long CPW runs
-   (arXiv:2411.16967); unconnected/dangling route pins; minimum feature
-   width.
-2. **Per-PDK rule sets** — a `RuleSet` that can be loaded from a foundry
-   file rather than assembled by hand.
-3. **Cross-layer awareness for `ground-continuity`** — treat an airbridge
-   spanning two ground regions as connecting them, so the rule can
-   distinguish a bridged split from a genuine floating island.
-
-GDS-level DRC (min width/spacing on exported artifacts) stays out of
-scope — KLayout covers it.
-
----
-
-## Architectural items `[research]`
-
-Longer-horizon things that aren't blocking anything today
-but are worth tracking:
-
-- **PEP 561 type hints across `QComponent` / `QDesign`
-  / `QRenderer`.** Today the type surface is partial;
-  full hints unlock static analysis for orchestrators
-  and make the LLM-driven code-generation path more
-  reliable.
-- **Plugin discovery via entry points** `[planned]`
-  External renderers and component libraries currently
-  require monkey-patching or vendoring. A
-  `qiskit_metal.renderers` and `qiskit_metal.qlibrary`
-  entry-point namespace lets the community ship third-party
-  packages — and gives lab and community PDKs a clean
-  `pip install <pdk>` distribution channel without
-  requiring any change to Metal itself.
-- **Functional component API alongside class hierarchy** `[research]`
-  Add a `@qm.cell`-decorator path so a component can be a
-  Python function returning a `QComponent`, in parallel to
-  the existing class-based subclassing. Doesn't replace
-  the class API. Motivation: LLM / agent codegen is
-  measurably more reliable against pure functions returning
-  values than against class hierarchies with stateful
-  side-effects, so a functional surface is a useful
-  on-ramp for the AI-orchestration profile above.
-- **JAX-differentiable parametric components** `[research]`
-  Inverse-design / qubit-frequency tuning via `grad()` is
-  unlocked once a small set of geometric primitives are
-  JAX-traceable. Start with `TransmonPocket` as a pilot
-  (pad width / gap → frequency gradient via an analytical
-  capacitance model, no FEM in the loop). Big win for the
-  research audience that currently hand-rolls finite-difference
-  sweeps; pairs naturally with EPR analysis for
-  Hamiltonian-aware optimisation.
-- **Docs hosting reassessment.** GH Pages is current
-  (years of SEO). Read the Docs config archived at
-  `docs/_archive/readthedocs/` — revivable in minutes
-  if/when per-PR previews, versioned docs, or the
-  rebrand cutover make the switch worth it.
-
----
-
-## Group and lab adoption pathway
-
-The next-tier adopters for Metal — research groups, university
-labs, multi-PI consortia — evaluate against a recurring set of
-questions: *Is it maintained? Can we plug our own PDK in?
-Does the GDS round-trip cleanly through downstream tooling?
-Will it scale to Python-agent-driven design loops?* This
-section groups items aimed at those questions. Several
-overlap with the Adoption / DevRel section below; the cut is
-by *audience* — DevRel is about attracting individual users,
-this section is about clearing the path for groups and labs.
-
-*Items in this section reflect open-source community
-direction discussed within the Quantum Device Consortium
-(QDC) and the broader contributor base. They are
-aspirations, not commitments by any individual contributor
-or their employer.*
-
-### High impact, low effort
-
-- **Ship a Metal `.lyp` layer-property file** `[planned, v0.7.x]`
-  Users who open a Metal-exported GDS in KLayout currently
-  see grey-on-grey because no layer colours / names ship
-  with our GDS files. A one-page `.lyp` under
-  `docs/_static/` (linked from the GDS export docs) gives
-  them a named, coloured view out of the box. KLayout is
-  the de-facto open-source viewer in the GDS-handoff path;
-  making this handoff frictionless removes a real papercut.
-  ~2 hours.
-- **"Metal → KLayout" how-to page** `[planned, v0.7.x]`
-  Document the GDS-export → KLayout-DRC / visual inspection
-  flow, paired with the `.lyp` and a starter DRC deck
-  (below). Most superconducting-design flows in the
-  community already do both — making the combination
-  first-class instead of folklore reduces onboarding
-  friction. ~3 hours.
-- **"Built for AI agents" docs page** `[planned, v0.7.x]`
-  Companion to `docs/orchestration.rst` already on the
-  roadmap. The lite-by-default flip and `qm.view()`
-  removed the dependency surface that made agent-driven
-  workflows painful; this page makes the workflow
-  visible. Importantly, position Metal *with* the
-  ecosystem here — design discovery via
-  [SQuADDS](https://github.com/LFL-Lab/SQuADDS), solver
-  dispatch via [SQDMetal](https://github.com/sqdlab/SQDMetal)
-  / [pypalace](https://pypalace.readthedocs.io/),
-  quantisation via [pyEPR](https://github.com/zlatko-minev/pyEPR)
-  and [scqubits](https://github.com/scqubits/scqubits) —
-  rather than implying Metal does it all. The story is the
-  composable open-source stack, not Metal in isolation.
-  ~3 hours.
-
-### High impact, medium effort
-
-- **Tighten release cadence to monthly minimum** `[planned]`
-  Even pure-docs / test-only point releases. Prospective
-  adopters check commit + release pulse before committing
-  engineering time, and read steady cadence as a
-  maintenance signal more strongly than raw feature
-  surface. Quarterly is fine for features; monthly is
-  cheap and changes the perception.
-- **Starter DRC deck for superconducting basics** `[planned]`
-  A `qm.drc(design, deck="sc_basics")` helper that shells
-  out to KLayout with a minimal rule set: min line width,
-  min gap, JJ overlap minimums, ground-plane keep-outs.
-  Doesn't need to be comprehensive — needs to *exist*, so
-  PDK authors and labs have a template to extend instead
-  of starting from blank.
-- **"When to use Quantum Metal" docs page** `[planned]`
-  Use-case-driven framing (not framework-comparison):
-  which problems Metal is shaped for (qubit-first design
-  with energy-participation analysis, Hamiltonian
-  extraction, integration with the open-source SC qubit
-  toolchain), which adjacent workflows hand off elsewhere
-  (mask-level DRC, process-specific PDK rules, photonics).
-  Highly searched by evaluators; framing the fit ourselves
-  is more useful to readers than leaving them to
-  assemble it.
-- **Gallery + thumbnail component icons**
-  `[promoted from research]`
-  Already on the Adoption list and the Wish-list. Promote
-  to planned: visual component catalogue is a natural
-  strength of the class-based qlibrary and is currently
-  under-used. Pairs with the "When to use Metal" page
-  above as the visual half of the answer.
-- **Airbridge support** `[shipped, #1140/#1142]`
-  CPW crossings need airbridges to tie the ground plane together;
-  users used to hand-place them downstream. Shipped as a
-  first-class `Airbridge` `QComponent` (on `bridge_layer` /
-  `pad_layer`) plus `route_airbridges(design, route, ...)`
-  auto-placement along the route's filleted centerline
-  (`bridge_at_corners=True` guarantees one per bend). Because the
-  bridges are real components they render in `qm.view` and export
-  through every renderer, not just GDS. Tutorial 2.15.
-  The original approach — @clarkmiyamoto's PR #962
-  (`_populate_airbridge` + `make_airbridge.py`, GDS-export-only,
-  uniform bridges) — informed this and is now closed.
-  Remaining follow-ups: overlap / off-chip warnings, adjacent-CPW
-  handling, and the experimental 3D/Ansys span (Phase 4, #1138).
-
-### High impact, high effort
-
-- **Reference PDK** (`metal-pdk-academic` or similar)
-  `[research]`
-  Demonstrates the entry-points pattern from a realistic
-  angle, so subsequent community PDKs have a worked example
-  to follow. Without one, the entry-points hook is
-  abstract.
-- **Hosted web design viewer** `[research]`
-  Already on the Adoption / Bigger plays list. Flagship
-  demo plus a real adoption unlock — closes the "I want
-  to look at a Metal design without installing anything"
-  gap that today forces evaluators to clone the repo
-  before they see a chip.
-
-### Wish-list
-
-- **Salt-style extension marketplace / index page** `[wish]`
-  The simpler `awesome-quantum-metal` (already on the
-  adoption list) covers most of the need; a richer
-  in-app discovery surface is a stretch goal.
-- **Format converters to / from adjacent Python design
-  libraries** `[wish]`
-  Quantum and RF design teams increasingly use multiple
-  Python frameworks side by side. Clean component-level
-  converters would make Metal a friendly neighbour in
-  mixed pipelines. Best owned jointly with the relevant
-  project teams if there's interest.
-- **Annual "State of Quantum Metal" report** `[wish]`
-  Already on the Adoption list as research. Doubles as
-  community visibility for grant proposals and external
-  reporting.
-
----
-
-## Adoption, DevRel, and onboarding
-
-Making sure people *find* the project, *try* it, and *stick with* it.
-Ideated post-v0.7.0 lite-by-default flip (which finally made one-click
-trial viable).
-
-### Shipped (v0.7.1)
-
-- ✅ **"Open in Colab" button** in the README → tutorial 1.2 Quick Start
-- ✅ **"Open in Codespaces" button** in the README
-- ✅ **`CITATION.cff`** — GitHub "Cite this repository" widget on the repo page
-- ✅ **Badge row refresh** — PyPI downloads, Python versions, CI, docs, stars, contributors
-- ✅ **Repo description + GitHub topics** — punchy one-liner + tags for
-  GitHub-search discoverability
-- ✅ **Hero animated GIF** — 4-qubit chip built in 5 frames, embedded in README
-- ✅ **Issue-template modernization** — Bug / Feature / Docs templates
-  refreshed with v0.7.0 install paths, code-block sections for repros and
-  tracebacks, and ROADMAP / FAQ pointers. Issues (not Discord) are the
-  canonical route for support requests so nothing gets lost in chat
-  scrollback. `.github/ISSUE_TEMPLATE/config.yml` surfaces Docs / Roadmap
-  / PyPI links plus Discord as a community-chat link (NOT a support route).
-- ✅ **JupyterLite on the docs site** — an in-browser Jupyter (Pyodide
-  kernel, zero install) under `/lite/` on the published docs site. No
-  notebooks are bundled yet: `jupyterlite_contents` in `docs/conf.py`
-  names `tutorials/`, which does not exist under `docs/`. Bundling the
-  notebooks that need no external solver or desktop GUI is `[planned]`,
-  after checking that the package installs in the Pyodide kernel.
-
-### Quick wins (≤2 hours each)
-
-- **Open Graph image** `[research]` — controls how the repo / docs preview
-  when shared on Twitter / Slack / Discord. Currently uses the GitHub
-  default which is much weaker than a designed image would be.
-- **Better Colab onboarding** `[shipped, v0.7.2]` — every numbered
-  tutorial plus every circuit-example carries Colab + Binder badges
-  and a commented ``!pip install -q quantum-metal`` cell at the top.
-  The new ``qm.gui(design)`` factory + ``MetalGUIHeadless`` mean Qt /
-  PySide6 friction is gone: the same tutorial code paths render as a
-  Qt window locally and as inline matplotlib in Colab/Binder. Headless
-  detection covers ``QISKIT_METAL_HEADLESS=1``, Google Colab, Binder
-  env vars, Linux without ``DISPLAY``, and missing PySide6.
-
-### Medium effort (~half-day each)
-
-- **QComponent gallery page** (`docs/qcomponents-gallery.rst`)
-  `[shipped, v0.7.2]` — sphinx-design grid of every ``QComponent``
-  shipped with Quantum Metal, grouped by category (qubits, couplers,
-  routes, resonators, terminations, lumped, sample shapes). Each card
-  has the thumbnail + a short description + a click-through to the
-  autodoc page. Regenerated at every docs build by
-  ``_dev/generate_qcomponent_gallery.py``; the same thumbnails feed
-  the MetalGUI Library pane at runtime. The broader "design examples"
-  gallery is now `[in-progress]`: its first three entries — single
-  transmon + readout, two coupled transmons, and 4-qubit multiplexed
-  readout — shipped in #1108 under **Tutorials → Full-Chip Design
-  Examples**. More patterns (e.g. surface-code patch) still `[planned]`.
-- **`SUPPORT.md` + `GOVERNANCE.md`** `[planned]` — currently support info is
-  scattered across README / FAQ / contributor-guide. A single `SUPPORT.md`
-  consolidates "where to ask, response expectations." `GOVERNANCE.md`
-  matters for institutional adopters (labs, companies) deciding whether to
-  commit time.
-- **Devcontainer config** (`.devcontainer/devcontainer.json`)
-  `[planned]` — one-click cloud dev environment from any GitHub page.
-  Pairs with the lite install for a 90-second "open and run." (Note:
-  Codespaces *button* already shipped in v0.7.1 — this is the
-  devcontainer that customizes the env it launches into.)
-- **Recipes section in docs** `[planned]` — short focused how-tos
-  ("Design a CPW resonator at 5 GHz", "Sweep transmon pad gap and extract
-  frequency", "Export GDS with custom layer mapping"). Each <50 LOC,
-  copy-paste-runnable. Tutorials are deep dives; recipes are the
-  Stack-Overflow-style "I just want to do X" entry point.
-
-### Bigger plays (multi-day)
-
-- **`awesome-quantum-metal` companion repo** `[research]` — curated list:
-  papers using Metal, lab tooling on top of Metal, talks, integrations.
-  Community-curated, standard `awesome-*` pattern.
-- **"When to use Metal" page** `[research]` — use-case-driven
-  framing of which problems Metal is shaped for and which
-  workflows hand off elsewhere. Highly searched by evaluators.
-  (Superseded direction for the older "comparison page" idea —
-  see the parallel item under "Group and lab adoption pathway".)
-- **Web-based read-only design viewer** `[research]` — overlaps with the
-  Jupyter widget viewer in the renderer roadmap; a web-hosted version on
-  the docs site would be a flagship demo.
-- **Annual / quarterly community report** `[research]` — "State of Quantum
-  Metal 202X" with downloads, contributors, papers citing, new features.
-  Community visibility artefact, useful for grant proposals and
-  external reporting.
-
----
-
-## Tutorials: structure, backend-swappable analysis, execution harness `[planned]`
-
-The tutorials and examples are 94 notebooks under `docs/tut/` and
-`docs/circuit-examples/`. CI executes 27 of them under the lite install
-(`_dev/rerun_auto.py` with `_dev/notebooks-auto-refresh.txt` and
-`_dev/notebooks-frozen-qt.txt`); the rest need Ansys, gmsh, ElmerFEM or
-the GUI and run only by hand.
-
-1. **Structure.** Categories with one suggested learning path; the
-   full-chip examples in order; links into the component gallery; later
-   notebooks reusing designs built in earlier ones instead of rebuilding
-   them; a thumbnail per notebook on the index pages and short feature
-   animations on the landing page.
-2. **Backend-swappable analysis tutorials.** Once `renderer_name` selects
-   the solver (see "Solver backends"), an analysis tutorial runs on the
-   pip-installable scikit-fem path first and on ElmerFEM where it needs
-   more, with the Ansys run and its stored outputs kept as a subsection.
-   Stored outputs remain the reference answers.
-3. **Execution harness.** Extend `_dev/rerun_auto.py` to every runnable
-   notebook, grouped by the extras it needs (lite, `[skfem]`, `[mesh]`,
-   external solvers). Each notebook executes in a scratch copy with a time
-   budget; the report lists errors, cells without outputs and run times.
-   Cells that need an external solver are skipped unless enabled, and
-   stored outputs under `docs/` are never rewritten by a check run. Run
-   locally before each release; the `[skfem]` group can join CI.
-   Refreshing a notebook's stored outputs stays a separate, reviewed
-   change, made when its code changes what it prints or draws or when an
-   output is known to be stale. Solver results are refreshed only by
-   running that solver; the curated GUI screenshots only through the
-   manual `notebooks-qt-refresh` workflow.
-4. **End-to-end renderer checks.** Each registered renderer runs a small
-   design end to end at its test tier (see "Testing solvers without losing
-   the stored answers" under "Solver backends"): scikit-fem in CI,
-   ElmerFEM, Palace and Ansys locally.
-
----
-
-## Docs build cleanup `[research]`
-
-Internal Sphinx fragilities deferred during the May 2026 docs-build pass
-([PR #1085](https://github.com/qiskit-community/qiskit-metal/pull/1085)).
-The build is currently clean (0 warnings), but two latent foot-guns remain
-for future contributors to be aware of:
-
-- **Analyses-module alias paths** — classes in `qiskit_metal.analyses` are
-  reachable through both the `__init__.py` re-export and the real submodule
-  path; autodoc registers them under both, raising `duplicate object
-  description` warnings if toctree structure ever changes.
-- **Autosummary code-block leak** — Sphinx's autosummary scans `.. autosummary::`
-  directives even inside `.. code-block::` examples, which can generate
-  phantom RST files. PR #1085 worked around by escaping directive names in
-  the contributor guide.
-
-Full background and remediation options are in PR #1085's discussion.
-
----
-
-## Open items after the #1202–#1234 batch (October 2026) `[planned]`
-
-Left over from #1235 and #1236. Each line says where to start.
-
-**CI / GUI**
-
-- `pyside6!=6.12.0` (in `pyproject.toml` `[gui]`/`[full]` and
-  `environment.yml`): 6.12.0 aborts a `MetalGUI` process with
-  `none_dealloc: deallocating None` on Python < 3.12. Lift the exclusion
-  once a PySide6 release fixes it; check with Python 3.11 and
-  `sys.getrefcount(None)` around `processEvents` (see lessons-learned).
-- Intermittent macOS GUI test failures remain: `test_gui_nudge`
-  (`MARKER_SELECTED` missing, also on `main` at 7a8d9d4) and a CoreGraphics
-  segfault in `test_gui_left_dock_min_width` (glyph rendering after
-  `resizeDocks`). Tracked with #1048 / #1200.
-- Building a second `MetalGUI` in one process after an application
-  stylesheet is set (`gui.set_font_size(...)`) segfaults at exit in
-  `_teardown_qt_widgets` (`QMenuBar::eventFilter`, failure mode 1 in
-  `docs/architecture/gui_crash_defenses.md`). Reproducible 3/3; not fixed.
-
-**Analysis**
-
-- LOM 2.0 `TL_RESONATOR` keeps one mode. Through a two-node bus the
-  omitted modes enter with alternating sign, so an `n_modes` option needs
-  many modes or an analytic tail correction (numbers in the
-  `TLResonatorBuilder` docstring, #1219).
-- LOM paper (arXiv:2103.10344) Eq. 13a writes 1/C_eff = 2 C⁻¹, a factor 2
-  relative to Eq. 8; the code uses 1. Confirm the paper's convention.
-- `Hcpb.nlevels` setter calls `__init__`, which resets `Ej`/`Ec` to `None`.
-- `hamiltonian_results` prints `np.float64(...)` in its frequency dict
-  under numpy 2 (visible in tutorial 4.04).
-- `fit_transmission(detrend=False)` with a large cable delay still starts
-  from zero delay.
-
-**Tutorials that need Qt or Ansys to refresh**
-
-- FlipChip tutorial (Layers dock screenshot; Ansys cells after the
-  `ReadoutResFC` layer change, #1224).
-- Full-Physical-Design-of-iSWAP-Gates: `tline` `total_length` 4.75 mm is
-  below its 4.957 mm minimum route and now warns.
-- A.4–A.7 and 2.21: stored `gds.options` prints and cheese counts
-  (#1214, #1223); A.4 `Read_Q_Main` figures (#1225).
-- LOM 1.0 notebooks 4.01, 4.11, 4.13, 4.21, A.4, A.6: E_J +0.08 % (#1207),
-  bus–bus g about 1.6× (#1222), new `T1`/`T1bus` columns.
-- The CR-gate notebook's `MetalGUI` cells.
-
-## Known bug-triage queue `[needs re-verification]`
-
-10 issues triaged on 2026-05-22 (now ~2.5 months stale against the current
-v0.8.0 release — two have since been fixed, see below; the rest still need
-a re-triage pass). **All reports are on Metal 0.5.x or earlier**
-(0.1.5 / 0.5.2.post4 / 0.5.3.post1); most not yet re-verified against
-v0.8.x. Before acting on any, reproduce on a current `quantum-metal[full]`
-install — some may have been fixed by the lite-flip / renderer-protocol /
-Qt6 work and just need closing.
-
-**Real bugs with reproducer + community-proposed fix:**
-
-- ✅ `[shipped]` [#1036](https://github.com/qiskit-community/qiskit-metal/issues/1036)
-  `RoutePathFinder` path-penetrates-component — `unobstructed()` returned
-  True when both segment endpoints lie inside a component bounding box even
-  though the segment intersects the actual contour. **Fixed in #1113**
-  (reimplements the community fix #1038 by @Jinyuan426, with a regression
-  test).
-- ✅ `[shipped]` [#1086](https://github.com/qiskit-community/qiskit-metal/issues/1086)
-  `RouteMeander` produces asymmetric geometry for rotated routes. **Fixed
-  in commit `541ddf667`** (part of the v0.8.0 bump, capping
-  `meander_number` in `meandered.py`); `scripts/make_hero_gif.py` still
-  references the fix in a comment on its sizing logic.
-
-**Easy / small fixes:**
-
-- ✅ `[shipped]` [#1042](https://github.com/qiskit-community/qiskit-metal/issues/1042)
-  `design.to_python_script()` omitted `from numpy import array` from the
-  generated header. **Fixed in #1043** (by @saschabuehrle).
-
-**Ansys 2025R1 compatibility cluster** (likely related):
-
-- [#1041](https://github.com/qiskit-community/qiskit-metal/issues/1041)
-  `EPR Analysis: TypeError: tuple indices must be integers or slices,
-  not Quantity` in pyEPR's `DistributedAnalysis`.
-- [#1046](https://github.com/qiskit-community/qiskit-metal/issues/1046)
-  `sim.save_screenshot()` throws COM/RPC error on Ansys 2025R1.
-
-  Both on Metal 0.5.x + old `renderer_ansys` COM path. Worth re-trying
-  with v0.7.x + the new `renderer_ansys_pyaedt` (no COM); may already
-  be resolved.
-
-**Qt6 / native crashes — `qm.view()` headless alternative now exists:**
-
-- [#1048](https://github.com/qiskit-community/qiskit-metal/issues/1048)
-  `[in-progress]` MetalGUI segfaults at `main_window.show()` on Ubuntu
-  24.04 + PySide6 6.11.0. Plain `QMainWindow().show()` works, so it's a
-  Metal-specific Qt6 interaction. v0.7.0's `qm.view()` is the documented
-  headless path for these users; longer-term plan is the Jupyter
-  `qm.gui()` widget. **Progress:** the at-exit teardown segfault was
-  fixed in #1104 (v0.7.4); #1110 added defensive init guards
-  (`QSystemTrayIcon` availability check, single late `show()`), a
-  `QISKIT_METAL_DEBUG_INIT` trace, and a `tests-gui-display-windows` CI
-  job for the still-open on-screen init crash — not yet confirmed fixed,
-  awaiting reporter validation.
-
-**Needs reproducer:** (none remaining in this batch — see shipped fixes below)
-
-- ✅ `[shipped]` [#1052](https://github.com/qiskit-community/qiskit-metal/issues/1052)
-  `TransmonCross` `connector_location='270'` placed the connector on the
-  east arm instead of the south arm — the rotation chain had no branch
-  above 225°, so 270 matched the `> 135` test. **Fixed**, and
-  `connector_location` now wraps mod 360 so out-of-range angles no
-  longer land arbitrarily (#1174, which also hardened
-  `TransmonCrossFL`'s south-arm flux-line warning).
-
-**Filed by us (info-only, needs external action):**
-
-- [#1079](https://github.com/qiskit-community/qiskit-metal/issues/1079)
-  HFSS / Q3D runtime validation needed for the lite-flip lazy-imports
-  (PR #1078). Needs someone with an AEDT license to spot-check.
-
----
-
-## External workshops & training `[reference]`
-
-Curated workshop materials that exercise Metal end-to-end.  Not maintained
-as part of this repo — version pins float independently.
-
-- **QDW 2025 — `tutorials_quantum_device_design`** `[frozen, pre-v0.5]`
-  https://github.com/zlatko-minev/tutorials_quantum_device_design
-
-  4-notebook walkthrough: layout → transmon+resonator → qubit-qubit
-  coupling → end-to-end project. Uses **Palace** (open FEM) via
-  **SQDMetal**. Pinned to `pyepr-quantum==0.8.5.7` + `pyaedt==0.6.46`,
-  Metal pre-v0.5 era. Historical reference — bringing it forward would
-  mean re-validating against current SQDMetal + Palace + Metal chain
-  (high effort, not planned).
-
-- **QDW 2026 — `qdw26-workshop-materials`** `[active, near-mainline]`
-  https://github.com/quantum-device-consortium/qdw26-workshop-materials
-
-  Same 4-notebook progression, now Dockerized with `uv` lockfile.
-  Currently pinned to `abhishekchak52/qiskit-metal@gui-import-isolation`
-  (a pre-release fork of what is now v0.7.0 lite-flip). **Quick
-  follow-up:** swap that pin for mainline `quantum-metal>=0.7.1` from
-  PyPI (one-line change, removes the fork dependency).
-
----
-
-## GUI / UX wishes `[wish-list]`
-
-Small UX improvements collected from real use. Lower priority than the
-roadmap items above, but tracked so they don't get lost.
-
-- **Thumbnail icons in the GUI library toolbar** `[wish]` — the left-side
-  component browser currently shows a flat text list (`TransmonPocket`,
-  `TransmonCross`, ...). A small preview icon next to each name would let
-  users pick a geometry visually. Applies to both the Qt `MetalGUI` and
-  the future Jupyter `qm.gui()` library panel. Implementation can reuse
-  the same reproducible-asset pattern as the hero GIF.
+## Research and help wanted
+
+**Solver backends** `[research]`. Goal: an analysis tutorial runs on Ansys,
+ElmerFEM, scikit-fem or AWS Palace by changing the renderer name, and each
+solver is checked against the others. The design and gap analysis are in
+`docs/architecture/solver_backends.md`; the user-facing summary is
+`docs/simulation-pathways.rst`.
+
+1. **Shared abstractions in core** `[in-progress]`: ports, mesh-size
+   control, named physical groups, boundary conditions, materials from the
+   layer stack, net naming and sign convention for capacitance matrices,
+   backend-neutral solve setups, and declared capabilities. Ports,
+   `group_map`, `mesh_spec` and capability checks shipped in v0.9.0.
+2. **scikit-fem and ElmerFEM** on those abstractions: scikit-fem reads its
+   geometry from `group_map` and `mesh_spec` and becomes a
+   `renderer_name="skfem"` backend for eigenmode and capacitance; ElmerFEM
+   gains eigenmodes with lumped junctions, cross-checked against
+   scikit-fem. ElmerFEM still hard-codes materials and labels nets
+   differently from Q3D.
+3. **AWS Palace** as a downstream `quantum-metal-palace` plugin, following
+   the RFC in [sqdlab/SQDMetal#67](https://github.com/sqdlab/SQDMetal/issues/67).
+   First slice: transmon + launchpad + CPW → gmsh → Palace eigenmode with one
+   lumped port, checked against an HFSS reference. Tested locally (MPI).
+4. **Ansys HFSS / Q3D**, a separate track gated on AEDT validation: make the
+   pyaedt renderers drivable by the simulation classes, fill the Q3D
+   capacitance stub and keep mutual-capacitance signs, reconcile the COM and
+   pyaedt conventions (voltage-line direction, sample-holder options), and
+   move the EPR step to pyEPR's gRPC path (`PyaedtDistributedAnalysis`)
+   after checking it covers surface and dielectric loss.
+5. **The renderer contract written down**: which calls each solve type
+   needs and how capabilities are reported, for every backend.
+6. **Testing without losing the stored answers**: reference numbers
+   extracted from stored notebook outputs into version-controlled files;
+   analytic and tiny scikit-fem checks in CI, larger runs opt-in, ElmerFEM,
+   Palace and Ansys local only.
+
+**Open FEM, further out** `[research]`. A gmsh API audit ahead of gmsh 5;
+openEMS as a lighter open-FEM option once Palace lands.
+
+**Design-rule checking** `[research]`. More rules (airbridge spacing on long
+CPW runs, minimum feature width); per-PDK rule sets loaded from a file;
+cross-layer `ground-continuity` that treats an airbridge as connecting two
+ground regions. GDS-level DRC stays with KLayout.
+
+**KLayout handoff** `[planned]`. Ship a `.lyp` layer-property file for
+exported GDS, a Metal → KLayout how-to, and a starter KLayout DRC deck for
+superconducting basics that PDK authors can extend.
+
+**Scriptable and agent-driven use** `[research]`. An orchestration guide (a
+design built, checked, exported and analyzed in a short headless script); a
+documented stable public API for `QDesign`, `QComponent` and the renderer
+bases; deterministic geometry construction so two runs give the same
+artifact; vendor-neutral task definitions that let a coding assistant drive
+Metal, with DRC as the success signal.
+
+**Architecture** `[research]`. PEP 561 type hints across the core classes;
+entry-point discovery for third-party renderers and component libraries
+(and a reference PDK package that uses it); a functional component API
+beside the class hierarchy; JAX-differentiable parametric components,
+starting with `TransmonPocket`.
+
+**In the browser** `[research]`. Bundle the notebooks that need no external
+solver into the JupyterLite site (`jupyterlite_contents` in `docs/conf.py`
+still points at a missing `tutorials/` folder); a read-only web design
+viewer.
+
+### Needs re-verification
+
+Recorded earlier and not checked against v0.10.0:
+
+- Ansys 2025R1 reports #1046 and the AEDT spot-check request #1079.
+- Airbridge follow-ups: overlap and off-chip warnings, adjacent-CPW handling.
+- LOM 2.0 `TL_RESONATOR` keeps one mode (#1219 docstring); the LOM paper's
+  Eq. 13a factor of 2; `Hcpb.nlevels` resetting `Ej`/`Ec`;
+  `hamiltonian_results` printing `np.float64(...)` under numpy 2;
+  `fit_transmission(detrend=False)` starting from zero cable delay.
+- pyEPR packaging: `pywin32` declared only in its `[pyaedt]` extra (a fix in
+  pyEPR, not here).
 
 ---
 
 ## How to help
 
-- **Use it and file issues.** Especially: anything that
-  bit you when you went off the happy path.
-- **Try the lite install** once v0.7.0 ships (or now,
-  with `pip install quantum-metal --no-deps` followed by
-  the deps you actually want) and tell us what breaks.
-- **Bring a backend.** If you maintain or work with an
-  open-source EM solver and want to see it as a
-  first-class Quantum Metal target, the renderer
-  protocol is documented in
-  [`docs/architecture/renderer_protocol.md`](https://github.com/qiskit-community/qiskit-metal/blob/main/docs/architecture/renderer_protocol.md).
-- **Join the conversation.** Discord:
-  https://discord.gg/FPNybyfpxd. QDC governance page:
-  https://qdc-qcsa.vercel.app.
-
----
-
-## Solver backends: shared abstractions, then scikit-fem, ElmerFEM, Palace and Ansys `[research]`
-
-Tutorials 4.41–4.45 (`docs/tut/4-Analysis/4.4*`) run eigenmode, driven
-(impedance) and electrostatic calculations with gmsh + scikit-fem + SciPy,
-from `docs/tut/resources/package_modes/`, and reproduce a published HFSS study
-to within a few percent. The goal is for the analysis tutorials to run on
-Ansys, ElmerFEM, scikit-fem or AWS Palace by changing the renderer name, and
-for each solver to be checked against the others. User-facing summary of the
-paths today: `docs/simulation-pathways.rst`. Design notes for the scikit-fem
-solver: `docs/architecture/open_fem_scikit_fem.md`.
-
-Today the switch point is `renderer_name` in the simulation classes
-(`analyses/simulation/`), whose contract with a renderer is informal and
-follows the Ansys renderers (`initialize_eigenmode`, `analyze_setup`,
-`get_convergences`, `set_mode` / `plot_fields`, `initialize_cap_extract`,
-`get_capacitance_matrix`). `QElmerRenderer` covers electrostatics through a
-different API (`add_solution_setup`, `run`, `capacitance_matrix`).
-
-A Palace design exists as an RFC in
-[sqdlab/SQDMetal#67](https://github.com/sqdlab/SQDMetal/issues/67): a
-`QPalaceRenderer` on the `QRendererAnalysis` seam composing `QGmshRenderer`,
-adapting SQDMetal's Palace pipeline (port vocabulary, gmsh wrappers,
-parsers), with small additive seams in Quantum Metal core. First slice: a
-transmon + launchpad + CPW → gmsh → Palace eigenmode with one lumped port,
-checked against an HFSS / SQDMetal reference.
-
-### Stage 1 — shared abstractions in core (lands first)
-
-Backends differ in what they can do; the aim is to make those differences
-explicit and small, not to hide them. Everything below lives in Quantum Metal
-core, is solver-neutral, and is what each backend reads:
-
-- **Ports**: one vocabulary for lumped ports (sheet or line), junctions
-  (open, lumped inductor, lumped port) and wave ports, attached to pins or
-  explicit geometry.
-- **Mesh-size control**: named refinement regions and per-region size fields
-  (metal edges, a sphere around each junction, the bulk), a global maximum,
-  in physical units.
-- **Named physical groups**: a structured map from roles (metal nets,
-  dielectrics, ports, boundaries, symmetry faces) to mesh entities, returned
-  by `QGmshRenderer`, replacing string matching.
-- **Boundary conditions**: perfect conductor, symmetry planes (PEC / PMC),
-  absorbing / radiation, surface impedance (e.g. kinetic inductance).
-- **Materials** from the layer stack (permittivity, loss tangent).
-- **Net naming and sign convention** for capacitance matrices, so
-  `LOManalysis` reads every backend the same way.
-- **Solve setups**: backend-neutral descriptions of eigenmode, driven and
-  electrostatic studies.
-- **Capabilities**: each backend declares which solve types, ports,
-  boundary conditions and outputs (EPR, convergence history, field plots) it
-  supports; the simulation classes check before running and fail with a
-  message naming the backends that can do it. The same table feeds
-  `docs/simulation-pathways.rst`.
-
-Before building these, a **gap analysis**: SQDMetal's Palace pipeline,
-pypalace, the Ansys renderers and `QGmshRenderer` / `QElmerRenderer` side by
-side — which of the abstractions above Quantum Metal already has, which it
-lacks, and which the others rely on. Done: the gap tables, the design, the
-decisions taken and the step-by-step sequence are in
-`docs/architecture/solver_backends.md`.
-
-### Stage 2 — backends on the shared abstractions
-
-1. **scikit-fem** (pip-only, runs in CI).
-   - Done (September 2026): the solver moved from the tutorial module into
-     `qiskit_metal.analyses.fem` and `qiskit_metal.analyses.em.package_modes`,
-     and `package_modes.py` is a thin wrapper, so 4.41–4.45 run unchanged.
-     Install: `pip install "quantum-metal[skfem]"`.
-   - To do:
-     - reading the geometry from `QGmshRenderer.group_map` and `mesh_spec`
-       instead of the tutorial mesher;
-     - a `renderer_name="skfem"` backend for the eigenmode and capacitance
-       flows.
-2. **ElmerFEM beyond electrostatics**: eigenmodes with lumped junctions from
-   Elmer's electromagnetic-wave solvers; cross-check against scikit-fem (the
-   4.19 cell, the 4.43 package).
-3. **Palace**: a downstream `quantum-metal-palace` plugin as in the RFC,
-   after v0.9.0; tested locally first (MPI binary). It reads the stage-1
-   abstractions.
-4. **Ansys HFSS / Q3D**: stays fully supported. In principle the Ansys
-   renderers read the same abstractions too, but any change to
-   `renderer_ansys*` is gated on validation in AEDT (see "Hard constraints"
-   in `CLAUDE.md`) and belongs to the Ansys track below.
-
-### Stage 3 — the renderer contract, written down
-
-Which calls each solve type needs (eigenmode, capacitance, driven), how
-"convergence" maps onto single-pass solvers, and how capabilities are
-reported — for all backends, Ansys included.
-
-### Ansys track (separate)
-
-Moving from the COM renderer (`renderer_ansys`) to current pyaedt
-(`renderer_ansys_pyaedt`; pinned `>=0.21,<0.24` below Python 3.14, `>=1.0.1`
-on 3.14) is its own project. It needs an AEDT test environment for every
-step, so it runs on its own track, with the stored HFSS / Q3D tutorial outputs
-as the reference answers until such an environment exists. Related: the
-Ansys 2025R1 issues (#1041, #1046) and the runtime spot-check request (#1079)
-under "Known bug-triage queue".
-
-The target is the pyaedt renderers: the COM renderers run only on Windows,
-while pyaedt runs wherever AEDT does. pyEPR already has a pyaedt path
-(`PyaedtDistributedAnalysis`). A pyaedt renderer can implement the stage-1
-neutral protocol directly (`docs/architecture/solver_backends.md`, 3.12)
-instead of the COM track's informal method list. The locked pyaedt versions
-are 0.23.0 (below Python 3.14) and 1.7.0 (Python 3.14, the latest release).
-Changes to the pyaedt renderers use only calls that both versions have.
-
-**Fixed in September 2026, not yet run in AEDT.** Each fix has a test that
-uses mocks; `changelog.md` has the details.
-
-- **pyaedt HFSS input check.** The renderers drew nothing unless both
-  `port_list` and `jj_to_port` were given, so the eigenmode renderer never
-  drew anything.
-- **COM HFSS `TypeError`.** It was raised for ports given without
-  `open_terminations`.
-- **pyaedt Q3D `TypeError`.** It was raised when `open_pins` was not given.
-- **pyaedt eigenmode `analyze_setup`.** For a setup that did not exist yet,
-  it called a driven-modal method.
-- **Q3D per-pass units.** Per-pass matrices were labeled "fF" but held
-  farads.
-- **pyaedt HFSS `default_setup`.** It was a one-element tuple.
-- **COM HFSS port height.** Port sheets were drawn at z = 0 on raised chips.
-- **pyaedt autosave options.** They had no effect, and closing forced AEDT
-  autosave on.
-- **Setup arguments.** An explicit `False` or `0` was replaced by the
-  default.
-
-**Open in the Ansys renderers** (found in the solver-backends gap analysis;
-the design note, section 2, has file references):
-
-- **pyaedt renderers cannot be driven by the simulation classes.** They lack
-  `execute_design`, `initialize_*`, `get_convergences`, `set_mode`,
-  `plot_fields` and the `epr_*` methods. The registered `aedt_hfss` defaults
-  to `renderer_type="HFSS"`, which is not one of `HFSS_DM`, `HFSS_EM`, `Q3D`,
-  so the tutorials create the eigenmode and driven-modal classes directly.
-- **pyaedt eigenmode** refuses `port_list` and `jj_to_port`.
-- **pyaedt Q3D.** `get_capacitance_matrix` is a stub, and
-  `get_capacitance_all_passes` returns magnitudes, losing the sign of the
-  mutual capacitances.
-- **pyaedt mesh and wirebonds.** `add_mesh` is empty, so there are no
-  junction or port mesh operations. Wirebond rendering is commented out.
-- **The two tracks disagree on:**
-  - the voltage-line direction: COM runs along the sheet's axis from the low
-    to the high coordinate (pyEPR `make_center_line`), whatever way the pin
-    faces, while pyaedt follows the pin normal. Junction EPR signs depend on
-    it.
-  - the meaning of `sample_holder_top` / `sample_holder_bottom`:
-    coordinates in pyaedt, distances in COM.
-- **Both tracks assume pins along x or y**, for port sheets and endcaps.
-- **Not exposed in either track:** absorbing or radiation walls, symmetry
-  planes, surface impedance (kinetic inductance), finite conductivity, and
-  wave ports.
-- **The `<renderer>_mesh_kw_jj` junction column** is written but never read.
-- **COM `get_convergences`** writes `hfss_eig_f_convergence.csv` into the
-  working directory.
-- **`ScatteringImpedanceSim`** never fills its `param_z` / `param_y` /
-  `param_s` data labels; results are reached through `plot_params`.
-
-**Open in the open-FEM path**, each assigned to a stage-1 step in the design
-note:
-
-- gmsh endcaps assume pins along x or y (step 1.6).
-- The gmsh and ElmerFEM renderers do not read the `helper` column.
-- ElmerFEM:
-  - hard-codes its materials (step 1.7);
-  - writes a placeholder ground self-capacitance (300 fF);
-  - labels and orders nets differently from Q3D (steps 1.3 and D3).
-
-**EPR over gRPC, and the pyEPR `pywin32` marker** (noted October 2026, from a
-user report; checked against the local pyEPR 1.0.2 checkout, not run on
-Windows).
-
-- **Metal's EPR step still goes through COM, in both renderers.** The legacy
-  `renderer_ansys` and the pyaedt renderer's `run_epr()` both call
-  `epr.ProjectInfo()` and `epr.DistributedAnalysis`. pyEPR 1.0.2 already ships
-  `pyEPR/ansys_pyaedt.py` (`PyaedtDistributedAnalysis`, gRPC, no COM), which
-  its docstring says was checked against the COM path (`p_mj = 0.9755`).
-  Metal does not use it yet.
-- **Packaging bug in pyEPR (one-line fix, there rather than in Metal).** The
-  base install imports `win32com` but does not declare `pywin32`; only the
-  `[pyaedt]` extra does, although that path needs no COM. Move the
-  `pywin32; platform_system == "Windows"` marker to the base requirements and
-  drop it from `[pyaedt]`. Metal then gets it through pyEPR unchanged.
-- **Severity is low.** It affects only Windows users who connect to Ansys.
-  Import works (pyEPR swallows the missing import in `ansys.py`). The legacy
-  renderer already raises a friendly message pointing at `pip install pywin32`
-  (`ansys_renderer.py`). The pyaedt renderer's `epr.ProjectInfo()` probably
-  fails with a bare `NameError` on `Dispatch`; unverified, it needs Windows.
-- **Longer term:** switch the pyaedt renderer's `run_epr()` to
-  `PyaedtDistributedAnalysis`, so `pywin32` is needed only by the legacy
-  renderer. **Before switching, check feature parity.** The module has volume
-  energy (`energy_electric(obj)`), line voltage and `analyze()`; surface and
-  dielectric loss (which `setup_dielectric_for_epr` feeds today) were not seen
-  there. This needs AEDT, so it belongs on this track.
-
-### Testing solvers without losing the stored answers
-
-The tutorials hold the reference answers: the committed outputs of the
-external-gated notebooks (Ansys, ElmerFEM, the heavier scikit-fem runs) are
-the only record of many of these results, and CI never re-executes those
-notebooks in place. Solver runs are expensive and, on shared runners, risky
-(time, memory, licenses, external binaries). So:
-
-- **Reference files.** Extract the key numbers once from the stored notebook
-  outputs into version-controlled data (e.g. `tests/solver_references/*.json`:
-  value, tolerance, source notebook, solver, mesh settings). Tests compare
-  against these; notebooks are never overwritten by a test run (execute into
-  a scratch copy). Updating a reference is a reviewed change of its own.
-- **Tier 0 — CI, every PR (seconds, no external binaries).** Analytic
-  references (box and LSM modes, circuit couplings, the Appendix D fit) and a
-  tiny scikit-fem model (an empty box on a coarse mesh) when scikit-fem is
-  installed; skipped otherwise.
-- **Tier 1 — local or opt-in scheduled (minutes, pip-installable solvers).**
-  Small-mesh versions of the tutorial problems against the reference files;
-  behind a pytest marker that is not collected by default.
-- **Tier 2 — local only (external binaries, MPI, licenses, gigabytes).**
-  ElmerFEM, Palace, Ansys, and full-size tutorial runs; enabled per solver by
-  an environment variable; never on shared CI runners. Ansys tests need an
-  AEDT installation and license; until one is available, compare against the
-  stored HFSS / Q3D outputs only.
-- **Guardrails for every solver test**: a time and memory budget, a skip when
-  the binary or extra is missing, and no writes under `docs/`.
+- **Use it and file issues**, especially for anything that broke off the
+  happy path.
+- **Bring a solver.** The renderer protocol is in
+  [`docs/architecture/renderer_protocol.md`](https://github.com/qiskit-community/qiskit-metal/blob/main/docs/architecture/renderer_protocol.md);
+  the backend plan is in
+  [`docs/architecture/solver_backends.md`](https://github.com/qiskit-community/qiskit-metal/blob/main/docs/architecture/solver_backends.md).
+- **Run Ansys.** With an AEDT license you can validate the renderer fixes
+  and the open Ansys issues above.
+- **Join the conversation** on [Discord](https://discord.gg/FPNybyfpxd).

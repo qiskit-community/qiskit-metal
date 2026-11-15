@@ -278,10 +278,6 @@ mesher — are opt-in **extras**.
 
 .. note::
 
-   **Migrating from v0.6.x?** See :doc:`migration-to-v0.7.0` for
-   per-persona migration recipes (GUI user / HFSS user / FEM user /
-   AI orchestrator) and common-error fixes.
-
    **CI coverage:** the ``tests-lite`` CI job validates the lite
    path on every commit; the ``tests-extras`` job exercises
    ``[gui]``, ``[ansys]``, ``[mesh]``, and ``[fem]`` (alias)
