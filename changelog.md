@@ -10,6 +10,8 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ### Added
 
+- **Scripting and agent guide** (docs: *Scripting and Agent Use*) with a tested headless script that builds, checks, exports and analyzes a chip (`docs/examples/headless_chip.py`), the design-rule check as a pass/fail gate, and what to rely on across runs.
+- **Repeatable GDS export.** If `SOURCE_DATE_EPOCH` is set, `QGDSRenderer` stores that time in the GDS file, so two exports of one design are identical byte for byte. Without it the file records the current time, as before.
 - **KLayout handoff:** a layer-properties file (`quantum-metal.lyp`) and a starter design-rule deck (`quantum-metal-basic.drc`) for GDS exported by `QGDSRenderer`, with a docs page (*GDS in KLayout*) that explains the layers and datatypes. Tried with the KLayout application on an exported chip; the deck's thresholds are placeholders for your fab's rules.
 
 ### Fixed

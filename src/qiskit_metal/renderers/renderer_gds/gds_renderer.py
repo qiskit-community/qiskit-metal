@@ -13,6 +13,7 @@
 
 from __future__ import annotations
 
+import datetime
 import math
 import os
 from collections import defaultdict
@@ -2325,11 +2326,31 @@ class QGDSRenderer(QRenderer):
             self._populate_cheese()
 
             # Export the file to disk from self.lib
-            self.lib.write_gds(file_name, max_points)
+            self.lib.write_gds(file_name, max_points, timestamp=self._gds_timestamp())
 
             return 1
 
         return 0
+
+    @staticmethod
+    def _gds_timestamp() -> datetime.datetime | None:
+        """Timestamp to store in the GDS file.
+
+        A GDS file records when it was written, so two exports of the same
+        design differ in a few bytes. If the environment variable
+        ``SOURCE_DATE_EPOCH`` (seconds since 1970, the reproducible-builds
+        convention) is set, that moment is used and the same design exports
+        to an identical file. Otherwise ``None``: gdstk uses the current time.
+        """
+        epoch = os.environ.get("SOURCE_DATE_EPOCH")
+        if not epoch:
+            return None
+        try:
+            return datetime.datetime.fromtimestamp(
+                int(epoch), tz=datetime.timezone.utc
+            ).replace(tzinfo=None)
+        except ValueError:
+            return None
 
     def _multipolygon_to_gds(
         self,

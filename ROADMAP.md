@@ -156,12 +156,12 @@ ground regions. GDS-level DRC stays with KLayout.
 a starter KLayout DRC deck ship in the docs (*GDS in KLayout*). Still open:
 per-process rule decks from fab design rules, which need a partner process.
 
-**Scriptable and agent-driven use** `[research]`. An orchestration guide (a
-design built, checked, exported and analyzed in a short headless script); a
+**Scriptable and agent-driven use** `[research]`. The orchestration guide
+(*Scripting and Agent Use*) and repeatable GDS export have shipped. Open: a
 documented stable public API for `QDesign`, `QComponent` and the renderer
-bases; deterministic geometry construction so two runs give the same
-artifact; vendor-neutral task definitions that let a coding assistant drive
-Metal, with DRC as the success signal.
+bases, with deprecation rules written down; deterministic ordering for every
+solver export; vendor-neutral task definitions that let a coding assistant
+drive Metal, with the design-rule check as the success signal.
 
 **Architecture** `[research]`. PEP 561 type hints across the core classes;
 entry-point discovery for third-party renderers and component libraries
