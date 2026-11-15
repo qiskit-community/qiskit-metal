@@ -1683,8 +1683,8 @@ class QGDSRenderer(QRenderer):
         if len(self.chip_info[chip_name][chip_layer]["q_subtract_true"]) != 0:
             # Difference for True-False.
             diff_geometry = subtract_in_strips(
-                list(self.chip_info[chip_name][chip_layer]["q_subtract_true"]),
-                list(self.chip_info[chip_name][chip_layer]["q_subtract_false"]),
+                self.chip_info[chip_name][chip_layer]["q_subtract_true"].values,
+                self.chip_info[chip_name][chip_layer]["q_subtract_false"].values,
                 layer=chip_layer,
                 datatype=0,
                 precision=precision,
@@ -1721,7 +1721,7 @@ class QGDSRenderer(QRenderer):
         if len(self.chip_info[chip_name][chip_layer]["q_subtract_true"]) != 0:
             diff_geometry = subtract_in_strips(
                 [self.chip_info[chip_name]["subtract_poly"]],
-                list(self.chip_info[chip_name][chip_layer]["q_subtract_true"]),
+                self.chip_info[chip_name][chip_layer]["q_subtract_true"].values,
                 layer=chip_layer,
                 datatype=0,
                 precision=precision,
@@ -2693,7 +2693,7 @@ class QGDSRenderer(QRenderer):
                 lib, "test_output.svg", scale=scale, style=svg_style
             )
 
-            from IPython.display import display, HTML
+            from IPython.display import HTML, display
 
             with open("test_output.svg") as _f:
                 _svg = _f.read()
