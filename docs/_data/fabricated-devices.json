@@ -1,0 +1,108 @@
+{
+  "images": [
+    {
+      "file": "qdw01-slide17-nqcp-adamite-sem-overview.jpg",
+      "caption": "SEM overview of a 12-qubit tunable chip with direct coupling (\"Adamite\"), designed with Quantum Metal.",
+      "credit": "Design: Christopher W. Warren, SQuID Lab, Niels Bohr Institute, University of Copenhagen; Novo Nordisk Quantum Computing Programme (NQCP)"
+    },
+    {
+      "file": "wallraff-17q-metal-rebuild.jpg",
+      "caption": "Layout of the 17-qubit surface-code processor (distance-three), rebuilt in Quantum Metal from the published design.",
+      "credit": "Design: ETH Zurich Quantum Device Lab (Krinner et al., Nature 2022); rebuild: notebook 53",
+      "url": "circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode.html"
+    },
+    {
+      "file": "qdw-figen-fluxonium-chip-design.jpg",
+      "caption": "Six-qubit fluxonium chip with readout resonators and drive lines, in the Quantum Metal GUI.",
+      "credit": "Figen Yilmaz, Andersen Lab, QuTech / TU Delft"
+    },
+    {
+      "file": "flipchip-25q-packaged.jpg",
+      "caption": "Photograph of a packaged 25-qubit flip-chip superconducting quantum processor (Q-chip and C-chip bonded onto a printed circuit board).",
+      "credit": "S. Kosen et al., PRX Quantum 5, 030350 (2024) (arXiv:2403.00285), CC BY 4.0",
+      "url": "https://doi.org/10.1103/PRXQuantum.5.030350"
+    },
+    {
+      "file": "qdw-figen-intermediate-chip-design.jpg",
+      "caption": "Intermediate chip design in the Quantum Metal GUI: a two-pad qubit with a readout resonator and control lines.",
+      "credit": "Figen Yilmaz, Andersen Lab, QuTech / TU Delft"
+    },
+    {
+      "file": "qdw-figen-fluxonium-spectrum.jpg",
+      "caption": "Fluxonium energy levels versus external flux from three models: lumped-element, quasi-lumped and eigenmode (pyEPR) analysis of the Quantum Metal design.",
+      "credit": "Roald van den Boogaart, Andersen Lab, QuTech / TU Delft"
+    },
+    {
+      "file": "qdw01-slide22-tudelft-fluxonium-teaser.jpg",
+      "caption": "TU Delft fluxonium chip: annotated layout, designed with Qiskit Metal.",
+      "credit": "Christian Kraglund Andersen, TU Delft"
+    },
+    {
+      "file": "qdw01-slide21-tudelft-resonator-design-figure.jpg",
+      "caption": "Resonator chip design (final design and single-resonator geometry).",
+      "credit": "QuTech / TU Delft, Andersen Lab (thesis figure)"
+    },
+    {
+      "file": "qdw01-slide19-nqcp-adamite-sem-tilted.jpg",
+      "caption": "Adamite chip, tilted SEM view.",
+      "credit": "Design: Christopher W. Warren, SQuID Lab, Niels Bohr Institute, University of Copenhagen; Novo Nordisk Quantum Computing Programme (NQCP)"
+    },
+    {
+      "file": "qdw01-slide16-nqcp-standard-candle-devices.jpg",
+      "caption": "Standard-candle devices for tracing fabrication reproducibility: layout.",
+      "credit": "Design: Thue Christian Thann; Niels Bohr Institute, University of Copenhagen; Novo Nordisk Quantum Computing Programme (NQCP)"
+    },
+    {
+      "file": "qdw01-slide20-lfl-layout-a.jpg",
+      "caption": "Community chip layout.",
+      "credit": "Eli Levenson-Falk, Sadman Ahmed Shanto"
+    },
+    {
+      "file": "qdw01-slide20-lfl-layout-b.jpg",
+      "caption": "Community chip layout with a perforated ground plane.",
+      "credit": "Eli Levenson-Falk, Sadman Ahmed Shanto"
+    },
+    {
+      "file": "flipchip-25q-layout.jpg",
+      "caption": "Design layout of part of the 25-qubit flip-chip processor, with overlapped Q-chip (qubits, couplers) and C-chip (control, readout) layers; 2 mm qubit pitch.",
+      "credit": "S. Kosen et al., PRX Quantum 5, 030350 (2024) (arXiv:2403.00285), CC BY 4.0",
+      "url": "https://doi.org/10.1103/PRXQuantum.5.030350"
+    },
+    {
+      "file": "squadds-6xmon-layout.jpg",
+      "caption": "Design layout of a chip with six xmon qubits, each coupled to its own quarter- or half-wave readout resonator, programmatically generated for the SQuADDS database.",
+      "credit": "S. A. Shanto et al., Quantum 8, 1465 (2024) (arXiv:2312.13483), CC BY 4.0",
+      "url": "https://doi.org/10.22331/q-2024-09-09-1465"
+    },
+    {
+      "file": "alinas-cpw-squid-optical.jpg",
+      "caption": "Optical image of the fabricated Al-InAs coplanar-waveguide resonator (In/Out transmission line, 0.4 mm scale bar) with the SQUID location marked by the dashed box.",
+      "credit": "B. H. Elfeky et al., PRX Quantum 4, 030339 (2023) (arXiv:2303.04784), CC BY 4.0",
+      "url": "https://arxiv.org/abs/2303.04784"
+    },
+    {
+      "file": "dm-transmon-micrograph.jpg",
+      "caption": "Micrograph of the 7 x 7 mm^2 chip with a fixed-frequency (QB-0) and a flux-tunable (QB-1) transmon, with a zoom on QB-0 (100 um scale bar).",
+      "credit": "R. Moretti, D. Labranca et al., IEEE Trans. Quantum Eng. 7 (2026) (arXiv:2409.05988), CC BY 4.0",
+      "url": "https://doi.org/10.1109/TQE.2025.3633176"
+    },
+    {
+      "file": "qubit-xmon-metal-gui.jpg",
+      "caption": "Qiskit Metal GUI rendering of the first QUB-IT design: zoom on the cross-shaped Xmon qubit (left) and the Xmon coupled to a quarter-wave readout resonator and feedline (right).",
+      "credit": "D. Labranca et al., Nucl. Instrum. Methods A (2022) (arXiv:2207.09290), CC BY 4.0",
+      "url": "https://arxiv.org/abs/2207.09290"
+    },
+    {
+      "file": "qdesignopt-two-qubit-layout.jpg",
+      "caption": "Layout of the two-qubit, tunable-coupler, two-resonator test system optimized with QDesignOptimizer (500 um scale bar).",
+      "credit": "A. M. Eriksson Lundstrom et al., Quantum Sci. Technol. 11, 035024 (2026) (arXiv:2508.18027), CC BY 4.0",
+      "url": "https://doi.org/10.1088/2058-9565/ae7ab6"
+    },
+    {
+      "file": "material-4q-8q-layouts.jpg",
+      "caption": "Ansys HFSS 3D models of a 4-qubit (left) and an 8-qubit (right) transmon chip layout, each qubit with a readout resonator.",
+      "credit": "J. Gayatri, S. S. Veni, arXiv:2508.05339 (2025), CC BY 4.0",
+      "url": "https://arxiv.org/abs/2508.05339"
+    }
+  ]
+}
