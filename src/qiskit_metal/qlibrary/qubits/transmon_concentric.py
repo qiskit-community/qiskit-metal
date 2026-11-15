@@ -185,7 +185,7 @@ class TransmonConcentric(BaseQubit):
         self.add_qgeometry(
             "junction", geom_jjb, layer=p.layer, subtract=False, width=p.inductor_width
         )
-        self.add_qgeometry("poly", geom_pocket, layer=1, subtract=True)
+        self.add_qgeometry("poly", geom_pocket, layer=p.layer, subtract=True)
 
         ###########################################################################
 
