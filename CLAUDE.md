@@ -63,13 +63,21 @@ copy, so files the notebook writes stay out of the repo).
 
 **Navigation.** The sidebar does not follow the folders. `docs/tut/index.rst`
 (Learn) lists four part pages (`first-steps`, `components-to-chip`,
-`render-and-export`, `simulate-and-analyze`, plus `simulate-ansys` and
-`circuits-to-hamiltonians` under Part 4). `docs/circuit-examples/index.rst`
-(Examples) lists the component gallery, `component-examples.rst` and
-`reference-designs.rst`. `docs/research.rst` homes the reproductions of
-published devices. `docs/archive.rst` homes retired notebooks. Every notebook
-is listed in exactly one toctree (`nbgallery`) on one of these pages, with an
-explicit entry and no globs; other pages link to it with `nblinkgallery`.
+`render-and-export`, `simulate-and-analyze`); Part 4 is one page with three
+sections (open-source solver, Ansys, circuits to Hamiltonians) and
+`simulate-ansys`, `circuits-to-hamiltonians` are redirect stubs. Learn also
+holds the videos and education section (`videoseducation.rst` is a stub).
+`docs/circuit-examples/index.rst` (Examples) is one flat page: reference
+designs, published devices (links to the research page), component examples,
+full design-flow examples; `component-examples.rst` and `reference-designs.rst`
+are redirect stubs. `docs/research.rst` homes the reproductions of published
+devices, plus a papers list and a fabricated-device gallery filled from
+`docs/_data/*.json` by `docs/qm_showcase.py`. `docs/archive.rst` homes retired
+notebooks. Every notebook is listed in exactly one toctree (`nbgallery`) on
+one of these pages, with an explicit entry and no globs; other pages link to
+it with `nblinkgallery`. Each notebook page ends with a full-width "Next"
+button and an "Examples" button, computed in `conf.py` (`_nb_nav`) from the
+toctree order.
 Moving a notebook between pages changes no URL. A notebook that is in no
 toctree triggers Sphinx's "not included in any toctree" warning.
 
