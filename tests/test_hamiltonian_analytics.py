@@ -162,7 +162,9 @@ class TestMathieuLevels(unittest.TestCase):
 
     def test_hcpb_analytic_matches_reference(self):
         Ec = 298.0
-        for ratio in (1.0, 5.0, 20.0, 45.7, 100.0):
+        # 41.8 (ng = 1/2, m = 5) and 74.75 (ng = 0, m = 3): scipy <= 1.18.1
+        # mathieu_a/b return the value of another order there (#1252).
+        for ratio in (1.0, 5.0, 20.0, 41.8, 45.7, 74.75, 100.0):
             for ng in self.NG:
                 ref = ref_levels(ratio * Ec, Ec, ng)
                 h = Hcpb_analytic(Ej=ratio * Ec, Ec=Ec, ng=ng)

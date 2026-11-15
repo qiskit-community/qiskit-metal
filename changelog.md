@@ -6,6 +6,12 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Unreleased
+
+### Fixed
+
+- **`mathieu_level` at ng = 0 and ng = 1/2** (#1252). It called `scipy.special.mathieu_a`/`mathieu_b`, which up to scipy 1.18.1 return the characteristic value of another order in narrow windows of q (scipy#4479, scipy#14526): for example E_5 came out equal to E_3 at Ej/Ec = 41.8, ng = 1/2. It now uses the Hill-matrix eigenvalue for every ng, which matches a charge-basis diagonalization for all 207,620 levels in a scan of Ej/Ec from 1 to 520 (ng in {0, 1/2}, m = 0..9). Affects `Hcpb_analytic.evalue_k` (default ng = 1/2) and `transmon_analytics.transmon_eigenvalue`. Reported, with the fix, by @robertolocatelli81-dev.
+
 ## Quantum Metal v0.10.0 (Python 3.11+, analysis and geometry fixes, docs overhaul)
 
 Minor release. Python 3.11 is now the minimum (3.10 reached end of life in
@@ -57,7 +63,7 @@ home page and navigation.
 - **Validation:** `ShortSegmentRule` has a float tolerance and reports each path once (#1213).
 - **`draw.buffer`** passes `quad_segs` to shapely (no DeprecationWarning on shapely ≥ 2.1) (#1228).
 - **No pandas `FutureWarning` ("DataFrame concatenation with empty or all-NA entries is deprecated") from building a design, GDS export, `metal_geometry_table`, the chip-bounds helper or `QDesignCheck`** (seen after #1229 stopped hiding warnings). The qgeometry tables are concatenated with a new `toolbox_python.utility_functions.concat_tables`, which gives the pandas 2 dtypes on pandas 2 and 3. Results are unchanged on pandas 2; on pandas 3 the `fillet` column of the `path` table and of the tables built from it is float64 again (it became object).
-- **The legacy HFSS renderer puts a junction's RLC boundary or lumped port on the junction's own line at any angle** (#1242). It drew an axis-aligned box and let pyEPR derive the terminal line from the box, so a junction that is not along x or y (a component with `orientation` not a multiple of 90°) got its boundary somewhere else, with no warning. Off-axis junctions and pins now get a sheet along their own line and the junction's endpoints as the terminal line. Axis-aligned junctions take the previous path unchanged. Checked against a stubbed Ansys layer only; not yet run in Ansys.
+- **The legacy HFSS renderer puts a junction's RLC boundary or lumped port on the junction's own line at any angle** (#1242). It drew an axis-aligned box and let pyEPR derive the terminal line from the box, so a junction that is not along x or y (a component with `orientation` not a multiple of 90°) got its boundary somewhere else, with no warning. Off-axis junctions and pins now get a sheet along their own line and the junction's endpoints as the terminal line. Axis-aligned junctions take the previous path unchanged. Checked in Ansys Electronics Desktop 2023 R1.1 by the reporter (@halldorjak): sheets and terminal lines sit on the junction line at 0–200°, and p_j agrees to 0.1% across orientations.
 - **`import qiskit_metal` and building a design no longer import `gdstk` or `qutip`** (they load on first use), so the lite path can import where those packages have no wheel (Pyodide). The GDS renderer creates its `gdstk.Library` on first access of `lib`; `states_energies`, `transmon_charge_basis` and `about` import qutip inside the functions that use it. `pyEPR`, when installed, still imports qutip itself.
 - **Connection pads added after construction** (`options.connection_pads.new = ...`) rebuild correctly (#1226); `to_python_script()` no longer writes a spurious `options_connection_pads` warning for every qubit (#1227).
 - **`TransmonPocket6` and `TransmonPocketTeeth` centre pads (`loc_W=0`) end `cpw_extend` past the pocket edge for any `pocket_height`** (#1245). Their vertical CPW was sized from `pocket_width`, so with a non-square pocket the pin missed the pocket edge: with `pocket_height="900um"` and the default 650 um width the line stopped 25 um inside the pocket. Square pockets are unchanged.

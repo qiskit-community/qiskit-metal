@@ -71,7 +71,7 @@ listed in the [ecosystem page](https://github.com/qiskit-community/qiskit-metal/
   multipole qubit–mode coupling.
 - `import qiskit_metal` no longer imports `gdstk` or `qutip`.
 - The legacy HFSS renderer places junction boundaries along off-axis
-  junction lines (#1242); checked against stubs only, not in AEDT.
+  junction lines (#1242), checked in AEDT 2023 R1.1 by the reporter.
 
 ---
 
@@ -87,8 +87,8 @@ listed in the [ecosystem page](https://github.com/qiskit-community/qiskit-metal/
 - `[planned]` Open GUI issues #1178 and #1103.
 
 **Ansys renderers**
-- `[planned]` Validate in AEDT the renderer fixes made in v0.9.0 and v0.10.0,
-  which are tested only with mocks or stubs. Needs a contributor with an
+- `[planned]` Validate in AEDT the renderer fixes made in v0.9.0 and v0.10.0
+  that are tested only with mocks or stubs (#1242 has been checked in AEDT). Needs a contributor with an
   AEDT license.
 - `[planned]` Open issues that need an Ansys run or more information from the
   reporter: #1041, #1019, #1017, #1015, #1005, #996, #995, #992.
