@@ -155,6 +155,19 @@ class TestParamsFromSpectrum(unittest.TestCase):
             h.params_from_spectrum(3000.0, -800.0)
 
 
+class TestHcpbNlevels(unittest.TestCase):
+    """Changing nlevels keeps Ej, Ec and ng and re-diagonalizes."""
+
+    def test_setting_nlevels_keeps_the_parameters(self):
+        h = Hcpb(nlevels=10, Ej=13971.3, Ec=295.2, ng=0.1)
+        f01 = h.fij(0, 1)
+        h.nlevels = 25
+        self.assertEqual((h.Ej, h.Ec, h.ng), (13971.3, 295.2, 0.1))
+        self.assertEqual(h.nlevels, 25)
+        self.assertEqual(len(h.evals), 2 * 25 + 1)
+        self.assertAlmostEqual(h.fij(0, 1), f01, places=6)
+
+
 class TestMathieuLevels(unittest.TestCase):
     """#1220: Hcpb_analytic / transmon_eigenvalue vs the dense reference."""
 

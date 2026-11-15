@@ -70,6 +70,15 @@ class TestFitTransmission(unittest.TestCase):
     def test_detrend_false(self):
         self.check(6, 0.0, detrend=False)
 
+    def test_detrend_false_warns_about_a_large_cable_delay(self):
+        f = np.linspace(FR - 50 * FR / QL, FR + 50 * FR / QL, 801)
+        s = notch(f, 0.8, 0.4, 40e-9, QL, QC, FR, 0.3)
+        with self.assertWarnsRegex(UserWarning, "cable delay"):
+            fit_transmission(f, s, detrend=False, plot=False)
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            fit_transmission(f, s, plot=False)  # detrend=True: no warning
+
     def test_full_output_parameters_match_the_model(self):
         f = np.linspace(FR - 50 * FR / QL, FR + 50 * FR / QL, 801)
         s = notch(f, 0.8, 0.4, 30e-9, QL, QC, FR, 0.3)
