@@ -151,8 +151,6 @@ docs/qiskit_metal.*.rst
 *.msh
 **/simdata/
 
-# JupyterLite build artifacts (docs/conf.py adds jupyterlite_sphinx)
-docs/.jupyterlite.doit.db
 docs/_build/
 
 # Tutorial-notebook output artifacts. These are regenerated whenever a
