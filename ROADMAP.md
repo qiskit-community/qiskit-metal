@@ -84,19 +84,17 @@ listed in the [ecosystem page](https://github.com/qiskit-community/qiskit-metal/
   mode 1 in `docs/architecture/gui_crash_defenses.md`).
 - `[planned]` Lift the `pyside6!=6.12.0` exclusion once a PySide6 release
   fixes the `none_dealloc` abort on Python < 3.12.
-- `[planned]` Open GUI issues #1178 and #1103.
+- `[planned]` GUI plug-in discovery: the Library pane lists only built-in components (#1178).
 
 **Ansys renderers**
 - `[planned]` Validate in AEDT the renderer fixes made in v0.9.0 and v0.10.0
   that are tested only with mocks or stubs (#1242 has been checked in AEDT). Needs a contributor with an
   AEDT license.
-- `[planned]` Open issues that need an Ansys run or more information from the
-  reporter: #1041, #1019, #1017, #1015, #1005, #996, #995, #992.
 
 **API**
-- `[planned]` #1166: the `Vec3D.two_points_described` signature change needs
-  a deprecation path before it lands (public signatures do not break without
-  one).
+- `[planned]` #1166: give `Vec3D.two_points_described` the same one-argument
+  call form as `Vector.two_points_described` by making `user_plane` optional;
+  existing calls keep working.
 - `[research]` Rename the import path `qiskit_metal` → `quantum_metal` to
   match the PyPI name. No release has been set.
 
