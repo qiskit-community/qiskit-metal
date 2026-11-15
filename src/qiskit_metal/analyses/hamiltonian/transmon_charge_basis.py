@@ -400,7 +400,8 @@ class Hcpb:
         """Set the number of levels and recompute the Hamiltonian with the new
         size."""
         self._nlevels = value
-        self.__init__(value)
+        self._gen_operators()
+        self._calc_H()
 
     @property
     def Ej(self):

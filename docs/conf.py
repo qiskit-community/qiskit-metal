@@ -236,11 +236,6 @@ extensions = [
     "nbsphinx",
     "qiskit_sphinx_theme",
     "sphinx_design",
-    # JupyterLite — builds an in-browser Jupyter runtime into the docs
-    # site so visitors can run any tutorial without installing anything.
-    # See the ``jupyterlite_*`` config block further down for content
-    # selection and kernel choice.
-    "jupyterlite_sphinx",
     # Renders ``.. mermaid::`` directives in RST + mermaid code fences
     # in nbsphinx-rendered notebooks. Used for the architecture and
     # design-flow diagrams in contributor-guide.rst and tutorial 1.1.
@@ -256,29 +251,6 @@ extensions = [
 # Render mermaid as inline SVG; light theme matches the rest of the docs.
 mermaid_output_format = "raw"
 mermaid_init_js = "mermaid.initialize({startOnLoad:true, theme:'default'});"
-
-# --- JupyterLite ----------------------------------------------------------
-# Ship a JupyterLite instance under ``/lite/`` on the docs site with the
-# tutorial notebooks pre-loaded. nbsphinx pages automatically gain a
-# "Try it live" / "Launch in JupyterLite" button.
-#
-# Trade-off: build time +1-2 min, output size +~20 MB. Worth it — every
-# tutorial becomes a zero-install try-it experience for newcomers, which
-# is the single biggest adoption lever for a library that already has a
-# lite-by-default install path.
-#
-# The Pyodide kernel runs Python in WebAssembly. Quantum Metal's lite
-# install (no Qt / Ansys / gmsh) works in Pyodide; the GUI / Ansys / FEM
-# extras don't, so we only surface the lite-compatible tutorials by
-# default (Section 1 + most of Section 2).
-# NOTE: this path is relative to docs/ and matches nothing (there is no
-# docs/tutorials/), so no notebooks are bundled today; choosing the
-# lite-compatible set is still open.
-jupyterlite_contents = ["tutorials/"]
-jupyterlite_dir = "."
-jupyterlite_silence = True  # quiet build-time chatter
-# Each bundled notebook gets a "Launch in JupyterLite" link in its header
-# (default behavior once the contents above include it).
 
 # Intersphinx — resolve cross-references to external project docs so that
 # type annotations like ``logging.Logger`` and ``matplotlib.figure.Figure``

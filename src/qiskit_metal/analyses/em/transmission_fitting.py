@@ -25,6 +25,8 @@ https://web.physics.ucsb.edu/~bmazin/Papers/2008/Gao/Caltech%20Thesis%202008%20G
 Circle Fitting adapted from http://www.cs.bsu.edu/homepages/kjones/kjones/circles.pdf
 """
 
+import warnings
+
 import numpy as np
 from scipy.optimize import leastsq
 from scipy.stats import linregress
@@ -279,7 +281,7 @@ def fit_transmission(
     Args:
         freq (array): The frequencies corresponding to the S21
         s21 (complex array): The complex S21 to be fit
-        detrend (bool): If True, estimates the cable delay (slope of the unwrapped phase) and a linear magnitude slope from the end points and uses the detrended data for the starting values. The final fit always runs on the data as given, with the delay as a free parameter; a magnitude slope is not part of the model. If False, the starting values come from the data as is, with zero delay. (defaults to True)
+        detrend (bool): If True, estimates the cable delay (slope of the unwrapped phase) and a linear magnitude slope from the end points and uses the detrended data for the starting values. The final fit always runs on the data as given, with the delay as a free parameter; a magnitude slope is not part of the model. If False, the starting values come from the data as is, with zero delay; this assumes the cable delay is small (a warning is issued when it turns the phase by more than 0.1 cycle across the span). (defaults to True)
         detrend_order (int): The order of polynomial to use when detrending the magnitude (As of now, only accepts value = 1) (defaults to 1)
         detrend_points_init (int): Number of points from the beginning of the array to use for detrending. Make sure that the resonance is at some distance from the beginning of the array (defaults to 1)
         detrend_points_final (int): Number of points from the end of the array to use for detrending. Make sure that the resonance is at some distance from the end of the array (defaults to 1)
@@ -322,6 +324,22 @@ def fit_transmission(
         s21_detrended = s21.copy()
         delay_init = 0.0
         mag_slope_init = 0.0
+        # The starting values assume the data carry no cable delay. A delay
+        # that turns the phase by more than a tenth of a cycle across the
+        # span can send the fit to the wrong Q, with no other sign.
+        _, phase_fit, _ = _detrend_transmission(
+            del_freq, s21, detrend_order, detrend_points_init, detrend_points_final
+        )
+        delay_est = -phase_fit.slope / (2.0 * np.pi)
+        if abs(delay_est) * np.ptp(freq) > 0.1:
+            warnings.warn(
+                f"fit_transmission(detrend=False): the phase slope suggests a "
+                f"cable delay of {delay_est * 1e9:.1f} ns, "
+                f"{abs(delay_est) * np.ptp(freq):.2f} cycles across the span. "
+                "The fit starts from zero delay and can converge to the wrong "
+                "Q; use detrend=True.",
+                stacklevel=2,
+            )
 
     amplitude_complex = s21_detrended[0]
     s21_new = s21_detrended / amplitude_complex
