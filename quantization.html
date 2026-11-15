@@ -3,10 +3,10 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Simulation pathways" href="simulation-pathways.html"><link rel="prev" title="Quantum Metal Workflow" href="workflow.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Simulation pathways" href="simulation-pathways.html"><link rel="prev" title="Quantum Metal workflow" href="workflow.html">
 
     <!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 -->
-        <title>Quantization Methods Overview - Quantum Metal 0.9.0</title>
+        <title>Quantization methods - Quantum Metal 0.9.0</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fc6d6d93" />
@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=f676e775" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=9e28cae6" />
+    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=b32f9225" />
     
     
 
@@ -194,31 +194,18 @@
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Quantum Metal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="choose-your-path.html">Choose Your Path</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on Quantum Metal</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Showcase &amp; Learn</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="research.html">Research Showcase</a><input aria-label="Toggle navigation of Research Showcase" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1"><a class="reference internal" href="built-with-metal.html">Device Images and Papers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="research.html">Reproduced Devices (Notebooks)</a><input aria-label="Toggle navigation of Reproduced Devices (Notebooks)" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.41-The-package-mode-on-paper.html">4.41 The Package Mode on Paper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling.html">4.42 Four Ways to Measure a Coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.43-Mesh-and-solve-the-10x10-processor.html">4.43 Mesh and Solve the 10 × 10 Processor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.44-Every-coupling-from-one-eigenmode.html">4.44 Every Coupling from One Eigenmode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.45-Four-methods-one-full-wave-model.html">4.45 Four Methods, One Full-Wave Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html">0. Setup and the compute budget</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#1.-The-qubit-as-a-source-of-moments">1. The qubit as a source of moments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#2.-The-qubit-as-a-source-of-current">2. The qubit as a source of current</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#3.-What-a-flat-source-sees">3. What a flat source sees</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#4.-The-package-mode-at-the-chip-plane">4. The package mode at the chip plane</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#5.-The-hierarchy-of-couplings">5. The hierarchy of couplings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#6.-Is-the-zero-a-blind-spot?-The-paddles,-and-the-exact-answer">6. Is the zero a blind spot? The paddles, and the exact answer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#7.-Breaking-the-symmetry:-the-quadrupole,-and-the-origin">7. Breaking the symmetry: the quadrupole, and the origin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#8.-Where-the-magnetic-coupling-is-not-zero">8. Where the magnetic coupling is not zero</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#9.-Refining-the-mesh:-which-terms-converge,-which-zeros-stay-zero">9. Refining the mesh: which terms converge, which zeros stay zero</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#10.-Error-bars:-which-terms-are-resolved">10. Error bars: which terms are resolved</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#11.-The-hierarchy,-with-error-bars">11. The hierarchy, with error bars</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#12.-What-was-claimed,-and-what-the-numbers-say">12. What was claimed, and what the numbers say</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#What-this-tells-you">What this tells you</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#Where-to-go-next">Where to go next</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html#References">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html">4.46 Beyond the Dipole: Multipoles and Magnetic Coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.html">5-Qubit Xmon Processor (Barends <em>et al.</em>, 2014)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates.html">Full Physical Designs of Three iSWAP Gates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode.html">17-Qubit Surface-Code Chip (Wallraff group, ETH Zurich)</a></li>
@@ -262,76 +249,64 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="tut/simulate-and-analyze.html">Part 4: Simulate and analyze</a><input aria-label="Toggle navigation of Part 4: Simulate and analyze" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM.html">4.19 Analyse a Transmon Qubit using ElmerFEM</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="tut/simulate-ansys.html">Simulate with Ansys</a><input aria-label="Toggle navigation of Simulate with Ansys" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.01-Capacitance-and-LOM.html">4.01 Capacitance matrix and LOM analysis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.02-Eigenmode-and-EPR.html">4.02 Eigenmode and EPR analysis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.03-Impedance.html">4.03 Impedance, admittance and scattering analysis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html">4.11 Analyzing and tuning a transmon qubit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.12-Analyze-a-resonator.html">4.12 Analyzing and tuning a resonator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.13-Analyze-transmon-and-resonator.html">4.13 Analyzing and tuning a transmon qubit with a resonator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.14-Analyze-a-double-hanger-resonator.html">4.14 Analyzing a double hanger resonator (S Param)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html">4.16 S21 simulation of a resonator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html">4.17 S21 simulation and fitting of a resonator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.18-Analyse-a-Resonator-with-Ports.html">4.18 Eigenmode simulation with Ports</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.21-Capacitance-matrix.html">4.21 Sweeps - Capacitance matrix</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.22-Eigenmode-matrix.html">4.22 Sweeps - Eigenmode matrix</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.23-Impedance-and-scattering-Z-S-Y-matrices.html">4.23 Sweeps - Impedance, scattering and admittance (Z S Y) matrices</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/pyaedt-multiplanar/Q3D-pyaedt-multiplanar.html">Q3D Capacitance Matrix of a MultiPlanar Design with pyaedt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/pyaedt-multiplanar/Eigenmode-pyaedt-multiplanar.html">Running Eigenmode Simulations &amp; EPR Analysis with <code class="docutils literal notranslate"><span class="pre">QHFSSEigenmodePyaedt</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/pyaedt-multiplanar/DrivenModal-pyaedt-multiplanar.html">HFSS Driven Modal Simulation of a MultiPlanar Design with pyaedt</a></li>
-</ul>
-</li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="tut/circuits-to-hamiltonians.html">From circuits to Hamiltonians</a><input aria-label="Toggle navigation of From circuits to Hamiltonians" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html">4.04 New LOM and Fluxonium Example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example.html">4.05 New LOM and Two Coupled Transmon Example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.html">4.05 New LOM and Two Coupled Transmon Example with sequence</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.15-CPW-kappa-calculation.html">4.15 CPW Kappa Calculation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.html">4.31 Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.32-Transmon-analytics-HCPB.html">4.32 Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html">4.34 Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.html">Circuit Quantum Electrodynamics (cQED) and the Jaynes-Cummings Interaction Model Using the HCPB Class and QuTip</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tut/4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate.html">The Cross Resonance (CR) Gate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM.html">4.19 Analyze a Transmon Qubit using ElmerFEM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.01-Capacitance-and-LOM.html">4.01 Capacitance matrix and LOM analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.02-Eigenmode-and-EPR.html">4.02 Eigenmode and EPR analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.03-Impedance.html">4.03 Impedance, admittance and scattering analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html">4.11 Analyzing and tuning a transmon qubit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.12-Analyze-a-resonator.html">4.12 Analyzing and tuning a resonator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.13-Analyze-transmon-and-resonator.html">4.13 Analyzing and tuning a transmon qubit with a resonator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.14-Analyze-a-double-hanger-resonator.html">4.14 Analyzing a double hanger resonator (S Param)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html">4.16 S21 simulation of a resonator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html">4.17 S21 simulation and fitting of a resonator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.18-Analyse-a-Resonator-with-Ports.html">4.18 Eigenmode simulation with Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.21-Capacitance-matrix.html">4.21 Sweeps - Capacitance matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.22-Eigenmode-matrix.html">4.22 Sweeps - Eigenmode matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.23-Impedance-and-scattering-Z-S-Y-matrices.html">4.23 Sweeps - Impedance, scattering and admittance (Z S Y) matrices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/pyaedt-multiplanar/Q3D-pyaedt-multiplanar.html">Q3D Capacitance Matrix of a MultiPlanar Design with pyaedt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/pyaedt-multiplanar/Eigenmode-pyaedt-multiplanar.html">Running Eigenmode Simulations &amp; EPR Analysis with <code class="docutils literal notranslate"><span class="pre">QHFSSEigenmodePyaedt</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/pyaedt-multiplanar/DrivenModal-pyaedt-multiplanar.html">HFSS Driven Modal Simulation of a MultiPlanar Design with pyaedt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html">4.04 New LOM and Fluxonium Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example.html">4.05 New LOM and Two Coupled Transmon Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.html">4.05 New LOM and Two Coupled Transmon Example with sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.15-CPW-kappa-calculation.html">4.15 CPW Kappa Calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.html">4.31 Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.32-Transmon-analytics-HCPB.html">4.32 Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html">4.34 Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.html">Circuit Quantum Electrodynamics (cQED) and the Jaynes-Cummings Interaction Model Using the HCPB Class and QuTip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate.html">The Cross Resonance (CR) Gate</a></li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="circuit-examples/index.html">Examples</a><input aria-label="Toggle navigation of Examples" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="circuit-examples/index.html">Examples</a><input aria-label="Toggle navigation of Examples" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tut/full-design-examples/A.1-Transmon-with-readout-resonator.html">A.1 Reference design — Transmon with readout resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/42-ResonatorAndLaunchPad.html">Readout line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/32-TwoTransmonsDirectCoupling.html">Direct Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/33-TwoTransmonsWithMeander.html">Bus Resonator Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/full-design-examples/A.2-Two-coupled-transmons.html">A.2 Reference design — Two coupled transmons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/full-design-examples/A.3-Four-qubit-multiplexed-readout.html">A.3 Reference design — Four-qubit multiplexed readout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/05-Transmon_cross_fl.html">Single Transmon - Grounded (xmon) flux lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/06-Transmon_floating_6.html">Single Transmon - Floating with 6 connection pads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/03-concentric_transmon.html">Concentric Transmon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/04-Interdigitated_Transmon.html">Interdigitated Transmon Qubits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/QComponent-Interdigitated-transmon.html">QComponent - Interdigitated transmon qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/43-TransmonPocketCL.html">Charge Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/08-JJ-Dolan.html">Josephson Junction (Dolan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/JJ-Demo-Notebook.html">Josephson Junction QComponent Demo Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/41-LaunchPad.html">CPW Launch Pad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/QComponent-3-fingers-capacitor.html">QComponent - 3-fingers capacitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.4-Full-chip-design.html">A.4 Full chip design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop.html">A.7 Quantum Metal tutorial for IMS 2022</a></li>
 <li class="toctree-l2"><a class="reference internal" href="qcomponents-gallery.html">Component Gallery</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="circuit-examples/component-examples.html">Component examples</a><input aria-label="Toggle navigation of Component examples" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/A.Qubits/05-Transmon_cross_fl.html">Single Transmon - Grounded (xmon) flux lines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/A.Qubits/06-Transmon_floating_6.html">Single Transmon - Floating with 6 connection pads</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/A.Qubits/03-concentric_transmon.html">Concentric Transmon</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/A.Qubits/04-Interdigitated_Transmon.html">Interdigitated Transmon Qubits</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tut/quick-topics/QComponent-Interdigitated-transmon.html">QComponent - Interdigitated transmon qubit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/43-TransmonPocketCL.html">Charge Line</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/A.Qubits/08-JJ-Dolan.html">Josephson Junction (Dolan)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tut/quick-topics/JJ-Demo-Notebook.html">Josephson Junction QComponent Demo Notebook</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/41-LaunchPad.html">CPW Launch Pad</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tut/quick-topics/QComponent-3-fingers-capacitor.html">QComponent - 3-fingers capacitor</a></li>
-</ul>
-</li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="circuit-examples/reference-designs.html">Reference designs</a><input aria-label="Toggle navigation of Reference designs" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="tut/full-design-examples/A.1-Transmon-with-readout-resonator.html">A.1 Reference design — Transmon with readout resonator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/42-ResonatorAndLaunchPad.html">Readout line</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/32-TwoTransmonsDirectCoupling.html">Direct Coupler (transmon-transmon)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/33-TwoTransmonsWithMeander.html">Bus Resonator Coupler (transmon-transmon)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tut/full-design-examples/A.2-Two-coupled-transmons.html">A.2 Reference design — Two coupled transmons</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tut/full-design-examples/A.3-Four-qubit-multiplexed-readout.html">A.3 Reference design — Four-qubit multiplexed readout</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.4-Full-chip-design.html">A.4 Full chip design</a></li>
-<li class="toctree-l3"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop.html">A.7 Qiskit Metal tutorial for IMS 2022</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -345,7 +320,7 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/designs.html">QDesigns</a><input aria-label="Toggle navigation of QDesigns" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/designs.html">QDesigns</a><input aria-label="Toggle navigation of QDesigns" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
@@ -354,7 +329,7 @@
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.Components.html">Components</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/qlibrary.html">QComponents</a><input aria-label="Toggle navigation of QComponents" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/qlibrary.html">QComponents</a><input aria-label="Toggle navigation of QComponents" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
@@ -408,7 +383,7 @@
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/analyses.html">Analyses</a><input aria-label="Toggle navigation of Analyses" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/analyses.html">Analyses</a><input aria-label="Toggle navigation of Analyses" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.QAnalysis.html">QAnalysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.QSimulation.html">QSimulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.LOManalysis.html">LOManalysis</a></li>
@@ -426,7 +401,7 @@
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.Sweeper.html">Sweeper</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/renderers.html">QRenderers</a><input aria-label="Toggle navigation of QRenderers" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/renderers.html">QRenderers</a><input aria-label="Toggle navigation of QRenderers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
@@ -450,7 +425,7 @@
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/toolbox_metal.html">Toolbox</a><input aria-label="Toggle navigation of Toolbox" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/toolbox_metal.html">Toolbox</a><input aria-label="Toggle navigation of Toolbox" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.about.html">about</a></li>
@@ -462,11 +437,11 @@
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.determine_larger_box.html">determine_larger_box</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/qgeometries.html">QGeometry</a><input aria-label="Toggle navigation of QGeometry" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/qgeometries.html">QGeometry</a><input aria-label="Toggle navigation of QGeometry" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/gui.html">GUI</a><input aria-label="Toggle navigation of GUI" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/gui.html">GUI</a><input aria-label="Toggle navigation of GUI" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
 </ul>
 </li>
@@ -477,7 +452,7 @@
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="archive.html">Archived Notebooks</a><input aria-label="Toggle navigation of Archived Notebooks" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="archive.html">Archived Notebooks</a><input aria-label="Toggle navigation of Archived Notebooks" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Testing-QComponents-for-overlap-and-collisions.html">Demo Notebook Demonstrating How to Test for Component/CPW Overlap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.33-Transmon-analytics.html">4.33 Transmon Analytics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.5-Launch-video-example.html">A.5 Launch video example</a></li>
@@ -490,8 +465,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Community &amp; Contributing</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on / with Quantum Metal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="videoseducation.html">Videos &amp; Education</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributor-guide.html">Contributor Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Using Quantum Metal without Qt</a></li>
@@ -532,52 +505,155 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="quantization-methods-overview">
-<span id="quantization"></span><h1>Quantization Methods Overview<a class="headerlink" href="#quantization-methods-overview" title="Link to this heading">¶</a></h1>
-<p>We currently support two complementary quantization approaches that cover most day-to-day chip design
-work: a lightweight lumped/ quasi-lumped model and a full-wave, black-box style energy-participation
-ratio (EPR) workflow. Use this section as a quick “why and when” guide before you pick a solver.</p>
-<p><strong>What you give us</strong>
-- Your device geometry (from the QComponent library or your own components)
-- A small set of materials/stack assumptions (dielectrics, metal films, boundaries)
-- The excitation/ports you care about (for scattering or eigenmode solves)</p>
-<p><strong>What you get back</strong>
-- Modal frequencies, anharmonicities, and dispersive shifts
-- Coupling strengths and participation matrices you can plug into Hamiltonians
-- Loss estimates tied to specific volumes (dielectrics, conductors, seams) so you can chase the right bottleneck</p>
-<p>Each method balances speed, fidelity, and required setup. Start with the lumped model when you need
-fast iteration and intuitive circuit pictures; switch to EPR when geometry and field participation
-really matter.</p>
-<img alt="Missing Image" src="_images/quantization.png" />
-<div class="line-block">
-<div class="line"><br /></div>
+          <section id="quantization-methods">
+<span id="quantization"></span><h1>Quantization methods<a class="headerlink" href="#quantization-methods" title="Link to this heading">¶</a></h1>
+<p>An electromagnetic solver returns fields, capacitances and impedances. To get a
+Hamiltonian (mode frequencies, anharmonicities, dispersive shifts, couplings) the
+result has to be <em>quantized</em>. Quantum Metal supports three routes, from a quick
+quasi-static estimate to a full-wave solve. They answer the same question at
+different cost, so it is common to start with the cheapest and check against the
+next.</p>
+<a class="qm-diagram reference internal image-reference" href="_images/quantization-landscape.svg"><img alt="Lumped-oscillator, impedance and eigenmode quantization, ordered from fast quasi-static to full-wave." class="qm-diagram" src="_images/quantization-landscape.svg" style="width: 100%;" />
+</a>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17.0%" />
+<col style="width: 24.0%" />
+<col style="width: 24.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>You solve</p></th>
+<th class="head"><p>You get</p></th>
+<th class="head"><p>Use it when</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Lumped-oscillator model (LOM)</strong></p></td>
+<td><p>capacitance (and inductance) of each cell, quasi-static</p></td>
+<td><p>frequencies, anharmonicities, couplings of a circuit assembled from cells</p></td>
+<td><p>exploring geometry; routing and first-order couplings; no eigenmode solve needed</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Energy participation (EPR)</strong></p></td>
+<td><p>eigenmodes of the linearized circuit, full-wave</p></td>
+<td><p>Hamiltonian with field-aware couplings, and a loss budget per volume or interface</p></td>
+<td><p>layout details matter: packaging, higher modes, seams, substrate loss</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Impedance</strong></p></td>
+<td><p>impedance or scattering matrix versus frequency at the ports</p></td>
+<td><p>mode frequencies and couplings read from poles and residues</p></td>
+<td><p>many ports (bus networks, Purcell filters, packages), or as an independent check of EPR</p></td>
+</tr>
+</tbody>
+</table>
 </div>
+<p>Where to run each one:</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>In Quantum Metal</p></th>
+<th class="head"><p>Tutorials</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LOM</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">LOManalysis</span></code> and the composite-system classes below; capacitance from Q3D or ElmerFEM</p></td>
+<td><p><a class="reference internal" href="tut/4-Analysis/4.01-Capacitance-and-LOM.html"><span class="doc">4.01</span></a>,
+<a class="reference internal" href="tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html"><span class="doc">4.04</span></a>,
+<a class="reference internal" href="tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.html"><span class="doc">4.05</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>EPR</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">EPRanalysis</span></code> with pyEPR and HFSS; the scikit-fem solver implements the same couplings without Ansys</p></td>
+<td><p><a class="reference internal" href="tut/4-Analysis/4.02-Eigenmode-and-EPR.html"><span class="doc">4.02</span></a>,
+<a class="reference internal" href="tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html"><span class="doc">4.11</span></a> to
+<a class="reference internal" href="tut/4-Analysis/4.13-Analyze-transmon-and-resonator.html"><span class="doc">4.13</span></a>,
+<a class="reference internal" href="tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling.html"><span class="doc">4.42</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Impedance</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ScatteringImpedanceSim</span></code> for the matrices; 4.42 also derives couplings from the impedance matrix</p></td>
+<td><p><a class="reference internal" href="tut/4-Analysis/4.03-Impedance.html"><span class="doc">4.03</span></a>,
+<a class="reference internal" href="tut/4-Analysis/4.14-Analyze-a-double-hanger-resonator.html"><span class="doc">4.14</span></a>,
+<a class="reference internal" href="tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling.html"><span class="doc">4.42</span></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Which solver each method needs is compared on <a class="reference internal" href="simulation-pathways.html"><span class="doc">Simulation pathways</span></a>.</p>
 <section id="lumped-oscillator-model">
 <h2>Lumped-oscillator model<a class="headerlink" href="#lumped-oscillator-model" title="Link to this heading">¶</a></h2>
-<p>In the lumped-oscillator model you treat each component as a compact circuit element whose capacitance
-and inductance can be extracted from fast quasi-static simulations or closed-form formulas. Think of it
-as a guided way to draw a circuit, pull out the C and L values, and then stitch those into a Hamiltonian.</p>
-<p><em>When to use it.</em> Early design and parameter sweeps when you want intuition and speed. Routing,
-connector placement, and first-order coupling strengths are often “good enough” here. Because solves are
-cheap, you can explore a lot of geometry/stack variants before moving to heavier solvers.</p>
-<p><em>How it works.</em> Partition the device into a handful of cells, solve each one quickly to get effective
-C/L values, then assemble the network and quantize. The reduction step preserves the pairwise couplings
-so you keep track of renormalization and loading. The result is a simple Hamiltonian with parameters you
-can iterate on in minutes.</p>
-<p>References:</p>
+<p>Treat each part of the chip as a compact circuit element. Cut the device into a
+few cells, extract each cell’s capacitance and inductance with a fast
+quasi-static solve, assemble the network, and quantize it. The reduction keeps
+the pairwise couplings, so renormalization and loading are tracked and the
+result is a small Hamiltonian you can iterate on in minutes.</p>
+<a class="qm-diagram reference internal image-reference" href="_images/lumped-circuit.svg"><img alt="A transmon (junction and shunt capacitor) coupled by a capacitor to a resonator (capacitor and inductor)." class="qm-diagram" src="_images/lumped-circuit.svg" style="width: 80%;" />
+</a>
+<p>Choose it for early design and sweeps, when speed and an intuitive circuit
+picture matter more than field detail. Because each solve is cheap, many
+geometry and stack variants can be compared before a heavier solver is needed.</p>
 <ul class="simple">
-<li><p>Zlatko K. Minev, Thomas G. McConkey, Maika Takita, Antonio Corcoles, Jay M. Gambetta,
-Circuit quantum electrodynamics (cQED) with modular quasi-lumped models. (2021)</p></li>
+<li><p>Z. K. Minev, T. G. McConkey, M. Takita, A. D. Corcoles, J. M. Gambetta,
+<a class="reference external" href="https://arxiv.org/abs/2103.10344">Circuit quantum electrodynamics (cQED) with modular quasi-lumped models</a> (2021).</p></li>
 </ul>
-<a class="reference internal image-reference" href="_images/lump.png"><img alt="Missing Image" src="_images/lump.png" width="388" />
+</section>
+<section id="energy-participation-ratio-epr">
+<h2>Energy-participation ratio (EPR)<a class="headerlink" href="#energy-participation-ratio-epr" title="Link to this heading">¶</a></h2>
+<p>The energy-participation ratio of an element in a mode is the fraction of the
+mode’s energy stored in that element, a number between zero and one. The
+participations of the nonlinear (Josephson) elements fix the Hamiltonian, and
+those of the lossy elements fix the loss, whatever the circuit topology. They
+come from one eigenmode simulation of the linearized circuit, so the method
+quantizes multi-junction and 3D circuits without a hand-built circuit model.</p>
+<a class="qm-diagram reference internal image-reference" href="_images/epr-participation.svg"><img alt="Bars showing the share of one mode's energy in the junction, the substrate, interfaces and other elements." class="qm-diagram" src="_images/epr-participation.svg" style="width: 85%;" />
 </a>
-<a class="reference internal image-reference" href="_images/lumped2.png"><img alt="Missing Image" src="_images/lumped2.png" width="400" />
-</a>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<section id="composite-system-api-cell-subsystem-compositesystem">
-<span id="lom-composite-api"></span><h3>Composite-system API: <code class="docutils literal notranslate"><span class="pre">Cell</span></code> / <code class="docutils literal notranslate"><span class="pre">Subsystem</span></code> / <code class="docutils literal notranslate"><span class="pre">CompositeSystem</span></code><a class="headerlink" href="#composite-system-api-cell-subsystem-compositesystem" title="Link to this heading">¶</a></h3>
+<p>Choose it when layout details matter: packaging, higher modes, junction
+placement, seams and substrate loss. Draw the design, set materials and
+boundaries, place the junction ports, and run one eigenmode solve; pyEPR reads
+the fields and returns frequencies, dispersive shifts, anharmonicities and loss
+budgets. It is best tested for weakly anharmonic circuits such as transmons
+coupled to resonators.</p>
+<ul class="simple">
+<li><p>Z. K. Minev, Z. Leghtas, S. O. Mundhada, L. Christakis, I. M. Pop,
+M. H. Devoret, <a class="reference external" href="https://arxiv.org/abs/2010.00620">Energy-participation quantization of Josephson circuits</a>, npj Quantum Information 7, 131 (2021).</p></li>
+<li><p>Z. K. Minev et al., <a class="reference external" href="https://github.com/zlatko-minev/pyEPR">pyEPR</a>
+(<a class="reference external" href="https://pyepr-docs.readthedocs.io">documentation</a>).</p></li>
+<li><p>Z. K. Minev, Ph.D. dissertation, Yale University (2018), chapter 4,
+<a class="reference external" href="https://arxiv.org/abs/1902.10355">arXiv:1902.10355</a>.</p></li>
+</ul>
+</section>
+<section id="impedance">
+<h2>Impedance<a class="headerlink" href="#impedance" title="Link to this heading">¶</a></h2>
+<p>The impedance route starts from the frequency-dependent impedance (or
+scattering) matrix at the ports, the same quantity a network analyzer measures.
+The modes appear as poles, and their frequencies, couplings and nonlinear
+participation follow from the pole and residue structure. It shares the
+fields-first philosophy of EPR, and is the natural handle for layouts with many
+ports or modes: bus networks, Purcell filters and chip-package assemblies. It is
+also an independent check of EPR couplings.</p>
+<p>Define ports at the junctions or pins, run a driven or eigenmode solve to get
+the matrix versus frequency, and sample around the modes of interest.</p>
+<ul class="simple">
+<li><p>S. E. Nigg, H. Paik, B. Vlastakis, G. Kirchmair, S. Shankar, L. Frunzio,
+M. H. Devoret, R. J. Schoelkopf, S. M. Girvin, <a class="reference external" href="https://arxiv.org/abs/1204.0587">Black-box superconducting
+circuit quantization</a>,
+Phys. Rev. Lett. 108, 240502 (2012).</p></li>
+</ul>
+</section>
+<section id="next">
+<h2>Next<a class="headerlink" href="#next" title="Link to this heading">¶</a></h2>
+<p>Run the methods side by side in the 4.4x tutorials (<a class="reference internal" href="tut/simulate-and-analyze.html"><span class="doc">Part 4: Simulate and analyze</span></a>), or see
+<a class="reference internal" href="simulation-pathways.html"><span class="doc">Simulation pathways</span></a> for the solvers behind them. The class reference follows.</p>
+</section>
+<section id="reference-cell-subsystem-compositesystem">
+<span id="lom-composite-api"></span><h2>Reference: <code class="docutils literal notranslate"><span class="pre">Cell</span></code> / <code class="docutils literal notranslate"><span class="pre">Subsystem</span></code> / <code class="docutils literal notranslate"><span class="pre">CompositeSystem</span></code><a class="headerlink" href="#reference-cell-subsystem-compositesystem" title="Link to this heading">¶</a></h2>
 <p>The lumped-oscillator model is assembled from three classes in
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">qiskit_metal.analyses.quantization.lom_core_analysis</span></code>. A <strong>Cell</strong> holds
 an extracted capacitance matrix plus any inductors and junctions; a
@@ -645,7 +721,7 @@ builders compute <code class="docutils literal notranslate"><span class="pre">EC
 resulting eigenvalues are in MHz even though scqubits’ default unit label
 is GHz; call <code class="docutils literal notranslate"><span class="pre">scqubits.set_units(&quot;MHz&quot;)</span></code> for correctly labelled plots.</p>
 <section id="built-in-sys-type-values-and-their-q-opts">
-<h4>Built-in <code class="docutils literal notranslate"><span class="pre">sys_type</span></code> values and their <code class="docutils literal notranslate"><span class="pre">q_opts</span></code><a class="headerlink" href="#built-in-sys-type-values-and-their-q-opts" title="Link to this heading">¶</a></h4>
+<h3>Built-in <code class="docutils literal notranslate"><span class="pre">sys_type</span></code> values and their <code class="docutils literal notranslate"><span class="pre">q_opts</span></code><a class="headerlink" href="#built-in-sys-type-values-and-their-q-opts" title="Link to this heading">¶</a></h3>
 <p>The list below is the accepted-parameter reference for the four models
 shipped with quantum-metal. Call
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">QuantumSystemRegistry.registry()</span></code> at runtime to list every
@@ -943,65 +1019,6 @@ capacitance matrix</p>
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">QuantumSystemRegistry</span></span><a class="reference internal" href="_modules/qiskit_metal/analyses/quantization/lom_core_analysis.html#QuantumSystemRegistry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qiskit_metal.analyses.quantization.lom_core_analysis.QuantumSystemRegistry" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-</section>
-</section>
-<section id="energy-the-energy-participation-ratio-epr-method">
-<h2>Energy: The energy-participation-ratio (EPR) method<a class="headerlink" href="#energy-the-energy-participation-ratio-epr-method" title="Link to this heading">¶</a></h2>
-<p>The energy-participation-ratio (EPR) method is a general (black-box) quantization method.
-Based on the Quantum Metal integration with <a class="reference external" href="https://github.com/zlatko-minev/pyEPR">pyEPR</a>,
-one can automate the design and quantization of Josephson quantum circuits,
-and even 3D circuits.</p>
-<p>The EPR method is based on the energy-participation ratio (EPR) of a dissipative or nonlinear
-element in an electromagnetic mode. The EPR, a number between zero and one, quantifies how much
-of the energy of a mode is stored in each element. It obeys universal constraints—valid
-regardless of the circuit topology and nature of the nonlinear elements.
-The EPR of the elements are calculated from a unique, efficient electromagnetic eigenmode
-simulation of the linearized circuit, including lossy elements.
-Their set is the key input to the determination of the quantum Hamiltonian of the system.
-The method provides an intuitive and simple-to-use tool to quantize multi-junction circuits.
-It is especially well-suited for finding the Hamiltonian and dissipative parameters of weakly
-anharmonic systems, such as transmon qubits coupled to resonators, or Josephson transmission lines.
-The EPR method is experimentally tested on a variety of Josephson circuits, and demonstrated
-high agreement for nonlinear couplings and modal Hamiltonian parameters, over many order of
-magnitude in energy.</p>
-<p><em>When to use it.</em> When layout details matter: packaging effects, higher-mode participation, junction
-placement, seams, or substrate losses. EPR gives you a field-aware Hamiltonian and ties every loss
-number to a physical volume, so you know which lever to pull next.</p>
-<p><em>What you set up.</em> Draw your design, define materials and boundaries, place ports, and run a single
-eigenmode solve on the linearized circuit. pyEPR reads the fields, computes participations for every
-nonlinear/lossy element, and hands back frequencies, dispersive shifts, anharmonicities, and loss
-budgets. Because it is black-box, it scales to multi-mode, multi-junction systems with minimal
-hand-tuning.</p>
-<p>References:</p>
-<ul class="simple">
-<li><p>Minev, Z. K., Leghtas, Z., Mudhada, S. O., Reinhold, P., Diringer, A., &amp; Devoret, M. H. (2018). <a class="reference external" href="https://github.com/zlatko-minev/pyEPR/blob/master/pyEPR.bib">pyEPR: The energy-participation-ratio (EPR) open-source framework for quantum device design.</a></p></li>
-<li><p>Minev, Z. K., Leghtas, Z., Mundhada, S. O., Christakis, L., Pop, I. M., &amp; Devoret, M. H. (2020). Energy-participation quantization of Josephson circuits. ArXiv. Retrieved from <a class="reference external" href="http://arxiv.org/abs/2010.00620">http://arxiv.org/abs/2010.00620</a> (2020)</p></li>
-<li><p>Z.K. Minev, Ph.D. Dissertation, Yale University (2018), Chapter 4. <a class="reference external" href="https://arxiv.org/abs/1902.10355">arXiv:1902.10355</a>  (2018)</p></li>
-<li><p><a class="reference external" href="https://pyepr-docs.readthedocs.io">pyEPR docs</a></p></li>
-</ul>
-</section>
-<section id="impedance-impedance-based-black-box-quantization-bbq">
-<h2>Impedance: impedance-based black-box quantization (BBQ)<a class="headerlink" href="#impedance-impedance-based-black-box-quantization-bbq" title="Link to this heading">¶</a></h2>
-<p>The impedance formulation of black-box quantization builds the Hamiltonian directly from the
-frequency-dependent impedance seen between nonlinear elements and ground. It shares the “full-wave
-fields first, circuit later” philosophy of EPR, but works in the impedance domain: from a port-defined
-impedance matrix you extract effective mode frequencies, participation factors, and couplings.</p>
-<p><em>When to use it.</em> For strongly multi-port/multi-mode layouts where port impedances are the most natural
-handle (e.g., rich bus networks, Purcell filters, or chip-package assemblies). It is also a good cross
-check to EPR when you want to validate couplings via an independent pipeline.</p>
-<p><em>What you set up.</em> Define ports at the locations of junctions or pins, run an eigenmode or driven solve
-to obtain the impedance matrix versus frequency, then sample around the modes of interest. The resulting
-impedances map to effective inductive/capacitive participations and give you the Hamiltonian parameters.</p>
-<p><em>Outputs.</em> Mode frequencies, nonlinear participation, and cross-Kerr rates derived from the impedance
-matrix, plus a clear picture of how design changes move those impedances. Use it to tune Purcell filters,
-set coupling windows, or debug unexpected mode crowding.</p>
-<img alt="Missing Image" src="_images/epr.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
 </section>
 </section>
 
@@ -1026,7 +1043,7 @@ set coupling windows, or debug unexpected mode crowding.</p>
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Quantum Metal Workflow</div>
+                <div class="title">Quantum Metal workflow</div>
                 
               </div>
             </a>
@@ -1034,7 +1051,7 @@ set coupling windows, or debug unexpected mode crowding.</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; Quantum Metal Community; 2019-2025 Qiskit Development Team
+                Copyright &#169; Quantum Metal Community; 2019-2026 Qiskit Development Team
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1061,9 +1078,12 @@ set coupling windows, or debug unexpected mode crowding.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Quantization Methods Overview</a><ul>
-<li><a class="reference internal" href="#lumped-oscillator-model">Lumped-oscillator model</a><ul>
-<li><a class="reference internal" href="#composite-system-api-cell-subsystem-compositesystem">Composite-system API: <code class="docutils literal notranslate"><span class="pre">Cell</span></code> / <code class="docutils literal notranslate"><span class="pre">Subsystem</span></code> / <code class="docutils literal notranslate"><span class="pre">CompositeSystem</span></code></a><ul>
+<li><a class="reference internal" href="#">Quantization methods</a><ul>
+<li><a class="reference internal" href="#lumped-oscillator-model">Lumped-oscillator model</a></li>
+<li><a class="reference internal" href="#energy-participation-ratio-epr">Energy-participation ratio (EPR)</a></li>
+<li><a class="reference internal" href="#impedance">Impedance</a></li>
+<li><a class="reference internal" href="#next">Next</a></li>
+<li><a class="reference internal" href="#reference-cell-subsystem-compositesystem">Reference: <code class="docutils literal notranslate"><span class="pre">Cell</span></code> / <code class="docutils literal notranslate"><span class="pre">Subsystem</span></code> / <code class="docutils literal notranslate"><span class="pre">CompositeSystem</span></code></a><ul>
 <li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Cell"><code class="docutils literal notranslate"><span class="pre">Cell</span></code></a></li>
 <li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem"><code class="docutils literal notranslate"><span class="pre">Subsystem</span></code></a><ul>
 <li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.Subsystem.h_params"><code class="docutils literal notranslate"><span class="pre">Subsystem.h_params</span></code></a></li>
@@ -1084,10 +1104,6 @@ set coupling windows, or debug unexpected mode crowding.</p>
 <li><a class="reference internal" href="#qiskit_metal.analyses.quantization.lom_core_analysis.QuantumSystemRegistry"><code class="docutils literal notranslate"><span class="pre">QuantumSystemRegistry</span></code></a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a class="reference internal" href="#energy-the-energy-participation-ratio-epr-method">Energy: The energy-participation-ratio (EPR) method</a></li>
-<li><a class="reference internal" href="#impedance-impedance-based-black-box-quantization-bbq">Impedance: impedance-based black-box quantization (BBQ)</a></li>
 </ul>
 </li>
 </ul>

@@ -1,0 +1,784 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Reproduced devices and results (notebooks)" href="research.html"><link rel="prev" title="The Quantum Metal Ecosystem" href="ecosystem.html">
+
+    <!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 -->
+        <title>Devices and papers - Quantum Metal 0.9.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fc6d6d93" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vibur" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyterlite_sphinx.css?v=f676e775" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=b32f9225" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 2H2C1.73478 2 1.48043 2.10536 1.29289 2.29289C1.10536 2.48043 1 2.73478 1 3V13C1 13.2652 1.10536 13.5196 1.29289 13.7071C1.48043 13.8946 1.73478 14 2 14H14C14.2652 14 14.5196 13.8946 14.7071 13.7071C14.8946 13.5196 15 13.2652 15 13V3C15 2.73478 14.8946 2.48043 14.7071 2.29289C14.5196 2.10536 14.2652 2 14 2V2ZM2 3H10V13H2V3ZM14 13H11V3H14V13Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 3H2V4H14V3Z" fill="currentColor"/>
+      <path d="M14 12H2V13H14V12Z" fill="currentColor"/>
+      <path d="M14 6H2V7H14V6Z" fill="currentColor"/>
+      <path d="M14 9H2V10H14V9Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 8L6.00005 13L5.30005 12.3L9.60005 8L5.30005 3.7L6.00005 3L11 8Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 13H1V14H15V13Z" fill="currentColor"/>
+      <path d="M12.7 4.5C13.1 4.1 13.1 3.5 12.7 3.1L10.9 1.3C10.5 0.9 9.9 0.9 9.5 1.3L2 8.8V12H5.2L12.7 4.5ZM10.2 2L12 3.8L10.5 5.3L8.7 3.5L10.2 2ZM3 11V9.2L8 4.2L9.8 6L4.8 11H3Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 13.0002C11.5523 13.0002 12 12.5525 12 12.0002C12 11.4479 11.5523 11.0002 11 11.0002C10.4477 11.0002 10 11.4479 10 12.0002C10 12.5525 10.4477 13.0002 11 13.0002Z" fill="currentColor"/>
+      <path d="M14.8884 11.7394C14.5795 10.9524 14.0464 10.2734 13.3552 9.78646C12.664 9.29954 11.8451 9.02615 11 9.00017C10.1549 9.02615 9.33604 9.29954 8.64484 9.78646C7.95365 10.2734 7.42052 10.9524 7.11155 11.7394L7 12.0002L7.11155 12.2609C7.42052 13.0479 7.95365 13.727 8.64484 14.2139C9.33604 14.7008 10.1549 14.9742 11 15.0002C11.8451 14.9742 12.664 14.7008 13.3552 14.2139C14.0464 13.727 14.5795 13.0479 14.8884 12.2609L15 12.0002L14.8884 11.7394ZM11 14.0002C10.6044 14.0002 10.2178 13.8829 9.88886 13.6631C9.55996 13.4433 9.30362 13.131 9.15224 12.7655C9.00087 12.4001 8.96126 11.998 9.03843 11.61C9.1156 11.222 9.30608 10.8657 9.58579 10.586C9.86549 10.3063 10.2219 10.1158 10.6098 10.0386C10.9978 9.96143 11.3999 10.001 11.7654 10.1524C12.1308 10.3038 12.4432 10.5601 12.6629 10.889C12.8827 11.2179 13 11.6046 13 12.0002C12.9994 12.5304 12.7885 13.0388 12.4136 13.4137C12.0386 13.7887 11.5303 13.9996 11 14.0002Z" fill="currentColor"/>
+      <path d="M6 14.0002H4V2.00017H8V5.00017C8.00077 5.26515 8.10637 5.51906 8.29374 5.70643C8.48111 5.8938 8.73502 5.99941 9 6.00017H12V8.00017H13V5.00017C13.0018 4.93446 12.9893 4.86913 12.9634 4.80871C12.9375 4.74828 12.8988 4.6942 12.85 4.65017L9.35 1.15017C9.30599 1.10134 9.2519 1.06263 9.19147 1.03674C9.13104 1.01084 9.06572 0.998364 9 1.00017H4C3.73502 1.00094 3.48111 1.10654 3.29374 1.29391C3.10637 1.48128 3.00077 1.73519 3 2.00017V14.0002C3.00077 14.2652 3.10637 14.5191 3.29374 14.7064C3.48111 14.8938 3.73502 14.9994 4 15.0002H6V14.0002ZM9 2.20017L11.8 5.00017H9V2.20017Z" fill="currentColor"/>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Quantum Metal 0.9.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">Quantum Metal 0.9.0</span>
+  
+</a>
+<form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Quantum Metal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="choose-your-path.html">Choose Your Path</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ecosystem.html">Built on Quantum Metal</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Showcase &amp; Learn</span></p>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Device Images and Papers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="research.html">Reproduced Devices (Notebooks)</a><input aria-label="Toggle navigation of Reproduced Devices (Notebooks)" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.41-The-package-mode-on-paper.html">4.41 The Package Mode on Paper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.42-Four-ways-to-measure-a-coupling.html">4.42 Four Ways to Measure a Coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.43-Mesh-and-solve-the-10x10-processor.html">4.43 Mesh and Solve the 10 × 10 Processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.44-Every-coupling-from-one-eigenmode.html">4.44 Every Coupling from One Eigenmode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.45-Four-methods-one-full-wave-model.html">4.45 Four Methods, One Full-Wave Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.html">4.46 Beyond the Dipole: Multipoles and Magnetic Coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.html">5-Qubit Xmon Processor (Barends <em>et al.</em>, 2014)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates.html">Full Physical Designs of Three iSWAP Gates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode.html">17-Qubit Surface-Code Chip (Wallraff group, ETH Zurich)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh.html">Two-Qubit Cell: Meshing Part of the 17-Qubit Chip</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tut/index.html">Learn</a><input aria-label="Toggle navigation of Learn" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tut/first-steps.html">Part 1: First steps</a><input aria-label="Toggle navigation of Part 1: First steps" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tut/1-Overview/1.1-Quick-start.html">1.1 Quick start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/1-Overview/1.2-Bird%27s-eye-view-of-Quantum-Metal.html">1.2 Bird’s eye view of Quantum Metal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/1-Overview/1.3-Build-a-4-qubit-chip.html">1.3 Build a 4-qubit chip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/1-Overview/1.4-Saving-Your-Chip-Design.html">1.4 Saving Your Chip Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/1-Overview/1.5-Parametric-design---iterate-and-compare.html">1.5 Parametric Design: Iterate and Compare</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tut/components-to-chip.html">Part 2: From components to chip</a><input aria-label="Toggle navigation of Part 2: From components to chip" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/2.01-How-to-use-a-QComponent.html">2.01 QComponent lifecycle — use, copy, delete, rename</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/quick-topics/Managing-variables.html">Managing variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/quick-topics/Managing-pins.html">Managing pins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/2.11-Routing-101.html">2.11 Routing 101</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/2.12-Simple-Meander.html">2.12 Simple Meander</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/2.13-Hybrid-Auto-and-AStar.html">2.13 Hybrid Auto and AStar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute.html">2.14 Get them all with MixedRoute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/2.15-Airbridges.html">Airbridges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.html">2.21 Design a 4 qubit full chip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/2.23-Modify-chip-options.html">2.23 Modify chip options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/2.24-Design-rule-checking.html">Design rule checking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/2.22-Design-100-qubits-programmatically.html">2.22 Design 100 qubits programmatically</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/FlipChip-design-tutorial.html">Flip-Chip Devices in Quantum Metal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/2.31-Create-a-QComponent-Basic.html">2.31 Create a QComponent - Basic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/2.32-Create-a-QComponent-Advanced.html">2.32 Create a QComponent - Advanced</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.html">2.33 Add my QComponent to a reusable python file</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tut/render-and-export.html">Part 3: Render and export</a><input aria-label="Toggle navigation of Part 3: Render and export" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tut/3-Renderers/3.1-Introduction-to-QRenderers.html">3.1 Introduction to QRenderers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/3-Renderers/3.2-Export-your-design-to-GDS.html">3.2 Export your design to GDS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/3-Renderers/3.5-Render-your-design-to-Gmsh.html">3.5 Render your design to Gmsh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/3-Renderers/3.3-Render-your-design-to-Ansys.html">3.3 Render your design to Ansys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/3-Renderers/3.4-How-do-I-make-my-custom-QRenderer.html">3.4 How do I make my custom QRenderer?</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tut/simulate-and-analyze.html">Part 4: Simulate and analyze</a><input aria-label="Toggle navigation of Part 4: Simulate and analyze" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM.html">4.19 Analyze a Transmon Qubit using ElmerFEM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.01-Capacitance-and-LOM.html">4.01 Capacitance matrix and LOM analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.02-Eigenmode-and-EPR.html">4.02 Eigenmode and EPR analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.03-Impedance.html">4.03 Impedance, admittance and scattering analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.11-Analyze-and-tune-a-transmon.html">4.11 Analyzing and tuning a transmon qubit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.12-Analyze-a-resonator.html">4.12 Analyzing and tuning a resonator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.13-Analyze-transmon-and-resonator.html">4.13 Analyzing and tuning a transmon qubit with a resonator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.14-Analyze-a-double-hanger-resonator.html">4.14 Analyzing a double hanger resonator (S Param)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html">4.16 S21 simulation of a resonator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.17-Fit-S21-of-Hanger-Resonator-Geometry.html">4.17 S21 simulation and fitting of a resonator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.18-Analyse-a-Resonator-with-Ports.html">4.18 Eigenmode simulation with Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.21-Capacitance-matrix.html">4.21 Sweeps - Capacitance matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.22-Eigenmode-matrix.html">4.22 Sweeps - Eigenmode matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.23-Impedance-and-scattering-Z-S-Y-matrices.html">4.23 Sweeps - Impedance, scattering and admittance (Z S Y) matrices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/pyaedt-multiplanar/Q3D-pyaedt-multiplanar.html">Q3D Capacitance Matrix of a MultiPlanar Design with pyaedt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/pyaedt-multiplanar/Eigenmode-pyaedt-multiplanar.html">Running Eigenmode Simulations &amp; EPR Analysis with <code class="docutils literal notranslate"><span class="pre">QHFSSEigenmodePyaedt</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/pyaedt-multiplanar/DrivenModal-pyaedt-multiplanar.html">HFSS Driven Modal Simulation of a MultiPlanar Design with pyaedt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example.html">4.04 New LOM and Fluxonium Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example.html">4.05 New LOM and Two Coupled Transmon Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.html">4.05 New LOM and Two Coupled Transmon Example with sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.15-CPW-kappa-calculation.html">4.15 CPW Kappa Calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.31-Plot-quantum-oscillator-wavefunction.html">4.31 Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.32-Transmon-analytics-HCPB.html">4.32 Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html">4.34 Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/cQED-with-the-Jaynes-Cummings-Interaction-Model.html">Circuit Quantum Electrodynamics (cQED) and the Jaynes-Cummings Interaction Model Using the HCPB Class and QuTip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tut/4-Analysis/Design-and-Simulation-of-a-Cross-Resonance-Gate.html">The Cross Resonance (CR) Gate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="circuit-examples/index.html">Examples</a><input aria-label="Toggle navigation of Examples" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tut/full-design-examples/A.1-Transmon-with-readout-resonator.html">A.1 Reference design — Transmon with readout resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/42-ResonatorAndLaunchPad.html">Readout line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/32-TwoTransmonsDirectCoupling.html">Direct Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/33-TwoTransmonsWithMeander.html">Bus Resonator Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/full-design-examples/A.2-Two-coupled-transmons.html">A.2 Reference design — Two coupled transmons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/full-design-examples/A.3-Four-qubit-multiplexed-readout.html">A.3 Reference design — Four-qubit multiplexed readout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/05-Transmon_cross_fl.html">Single Transmon - Grounded (xmon) flux lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/06-Transmon_floating_6.html">Single Transmon - Floating with 6 connection pads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/03-concentric_transmon.html">Concentric Transmon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/04-Interdigitated_Transmon.html">Interdigitated Transmon Qubits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/QComponent-Interdigitated-transmon.html">QComponent - Interdigitated transmon qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/43-TransmonPocketCL.html">Charge Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/08-JJ-Dolan.html">Josephson Junction (Dolan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/JJ-Demo-Notebook.html">Josephson Junction QComponent Demo Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/E.Input-output-coupling/41-LaunchPad.html">CPW Launch Pad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/QComponent-3-fingers-capacitor.html">QComponent - 3-fingers capacitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.4-Full-chip-design.html">A.4 Full chip design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop.html">A.7 Quantum Metal tutorial for IMS 2022</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qcomponents-gallery.html">Component Gallery</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How It Works</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">Quantum Metal Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation-pathways.html">Simulation Pathways</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui-shortcuts.html">GUI Navigation &amp; Shortcuts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/designs.html">QDesigns</a><input aria-label="Toggle navigation of QDesigns" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.DesignFlipChip.html">DesignFlipChip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.QNet.html">QNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.designs.Components.html">Components</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/qlibrary.html">QComponents</a><input aria-label="Toggle navigation of QComponents" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.QRoute.html">QRoute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.QRouteLead.html">QRouteLead</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.QRoutePoint.html">QRoutePoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.CircleCaterpillar.html">CircleCaterpillar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.CircleRaster.html">CircleRaster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.NGon.html">NGon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.NSquareSpiral.html">NSquareSpiral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.Rectangle.html">Rectangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.RectangleHollow.html">RectangleHollow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.Cap3Interdigital.html">Cap3Interdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.CapFingerInFrame.html">CapFingerInFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.CapNInterdigital.html">CapNInterdigital</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.ResonatorCoilRect.html">ResonatorCoilRect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.CoupledLineTee.html">CoupledLineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.LineTee.html">LineTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.CapNInterdigitalTee.html">CapNInterdigitalTee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.TunableCoupler02.html">TunableCoupler02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.ReadoutResFC.html">ReadoutResFC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.ResonatorLumped.html">ResonatorLumped</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.LaunchpadWirebond.html">LaunchpadWirebond</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled.html">LaunchpadWirebondCoupled</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.LaunchpadWirebondDriven.html">LaunchpadWirebondDriven</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.OpenToGround.html">OpenToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.ShortToGround.html">ShortToGround</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.RouteStraight.html">RouteStraight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.RouteFramed.html">RouteFramed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.RouteMeander.html">RouteMeander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.RouteAnchors.html">RouteAnchors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.RouteMixed.html">RouteMixed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.RoutePathfinder.html">RoutePathfinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.PolylineCPW.html">PolylineCPW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.jj_dolan.html">jj_dolan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.jj_manhattan.html">jj_manhattan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.TransmonConcentric.html">TransmonConcentric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.TransmonConcentricType2.html">TransmonConcentricType2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.TransmonCross.html">TransmonCross</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.TransmonCrossFL.html">TransmonCrossFL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.TransmonInterdigitated.html">TransmonInterdigitated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.TransmonPocket.html">TransmonPocket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.TransmonPocketCL.html">TransmonPocketCL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.TransmonPocket6.html">TransmonPocket6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.TransmonPocketTeeth.html">TransmonPocketTeeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.TunableCoupler01.html">TunableCoupler01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.SQUID_LOOP.html">SQUID_LOOP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.SNAIL.html">SNAIL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.StarQubit.html">StarQubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/analyses.html">Analyses</a><input aria-label="Toggle navigation of Analyses" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.QAnalysis.html">QAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.QSimulation.html">QSimulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.LOManalysis.html">LOManalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.EPRanalysis.html">EPRanalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.LumpedElementsSim.html">LumpedElementsSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.EigenmodeSim.html">EigenmodeSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.ScatteringImpedanceSim.html">ScatteringImpedanceSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.Hcpb.html">Hcpb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.Hcpb_analytic.html">Hcpb_analytic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.HO_wavefunctions.html">HO_wavefunctions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.transmon_analytics.html">transmon_analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.cpw_calculations.html">cpw_calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.kappa_calculation.html">kappa_calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.lumped_capacitive.html">lumped_capacitive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.analyses.Sweeper.html">Sweeper</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/renderers.html">QRenderers</a><input aria-label="Toggle navigation of QRenderers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.PlotCanvas.html">PlotCanvas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.MplInteraction.html">MplInteraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.ZoomOnWheel.html">ZoomOnWheel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.PanAndZoom.html">PanAndZoom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QMplRenderer.html">QMplRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.AnimatedText.html">AnimatedText</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QGDSRenderer.html">QGDSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.Cheesing.html">Cheesing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QAnsysRenderer.html">QAnsysRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QHFSSRenderer.html">QHFSSRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QQ3DRenderer.html">QQ3DRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QPyaedt.html">QPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QQ3DPyaedt.html">QQ3DPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QHFSSPyaedt.html">QHFSSPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QHFSSDrivenmodalPyaedt.html">QHFSSDrivenmodalPyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt.html">QHFSSEigenmodePyaedt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.QGmshRenderer.html">QGmshRenderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/toolbox_metal.html">Toolbox</a><input aria-label="Toggle navigation of Toolbox" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.about.html">about</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.import_export.html">import_export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.math_and_overrides.html">math_and_overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.parsing.html">parsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.layer_stack_handler.html">layer_stack_handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.bounds_for_path_and_poly_tables.html">bounds_for_path_and_poly_tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.toolbox_metal.determine_larger_box.html">determine_larger_box</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/qgeometries.html">QGeometry</a><input aria-label="Toggle navigation of QGeometry" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/gui.html">GUI</a><input aria-label="Toggle navigation of GUI" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="archive.html">Archived Notebooks</a><input aria-label="Toggle navigation of Archived Notebooks" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Testing-QComponents-for-overlap-and-collisions.html">Demo Notebook Demonstrating How to Test for Component/CPW Overlap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/4-Analysis/4.33-Transmon-analytics.html">4.33 Transmon Analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.5-Launch-video-example.html">A.5 Launch video example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/full-design-flow-examples/A.6-Hackathon-exercise-South-Korea-2020.html">A.6 Hackathon exercise — South Korea 2020</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/F.Small-quantum-chips/51-Four_qubit_chip.html">Four Qubit Chip Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit-examples/A.Qubits/07-Transmon_floating_cl.html">Single Transmon - Floating with charge lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tut/quick-topics/Opening-documentation.html">Opening the documentation</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community &amp; Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributor-guide.html">Contributor Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="headless-usage.html">Using Quantum Metal without Qt</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+</ul>
+
+</div></div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/built-with-metal.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="devices-and-papers">
+<span id="built-with-metal"></span><h1>Devices and papers<a class="headerlink" href="#devices-and-papers" title="Link to this heading">¶</a></h1>
+<p>Images of devices designed with Quantum Metal, and the papers, theses and software that
+used it. Notebooks that reproduce published devices are on a separate page:
+<a class="reference internal" href="research.html"><span class="doc">Reproduced devices and results (notebooks)</span></a>.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-4 sd-row-cols-lg-4 sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-column docutils">
+<p><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-primary sd-shadow-sm reference internal" href="#devices-fabricated"><span>Device images</span></a></span></p>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<p><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-primary sd-shadow-sm reference internal" href="#devices-chips"><span>Chips and designs</span></a></span></p>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<p><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-primary sd-shadow-sm reference internal" href="#devices-papers"><span>Papers and theses</span></a></span></p>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<p><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-primary sd-shadow-sm reference internal" href="#devices-software"><span>Software</span></a></span></p>
+</div>
+</div>
+</div>
+<p>Entries come from published sources that name Quantum Metal (or Qiskit Metal).
+A paper is listed under “Papers and theses” only if it used the software for a
+design or an analysis; papers that cite or review it are at the end.
+To add or correct an entry, open an issue or a pull request that edits
+<code class="docutils literal notranslate"><span class="pre">docs/_data/papers.json</span></code>.</p>
+<section id="device-images">
+<span id="devices-fabricated"></span><h2>Device images<a class="headerlink" href="#device-images" title="Link to this heading">¶</a></h2>
+<div class="qm-fab-grid">
+<figure><img src="_static/fabricated/qdw01-slide17-nqcp-adamite-sem-overview.jpg" alt="SEM overview of a 12-qubit tunable chip with direct coupling (&quot;Adamite&quot;), designed with Quantum Metal." loading="lazy"><figcaption>SEM overview of a 12-qubit tunable chip with direct coupling (&quot;Adamite&quot;), designed with Quantum Metal.<br><span class="qm-fab-credit">Design: Christopher W. Warren, SQuID Lab, Niels Bohr Institute, University of Copenhagen; Novo Nordisk Quantum Computing Programme (NQCP)</span></figcaption></figure>
+<figure><img src="_static/fabricated/wallraff-17q-metal-rebuild.jpg" alt="Layout of the 17-qubit surface-code processor (distance-three), rebuilt in Quantum Metal from the published design." loading="lazy"><figcaption>Layout of the 17-qubit surface-code processor (distance-three), rebuilt in Quantum Metal from the published design.<br><span class="qm-fab-credit"><a href="circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode.html">Design: ETH Zurich Quantum Device Lab (Krinner et al., Nature 2022); rebuild: notebook 53</a></span></figcaption></figure>
+<figure><img src="_static/fabricated/qdw-figen-fluxonium-chip-design.jpg" alt="Six-qubit fluxonium chip with readout resonators and drive lines, in the Quantum Metal GUI." loading="lazy"><figcaption>Six-qubit fluxonium chip with readout resonators and drive lines, in the Quantum Metal GUI.<br><span class="qm-fab-credit">Figen Yilmaz, Andersen Lab, QuTech / TU Delft</span></figcaption></figure>
+<figure><img src="_static/fabricated/flipchip-25q-packaged.jpg" alt="Photograph of a packaged 25-qubit flip-chip superconducting quantum processor (Q-chip and C-chip bonded onto a printed circuit board)." loading="lazy"><figcaption>Photograph of a packaged 25-qubit flip-chip superconducting quantum processor (Q-chip and C-chip bonded onto a printed circuit board).<br><span class="qm-fab-credit"><a href="https://doi.org/10.1103/PRXQuantum.5.030350">S. Kosen et al., PRX Quantum 5, 030350 (2024) (arXiv:2403.00285), CC BY 4.0</a></span></figcaption></figure>
+<figure><img src="_static/fabricated/qdw-figen-intermediate-chip-design.jpg" alt="Intermediate chip design in the Quantum Metal GUI: a two-pad qubit with a readout resonator and control lines." loading="lazy"><figcaption>Intermediate chip design in the Quantum Metal GUI: a two-pad qubit with a readout resonator and control lines.<br><span class="qm-fab-credit">Figen Yilmaz, Andersen Lab, QuTech / TU Delft</span></figcaption></figure>
+<figure><img src="_static/fabricated/qdw-figen-fluxonium-spectrum.jpg" alt="Fluxonium energy levels versus external flux from three models: lumped-element, quasi-lumped and eigenmode (pyEPR) analysis of the Quantum Metal design." loading="lazy"><figcaption>Fluxonium energy levels versus external flux from three models: lumped-element, quasi-lumped and eigenmode (pyEPR) analysis of the Quantum Metal design.<br><span class="qm-fab-credit">Roald van den Boogaart, Andersen Lab, QuTech / TU Delft</span></figcaption></figure>
+<figure><img src="_static/fabricated/qdw01-slide22-tudelft-fluxonium-teaser.jpg" alt="TU Delft fluxonium chip: annotated layout, designed with Qiskit Metal." loading="lazy"><figcaption>TU Delft fluxonium chip: annotated layout, designed with Qiskit Metal.<br><span class="qm-fab-credit">Christian Kraglund Andersen, TU Delft</span></figcaption></figure>
+<figure><img src="_static/fabricated/qdw01-slide21-tudelft-resonator-design-figure.jpg" alt="Resonator chip design (final design and single-resonator geometry)." loading="lazy"><figcaption>Resonator chip design (final design and single-resonator geometry).<br><span class="qm-fab-credit">QuTech / TU Delft, Andersen Lab (thesis figure)</span></figcaption></figure>
+<figure><img src="_static/fabricated/qdw01-slide19-nqcp-adamite-sem-tilted.jpg" alt="Adamite chip, tilted SEM view." loading="lazy"><figcaption>Adamite chip, tilted SEM view.<br><span class="qm-fab-credit">Design: Christopher W. Warren, SQuID Lab, Niels Bohr Institute, University of Copenhagen; Novo Nordisk Quantum Computing Programme (NQCP)</span></figcaption></figure>
+<figure><img src="_static/fabricated/qdw01-slide16-nqcp-standard-candle-devices.jpg" alt="Standard-candle devices for tracing fabrication reproducibility: layout." loading="lazy"><figcaption>Standard-candle devices for tracing fabrication reproducibility: layout.<br><span class="qm-fab-credit">Design: Thue Christian Thann; Niels Bohr Institute, University of Copenhagen; Novo Nordisk Quantum Computing Programme (NQCP)</span></figcaption></figure>
+<figure><img src="_static/fabricated/qdw01-slide20-lfl-layout-a.jpg" alt="Community chip layout." loading="lazy"><figcaption>Community chip layout.<br><span class="qm-fab-credit">Eli Levenson-Falk, Sadman Ahmed Shanto</span></figcaption></figure>
+<figure><img src="_static/fabricated/qdw01-slide20-lfl-layout-b.jpg" alt="Community chip layout with a perforated ground plane." loading="lazy"><figcaption>Community chip layout with a perforated ground plane.<br><span class="qm-fab-credit">Eli Levenson-Falk, Sadman Ahmed Shanto</span></figcaption></figure>
+<figure><img src="_static/fabricated/flipchip-25q-layout.jpg" alt="Design layout of part of the 25-qubit flip-chip processor, with overlapped Q-chip (qubits, couplers) and C-chip (control, readout) layers; 2 mm qubit pitch." loading="lazy"><figcaption>Design layout of part of the 25-qubit flip-chip processor, with overlapped Q-chip (qubits, couplers) and C-chip (control, readout) layers; 2 mm qubit pitch.<br><span class="qm-fab-credit"><a href="https://doi.org/10.1103/PRXQuantum.5.030350">S. Kosen et al., PRX Quantum 5, 030350 (2024) (arXiv:2403.00285), CC BY 4.0</a></span></figcaption></figure>
+<figure><img src="_static/fabricated/squadds-6xmon-layout.jpg" alt="Design layout of a chip with six xmon qubits, each coupled to its own quarter- or half-wave readout resonator, programmatically generated for the SQuADDS database." loading="lazy"><figcaption>Design layout of a chip with six xmon qubits, each coupled to its own quarter- or half-wave readout resonator, programmatically generated for the SQuADDS database.<br><span class="qm-fab-credit"><a href="https://doi.org/10.22331/q-2024-09-09-1465">S. A. Shanto et al., Quantum 8, 1465 (2024) (arXiv:2312.13483), CC BY 4.0</a></span></figcaption></figure>
+<figure><img src="_static/fabricated/alinas-cpw-squid-optical.jpg" alt="Optical image of the fabricated Al-InAs coplanar-waveguide resonator (In/Out transmission line, 0.4 mm scale bar) with the SQUID location marked by the dashed box." loading="lazy"><figcaption>Optical image of the fabricated Al-InAs coplanar-waveguide resonator (In/Out transmission line, 0.4 mm scale bar) with the SQUID location marked by the dashed box.<br><span class="qm-fab-credit"><a href="https://arxiv.org/abs/2303.04784">B. H. Elfeky et al., PRX Quantum 4, 030339 (2023) (arXiv:2303.04784), CC BY 4.0</a></span></figcaption></figure>
+<figure><img src="_static/fabricated/dm-transmon-micrograph.jpg" alt="Micrograph of the 7 x 7 mm^2 chip with a fixed-frequency (QB-0) and a flux-tunable (QB-1) transmon, with a zoom on QB-0 (100 um scale bar)." loading="lazy"><figcaption>Micrograph of the 7 x 7 mm^2 chip with a fixed-frequency (QB-0) and a flux-tunable (QB-1) transmon, with a zoom on QB-0 (100 um scale bar).<br><span class="qm-fab-credit"><a href="https://doi.org/10.1109/TQE.2025.3633176">R. Moretti, D. Labranca et al., IEEE Trans. Quantum Eng. 7 (2026) (arXiv:2409.05988), CC BY 4.0</a></span></figcaption></figure>
+<figure><img src="_static/fabricated/qubit-xmon-metal-gui.jpg" alt="Qiskit Metal GUI rendering of the first QUB-IT design: zoom on the cross-shaped Xmon qubit (left) and the Xmon coupled to a quarter-wave readout resonator and feedline (right)." loading="lazy"><figcaption>Qiskit Metal GUI rendering of the first QUB-IT design: zoom on the cross-shaped Xmon qubit (left) and the Xmon coupled to a quarter-wave readout resonator and feedline (right).<br><span class="qm-fab-credit"><a href="https://arxiv.org/abs/2207.09290">D. Labranca et al., Nucl. Instrum. Methods A (2022) (arXiv:2207.09290), CC BY 4.0</a></span></figcaption></figure>
+<figure><img src="_static/fabricated/qdesignopt-two-qubit-layout.jpg" alt="Layout of the two-qubit, tunable-coupler, two-resonator test system optimized with QDesignOptimizer (500 um scale bar)." loading="lazy"><figcaption>Layout of the two-qubit, tunable-coupler, two-resonator test system optimized with QDesignOptimizer (500 um scale bar).<br><span class="qm-fab-credit"><a href="https://doi.org/10.1088/2058-9565/ae7ab6">A. M. Eriksson Lundstrom et al., Quantum Sci. Technol. 11, 035024 (2026) (arXiv:2508.18027), CC BY 4.0</a></span></figcaption></figure>
+<figure><img src="_static/fabricated/material-4q-8q-layouts.jpg" alt="Ansys HFSS 3D models of a 4-qubit (left) and an 8-qubit (right) transmon chip layout, each qubit with a readout resonator." loading="lazy"><figcaption>Ansys HFSS 3D models of a 4-qubit (left) and an 8-qubit (right) transmon chip layout, each qubit with a readout resonator.<br><span class="qm-fab-credit"><a href="https://arxiv.org/abs/2508.05339">J. Gayatri, S. S. Veni, arXiv:2508.05339 (2025), CC BY 4.0</a></span></figcaption></figure>
+</div></section>
+<section id="chips-and-designs">
+<span id="devices-chips"></span><h2>Chips and designs<a class="headerlink" href="#chips-and-designs" title="Link to this heading">¶</a></h2>
+<ul class="qm-papers">
+<li><span class="qm-paper-title"><a href="https://github.com/fthyco/5QubitsChip">Alexandria Quantum Hackathon 2026: 5-qubit layout optimizer (Pocket-X)</a></span><span class="qm-paper-meta">fthyco · GitHub · 2026</span><span class="qm-paper-note">Geometric layout optimizer for a five-qubit chip built in Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/Siwarx3/quantum-hackathon-2026-parachute">Alexandria Quantum Hackathon 2026: linear vs star 5-qubit chip (Parachute)</a></span><span class="qm-paper-meta">Siwarx3 · GitHub · 2026</span><span class="qm-paper-note">Compares linear-chain and star topologies for a five-qubit transmon processor designed in Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/BurhanCalik/Quantum-Processing-Unit">Dual-transmon readout chip with feedline S21 (BurhanCalik)</a></span><span class="qm-paper-meta">BurhanCalik · GitHub · 2026</span><span class="qm-paper-note">Dual-transmon readout design in Qiskit Metal with feedline-coupled S21.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2508.18027">Fabricated and measured qubit from QDesignOptimizer workflow (Chalmers)</a></span><span class="qm-paper-meta">Eriksson et al. · arXiv:2508.18027 · 2025</span><span class="qm-paper-note">Qubit designed with Qiskit Metal and pyEPR optimization, then fabricated and characterized at 20 mK.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2409.05988">Dark-matter-search transmon chip (flux-tunable pair)</a></span><span class="qm-paper-meta">Moretti et al. · IEEE TQE · 2025</span><span class="qm-paper-note">Fabricated and characterized transmon circuit designed with Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://scholarworks.sjsu.edu/etd_theses/5666/">SJSU planar qubit chip (taped out)</a></span><span class="qm-paper-meta">J. Saslow · SJSU MS thesis · 2025</span><span class="qm-paper-note">Planar qubit layout designed with Qiskit Metal and taped out for fabrication.</span></li>
+<li><span class="qm-paper-title"><a href="https://doi.org/10.2172/2553019">QUIET underground cryostat qubit chips (Seidel)</a></span><span class="qm-paper-meta">O. Seidel et al. · OSTI 2553019 · 2025</span><span class="qm-paper-note">Device design and simulation with Qiskit Metal and SQuADDS before fabrication; devices tested in an underground facility.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/OJB-Quantum/Qiskit-Metal-to-Litho">400-transmon patterned demo chip (Metal to e-beam litho)</a></span><span class="qm-paper-meta">Onri Jay Benally · GitHub · 2025</span><span class="qm-paper-note">Demonstrates a path from Qiskit Metal design to a lithography-written pattern.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/uday-0702/Four-Qubit-Quantum-Chip-Analysis">Four-qubit chip analysis (uday-0702)</a></span><span class="qm-paper-meta">uday-0702 · GitHub · 2025</span><span class="qm-paper-note">Four-qubit superconducting chip designed in Qiskit Metal, with analyses.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/AnimFs/Undergraduate-Thesis">Undergraduate thesis: 4-qubit chip in Qiskit Metal and Ansys</a></span><span class="qm-paper-meta">AnimFs · GitHub · 2025</span><span class="qm-paper-note">Design and tuning of a four-qubit chip using Qiskit Metal and Ansys.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2312.13483">SQuADDS validated six-xmon chip (MIT-LL SQUILL fabrication)</a></span><span class="qm-paper-meta">Shanto et al. · Quantum 8, 1465 · 2024</span><span class="qm-paper-note">Device layout produced with Qiskit Metal, fabricated, with measured Hamiltonian parameters compared against simulation.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2310.05238">Axion-detection transmon chip</a></span><span class="qm-paper-meta">Moretti et al. · IEEE TAS · 2024</span><span class="qm-paper-note">Transmon chip circuit designed with Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2403.00285">Chalmers flip-chip QPU (signal-crosstalk study)</a></span><span class="qm-paper-meta">Kosen et al. · PRX Quantum 5, 030350 · 2024</span><span class="qm-paper-note">Flip-chip processor layout designed in Qiskit Metal; 240 flux-crosstalk pairs measured.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2401.13735">Xmon three-qubit device for non-Markovian probe</a></span><span class="qm-paper-meta">Gaikwad et al. · PRL 132, 200401 · 2024</span><span class="qm-paper-note">Three-qubit Xmon device laid out with Qiskit Metal and simulated in Ansys; device measured experimentally.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2310.13282">Compact broadband Purcell-filter chip</a></span><span class="qm-paper-meta">Park et al. · Appl. Phys. Lett. · 2024</span><span class="qm-paper-note">Broadband Purcell filters designed with Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2303.04784">Al-InAs planar JJ transmon chip</a></span><span class="qm-paper-meta">Elfeky et al. · PRX Quantum 4, 030339 · 2023</span><span class="qm-paper-note">Chip design constructed in Qiskit Metal and rendered into HFSS.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/AbeerVaishnav13/4-qubit-design">4-qubit design for Qiskit Metal Korea Hackathon 2022</a></span><span class="qm-paper-meta">AbeerVaishnav13 · GitHub · 2022</span><span class="qm-paper-note">Four-qubit sample design for a Qiskit Metal Korea hackathon study group.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2207.09290">QUB-IT first transmon chip design</a></span><span class="qm-paper-meta">Labranca et al. · NIM A · 2022</span><span class="qm-paper-note">Xmon qubit with quarter-wave resonator laid out in Qiskit Metal for first fabrication.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/Northerneye/Q6-Qiskit-Metal">6-qubit computer designed in Qiskit Metal</a></span><span class="qm-paper-meta">Northerneye · GitHub · 2022</span><span class="qm-paper-note">Six-qubit superconducting quantum computer designed in Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://web.archive.org/web/2021/https://medium.com/qiskit/starting-today-anyone-can-design-quantum-hardware-with-qiskit-metal-4fd5dcf4c7cf">Chalmers 8-qubit test chip designed with Qiskit Metal</a></span><span class="qm-paper-meta">C. Warren, Amr Osman et al. (Chalmers) · Qiskit blog (archived copy) · 2021</span><span class="qm-paper-note">Eight-qubit chip designed by a Chalmers team with Qiskit Metal; spectroscopy of the fabricated device shown.</span></li>
+<li><span class="qm-paper-title"><a href="https://web.archive.org/web/2021/https://medium.com/qiskit/starting-today-anyone-can-design-quantum-hardware-with-qiskit-metal-4fd5dcf4c7cf">Qiskit Hackathon Korea 2021: two qubit chips designed in Metal in two days</a></span><span class="qm-paper-meta">Qiskit Korea / IBM · Qiskit blog (archived copy) · 2021</span><span class="qm-paper-note">One of two qubit chips designed by hackathon teams with Qiskit Metal in a two-day event.</span></li>
+</ul></section>
+<section id="papers-and-theses-that-used-quantum-metal">
+<span id="devices-papers"></span><h2>Papers and theses that used Quantum Metal<a class="headerlink" href="#papers-and-theses-that-used-quantum-metal" title="Link to this heading">¶</a></h2>
+<ul class="qm-papers">
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2508.18027">QDesignOptimizer based on ANMod: an automated, physics-guided, multi-parameter design optimizer for superconducting quantum devices</a></span><span class="qm-paper-meta">Axel M. Eriksson, Lukas J. Splitthoff, Simone Gasparinetti, et al. · Quantum Sci. Technol. 11, 035024 (2026) · 2026</span><span class="qm-paper-note">Qubit design optimized with Qiskit Metal and pyEPR, then fabricated and characterized at 20 mK.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2607.20795">Component-Level Inverse Design of Transmon Qubits Using Neural Networks</a></span><span class="qm-paper-meta">Olivia Seidel, Firas Abouzahr, Abhishek Chakraborty, Sadman Shanto et al. · Research Square / arXiv (2026) · 2026</span><span class="qm-paper-note">Neural network predicts Quantum Metal layout parameters from target transmon Hamiltonian parameters.</span></li>
+<li><span class="qm-paper-title"><a href="https://doi.org/10.2172/3011980">Superconducting qubits for particle detection and fundamental tests of quantum mechanics</a></span><span class="qm-paper-meta">Olivia Seidel · OSTI report (2026) · 2026</span><span class="qm-paper-note">Qubit-design loop that guesses Qiskit Metal parameters, simulates with an EM solver, and predicts parameters with a neural network.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2411.15039">Energy-participation-ratio analysis for very anharmonic superconducting circuits</a></span><span class="qm-paper-meta">Figen YILMAZ, Siddharth Singh, Martijn F. S. Zwanenburg, Jinlun Hu et al. · Physical Review Applied · 2026</span><span class="qm-paper-note">Fluxonium designed with Qiskit Metal and rendered into Ansys HFSS for energy-participation-ratio analysis.</span></li>
+<li><span class="qm-paper-title"><a href="https://doi.org/10.1109/aiei69164.2026.11497215">Multimode Duffing–Jaynes–Cummings Hamiltonian modeling of a coupled transmon chip layout</a></span><span class="qm-paper-meta">Nongmeikapam Brajabidhu Singh, Joseph L. Pachuau, Anish Kumar Saha · IEEE AIEI 2026 · 2026</span><span class="qm-paper-note">Coupled-transmon layout designed and parameterized in Qiskit Metal and analyzed with 3D eigenmode simulations in HFSS.</span></li>
+<li><span class="qm-paper-title"><a href="https://doi.org/10.21203/rs.3.rs-9995106/v1">Co-Design of a Quantum Circuit using QGHNN for High Separate Fidelity and Maximum Grover Algorithm Accuracy</a></span><span class="qm-paper-meta">Mahdi Esmaeili, Katayoun Emadzadeh, M. Hossein Eskandari, Muhamad. B Barfar et al. · Research Square preprint (2026) · 2026</span><span class="qm-paper-note">Optimized circuit parameters implemented as a Qiskit Metal layout and checked with EPR analysis.</span></li>
+<li><span class="qm-paper-title"><a href="https://dl.acm.org/doi/10.1145/3770855.3817558">SQChip-EM: A Qiskit-Metal-Based Layout-to-EM Simulation Dataset for Superconducting Quantum Chips</a></span><span class="qm-paper-meta">Yu Peng, Junyu Chen, Yuhan Chen, Shenglong Zhang et al. · ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD) · 2026</span><span class="qm-paper-note">Open dataset linking Qiskit Metal layouts to HFSS and Q3D electromagnetic simulation results.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2411.16967">A review of design concerns in superconducting quantum circuits</a></span><span class="qm-paper-meta">Eli M. Levenson-Falk, Sadman Shanto · Materials for Quantum Technology 5 (2025) · 2025</span><span class="qm-paper-note">Review that walks through a superconducting-circuit design flow using KLayout and Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2511.01220">Open-Source Highly Parallel Electromagnetic Simulations for Superconducting Circuits</a></span><span class="qm-paper-meta">Sommers, David, Zachary Degnan, Gautam, Divita, Yi‐Hsun Chen et al. · arXiv (Cornell University) · 2025</span><span class="qm-paper-note">Python API integrating Qiskit Metal, Gmsh, Palace and Paraview into an open-source simulation workflow.</span></li>
+<li><span class="qm-paper-title"><a href="https://doi.org/10.2172/2553019">Superconducting Qubits Underground</a></span><span class="qm-paper-meta">Olivia Seidel, Unlisted, Sara Sussman, A. Colón Cesaní et al. · OSTI report (2025) · 2025</span><span class="qm-paper-note">Device design and simulation with Qiskit Metal and SQuADDS before fabrication; devices tested in an underground facility.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2409.05988">Transmon Qubit Modeling and Characterization for Dark Matter Search</a></span><span class="qm-paper-meta">Roberto Moretti, Danilo Labranca, Pietro Campana, Rodolfo Carobene et al. · IEEE Transactions on Quantum Engineering · 2025</span><span class="qm-paper-note">Fabricated and characterized transmon circuit designed with Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2407.09942">Benchmarking Quantum Gates and Circuits</a></span><span class="qm-paper-meta">Vinay Tripathi, Daria Kowsari, Kumar Saurav, Haimeng Zhang et al. · Chemical Reviews · 2025</span><span class="qm-paper-note">Review that describes a superconducting qubit device whose layout was created with Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2505.02263">Analysis of a 3D Integrated Superconducting Quantum Chip Structure</a></span><span class="qm-paper-meta">James Saslow, Hiu Yung Wong · IEEE International Conference on Quantum Computing and Engineering (QCE) · 2025</span><span class="qm-paper-note">Uses Qiskit Metal 0.1.5 for circuit layout, with HFSS and pyEPR, to analyze a 3D integrated chip structure.</span></li>
+<li><span class="qm-paper-title"><a href="https://scholarworks.sjsu.edu/etd_theses/5666/">Superconducting Quantum Chip Design and Simulation</a></span><span class="qm-paper-meta">James F. Saslow · San Jose State University MS thesis (2025) · 2025</span><span class="qm-paper-note">Planar qubit layout designed with Qiskit Metal and taped out for fabrication.</span></li>
+<li><span class="qm-paper-title"><a href="https://doi.org/10.1063/5.0251879">Modeling realistic multilayer devices for superconducting quantum electronic circuits</a></span><span class="qm-paper-meta">Giuseppe Colletta, Susan Johny, Jonathan A. Collins, A. Casaburi et al. · Applied Physics Letters (2025); arXiv:2411.02178 · 2025</span><span class="qm-paper-note">Phase-basis Hamiltonian for multilayer devices incorporated into scqubits and Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://doi.org/10.1109/qpain66474.2025.11171660">End-to-End Design Flow for 4-Qubit Superconducting Quantum Chip with Alternative Coupling Architectures</a></span><span class="qm-paper-meta">Fahim Shahriar Anim, Md. Saifur Rahman · IEEE QPAIN 2025 · 2025</span><span class="qm-paper-note">Four-qubit chip designed with Qiskit Metal and Ansys Electronics; parameters tuned and verified with LOM and EPR analysis.</span></li>
+<li><span class="qm-paper-title"><a href="https://doi.org/10.1088/1402-4896/ae1906">Exploring graph cuts in quantum approximate optimization algorithm</a></span><span class="qm-paper-meta">Nongmeikapam Brajabidhu Singh, Anish Kumar Saha · Physica Scripta (2025) · 2025</span><span class="qm-paper-note">Layout design and eigenmode simulations in Qiskit Metal and Ansys for a QAOA graph-cut hardware study.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2508.05339">Material-Driven Optimization of Transmon Qubits for Scalable and Efficient Quantum Architectures</a></span><span class="qm-paper-meta">Jonnalagadda et al. · arXiv · 2025</span><span class="qm-paper-note">Four- and eight-qubit transmon layouts created with Qiskit Metal and simulated with COMSOL.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2401.17450">QPlacer: Frequency-Aware Component Placement for Superconducting Quantum Computers</a></span><span class="qm-paper-meta">Junyao Zhang, Hanrui Wang, Qi Ding, Jiaqi Gu et al. · Proceedings - International Symposium on Computer Architecture/Proceedings · 2025</span><span class="qm-paper-note">Uses Qiskit Metal to simulate parasitic capacitance and follows its routing configurations for qubit component placement.</span></li>
+<li><span class="qm-paper-title"><a href="https://link.springer.com/book/10.1007/979-8-8688-1504-1">Superconducting Qubit Design Using Qiskit Metal</a></span><span class="qm-paper-meta">Subhojit Halder, Kinjal A. Chauhan, Muhamad Bagher Barfar, Srinjoy Ganguly et al. · Apress eBooks · 2025</span><span class="qm-paper-note">Book on superconducting qubit design with Qiskit Metal, with accompanying code.</span></li>
+<li><span class="qm-paper-title"><a href="https://doi.org/10.1007/979-8-8688-1504-1_6">Energy-Participation Ratio Method for Quantization and Analysis</a></span><span class="qm-paper-meta">Subhojit Halder, Kinjal A. Chauhan, Muhamad Bagher Barfar, Srinjoy Ganguly et al. · Apress eBooks · 2025</span><span class="qm-paper-note">Book chapter on the energy-participation-ratio method with emphasis on its implementation in Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2312.13483">SQuADDS: A validated design database and simulation workflow for superconducting qubit design</a></span><span class="qm-paper-meta">Sadman Shanto, Andre Kuo, Clark Miyamoto, Haimeng Zhang et al. · Quantum 8, 1465 (2024) · 2024</span><span class="qm-paper-note">Device layout produced with Qiskit Metal, fabricated, with measured Hamiltonian parameters compared against simulation.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2310.05238">Design and Simulation of a Transmon Qubit Chip for Axion Detection</a></span><span class="qm-paper-meta">Roberto Moretti, Hervè Atsè Corti, Danilo Labranca, F. Ahrens et al. · IEEE Transactions on Applied Superconductivity · 2024</span><span class="qm-paper-note">Transmon chip circuit designed with Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2401.13735">Entanglement Assisted Probe of the Non-Markovian to Markovian Transition in Open Quantum System Dynamics</a></span><span class="qm-paper-meta">Chandrashekhar Gaikwad, Daria Kowsari, Carson Brame, Xingrui Song et al. · Physical Review Letters · 2024</span><span class="qm-paper-note">Qubit layout designed with Qiskit Metal and simulated in Ansys; device measured experimentally.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2403.00285">Signal Crosstalk in a Flip-Chip Quantum Processor</a></span><span class="qm-paper-meta">Sandoko Kosen, Hang-Xi Li, Marcus Rommel, Robert Rehammar et al. · PRX Quantum · 2024</span><span class="qm-paper-note">Flip-chip processor layout designed in Qiskit Metal; 240 flux-crosstalk pairs measured.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2310.13282">Characterization of broadband Purcell filters with compact footprint for fast multiplexed superconducting qubit readout</a></span><span class="qm-paper-meta">Seong Hyeon Park, Gahyun Choi, Gyunghun Kim, Jaehyeong Jo et al. · Applied Physics Letters · 2024</span><span class="qm-paper-note">Broadband Purcell filters designed with Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2406.04351">Efficiently Building and Characterizing Electromagnetic Models of Multi-Qubit Superconducting Circuits</a></span><span class="qm-paper-meta">Fadi Wassaf · arXiv (thesis-style, 2024) · 2024</span><span class="qm-paper-note">Uses Ansys HFSS and Qiskit Metal for part of the device modeling.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2305.07052">A Framework for the Design and Realization of Alternative Superconducting Quantum Architectures</a></span><span class="qm-paper-meta">Jagatheesan Kunasaikaran, Kevin Mato, Robert Wille · Proceedings/Proceedings - International Symposium on Multiple-Valued Logic · 2024</span><span class="qm-paper-note">Uses Qiskit Metal to render physical designs and run LOM-type analyses for alternative superconducting architectures.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2303.04784">Quasiparticle Dynamics in Epitaxial Al - InAs Planar Josephson Junctions</a></span><span class="qm-paper-meta">Bassel Heiba Elfeky, William M. Strickland, Jaewoo Lee, James T. Farmer et al. · PRX Quantum · 2023</span><span class="qm-paper-note">Chip design constructed in Qiskit Metal and rendered into HFSS.</span></li>
+<li><span class="qm-paper-title"><a href="https://doi.org/10.1109/ic2e357697.2023.10262633">Simulating Quantum Hardware using Qiskit Metal</a></span><span class="qm-paper-meta">Siri Shivashankar Revant, Satyadhan Chickerur · IEEE IC2E 2023 · 2023</span><span class="qm-paper-note">Simulates quantum hardware with Qiskit Metal and Ansys Electronics Desktop.</span></li>
+<li><span class="qm-paper-title"><a href="https://doi.org/10.1109/qce57702.2023.00154">Machine Learning-Based Predictive Modeling for Designing Transmon Superconducting Qubits</a></span><span class="qm-paper-meta">Ferris Prima Nugraha, Qiming Shao · IEEE International Conference on Quantum Computing and Engineering (QCE) · 2023</span><span class="qm-paper-note">Machine-learning models for transmon design trained on simulation data collected with Qiskit Metal and Ansys Electronics.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2207.09290">First design of a superconducting qubit for the QUB-IT experiment</a></span><span class="qm-paper-meta">Danilo Labranca, Hervè Atsè Corti, Leonardo Banchi, Alessandro Cidronali et al. · Nuclear Instruments and Methods in Physics Research Section A Accelerators Spectrometers Detectors and Associated Equipment · 2022</span><span class="qm-paper-note">Xmon qubit with quarter-wave resonator laid out in Qiskit Metal for first fabrication.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2103.10344">Circuit quantum electrodynamics (cQED) with modular quasi-lumped models</a></span><span class="qm-paper-meta">Zlatko K. Minev, Thomas G. McConkey, Maika Takita, Antonio D. Corcoles et al. · arXiv (Minev, McConkey, Takita, Corcoles, Gambetta; IBM) · 2021</span><span class="qm-paper-note">Describes a quasi-lumped-oscillator model whose qubit-cell Maxwell-matrix extraction is automated with Qiskit Metal.</span></li>
+</ul></section>
+<section id="software-built-on-or-for-quantum-metal">
+<span id="devices-software"></span><h2>Software built on or for Quantum Metal<a class="headerlink" href="#software-built-on-or-for-quantum-metal" title="Link to this heading">¶</a></h2>
+<p>Further tools are described on <a class="reference internal" href="ecosystem.html"><span class="doc">The Quantum Metal Ecosystem</span></a>.</p>
+<ul class="qm-papers">
+<li><span class="qm-paper-title"><a href="https://github.com/qismib/SQuDO">SQuDO (Superconducting Qubit Design Optimizer)</a></span><span class="qm-paper-meta">qismib · GitHub · 2026</span><span class="qm-paper-note">Qubit design optimizer that takes design variables from a Qiskit Metal design.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/quantum-device-consortium/qdw26-workshop-materials">QDW 2026 workshop materials</a></span><span class="qm-paper-meta">quantum-device-consortium · GitHub · 2026</span><span class="qm-paper-note">Workshop materials with a shared environment including Quantum Metal, SQDMetal, SQuADDS, scqubits and PyPalace.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/nanoacademic/quantum-metal">Nanoacademic fork (QTCAD renderer)</a></span><span class="qm-paper-meta">nanoacademic · GitHub · 2026</span><span class="qm-paper-note">Fork of Quantum Metal adding a QTCAD-driven renderer.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/Secbrain/SQChip-EM">SQChip-EM</a></span><span class="qm-paper-meta">Secbrain · GitHub · 2026</span><span class="qm-paper-note">Qiskit Metal scripts and layout-to-electromagnetic-simulation dataset for one- to eight-qubit chips.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/gql1993/QuantaMind">QuantaMind</a></span><span class="qm-paper-meta">gql1993 · GitHub · 2026</span><span class="qm-paper-note">Scripts importing Qiskit Metal designs and MetalGUI, with a wrapper for LOM and EPR analysis and GDS export.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/QC4HEP-BO/cQED_Gen">cQED_Gen</a></span><span class="qm-paper-meta">QC4HEP-BO · GitHub · 2026</span><span class="qm-paper-note">Graph-neural-network inverse design whose output is translated into a Qiskit Metal layout.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/tyh0123/AgentQ">AgentQ</a></span><span class="qm-paper-meta">tyh0123 · GitHub · 2026</span><span class="qm-paper-note">Pipeline from a SQuADDS database query to a Qiskit Metal GDS layout, driven by an LLM through MCP.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/Axelisme/Qubit-measure">Qubit-measure</a></span><span class="qm-paper-meta">Axelisme · GitHub · 2026</span><span class="qm-paper-note">Lists quantum-metal as a dependency of its design environment, used with the Ansys stack.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/AnsatzAI/ansatz-integrations">ansatz-integrations</a></span><span class="qm-paper-meta">AnsatzAI · GitHub · 2026</span><span class="qm-paper-note">Ansatz solver integration used through Quantum Metal&#x27;s lumped-element and LOM analysis interfaces.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/Vorobusheg/quantum-metal-extension">quantum-metal-extension</a></span><span class="qm-paper-meta">Vorobusheg · GitHub · 2026</span><span class="qm-paper-note">Extension for Quantum Metal with new circuit elements and PyAEDT scripts.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/recursion2612/metal-flow">metal-flow</a></span><span class="qm-paper-meta">recursion2612 · GitHub · 2026</span><span class="qm-paper-note">Installs quantum-metal with mesh support alongside SQDMetal.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/202Q-lab/QDesignOptimizer">QDesignOptimizer</a></span><span class="qm-paper-meta">202Q-lab (Chalmers) · GitHub · 2025</span><span class="qm-paper-note">Automated design optimization that integrates with Qiskit Metal and HFSS.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/LFL-Lab/QDW2025">QDW 2025 materials (LF Lab)</a></span><span class="qm-paper-meta">LFL-Lab · GitHub · 2025</span><span class="qm-paper-note">Workshop materials using SQuADDS and SQDMetal, which require Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/FirasAbouzahr/pyPalace">pyPalace (PyPI: pypalace)</a></span><span class="qm-paper-meta">FirasAbouzahr · GitHub · 2025</span><span class="qm-paper-note">Includes an example simulating a Quantum Metal design with Palace.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/kpezeshki/qiskit-metal-palace">qiskit-metal-palace fork</a></span><span class="qm-paper-meta">kpezeshki · GitHub · 2025</span><span class="qm-paper-note">Patched version of Qiskit Metal supporting 2D metal export to AWS Palace.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/kpezeshki/cqed-design-ai">cqed-design-ai (MCP servers)</a></span><span class="qm-paper-meta">kpezeshki · GitHub · 2025</span><span class="qm-paper-note">MCP servers for LLM-driven CAD generation through Qiskit Metal with frequency and kappa targeting.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/CosmiQuantum/ML_qubit_design">ML_qubit_design</a></span><span class="qm-paper-meta">CosmiQuantum · GitHub · 2025</span><span class="qm-paper-note">Notebooks predicting Quantum Metal design parameters from Hamiltonian quantities with a neural network.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/OJB-Quantum/Qiskit-Metal-to-Litho">Qiskit-Metal-to-Litho</a></span><span class="qm-paper-meta">Onri Jay Benally · GitHub · 2025</span><span class="qm-paper-note">Demonstrates a path from Qiskit Metal design to a lithography-written pattern.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/JJJayyyy/QPlacer">QPlacer</a></span><span class="qm-paper-meta">JJJayyyy · GitHub · 2025</span><span class="qm-paper-note">Qubit placement tool that imports qiskit_metal.designs.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/gql1993/EDA-Q">EDA-Q</a></span><span class="qm-paper-meta">gql1993 · GitHub · 2025</span><span class="qm-paper-note">Design automation tool that uses Qiskit Metal style layout assets and imports qiskit_metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/Harrbit/Qubit_Design">Qubit_Design</a></span><span class="qm-paper-meta">Harrbit · GitHub · 2025</span><span class="qm-paper-note">Automation module importing Qiskit Metal&#x27;s EPR analysis.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/InderpalSuthar/Qiskit_Metal-KLayout-Blender">Qiskit_Metal-KLayout-Blender</a></span><span class="qm-paper-meta">InderpalSuthar · GitHub · 2025</span><span class="qm-paper-note">Renders a quantum chip in Blender using Qiskit Metal and KLayout.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/cda-tum/mqt-dasqa">MQT DASQA</a></span><span class="qm-paper-meta">TUM Chair for Design Automation · GitHub · 2024</span><span class="qm-paper-note">Maps architectures to Qiskit Metal layouts and subclasses a Metal transmon component.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/DavidSomm/SQDPalace">SQDPalace</a></span><span class="qm-paper-meta">DavidSomm · GitHub · 2024</span><span class="qm-paper-note">API integrating Qiskit Metal, Gmsh and Palace.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/LFL-Lab/cavity_sweeps">cavity_sweeps</a></span><span class="qm-paper-meta">LFL-Lab · GitHub · 2024</span><span class="qm-paper-note">Code importing qiskit_metal for LOM parameter sweeps.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/LFL-Lab/design_schema_WM1">design_schema_WM1</a></span><span class="qm-paper-meta">LFL-Lab · GitHub · 2024</span><span class="qm-paper-note">Notebook importing qiskit_metal QComponent and MetalGUI.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/LFL-Lab/SQuADDS">SQuADDS</a></span><span class="qm-paper-meta">LFL-Lab (USC) · GitHub · 2023</span><span class="qm-paper-note">Design database and simulation workflow built on Quantum Metal and pyEPR.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/sqdlab/SQDMetal">SQDMetal</a></span><span class="qm-paper-meta">SQDLab (UQ) · GitHub · 2023</span><span class="qm-paper-note">Python API wrapping Qiskit Metal, Gmsh and Palace for electromagnetic simulation.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/LFL-Lab/metal-library">metal-library</a></span><span class="qm-paper-meta">LFL-Lab · GitHub · 2023</span><span class="qm-paper-note">Library of pre-simulated superconducting quantum components built on Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/LFL-Lab/QubitPresimulated">QubitPresimulated</a></span><span class="qm-paper-meta">LFL-Lab · GitHub · 2023</span><span class="qm-paper-note">Library of premade qubits made in Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/LFL-Lab/QubitCavityFeedline">QubitCavityFeedline</a></span><span class="qm-paper-meta">LFL-Lab · GitHub · 2023</span><span class="qm-paper-note">Automatic characterization of qubit-cavity-feedline systems simulated with Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/clarkmiyamoto/TransmonCavitySim">TransmonCavitySim</a></span><span class="qm-paper-meta">clarkmiyamoto · GitHub · 2023</span><span class="qm-paper-note">Uses Qiskit Metal to simulate Hamiltonian parameters of a transmon coupled to a readout cavity.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/ambhudia/anvil">anvil</a></span><span class="qm-paper-meta">ambhudia · GitHub · 2021</span><span class="qm-paper-note">Utilities for Qiskit Metal.</span></li>
+</ul></section>
+<section id="papers-that-cite-or-discuss-quantum-metal">
+<span id="devices-mentions"></span><h2>Papers that cite or discuss Quantum Metal<a class="headerlink" href="#papers-that-cite-or-discuss-quantum-metal" title="Link to this heading">¶</a></h2>
+<p>Reviews, comparisons and papers that name the software without using it for a
+design in the work.</p>
+<ul class="qm-papers">
+<li><span class="qm-paper-title"><a href="https://doi.org/10.5281/zenodo.4618153">Qiskit Metal: An Open-Source Framework for Quantum Device Design &amp; Analysis</a></span><span class="qm-paper-meta">Minev, McConkey, Drysdale, Shah, Wang, Facchini, Harper, Blair, Zhang, Lanzillo, Mukesh, Shanks, Warren, Gambetta · Zenodo (software) · 2021</span><span class="qm-paper-note">The software record, with the canonical citation.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2610.08580">Physical Design Automation for Planar Superconducting Quantum Chips</a></span><span class="qm-paper-meta">Michael Feldmeier, Marcel Walter, Gerhard B. P. Huber, Anirban Bhattacharjee et al. · arXiv (Cornell University) · 2026</span><span class="qm-paper-note">Reviews Quantum Metal as a baseline for planar superconducting chip design automation.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2509.03651">Method for the numerical analysis of hybrid lumped-distributed superconducting quantum circuits</a></span><span class="qm-paper-meta">Simona Zaccaria, Antonio Gnudi · APS Open Science (2026); arXiv:2509.03651 · 2026</span><span class="qm-paper-note">Compares against a Qiskit Metal, HFSS and pyEPR workflow; test structure taken from the Qiskit Metal tutorials.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2606.17899">Quantum Chip Paradigm Framework</a></span><span class="qm-paper-meta">Cai, Ling Qiao, B Yang, Fumin Luo et al. · arXiv (Cornell University) · 2026</span><span class="qm-paper-note">Mentions Qiskit Metal among tools for parameterized layout generation.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2606.17907">SPICE-Q and Large-Scale Quantum Chip Production</a></span><span class="qm-paper-meta">Cai, Ling Qiao, B Yang, Fumin Luo et al. · arXiv (Cornell University) · 2026</span><span class="qm-paper-note">States that Qiskit Metal can perform parameterized layout generation.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2606.17956">Fabless Quantum Chip Design and Commercial Production</a></span><span class="qm-paper-meta">Cai, Ling Qiao, B Yang, Fumin Luo et al. · arXiv (Cornell University) · 2026</span><span class="qm-paper-note">Cites Qiskit Metal as part of the chip design toolstack.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2604.11379">From GDSII to Wafer: EDA Design Flow and Data Conversion for Wafer-Scale Manufacturing of Superconducting Quantum Chips</a></span><span class="qm-paper-meta">Ling Qiao, Fumin Luo, Qinglang Guo · arXiv (Cornell University) · 2026</span><span class="qm-paper-note">Describes Qiskit Metal as focused on front-end design and simulation.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2602.04831">Review of Superconducting Qubit Devices and Their Large-Scale Integration</a></span><span class="qm-paper-meta">Hiu Yung Wong · IEEE Electron Devices Reviews (2026) · 2026</span><span class="qm-paper-note">Review stating Qiskit Metal is a commonly used platform; includes a layout built in Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2503.10607">Utilizing discrete variable representations for decoherence-accurate numerical simulation of superconducting circuits</a></span><span class="qm-paper-meta">Brittany Richman, Christopher J. Lobb, Jacob M. Taylor · Phys. Rev. B (2026) · 2026</span><span class="qm-paper-note">Cites the Qiskit Metal software record.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2607.00365">When AI meets quantum information: A comprehensive review</a></span><span class="qm-paper-meta">Min Chen, Yu Gan, Xin Jin, Yuqing Li et al. · arXiv (Cornell University) · 2026</span><span class="qm-paper-note">Review mentioning machine learning on Qiskit Metal and Ansys data and Metal-generated SQuADDS designs.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2409.07612">In Situ Tunable Interaction with an Invertible Sign between a Fluxonium and a Post Cavity</a></span><span class="qm-paper-meta">D.G. Atanasova, Ian Yang, T. Hönigl-Decrinis, Daria Gusenkova et al. · PRX Quantum · 2025</span><span class="qm-paper-note">Notes that HFSS with BBQ or the Qiskit Metal extension pyEPR could not simulate highly anharmonic fluxonium-type qubits.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2502.15386">EDA-Q: Electronic Design Automation for Superconducting Quantum Chip</a></span><span class="qm-paper-meta">Bo Zhao, Zhihang Li, Xiaohan Yu et al. · arXiv:2502.15386 · 2025</span><span class="qm-paper-note">Compares EDA-Q with Qiskit Metal in a feature table.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2511.10479">Quantum Design Automation: Foundations, Challenges, and the Road Ahead</a></span><span class="qm-paper-meta">Feng Wu, Guo, Jingzhe, Tian Xia, Kong, Linghang et al. · arXiv (Cornell University) · 2025</span><span class="qm-paper-note">Survey listing Qiskit Metal as a representative quantum design tool with layout, quantization and Hamiltonian analysis.</span></li>
+<li><span class="qm-paper-title"><a href="https://doi.org/10.1140/epjqt/s40507-025-00320-x">A scalable routing method for superconducting quantum processor</a></span><span class="qm-paper-meta">Tian Yang, Chen Liang, Weilong Wang, Bo Zhao et al. · EPJ Quantum Technology (2025) · 2025</span><span class="qm-paper-note">Benchmarks a new routing method against the A-star routing in Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2501.17825">Optimizing Superconducting Qubit Performance: A Theoretical Framework for Design, Analysis, and Calibration</a></span><span class="qm-paper-meta">Ram, Sirshi S, Muralikrishna Molli, Vamshi M. Katukuri, Bharadwaj Chowdary Mummaneni · arXiv (2025) · 2025</span><span class="qm-paper-note">Cites the Qiskit Metal software record and APS abstract.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2309.17233">Open hardware solutions in quantum technology</a></span><span class="qm-paper-meta">Nathan Shammah, Anurag Saha Roy, Carmen G. Almudéver, Sébastien Bourdeauducq et al. · APL Quantum · 2024</span><span class="qm-paper-note">Lists Qiskit Metal and pyEPR among open chip-design projects.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2312.05329">Lecture Notes on Quantum Electrical Circuits</a></span><span class="qm-paper-meta">Alessandro Ciani, David Peter Divincenzo, Barbara M. Terhal · Lecture notes (2024) · 2024</span><span class="qm-paper-note">Lecture notes describing Qiskit Metal as software implementing the EPR method.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2408.13943">A Review of Quantum Scientific Computing Algorithms for Engineering Problems</a></span><span class="qm-paper-meta">Osama M. Raisuddin, Suvranu De · arXiv (Cornell University) · 2024</span><span class="qm-paper-note">Mentions the Qiskit Metal library for hardware design.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2305.03243">Microarchitectures for Heterogeneous Superconducting Quantum Computers</a></span><span class="qm-paper-meta">Stein, Samuel, Sara Sussman, Teague Tomesh, Charles R. Guinn et al. · arXiv (MICRO 2023 version: HetArch) · 2023</span><span class="qm-paper-note">Maps an architecture to a physical layout using existing frameworks such as Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://doi.org/10.1109/qce57702.2023.10264">QuantumPro: An Integrated Workflow for the Design of Superconducting Qubits Using PathWave Advanced Design System (ADS)</a></span><span class="qm-paper-meta">Jungu Choi, Mohamed Ismail Abdelrahman, Derek Slater, Tom Parker et al. · IEEE International Conference on Quantum Computing and Engineering (QCE) · 2023</span><span class="qm-paper-note">Validates a commercial design workflow against the two-coupled-transmons example from Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2303.15547">Is there a Moore&#x27;s law for quantum computing?</a></span><span class="qm-paper-meta">Olivier Ezratty · arXiv (Cornell University) · 2023</span><span class="qm-paper-note">Mentions Qiskit Metal as a tool for designing superconducting chipsets.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2106.05342">CircuitQ: an open-source toolbox for superconducting circuits</a></span><span class="qm-paper-meta">Philipp Aumann, Tim Menke, William D. Oliver, Wolfgang Lechner · New Journal of Physics · 2022</span><span class="qm-paper-note">Cites Qiskit Metal as a related circuit toolbox.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2112.12509">Integrating quantum processor device and control optimization in a gradient-based framework</a></span><span class="qm-paper-meta">Xiaotong Ni, Hui‐Hai Zhao, Lei Wang, Feng Wu et al. · npj Quantum Information · 2022</span><span class="qm-paper-note">Cites the Qiskit Metal software record.</span></li>
+<li><span class="qm-paper-title"><a href="https://openalex.org/W3159408565">A Framework for Quantum Device Design—Project Qiskit Metal</a></span><span class="qm-paper-meta">Dennis Y.Q. Wang, Priti Shah, Marco Facchini, J. M. Blair · Bull. Am. Phys. Soc. (APS March Meeting 2021) · 2021</span><span class="qm-paper-note">APS March Meeting 2021 abstract by the Metal team announcing the Qiskit Metal project.</span></li>
+<li><span class="qm-paper-title"><a href="https://arxiv.org/abs/2010.00620">Energy-participation quantization of Josephson circuits</a></span><span class="qm-paper-meta">Zlatko K. Minev, Zaki Leghtas, Serge Rosenblum, Michel H. Devoret · npj Quantum Information · 2021</span><span class="qm-paper-note">Presents the pyEPR method and cites Qiskit Metal, which wraps pyEPR.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/WashU-Astroparticle-Lab/qpd">qpd (Quantum Parity Detectors)</a></span><span class="qm-paper-meta">WashU-Astroparticle-Lab · GitHub · 2026</span><span class="qm-paper-note">Documentation cites Qiskit Metal functions for computing bare Hamiltonian parameters.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/conda-forge/qiskit-metal-feedstock">qiskit-metal conda-forge feedstock</a></span><span class="qm-paper-meta">conda-forge · GitHub · 2025</span><span class="qm-paper-note">conda-forge feedstock packaging qiskit-metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/OJB-Quantum/QC-Hardware-How-To">QC-Hardware-How-To</a></span><span class="qm-paper-meta">OJB-Quantum · GitHub · 2025</span><span class="qm-paper-note">Curated resource list that includes Qiskit Metal.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/Dpbm/qiskit-metal-docker">qiskit-metal-docker</a></span><span class="qm-paper-meta">Dpbm · GitHub · 2024</span><span class="qm-paper-note">Docker setup for running Qiskit Metal in a container.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/qcsa-at-ucla/qiskit-metal">qcsa-at-ucla fork</a></span><span class="qm-paper-meta">qcsa-at-ucla · GitHub · 2024</span><span class="qm-paper-note">Fork of Qiskit Metal under the UCLA QCSA organization.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/clarkmiyamoto/qiskit-metal-textbook">qiskit-metal-textbook</a></span><span class="qm-paper-meta">clarkmiyamoto · GitHub · 2023</span><span class="qm-paper-note">Introduction to Qiskit Metal written for new research-group members.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/obrienpja/local-metal-webapp">local-metal-webapp</a></span><span class="qm-paper-meta">obrienpja · GitHub · 2022</span><span class="qm-paper-note">Installer and runner for a local version of the Qiskit Metal web app.</span></li>
+<li><span class="qm-paper-title"><a href="https://github.com/GyeonghunKim/2022-Feb-Qiskit-Metal-Study">2022 Qiskit Metal Study (Qiskit Korea)</a></span><span class="qm-paper-meta">GyeonghunKim · GitHub · 2022</span><span class="qm-paper-note">Study materials for a Qiskit Korea study on Qiskit Metal, February 2022.</span></li>
+</ul></section>
+<section id="next">
+<h2>Next<a class="headerlink" href="#next" title="Link to this heading">¶</a></h2>
+<p>To rebuild one of these devices, see <a class="reference internal" href="research.html"><span class="doc">Reproduced devices and results (notebooks)</span></a>. To start a design of your own, see <a class="reference internal" href="quickstart.html"><span class="doc">Quick start</span></a>.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="research.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Reproduced devices and results (notebooks)</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="ecosystem.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">The Quantum Metal Ecosystem</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Quantum Metal Community; 2019-2026 Qiskit Development Team
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2026/11/15</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Devices and papers</a><ul>
+<li><a class="reference internal" href="#device-images">Device images</a></li>
+<li><a class="reference internal" href="#chips-and-designs">Chips and designs</a></li>
+<li><a class="reference internal" href="#papers-and-theses-that-used-quantum-metal">Papers and theses that used Quantum Metal</a></li>
+<li><a class="reference internal" href="#software-built-on-or-for-quantum-metal">Software built on or for Quantum Metal</a></li>
+<li><a class="reference internal" href="#papers-that-cite-or-discuss-quantum-metal">Papers that cite or discuss Quantum Metal</a></li>
+<li><a class="reference internal" href="#next">Next</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/jupyterlite_sphinx.js?v=96e329c5"></script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="_static/design-tabs.js?v=fcb327ea"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

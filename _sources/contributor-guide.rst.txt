@@ -22,7 +22,7 @@ diagram of how the layers fit together), see the dedicated
 Where Things Are
 =================
 
-The source code for Quantum Metal is currently located in the `Quantum Community GitHub organization <https://github.com/Quantum-community>`__,
+The source code for Quantum Metal is currently located in the `Quantum Community GitHub organization <https://github.com/qiskit-community>`__,
 as part of the larger umbrella of community-driven Quantum projects. This repository will change ownership in the future.
 
 
@@ -127,11 +127,7 @@ Style Guide
 .. attention::
    The style guide below is outdated. Quantum Metal uses ``ruff`` for linting and formatting (see the Linting and Formatting section above). An updated style guide will be added soon.
 
-To enforce a consistent code style in the project, we use customized `Pylint
-<https://www.pylint.org>`__ for linting and `YAPF <https://github.com/google/yapf>`_ with the `Google style
-<https://google.github.io/styleguide/pyguide.html>`__ for auto formatting. The custom
-`.pylintrc` and `.style.yapf` files is located in the root of the repository.
-Our CI pipeline will enforce these styles when you make the pull request.
+Linting and formatting are done with ``ruff`` (configured in ``pyproject.toml``); CI runs it on every pull request. The Google-style conventions below apply to docstrings and naming.
 
 Contributor License Agreement
 -----------------------------
@@ -430,7 +426,7 @@ Custom Names and Images for QComponents
 When adding new qcomponents, new images for these components go
 in the following directory::
 
-    qiskit-metal/qiskit_metal/_gui/_imgs/components
+    src/qiskit_metal/_gui/_imgs/components
 
 In the qcomponent file itself, the following attribute somewhere in
 the comments will tell the application which image corresponds to
@@ -448,7 +444,7 @@ If you had a file with the previous two attributes, the user is telling
 the Quantum metal application that the image for the qcomponent is named
 ``myqcomponent.png`` and is located in::
 
-   qiskit-metal/qiskit_metal/_gui/_imgs/components/myqcomponent.png
+   src/qiskit_metal/_gui/_imgs/components/myqcomponent.png
 
 and that they want the display name of this file to be ``MyQComponent``.
 
@@ -465,7 +461,7 @@ drawn from Quantum Metal code comments in the `style of API documentation
 
 The documentation is built using `Sphinx
 <http://www.sphinx-doc.org/en/master/>`__. The majority of documentation, under
-`API Reference <https://Quantum-community.github.io/Quantum-metal/overview.html>`__, is
+`API Reference <https://qiskit-community.github.io/qiskit-metal/overview.html>`__, is
 drawn from code comments in the repositories listed in :ref:`where_things_are`.
 
 Documentation Structure
@@ -481,7 +477,7 @@ The ``.rst`` files in the ``docs/apidocs``
    These files are used to tell Sphinx which modules to include in the rendered
    documentation. This contains two pieces of information:
    an `internal reference <http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#reference-names>`__
-   or `cross reference <https://www.sphinx-doc.org/en/latest/usage/restructuredtext/roles.html#ref-role>`__
+   or `cross reference <https://www.sphinx-doc.org/en/master/usage/referencing.html#role-ref>`__
    to the module, which can be used for internal links
    inside the documentation, and an `automodule directive <http://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html>`__
    used to parse the
@@ -582,7 +578,7 @@ Notes:
 - ``-j auto`` enables parallel Sphinx workers to speed up the build on multi-core machines.
 - The HTML output is written to ``/docs/_build/html/``. Use ``open _build/html/index.html`` (macOS) or ``python -m http.server 8000 -d _build/html`` to preview locally.
 - We also added ``-v`` for verbose output and ``-T`` traceback during the build.
-- Env variable ``Quantum_DOCS_BUILD_TUTORIALS=never`` skips executing notebooks during the build (fast; uses stored outputs if present).
+- Notebooks are not executed during the build; the stored outputs are used. Set the environment variable ``QISKIT_DOCS_BUILD_TUTORIALS`` to execute them.
 
 For convenience, the first command can be run using tox (from the root directory of the repository) as follows:
 
@@ -602,11 +598,6 @@ To get fast, automatic rebuilding of the documentation while you edit it, use th
    tox -e docs-autobuild
 
 This launches a local server (default: http://127.0.0.1:8000) and rebuilds the HTML pages incrementally whenever source files change.
-
-
-.. warning::
-
-   Avoid running the docs build **and** importing `Quantum_metal` at the same time from the same checkout. A legacy guard (`config.is_building_docs()` looks for a `.buildingdocs` file) can skip certain imports when that marker file is present. If you see unexpected import errors while developing and building docs, check for and remove `docs/.buildingdocs` before importing. Longer-term we’ll remove this guard, but for now be mindful of the interaction.
 
 
 =================================

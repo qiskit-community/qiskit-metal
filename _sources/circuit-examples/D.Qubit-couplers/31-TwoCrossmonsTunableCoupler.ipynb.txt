@@ -25,7 +25,7 @@
    "outputs": [],
    "source": [
     "import qiskit_metal as metal\n",
-    "from qiskit_metal import designs, MetalGUI"
+    "from qiskit_metal import designs"
    ]
   },
   {
@@ -73,7 +73,7 @@
     "design.chips.main.size[\"size_x\"] = \"3mm\"\n",
     "design.chips.main.size[\"size_y\"] = \"3mm\"\n",
     "\n",
-    "gui = MetalGUI(design)"
+    "gui = metal.gui(design)"
    ]
   },
   {

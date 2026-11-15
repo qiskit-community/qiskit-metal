@@ -39,11 +39,11 @@ result from one path can be checked against another.
        induced-EMF and impedance-matrix couplings; port impedance matrices;
        capacitance matrices
      - ``pip install "quantum-metal[skfem]" pymetis``
-       (``pymetis`` optional)
+       (``pymetis`` is required only for 4.46)
      - ``qiskit_metal.analyses.fem`` (the solver) and
        ``qiskit_metal.analyses.em.package_modes`` (the analytic models);
        not yet a renderer
-     - 4.41–4.45
+     - 4.41–4.46
    * - **AWS Palace via SQDMetal** (open source)
      - eigenmodes, capacitance, driven and inductance studies on MPI;
        lumped and wave ports, EPR
@@ -67,7 +67,7 @@ Choosing a path
   runs in parallel and supports higher-order elements); the scikit-fem solver
   for small ones or where installing binaries is not possible.
 - **Eigenmodes and couplings without a license**: the scikit-fem solver, for
-  cells and arrays of simple qubits. Tutorials 4.43–4.45 reproduce a published
+  cells and arrays of simple qubits. Tutorials 4.43–4.46 reproduce a published
   HFSS study of a 10 × 10 transmon array to within a few percent.
 - **Large full-wave models, wave ports, losses, clusters**: Palace, through
   SQDMetal today; natively once the integration above lands.

@@ -12,6 +12,27 @@
   },
   {
    "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs/tut/2-From-components-to-chip/2.33-Add-my-QComponent-to-a-reusable-python-file.ipynb)\n",
+    "[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=docs%2Ftut%2F2-From-components-to-chip%2F2.33-Add-my-QComponent-to-a-reusable-python-file.ipynb)"
+   ],
+   "id": "colab-badge"
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# In Colab / Binder, uncomment to install Quantum Metal (lite, no Qt).\n",
+    "# Locally you should already have it via `pip install quantum-metal`.\n",
+    "# !pip install -q quantum-metal"
+   ],
+   "id": "colab-install"
+  },
+  {
+   "cell_type": "markdown",
    "id": "649a7657",
    "metadata": {},
    "source": [
@@ -67,7 +88,7 @@
    "source": [
     "## Managing a QComponent\n",
     "#### Create an instance\n",
-    "Create an instance of `TransmonPocket`. Notice the import needs to use the absolute path. This is to minimize the dynamic memory footprint of Qiskit Metal and to prevent QComponent sub-class naming conflicts that might occur if user creates custom ones.\n",
+    "Create an instance of `TransmonPocket`. Notice the import needs to use the absolute path. This is to minimize the dynamic memory footprint of Quantum Metal and to prevent QComponent sub-class naming conflicts that might occur if user creates custom ones.\n",
     "\n",
     "Observe how, at time of creation, we define some basic options of the TransmonPocket, being the number/name of connection pads(`a`->`d`). Most options can be defined/updated also after the creation of the QComponent instance, as we will show later in this section."
    ]
@@ -107,7 +128,7 @@
    "id": "8f6450e1",
    "metadata": {},
    "source": [
-    "Turn your attention to the Qiskit Metal GUI. In the `Main View` tab you will not see `q1` yet. However if you open the tab `Elements`, you will observe that all of its shapes (`component_id` = 1) are now present in the QGeometry tables (show in that tab). This occurs because the `__init__()` of the QComponent class already run the `make()` of the TransmonPocket.\n",
+    "Turn your attention to the Quantum Metal GUI. In the `Main View` tab you will not see `q1` yet. However if you open the tab `Elements`, you will observe that all of its shapes (`component_id` = 1) are now present in the QGeometry tables (show in that tab). This occurs because the `__init__()` of the QComponent class already run the `make()` of the TransmonPocket.\n",
     "\n",
     "Note that the `make()` if the component does not automatically render to the GUI, for increased usage flexibility. Therefore we need to explicit call the method `gui.rebuild()` to observe the shapes in the `Main View`. We do that in the next cell."
    ]

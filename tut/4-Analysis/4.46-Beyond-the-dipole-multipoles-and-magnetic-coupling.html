@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="5-Qubit Xmon Processor (Barends et al., 2014)" href="../../circuit-examples/F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.html"><link rel="prev" title="4.45 Four Methods, One Full-Wave Model" href="4.45-Four-methods-one-full-wave-model.html">
 
     <!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 -->
-        <title>0. Setup and the compute budget - Quantum Metal 0.9.0</title>
+        <title>4.46 Beyond the Dipole: Multipoles and Magnetic Coupling - Quantum Metal 0.9.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=fc6d6d93" />
@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/qm-gallery.css?v=9e28cae6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/qm-gallery.css?v=b32f9225" />
     
     
 
@@ -195,31 +195,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing Quantum Metal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../choose-your-path.html">Choose Your Path</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ecosystem.html">Built on Quantum Metal</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Showcase &amp; Learn</span></p>
 <ul class="current">
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../../research.html">Research Showcase</a><input aria-label="Toggle navigation of Research Showcase" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../built-with-metal.html">Device Images and Papers</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../research.html">Reproduced Devices (Notebooks)</a><input aria-label="Toggle navigation of Reproduced Devices (Notebooks)" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="4.41-The-package-mode-on-paper.html">4.41 The Package Mode on Paper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="4.42-Four-ways-to-measure-a-coupling.html">4.42 Four Ways to Measure a Coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="4.43-Mesh-and-solve-the-10x10-processor.html">4.43 Mesh and Solve the 10 × 10 Processor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="4.44-Every-coupling-from-one-eigenmode.html">4.44 Every Coupling from One Eigenmode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="4.45-Four-methods-one-full-wave-model.html">4.45 Four Methods, One Full-Wave Model</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">0. Setup and the compute budget</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#1.-The-qubit-as-a-source-of-moments">1. The qubit as a source of moments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#2.-The-qubit-as-a-source-of-current">2. The qubit as a source of current</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#3.-What-a-flat-source-sees">3. What a flat source sees</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#4.-The-package-mode-at-the-chip-plane">4. The package mode at the chip plane</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#5.-The-hierarchy-of-couplings">5. The hierarchy of couplings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#6.-Is-the-zero-a-blind-spot?-The-paddles,-and-the-exact-answer">6. Is the zero a blind spot? The paddles, and the exact answer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#7.-Breaking-the-symmetry:-the-quadrupole,-and-the-origin">7. Breaking the symmetry: the quadrupole, and the origin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#8.-Where-the-magnetic-coupling-is-not-zero">8. Where the magnetic coupling is not zero</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#9.-Refining-the-mesh:-which-terms-converge,-which-zeros-stay-zero">9. Refining the mesh: which terms converge, which zeros stay zero</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#10.-Error-bars:-which-terms-are-resolved">10. Error bars: which terms are resolved</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#11.-The-hierarchy,-with-error-bars">11. The hierarchy, with error bars</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#12.-What-was-claimed,-and-what-the-numbers-say">12. What was claimed, and what the numbers say</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#What-this-tells-you">What this tells you</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Where-to-go-next">Where to go next</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#References">References</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">4.46 Beyond the Dipole: Multipoles and Magnetic Coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.html">5-Qubit Xmon Processor (Barends <em>et al.</em>, 2014)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/F.Small-quantum-chips/Full-Physical-Design-of-iSWAP-Gates.html">Full Physical Designs of Three iSWAP Gates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/F.Small-quantum-chips/53-Wallraff_17Qubit_SurfaceCode.html">17-Qubit Surface-Code Chip (Wallraff group, ETH Zurich)</a></li>
@@ -263,76 +250,64 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../simulate-and-analyze.html">Part 4: Simulate and analyze</a><input aria-label="Toggle navigation of Part 4: Simulate and analyze" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="4.19-Analyze-a-transmon-using-ElmerFEM.html">4.19 Analyse a Transmon Qubit using ElmerFEM</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../simulate-ansys.html">Simulate with Ansys</a><input aria-label="Toggle navigation of Simulate with Ansys" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="4.01-Capacitance-and-LOM.html">4.01 Capacitance matrix and LOM analysis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.02-Eigenmode-and-EPR.html">4.02 Eigenmode and EPR analysis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.03-Impedance.html">4.03 Impedance, admittance and scattering analysis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.11-Analyze-and-tune-a-transmon.html">4.11 Analyzing and tuning a transmon qubit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.12-Analyze-a-resonator.html">4.12 Analyzing and tuning a resonator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.13-Analyze-transmon-and-resonator.html">4.13 Analyzing and tuning a transmon qubit with a resonator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.14-Analyze-a-double-hanger-resonator.html">4.14 Analyzing a double hanger resonator (S Param)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html">4.16 S21 simulation of a resonator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.17-Fit-S21-of-Hanger-Resonator-Geometry.html">4.17 S21 simulation and fitting of a resonator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.18-Analyse-a-Resonator-with-Ports.html">4.18 Eigenmode simulation with Ports</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.21-Capacitance-matrix.html">4.21 Sweeps - Capacitance matrix</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.22-Eigenmode-matrix.html">4.22 Sweeps - Eigenmode matrix</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.23-Impedance-and-scattering-Z-S-Y-matrices.html">4.23 Sweeps - Impedance, scattering and admittance (Z S Y) matrices</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyaedt-multiplanar/Q3D-pyaedt-multiplanar.html">Q3D Capacitance Matrix of a MultiPlanar Design with pyaedt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyaedt-multiplanar/Eigenmode-pyaedt-multiplanar.html">Running Eigenmode Simulations &amp; EPR Analysis with <code class="docutils literal notranslate"><span class="pre">QHFSSEigenmodePyaedt</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyaedt-multiplanar/DrivenModal-pyaedt-multiplanar.html">HFSS Driven Modal Simulation of a MultiPlanar Design with pyaedt</a></li>
-</ul>
-</li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../circuits-to-hamiltonians.html">From circuits to Hamiltonians</a><input aria-label="Toggle navigation of From circuits to Hamiltonians" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="4.04-New-LOM-and-Fluxonium-Example.html">4.04 New LOM and Fluxonium Example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.05-New-LOM-and-Two-Coupled-Transmon-Example.html">4.05 New LOM and Two Coupled Transmon Example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.html">4.05 New LOM and Two Coupled Transmon Example with sequence</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.15-CPW-kappa-calculation.html">4.15 CPW Kappa Calculation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.31-Plot-quantum-oscillator-wavefunction.html">4.31 Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.32-Transmon-analytics-HCPB.html">4.32 Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
-<li class="toctree-l4"><a class="reference internal" href="4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html">4.34 Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cQED-with-the-Jaynes-Cummings-Interaction-Model.html">Circuit Quantum Electrodynamics (cQED) and the Jaynes-Cummings Interaction Model Using the HCPB Class and QuTip</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Design-and-Simulation-of-a-Cross-Resonance-Gate.html">The Cross Resonance (CR) Gate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.19-Analyze-a-transmon-using-ElmerFEM.html">4.19 Analyze a Transmon Qubit using ElmerFEM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.01-Capacitance-and-LOM.html">4.01 Capacitance matrix and LOM analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.02-Eigenmode-and-EPR.html">4.02 Eigenmode and EPR analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.03-Impedance.html">4.03 Impedance, admittance and scattering analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.11-Analyze-and-tune-a-transmon.html">4.11 Analyzing and tuning a transmon qubit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.12-Analyze-a-resonator.html">4.12 Analyzing and tuning a resonator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.13-Analyze-transmon-and-resonator.html">4.13 Analyzing and tuning a transmon qubit with a resonator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.14-Analyze-a-double-hanger-resonator.html">4.14 Analyzing a double hanger resonator (S Param)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.16-Analyze-S21-of-Hange-Geometry-with-WirebondLunchpadDriven.html">4.16 S21 simulation of a resonator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.17-Fit-S21-of-Hanger-Resonator-Geometry.html">4.17 S21 simulation and fitting of a resonator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.18-Analyse-a-Resonator-with-Ports.html">4.18 Eigenmode simulation with Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.21-Capacitance-matrix.html">4.21 Sweeps - Capacitance matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.22-Eigenmode-matrix.html">4.22 Sweeps - Eigenmode matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.23-Impedance-and-scattering-Z-S-Y-matrices.html">4.23 Sweeps - Impedance, scattering and admittance (Z S Y) matrices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyaedt-multiplanar/Q3D-pyaedt-multiplanar.html">Q3D Capacitance Matrix of a MultiPlanar Design with pyaedt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyaedt-multiplanar/Eigenmode-pyaedt-multiplanar.html">Running Eigenmode Simulations &amp; EPR Analysis with <code class="docutils literal notranslate"><span class="pre">QHFSSEigenmodePyaedt</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyaedt-multiplanar/DrivenModal-pyaedt-multiplanar.html">HFSS Driven Modal Simulation of a MultiPlanar Design with pyaedt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.04-New-LOM-and-Fluxonium-Example.html">4.04 New LOM and Fluxonium Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.05-New-LOM-and-Two-Coupled-Transmon-Example.html">4.05 New LOM and Two Coupled Transmon Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.05-New-LOM-and-Two-Coupled-Transmon-Example-with-sequence.html">4.05 New LOM and Two Coupled Transmon Example with sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.15-CPW-kappa-calculation.html">4.15 CPW Kappa Calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.31-Plot-quantum-oscillator-wavefunction.html">4.31 Plotting Wavefunctions of the Quantum Harmonic Oscillator (LC Circuit)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.32-Transmon-analytics-HCPB.html">4.32 Transmon Analytics: Plotting Eigenvalues as a Function of Offset Charge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4.34-Transmon-qubit-CPB-hamiltonian-charge-basis.html">4.34 Modeling transmon qubit Cooper-pair box Hamiltonian in the charge basis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cQED-with-the-Jaynes-Cummings-Interaction-Model.html">Circuit Quantum Electrodynamics (cQED) and the Jaynes-Cummings Interaction Model Using the HCPB Class and QuTip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Design-and-Simulation-of-a-Cross-Resonance-Gate.html">The Cross Resonance (CR) Gate</a></li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../circuit-examples/index.html">Examples</a><input aria-label="Toggle navigation of Examples" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../circuit-examples/index.html">Examples</a><input aria-label="Toggle navigation of Examples" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../full-design-examples/A.1-Transmon-with-readout-resonator.html">A.1 Reference design — Transmon with readout resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/E.Input-output-coupling/42-ResonatorAndLaunchPad.html">Readout line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/D.Qubit-couplers/32-TwoTransmonsDirectCoupling.html">Direct Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/D.Qubit-couplers/33-TwoTransmonsWithMeander.html">Bus Resonator Coupler (transmon-transmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../full-design-examples/A.2-Two-coupled-transmons.html">A.2 Reference design — Two coupled transmons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../full-design-examples/A.3-Four-qubit-multiplexed-readout.html">A.3 Reference design — Four-qubit multiplexed readout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/05-Transmon_cross_fl.html">Single Transmon - Grounded (xmon) flux lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/06-Transmon_floating_6.html">Single Transmon - Floating with 6 connection pads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/03-concentric_transmon.html">Concentric Transmon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/04-Interdigitated_Transmon.html">Interdigitated Transmon Qubits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/QComponent-Interdigitated-transmon.html">QComponent - Interdigitated transmon qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/E.Input-output-coupling/43-TransmonPocketCL.html">Charge Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/08-JJ-Dolan.html">Josephson Junction (Dolan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/JJ-Demo-Notebook.html">Josephson Junction QComponent Demo Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/E.Input-output-coupling/41-LaunchPad.html">CPW Launch Pad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quick-topics/QComponent-3-fingers-capacitor.html">QComponent - 3-fingers capacitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/A.4-Full-chip-design.html">A.4 Full chip design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop.html">A.7 Quantum Metal tutorial for IMS 2022</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../qcomponents-gallery.html">Component Gallery</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../circuit-examples/component-examples.html">Component examples</a><input aria-label="Toggle navigation of Component examples" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/A.Qubits/01-Transmon_cross.html">Single Transmon - Grounded (xmon)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/A.Qubits/05-Transmon_cross_fl.html">Single Transmon - Grounded (xmon) flux lines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/A.Qubits/02-Transmon_floating.html">Single Transmon - Floating</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/A.Qubits/06-Transmon_floating_6.html">Single Transmon - Floating with 6 connection pads</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/A.Qubits/10-Transmon_floating_teeth.html">Single Transmon - Floating with teeth</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/A.Qubits/03-concentric_transmon.html">Concentric Transmon</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/A.Qubits/04-Interdigitated_Transmon.html">Interdigitated Transmon Qubits</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../quick-topics/QComponent-Interdigitated-transmon.html">QComponent - Interdigitated transmon qubit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/A.Qubits/11-Star_shaped_qubit.html">Star shaped qubit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/E.Input-output-coupling/43-TransmonPocketCL.html">Charge Line</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/A.Qubits/08-JJ-Dolan.html">Josephson Junction (Dolan)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/A.Qubits/09-JJ-Manhattan.html">Josephson Junction (Manhattan)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../quick-topics/JJ-Demo-Notebook.html">Josephson Junction QComponent Demo Notebook</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/B.Resonators/11-Resonator_Meander.html">Simple CPW Meander</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/E.Input-output-coupling/41-LaunchPad.html">CPW Launch Pad</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../quick-topics/QComponent-3-fingers-capacitor.html">QComponent - 3-fingers capacitor</a></li>
-</ul>
-</li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../circuit-examples/reference-designs.html">Reference designs</a><input aria-label="Toggle navigation of Reference designs" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../full-design-examples/A.1-Transmon-with-readout-resonator.html">A.1 Reference design — Transmon with readout resonator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/C.Composite-bi-partite/21-OneTransmonsWithMeanderAndOTG.html">Transmon coupled to CPW resonator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/E.Input-output-coupling/42-ResonatorAndLaunchPad.html">Readout line</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/D.Qubit-couplers/32-TwoTransmonsDirectCoupling.html">Direct Coupler (transmon-transmon)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/D.Qubit-couplers/33-TwoTransmonsWithMeander.html">Bus Resonator Coupler (transmon-transmon)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/D.Qubit-couplers/31-TwoCrossmonsTunableCoupler.html">Tunable Coupler (MIT)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../full-design-examples/A.2-Two-coupled-transmons.html">A.2 Reference design — Two coupled transmons</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../full-design-examples/A.3-Four-qubit-multiplexed-readout.html">A.3 Reference design — Four-qubit multiplexed readout</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/A.4-Full-chip-design.html">A.4 Full chip design</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/A.7-IMS-2022-workshop.html">A.7 Qiskit Metal tutorial for IMS 2022</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -346,7 +321,7 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">QDesigns</a><input aria-label="Toggle navigation of QDesigns" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/designs.html">QDesigns</a><input aria-label="Toggle navigation of QDesigns" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.QDesign.html">QDesign</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.DesignPlanar.html">DesignPlanar</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.MultiPlanar.html">MultiPlanar</a></li>
@@ -355,7 +330,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.designs.Components.html">Components</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QComponents</a><input aria-label="Toggle navigation of QComponents" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qlibrary.html">QComponents</a><input aria-label="Toggle navigation of QComponents" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.QComponent.html">QComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.ParsedDynamicAttributes_Component.html">ParsedDynamicAttributes_Component</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.BaseQubit.html">BaseQubit</a></li>
@@ -409,7 +384,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qlibrary.anchored_path.html">anchored_path</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/analyses.html">Analyses</a><input aria-label="Toggle navigation of Analyses" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/analyses.html">Analyses</a><input aria-label="Toggle navigation of Analyses" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.QAnalysis.html">QAnalysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.QSimulation.html">QSimulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.LOManalysis.html">LOManalysis</a></li>
@@ -427,7 +402,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.analyses.Sweeper.html">Sweeper</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">QRenderers</a><input aria-label="Toggle navigation of QRenderers" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/renderers.html">QRenderers</a><input aria-label="Toggle navigation of QRenderers" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRenderer.html">QRenderer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererGui.html">QRendererGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.QRendererAnalysis.html">QRendererAnalysis</a></li>
@@ -451,7 +426,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.renderers.Vec3DArray.html">Vec3DArray</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox</a><input aria-label="Toggle navigation of Toolbox" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/toolbox_metal.html">Toolbox</a><input aria-label="Toggle navigation of Toolbox" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalExceptions.html">QiskitMetalExceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.QiskitMetalDesignError.html">QiskitMetalDesignError</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.about.html">about</a></li>
@@ -463,11 +438,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.toolbox_metal.determine_larger_box.html">determine_larger_box</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometry</a><input aria-label="Toggle navigation of QGeometry" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/qgeometries.html">QGeometry</a><input aria-label="Toggle navigation of QGeometry" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal.qgeometries.QGeometryTables.html">QGeometryTables</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI</a><input aria-label="Toggle navigation of GUI" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../apidocs/gui.html">GUI</a><input aria-label="Toggle navigation of GUI" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../apidocs/qiskit_metal._gui.MetalGUI.html">MetalGUI</a></li>
 </ul>
 </li>
@@ -478,7 +453,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../migration-to-v0.7.0.html">Migrating to v0.7.0 (lite-by-default install)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../migration-to-v0.7.0.html#v0-7-2-follow-on-prefer-qm-gui-design-over-metalgui-design">v0.7.2 follow-on: prefer <code class="docutils literal notranslate"><span class="pre">qm.gui(design)</span></code> over <code class="docutils literal notranslate"><span class="pre">MetalGUI(design)</span></code></a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../archive.html">Archived Notebooks</a><input aria-label="Toggle navigation of Archived Notebooks" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../archive.html">Archived Notebooks</a><input aria-label="Toggle navigation of Archived Notebooks" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../quick-topics/Testing-QComponents-for-overlap-and-collisions.html">Demo Notebook Demonstrating How to Test for Component/CPW Overlap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="4.33-Transmon-analytics.html">4.33 Transmon Analytics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../circuit-examples/full-design-flow-examples/A.5-Launch-video-example.html">A.5 Launch video example</a></li>
@@ -491,8 +466,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Community &amp; Contributing</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../ecosystem.html">Built on / with Quantum Metal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../videoseducation.html">Videos &amp; Education</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributor-guide.html">Contributor Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../headless-usage.html">Using Quantum Metal without Qt</a></li>
@@ -543,8 +516,9 @@
 <p class="admonition-title">Note</p>
 <p>This page was generated from <a class="reference external" href="https://github.com/Qiskit/qiskit-metal/blob/main/docs/tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.ipynb">tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.ipynb</a>.</p>
 </div>
-<p>4.46 Beyond the Dipole: Multipoles and Magnetic Coupling</p>
-<p><a class="reference external" href="https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs%2Ftut%2F4-Analysis%2F4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> <a class="reference external" href="https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=docs%2Ftut%2F4-Analysis%2F4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
+<section id="4.46-Beyond-the-Dipole:-Multipoles-and-Magnetic-Coupling">
+<h1>4.46 Beyond the Dipole: Multipoles and Magnetic Coupling<a class="headerlink" href="#4.46-Beyond-the-Dipole:-Multipoles-and-Magnetic-Coupling" title="Link to this heading">¶</a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs/tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a> <a class="reference external" href="https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=docs%2Ftut%2F4-Analysis%2F4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling.ipynb"><img alt="Binder" src="https://mybinder.org/badge_logo.svg" /></a></p>
 <blockquote>
 <div><p>💡 <strong>What you need.</strong> gmsh, scikit-fem and SciPy (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;quantum-metal[skfem]&quot;</span> <span class="pre">pymetis</span></code>). One knob, <code class="docutils literal notranslate"><span class="pre">BUDGET</span></code> in the first code cell, sets the cost: <code class="docutils literal notranslate"><span class="pre">&quot;standard&quot;</span></code> (the default) takes about 15–20 minutes and 10–14 GB (measured on an 8-core laptop with 24 GB; the mesher is not deterministic, so run times and peak memory vary by tens of percent, and a run with less memory may need the optional sections switched off); <code class="docutils literal notranslate"><span class="pre">&quot;quick&quot;</span></code> about 40 seconds and 2.3 GB, on a coarse mesh whose
 floors are large and with claim thresholds written for <code class="docutils literal notranslate"><span class="pre">&quot;standard&quot;</span></code>, so some rows of the claims table will read CAVEAT or FAIL; <code class="docutils literal notranslate"><span class="pre">&quot;fine&quot;</span></code> about 30 minutes and 13 GB. Memory is the peak of the kernel. The optional sections (the <code class="docutils literal notranslate"><span class="pre">RUN_*</span></code> flags next to <code class="docutils literal notranslate"><span class="pre">BUDGET</span></code>) can each be switched off. Extends the series on Molavi <em>et al.</em> [1] beyond what the paper does; <a class="reference internal" href="4.44-Every-coupling-from-one-eigenmode.html"><span class="doc">4.44</span></a> and <a class="reference internal" href="4.45-Four-methods-one-full-wave-model.html"><span class="doc">4.45</span></a> built the full-wave
@@ -570,7 +544,7 @@ which tutorials use it.</p>
 <li><p>how genuine terms and symmetry zeros behave under mesh refinement, and how to put a measured noise floor under every small number, so that a coupling of <span class="math notranslate nohighlight">\(10^{-6}\)</span> is reported as a value, or as an upper limit (Secs. 9–11).</p></li>
 </ul>
 <section id="0.-Setup-and-the-compute-budget">
-<h1>0. Setup and the compute budget<a class="headerlink" href="#0.-Setup-and-the-compute-budget" title="Link to this heading">¶</a></h1>
+<h2>0. Setup and the compute budget<a class="headerlink" href="#0.-Setup-and-the-compute-budget" title="Link to this heading">¶</a></h2>
 <p>The model is the paper’s device of notebooks 4.43–4.45: a 10 × 10 array of two-pad transmons on a silicon slab in a <span class="math notranslate nohighlight">\(30\times30\times3\)</span> mm box. The mirror symmetry of the box and the array lets a quarter, 25 qubits, stand for all 100. <code class="docutils literal notranslate"><span class="pre">BUDGET</span></code> picks the mesh and the optional sections:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -761,7 +735,7 @@ mesh-free checks of the helper module:
 </pre></div></div>
 </div>
 <section id="How-the-numbers-are-reported">
-<h2>How the numbers are reported<a class="headerlink" href="#How-the-numbers-are-reported" title="Link to this heading">¶</a></h2>
+<h3>How the numbers are reported<a class="headerlink" href="#How-the-numbers-are-reported" title="Link to this heading">¶</a></h3>
 <p>Several of the couplings below are a part in <span class="math notranslate nohighlight">\(10^{4}\)</span> to <span class="math notranslate nohighlight">\(10^{6}\)</span> of the main one. A number that small is only meaningful if it is larger than the noise of the way it was computed, so every term of this notebook carries a <strong>floor</strong>, measured and not assumed, and the notebook says plainly when a term is below it.</p>
 <p><strong>Four measured contributions to the floor of a term</strong> (Sec. 9–10 compute them; they add in quadrature, and the largest is reported alone as well):</p>
 <ol class="arabic simple">
@@ -777,7 +751,7 @@ term can be resolved and still irrelevant, or an upper limit and still the inter
 </section>
 </section>
 <section id="1.-The-qubit-as-a-source-of-moments">
-<h1>1. The qubit as a source of moments<a class="headerlink" href="#1.-The-qubit-as-a-source-of-moments" title="Link to this heading">¶</a></h1>
+<h2>1. The qubit as a source of moments<a class="headerlink" href="#1.-The-qubit-as-a-source-of-moments" title="Link to this heading">¶</a></h2>
 <p>A qubit mode with energy <span class="math notranslate nohighlight">\(E_n\)</span> carries charge <span class="math notranslate nohighlight">\(\pm q\)</span> on its two paddles, with <span class="math notranslate nohighlight">\(q=\sqrt{2C E_n}\)</span> for the capacitance <span class="math notranslate nohighlight">\(C\)</span> across the junction. Far from the paddles only the <em>moments</em> of that charge matter,</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -1079,7 +1053,7 @@ largest even harmonic / dipole harmonic: 2.3e-03
 </div>
 </section>
 <section id="2.-The-qubit-as-a-source-of-current">
-<h1>2. The qubit as a source of current<a class="headerlink" href="#2.-The-qubit-as-a-source-of-current" title="Link to this heading">¶</a></h1>
+<h2>2. The qubit as a source of current<a class="headerlink" href="#2.-The-qubit-as-a-source-of-current" title="Link to this heading">¶</a></h2>
 <p>At the qubit’s frequency the charge <span class="math notranslate nohighlight">\(\pm q(t)\)</span> on the paddles slosh through the junction, so a current flows in the paddles and across the gap. The coupling of that current to a magnetic field is the second half of the multipole expansion, and it needs the <em>current</em> distribution, not only the charge.</p>
 <p><strong>What can be computed and what cannot.</strong> Charge conservation fixes the divergence of the current: with <span class="math notranslate nohighlight">\(\mathbf K\)</span> the charge displaced during the oscillation (so that <span class="math notranslate nohighlight">\(\partial_t\mathbf K\)</span> is the sheet current), <span class="math notranslate nohighlight">\(\nabla\cdot\mathbf K=-\sigma\)</span> on the paddles, and the junction carries the whole charge of one paddle to the other. It does not fix the rotation of <span class="math notranslate nohighlight">\(\mathbf K\)</span>: a current loop on a paddle satisfies <span class="math notranslate nohighlight">\(\nabla\cdot\mathbf K=0\)</span> and moves no charge. That
 divergence-free part depends on the paddle’s response (a superconducting sheet screens differently from a resistive one). This notebook takes the simplest closed model, the resistive-sheet limit in which <span class="math notranslate nohighlight">\(\mathbf K=-\nabla\psi\)</span> with <span class="math notranslate nohighlight">\(\nabla^2\psi=\sigma\)</span> on each paddle and the junction as the only exit, and treats the answer as good to a factor of about 2. What does <em>not</em> depend on the model is symmetry, which is what the zeros of Sec. 1 and this section rest on.</p>
@@ -1250,7 +1224,7 @@ net circulation m_z = +2.4e-16 C m² against the integral of |r×K|/2 = 2.7e-14 
 </pre></div></div>
 </div>
 <section id="A-full-wave-check-of-the-current,-and-of-the-claim-that-the-magnetic-energy-of-a-qubit-is-small">
-<h2>A full-wave check of the current, and of the claim that the magnetic energy of a qubit is small<a class="headerlink" href="#A-full-wave-check-of-the-current,-and-of-the-claim-that-the-magnetic-energy-of-a-qubit-is-small" title="Link to this heading">¶</a></h2>
+<h3>A full-wave check of the current, and of the claim that the magnetic energy of a qubit is small<a class="headerlink" href="#A-full-wave-check-of-the-current,-and-of-the-claim-that-the-magnetic-energy-of-a-qubit-is-small" title="Link to this heading">¶</a></h3>
 <p>The sheet current is a model. A full-wave solve of one qubit gives an independent look at the same current: put the qubit alone in a small box, replace the open junction by its inductor <span class="math notranslate nohighlight">\(L_J\)</span>, and find the qubit mode. Its magnetic field around the junction is the field of the qubit’s own current, and the share of its magnetic energy that sits outside the junction inductor is the geometric inductance, the quantity the paper’s impedance fit returns as <span class="math notranslate nohighlight">\(\delta L'_n\approx0.32\)</span> nH (4.45
 reproduces it) and quotes as a few percent of the qubit’s energy.</p>
 <p><code class="docutils literal notranslate"><span class="pre">pm.MaxwellFEM</span></code> takes the inductor as a rank-one term (4.43). Because the discrete Maxwell model sees the first-order electrostatic capacitance (4.45, Sec. 2), the inductance that puts the mode at 6.49 GHz comes from the first-order capacitance.</p>
@@ -1551,7 +1525,7 @@ the model&#39;s B_z, scaled by the best fit factor 0.87, has correlation 0.957 w
 </section>
 </section>
 <section id="3.-What-a-flat-source-sees">
-<h1>3. What a flat source sees<a class="headerlink" href="#3.-What-a-flat-source-sees" title="Link to this heading">¶</a></h1>
+<h2>3. What a flat source sees<a class="headerlink" href="#3.-What-a-flat-source-sees" title="Link to this heading">¶</a></h2>
 <p>The qubit is a flat object: charge and current confined to the plane of the paddles, <span class="math notranslate nohighlight">\(z=t\)</span>, a distance that is a thousand times shorter than the wavelength. Its coupling energy with a mode, written in the multipolar (Power–Zienau–Woolley) form [3, 4] in which a neutral source couples to the <em>fields</em> <span class="math notranslate nohighlight">\(\mathbf E\)</span> and <span class="math notranslate nohighlight">\(\mathbf B\)</span> and not to the potentials, is a sum of two pieces,</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -1643,7 +1617,7 @@ qubit (1,2) in the analytic LSM110 field, g/2π = f U/4:
 <p>That settles which fields a flat qubit can feel. What remains is to <em>measure</em> those fields in the finite-element solution, because “the mode has <span class="math notranslate nohighlight">\(B_z=0\)</span>” is a property of the idealized analytic mode, and the real package has 200 paddles in it. First the bare mode, the one the series is an expansion in: the package without any paddles. Then (Sec. 6) the mode with every paddle present.</p>
 </section>
 <section id="4.-The-package-mode-at-the-chip-plane">
-<h1>4. The package mode at the chip plane<a class="headerlink" href="#4.-The-package-mode-at-the-chip-plane" title="Link to this heading">¶</a></h1>
+<h2>4. The package mode at the chip plane<a class="headerlink" href="#4.-The-package-mode-at-the-chip-plane" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">mp.bare_mode</span></code> removes the paddles and junctions from the mesh of Sec. 1 and solves for the mode of the empty package, on a mesh that is still fine around every qubit: the field is sampled where the qubits are. A polynomial fit over a disc around each qubit gives the field and its gradient there (the field of a lowest-order edge element scatters by a percent or so from one tetrahedron to the next, so the value at the central point alone is not the value of the underlying field, but a fit over
 several hundred tetrahedra is). The same fit gives <span class="math notranslate nohighlight">\((\nabla\times E)_z\)</span>, computed from the edge coefficients, and its gradient.</p>
 <p>Two modes, as in 4.44: LSM<span class="math notranslate nohighlight">\(_{110}\)</span> (PMC cuts) and LSM<span class="math notranslate nohighlight">\(_{210}\)</span> (PEC at the middle of <span class="math notranslate nohighlight">\(x\)</span>, which excludes its degenerate twin LSM<span class="math notranslate nohighlight">\(_{120}\)</span>).</p>
@@ -2036,7 +2010,7 @@ across the surface, finite element, value above / value below: E_x 1.000, D_x 0.
 </div>
 </section>
 <section id="5.-The-hierarchy-of-couplings">
-<h1>5. The hierarchy of couplings<a class="headerlink" href="#5.-The-hierarchy-of-couplings" title="Link to this heading">¶</a></h1>
+<h2>5. The hierarchy of couplings<a class="headerlink" href="#5.-The-hierarchy-of-couplings" title="Link to this heading">¶</a></h2>
 <p>Everything is in place to compute each term of the series for every qubit and both modes, with the moments of Sec. 1–2 and the field of Sec. 4:</p>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
@@ -2211,7 +2185,7 @@ LSM210:          -2.11e-03           -2.11e-03       1.1e-05   (exact/E1 - 1 ≤
 </pre></div></div>
 </div>
 <section id="The-dark-columns">
-<h2>The dark columns<a class="headerlink" href="#The-dark-columns" title="Link to this heading">¶</a></h2>
+<h3>The dark columns<a class="headerlink" href="#The-dark-columns" title="Link to this heading">¶</a></h3>
 <p>For LSM<span class="math notranslate nohighlight">\(_{210}\)</span> the qubits of column <span class="math notranslate nohighlight">\(i=2\)</span> (<span class="math notranslate nohighlight">\(x=7.5\)</span> mm) sit on a node of <span class="math notranslate nohighlight">\(E_x\)</span>: their coupling is zero to every order, so what the pipeline returns for them measures its noise directly. Two numbers: the all-orders coupling computed in the finite-element field, and in the analytic field (with the same charges, which then isolates the asymmetry of the mesh’s charges).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
@@ -2269,7 +2243,7 @@ LSM210, column i = 2 (x = 7.5 mm, a node of E_x): the analytic coupling is zero 
 </section>
 </section>
 <section id="6.-Is-the-zero-a-blind-spot?-The-paddles,-and-the-exact-answer">
-<h1>6. Is the zero a blind spot? The paddles, and the exact answer<a class="headerlink" href="#6.-Is-the-zero-a-blind-spot?-The-paddles,-and-the-exact-answer" title="Link to this heading">¶</a></h1>
+<h2>6. Is the zero a blind spot? The paddles, and the exact answer<a class="headerlink" href="#6.-Is-the-zero-a-blind-spot?-The-paddles,-and-the-exact-answer" title="Link to this heading">¶</a></h2>
 <p>The magnetic terms above are zero for two reasons that are both properties of the <em>bare</em> mode: it has <span class="math notranslate nohighlight">\(B_z=0\)</span>, and the series is expanded in it. A real processor changes this in two ways. The 200 paddles are perfect conductors in the field of the mode and carry induced currents, which have a normal magnetic field of their own, so the mode that the qubits actually sit in is not LSM<span class="math notranslate nohighlight">\(_{110}\)</span> but its dressed version, which has <span class="math notranslate nohighlight">\(B_z\neq0\)</span> near the paddles. And a coupling extracted
 from a model that computes the field at the qubit, as the series does, can be wrong in a way that no check inside the model reveals. Two independent tests follow.</p>
 <p><strong>Test 1: the dressed mode.</strong> Solve the mode again with every paddle present and every junction open, the model of 4.44. Its <span class="math notranslate nohighlight">\(B_z\)</span> is the normal magnetic field of the induced currents on the paddles. The magnetic terms <span class="math notranslate nohighlight">\(M_1\)</span> and <span class="math notranslate nohighlight">\(M_2\)</span> are evaluated with that <span class="math notranslate nohighlight">\(B_z\)</span> at each qubit, from a fit over the annulus <span class="math notranslate nohighlight">\(0.85\)</span>–<span class="math notranslate nohighlight">\(1.7\)</span> mm around it, outside the qubit’s own paddles (where the field is zero on the metal). The annulus contains the halo of the induced currents of
@@ -2529,7 +2503,7 @@ to depend on the paddle-edge mesh: its <span class="math notranslate nohighlight
 <code class="docutils literal notranslate"><span class="pre">BUDGET</span></code>, as an upper bound on all neglected physics at that mesh. Any magnetic or paddle-loading contribution is inside it.</p>
 </section>
 <section id="7.-Breaking-the-symmetry:-the-quadrupole,-and-the-origin">
-<h1>7. Breaking the symmetry: the quadrupole, and the origin<a class="headerlink" href="#7.-Breaking-the-symmetry:-the-quadrupole,-and-the-origin" title="Link to this heading">¶</a></h1>
+<h2>7. Breaking the symmetry: the quadrupole, and the origin<a class="headerlink" href="#7.-Breaking-the-symmetry:-the-quadrupole,-and-the-origin" title="Link to this heading">¶</a></h2>
 <p>Every zero in Secs. 1–2 rests on a symmetry. A theorem is only informative if its conditions can be broken, so this section breaks them one at a time and watches the zeros turn into numbers. Two things first need care: what a quadrupole <em>is</em> about a source that has a dipole, and which of its components can be removed by moving the origin.</p>
 <p><strong>Origin dependence.</strong> The moments depend on where the origin is. For a neutral source, shifting the origin by <span class="math notranslate nohighlight">\(\mathbf d\)</span> leaves <span class="math notranslate nohighlight">\(\mathbf p\)</span> alone but changes</p>
 <div class="math-wrapper docutils container">
@@ -2842,10 +2816,10 @@ symmetric the quadrupole is negligible by construction, and for one that is not 
 <p>What an off-axis junction does is for the magnetic side, and no LSM mode can see it: <span class="math notranslate nohighlight">\(\tilde m_z\)</span> multiplies <span class="math notranslate nohighlight">\((\nabla\times\mathbf E)_z\)</span>, which is zero. The next section shows where it is not.</p>
 </section>
 <section id="8.-Where-the-magnetic-coupling-is-not-zero">
-<h1>8. Where the magnetic coupling is not zero<a class="headerlink" href="#8.-Where-the-magnetic-coupling-is-not-zero" title="Link to this heading">¶</a></h1>
+<h2>8. Where the magnetic coupling is not zero<a class="headerlink" href="#8.-Where-the-magnetic-coupling-is-not-zero" title="Link to this heading">¶</a></h2>
 <p>A zero that is never seen to fail is a blind spot. Two ways to make the magnetic coupling nonzero, each breaking one of the conditions of Sec. 3 (the source is flat; the mode has <span class="math notranslate nohighlight">\(B_z=0\)</span>).</p>
 <section id="8a.-A-source-that-is-not-flat">
-<h2>8a. A source that is not flat<a class="headerlink" href="#8a.-A-source-that-is-not-flat" title="Link to this heading">¶</a></h2>
+<h3>8a. A source that is not flat<a class="headerlink" href="#8a.-A-source-that-is-not-flat" title="Link to this heading">¶</a></h3>
 <p>A vertical current element has a moment along the in-plane direction, and the in-plane magnetic field of the mode, 16 times larger than <span class="math notranslate nohighlight">\(E_x/c\)</span>, couples to it. The simplest model is a bond-wire or airbridge-like arch that carries the qubit’s displacement charge <span class="math notranslate nohighlight">\(Q\)</span> over a span <span class="math notranslate nohighlight">\(s\)</span> with height <span class="math notranslate nohighlight">\(h\)</span>, in place of a flat path between the same two points. The charges stay on the paddles, so the electric multipoles do not change: the dipole <span class="math notranslate nohighlight">\(\mathbf p=Q\,\mathbf\Delta\)</span>
 depends only on the end points. The current path does change, and with it the magnetic moment, by <span class="math notranslate nohighlight">\(Q\)</span> times the vector area between the arch and the chord, <span class="math notranslate nohighlight">\(\tilde{\mathbf m}=Q\,\mathbf A\)</span> with <span class="math notranslate nohighlight">\(|\mathbf A|=\tfrac23sh\)</span> for a parabola. For an arch in the <span class="math notranslate nohighlight">\(xz\)</span>-plane the moment is along <span class="math notranslate nohighlight">\(y\)</span> and couples to <span class="math notranslate nohighlight">\((\nabla\times\mathbf E)_y=\omega B_y\)</span>, an in-plane component that the flat qubit cannot feel. The coupling energy is <span class="math notranslate nohighlight">\(U_M=\tilde m_y\,\omega B_y\)</span>, in the
 same normalization as everything else.</p>
@@ -2964,7 +2938,7 @@ at qubit (0,4): a 0.2 mm-span arch reaches 1% of the dipole coupling at h = 23 �
 which it is not, but because the qubits are flat. Features of a device with vertical extent (wirebonds, airbridges of a few micrometers contribute proportionally less, a probe or a pin through the chip) do not have that protection.</p>
 </section>
 <section id="8b.-A-mode-with-B_z\neq0">
-<h2>8b. A mode with <span class="math notranslate nohighlight">\(B_z\neq0\)</span><a class="headerlink" href="#8b.-A-mode-with-B_z\neq0" title="Link to this heading">¶</a></h2>
+<h3>8b. A mode with <span class="math notranslate nohighlight">\(B_z\neq0\)</span><a class="headerlink" href="#8b.-A-mode-with-B_z\neq0" title="Link to this heading">¶</a></h3>
 <p>The other condition is the mode. Modes that are transverse-electric to <span class="math notranslate nohighlight">\(z\)</span> (LSE) have <span class="math notranslate nohighlight">\(H_z\neq0\)</span> and a rotational in-plane electric field. Where is the lowest one? Their frequency follows from continuity of <span class="math notranslate nohighlight">\(h(z)\)</span> and <span class="math notranslate nohighlight">\(h'(z)\)</span> at the silicon surface (<code class="docutils literal notranslate"><span class="pre">mp.lse_frequencies</span></code>), and the finite-element solver finds them: solve the paddle-free quarter at 0.3 mm elements near that frequency and sort the modes by the share of the normal magnetic field in their in-plane field. The
 mesh is coarse for 40 GHz (wavelength in the silicon about 2 mm), so frequencies are good to a few percent.</p>
 <div class="nbinput docutils container">
@@ -3151,7 +3125,7 @@ fit floor of M1 (scatter over three fit radii, 1.2 / 1.6 / 2.0 mm, peak over qub
 </section>
 </section>
 <section id="9.-Refining-the-mesh:-which-terms-converge,-which-zeros-stay-zero">
-<h1>9. Refining the mesh: which terms converge, which zeros stay zero<a class="headerlink" href="#9.-Refining-the-mesh:-which-terms-converge,-which-zeros-stay-zero" title="Link to this heading">¶</a></h1>
+<h2>9. Refining the mesh: which terms converge, which zeros stay zero<a class="headerlink" href="#9.-Refining-the-mesh:-which-terms-converge,-which-zeros-stay-zero" title="Link to this heading">¶</a></h2>
 <p>Everything so far is on one mesh, and a number from one mesh is a statement about that mesh. The test that separates a <em>physical</em> zero from a <em>numerical</em> one is refinement. A term that is nonzero in the continuum converges to a finite value. A term that vanishes by symmetry is zero only in the continuum: on a discrete mesh, which is not symmetric, it is a small number that should shrink as the mesh refines (the asymmetry of the mesh shrinks), or stay at a floor set by something other than the
 mesh. Each level below meshes the quarter again with a different element size at the paddle edges, <code class="docutils literal notranslate"><span class="pre">h_metal</span></code>, solves the electrostatics, both bare modes and both dressed modes, and takes every number of Secs. 1–6 from them. (A separately generated mesh never reuses the charges of another: they belong to the nodes of the mesh they were computed on.)</p>
 <div class="nbinput docutils container">
@@ -3516,7 +3490,7 @@ magnetic quadrupole fall with fitted rates of order one in <span class="math not
 <p>The right-hand panel of the first row shows the induced EMF approaching the electric series from below as the mesh is refined, as 4.44 found for the EMF alone, while the series is already converged at the coarser levels: the residual of Sec. 6, the bound on everything the series neglects, is dominated by the discretization error of the EMF side and shrinks with it.</p>
 </section>
 <section id="10.-Error-bars:-which-terms-are-resolved">
-<h1>10. Error bars: which terms are resolved<a class="headerlink" href="#10.-Error-bars:-which-terms-are-resolved" title="Link to this heading">¶</a></h1>
+<h2>10. Error bars: which terms are resolved<a class="headerlink" href="#10.-Error-bars:-which-terms-are-resolved" title="Link to this heading">¶</a></h2>
 <p>Sec. 9 gave two of the four floors of the introduction: the change between mesh levels and the scatter over an ensemble of meshes. The third is the estimator. The finite-element field enters every term through a polynomial fit over a disc, and the fit has arbitrary choices: how large the disc, how many points, quadratic or cubic, centered where. Recompute every term of every qubit with ten variants of these choices (and, for the dressed mode, with five annuli) on the finest mesh, and the scatter
 is the noise of the estimator:</p>
 <div class="nbinput docutils container">
@@ -3854,7 +3828,7 @@ finite-element noise level: it is listed because the question “can the finite-
 above reports for the bare magnetic terms when that happens (the rms <span class="math notranslate nohighlight">\(B_z\)</span> of Sec. 9 falls with <span class="math notranslate nohighlight">\(h\)</span> the same way). Only a null that is reproducible and does not shrink would be flagged as a result. The “&gt; 1 kHz” and “&gt; 4.8% of <span class="math notranslate nohighlight">\(E_1\)</span>” columns separate numerical from physical significance: the octupole is resolved and above the frequency resolution of a lab measurement, and far below the spread between the paper’s methods.</p>
 </section>
 <section id="11.-The-hierarchy,-with-error-bars">
-<h1>11. The hierarchy, with error bars<a class="headerlink" href="#11.-The-hierarchy,-with-error-bars" title="Link to this heading">¶</a></h1>
+<h2>11. The hierarchy, with error bars<a class="headerlink" href="#11.-The-hierarchy,-with-error-bars" title="Link to this heading">¶</a></h2>
 <p>The terms of Sec. 5 again, now with their floors. Left to right in each panel: the value (peak over the 25 qubits, kilohertz) of each term, a filled bar with an error bar where the term is resolved, a hollow bar and a downward arrow at the floor where it is not. Reference lines: 1 kHz (practical frequency resolution), 1% and 4.8% of the dipole coupling (the paper’s spread between its four methods).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
@@ -4192,7 +4166,7 @@ discretization error of the field. Row 4, the magnetic coupling <span class="mat
 </div>
 </section>
 <section id="12.-What-was-claimed,-and-what-the-numbers-say">
-<h1>12. What was claimed, and what the numbers say<a class="headerlink" href="#12.-What-was-claimed,-and-what-the-numbers-say" title="Link to this heading">¶</a></h1>
+<h2>12. What was claimed, and what the numbers say<a class="headerlink" href="#12.-What-was-claimed,-and-what-the-numbers-say" title="Link to this heading">¶</a></h2>
 <p>Every statement in this notebook about what is zero, small or large is a row below, with its condition, the test that was run, and the measured result. The table is built from the values computed above, not typed.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
@@ -4541,7 +4515,7 @@ time per stage (s): mesh 3, electrostatics 89, box 106, bare 110 56, bare 210 56
 </div>
 </section>
 <section id="What-this-tells-you">
-<h1>What this tells you<a class="headerlink" href="#What-this-tells-you" title="Link to this heading">¶</a></h1>
+<h2>What this tells you<a class="headerlink" href="#What-this-tells-you" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><strong>The dipole picture is right, and now it has an error bar.</strong> The electric dipole coupling and the sum of all electric multipoles agree to a few parts in a thousand; the first correction that exists, the octupole, multiplies the dipole coupling of a mode by a factor of about <span class="math notranslate nohighlight">\(1-10^{-3}\)</span> (LSM<span class="math notranslate nohighlight">\(_{110}\)</span>) or <span class="math notranslate nohighlight">\(1-2\times10^{-3}\)</span> (LSM<span class="math notranslate nohighlight">\(_{210}\)</span>), the same factor at every qubit, and so changes the amplitude <span class="math notranslate nohighlight">\(A\)</span> and not the pattern.</p></li>
 <li><p><strong>The zeros are properties of a geometry, and each has a condition.</strong> The electric quadrupole and the magnetic dipole of a two-pad transmon vanish because the charge is odd in <span class="math notranslate nohighlight">\(x\)</span> and even in <span class="math notranslate nohighlight">\(y\)</span> and the current has the matching mirror symmetry. Break the symmetry and they appear (Sec. 7). The magnetic coupling of a flat qubit to the lowest package modes vanishes because a flat source couples only to <span class="math notranslate nohighlight">\(B_z\)</span> and these modes have none (Secs. 3, 4, 6); give the source vertical
@@ -4553,7 +4527,7 @@ the analytic one is exact. Which of these matter physically is a separate questi
 </ul>
 </section>
 <section id="Where-to-go-next">
-<h1>Where to go next<a class="headerlink" href="#Where-to-go-next" title="Link to this heading">¶</a></h1>
+<h2>Where to go next<a class="headerlink" href="#Where-to-go-next" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><strong>Break the symmetry of the real device.</strong> Replace the paddles with the ones of a particular layout (<code class="docutils literal notranslate"><span class="pre">pm.build_design</span></code> takes the geometry; <code class="docutils literal notranslate"><span class="pre">mp.qubit_sources</span></code> takes any <code class="docutils literal notranslate"><span class="pre">Package</span></code>) and read <span class="math notranslate nohighlight">\(S_{yy}\)</span> and <span class="math notranslate nohighlight">\(\tilde m_z\)</span> off the table of Sec. 7.</p></li>
 <li><p><strong>A chip in a pocket smaller than the box.</strong> The statement “LSM modes have <span class="math notranslate nohighlight">\(B_z=0\)</span>” needs the package to be translation-invariant in the plane, as a box with a full-size slab is. A chip smaller than the box, or a lid with a pocket, mixes LSM and LSE: the modes are no longer TM in <span class="math notranslate nohighlight">\(z\)</span> and their normal field is no longer zero. The dressed-mode test of Sec. 6 (the same <code class="docutils literal notranslate"><span class="pre">mp.dressed_data</span></code>) measures it for that geometry without any new theory.</p></li>
@@ -4562,7 +4536,7 @@ the analytic one is exact. Which of these matter physically is a separate questi
 </ul>
 </section>
 <section id="References">
-<h1>References<a class="headerlink" href="#References" title="Link to this heading">¶</a></h1>
+<h2>References<a class="headerlink" href="#References" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><ol class="upperalpha simple" start="18">
 <li><p>Molavi, E. Forati, Y. Zhang, A. R. Klots, J. Atalaya, B. W. Langley, D. A. Timucin, M. Nazari, G. Khan, Z. K. Minev, A. N. Korotkov, M. H. Devoret, “Extracting electromagnetic bare mode couplings in large superconducting quantum processors,” <a class="reference external" href="https://arxiv.org/abs/2609.22442">arXiv:2609.22442</a> (2026).</p></li>
@@ -4628,7 +4602,8 @@ the analytic one is exact. Which of these matter physically is a separate questi
 </li>
 </ol>
 </section>
-<br><br>
+</section>
+<div class="qm-nb-nav"><a class="qm-nb-next" href="../../circuit-examples/F.Small-quantum-chips/52-Barends_5Qubit_Xmon_Processor.html">Next: 5-Qubit Xmon Processor (Barends et al., 2014)</a><a class="qm-nb-examples" href="../../circuit-examples/index.html">Examples</a></div><br><br>
 <h3>For more information, review the <b>Introduction to Quantum Computing and Quantum Hardware</b> lectures below</h3>
 <div style="border:solid 1 px #990000;">
 <table>
@@ -4686,7 +4661,7 @@ the analytic one is exact. Which of these matter physically is a separate questi
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; Quantum Metal Community; 2019-2025 Qiskit Development Team
+                Copyright &#169; Quantum Metal Community; 2019-2026 Qiskit Development Team
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -4713,7 +4688,8 @@ the analytic one is exact. Which of these matter physically is a separate questi
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">0. Setup and the compute budget</a><ul>
+<li><a class="reference internal" href="#">4.46 Beyond the Dipole: Multipoles and Magnetic Coupling</a><ul>
+<li><a class="reference internal" href="#0.-Setup-and-the-compute-budget">0. Setup and the compute budget</a><ul>
 <li><a class="reference internal" href="#How-the-numbers-are-reported">How the numbers are reported</a></li>
 </ul>
 </li>
@@ -4742,6 +4718,8 @@ the analytic one is exact. Which of these matter physically is a separate questi
 <li><a class="reference internal" href="#What-this-tells-you">What this tells you</a></li>
 <li><a class="reference internal" href="#Where-to-go-next">Where to go next</a></li>
 <li><a class="reference internal" href="#References">References</a></li>
+</ul>
+</li>
 </ul>
 
           </div>

@@ -72,7 +72,7 @@ If you cannot use conda, modern ``geopandas`` (>=1.0) for Python 3.10+ ships wit
 **A:** If you are seeing: ``xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at /Library/Developer/CommandLineTools/usr/bin/xcrun`` you may be missing the Command Line Tools.
 
 The Command Line Tools package for XCode should be already installed.
-If not, they can be installed with: ``xcode-select —install``
+If not, they can be installed with: ``xcode-select --install``
 
 **Q: Why can't qutip find my path?**
 
@@ -183,7 +183,7 @@ Quantum Metal's desktop GUI (``MetalGUI``) is built on **PySide6** (Qt for
 Python). Resources for learning PySide6 / Qt:
 
 * `PySide6 official tutorials <https://doc.qt.io/qtforpython-6/tutorials/index.html>`_
-* `Qt for Python: signals and slots <https://doc.qt.io/qtforpython-6/overviews/signalsandslots.html>`_
+* `Qt for Python: signals and slots <https://doc.qt.io/qtforpython-6/overviews/qtcore-signalsandslots.html>`_
 * `Real Python — PyQt/PySide GUI tutorial <https://realpython.com/python-pyqt-gui-calculator/>`_ (PyQt; concepts transfer to PySide6)
 
 If you're working on the lite install (no Qt), see the headless workflow at
