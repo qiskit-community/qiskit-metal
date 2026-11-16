@@ -6,7 +6,7 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
-## Unreleased
+## Quantum Metal v0.10.1 (fixes, scripting and KLayout tools, component catalog, docs restructure)
 
 ### Added
 
