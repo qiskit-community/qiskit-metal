@@ -104,7 +104,7 @@ class LSMMode:
 
         ``E0x`` holds the magnitude the paper quotes. Eq. (E9) carries a minus
         sign, because E_z decreases with height in the silicon:
-        E_x = -a |E0x| cos(a pi x/Lx) sin(b pi y/Ly) for E_z > 0.
+        ``E_x = -a abs(E0x) cos(a pi x/Lx) sin(b pi y/Ly)`` for E_z > 0.
         """
         return (
             -self.a
@@ -385,10 +385,10 @@ def fit_impedance(w, Z, n_poles=2):
 
 
 def fit_amplitude(g, a, b, Lx, Ly):
-    """Least-squares A in g = A cos(a pi x/Lx) sin(b pi y/Ly) (Eqs. 14, 17).
+    """Least-squares ``A`` in ``g = A cos(a pi x/Lx) sin(b pi y/Ly)`` (Eqs. 14, 17).
 
     ``g`` is an (n, n) array [j, i] over a uniform grid of qubits on a
-    ``Lx x Ly`` (mm) chip. Returns (A, largest residual / |A|).
+    ``Lx x Ly`` (mm) chip. Returns ``(A, largest residual / abs(A))``.
     """
     n = g.shape[0]
     c = qubit_centers(n, Lx / n)

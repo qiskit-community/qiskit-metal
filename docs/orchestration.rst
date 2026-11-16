@@ -120,13 +120,13 @@ habits keep a script safe:
 * Rely on the surface the :doc:`API reference <overview>` documents:
   ``QDesign`` and its subclasses, ``QComponent`` options, ``qm.view`` and
   ``qm.gui``, ``validate``, the renderers' export methods and the analyses.
-  Public method signatures do not change without a deprecation path.
-* Read the *Behaviour changes* part of the `changelog
+  Changes to those are listed in the changelog.
+* Read the *Behavior changes* part of the `changelog
   <https://github.com/qiskit-community/qiskit-metal/blob/main/changelog.md>`_ when
   you upgrade. Every change that moves numbers or geometry is listed there, and
   the fingerprint above shows whether your design moved.
 
-Pin the version in your environment (for example ``quantum-metal==0.10.0``) so a
+Pin the version in your environment (for example ``quantum-metal==<version>``) so a
 run you want to repeat uses the same code.
 
 Using a coding assistant

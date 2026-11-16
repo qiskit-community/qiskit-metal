@@ -1,5 +1,5 @@
 ##############################################################
-Qiskit Metal is now Quantum Metal
+Quantum Metal
 ##############################################################
 
 .. container:: qm-hero
@@ -32,7 +32,7 @@ Qiskit Metal is now Quantum Metal
 
    **Design superconducting quantum chips in Python, then simulate them.**
 
-   Open source and community-maintained. One Python API, with an optional desktop GUI,
+   Open source and community-maintained, formerly Qiskit Metal. One Python API, with an optional desktop GUI,
    takes a chip from layout to Hamiltonian.
 
    .. grid:: 1 2 2 2
@@ -111,6 +111,9 @@ Qiskit Metal is now Quantum Metal
 
          Capacitance, eigenmodes, energy participation, Hamiltonians.
 
+   Looking for one specific task, such as routing a CPW or exporting GDS? See
+   :doc:`how-do-i`.
+
 .. container:: qm-section
 
    .. rubric:: Devices designed with Quantum Metal
@@ -163,47 +166,50 @@ Qiskit Metal is now Quantum Metal
 
 .. toctree::
     :maxdepth: 2
-    :caption: Get Started
+    :caption: Get started
     :hidden:
 
-    Quick Start<quickstart>
-    Installing Quantum Metal<installation>
-    Choose Your Path<choose-your-path>
-    Scripting and Agent Use<orchestration>
+    Quick start<quickstart>
+    Installation<installation>
+    Choose your path<choose-your-path>
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Showcase and learn
+    :hidden:
+
+    Devices and papers<built-with-metal>
+    How do I...?<how-do-i>
+    Reproduced devices (notebooks)<research>
+    Learn<tut/index>
+    Examples<circuit-examples/index>
     Built on Quantum Metal<ecosystem>
 
 .. toctree::
-    :maxdepth: 2
-    :caption: Showcase & Learn
-    :hidden:
-
-    Device Images and Papers<built-with-metal>
-    Reproduced Devices (Notebooks)<research>
-    Learn<tut/index>
-    Examples<circuit-examples/index>
-
-.. toctree::
     :maxdepth: 1
-    :caption: How It Works
+    :caption: How it works
     :hidden:
 
-    Quantum Metal Workflow<workflow>
-    Quantization Methods<quantization>
-    Simulation Pathways<simulation-pathways>
+    Quantum Metal workflow<workflow>
+    Quantization methods<quantization>
     GDS in KLayout<klayout>
-    Desktop GUI or Headless<headless-usage>
-    GUI Navigation & Shortcuts<gui-shortcuts>
+    Simulation pathways<simulation-pathways>
+    Desktop GUI or headless<headless-usage>
+    Scripting and agent use<orchestration>
+    GUI navigation and shortcuts<gui-shortcuts>
 
 .. toctree::
     :maxdepth: 2
-    :caption: API Reference
+    :caption: API reference
     :hidden:
 
-    Overview<overview>
+    API summary<overview>
     QDesigns<apidocs/designs>
     QComponents<apidocs/qlibrary>
-    Analyses<apidocs/analyses>
+    Component catalog<qcomponents-gallery>
     QRenderers<apidocs/renderers>
+    Analyses<apidocs/analyses>
+    Open-source solvers<apidocs/open-source-solvers>
     Toolbox<apidocs/toolbox_metal>
     QGeometry<apidocs/qgeometries>
     GUI<apidocs/gui>
@@ -214,16 +220,16 @@ Qiskit Metal is now Quantum Metal
     :hidden:
 
     Roadmap<roadmap>
-    Frequently Asked Questions<faq>
+    Frequently asked questions<faq>
 
 .. toctree::
     :maxdepth: 2
-    :caption: Community & Contributing
+    :caption: Community and contributing
     :hidden:
 
-    Contributor Guide<contributor-guide>
+    Contributor guide<contributor-guide>
     Architecture<architecture>
-    Code of Conduct<https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md>
+    Code of conduct<https://github.com/qiskit-community/qiskit-metal/blob/main/CODE_OF_CONDUCT.md>
 
 .. Per-class autodoc stubs in ``apidocs/`` are reached via the
    autosummary ``:toctree: .`` directives in each module's

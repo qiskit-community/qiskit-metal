@@ -54,15 +54,7 @@ therefore runs unchanged on a laptop and in the cloud.
 
 .. rubric:: Run the tutorials in your browser
 
-.. image:: https://colab.research.google.com/assets/colab-badge.svg
-   :target: https://colab.research.google.com/github/qiskit-community/qiskit-metal/blob/main/docs/tut/1-Overview/1.1-Quick-start.ipynb
-   :alt: Open Quick Start in Colab
-
-.. image:: https://mybinder.org/badge_logo.svg
-   :target: https://mybinder.org/v2/gh/qiskit-community/qiskit-metal/main?labpath=docs%2Ftut%2F1-Overview%2F1.1-Quick-start.ipynb
-   :alt: Open Quick Start in Binder
-
-In Colab and Binder the first cell installs the lite wheel
+The Colab and Binder badges are on the :doc:`quickstart` page. In both, the first cell installs the lite wheel
 (``pip install -q quantum-metal``), and the tutorial's ``qm.gui(design)``
 call picks the inline viewer.
 
@@ -137,9 +129,7 @@ Only the interactive desktop editor itself:
 Installing without Qt
 =====================
 
-As of **v0.7.0**, ``pip install quantum-metal`` no longer pulls in
-PySide6 or the Qt stack. The base install is headless by default —
-no GUI, no Qt surprises.
+``pip install quantum-metal`` does not pull in PySide6 or the Qt stack: the base install is headless.
 
 If you have the ``[gui]`` extra installed and want to suppress Qt
 initialization at runtime (e.g. in a script that runs headlessly),
@@ -159,15 +149,7 @@ force_headless=True)`` does the same for one call, and
 Install extras
 ==============
 
-* ``pip install quantum-metal`` — lite default: no Qt, no Ansys, no gmsh
-* ``pip install "quantum-metal[gui]"`` — + PySide6 + qdarkstyle
-* ``pip install "quantum-metal[ansys]"`` — + pyaedt + pyEPR-quantum
-* ``pip install "quantum-metal[mesh]"`` — + gmsh (foundation for Elmer / Palace).
-* ``pip install "quantum-metal[skfem]"`` — ``[mesh]`` + the scikit-fem eigenmode solver (tutorials 4.41–4.46).
-  ``[fem]`` is a backward-compatible alias.
-* ``pip install "quantum-metal[full]"`` — all extras
-
-See :doc:`installation` for the full feature matrix.
+The extras (``[gui]``, ``[ansys]``, ``[mesh]``, ``[skfem]``, ``[full]``) and what each adds are listed on :doc:`installation`.
 
 See also
 ========

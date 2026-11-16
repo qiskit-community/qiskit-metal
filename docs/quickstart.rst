@@ -107,4 +107,4 @@ without a GUI object.
     :outline:
     :expand:
 
-    Continue: the learning path
+    Continue: the tutorial course

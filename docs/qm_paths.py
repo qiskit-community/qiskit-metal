@@ -76,13 +76,13 @@ PATHS = [
     (
         "ansys-analyst",
         "Ansys EPR and LOM analyst",
-        "Render to Ansys, then EPR and LOM analysis. Needs Ansys.",
+        "Render to Ansys, then EPR and LOM analysis.",
         ["1.1", "3.3", "4.01", "4.02", "4.03", "4.11", "4.13", "4.04", "A.4"],
     ),
     (
         "teaching",
         "Teaching",
-        "Runs in Colab: no solver, no GUI.",
+        "No solver and no GUI needed.",
         ["1.1", "1.2", "4.31", "4.32", "4.34", "4.41", "4.42", "A.1", "A.2"],
     ),
     (
@@ -136,12 +136,58 @@ def by_doc():
     return out
 
 
+# Per path: (who it is for, what it needs)
+ICONS = {
+    "chip-designer": "cpu",
+    "open-source-simulation": "unlock",
+    "ansys-analyst": "beaker",
+    "teaching": "mortar-board",
+    "component-developer": "tools",
+    "package-modes-series": "graph",
+}
+
+PATH_META = {
+    "chip-designer": ("Lay out a chip and send it to a fab.", "Python only"),
+    "open-source-simulation": (
+        "Simulate without a license.",
+        "gmsh, ElmerFEM or scikit-fem",
+    ),
+    "ansys-analyst": ("EPR and LOM with a commercial solver.", "Ansys license"),
+    "teaching": ("Courses and workshops.", "Python only (runs in Colab)"),
+    "component-developer": ("Extend the library.", "Python only"),
+    "package-modes-series": ("A published study, step by step.", "scikit-fem"),
+}
+
+
 def page_body():
-    """RST for ``choose-your-path.rst``: one section per path."""
-    lines = []
+    """RST for ``choose-your-path.rst``: a card per path, then one section each."""
+    lines = [".. grid:: 1 2 3 3", "    :gutter: 3", ""]
     for key, title, desc, ids in PATHS:
-        lines += [f".. _path-{key}:", "", title, "=" * len(title), "", desc, ""]
-        for nid in ids:
-            lines.append(f"#. :doc:`/{_doc(nid)}`")
+        who, needs = PATH_META[key]
+        lines += [
+            f"    .. grid-item-card:: :octicon:`{ICONS[key]};1.2em` {title}",
+            f"        :link: path-{key}",
+            "        :link-type: ref",
+            "        :class-card: sd-shadow-sm",
+            "",
+            f"        {who} {desc}",
+            "",
+            "        +++",
+            f"        {len(ids)} notebooks · {needs}",
+            "",
+        ]
+    lines.append("")
+    for key, title, desc, ids in PATHS:
+        lines += [
+            f".. _path-{key}:",
+            "",
+            title,
+            "=" * len(title),
+            "",
+            desc,
+            "",
+        ]
+        lines += [".. nblinkgallery::", ""]
+        lines += [f"    /{_doc(nid)}" for nid in ids]
         lines.append("")
     return "\n".join(lines)
