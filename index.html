@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="_static/nbsphinx-gallery.css?v=26227f6e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=6ae7c48f" />
+    <link rel="stylesheet" type="text/css" href="_static/qm-gallery.css?v=8549c29d" />
     
     
 
@@ -532,11 +532,17 @@ takes a chip from layout to Hamiltonian.</p>
 </div>
 </div>
 </div>
-<div class="qm-hero-shot docutils container">
-<a class="reference internal image-reference" href="_images/logo1.webp"><img alt="Quantum Metal: the desktop GUI showing a chip layout, with capacitance, eigenmode and S-parameter analysis panels." src="_images/logo1.webp" style="width: 1800px; height: 931px;" />
-</a>
+<div class="qm-stage">
+  <div class="qm-scene">
+    <figure class="qm-card qm-gui">
+      <img src="_static/home/gui-chip.webp" width="1400" height="1232" alt="The Quantum Metal desktop GUI showing a four-qubit chip layout with its component list and options.">
+    </figure>
+    <figure class="qm-card qm-methods">
+      <img src="_static/home/methods.webp" width="1162" height="704" alt="Four analysis methods side by side: capacitance extraction, eigenmode and field, impedance and scattering parameters, and the transmon Hamiltonian with its Bloch sphere." loading="lazy">
+    </figure>
+  </div>
 </div>
-</div>
+<p class="qm-credit">Images: Z. Minev</p></div>
 <div class="qm-section docutils container">
 <p class="qm-h2 rubric">What is Quantum Metal?</p>
 <p>Designing quantum devices is a multi-step process that connects traditionally
@@ -585,11 +591,6 @@ Analyze</div>
 </div>
 </div>
 <div class="qm-section docutils container">
-<p class="qm-h2 rubric">Built on Quantum Metal</p>
-<p>Tools from the community that use it as their design layer:
-<a class="reference internal" href="ecosystem.html"><span class="doc">SQuADDS, SQDMetal, QDesignOptimizer and more</span></a>.</p>
-</div>
-<div class="qm-section docutils container">
 <p class="qm-h2 rubric">Devices designed with Quantum Metal</p>
 <p>Chips designed or rebuilt with Quantum Metal, from community fabrication to
 published processors. More device images, papers and theses are on
@@ -624,6 +625,11 @@ published processors. More device images, papers and theses are on
 </div>
 </div>
 <div class="qm-section docutils container">
+<p class="qm-h2 rubric">Built on Quantum Metal</p>
+<p>Tools from the community that use it as their design layer:
+<a class="reference internal" href="ecosystem.html"><span class="doc">SQuADDS, SQDMetal, QDesignOptimizer and more</span></a>.</p>
+</div>
+<div class="qm-section docutils container">
 <p class="qm-h2 rubric">Community</p>
 <p>Questions, ideas and bug reports are welcome.</p>
 <div class="qm-chips docutils container">
@@ -634,13 +640,6 @@ published processors. More device images, papers and theses are on
 <li><p><a class="reference external" href="https://qdc-qcsa.vercel.app">Quantum Device Consortium</a></p></li>
 </ul>
 </div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><strong>Rebrand in progress: Qiskit Metal → Quantum Metal.</strong>
-The PyPI package is <code class="docutils literal notranslate"><span class="pre">quantum-metal</span></code> (v0.5+).
-A future release will rename the import path from <code class="docutils literal notranslate"><span class="pre">qiskit_metal</span></code> to <code class="docutils literal notranslate"><span class="pre">quantum_metal</span></code>; no version has been set for that yet.
-See <a class="reference internal" href="installation.html"><span class="doc">Installation</span></a>.</p>
 </div>
 <div class="toctree-wrapper compound">
 </div>
@@ -681,7 +680,7 @@ See <a class="reference internal" href="installation.html"><span class="doc">Ins
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/11/15</div>
+              Last updated on 2026/11/16</div>
           </div>
           <div class="right-details">
             
@@ -702,5 +701,6 @@ See <a class="reference internal" href="installation.html"><span class="doc">Ins
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="_static/design-tabs.js?v=fcb327ea"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/qm-hero.js?v=1b0c1d9c"></script>
     </body>
 </html>
