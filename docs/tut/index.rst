@@ -52,22 +52,13 @@ See :doc:`../how-do-i`.
 
             4 Simulate and analyze
 
-Want a result fast?
-===================
-
-.. nblinkgallery::
-
-    1-Overview/1.1-Quick-start
-    1-Overview/1.3-Build-a-4-qubit-chip
-    2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip
-
 .. _learn-part1:
 
 Part 1: First steps
 ===================
 
 Place a component, build a four-qubit chip, save it, iterate on it.
-:doc:`All 5 notebooks <first-steps>`.
+:doc:`All notebooks <first-steps>`.
 
 .. nblinkgallery::
 
@@ -81,7 +72,7 @@ Part 2: From components to chip
 ===============================
 
 QComponents, routing, a full chip, design rules, and your own QComponent.
-:doc:`All 16 notebooks <components-to-chip>`.
+:doc:`All notebooks <components-to-chip>`.
 
 .. nblinkgallery::
 
@@ -97,7 +88,7 @@ Part 3: Render and export
 =========================
 
 Export to GDS, mesh with gmsh, render to Ansys, write a renderer.
-:doc:`All 5 notebooks <render-and-export>`.
+:doc:`All notebooks <render-and-export>`.
 
 .. nblinkgallery::
 
@@ -113,7 +104,7 @@ Part 4: Simulate and analyze
 
 Open-source and Ansys simulation, then circuits to Hamiltonians. See
 :doc:`../simulation-pathways` for what each solver computes.
-:doc:`All 30 notebooks <simulate-and-analyze>`.
+:doc:`All notebooks <simulate-and-analyze>`.
 
 .. nblinkgallery::
 
@@ -126,12 +117,10 @@ Featured: package modes and qubit couplings
 ===========================================
 
 Six notebooks follow R. Molavi *et al.*, `arXiv:2609.22442
-<https://arxiv.org/abs/2609.22442>`_: the couplings of a 10 × 10 transmon array
-to the modes of its metal package. They go from an analytic estimate (4.41) to
-a full-wave model of the whole package (4.45); 4.46 then looks inside that
-model term by term. They use gmsh and a scikit-fem Maxwell solver in place of
-HFSS (``pip install "quantum-metal[skfem]"``). Also on the :doc:`../research`
-page.
+<https://arxiv.org/abs/2609.22442>`_: a 10 × 10 transmon array coupled to the
+modes of its metal package, from an analytic estimate (4.41) to a full-wave
+model (4.45) and its term-by-term anatomy (4.46). They need
+``pip install "quantum-metal[skfem]"``. See also :doc:`../research`.
 
 .. nblinkgallery::
 

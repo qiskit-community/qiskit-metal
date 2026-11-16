@@ -176,14 +176,10 @@ def page_body():
             title,
             "=" * len(title),
             "",
-            f"{desc} Needs: {needs}.",
-            "",
-            "In reading order:",
+            desc,
             "",
         ]
-        for nid in ids:
-            lines.append(f"#. :doc:`/{_doc(nid)}`")
-        lines += ["", ".. nblinkgallery::", ""]
+        lines += [".. nblinkgallery::", ""]
         lines += [f"    /{_doc(nid)}" for nid in ids]
         lines.append("")
     return "\n".join(lines)

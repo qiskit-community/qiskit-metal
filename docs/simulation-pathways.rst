@@ -42,7 +42,7 @@ result from one path can be checked against another.
         :link: https://github.com/sqdlab/SQDMetal
         :class-card: sd-shadow-sm
 
-        Large full-wave models on clusters, through SQDMetal.
+        Large full-wave models on clusters, through SQDMetal. Not built in yet.
 
 
 .. list-table::

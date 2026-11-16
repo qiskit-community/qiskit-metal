@@ -172,7 +172,6 @@ Qiskit Metal is now Quantum Metal
     Quick Start<quickstart>
     Installing Quantum Metal<installation>
     Choose Your Path<choose-your-path>
-    Built on Quantum Metal<ecosystem>
 
 .. toctree::
     :maxdepth: 2
@@ -180,6 +179,7 @@ Qiskit Metal is now Quantum Metal
     :hidden:
 
     Device Images and Papers<built-with-metal>
+    Built on Quantum Metal<ecosystem>
     Reproduced Devices (Notebooks)<research>
     Learn<tut/index>
     Examples<circuit-examples/index>

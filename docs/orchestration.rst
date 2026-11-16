@@ -121,7 +121,7 @@ habits keep a script safe:
   ``QDesign`` and its subclasses, ``QComponent`` options, ``qm.view`` and
   ``qm.gui``, ``validate``, the renderers' export methods and the analyses.
   Public method signatures do not change without a deprecation path.
-* Read the *Behaviour changes* part of the `changelog
+* Read the *Behavior changes* part of the `changelog
   <https://github.com/qiskit-community/qiskit-metal/blob/main/changelog.md>`_ when
   you upgrade. Every change that moves numbers or geometry is listed there, and
   the fingerprint above shows whether your design moved.

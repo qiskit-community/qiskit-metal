@@ -36,7 +36,7 @@ October 2026), which lets the lock use the patched Pillow, tornado and
 soupsieve. Fixes for issues #1202–#1234 and #1242–#1253: analytic formulas
 (transmon, LOM, kappa, chi, package modes, resonator fitting), GDS export,
 design-rule checks, routing, components and tutorials. Several fixes change
-numbers or geometry; see *Behaviour changes*. The documentation site has a new
+numbers or geometry; see *Behavior changes*. The documentation site has a new
 home page and navigation.
 
 ### Added
@@ -45,7 +45,7 @@ home page and navigation.
 - **Documentation site:** a new home page; Learn, Examples and Showcase sections; a *Devices and papers* page (device images with credits, and the papers, theses and software that use Quantum Metal); a *Reproduced devices* page; a Part 3 (render and export) hub; rewritten workflow and quantization pages. Old page URLs redirect (#1255).
 - **Colab and Binder badges** on the notebooks that run without Ansys; they call `qm.gui(design)`, which falls back to the inline viewer without the `[gui]` extra (#1255).
 
-### Behaviour changes
+### Behavior changes
 
 - **Python 3.11 is the minimum version** (Python 3.10 reached end of life in October 2026). The patched releases of Pillow (13.0), tornado (6.6) and soupsieve (3.0.2 and 4.0) require Python 3.11 or newer, so the lock kept vulnerable versions for 3.10.
 - **`RouteMeander` now reaches `total_length` when its leads are jogged or its fillet/spacing pair left it short** (#1225, #1234). `make()` refits the meander (up to 8 secant steps) when the first build misses by more than 1e-4 design units, and warns with both lengths when it still cannot. A `total_length` shorter than the shortest possible route draws that route and warns with its length, where it raised `IndexError` before. Routes that already reached `total_length` are unchanged bit for bit; routes that were short change shape on existing chips.

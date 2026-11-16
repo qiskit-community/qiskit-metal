@@ -146,8 +146,9 @@ Export and view
         :img-top: _static/workflow/gds-layers.png
         :class-card: sd-shadow-sm
 
-        ``design.renderers.gds.export_to_gds("chip.gds")``. Cheesing and the
-        fabrication export are in the tutorial.
+        ``design.renderers.gds.export_to_gds("chip.gds")``. The tutorial
+        covers cheesing (a hole pattern in the ground plane) and the fabrication
+        export.
 
         +++
         :doc:`3.2 Export to GDS <tut/3-Renderers/3.2-Export-your-design-to-GDS>`
@@ -220,7 +221,7 @@ Simulate
         parameters.
 
         +++
-        :doc:`4.01 LOM <tut/4-Analysis/4.01-Capacitance-and-LOM>` ·
+        :doc:`4.04 New LOM <tut/4-Analysis/4.04-New-LOM-and-Fluxonium-Example>` ·
         :doc:`Quantization methods <quantization>`
 
     .. grid-item-card:: Use Ansys
@@ -231,7 +232,7 @@ Simulate
 
         +++
         :doc:`3.3 Render to Ansys <tut/3-Renderers/3.3-Render-your-design-to-Ansys>` ·
-        :doc:`Part 4 with Ansys <tut/simulate-ansys>`
+        :ref:`Part 4, Ansys <p4-ansys>`
 
     .. grid-item-card:: Reproduce a published chip
         :img-top: _static/home/gui-chip.webp
@@ -280,5 +281,4 @@ Run and automate
 
         +++
         :doc:`Installation <installation>` ·
-        :doc:`Quick start <quickstart>` ·
-        :doc:`Choose your path <choose-your-path>`
+        :doc:`Quick start <quickstart>`
