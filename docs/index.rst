@@ -59,12 +59,19 @@ Qiskit Metal is now Quantum Metal
 
             Learn: the tutorial course
 
-   .. container:: qm-hero-shot
+   .. raw:: html
 
-      .. image:: images/logo1.webp
-         :alt: Quantum Metal: the desktop GUI showing a chip layout, with capacitance, eigenmode and S-parameter analysis panels.
-         :width: 1800px
-         :height: 931px
+      <div class="qm-stage">
+        <div class="qm-scene">
+          <figure class="qm-card qm-gui">
+            <img src="_static/home/gui-chip.webp" width="1400" height="1232" alt="The Quantum Metal desktop GUI showing a four-qubit chip layout with its component list and options.">
+          </figure>
+          <figure class="qm-card qm-methods">
+            <img src="_static/home/methods.webp" width="1162" height="704" alt="Four analysis methods side by side: capacitance extraction, eigenmode and field, impedance and scattering parameters, and the transmon Hamiltonian with its Bloch sphere." loading="lazy">
+          </figure>
+        </div>
+      </div>
+      <p class="qm-credit">Images: Z. Minev</p>
 
 .. container:: qm-section
 
@@ -106,14 +113,6 @@ Qiskit Metal is now Quantum Metal
 
 .. container:: qm-section
 
-   .. rubric:: Built on Quantum Metal
-      :class: qm-h2
-
-   Tools from the community that use it as their design layer:
-   :doc:`SQuADDS, SQDMetal, QDesignOptimizer and more <ecosystem>`.
-
-.. container:: qm-section
-
    .. rubric:: Devices designed with Quantum Metal
       :class: qm-h2
 
@@ -141,6 +140,14 @@ Qiskit Metal is now Quantum Metal
 
 .. container:: qm-section
 
+   .. rubric:: Built on Quantum Metal
+      :class: qm-h2
+
+   Tools from the community that use it as their design layer:
+   :doc:`SQuADDS, SQDMetal, QDesignOptimizer and more <ecosystem>`.
+
+.. container:: qm-section
+
    .. rubric:: Community
       :class: qm-h2
 
@@ -153,11 +160,6 @@ Qiskit Metal is now Quantum Metal
       * `Quantum Device Workshop <https://qdc-qcsa.org/qdw/2026/info>`__
       * `Quantum Device Consortium <https://qdc-qcsa.vercel.app>`__
 
-.. note::
-    **Rebrand in progress: Qiskit Metal → Quantum Metal.**
-    The PyPI package is ``quantum-metal`` (v0.5+).
-    A future release will rename the import path from ``qiskit_metal`` to ``quantum_metal``; no version has been set for that yet.
-    See :doc:`installation`.
 
 .. toctree::
     :maxdepth: 2
