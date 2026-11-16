@@ -57,6 +57,12 @@ GALLERY_RST = DOCS / "qcomponents-gallery.rst"
 # readable" warnings.
 APIDOCS_IMG = DOCS / "apidocs"
 
+CATALOG_DIR = DOCS / "catalog"
+THUMBS = REPO / "_dev" / "generate_qlibrary_thumbnails.py"
+# Option keys consumed by renderers rather than by the component's geometry;
+# shown in a collapsed block on each catalog page.
+RENDERER_PREFIXES = ("gds_", "hfss_", "q3d_", "aedt_", "elmer_", "gmsh_")
+
 SKIP_DIRS = {"core", "user_components"}
 SKIP_NAMES = {"MyQComponent", "BridgeFreeJunction"}
 
@@ -288,11 +294,15 @@ def _example_links(cls) -> str:
     return " | ".join(f":doc:`{label} </{doc}>`" for doc, label in entries)
 
 
-def _render_card(cls, copied_img: str) -> str:
+def _render_card(cls, copied_img: str, catalog=()) -> str:
     """One ``grid-item-card`` block for the gallery."""
     display = _meta_display_name(cls)
     desc = _short_description(cls)
-    link_doc = _apidoc_doc_target(cls)
+    link_doc = (
+        f"catalog/{cls.__name__}"
+        if cls.__name__ in catalog
+        else _apidoc_doc_target(cls)
+    )
     img_rel = f"images/qlibrary/{copied_img}" if copied_img else None
 
     lines = [
@@ -320,7 +330,7 @@ def _render_card(cls, copied_img: str) -> str:
     return "\n".join(lines)
 
 
-def _emit_gallery_rst(groups, copied_lookup):
+def _emit_gallery_rst(groups, copied_lookup, catalog=()):
     out = [
         ".. _qcomponents-gallery:",
         "",
@@ -329,7 +339,8 @@ def _emit_gallery_rst(groups, copied_lookup):
         "##############################",
         "",
         "Every component shipped with Quantum Metal at a glance — click a card "
-        "to jump to its API reference. The same thumbnails ship inside the "
+        "for its catalog entry: default options, pins, and a link to the API "
+        "reference. The same thumbnails ship inside the "
         "desktop ``MetalGUI`` Library pane and the headless preview, "
         "regenerated from source by ``_dev/generate_qlibrary_thumbnails.py``.",
         "",
@@ -346,6 +357,15 @@ def _emit_gallery_rst(groups, copied_lookup):
         ":doc:`circuit-examples/component-examples`.",
         "",
     ]
+    if catalog:
+        out += [
+            ".. toctree::",
+            "   :hidden:",
+            "   :glob:",
+            "",
+            "   catalog/*",
+            "",
+        ]
     # Stable category order
     order = list(CATEGORY_LABELS) + [k for k in groups if k not in CATEGORY_LABELS]
     for cat in order:
@@ -367,7 +387,7 @@ def _emit_gallery_rst(groups, copied_lookup):
         ]
         for _, cls in groups[cat]:
             img = copied_lookup.get(cls.__name__, "")
-            out.append(_render_card(cls, img))
+            out.append(_render_card(cls, img, catalog))
             out.append("")
     return "\n".join(out) + "\n"
 
@@ -414,6 +434,153 @@ def _copy_thumbnails(groups, write: bool) -> dict[str, str]:
     return out
 
 
+def _load_thumbnail_recipes():
+    """Import the thumbnail script for its recipes (pins, anchors, points)."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("_qm_thumbs", THUMBS)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    mod._populate_special_recipes()
+    return mod
+
+
+def _fmt_value(val) -> str:
+    text = repr(val) if not isinstance(val, str) else f"'{val}'"
+    text = " ".join(text.split())
+    if len(text) > 70:
+        text = text[:67] + "..."
+    return text.replace("`", "'")
+
+
+def _flatten(opts, prefix=""):
+    for key, val in opts.items():
+        name = f"{prefix}{key}"
+        if hasattr(val, "items") and val:
+            yield from _flatten(val, name + ".")
+        else:
+            yield name, val
+
+
+def _csv_table(rows, header):
+    out = [".. csv-table::", f"   :header: {header}", "   :widths: 40, 60", ""]
+    for name, val in rows:
+        out.append(
+            '   "``{}``", "``{}``"'.format(name, _fmt_value(val).replace('"', '""'))
+        )
+    return out
+
+
+def _catalog_page(cls, design, comp, category, thumb) -> str:
+    """RST for one component's catalog entry, built from a live instance."""
+    name = cls.__name__
+    display = _meta_display_name(cls)
+    opts = cls.get_template_options(design)
+    flat = list(_flatten(opts))
+    geom = [(k, v) for k, v in flat if not k.startswith(RENDERER_PREFIXES)]
+    rend = [(k, v) for k, v in flat if k.startswith(RENDERER_PREFIXES)]
+    pins = sorted(comp.pins) if hasattr(comp, "pins") else []
+    bases = [b.__name__ for b in cls.__mro__[1:] if b.__name__ != "object"]
+    desc = _short_description(cls)
+    title = f"{display}"
+    out = [f".. _catalog-{name}:", "", title, "=" * max(len(title), 4), ""]
+    if desc:
+        out += [desc, ""]
+    if thumb:
+        out += [
+            f".. image:: ../images/qlibrary/{thumb}",
+            f"   :alt: {display}",
+            "   :width: 220px",
+            "",
+        ]
+    out += [
+        f"**Class** ``{name}`` · **Module** ``{cls.__module__}`` · "
+        f"**Category** {category.replace('_', ' ')}",
+        "",
+        f"**Inherits** {' → '.join(f'``{b}``' for b in bases[:3])}",
+        "",
+        "Usage",
+        "-----",
+        "",
+        ".. code-block:: python",
+        "",
+        "   from qiskit_metal import designs",
+        f"   from {cls.__module__} import {name}",
+        "",
+        "   design = designs.DesignPlanar()",
+        f'   comp = {name}(design, "{name[0].lower() + name[1:]}1", options=dict())',
+        "",
+        "Pins",
+        "----",
+        "",
+    ]
+    if pins:
+        out += [", ".join(f"``{p}``" for p in pins), ""]
+        out += [
+            "Pin names of the instance built for this page; some components "
+            "add or rename pins from their options.",
+            "",
+        ]
+    else:
+        out += [
+            "None with the default options. Pins appear when the options "
+            "define connection pads, ports, or flux lines.",
+            "",
+        ]
+    out += ["Default options", "---------------", ""]
+    if geom:
+        out += _csv_table(geom, '"Option", "Default"') + [""]
+    else:
+        out += ["No component-specific options.", ""]
+    if rend:
+        out += [
+            ".. dropdown:: Renderer options",
+            "",
+            "   Consumed by the GDS and Ansys renderers.",
+            "",
+        ]
+        out += [
+            "   " + ln if ln else "" for ln in _csv_table(rend, '"Option", "Default"')
+        ]
+        out += [""]
+    out += ["More", "----", ""]
+    refs = [f":doc:`API reference </{_apidoc_doc_target(cls)}>`"]
+    ex = _example_links(cls)
+    if ex:
+        refs.append(ex)
+    out += [" | ".join(refs), ""]
+    return "\n".join(out) + "\n"
+
+
+def _write_catalog(groups, copied, write: bool) -> set:
+    """Build every component headlessly and write one page each. Returns
+    the class names that got a page; a failing component is skipped."""
+    import logging
+
+    thumbs = _load_thumbnail_recipes()
+    logging.disable(logging.WARNING)
+    done = set()
+    if write:
+        CATALOG_DIR.mkdir(parents=True, exist_ok=True)
+        for old in CATALOG_DIR.glob("*.rst"):
+            old.unlink()
+    for category, members in groups.items():
+        for _, cls in members:
+            try:
+                design, comp = thumbs._build_design_for(cls)
+                text = _catalog_page(
+                    cls, design, comp, category, copied.get(cls.__name__, "")
+                )
+            except Exception as exc:
+                print(f"  ! catalog: skipped {cls.__name__}: {exc!r}"[:200])
+                continue
+            if write:
+                (CATALOG_DIR / f"{cls.__name__}.rst").write_text(text)
+            done.add(cls.__name__)
+    logging.disable(logging.NOTSET)
+    return done
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -430,7 +597,8 @@ def main():
         f"{len(groups)} categories: {', '.join(groups)}"
     )
     copied = _copy_thumbnails(groups, write=args.write)
-    rst = _emit_gallery_rst(groups, copied)
+    catalog = _write_catalog(groups, copied, write=args.write)
+    rst = _emit_gallery_rst(groups, copied, catalog)
     if args.write:
         GALLERY_RST.write_text(rst)
         print(f"Wrote {GALLERY_RST.relative_to(REPO)}")

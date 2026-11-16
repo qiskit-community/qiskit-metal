@@ -10,6 +10,8 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ### Added
 
+- **Component catalog** (docs): the QComponent gallery is in the sidebar, and each card opens a catalog entry with the component's default options, pin names, usage line and API link. Entries are built from the code at docs-build time (`_dev/generate_qcomponent_gallery.py`, using the recipes of `_dev/generate_qlibrary_thumbnails.py`), so they track the component classes.
+- **How do I...? page** (docs): short answers organized by task, each linking to the tutorial or reference page.
 - **`python -m qiskit_metal.watch my_design.py`** re-runs a design script whenever it is saved, renders the `design` it leaves to `watch_out/design.png`, prints the design-rule report, and with `--gds` writes `design.gds` for KLayout to reload. Errors in the script are printed and the watch continues.
 - **Scripting and agent guide** (docs: *Scripting and Agent Use*) with a tested headless script that builds, checks, exports and analyzes a chip (`docs/examples/headless_chip.py`), the design-rule check as a pass/fail gate, and what to rely on across runs.
 - **Repeatable GDS export.** If `SOURCE_DATE_EPOCH` is set, `QGDSRenderer` stores that time in the GDS file, so two exports of one design are identical byte for byte. Without it the file records the current time, as before.

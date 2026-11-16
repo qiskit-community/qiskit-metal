@@ -111,6 +111,9 @@ Qiskit Metal is now Quantum Metal
 
          Capacitance, eigenmodes, energy participation, Hamiltonians.
 
+   Looking for one specific task, such as routing a CPW or exporting GDS? See
+   :doc:`how-do-i`.
+
 .. container:: qm-section
 
    .. rubric:: Devices designed with Quantum Metal
@@ -169,6 +172,7 @@ Qiskit Metal is now Quantum Metal
     Quick Start<quickstart>
     Installing Quantum Metal<installation>
     Choose Your Path<choose-your-path>
+    How Do I...?<how-do-i>
     Scripting and Agent Use<orchestration>
     Built on Quantum Metal<ecosystem>
 
@@ -202,6 +206,7 @@ Qiskit Metal is now Quantum Metal
     Overview<overview>
     QDesigns<apidocs/designs>
     QComponents<apidocs/qlibrary>
+    Component Catalog<qcomponents-gallery>
     Analyses<apidocs/analyses>
     QRenderers<apidocs/renderers>
     Toolbox<apidocs/toolbox_metal>
