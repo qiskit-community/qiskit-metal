@@ -1,7 +1,7 @@
 .. _gui-shortcuts:
 
 *******************************
-GUI Navigation & Shortcuts
+GUI navigation and shortcuts
 *******************************
 
 The desktop GUI (``MetalGUI``) can be driven entirely with the mouse, but

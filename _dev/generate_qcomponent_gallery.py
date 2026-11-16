@@ -335,7 +335,7 @@ def _emit_gallery_rst(groups, copied_lookup, catalog=()):
         ".. _qcomponents-gallery:",
         "",
         "##############################",
-        "QComponent Gallery",
+        "Component catalog",
         "##############################",
         "",
         "Every component shipped with Quantum Metal at a glance — click a card "

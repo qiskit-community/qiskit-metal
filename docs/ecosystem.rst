@@ -1,6 +1,6 @@
 .. _ecosystem:
 
-The Quantum Metal Ecosystem
+Built on Quantum Metal
 ###########################
 
 Quantum Metal is the **open-source chip-design layer** for superconducting

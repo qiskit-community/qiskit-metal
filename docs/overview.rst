@@ -1,8 +1,8 @@
 .. _overview:
 
-**********************
-Quantum Metal Overview
-**********************
+************
+API summary
+************
 
 .. image:: images/overview.jpg
    :alt: Quantum Metal design flow: concept, layout, simulation, Hamiltonian
