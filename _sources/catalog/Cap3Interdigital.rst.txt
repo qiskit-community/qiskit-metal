@@ -1,0 +1,55 @@
+.. _catalog-Cap3Interdigital:
+
+Cap 3 Interdigital
+==================
+
+Create a three finger planar capacitor with a ground pocket cuttout.
+
+.. image:: ../images/qlibrary/Cap3Interdigital.png
+   :alt: Cap 3 Interdigital
+   :width: 220px
+
+**Class** ``Cap3Interdigital`` · **Module** ``qiskit_metal.qlibrary.lumped.cap_3_interdigital`` · **Category** lumped
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.lumped.cap_3_interdigital import Cap3Interdigital
+
+   design = designs.DesignPlanar()
+   comp = Cap3Interdigital(design, "cap3Interdigital1", options=dict())
+
+Pins
+----
+
+``a``, ``b``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``trace_width``", "``'10um'``"
+   "``finger_length``", "``'65um'``"
+   "``pocket_buffer_width_x``", "``'10um'``"
+   "``pocket_buffer_width_y``", "``'30um'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.Cap3Interdigital>` | :doc:`Tutorial </tut/quick-topics/QComponent-3-fingers-capacitor>`
+

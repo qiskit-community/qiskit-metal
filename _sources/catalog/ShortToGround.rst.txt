@@ -1,0 +1,52 @@
+.. _catalog-ShortToGround:
+
+Short to Ground
+===============
+
+A sample_shapes short to ground termination. Functions as a pin for auto CPW
+
+.. image:: ../images/qlibrary/ShortToGround.png
+   :alt: Short to Ground
+   :width: 220px
+
+**Class** ``ShortToGround`` · **Module** ``qiskit_metal.qlibrary.terminations.short_to_ground`` · **Category** terminations
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.terminations.short_to_ground import ShortToGround
+
+   design = designs.DesignPlanar()
+   comp = ShortToGround(design, "shortToGround1", options=dict())
+
+Pins
+----
+
+``short``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``width``", "``'10um'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.ShortToGround>`
+

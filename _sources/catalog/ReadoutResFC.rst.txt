@@ -1,0 +1,64 @@
+.. _catalog-ReadoutResFC:
+
+ReadoutResFC
+============
+
+Flip-chip readout resonator used in the flipchip tutorial.
+
+.. image:: ../images/qlibrary/ReadoutResFC.png
+   :alt: ReadoutResFC
+   :width: 220px
+
+**Class** ``ReadoutResFC`` · **Module** ``qiskit_metal.qlibrary.resonators.readoutres_fc`` · **Category** resonators
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.resonators.readoutres_fc import ReadoutResFC
+
+   design = designs.DesignPlanar()
+   comp = ReadoutResFC(design, "readoutResFC1", options=dict())
+
+Pins
+----
+
+``readout``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0 um'``"
+   "``pos_y``", "``'0 um'``"
+   "``orientation``", "``'0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``readout_radius``", "``'50 um'``"
+   "``readout_cpw_width``", "``'5 um'``"
+   "``readout_cpw_gap``", "``'5 um'``"
+   "``readout_cpw_turnradius``", "``'50 um'``"
+   "``readout_l1``", "``'400 um'``"
+   "``readout_l2``", "``'400 um'``"
+   "``readout_l3``", "``'400 um'``"
+   "``readout_l4``", "``'250 um'``"
+   "``readout_l5``", "``'400 um'``"
+   "``arc_step``", "``'1 um'``"
+   "``layer_subtract``", "``''``"
+   "``subtract``", "``True``"
+   "``_default_connection_pads``", "``{}``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.ReadoutResFC>`
+

@@ -1,0 +1,76 @@
+.. _catalog-TunableCoupler01:
+
+Tunable Coupler 01
+==================
+
+One of the tunable couplers Based off the implementation in
+
+.. image:: ../images/qlibrary/TunableCoupler01.png
+   :alt: Tunable Coupler 01
+   :width: 220px
+
+**Class** ``TunableCoupler01`` · **Module** ``qiskit_metal.qlibrary.couplers.tunable_coupler_01`` · **Category** couplers
+
+**Inherits** ``BaseQubit`` → ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.couplers.tunable_coupler_01 import TunableCoupler01
+
+   design = designs.DesignPlanar()
+   comp = TunableCoupler01(design, "tunableCoupler011", options=dict())
+
+Pins
+----
+
+``Control``, ``Flux``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``connection_pads``", "``{}``"
+   "``_default_connection_pads``", "``{}``"
+   "``c_width``", "``'400um'``"
+   "``l_width``", "``'20um'``"
+   "``l_gap``", "``'10um'``"
+   "``a_height``", "``'60um'``"
+   "``cp_height``", "``'15um'``"
+   "``cp_arm_length``", "``'30um'``"
+   "``cp_arm_width``", "``'6um'``"
+   "``cp_gap``", "``'6um'``"
+   "``cp_gspace``", "``'3um'``"
+   "``fl_width``", "``'5um'``"
+   "``fl_gap``", "``'3um'``"
+   "``fl_length``", "``'10um'``"
+   "``fl_ground``", "``'2um'``"
+
+.. dropdown:: Renderer options
+
+   Consumed by the GDS and Ansys renderers.
+
+   .. csv-table::
+      :header: "Option", "Default"
+      :widths: 40, 60
+
+      "``gds_cell_name``", "``'my_other_junction'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.TunableCoupler01>`
+

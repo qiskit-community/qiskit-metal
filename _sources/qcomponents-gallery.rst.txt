@@ -1,16 +1,22 @@
 .. _qcomponents-gallery:
 
 ##############################
-QComponent Gallery
+Component catalog
 ##############################
 
-Every component shipped with Quantum Metal at a glance — click a card to jump to its API reference. The same thumbnails ship inside the desktop ``MetalGUI`` Library pane and the headless preview, regenerated from source by ``_dev/generate_qlibrary_thumbnails.py``.
+Every component shipped with Quantum Metal at a glance — click a card for its catalog entry: default options, pins, and a link to the API reference. The same thumbnails ship inside the desktop ``MetalGUI`` Library pane and the headless preview, regenerated from source by ``_dev/generate_qlibrary_thumbnails.py``.
 
 .. note::
 
    Adding a new ``QComponent``? Run    ``uv run python _dev/generate_qlibrary_thumbnails.py    --write --inject-docstrings`` and then    ``uv run python _dev/generate_qcomponent_gallery.py --write``    to refresh this page.
 
 Cards with an **Example** or **Tutorial** link point to a notebook that uses the component. All component notebooks are listed under :doc:`circuit-examples/component-examples`.
+
+.. toctree::
+   :hidden:
+   :glob:
+
+   catalog/*
 
 🧬 Qubits
 ============
@@ -19,7 +25,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
    :gutter: 3
 
    .. grid-item-card:: Josephson Junction Dolan
-      :link: apidocs/qiskit_metal.qlibrary.jj_dolan
+      :link: catalog/jj_dolan
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -38,7 +44,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Josephson Junction Manhattan
-      :link: apidocs/qiskit_metal.qlibrary.jj_manhattan
+      :link: catalog/jj_manhattan
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -57,7 +63,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement)
-      :link: apidocs/qiskit_metal.qlibrary.SNAIL
+      :link: catalog/SNAIL
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -73,7 +79,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Squid Loop
-      :link: apidocs/qiskit_metal.qlibrary.SQUID_LOOP
+      :link: catalog/SQUID_LOOP
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -89,7 +95,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Star Qubit
-      :link: apidocs/qiskit_metal.qlibrary.StarQubit
+      :link: catalog/StarQubit
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -108,7 +114,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Transmon Concentric
-      :link: apidocs/qiskit_metal.qlibrary.TransmonConcentric
+      :link: catalog/TransmonConcentric
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -127,7 +133,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Transmon Concentric Type 2
-      :link: apidocs/qiskit_metal.qlibrary.TransmonConcentricType2
+      :link: catalog/TransmonConcentricType2
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -143,7 +149,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Transmon Cross
-      :link: apidocs/qiskit_metal.qlibrary.TransmonCross
+      :link: catalog/TransmonCross
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -162,7 +168,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Transmon Cross Flux Line
-      :link: apidocs/qiskit_metal.qlibrary.TransmonCrossFL
+      :link: catalog/TransmonCrossFL
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -181,7 +187,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Transmon Interdigitated
-      :link: apidocs/qiskit_metal.qlibrary.TransmonInterdigitated
+      :link: catalog/TransmonInterdigitated
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -200,7 +206,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Transmon Pocket
-      :link: apidocs/qiskit_metal.qlibrary.TransmonPocket
+      :link: catalog/TransmonPocket
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -219,7 +225,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Transmon Pocket 6
-      :link: apidocs/qiskit_metal.qlibrary.TransmonPocket6
+      :link: catalog/TransmonPocket6
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -238,7 +244,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Transmon Pocket Charge Line
-      :link: apidocs/qiskit_metal.qlibrary.TransmonPocketCL
+      :link: catalog/TransmonPocketCL
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -257,7 +263,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Transmon Pocket Teeth
-      :link: apidocs/qiskit_metal.qlibrary.TransmonPocketTeeth
+      :link: catalog/TransmonPocketTeeth
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -276,7 +282,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Transmon Star
-      :link: apidocs/qlibrary
+      :link: catalog/TransmonStar
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -298,7 +304,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
    :gutter: 3
 
    .. grid-item-card:: Cap N Interdigital Tee
-      :link: apidocs/qiskit_metal.qlibrary.CapNInterdigitalTee
+      :link: catalog/CapNInterdigitalTee
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -314,7 +320,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Coupled Line Tee
-      :link: apidocs/qiskit_metal.qlibrary.CoupledLineTee
+      :link: catalog/CoupledLineTee
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -330,7 +336,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Line Tee
-      :link: apidocs/qiskit_metal.qlibrary.LineTee
+      :link: catalog/LineTee
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -346,7 +352,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Tunable Coupler 01
-      :link: apidocs/qiskit_metal.qlibrary.TunableCoupler01
+      :link: catalog/TunableCoupler01
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -362,7 +368,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Tunable Coupler 2
-      :link: apidocs/qiskit_metal.qlibrary.TunableCoupler02
+      :link: catalog/TunableCoupler02
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -384,7 +390,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
    :gutter: 3
 
    .. grid-item-card:: Airbridge
-      :link: apidocs/qlibrary
+      :link: catalog/Airbridge
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -403,7 +409,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: CPW along an explicit list of points
-      :link: apidocs/qiskit_metal.qlibrary.PolylineCPW
+      :link: catalog/PolylineCPW
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -419,7 +425,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: RouteAnchors
-      :link: apidocs/qiskit_metal.qlibrary.RouteAnchors
+      :link: catalog/RouteAnchors
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -435,7 +441,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Routed Frame
-      :link: apidocs/qiskit_metal.qlibrary.RouteFramed
+      :link: catalog/RouteFramed
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -451,7 +457,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Route Meander
-      :link: apidocs/qiskit_metal.qlibrary.RouteMeander
+      :link: catalog/RouteMeander
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -470,7 +476,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Route Mixed
-      :link: apidocs/qiskit_metal.qlibrary.RouteMixed
+      :link: catalog/RouteMixed
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -489,7 +495,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Route Pathfinder
-      :link: apidocs/qiskit_metal.qlibrary.RoutePathfinder
+      :link: catalog/RoutePathfinder
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -505,7 +511,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Route Straight
-      :link: apidocs/qiskit_metal.qlibrary.RouteStraight
+      :link: catalog/RouteStraight
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -527,7 +533,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
    :gutter: 3
 
    .. grid-item-card:: ReadoutResFC
-      :link: apidocs/qiskit_metal.qlibrary.ReadoutResFC
+      :link: catalog/ReadoutResFC
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -543,7 +549,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Lumped Resonator
-      :link: apidocs/qiskit_metal.qlibrary.ResonatorLumped
+      :link: catalog/ResonatorLumped
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -565,7 +571,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
    :gutter: 3
 
    .. grid-item-card:: Launchpad Wirebond
-      :link: apidocs/qiskit_metal.qlibrary.LaunchpadWirebond
+      :link: catalog/LaunchpadWirebond
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -581,7 +587,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Launchpad Wirebond Coupled
-      :link: apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled
+      :link: catalog/LaunchpadWirebondCoupled
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -600,7 +606,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Launchpad Wirebond Driven
-      :link: apidocs/qiskit_metal.qlibrary.LaunchpadWirebondDriven
+      :link: catalog/LaunchpadWirebondDriven
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -616,7 +622,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Open to Ground
-      :link: apidocs/qiskit_metal.qlibrary.OpenToGround
+      :link: catalog/OpenToGround
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -632,7 +638,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Short to Ground
-      :link: apidocs/qiskit_metal.qlibrary.ShortToGround
+      :link: catalog/ShortToGround
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -654,7 +660,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
    :gutter: 3
 
    .. grid-item-card:: Cap 3 Interdigital
-      :link: apidocs/qiskit_metal.qlibrary.Cap3Interdigital
+      :link: catalog/Cap3Interdigital
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -673,7 +679,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: CapFingerInFrame
-      :link: apidocs/qiskit_metal.qlibrary.CapFingerInFrame
+      :link: catalog/CapFingerInFrame
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -689,7 +695,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Cap N Interdigital
-      :link: apidocs/qiskit_metal.qlibrary.CapNInterdigital
+      :link: catalog/CapNInterdigital
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -705,7 +711,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Resonator Coil Rectangle
-      :link: apidocs/qiskit_metal.qlibrary.ResonatorCoilRect
+      :link: catalog/ResonatorCoilRect
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -727,7 +733,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
    :gutter: 3
 
    .. grid-item-card:: Circle Caterpillar
-      :link: apidocs/qiskit_metal.qlibrary.CircleCaterpillar
+      :link: catalog/CircleCaterpillar
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -743,7 +749,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Circle Raster
-      :link: apidocs/qiskit_metal.qlibrary.CircleRaster
+      :link: catalog/CircleRaster
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -759,7 +765,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: N-Gon Polygon
-      :link: apidocs/qiskit_metal.qlibrary.NGon
+      :link: catalog/NGon
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -775,7 +781,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: N Square Spiral
-      :link: apidocs/qiskit_metal.qlibrary.NSquareSpiral
+      :link: catalog/NSquareSpiral
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -791,7 +797,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Rectangle
-      :link: apidocs/qiskit_metal.qlibrary.Rectangle
+      :link: catalog/Rectangle
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -807,7 +813,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Rectangle Hollow
-      :link: apidocs/qiskit_metal.qlibrary.RectangleHollow
+      :link: catalog/RectangleHollow
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center
@@ -823,7 +829,7 @@ Cards with an **Example** or **Tutorial** link point to a notebook that uses the
 
 
    .. grid-item-card:: Smiley Face :)
-      :link: apidocs/qlibrary
+      :link: catalog/SmileyFace
       :link-type: doc
       :class-card: sd-shadow-sm
       :text-align: center

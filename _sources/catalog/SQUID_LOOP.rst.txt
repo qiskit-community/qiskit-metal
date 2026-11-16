@@ -1,0 +1,64 @@
+.. _catalog-SQUID_LOOP:
+
+Squid Loop
+==========
+
+This creates a simple SQUID loop consisting of two Josephson
+
+.. image:: ../images/qlibrary/SQUID_LOOP.png
+   :alt: Squid Loop
+   :width: 220px
+
+**Class** ``SQUID_LOOP`` · **Module** ``qiskit_metal.qlibrary.qubits.SQUID_loop`` · **Category** qubits
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.qubits.SQUID_loop import SQUID_LOOP
+
+   design = designs.DesignPlanar()
+   comp = SQUID_LOOP(design, "sQUID_LOOP1", options=dict())
+
+Pins
+----
+
+None with the default options. Pins appear when the options define connection pads, ports, or flux lines.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``plate1_width``", "``'5.5um'``"
+   "``plate1_height``", "``'40um'``"
+   "``plate1_pos_x``", "``'0'``"
+   "``plate1_pos_y``", "``'0'``"
+   "``squid_gap``", "``'10um'``"
+   "``segment_a_length``", "``'10um'``"
+   "``segment_a_width``", "``'1um'``"
+   "``JJ_gap``", "``'0.5um'``"
+   "``segment_b_length``", "``'5um'``"
+   "``segment_b_width``", "``'1um'``"
+   "``segment_c_width``", "``'1um'``"
+   "``segment_d_length``", "``'10um'``"
+   "``segment_d_width``", "``'2um'``"
+   "``plate2_width``", "``'6um'``"
+   "``plate2_height``", "``'30um'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.SQUID_LOOP>`
+

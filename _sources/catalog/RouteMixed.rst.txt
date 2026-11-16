@@ -1,0 +1,67 @@
+.. _catalog-RouteMixed:
+
+Route Mixed
+===========
+
+Implements fully featured Routing, allowing different type of
+
+.. image:: ../images/qlibrary/RouteMixed.png
+   :alt: Route Mixed
+   :width: 220px
+
+**Class** ``RouteMixed`` · **Module** ``qiskit_metal.qlibrary.tlines.mixed_path`` · **Category** tlines
+
+**Inherits** ``RoutePathfinder`` → ``RouteAnchors`` → ``RouteMeander``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.tlines.mixed_path import RouteMixed
+
+   design = designs.DesignPlanar()
+   comp = RouteMixed(design, "routeMixed1", options=dict())
+
+Pins
+----
+
+``end``, ``start``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``pin_inputs.start_pin.component``", "``''``"
+   "``pin_inputs.start_pin.pin``", "``''``"
+   "``pin_inputs.end_pin.component``", "``''``"
+   "``pin_inputs.end_pin.pin``", "``''``"
+   "``fillet``", "``'0'``"
+   "``lead.start_straight``", "``'0mm'``"
+   "``lead.end_straight``", "``'0mm'``"
+   "``lead.start_jogged_extension``", "``''``"
+   "``lead.end_jogged_extension``", "``''``"
+   "``total_length``", "``'7mm'``"
+   "``trace_width``", "``'cpw_width'``"
+   "``meander.spacing``", "``'200um'``"
+   "``meander.asymmetry``", "``'0um'``"
+   "``snap``", "``'true'``"
+   "``prevent_short_edges``", "``'true'``"
+   "``anchors``", "``{}``"
+   "``advanced.avoid_collision``", "``'true'``"
+   "``step_size``", "``'0.25mm'``"
+   "``between_anchors``", "``{}``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.RouteMixed>` | :doc:`Tutorial </tut/2-From-components-to-chip/2.14-Get-them-all-with-MixedRoute>`
+

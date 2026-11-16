@@ -72,28 +72,7 @@ produces and where to start.
 Which path to take
 ==================
 
-.. list-table::
-   :header-rows: 1
-   :widths: 30 35 35
-
-   * - You want
-     - Start with
-     - Needs
-   * - A layout and a GDS file
-     - Quick start, then Parts 1 to 3
-     - ``pip install quantum-metal``
-   * - Capacitances and a Hamiltonian, no Ansys
-     - The open-source solver path in Part 4
-     - ``[mesh]`` or ``[skfem]`` extra, ElmerFEM
-   * - Eigenmodes, EPR and S-parameters
-     - 4.02 and the Ansys notebooks of Part 4
-     - Ansys Electronics Desktop
-   * - To reproduce a published chip
-     - :doc:`Reproduced devices <research>`
-     - see each notebook
-
-The full list of paths, each an ordered set of notebooks, is on
-:doc:`choose-your-path`.
+Pick a goal, a layout and GDS, open-source simulation, Ansys, or a published chip, on :doc:`choose-your-path`. For a specific task, see :doc:`how-do-i`.
 
 Where Metal sits in a larger design flow
 ========================================

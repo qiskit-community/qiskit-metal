@@ -1,0 +1,53 @@
+.. _catalog-NGon:
+
+N-Gon Polygon
+=============
+
+A n-gon polygon. Eg. n = 3 : triangle, n = infinity : circle
+
+.. image:: ../images/qlibrary/NGon.png
+   :alt: N-Gon Polygon
+   :width: 220px
+
+**Class** ``NGon`` · **Module** ``qiskit_metal.qlibrary.sample_shapes.n_gon`` · **Category** sample shapes
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.sample_shapes.n_gon import NGon
+
+   design = designs.DesignPlanar()
+   comp = NGon(design, "nGon1", options=dict())
+
+Pins
+----
+
+None with the default options. Pins appear when the options define connection pads, ports, or flux lines.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``n``", "``'3'``"
+   "``radius``", "``'30um'``"
+   "``subtract``", "``'False'``"
+   "``helper``", "``'False'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.NGon>`
+

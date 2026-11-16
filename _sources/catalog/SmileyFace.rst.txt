@@ -1,0 +1,51 @@
+.. _catalog-SmileyFace:
+
+Smiley Face :)
+==============
+
+TEST COMPONENT It is for fun only.  Can view a smiley face. Can make it
+
+.. image:: ../images/qlibrary/SmileyFace.png
+   :alt: Smiley Face :)
+   :width: 220px
+
+**Class** ``SmileyFace`` · **Module** ``qiskit_metal.qlibrary.sample_shapes.smiley_face`` · **Category** sample shapes
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.sample_shapes.smiley_face import SmileyFace
+
+   design = designs.DesignPlanar()
+   comp = SmileyFace(design, "smileyFace1", options=dict())
+
+Pins
+----
+
+None with the default options. Pins appear when the options define connection pads, ports, or flux lines.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``0``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``happy``", "``True``"
+   "``wink``", "``False``"
+
+More
+----
+
+:doc:`API reference </apidocs/qlibrary>`
+

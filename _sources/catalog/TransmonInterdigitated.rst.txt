@@ -1,0 +1,73 @@
+.. _catalog-TransmonInterdigitated:
+
+Transmon Interdigitated
+=======================
+
+This creates a transmon pocket with two large pads connected by a Josephson
+
+.. image:: ../images/qlibrary/TransmonInterdigitated.png
+   :alt: Transmon Interdigitated
+   :width: 220px
+
+**Class** ``TransmonInterdigitated`` · **Module** ``qiskit_metal.qlibrary.qubits.Transmon_Interdigitated`` · **Category** qubits
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.qubits.Transmon_Interdigitated import TransmonInterdigitated
+
+   design = designs.DesignPlanar()
+   comp = TransmonInterdigitated(design, "transmonInterdigitated1", options=dict())
+
+Pins
+----
+
+``bus1``, ``bus2``, ``readout``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``pad_width``", "``'1000um'``"
+   "``pad_height``", "``'300um'``"
+   "``finger_width``", "``'50um'``"
+   "``finger_height``", "``'100um'``"
+   "``finger_space``", "``'50um'``"
+   "``pad_pos_x``", "``'0um'``"
+   "``pad_pos_y``", "``'0um'``"
+   "``comb_width``", "``'50um'``"
+   "``comb_space_vert``", "``'50um'``"
+   "``comb_space_hor``", "``'50um'``"
+   "``jj_width``", "``'20um'``"
+   "``cc_space``", "``'50um'``"
+   "``cc_width``", "``'100um'``"
+   "``cc_height``", "``'100um'``"
+   "``cc_topleft_space``", "``'50um'``"
+   "``cc_topleft_width``", "``'100um'``"
+   "``cc_topleft_height``", "``'100um'``"
+   "``cc_topright_space``", "``'50um'``"
+   "``cc_topright_width``", "``'100um'``"
+   "``cc_topright_height``", "``'100um'``"
+   "``rotation_top_pad``", "``'180'``"
+   "``inductor_width``", "``'20um'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.TransmonInterdigitated>` | :doc:`Example </circuit-examples/A.Qubits/04-Interdigitated_Transmon>` | :doc:`Tutorial </tut/quick-topics/QComponent-Interdigitated-transmon>`
+

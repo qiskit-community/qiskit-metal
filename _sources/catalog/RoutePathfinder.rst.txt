@@ -1,0 +1,62 @@
+.. _catalog-RoutePathfinder:
+
+Route Pathfinder
+================
+
+Non-meandered CPW class that combines A* pathfinding algorithm with
+
+.. image:: ../images/qlibrary/RoutePathfinder.png
+   :alt: Route Pathfinder
+   :width: 220px
+
+**Class** ``RoutePathfinder`` · **Module** ``qiskit_metal.qlibrary.tlines.pathfinder`` · **Category** tlines
+
+**Inherits** ``RouteAnchors`` → ``QRoute`` → ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.tlines.pathfinder import RoutePathfinder
+
+   design = designs.DesignPlanar()
+   comp = RoutePathfinder(design, "routePathfinder1", options=dict())
+
+Pins
+----
+
+``end``, ``start``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``pin_inputs.start_pin.component``", "``''``"
+   "``pin_inputs.start_pin.pin``", "``''``"
+   "``pin_inputs.end_pin.component``", "``''``"
+   "``pin_inputs.end_pin.pin``", "``''``"
+   "``fillet``", "``'0'``"
+   "``lead.start_straight``", "``'0mm'``"
+   "``lead.end_straight``", "``'0mm'``"
+   "``lead.start_jogged_extension``", "``''``"
+   "``lead.end_jogged_extension``", "``''``"
+   "``total_length``", "``'7mm'``"
+   "``trace_width``", "``'cpw_width'``"
+   "``anchors``", "``{}``"
+   "``advanced.avoid_collision``", "``'true'``"
+   "``step_size``", "``'0.25mm'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.RoutePathfinder>`
+

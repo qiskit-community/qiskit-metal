@@ -1,0 +1,57 @@
+.. _catalog-PolylineCPW:
+
+CPW along an explicit list of points
+====================================
+
+A coplanar waveguide drawn along an explicit polyline.
+
+.. image:: ../images/qlibrary/PolylineCPW.png
+   :alt: CPW along an explicit list of points
+   :width: 220px
+
+**Class** ``PolylineCPW`` · **Module** ``qiskit_metal.qlibrary.tlines.polyline_cpw`` · **Category** tlines
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.tlines.polyline_cpw import PolylineCPW
+
+   design = designs.DesignPlanar()
+   comp = PolylineCPW(design, "polylineCPW1", options=dict())
+
+Pins
+----
+
+``end``, ``start``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``points``", "``[[0, 0], [0.5, 0]]``"
+   "``trace_width``", "``'cpw_width'``"
+   "``trace_gap``", "``'cpw_gap'``"
+   "``fillet``", "``'0'``"
+   "``min_segment``", "``'0'``"
+   "``taps``", "``{}``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.PolylineCPW>`
+

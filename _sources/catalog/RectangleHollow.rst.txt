@@ -1,0 +1,58 @@
+.. _catalog-RectangleHollow:
+
+Rectangle Hollow
+================
+
+A single configurable square.
+
+.. image:: ../images/qlibrary/RectangleHollow.png
+   :alt: Rectangle Hollow
+   :width: 220px
+
+**Class** ``RectangleHollow`` · **Module** ``qiskit_metal.qlibrary.sample_shapes.rectangle_hollow`` · **Category** sample shapes
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.sample_shapes.rectangle_hollow import RectangleHollow
+
+   design = designs.DesignPlanar()
+   comp = RectangleHollow(design, "rectangleHollow1", options=dict())
+
+Pins
+----
+
+None with the default options. Pins appear when the options define connection pads, ports, or flux lines.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``width``", "``'500um'``"
+   "``height``", "``'300um'``"
+   "``subtract``", "``'False'``"
+   "``helper``", "``'False'``"
+   "``inner.width``", "``'250um'``"
+   "``inner.height``", "``'100um'``"
+   "``inner.offset_x``", "``'40um'``"
+   "``inner.offset_y``", "``'-20um'``"
+   "``inner.orientation``", "``'15'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.RectangleHollow>`
+

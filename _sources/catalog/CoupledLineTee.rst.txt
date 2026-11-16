@@ -1,0 +1,61 @@
+.. _catalog-CoupledLineTee:
+
+Coupled Line Tee
+================
+
+Generates a three pin (+) structure comprised of a primary two pin CPW
+
+.. image:: ../images/qlibrary/CoupledLineTee.png
+   :alt: Coupled Line Tee
+   :width: 220px
+
+**Class** ``CoupledLineTee`` · **Module** ``qiskit_metal.qlibrary.couplers.coupled_line_tee`` · **Category** couplers
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.couplers.coupled_line_tee import CoupledLineTee
+
+   design = designs.DesignPlanar()
+   comp = CoupledLineTee(design, "coupledLineTee1", options=dict())
+
+Pins
+----
+
+``prime_end``, ``prime_start``, ``second_end``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``prime_width``", "``'10um'``"
+   "``prime_gap``", "``'6um'``"
+   "``second_width``", "``'10um'``"
+   "``second_gap``", "``'6um'``"
+   "``coupling_space``", "``'3um'``"
+   "``coupling_length``", "``'100um'``"
+   "``down_length``", "``'100um'``"
+   "``fillet``", "``'25um'``"
+   "``mirror``", "``False``"
+   "``open_termination``", "``True``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.CoupledLineTee>`
+

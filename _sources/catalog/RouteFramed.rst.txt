@@ -1,0 +1,59 @@
+.. _catalog-RouteFramed:
+
+Routed Frame
+============
+
+A non-meandered sample_shapes CPW that is auto-generated between 2 components.
+
+.. image:: ../images/qlibrary/RouteFramed.png
+   :alt: Routed Frame
+   :width: 220px
+
+**Class** ``RouteFramed`` · **Module** ``qiskit_metal.qlibrary.tlines.framed_path`` · **Category** tlines
+
+**Inherits** ``QRoute`` → ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.tlines.framed_path import RouteFramed
+
+   design = designs.DesignPlanar()
+   comp = RouteFramed(design, "routeFramed1", options=dict())
+
+Pins
+----
+
+``end``, ``start``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``pin_inputs.start_pin.component``", "``''``"
+   "``pin_inputs.start_pin.pin``", "``''``"
+   "``pin_inputs.end_pin.component``", "``''``"
+   "``pin_inputs.end_pin.pin``", "``''``"
+   "``fillet``", "``'0'``"
+   "``lead.start_straight``", "``'0mm'``"
+   "``lead.end_straight``", "``'0mm'``"
+   "``lead.start_jogged_extension``", "``''``"
+   "``lead.end_jogged_extension``", "``''``"
+   "``total_length``", "``'7mm'``"
+   "``trace_width``", "``'cpw_width'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.RouteFramed>`
+

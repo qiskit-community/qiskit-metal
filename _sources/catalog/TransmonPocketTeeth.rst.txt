@@ -1,0 +1,81 @@
+.. _catalog-TransmonPocketTeeth:
+
+Transmon Pocket Teeth
+=====================
+
+Transmon pocket with 'Teeth' connection pads.
+
+.. image:: ../images/qlibrary/TransmonPocketTeeth.png
+   :alt: Transmon Pocket Teeth
+   :width: 220px
+
+**Class** ``TransmonPocketTeeth`` · **Module** ``qiskit_metal.qlibrary.qubits.transmon_pocket_teeth`` · **Category** qubits
+
+**Inherits** ``BaseQubit`` → ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.qubits.transmon_pocket_teeth import TransmonPocketTeeth
+
+   design = designs.DesignPlanar()
+   comp = TransmonPocketTeeth(design, "transmonPocketTeeth1", options=dict())
+
+Pins
+----
+
+None with the default options. Pins appear when the options define connection pads, ports, or flux lines.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``connection_pads``", "``{}``"
+   "``_default_connection_pads.pad_gap``", "``'15um'``"
+   "``_default_connection_pads.pad_width``", "``'20um'``"
+   "``_default_connection_pads.pad_height``", "``'150um'``"
+   "``_default_connection_pads.pad_cpw_shift``", "``'0um'``"
+   "``_default_connection_pads.pad_cpw_extent``", "``'25um'``"
+   "``_default_connection_pads.cpw_width``", "``'10um'``"
+   "``_default_connection_pads.cpw_gap``", "``'6um'``"
+   "``_default_connection_pads.cpw_extend``", "``'100um'``"
+   "``_default_connection_pads.pocket_extent``", "``'5um'``"
+   "``_default_connection_pads.pocket_rise``", "``'0um'``"
+   "``_default_connection_pads.loc_W``", "``'+1'``"
+   "``_default_connection_pads.loc_H``", "``'+1'``"
+   "``pad_gap``", "``'30um'``"
+   "``inductor_width``", "``'20um'``"
+   "``pad_width``", "``'400um'``"
+   "``pad_height``", "``'90um'``"
+   "``pocket_width``", "``'650um'``"
+   "``pocket_height``", "``'650um'``"
+   "``coupled_pad_height``", "``'150um'``"
+   "``coupled_pad_width``", "``'20um'``"
+   "``coupled_pad_gap``", "``'50um'``"
+
+.. dropdown:: Renderer options
+
+   Consumed by the GDS and Ansys renderers.
+
+   .. csv-table::
+      :header: "Option", "Default"
+      :widths: 40, 60
+
+      "``gds_cell_name``", "``'my_other_junction'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.TransmonPocketTeeth>` | :doc:`Example </circuit-examples/A.Qubits/10-Transmon_floating_teeth>`
+

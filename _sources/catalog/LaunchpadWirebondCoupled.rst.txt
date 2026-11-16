@@ -1,0 +1,55 @@
+.. _catalog-LaunchpadWirebondCoupled:
+
+Launchpad Wirebond Coupled
+==========================
+
+Launch pad to feed/read signals to/from the chip.
+
+.. image:: ../images/qlibrary/LaunchpadWirebondCoupled.png
+   :alt: Launchpad Wirebond Coupled
+   :width: 220px
+
+**Class** ``LaunchpadWirebondCoupled`` · **Module** ``qiskit_metal.qlibrary.terminations.launchpad_wb_coupled`` · **Category** terminations
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.terminations.launchpad_wb_coupled import LaunchpadWirebondCoupled
+
+   design = designs.DesignPlanar()
+   comp = LaunchpadWirebondCoupled(design, "launchpadWirebondCoupled1", options=dict())
+
+Pins
+----
+
+``tie``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``trace_width``", "``'cpw_width'``"
+   "``trace_gap``", "``'cpw_gap'``"
+   "``coupler_length``", "``'62.5um'``"
+   "``lead_length``", "``'25um'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.LaunchpadWirebondCoupled>` | :doc:`Example </circuit-examples/E.Input-output-coupling/41-LaunchPad>`
+

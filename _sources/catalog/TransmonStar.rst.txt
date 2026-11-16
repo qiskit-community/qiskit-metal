@@ -1,0 +1,75 @@
+.. _catalog-TransmonStar:
+
+Transmon Star
+=============
+
+A transmon island with ``num_points`` radial arms evenly spaced around
+
+.. image:: ../images/qlibrary/TransmonStar.png
+   :alt: Transmon Star
+   :width: 220px
+
+**Class** ``TransmonStar`` · **Module** ``qiskit_metal.qlibrary.qubits.transmon_star`` · **Category** qubits
+
+**Inherits** ``BaseQubit`` → ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.qubits.transmon_star import TransmonStar
+
+   design = designs.DesignPlanar()
+   comp = TransmonStar(design, "transmonStar1", options=dict())
+
+Pins
+----
+
+None with the default options. Pins appear when the options define connection pads, ports, or flux lines.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``connection_pads``", "``{}``"
+   "``_default_connection_pads.arm_index``", "``0``"
+   "``_default_connection_pads.connector_type``", "``'0'``"
+   "``_default_connection_pads.claw_length``", "``'30um'``"
+   "``_default_connection_pads.ground_spacing``", "``'5um'``"
+   "``_default_connection_pads.ground_spacing_back``", "``None``"
+   "``_default_connection_pads.claw_width``", "``'10um'``"
+   "``_default_connection_pads.claw_width_back``", "``None``"
+   "``_default_connection_pads.claw_gap``", "``'6um'``"
+   "``_default_connection_pads.claw_cpw_length``", "``'40um'``"
+   "``_default_connection_pads.claw_cpw_width``", "``'10um'``"
+   "``num_points``", "``6``"
+   "``arm_width``", "``'20um'``"
+   "``arm_length``", "``'150um'``"
+   "``arm_gap``", "``'20um'``"
+   "``junction_arm_index``", "``0``"
+
+.. dropdown:: Renderer options
+
+   Consumed by the GDS and Ansys renderers.
+
+   .. csv-table::
+      :header: "Option", "Default"
+      :widths: 40, 60
+
+      "``gds_cell_name``", "``'my_other_junction'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qlibrary>`
+

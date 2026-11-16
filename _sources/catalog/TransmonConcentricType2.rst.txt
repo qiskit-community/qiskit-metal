@@ -1,0 +1,79 @@
+.. _catalog-TransmonConcentricType2:
+
+Transmon Concentric Type 2
+==========================
+
+Metal transmon object consisting of a circle surrounding by a concentric
+
+.. image:: ../images/qlibrary/TransmonConcentricType2.png
+   :alt: Transmon Concentric Type 2
+   :width: 220px
+
+**Class** ``TransmonConcentricType2`` · **Module** ``qiskit_metal.qlibrary.qubits.transmon_concentric_type_2`` · **Category** qubits
+
+**Inherits** ``BaseQubit`` → ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.qubits.transmon_concentric_type_2 import TransmonConcentricType2
+
+   design = designs.DesignPlanar()
+   comp = TransmonConcentricType2(design, "transmonConcentricType21", options=dict())
+
+Pins
+----
+
+``pin1``, ``pin2``, ``pin3``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0mm'``"
+   "``pos_y``", "``'0mm'``"
+   "``orientation``", "``'0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``connection_pads``", "``{}``"
+   "``_default_connection_pads``", "``{}``"
+   "``rad_outer``", "``'2mm'``"
+   "``rad_inner``", "``'1mm'``"
+   "``gap``", "``'0.5mm'``"
+   "``jj_w``", "``'0.2mm'``"
+   "``finger_NE_width``", "``'0.1mm'``"
+   "``finger_NE_length``", "``'0.5mm'``"
+   "``coupler_NE_width``", "``'0.1mm'``"
+   "``coupler_NE_gap``", "``'0.1mm'``"
+   "``finger_NW_width``", "``'0.1mm'``"
+   "``finger_NW_length``", "``'0.5mm'``"
+   "``coupler_NW_width``", "``'0.1mm'``"
+   "``coupler_NW_gap``", "``'0.1mm'``"
+   "``finger_SW_width``", "``'0.1mm'``"
+   "``finger_SW_length``", "``'0.5mm'``"
+   "``coupler_SW_width``", "``'0.1mm'``"
+   "``coupler_SW_gap``", "``'0.1mm'``"
+   "``finger_E_width``", "``'0.1mm'``"
+   "``finger_E_length``", "``'0.5mm'``"
+   "``box_E_width``", "``'0.7mm'``"
+   "``box_E_length``", "``'0.7mm'``"
+   "``finger_N_width``", "``'0.1mm'``"
+   "``finger_N_length``", "``'2mm'``"
+   "``triangle_base``", "``'2mm'``"
+   "``triangle_height``", "``'1mm'``"
+   "``pocket_w``", "``'10mm'``"
+   "``pocket_h``", "``'10mm'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.TransmonConcentricType2>`
+

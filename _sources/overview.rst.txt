@@ -1,11 +1,13 @@
 .. _overview:
 
-**********************
-Quantum Metal Overview
-**********************
+************
+API summary
+************
 
-.. image:: images/overview.jpg
-   :alt: Quantum Metal design flow: concept, layout, simulation, Hamiltonian
+Every box links to its API page; the components inside the library are generated from the code.
+
+.. raw:: html
+   :file: _package_map.html
 
 
 
@@ -24,7 +26,7 @@ Quantum Metal Overview
    * - :doc:`QDesign <apidocs/qiskit_metal.designs.QDesign>`
      - QDesign is the base class for Quantum Metal designs. A design is the most top-level object in Quantum Metal.  Create a new Metal QDesign.
    * - :doc:`QNet <apidocs/qiskit_metal.designs.QNet>`
-     - Use DataFrame to hold Net Information about the connected pins of a design. There is one uniqe net_id for each connected pin.  Hold the net information of all the USED pins within a design.
+     - Use DataFrame to hold Net Information about the connected pins of a design. There is one unique net_id for each connected pin.  Hold the net information of all the USED pins within a design.
 
 
 **QLibrary**
@@ -168,7 +170,7 @@ Quantum Metal Overview
    * - Class
      - Description
    * - :doc:`MetalGUI <apidocs/qiskit_metal._gui.MetalGUI>`
-     - Quantum Metal main GUI.  This class extends the QMainWindowBaseHandler class.  The GUI can be controled by the user using the mouse and keyboard or API for full control.
+     - Quantum Metal main GUI.  This class extends the QMainWindowBaseHandler class.  The GUI can be controlled by the user using the mouse and keyboard or API for full control.
    * - ``qm.view`` (``qiskit_metal.viewer``)
      - Headless entry point. Renders a design to a matplotlib figure with no Qt. Also provides ``gui`` and ``show_inline``. See :ref:`headless-usage`.
 

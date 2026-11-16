@@ -1,0 +1,80 @@
+.. _catalog-StarQubit:
+
+Star Qubit
+==========
+
+A single configurable circle with multiple pads.
+
+.. image:: ../images/qlibrary/StarQubit.png
+   :alt: Star Qubit
+   :width: 220px
+
+**Class** ``StarQubit`` · **Module** ``qiskit_metal.qlibrary.qubits.star_qubit`` · **Category** qubits
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.qubits.star_qubit import StarQubit
+
+   design = designs.DesignPlanar()
+   comp = StarQubit(design, "starQubit1", options=dict())
+
+Pins
+----
+
+``pin_cpl1``, ``pin_cpl2``, ``pin_cpl3``, ``pin_cpl4``, ``pin_rdout``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``radius``", "``'300um'``"
+   "``center_radius``", "``'100um'``"
+   "``gap_couplers``", "``'25um'``"
+   "``gap_readout``", "``'10um'``"
+   "``connector_length``", "``'75um'``"
+   "``trap_offset``", "``'20um'``"
+   "``junc_h``", "``'100um'``"
+   "``cpw_width``", "``'0.01'``"
+   "``rotation_cpl1``", "``'0.0'``"
+   "``rotation_cpl2``", "``'72.0'``"
+   "``rotation_rdout``", "``'144.0'``"
+   "``rotation_cpl3``", "``'216.0'``"
+   "``rotation_cpl4``", "``'288.0'``"
+   "``rotation_jj``", "``'auto'``"
+   "``number_of_connectors``", "``'4'``"
+   "``resolution``", "``'16'``"
+   "``cap_style``", "``'round'``"
+   "``subtract``", "``'False'``"
+   "``helper``", "``'False'``"
+
+.. dropdown:: Renderer options
+
+   Consumed by the GDS and Ansys renderers.
+
+   .. csv-table::
+      :header: "Option", "Default"
+      :widths: 40, 60
+
+      "``gds_cell_name``", "``'my_other_junction'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.StarQubit>` | :doc:`Example </circuit-examples/A.Qubits/11-Star_shaped_qubit>`
+

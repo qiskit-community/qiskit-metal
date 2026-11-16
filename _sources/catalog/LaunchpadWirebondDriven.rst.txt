@@ -1,0 +1,58 @@
+.. _catalog-LaunchpadWirebondDriven:
+
+Launchpad Wirebond Driven
+=========================
+
+Launch pad to feed/read signals to/from the chip.
+
+.. image:: ../images/qlibrary/LaunchpadWirebondDriven.png
+   :alt: Launchpad Wirebond Driven
+   :width: 220px
+
+**Class** ``LaunchpadWirebondDriven`` · **Module** ``qiskit_metal.qlibrary.terminations.launchpad_wb_driven`` · **Category** terminations
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.terminations.launchpad_wb_driven import LaunchpadWirebondDriven
+
+   design = designs.DesignPlanar()
+   comp = LaunchpadWirebondDriven(design, "launchpadWirebondDriven1", options=dict())
+
+Pins
+----
+
+``in``, ``tie``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``trace_width``", "``'cpw_width'``"
+   "``trace_gap``", "``'cpw_gap'``"
+   "``lead_length``", "``'25um'``"
+   "``pad_width``", "``'80um'``"
+   "``pad_height``", "``'80um'``"
+   "``pad_gap``", "``'58um'``"
+   "``taper_height``", "``'122um'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.LaunchpadWirebondDriven>`
+

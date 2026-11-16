@@ -1,0 +1,54 @@
+.. _catalog-CircleRaster:
+
+Circle Raster
+=============
+
+A single configurable circle.
+
+.. image:: ../images/qlibrary/CircleRaster.png
+   :alt: Circle Raster
+   :width: 220px
+
+**Class** ``CircleRaster`` · **Module** ``qiskit_metal.qlibrary.sample_shapes.circle_raster`` · **Category** sample shapes
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.sample_shapes.circle_raster import CircleRaster
+
+   design = designs.DesignPlanar()
+   comp = CircleRaster(design, "circleRaster1", options=dict())
+
+Pins
+----
+
+None with the default options. Pins appear when the options define connection pads, ports, or flux lines.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``radius``", "``'300um'``"
+   "``resolution``", "``'16'``"
+   "``cap_style``", "``'round'``"
+   "``subtract``", "``'False'``"
+   "``helper``", "``'False'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.CircleRaster>`
+

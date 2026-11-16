@@ -1,0 +1,69 @@
+.. _catalog-TransmonConcentric:
+
+Transmon Concentric
+===================
+
+Metal transmon object consisting of a circle surrounding by a concentric
+
+.. image:: ../images/qlibrary/TransmonConcentric.png
+   :alt: Transmon Concentric
+   :width: 220px
+
+**Class** ``TransmonConcentric`` · **Module** ``qiskit_metal.qlibrary.qubits.transmon_concentric`` · **Category** qubits
+
+**Inherits** ``BaseQubit`` → ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.qubits.transmon_concentric import TransmonConcentric
+
+   design = designs.DesignPlanar()
+   comp = TransmonConcentric(design, "transmonConcentric1", options=dict())
+
+Pins
+----
+
+``pin1``, ``pin2``, ``pin3``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``connection_pads``", "``{}``"
+   "``_default_connection_pads``", "``{}``"
+   "``width``", "``'1000um'``"
+   "``height``", "``'1000um'``"
+   "``rad_o``", "``'170um'``"
+   "``rad_i``", "``'115um'``"
+   "``gap``", "``'35um'``"
+   "``jj_w``", "``'10um'``"
+   "``res_s``", "``'100um'``"
+   "``res_ext``", "``'100um'``"
+   "``fbl_rad``", "``'100um'``"
+   "``fbl_sp``", "``'100um'``"
+   "``fbl_gap``", "``'80um'``"
+   "``fbl_ext``", "``'300um'``"
+   "``pocket_w``", "``'1500um'``"
+   "``pocket_h``", "``'1000um'``"
+   "``cpw_width``", "``'10.0um'``"
+   "``inductor_width``", "``'5.0um'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.TransmonConcentric>` | :doc:`Example </circuit-examples/A.Qubits/03-concentric_transmon>`
+

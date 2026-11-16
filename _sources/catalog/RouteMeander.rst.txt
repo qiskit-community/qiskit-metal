@@ -1,0 +1,63 @@
+.. _catalog-RouteMeander:
+
+Route Meander
+=============
+
+Implements a simple CPW, with a single meander.  The base
+
+.. image:: ../images/qlibrary/RouteMeander.png
+   :alt: Route Meander
+   :width: 220px
+
+**Class** ``RouteMeander`` · **Module** ``qiskit_metal.qlibrary.tlines.meandered`` · **Category** tlines
+
+**Inherits** ``QRoute`` → ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.tlines.meandered import RouteMeander
+
+   design = designs.DesignPlanar()
+   comp = RouteMeander(design, "routeMeander1", options=dict())
+
+Pins
+----
+
+``end``, ``start``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``pin_inputs.start_pin.component``", "``''``"
+   "``pin_inputs.start_pin.pin``", "``''``"
+   "``pin_inputs.end_pin.component``", "``''``"
+   "``pin_inputs.end_pin.pin``", "``''``"
+   "``fillet``", "``'0'``"
+   "``lead.start_straight``", "``'0mm'``"
+   "``lead.end_straight``", "``'0mm'``"
+   "``lead.start_jogged_extension``", "``''``"
+   "``lead.end_jogged_extension``", "``''``"
+   "``total_length``", "``'7mm'``"
+   "``trace_width``", "``'cpw_width'``"
+   "``meander.spacing``", "``'200um'``"
+   "``meander.asymmetry``", "``'0um'``"
+   "``snap``", "``'true'``"
+   "``prevent_short_edges``", "``'true'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.RouteMeander>` | :doc:`Example </circuit-examples/B.Resonators/11-Resonator_Meander>`
+

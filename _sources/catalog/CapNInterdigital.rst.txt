@@ -1,0 +1,61 @@
+.. _catalog-CapNInterdigital:
+
+Cap N Interdigital
+==================
+
+Generates a two pin (+) structure comprised of a north CPW transmission
+
+.. image:: ../images/qlibrary/CapNInterdigital.png
+   :alt: Cap N Interdigital
+   :width: 220px
+
+**Class** ``CapNInterdigital`` · **Module** ``qiskit_metal.qlibrary.lumped.cap_n_interdigital`` · **Category** lumped
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.lumped.cap_n_interdigital import CapNInterdigital
+
+   design = designs.DesignPlanar()
+   comp = CapNInterdigital(design, "capNInterdigital1", options=dict())
+
+Pins
+----
+
+``north_end``, ``south_end``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``north_width``", "``'10um'``"
+   "``north_gap``", "``'6um'``"
+   "``south_width``", "``'10um'``"
+   "``south_gap``", "``'6um'``"
+   "``cap_width``", "``'10um'``"
+   "``cap_gap``", "``'6um'``"
+   "``cap_gap_ground``", "``'6um'``"
+   "``finger_length``", "``'20um'``"
+   "``finger_count``", "``'5'``"
+   "``cap_distance``", "``'50um'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.CapNInterdigital>`
+

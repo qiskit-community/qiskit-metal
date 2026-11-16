@@ -1,0 +1,83 @@
+.. _catalog-SNAIL:
+
+SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement)
+==============================================================
+
+A SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement).
+
+.. image:: ../images/qlibrary/SNAIL.png
+   :alt: SNAIL (Superconducting Nonlinear Asymmetric Inductive eLement)
+   :width: 220px
+
+**Class** ``SNAIL`` · **Module** ``qiskit_metal.qlibrary.qubits.SNAIL`` · **Category** qubits
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.qubits.SNAIL import SNAIL
+
+   design = designs.DesignPlanar()
+   comp = SNAIL(design, "sNAIL1", options=dict())
+
+Pins
+----
+
+``a``, ``b``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``plate1_width``", "``'5.5um'``"
+   "``plate1_height``", "``'40um'``"
+   "``plate1_pos_x``", "``'0'``"
+   "``plate1_pos_y``", "``'0'``"
+   "``squid_gap``", "``'10um'``"
+   "``segment_a_length``", "``'10um'``"
+   "``segment_a_width``", "``'1um'``"
+   "``JJ_gap``", "``'0.5um'``"
+   "``segment_ab_length``", "``'5um'``"
+   "``segment_b_length``", "``'5um'``"
+   "``segment_b_width``", "``'1um'``"
+   "``JJ_gap_small``", "``'0.3um'``"
+   "``segment_lower_width``", "``'0.6um'``"
+   "``segment_c_width``", "``'1um'``"
+   "``segment_d_length``", "``'10um'``"
+   "``segment_d_width``", "``'2um'``"
+   "``plate2_width``", "``'6um'``"
+   "``plate2_height``", "``'30um'``"
+   "``Lj``", "``'0.046nH'``"
+   "``Lj_small``", "``'0.165nH'``"
+   "``inductor_width``", "``'1um'``"
+   "``pin_width``", "``'5um'``"
+
+.. dropdown:: Renderer options
+
+   Consumed by the GDS and Ansys renderers.
+
+   .. csv-table::
+      :header: "Option", "Default"
+      :widths: 40, 60
+
+      "``gds_cell_name``", "``'my_other_junction'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.SNAIL>`
+

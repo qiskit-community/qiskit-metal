@@ -1,0 +1,78 @@
+.. _catalog-TransmonPocket6:
+
+Transmon Pocket 6
+=================
+
+Transmon pocket with 6 connection pads.
+
+.. image:: ../images/qlibrary/TransmonPocket6.png
+   :alt: Transmon Pocket 6
+   :width: 220px
+
+**Class** ``TransmonPocket6`` · **Module** ``qiskit_metal.qlibrary.qubits.transmon_pocket_6`` · **Category** qubits
+
+**Inherits** ``BaseQubit`` → ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.qubits.transmon_pocket_6 import TransmonPocket6
+
+   design = designs.DesignPlanar()
+   comp = TransmonPocket6(design, "transmonPocket61", options=dict())
+
+Pins
+----
+
+None with the default options. Pins appear when the options define connection pads, ports, or flux lines.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``connection_pads``", "``{}``"
+   "``_default_connection_pads.pad_gap``", "``'15um'``"
+   "``_default_connection_pads.pad_width``", "``'125um'``"
+   "``_default_connection_pads.pad_height``", "``'30um'``"
+   "``_default_connection_pads.pad_cpw_shift``", "``'0um'``"
+   "``_default_connection_pads.pad_cpw_extent``", "``'25um'``"
+   "``_default_connection_pads.cpw_width``", "``'10um'``"
+   "``_default_connection_pads.cpw_gap``", "``'6um'``"
+   "``_default_connection_pads.cpw_extend``", "``'100um'``"
+   "``_default_connection_pads.pocket_extent``", "``'5um'``"
+   "``_default_connection_pads.pocket_rise``", "``'0um'``"
+   "``_default_connection_pads.loc_W``", "``'+1'``"
+   "``_default_connection_pads.loc_H``", "``'+1'``"
+   "``pad_gap``", "``'30um'``"
+   "``inductor_width``", "``'20um'``"
+   "``pad_width``", "``'455um'``"
+   "``pad_height``", "``'90um'``"
+   "``pocket_width``", "``'650um'``"
+   "``pocket_height``", "``'650um'``"
+
+.. dropdown:: Renderer options
+
+   Consumed by the GDS and Ansys renderers.
+
+   .. csv-table::
+      :header: "Option", "Default"
+      :widths: 40, 60
+
+      "``gds_cell_name``", "``'my_other_junction'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.TransmonPocket6>` | :doc:`Example </circuit-examples/A.Qubits/06-Transmon_floating_6>`
+

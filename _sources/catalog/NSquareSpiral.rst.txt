@@ -1,0 +1,57 @@
+.. _catalog-NSquareSpiral:
+
+N Square Spiral
+===============
+
+A n count square spiral.
+
+.. image:: ../images/qlibrary/NSquareSpiral.png
+   :alt: N Square Spiral
+   :width: 220px
+
+**Class** ``NSquareSpiral`` · **Module** ``qiskit_metal.qlibrary.sample_shapes.n_square_spiral`` · **Category** sample shapes
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.sample_shapes.n_square_spiral import NSquareSpiral
+
+   design = designs.DesignPlanar()
+   comp = NSquareSpiral(design, "nSquareSpiral1", options=dict())
+
+Pins
+----
+
+``spiralPin``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``n``", "``'3'``"
+   "``width``", "``'1um'``"
+   "``radius``", "``'40um'``"
+   "``gap``", "``'4um'``"
+   "``subtract``", "``'False'``"
+   "``helper``", "``'False'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.NSquareSpiral>`
+

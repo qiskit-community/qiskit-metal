@@ -1,0 +1,81 @@
+.. _catalog-TransmonCrossFL:
+
+Transmon Cross Flux Line
+========================
+
+Description
+
+.. image:: ../images/qlibrary/TransmonCrossFL.png
+   :alt: Transmon Cross Flux Line
+   :width: 220px
+
+**Class** ``TransmonCrossFL`` · **Module** ``qiskit_metal.qlibrary.qubits.transmon_cross_fl`` · **Category** qubits
+
+**Inherits** ``TransmonCross`` → ``BaseQubit`` → ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.qubits.transmon_cross_fl import TransmonCrossFL
+
+   design = designs.DesignPlanar()
+   comp = TransmonCrossFL(design, "transmonCrossFL1", options=dict())
+
+Pins
+----
+
+``flux_line``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``connection_pads``", "``{}``"
+   "``_default_connection_pads.connector_type``", "``'0'``"
+   "``_default_connection_pads.claw_length``", "``'30um'``"
+   "``_default_connection_pads.ground_spacing``", "``'5um'``"
+   "``_default_connection_pads.ground_spacing_back``", "``None``"
+   "``_default_connection_pads.claw_width``", "``'10um'``"
+   "``_default_connection_pads.claw_width_back``", "``None``"
+   "``_default_connection_pads.claw_gap``", "``'6um'``"
+   "``_default_connection_pads.claw_cpw_length``", "``'40um'``"
+   "``_default_connection_pads.claw_cpw_width``", "``'10um'``"
+   "``_default_connection_pads.connector_location``", "``'0'``"
+   "``cross_width``", "``'20um'``"
+   "``cross_length``", "``'200um'``"
+   "``cross_gap``", "``'20um'``"
+   "``make_fl``", "``True``"
+   "``fl_options.t_top``", "``'15um'``"
+   "``fl_options.t_offset``", "``'0um'``"
+   "``fl_options.t_inductive_gap``", "``'3um'``"
+   "``fl_options.t_width``", "``'5um'``"
+   "``fl_options.t_gap``", "``'3um'``"
+
+.. dropdown:: Renderer options
+
+   Consumed by the GDS and Ansys renderers.
+
+   .. csv-table::
+      :header: "Option", "Default"
+      :widths: 40, 60
+
+      "``gds_cell_name``", "``'my_other_junction'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.TransmonCrossFL>` | :doc:`Example </circuit-examples/A.Qubits/05-Transmon_cross_fl>`
+

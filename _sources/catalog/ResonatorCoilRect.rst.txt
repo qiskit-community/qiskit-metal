@@ -1,0 +1,57 @@
+.. _catalog-ResonatorCoilRect:
+
+Resonator Coil Rectangle
+========================
+
+A rectangle spiral resonator based on length input. The X dimension is
+
+.. image:: ../images/qlibrary/ResonatorCoilRect.png
+   :alt: Resonator Coil Rectangle
+   :width: 220px
+
+**Class** ``ResonatorCoilRect`` · **Module** ``qiskit_metal.qlibrary.lumped.resonator_coil_rect`` · **Category** lumped
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.lumped.resonator_coil_rect import ResonatorCoilRect
+
+   design = designs.DesignPlanar()
+   comp = ResonatorCoilRect(design, "resonatorCoilRect1", options=dict())
+
+Pins
+----
+
+``spiralPin``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``n``", "``'3'``"
+   "``length``", "``'2000um'``"
+   "``line_width``", "``'1um'``"
+   "``height``", "``'40um'``"
+   "``gap``", "``'4um'``"
+   "``coupler_distance``", "``'10um'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.ResonatorCoilRect>`
+

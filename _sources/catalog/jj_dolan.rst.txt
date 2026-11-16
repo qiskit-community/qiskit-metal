@@ -1,0 +1,59 @@
+.. _catalog-jj_dolan:
+
+Josephson Junction Dolan
+========================
+
+Dolan-bridge Josephson junction.
+
+.. image:: ../images/qlibrary/jj_dolan.png
+   :alt: Josephson Junction Dolan
+   :width: 220px
+
+**Class** ``jj_dolan`` · **Module** ``qiskit_metal.qlibrary.qubits.JJ_Dolan`` · **Category** qubits
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.qubits.JJ_Dolan import jj_dolan
+
+   design = designs.DesignPlanar()
+   comp = jj_dolan(design, "jj_dolan1", options=dict())
+
+Pins
+----
+
+None with the default options. Pins appear when the options define connection pads, ports, or flux lines.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``JJ_pad_lower_width``", "``'25um'``"
+   "``JJ_pad_lower_height``", "``'10um'``"
+   "``JJ_pad_lower_pos_x``", "``'0'``"
+   "``JJ_pad_lower_pos_y``", "``'0'``"
+   "``finger_lower_width``", "``'1um'``"
+   "``finger_lower_height``", "``'20um'``"
+   "``extension``", "``'1um'``"
+   "``offset``", "``'2um'``"
+   "``second_metal_length``", "``'5um'``"
+   "``second_metal_width``", "``'1um'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.jj_dolan>` | :doc:`Example </circuit-examples/A.Qubits/08-JJ-Dolan>` | :doc:`Tutorial </tut/quick-topics/JJ-Demo-Notebook>`
+

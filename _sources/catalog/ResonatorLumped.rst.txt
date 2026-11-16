@@ -1,0 +1,62 @@
+.. _catalog-ResonatorLumped:
+
+Lumped Resonator
+================
+
+A meandered resonator inside a rectangular metal perimeter. The trace
+
+.. image:: ../images/qlibrary/ResonatorLumped.png
+   :alt: Lumped Resonator
+   :width: 220px
+
+**Class** ``ResonatorLumped`` · **Module** ``qiskit_metal.qlibrary.resonators.resonator_lumped`` · **Category** resonators
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.resonators.resonator_lumped import ResonatorLumped
+
+   design = designs.DesignPlanar()
+   comp = ResonatorLumped(design, "resonatorLumped1", options=dict())
+
+Pins
+----
+
+``pin_east``, ``pin_n``, ``pin_ne``, ``pin_nw``, ``pin_s``, ``pin_se``, ``pin_sw``, ``pin_west``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0 um'``"
+   "``pos_y``", "``'0 um'``"
+   "``orientation``", "``'0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``box_width``", "``'5mm'``"
+   "``box_height``", "``'5mm'``"
+   "``perimeter_thickness``", "``'0.01mm'``"
+   "``res_width``", "``'0.01mm'``"
+   "``initial``", "``'0.1mm'``"
+   "``n_turns``", "``'14'``"
+   "``turn_radius``", "``'0.1mm'``"
+   "``inner_space``", "``'0.19mm'``"
+   "``outer_space``", "``'0.1mm'``"
+   "``final``", "``'2.5mm'``"
+   "``break_width``", "``'0.2mm'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.ResonatorLumped>`
+

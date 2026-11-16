@@ -1,0 +1,75 @@
+.. _catalog-TunableCoupler02:
+
+Tunable Coupler 2
+=================
+
+One of the tunable couplers
+
+.. image:: ../images/qlibrary/TunableCoupler02.png
+   :alt: Tunable Coupler 2
+   :width: 220px
+
+**Class** ``TunableCoupler02`` · **Module** ``qiskit_metal.qlibrary.couplers.tunable_coupler_02`` · **Category** couplers
+
+**Inherits** ``BaseQubit`` → ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.couplers.tunable_coupler_02 import TunableCoupler02
+
+   design = designs.DesignPlanar()
+   comp = TunableCoupler02(design, "tunableCoupler021", options=dict())
+
+Pins
+----
+
+``fbl``, ``pin1``, ``pin2``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0mm'``"
+   "``pos_y``", "``'0mm'``"
+   "``orientation``", "``'0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``connection_pads``", "``{}``"
+   "``_default_connection_pads``", "``{}``"
+   "``pocket_width``", "``'3mm'``"
+   "``pocket_height``", "``'2mm'``"
+   "``pad_radius``", "``'0.3mm'``"
+   "``bus_width``", "``'0.1mm'``"
+   "``bus_inner_length``", "``'0.5mm'``"
+   "``bus_outer_length``", "``'0.5mm'``"
+   "``bus_JJ_height``", "``'0.5mm'``"
+   "``JJ_width``", "``'0.1mm'``"
+   "``JJ_length``", "``'0.4mm'``"
+   "``fbl_width``", "``'0.1mm'``"
+   "``fbl_length``", "``'0.5mm'``"
+   "``fbl_offset``", "``'0.1mm'``"
+
+.. dropdown:: Renderer options
+
+   Consumed by the GDS and Ansys renderers.
+
+   .. csv-table::
+      :header: "Option", "Default"
+      :widths: 40, 60
+
+      "``gds_cell_name``", "``'my_other_junction'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.TunableCoupler02>`
+

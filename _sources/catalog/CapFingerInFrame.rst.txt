@@ -1,0 +1,58 @@
+.. _catalog-CapFingerInFrame:
+
+CapFingerInFrame
+================
+
+Two-pin gap capacitor with one electrode framing the other.
+
+.. image:: ../images/qlibrary/CapFingerInFrame.png
+   :alt: CapFingerInFrame
+   :width: 220px
+
+**Class** ``CapFingerInFrame`` · **Module** ``qiskit_metal.qlibrary.lumped.cap_finger_in_frame`` · **Category** lumped
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.lumped.cap_finger_in_frame import CapFingerInFrame
+
+   design = designs.DesignPlanar()
+   comp = CapFingerInFrame(design, "capFingerInFrame1", options=dict())
+
+Pins
+----
+
+``finger``, ``frame``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``frame_length``", "``'245um'``"
+   "``frame_width``", "``'72um'``"
+   "``frame_trace``", "``'16um'``"
+   "``cap_gap``", "``'10um'``"
+   "``ground_gap``", "``'10um'``"
+   "``frame_cpw_width``", "``'cpw_width'``"
+   "``finger_cpw_width``", "``'cpw_width'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.CapFingerInFrame>`
+

@@ -1,0 +1,61 @@
+.. _catalog-RouteAnchors:
+
+RouteAnchors
+============
+
+Creates and connects a series of anchors through which the Route passes.
+
+.. image:: ../images/qlibrary/RouteAnchors.png
+   :alt: RouteAnchors
+   :width: 220px
+
+**Class** ``RouteAnchors`` · **Module** ``qiskit_metal.qlibrary.tlines.anchored_path`` · **Category** tlines
+
+**Inherits** ``QRoute`` → ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.tlines.anchored_path import RouteAnchors
+
+   design = designs.DesignPlanar()
+   comp = RouteAnchors(design, "routeAnchors1", options=dict())
+
+Pins
+----
+
+``end``, ``start``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``pin_inputs.start_pin.component``", "``''``"
+   "``pin_inputs.start_pin.pin``", "``''``"
+   "``pin_inputs.end_pin.component``", "``''``"
+   "``pin_inputs.end_pin.pin``", "``''``"
+   "``fillet``", "``'0'``"
+   "``lead.start_straight``", "``'0mm'``"
+   "``lead.end_straight``", "``'0mm'``"
+   "``lead.start_jogged_extension``", "``''``"
+   "``lead.end_jogged_extension``", "``''``"
+   "``total_length``", "``'7mm'``"
+   "``trace_width``", "``'cpw_width'``"
+   "``anchors``", "``{}``"
+   "``advanced.avoid_collision``", "``'false'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qiskit_metal.qlibrary.RouteAnchors>`
+

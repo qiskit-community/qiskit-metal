@@ -1,0 +1,59 @@
+.. _catalog-Airbridge:
+
+Airbridge
+=========
+
+A single airbridge: two base-metal landing pads joined by an elevated
+
+.. image:: ../images/qlibrary/Airbridge.png
+   :alt: Airbridge
+   :width: 220px
+
+**Class** ``Airbridge`` · **Module** ``qiskit_metal.qlibrary.tlines.airbridge`` · **Category** tlines
+
+**Inherits** ``QComponent``
+
+Usage
+-----
+
+.. code-block:: python
+
+   from qiskit_metal import designs
+   from qiskit_metal.qlibrary.tlines.airbridge import Airbridge
+
+   design = designs.DesignPlanar()
+   comp = Airbridge(design, "airbridge1", options=dict())
+
+Pins
+----
+
+``end``, ``start``
+
+Pin names of the instance built for this page; some components add or rename pins from their options.
+
+Default options
+---------------
+
+.. csv-table::
+   :header: "Option", "Default"
+   :widths: 40, 60
+
+   "``pos_x``", "``'0.0um'``"
+   "``pos_y``", "``'0.0um'``"
+   "``orientation``", "``'0.0'``"
+   "``chip``", "``'main'``"
+   "``layer``", "``'1'``"
+   "``crossover_length``", "``'22um'``"
+   "``bridge_width``", "``'7.5um'``"
+   "``pad_width``", "``'11um'``"
+   "``pad_length``", "``'11um'``"
+   "``bridge_layer``", "``'30'``"
+   "``pad_layer``", "``'31'``"
+   "``enable_posts``", "``'False'``"
+   "``post_layer``", "``'32'``"
+
+More
+----
+
+:doc:`API reference </apidocs/qlibrary>` | :doc:`Tutorial </tut/2-From-components-to-chip/2.15-Airbridges>`
+
