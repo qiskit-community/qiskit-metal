@@ -518,14 +518,18 @@ def _catalog_page(cls, design, comp, category, thumb) -> str:
     if pins:
         out += [", ".join(f"``{p}``" for p in pins), ""]
         out += [
-            "Pin names of the instance built for this page; some components "
-            "add or rename pins from their options.",
+            (
+                "Pin names of the instance built for this page; some components "
+                "add or rename pins from their options."
+            ),
             "",
         ]
     else:
         out += [
-            "None with the default options. Pins appear when the options "
-            "define connection pads, ports, or flux lines.",
+            (
+                "None with the default options. Pins appear when the options "
+                "define connection pads, ports, or flux lines."
+            ),
             "",
         ]
     out += ["Default options", "---------------", ""]

@@ -178,7 +178,6 @@ def page_body():
         ]
     lines.append("")
     for key, title, desc, ids in PATHS:
-        who, needs = PATH_META[key]
         lines += [
             f".. _path-{key}:",
             "",
