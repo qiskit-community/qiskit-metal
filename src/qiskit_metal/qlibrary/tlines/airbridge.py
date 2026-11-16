@@ -338,6 +338,22 @@ def route_airbridges(
         ab_options.setdefault("enable_posts", "True")
     name = name or f"{route.name}_ab"
 
+    # Along the trace a bridge is as wide as its span or its landing pads.
+    footprint = max(
+        design.parse_value(
+            ab_options.get("bridge_width", Airbridge.default_options.bridge_width)
+        ),
+        design.parse_value(
+            ab_options.get("pad_width", Airbridge.default_options.pad_width)
+        ),
+    )
+    if pitch < footprint:
+        logger.warning(
+            f"route_airbridges: pitch {pitch * 1000:g} um is below the bridge "
+            f"footprint along the trace, {footprint * 1000:g} um, so neighboring "
+            "bridges overlap. Increase pitch."
+        )
+
     fillet = 0.0
     if "fillet" in route.options:
         fillet = design.parse_value(route.options.fillet)
@@ -346,6 +362,9 @@ def route_airbridges(
         trace_width = design.parse_value(route.options.get("trace_width", "10um"))
         trace_gap = design.parse_value(route.options.get("trace_gap", "6um"))
         crossover_length = trace_width + 2.0 * trace_gap
+    else:
+        # A string such as "40um" (as documented), a number in design units.
+        crossover_length = design.parse_value(crossover_length)
 
     centerline, corners = _fillet_centerline(
         route.get_points(), fillet, return_corners=True

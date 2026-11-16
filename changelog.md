@@ -10,12 +10,15 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 
 ### Added
 
+- **`python -m qiskit_metal.watch my_design.py`** re-runs a design script whenever it is saved, renders the `design` it leaves to `watch_out/design.png`, prints the design-rule report, and with `--gds` writes `design.gds` for KLayout to reload. Errors in the script are printed and the watch continues.
 - **Scripting and agent guide** (docs: *Scripting and Agent Use*) with a tested headless script that builds, checks, exports and analyzes a chip (`docs/examples/headless_chip.py`), the design-rule check as a pass/fail gate, and what to rely on across runs.
 - **Repeatable GDS export.** If `SOURCE_DATE_EPOCH` is set, `QGDSRenderer` stores that time in the GDS file, so two exports of one design are identical byte for byte. Without it the file records the current time, as before.
 - **KLayout handoff:** a layer-properties file (`quantum-metal.lyp`) and a starter design-rule deck (`quantum-metal-basic.drc`) for GDS exported by `QGDSRenderer`, with a docs page (*GDS in KLayout*) that explains the layers and datatypes. Tried with the KLayout application on an exported chip; the deck's thresholds are placeholders for your fab's rules.
 
 ### Fixed
 
+- **`route_airbridges(..., crossover_length="40um")`** raised `TypeError`: the documented unit string was written back as `"40ummm"`. It now accepts a unit string or a number in design units.
+- **`route_airbridges`** warns when `pitch` is smaller than the bridge footprint along the trace (the larger of `bridge_width` and `pad_width`), where neighboring bridges overlap and no design rule reports it.
 - **`Hcpb.nlevels` keeps `Ej`, `Ec` and `ng`** when set. The setter re-ran `__init__`, which reset them to `None`, `None` and 0.5, so the object had no spectrum after the change.
 - **`CompositeSystem.hamiltonian_results`** returns the qubit frequencies as plain floats, so the printed dictionary reads `{'qubit': 5.4}` instead of `{'qubit': np.float64(5.4)}` under numpy 2.
 - **`fit_transmission(detrend=False)`** warns when the phase slope shows a cable delay of more than 0.1 cycle across the span. The fit starts from zero delay and, with 40 ns over a 100 MHz span, returned a Q 20 % too high; at 80 ns it did not converge. `detrend=True` handles these.

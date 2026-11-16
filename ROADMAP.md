@@ -177,18 +177,18 @@ dependencies today and have no Pyodide wheels. Also open: a read-only web
 design viewer. Colab and Binder badges cover trying a notebook without an
 install.
 
-### Needs re-verification
+### Known limits and open checks
 
-Recorded earlier and not checked against v0.10.0:
-
-- Ansys 2025R1 reports #1046 and the AEDT spot-check request #1079.
-- Airbridge follow-ups: overlap and off-chip warnings, adjacent-CPW handling.
-- LOM 2.0 `TL_RESONATOR` keeps one mode (#1219 docstring); the LOM paper's
-  Eq. 13a factor of 2; `Hcpb.nlevels` resetting `Ej`/`Ec`;
-  `hamiltonian_results` printing `np.float64(...)` under numpy 2;
-  `fit_transmission(detrend=False)` starting from zero cable delay.
-- pyEPR packaging: `pywin32` declared only in its `[pyaedt]` extra (a fix in
-  pyEPR, not here).
+- LOM 2.0 `TL_RESONATOR` keeps one mode (the #1219 docstring states the
+  single-mode limit); the LOM paper's Eq. 13a factor of 2 still needs a
+  check against the paper.
+- Airbridges: `route_airbridges` places real components, so the design-rule
+  check already flags a bridge that runs off the chip (`chip-bounds`). It now
+  warns when `pitch` is below the bridge footprint, since overlapping bridges
+  are not flagged by any rule. A bridge hopping over a neighboring CPW is a
+  legal crossover, so adjacent-line handling stays a design choice.
+- pyEPR packaging: `pywin32` is declared only in its `[pyaedt]` extra (a fix
+  in pyEPR, not here).
 
 ---
 
