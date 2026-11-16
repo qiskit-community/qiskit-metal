@@ -4,8 +4,44 @@
 How do I...?
 ============
 
-Short answers, organized by task. Each card names the call or page that does
-it and links to where it is explained.
+Start with one of the sections below, or jump to a task further down.
+
+.. grid:: 1 2 4 4
+    :gutter: 3
+
+    .. grid-item-card:: :octicon:`device-camera;1.2em` Devices and papers
+        :link: built-with-metal
+        :link-type: doc
+        :class-card: sd-shadow-sm
+
+        Chips designed with Quantum Metal and the papers behind them.
+
+    .. grid-item-card:: :octicon:`beaker;1.2em` Reproduced devices
+        :link: research
+        :link-type: doc
+        :class-card: sd-shadow-sm
+
+        Published chips and results rebuilt as notebooks.
+
+    .. grid-item-card:: :octicon:`mortar-board;1.2em` Learn
+        :link: tut/index
+        :link-type: doc
+        :class-card: sd-shadow-sm
+
+        The tutorial course in four parts.
+
+    .. grid-item-card:: :octicon:`file-code;1.2em` Examples
+        :link: circuit-examples/index
+        :link-type: doc
+        :class-card: sd-shadow-sm
+
+        Designs and components to copy.
+
+Tasks
+=====
+
+Each card names the call or page that does it and links to where it is
+explained.
 
 .. grid:: 1 2 4 4
     :gutter: 2

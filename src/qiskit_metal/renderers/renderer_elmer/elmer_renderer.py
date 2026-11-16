@@ -40,48 +40,54 @@ class QElmerRenderer(QRendererAnalysis):
 
     QElmerRenderer Default Setup:
         * capacitance -- Default setup for capacitance simulation:
-            * Calculate_Electric_Field -- Defaults to True.
-            * Calculate_Electric_Energy -- Defaults to True.
-            * Calculate_Capacitance_Matrix -- Defaults to True.
-            * Capacitance_Matrix_Filename -- Defaults to "cap_matrix.txt".
-            * Linear_System_Solver -- Defaults to "Iterative".
-            * Steady_State_Convergence_Tolerance -- Defaults to 1.0e-5.
-            * Nonlinear_System_Convergence_Tolerance -- Defaults to 1.0e-7.
-            * Nonlinear_System_Max_Iterations -- Defaults to 20.
-            * Linear_System_Convergence_Tolerance -- Defaults to 1.0e-10.
-            * Linear_System_Max_Iterations -- Defaults to 500.
-            * Linear_System_Iterative_Method -- Defaults to "BiCGStab".
-            * BiCGstabl_polynomial_degree -- Defaults to 2.
+
+          * Calculate_Electric_Field -- Defaults to True.
+          * Calculate_Electric_Energy -- Defaults to True.
+          * Calculate_Capacitance_Matrix -- Defaults to True.
+          * Capacitance_Matrix_Filename -- Defaults to "cap_matrix.txt".
+          * Linear_System_Solver -- Defaults to "Iterative".
+          * Steady_State_Convergence_Tolerance -- Defaults to 1.0e-5.
+          * Nonlinear_System_Convergence_Tolerance -- Defaults to 1.0e-7.
+          * Nonlinear_System_Max_Iterations -- Defaults to 20.
+          * Linear_System_Convergence_Tolerance -- Defaults to 1.0e-10.
+          * Linear_System_Max_Iterations -- Defaults to 500.
+          * Linear_System_Iterative_Method -- Defaults to "BiCGStab".
+          * BiCGstabl_polynomial_degree -- Defaults to 2.
 
         * eigenmode -- Default setup for Eigenmode simulation (to be added in future).
 
         * materials -- Materials used in the simulation. Defaults to `["vacuum", "silicon"]`.
 
         * constants -- Default constants to be included in the simulation:
-            * Permittivity_of_Vacuum -- Defaults to 8.8542e-12 F/m.
-            * Unit_Charge -- Defaults to 1.602e-19 C.
+
+          * Permittivity_of_Vacuum -- Defaults to 8.8542e-12 F/m.
+          * Unit_Charge -- Defaults to 1.602e-19 C.
 
     QGmshRenderer Default Options:
         # Buffer between max/min x and edge of ground plane, in mm
         * x_buffer_width_mm -- Buffer between max/min x and edge of ground plane, in mm
         * y_buffer_width_mm -- Buffer between max/min y and edge of ground plane, in mm
         * mesh -- to define meshing parameters
-            * max_size -- upper bound for the size of mesh node
-            * min_size -- lower bound for the size of mesh node
-            * max_size_jj -- maximum size of mesh nodes at jj
-            * smoothing -- mesh smoothing value
-            * nodes_per_2pi_curve -- number of nodes for every 2π radians of curvature
-            * algorithm_3d -- value to indicate meshing algorithm used by Gmsh
-            * num_threads -- number of threads for parallel meshing
-            * mesh_size_fields -- specify mesh size field parameters
+
+          * max_size -- upper bound for the size of mesh node
+          * min_size -- lower bound for the size of mesh node
+          * max_size_jj -- maximum size of mesh nodes at jj
+          * smoothing -- mesh smoothing value
+          * nodes_per_2pi_curve -- number of nodes for every 2π radians of curvature
+          * algorithm_3d -- value to indicate meshing algorithm used by Gmsh
+          * num_threads -- number of threads for parallel meshing
+          * mesh_size_fields -- specify mesh size field parameters
+
                 * min_distance_from_edges -- min distance for mesh gradient generation
                 * max_distance_from_edges -- max distance for mesh gradient generation
                 * distance_delta -- delta change in distance with each consecutive step
                 * gradient_delta -- delta change in gradient with each consecutive step
+
         * colors -- specify colors for the mesh elements, chips or layers
-            * metal -- color for metallized entities
-            * jj -- color for JJs
-            * dielectric -- color for dielectric entity
+
+          * metal -- color for metallized entities
+          * jj -- color for JJs
+          * dielectric -- color for dielectric entity
     """
 
     default_options = Dict(

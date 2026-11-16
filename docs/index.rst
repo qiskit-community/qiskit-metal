@@ -179,11 +179,11 @@ Qiskit Metal is now Quantum Metal
     :hidden:
 
     Device Images and Papers<built-with-metal>
-    Built on Quantum Metal<ecosystem>
+    How Do I...?<how-do-i>
     Reproduced Devices (Notebooks)<research>
     Learn<tut/index>
     Examples<circuit-examples/index>
-    How Do I...?<how-do-i>
+    Built on Quantum Metal<ecosystem>
 
 .. toctree::
     :maxdepth: 1
@@ -192,8 +192,8 @@ Qiskit Metal is now Quantum Metal
 
     Quantum Metal Workflow<workflow>
     Quantization Methods<quantization>
-    Simulation Pathways<simulation-pathways>
     GDS in KLayout<klayout>
+    Simulation Pathways<simulation-pathways>
     Desktop GUI or Headless<headless-usage>
     Scripting and Agent Use<orchestration>
     GUI Navigation & Shortcuts<gui-shortcuts>
@@ -203,12 +203,13 @@ Qiskit Metal is now Quantum Metal
     :caption: API Reference
     :hidden:
 
-    Overview<overview>
+    API Summary<overview>
     QDesigns<apidocs/designs>
     QComponents<apidocs/qlibrary>
     Component Catalog<qcomponents-gallery>
-    Analyses<apidocs/analyses>
     QRenderers<apidocs/renderers>
+    Analyses<apidocs/analyses>
+    Open-Source Solvers<apidocs/open-source-solvers>
     Toolbox<apidocs/toolbox_metal>
     QGeometry<apidocs/qgeometries>
     GUI<apidocs/gui>

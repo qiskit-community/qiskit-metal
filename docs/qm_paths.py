@@ -137,6 +137,15 @@ def by_doc():
 
 
 # Per path: (who it is for, what it needs)
+ICONS = {
+    "chip-designer": "cpu",
+    "open-source-simulation": "unlock",
+    "ansys-analyst": "beaker",
+    "teaching": "mortar-board",
+    "component-developer": "tools",
+    "package-modes-series": "graph",
+}
+
 PATH_META = {
     "chip-designer": ("Lay out a chip and send it to a fab.", "Python only"),
     "open-source-simulation": (
@@ -156,7 +165,7 @@ def page_body():
     for key, title, desc, ids in PATHS:
         who, needs = PATH_META[key]
         lines += [
-            f"    .. grid-item-card:: {title}",
+            f"    .. grid-item-card:: :octicon:`{ICONS[key]};1.2em` {title}",
             f"        :link: path-{key}",
             "        :link-type: ref",
             "        :class-card: sd-shadow-sm",

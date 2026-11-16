@@ -712,7 +712,7 @@ class MaxwellFEM:
     def energy(self, u):
         """Energy (J) in the whole package of a field u defined on this region.
 
-        u is a peak amplitude, so 1/2 int eps |E|^2 is the total mode energy.
+        u is a peak amplitude, so ``1/2 int eps abs(E)^2`` is the total mode energy.
         """
         return self.pmesh.n_sym * 0.5 * EPS0 * 1e-3 * (u @ (self.M @ u))
 

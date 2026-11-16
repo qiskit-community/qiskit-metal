@@ -45,54 +45,82 @@ result from one path can be checked against another.
         Large full-wave models on clusters, through SQDMetal. Not built in yet.
 
 
+What each computes and needs
+============================
+
 .. list-table::
    :header-rows: 1
-   :widths: 16 26 20 20 18
+   :widths: 22 46 32
 
    * - Pathway
      - Computes
      - Install
-     - Where in Metal
-     - Tutorials
    * - **Ansys HFSS / Q3D** (commercial)
      - eigenmodes and energy participation (EPR); driven S/Z/Y parameters;
        capacitance matrices for the lumped-oscillator model (LOM)
      - Ansys Electronics Desktop with a license; ``pip install
        "quantum-metal[ansys]"``
-     - renderers ``hfss``, ``q3d``, ``aedt_hfss``, ``aedt_q3d``;
-       ``analyses.simulation`` (``EigenmodeSim``, ``LumpedElementsSim``,
-       ``ScatteringImpedanceSim``); ``LOManalysis``
-     - :doc:`3.3 <tut/3-Renderers/3.3-Render-your-design-to-Ansys>`; :ref:`Part 4, Ansys <p4-ansys>`; :doc:`A.4 <circuit-examples/full-design-flow-examples/A.4-Full-chip-design>`
    * - **gmsh + ElmerFEM** (open source)
      - capacitance matrices (electrostatics) for LOM
      - ``pip install "quantum-metal[mesh]"`` plus the ElmerFEM binaries
        (``ElmerGrid``, ``ElmerSolver`` on ``PATH``; see
-       ``README_Open_FEM_Stack.md``)
-     - ``QGmshRenderer``, ``QElmerRenderer``
-     - :doc:`3.5 <tut/3-Renderers/3.5-Render-your-design-to-Gmsh>`; :doc:`4.19 <tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM>`; :doc:`A.4 <circuit-examples/full-design-flow-examples/A.4-Full-chip-design>`; :doc:`the two-qubit cell of the 17-qubit chip <circuit-examples/F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh>`
+       ``README_Open_FEM_Stack.md`` in the repository)
    * - **gmsh + scikit-fem** (open source, pure Python)
      - eigenmodes with lumped junction inductors; EPR, avoided-crossing,
        induced-EMF and impedance-matrix couplings; port impedance matrices;
        capacitance matrices
      - ``pip install "quantum-metal[skfem]" pymetis``
        (``pymetis`` is required only for 4.46)
-     - ``qiskit_metal.analyses.fem`` (the solver) and
-       ``qiskit_metal.analyses.em.package_modes`` (the analytic models);
-       not yet a renderer
-     - :doc:`4.41 <tut/4-Analysis/4.41-The-package-mode-on-paper>` to :doc:`4.46 <tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling>`; :ref:`Part 4, open source <p4-open-source>`
    * - **AWS Palace via SQDMetal** (open source)
      - eigenmodes, capacitance, driven and inductance studies on MPI;
        lumped and wave ports, EPR
-     - `SQDMetal <https://github.com/sqdlab/SQDMetal>`_ (install from
-       GitHub) and the Palace solver (MPI binary: build from source or a
-       container). `pypalace <https://pypalace.readthedocs.io/>`_ is another
-       Palace toolkit with a Quantum Metal gmsh export.
-     - SQDMetal takes a ``QDesign`` directly today. A native path —
-       ``renderer_name="palace"`` in the simulation classes, built on
-       ``QGmshRenderer`` — is being designed; see the RFC in
+     - `SQDMetal <https://github.com/sqdlab/SQDMetal>`_ (from GitHub) and
+       the Palace solver (MPI binary: build from source or a container).
+       `pypalace <https://pypalace.readthedocs.io/>`_ is another Palace
+       toolkit with a Quantum Metal gmsh export.
+
+Where each lives in Quantum Metal
+=================================
+
+.. list-table::
+   :header-rows: 1
+   :widths: 22 46 32
+
+   * - Pathway
+     - API
+     - Tutorials
+   * - **Ansys HFSS / Q3D**
+     - Renderers :doc:`QHFSSRenderer <apidocs/qiskit_metal.renderers.QHFSSRenderer>`,
+       :doc:`QQ3DRenderer <apidocs/qiskit_metal.renderers.QQ3DRenderer>` and the
+       pyaedt versions :doc:`QHFSSEigenmodePyaedt <apidocs/qiskit_metal.renderers.QHFSSEigenmodePyaedt>`,
+       :doc:`QQ3DPyaedt <apidocs/qiskit_metal.renderers.QQ3DPyaedt>`.
+       Simulations :doc:`EigenmodeSim <apidocs/qiskit_metal.analyses.EigenmodeSim>`,
+       :doc:`LumpedElementsSim <apidocs/qiskit_metal.analyses.LumpedElementsSim>`,
+       :doc:`ScatteringImpedanceSim <apidocs/qiskit_metal.analyses.ScatteringImpedanceSim>`.
+       Quantization :doc:`LOManalysis <apidocs/qiskit_metal.analyses.LOManalysis>`,
+       :doc:`EPRanalysis <apidocs/qiskit_metal.analyses.EPRanalysis>`.
+     - :doc:`3.3 <tut/3-Renderers/3.3-Render-your-design-to-Ansys>`;
+       :ref:`Part 4, Ansys <p4-ansys>`;
+       :doc:`A.4 <circuit-examples/full-design-flow-examples/A.4-Full-chip-design>`
+   * - **gmsh + ElmerFEM**
+     - :doc:`QGmshRenderer <apidocs/qiskit_metal.renderers.QGmshRenderer>`,
+       :ref:`QElmerRenderer <api-open-source-solvers>`
+     - :doc:`3.5 <tut/3-Renderers/3.5-Render-your-design-to-Gmsh>`;
+       :doc:`4.19 <tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM>`;
+       :doc:`A.4 <circuit-examples/full-design-flow-examples/A.4-Full-chip-design>`;
+       :doc:`the two-qubit cell of the 17-qubit chip <circuit-examples/F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh>`
+   * - **gmsh + scikit-fem**
+     - :doc:`qiskit_metal.analyses.fem <apidocs/open-source-solvers>` (the
+       solver; not yet a renderer) and ``qiskit_metal.analyses.em.package_modes``
+       (the analytic models)
+     - :doc:`4.41 <tut/4-Analysis/4.41-The-package-mode-on-paper>` to
+       :doc:`4.46 <tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling>`;
+       :ref:`Part 4, open source <p4-open-source>`
+   * - **AWS Palace via SQDMetal**
+     - none yet: SQDMetal takes a ``QDesign`` directly. A native
+       ``renderer_name="palace"`` path is being designed; see the RFC in
        `sqdlab/SQDMetal#67 <https://github.com/sqdlab/SQDMetal/issues/67>`_
-     - none in Quantum Metal yet; an end-to-end tutorial is part of the
-       integration plan
+     - none yet
 
 Choosing a path
 ===============

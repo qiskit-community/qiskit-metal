@@ -26,11 +26,13 @@ class ReadoutResFC(QComponent):
         gap ``readout_cpw_gap``.
 
         Tuning tips:
+
         - Change coupling to the qubit by varying ``readout_radius``.
         - Couple to the feedthrough line via the horizontal section of length ``readout_l3``.
         - Adjust resonator frequency by varying ``readout_l5``.
 
         Layers:
+
         - The trace (``ro``) is drawn on ``layer``.
         - The etch (``ro_etch``, subtracted from the ground plane when
           ``subtract`` is true) is drawn on ``layer_subtract``. Left empty (the
