@@ -4,8 +4,10 @@
 API summary
 ************
 
-.. image:: images/overview.jpg
-   :alt: Quantum Metal design flow: concept, layout, simulation, Hamiltonian
+Every box links to its API page; the components inside the library are generated from the code.
+
+.. raw:: html
+   :file: _package_map.html
 
 
 

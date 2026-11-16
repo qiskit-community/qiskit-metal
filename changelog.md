@@ -11,6 +11,7 @@ The changelog for all releases can be found in the release page: [![Releases](ht
 ### Added
 
 - **Component catalog** (docs): the QComponent gallery is in the sidebar, and each card opens a catalog entry with the component's default options, pin names, usage line and API link. Entries are built from the code at docs-build time (`_dev/generate_qcomponent_gallery.py`, using the recipes of `_dev/generate_qlibrary_thumbnails.py`), so they track the component classes.
+- **API summary** shows a generated, clickable map of the package (components come from the library) in place of the old picture.
 - **FAQ rewritten** for the current install, GUI, GDS and solver paths; sidebar and page titles use one capitalization (sentence case); the home title is *Quantum Metal*.
 - **Open-source solvers API page** (docs): `qiskit_metal.analyses.fem`, the package-mode models and `QElmerRenderer`, linked from *Simulation pathways*, which now has two shorter tables.
 - **How do I...? page** (docs): task cards with a thumbnail, a short answer and links to the tutorial or reference page. *Choose your path* now opens with a card per path; *Learn* is laid out like *Examples* (a button per part, notebook thumbnails, package-modes series after the parts, videos in three groups); *Simulation pathways* has solver cards and links to the tutorials. *How Do I...?* moved under Showcase & Learn and *Scripting and Agent Use* under How It Works.

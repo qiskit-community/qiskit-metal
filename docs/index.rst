@@ -229,7 +229,7 @@ Quantum Metal
 
     Contributor guide<contributor-guide>
     Architecture<architecture>
-    Code of conduct<https://github.com/Qiskit/qiskit/blob/master/CODE_OF_CONDUCT.md>
+    Code of conduct<https://github.com/qiskit-community/qiskit-metal/blob/main/CODE_OF_CONDUCT.md>
 
 .. Per-class autodoc stubs in ``apidocs/`` are reached via the
    autosummary ``:toctree: .`` directives in each module's

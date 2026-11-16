@@ -164,3 +164,4 @@ docs/_build/
 **/batch_output/
 **/sweep_output/
 docs/catalog/
+docs/_package_map.html

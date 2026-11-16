@@ -632,3 +632,43 @@ body[data-theme="dark"] {
   object-fit: contain;
   padding: 0.5rem;
 }
+
+/* Package map on the API summary page */
+.qm-map { display: grid; gap: 0.75rem; margin: 1rem 0 1.5rem; font-size: 0.85rem; }
+.qm-map-main { display: grid; gap: 0.75rem; grid-template-columns: 1fr; }
+.qm-map-row { display: grid; gap: 0.75rem; grid-template-columns: 1fr; }
+.qm-map-side { display: grid; gap: 0.75rem; align-content: start; }
+@media (min-width: 52em) {
+  .qm-map-main { grid-template-columns: 3fr 1fr; }
+  .qm-map-row { grid-template-columns: 1fr 1fr 1fr; }
+}
+.qm-box {
+  border: 1px solid var(--color-background-border);
+  border-radius: 10px;
+  background: var(--color-background-secondary);
+  padding: 0.5rem 0.75rem 0.75rem;
+}
+.qm-box .qm-box { background: var(--color-background-primary); border-radius: 8px; }
+.qm-box > h3 { margin: 0 0 0.4rem; font-size: 0.95rem; font-weight: 600; }
+.qm-box > h3 a { color: inherit; text-decoration: none; }
+.qm-box > h3 a:hover { text-decoration: underline; }
+.qm-box-lib > .qm-box-cat { margin-top: 0.5rem; }
+.qm-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.qm-chip {
+  display: inline-block;
+  padding: 0.12rem 0.5rem;
+  border: 1px solid var(--color-background-border);
+  border-radius: 999px;
+  background: var(--color-background-primary);
+  font-family: var(--font-stack--monospace);
+  font-size: 0.78rem;
+  text-decoration: none;
+  color: var(--color-foreground-primary);
+}
+.qm-box .qm-box .qm-chip { background: var(--color-background-secondary); }
+a.qm-chip:hover { border-color: var(--color-brand-primary); color: var(--color-brand-primary); }
+.qm-chip-plain { opacity: 0.85; }
+.qm-box-lib { display: grid; gap: 0.5rem; grid-template-columns: 1fr; }
+.qm-box-lib > h3 { grid-column: 1 / -1; }
+.qm-box-lib > .qm-box-cat { margin-top: 0; }
+@media (min-width: 40em) { .qm-box-lib { grid-template-columns: 1fr 1fr; } }

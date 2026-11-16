@@ -58,6 +58,7 @@ GALLERY_RST = DOCS / "qcomponents-gallery.rst"
 APIDOCS_IMG = DOCS / "apidocs"
 
 CATALOG_DIR = DOCS / "catalog"
+PACKAGE_MAP = DOCS / "_package_map.html"
 THUMBS = REPO / "_dev" / "generate_qlibrary_thumbnails.py"
 # Option keys consumed by renderers rather than by the component's geometry;
 # shown in a collapsed block on each catalog page.
@@ -581,6 +582,146 @@ def _write_catalog(groups, copied, write: bool) -> set:
     return done
 
 
+def _chip(label, href=None):
+    from html import escape
+
+    text = escape(label)
+    if href:
+        return f'<a class="qm-chip" href="{escape(href)}">{text}</a>'
+    return f'<span class="qm-chip qm-chip-plain">{text}</span>'
+
+
+def _box(title, inner, cls="", href=None):
+    from html import escape
+
+    head = escape(title)
+    if href:
+        head = f'<a href="{escape(href)}">{head}</a>'
+    return f'<section class="qm-box {cls}"><h3>{head}</h3>{inner}</section>'
+
+
+def _api(module, name):
+    return f"apidocs/qiskit_metal.{module}.{name}.html"
+
+
+def _package_map_html(groups, catalog) -> str:
+    """Nested map of the package for the API summary page. The component
+    boxes come from the library itself; the other boxes are listed by hand
+    and point at their API pages."""
+    lib = []
+    for cat in list(CATEGORY_LABELS) + [k for k in groups if k not in CATEGORY_LABELS]:
+        if cat not in groups:
+            continue
+        label = cat.replace("_", " ").capitalize()
+        chips = "".join(
+            _chip(
+                c.__name__,
+                f"catalog/{c.__name__}.html" if c.__name__ in catalog else None,
+            )
+            for _, c in groups[cat]
+        )
+        lib.append(_box(label, f'<div class="qm-chips">{chips}</div>', "qm-box-cat"))
+    qlib = _box(
+        "QLibrary: QComponent subclasses",
+        "".join(lib),
+        "qm-box-lib",
+        "apidocs/qlibrary.html",
+    )
+    designs = _box(
+        "Designs",
+        '<div class="qm-chips">'
+        + "".join(
+            _chip(n, _api("designs", n))
+            for n in (
+                "QDesign",
+                "DesignPlanar",
+                "DesignFlipChip",
+                "MultiPlanar",
+                "QNet",
+                "Components",
+            )
+        )
+        + "</div>",
+        "",
+        "apidocs/designs.html",
+    )
+    geometry = _box(
+        "QGeometry",
+        '<div class="qm-chips">'
+        + _chip("QGeometryTables", _api("qgeometries", "QGeometryTables"))
+        + "</div>",
+        "",
+        "apidocs/qgeometries.html",
+    )
+    rend = lambda n: _chip(n, _api("renderers", n))  # noqa: E731
+    renderers = _box(
+        "Renderers",
+        '<div class="qm-chips">'
+        + "".join(
+            rend(n)
+            for n in (
+                "QRenderer",
+                "QRendererAnalysis",
+                "QMplRenderer",
+                "QGDSRenderer",
+                "QGmshRenderer",
+                "QHFSSRenderer",
+                "QQ3DRenderer",
+                "QHFSSEigenmodePyaedt",
+                "QQ3DPyaedt",
+            )
+        )
+        + _chip("QElmerRenderer", "apidocs/open-source-solvers.html")
+        + "</div>",
+        "",
+        "apidocs/renderers.html",
+    )
+    ana = lambda n: _chip(n, _api("analyses", n))  # noqa: E731
+    analyses = _box(
+        "Analyses",
+        '<div class="qm-chips">'
+        + "".join(
+            ana(n)
+            for n in (
+                "QAnalysis",
+                "QSimulation",
+                "EigenmodeSim",
+                "LumpedElementsSim",
+                "ScatteringImpedanceSim",
+                "LOManalysis",
+                "EPRanalysis",
+            )
+        )
+        + _chip("fem", "apidocs/open-source-solvers.html")
+        + "</div>",
+        "",
+        "apidocs/analyses.html",
+    )
+    checks = _box(
+        "Validation and viewing",
+        '<div class="qm-chips">'
+        + _chip("validate")
+        + _chip("qm.view")
+        + _chip("qm.gui")
+        + "</div>",
+    )
+    gui = _box(
+        "GUI",
+        '<div class="qm-chips">'
+        + _chip("MetalGUI", "apidocs/qiskit_metal._gui.MetalGUI.html")
+        + "</div>",
+        "",
+        "apidocs/gui.html",
+    )
+    toolbox = _box("Toolbox", "", "", "apidocs/toolbox_metal.html")
+    return (
+        '<div class="qm-map" role="group" aria-label="Map of the Quantum Metal package">'
+        f'<div class="qm-map-main">{qlib}<div class="qm-map-side">{designs}{geometry}{toolbox}</div></div>'
+        f'<div class="qm-map-row">{renderers}{analyses}<div class="qm-map-side">{checks}{gui}</div></div>'
+        "</div>\n"
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -598,6 +739,8 @@ def main():
     )
     copied = _copy_thumbnails(groups, write=args.write)
     catalog = _write_catalog(groups, copied, write=args.write)
+    if args.write:
+        PACKAGE_MAP.write_text(_package_map_html(groups, catalog))
     rst = _emit_gallery_rst(groups, copied, catalog)
     if args.write:
         GALLERY_RST.write_text(rst)
