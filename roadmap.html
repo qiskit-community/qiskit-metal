@@ -689,18 +689,19 @@ Pyodide-installable core: <code class="docutils literal notranslate"><span class
 dependencies today and have no Pyodide wheels. Also open: a read-only web
 design viewer. Colab and Binder badges cover trying a notebook without an
 install.</p>
-<section id="needs-re-verification">
-<h3>Needs re-verification<a class="headerlink" href="#needs-re-verification" title="Link to this heading">¶</a></h3>
-<p>Recorded earlier and not checked against v0.10.0:</p>
+<section id="known-limits-and-open-checks">
+<h3>Known limits and open checks<a class="headerlink" href="#known-limits-and-open-checks" title="Link to this heading">¶</a></h3>
 <ul class="simple">
-<li><p>Ansys 2025R1 reports #1046 and the AEDT spot-check request #1079.</p></li>
-<li><p>Airbridge follow-ups: overlap and off-chip warnings, adjacent-CPW handling.</p></li>
-<li><p>LOM 2.0 <code class="docutils literal notranslate"><span class="pre">TL_RESONATOR</span></code> keeps one mode (#1219 docstring); the LOM paper’s
-Eq. 13a factor of 2; <code class="docutils literal notranslate"><span class="pre">Hcpb.nlevels</span></code> resetting <code class="docutils literal notranslate"><span class="pre">Ej</span></code>/<code class="docutils literal notranslate"><span class="pre">Ec</span></code>;
-<code class="docutils literal notranslate"><span class="pre">hamiltonian_results</span></code> printing <code class="docutils literal notranslate"><span class="pre">np.float64(...)</span></code> under numpy 2;
-<code class="docutils literal notranslate"><span class="pre">fit_transmission(detrend=False)</span></code> starting from zero cable delay.</p></li>
-<li><p>pyEPR packaging: <code class="docutils literal notranslate"><span class="pre">pywin32</span></code> declared only in its <code class="docutils literal notranslate"><span class="pre">[pyaedt]</span></code> extra (a fix in
-pyEPR, not here).</p></li>
+<li><p>LOM 2.0 <code class="docutils literal notranslate"><span class="pre">TL_RESONATOR</span></code> keeps one mode (the #1219 docstring states the
+single-mode limit); the LOM paper’s Eq. 13a factor of 2 still needs a
+check against the paper.</p></li>
+<li><p>Airbridges: <code class="docutils literal notranslate"><span class="pre">route_airbridges</span></code> places real components, so the design-rule
+check already flags a bridge that runs off the chip (<code class="docutils literal notranslate"><span class="pre">chip-bounds</span></code>). It now
+warns when <code class="docutils literal notranslate"><span class="pre">pitch</span></code> is below the bridge footprint, since overlapping bridges
+are not flagged by any rule. A bridge hopping over a neighboring CPW is a
+legal crossover, so adjacent-line handling stays a design choice.</p></li>
+<li><p>pyEPR packaging: <code class="docutils literal notranslate"><span class="pre">pywin32</span></code> is declared only in its <code class="docutils literal notranslate"><span class="pre">[pyaedt]</span></code> extra (a fix
+in pyEPR, not here).</p></li>
 </ul>
 </section>
 </section>
@@ -782,7 +783,7 @@ and the open Ansys issues above.</p></li>
 <li><a class="reference internal" href="#recently-shipped-shipped">Recently shipped <code class="docutils literal notranslate"><span class="pre">[shipped]</span></code></a></li>
 <li><a class="reference internal" href="#now-and-next">Now and next</a></li>
 <li><a class="reference internal" href="#research-and-help-wanted">Research and help wanted</a><ul>
-<li><a class="reference internal" href="#needs-re-verification">Needs re-verification</a></li>
+<li><a class="reference internal" href="#known-limits-and-open-checks">Known limits and open checks</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#how-to-help">How to help</a></li>

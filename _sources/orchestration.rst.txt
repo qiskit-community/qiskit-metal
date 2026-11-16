@@ -82,6 +82,16 @@ of hiding it. The rules and their thresholds are described in
 :mod:`qiskit_metal.validation`; a different process design kit is a constructor
 argument, not a fork.
 
+Watch a script and see the chip update
+======================================
+
+While you edit a design script, ``python -m qiskit_metal.watch my_design.py``
+re-runs it each time you save, writes ``watch_out/design.png``, and prints the
+design-rule report. Add ``--gds`` to also write ``watch_out/design.gds``, which
+KLayout can reload. The script only has to leave a ``QDesign`` in a variable named
+``design`` (``--var`` changes the name). An error in the script is printed and the
+watch keeps running. Nothing here needs Qt.
+
 Getting the same answer twice
 =============================
 
