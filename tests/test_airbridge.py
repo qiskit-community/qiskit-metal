@@ -283,6 +283,60 @@ class TestRouteAirbridges(unittest.TestCase):
         for g in poly[poly["name"] == "bridge"]["geometry"]:
             self.assertTrue(g.intersects(trace))
 
+    def test_pitch_below_the_bridge_footprint_warns(self):
+        """Bridges closer than their own width overlap; nothing else flags it."""
+        from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
+        from qiskit_metal.qlibrary.tlines.straight_path import RouteStraight
+        from qiskit_metal.qlibrary.tlines.airbridge import route_airbridges
+
+        OpenToGround(self.design, "A", options=dict(pos_x="-1mm", orientation="180"))
+        OpenToGround(self.design, "B", options=dict(pos_x="1mm", orientation="0"))
+        cpw = RouteStraight(
+            self.design,
+            "cpw",
+            options=Dict(
+                pin_inputs=Dict(
+                    start_pin=Dict(component="A", pin="open"),
+                    end_pin=Dict(component="B", pin="open"),
+                )
+            ),
+        )
+        with self.assertLogs("qiskit_metal.qlibrary.tlines.airbridge", "WARNING") as cm:
+            route_airbridges(self.design, cpw, pitch="8um", min_spacing="5um")
+        self.assertIn("neighboring bridges overlap", "\n".join(cm.output))
+        with self.assertNoLogs("qiskit_metal.qlibrary.tlines.airbridge", "WARNING"):
+            route_airbridges(self.design, cpw, pitch="200um", min_spacing="5um")
+
+    def test_crossover_length_accepts_a_unit_string(self):
+        """crossover_length="40um" (documented as a str) sets a 0.04 mm span.
+        It raised TypeError, because the value was written back as "40ummm"."""
+        from qiskit_metal.qlibrary.terminations.open_to_ground import OpenToGround
+        from qiskit_metal.qlibrary.tlines.straight_path import RouteStraight
+        from qiskit_metal.qlibrary.tlines.airbridge import route_airbridges
+
+        OpenToGround(self.design, "A", options=dict(pos_x="-1mm", orientation="0"))
+        OpenToGround(self.design, "B", options=dict(pos_x="1mm", orientation="180"))
+        cpw = RouteStraight(
+            self.design,
+            "cpw",
+            options=Dict(
+                pin_inputs=Dict(
+                    start_pin=Dict(component="A", pin="open"),
+                    end_pin=Dict(component="B", pin="open"),
+                )
+            ),
+        )
+        for spec in ("40um", "0.04mm", 0.04):
+            with self.subTest(crossover_length=spec):
+                bridges = route_airbridges(
+                    self.design, cpw, pitch="300um", crossover_length=spec
+                )
+                self.assertGreater(len(bridges), 0)
+                for b in bridges:
+                    self.assertAlmostEqual(
+                        self.design.parse_value(b.options.crossover_length), 0.04
+                    )
+
     def test_route_airbridges_cross_the_filleted_trace(self):
         """Regression: every bridge lands on the *filleted* trace and its span
         actually crosses the CPW — including at corners and near the ends."""
