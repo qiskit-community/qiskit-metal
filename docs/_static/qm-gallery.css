@@ -625,3 +625,10 @@ body[data-theme="dark"] {
     --qm-shadow-hi: 0 2px 4px rgba(0, 0, 0, 0.5), 0 16px 32px -14px rgba(160, 130, 255, 0.45);
   }
 }
+
+/* Task and solver cards: same image height whatever the source aspect ratio */
+.qm-cards-img .sd-card-img-top {
+  height: 150px;
+  object-fit: contain;
+  padding: 0.5rem;
+}

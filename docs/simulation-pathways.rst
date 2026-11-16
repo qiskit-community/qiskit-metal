@@ -9,6 +9,42 @@ paths. Which one to take depends on what you need to compute and what you can
 install. The tutorials use all of them, often on the same kind of device, so a
 result from one path can be checked against another.
 
+.. grid:: 1 2 4 4
+    :gutter: 3
+    :class-container: qm-cards-img
+
+    .. grid-item-card:: Ansys HFSS / Q3D
+        :img-top: _static/workflow/eigenmode-field.png
+        :link: p4-ansys
+        :link-type: ref
+        :class-card: sd-shadow-sm
+
+        Eigenmodes, EPR, S-parameters and LOM. Needs a license.
+
+    .. grid-item-card:: gmsh + ElmerFEM
+        :img-top: _static/gallery/eigenfield_qubit_mode.png
+        :link: tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM
+        :link-type: doc
+        :class-card: sd-shadow-sm
+
+        Open-source capacitance matrices for the LOM.
+
+    .. grid-item-card:: gmsh + scikit-fem
+        :img-top: _static/gallery/eigenfield_resonator_mode.png
+        :link: tut/4-Analysis/4.43-Mesh-and-solve-the-10x10-processor
+        :link-type: doc
+        :class-card: sd-shadow-sm
+
+        Pure-Python eigenmodes and couplings. Only ``pip``.
+
+    .. grid-item-card:: Palace
+        :img-top: _static/home/methods.webp
+        :link: https://github.com/sqdlab/SQDMetal
+        :class-card: sd-shadow-sm
+
+        Large full-wave models on clusters, through SQDMetal.
+
+
 .. list-table::
    :header-rows: 1
    :widths: 16 26 20 20 18
@@ -26,14 +62,14 @@ result from one path can be checked against another.
      - renderers ``hfss``, ``q3d``, ``aedt_hfss``, ``aedt_q3d``;
        ``analyses.simulation`` (``EigenmodeSim``, ``LumpedElementsSim``,
        ``ScatteringImpedanceSim``); ``LOManalysis``
-     - 3.3; 4.01–4.05; 4.11–4.18; 4.21–4.23; pyaedt multiplanar; A.4–A.7
+     - :doc:`3.3 <tut/3-Renderers/3.3-Render-your-design-to-Ansys>`; :ref:`Part 4, Ansys <p4-ansys>`; :doc:`A.4 <circuit-examples/full-design-flow-examples/A.4-Full-chip-design>`
    * - **gmsh + ElmerFEM** (open source)
      - capacitance matrices (electrostatics) for LOM
      - ``pip install "quantum-metal[mesh]"`` plus the ElmerFEM binaries
        (``ElmerGrid``, ``ElmerSolver`` on ``PATH``; see
        ``README_Open_FEM_Stack.md``)
      - ``QGmshRenderer``, ``QElmerRenderer``
-     - 3.5; 4.19; A.4; the two-qubit cell of the 17-qubit chip
+     - :doc:`3.5 <tut/3-Renderers/3.5-Render-your-design-to-Gmsh>`; :doc:`4.19 <tut/4-Analysis/4.19-Analyze-a-transmon-using-ElmerFEM>`; :doc:`A.4 <circuit-examples/full-design-flow-examples/A.4-Full-chip-design>`; :doc:`the two-qubit cell of the 17-qubit chip <circuit-examples/F.Small-quantum-chips/54-Wallraff_TwoQubit_Cell_Mesh>`
    * - **gmsh + scikit-fem** (open source, pure Python)
      - eigenmodes with lumped junction inductors; EPR, avoided-crossing,
        induced-EMF and impedance-matrix couplings; port impedance matrices;
@@ -43,7 +79,7 @@ result from one path can be checked against another.
      - ``qiskit_metal.analyses.fem`` (the solver) and
        ``qiskit_metal.analyses.em.package_modes`` (the analytic models);
        not yet a renderer
-     - 4.41–4.46
+     - :doc:`4.41 <tut/4-Analysis/4.41-The-package-mode-on-paper>` to :doc:`4.46 <tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling>`; :ref:`Part 4, open source <p4-open-source>`
    * - **AWS Palace via SQDMetal** (open source)
      - eigenmodes, capacitance, driven and inductance studies on MPI;
        lumped and wave ports, EPR
@@ -67,7 +103,7 @@ Choosing a path
   runs in parallel and supports higher-order elements); the scikit-fem solver
   for small ones or where installing binaries is not possible.
 - **Eigenmodes and couplings without a license**: the scikit-fem solver, for
-  cells and arrays of simple qubits. Tutorials 4.43–4.46 reproduce a published
+  cells and arrays of simple qubits. Tutorials :doc:`4.43 <tut/4-Analysis/4.43-Mesh-and-solve-the-10x10-processor>` to :doc:`4.46 <tut/4-Analysis/4.46-Beyond-the-dipole-multipoles-and-magnetic-coupling>` reproduce a published
   HFSS study of a 10 × 10 transmon array to within a few percent.
 - **Large full-wave models, wave ports, losses, clusters**: Palace, through
   SQDMetal today; natively once the integration above lands.

@@ -172,8 +172,6 @@ Qiskit Metal is now Quantum Metal
     Quick Start<quickstart>
     Installing Quantum Metal<installation>
     Choose Your Path<choose-your-path>
-    How Do I...?<how-do-i>
-    Scripting and Agent Use<orchestration>
     Built on Quantum Metal<ecosystem>
 
 .. toctree::
@@ -185,6 +183,7 @@ Qiskit Metal is now Quantum Metal
     Reproduced Devices (Notebooks)<research>
     Learn<tut/index>
     Examples<circuit-examples/index>
+    How Do I...?<how-do-i>
 
 .. toctree::
     :maxdepth: 1
@@ -196,6 +195,7 @@ Qiskit Metal is now Quantum Metal
     Simulation Pathways<simulation-pathways>
     GDS in KLayout<klayout>
     Desktop GUI or Headless<headless-usage>
+    Scripting and Agent Use<orchestration>
     GUI Navigation & Shortcuts<gui-shortcuts>
 
 .. toctree::
