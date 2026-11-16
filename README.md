@@ -21,11 +21,21 @@
 
 <p align="center"><sub><a href="./scripts/make_hero_gif.py">Regenerate this GIF</a> · <a href="./docs/tut/2-From-components-to-chip/2.21-Design-a-4-qubit-full-chip.ipynb">Full tutorial: 2.21</a></sub></p>
 
-**Since v0.8.1:** the desktop GUI canvas is now directly editable — click a
-component to select it, move and rotate it with the keyboard, rebuild to
-re-route connected CPWs (selection survives). See the
-[GUI Navigation & Shortcuts](https://qiskit-community.github.io/qiskit-metal/gui-shortcuts.html)
-docs page.
+<p align="center">
+  <a href="https://qiskit-community.github.io/qiskit-metal/quickstart.html"><b>Quick start</b></a> ·
+  <a href="https://qiskit-community.github.io/qiskit-metal/how-do-i.html"><b>How do I...?</b></a> ·
+  <a href="https://qiskit-community.github.io/qiskit-metal/qcomponents-gallery.html"><b>Component catalog</b></a> ·
+  <a href="https://qiskit-community.github.io/qiskit-metal/tut/index.html"><b>Tutorials</b></a> ·
+  <a href="https://qiskit-community.github.io/qiskit-metal/orchestration.html"><b>Scripting and agent use</b></a>
+</p>
+
+**What's new** (v0.9.0 to v0.10.1, see the [release notes](https://github.com/qiskit-community/qiskit-metal/releases)):
+
+- **Open-source simulation:** a gmsh + scikit-fem Maxwell solver (`qiskit_metal.analyses.fem`) and tutorials 4.41–4.46 on package modes and qubit couplings, with no Ansys license.
+- **Design-rule checks:** `validate(design)` with shape rules and waivers; a GDS layer-properties file and starter rule deck for [KLayout](https://qiskit-community.github.io/qiskit-metal/klayout.html).
+- **Scripting:** `python -m qiskit_metal.watch my_design.py` re-runs a script on save and renders the chip; repeatable GDS export with `SOURCE_DATE_EPOCH`.
+- **Docs:** a [component catalog](https://qiskit-community.github.io/qiskit-metal/qcomponents-gallery.html) with default options and pins for every component, a task-organized [How do I...?](https://qiskit-community.github.io/qiskit-metal/how-do-i.html) page, and a [simulation pathways](https://qiskit-community.github.io/qiskit-metal/simulation-pathways.html) guide.
+- **Python 3.11 to 3.14** and numpy 2; many fixes to the analytic formulas, GDS export and routing (see *Behavior changes* in the [changelog](./changelog.md)).
 
 ### 🚀 Try it now — zero install
 
@@ -35,54 +45,36 @@ docs page.
 
 One click → working Quantum Metal in your browser in 60 seconds (lite install, no Qt required).
 
-📍 **Where we're heading:** see [ROADMAP.md](./ROADMAP.md) for the
-lite-by-default install (v0.7.0, shipped), the AI-orchestration profile,
-the open FEM stack (gmsh + Elmer + AWS Palace), and the upcoming
-import-path rename.
+📍 **Where we're heading:** see [ROADMAP.md](./ROADMAP.md) for the open FEM
+stack (ElmerFEM eigenmodes, a scikit-fem renderer, AWS Palace), solver
+backends, more design-rule checks, and the planned import-path rename.
 
 ---
 
 ## Install
 
 ```bash
-pip install quantum-metal             # lite (v0.7.0+ default)
-pip install "quantum-metal[full]"     # everything (v0.6.x compatibility)
+pip install quantum-metal             # lite: no Qt, no Ansys, no gmsh
+pip install "quantum-metal[gui]"      # + the desktop GUI
 ```
 
-Pick the install command that matches your workflow:
-
-| | What you get | When |
+| Install | What you get | When |
 |---|---|---|
-| **🪶 Lite** `pip install quantum-metal` | Core API, `qm.view(design)` headless viewer, GDS export, pure-Python analyses | AI orchestration, Colab / Binder, cloud Jupyter, CI, any non-interactive workflow |
-| **🖥️ GUI** `pip install "quantum-metal[gui]"` | + `MetalGUI` desktop app (PySide6, qdarkstyle) | Interactive design work |
-| **🧲 Ansys** `pip install "quantum-metal[ansys]"` | + HFSS / Q3D renderers, EPR analyses (pyaedt, pyEPR-quantum) | HFSS / Q3D simulation (Windows + Ansys AEDT license) |
-| **🔺 Open FEM mesher** `pip install "quantum-metal[mesh]"` | + gmsh meshing (foundation for Elmer / Palace) | Open-source FEM (no Ansys license). `[fem]` is a backward-compat alias. |
-| **🧮 Open Maxwell solver** `pip install "quantum-metal[skfem]"` | `[mesh]` + the scikit-fem eigenmode solver (add `pymetis` for tutorial 4.46) | Open-source eigenmodes and couplings without Ansys (tutorials 4.41–4.46). |
-| **📦 Full** `pip install "quantum-metal[full]"` | All of the above | Migrating from v0.6.x, want zero behavior change |
+| `pip install quantum-metal` | Core API, `qm.view(design)` headless viewer, GDS export, design-rule checks, pure-Python analyses | Scripts, AI orchestration, Colab / Binder, CI |
+| `"quantum-metal[gui]"` | + `MetalGUI` desktop app (PySide6) | Interactive design |
+| `"quantum-metal[ansys]"` | + HFSS / Q3D renderers, EPR (pyaedt, pyEPR-quantum) | Ansys simulation (Ansys Electronics Desktop license) |
+| `"quantum-metal[mesh]"` | + gmsh meshing for ElmerFEM (`[fem]` is an alias) | Open-source capacitance simulation |
+| `"quantum-metal[skfem]"` | `[mesh]` + the scikit-fem solver (add `pymetis` for tutorial 4.46) | Open-source eigenmodes and couplings, tutorials 4.41–4.46 |
+| `"quantum-metal[full]"` | GUI, Ansys and mesh together | Everything |
 
-Extras compose: `pip install "quantum-metal[gui,ansys]"` works.
+Extras compose: `pip install "quantum-metal[gui,ansys]"` works. Which extra to
+choose is explained on the
+[simulation pathways](https://qiskit-community.github.io/qiskit-metal/simulation-pathways.html)
+page.
 
-<details>
-<summary>Feature matrix — what each install gives you</summary>
-
-| | lite | `[gui]` | `[ansys]` | `[mesh]` | `[full]` |
-|---|---|---|---|---|---|
-| `import qiskit_metal` | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `qm.view(design)` (headless matplotlib) | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Build designs + components from `qlibrary` | ✅ | ✅ | ✅ | ✅ | ✅ |
-| GDS export | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `LOManalysis`, LOM math, capacitance reductions | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `MetalGUI` desktop app | — | ✅ | — | — | ✅ |
-| HFSS / Q3D renderers | — | — | ✅ | — | ✅ |
-| EPR analyses (`EigenmodeSim`, `LumpedElementsSim`) | — | — | ✅ | — | ✅ |
-| gmsh mesher (for Elmer / Palace) | — | — | — | ✅ | ✅ |
-
-`[fem]` is a backward-compatible alias of `[mesh]` — both install gmsh.
-
-</details>
-
-Source install, conda and troubleshooting:
-[`docs/installation.rst`](./docs/installation.rst).
+Source install, conda, the full feature matrix and troubleshooting:
+[`docs/installation.rst`](./docs/installation.rst) and the
+[FAQ](https://qiskit-community.github.io/qiskit-metal/faq.html).
 
 CI runs on **Python 3.11 / 3.12 / 3.13 / 3.14** across Linux, macOS, and Windows.
 
@@ -145,8 +137,8 @@ for the related environment switches.
 
 </details>
 
-**Next:** browse the [tutorial notebooks](./docs/tut/) (40+ Jupyter notebooks
-covering the full API) or the
+**Next:** pick a goal on [Choose your path](https://qiskit-community.github.io/qiskit-metal/choose-your-path.html), browse the [tutorial notebooks](./docs/tut/) (about 95 Jupyter notebooks
+from first steps to solver tutorials) or the
 [online documentation](https://qiskit-community.github.io/qiskit-metal/).
 
 ---
@@ -266,7 +258,7 @@ Utilities — and how they interact, see
 [`docs/architecture.rst`](./docs/architecture.rst).
 
 Module-level deep dive:
-[`docs/overview.rst`](./docs/overview.rst) ·
+[`docs/overview.rst`](./docs/overview.rst) (API summary and package map) ·
 [`docs/workflow.rst`](./docs/workflow.rst).
 
 ---
