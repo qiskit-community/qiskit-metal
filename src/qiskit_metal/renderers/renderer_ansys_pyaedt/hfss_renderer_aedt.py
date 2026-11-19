@@ -607,11 +607,14 @@ class QHFSSPyaedt(QPyaedt):
                 impedance = self.jj_to_port_dict[search_junction]
                 jj_name_port = "JJ_rect_" + "R_" + str(
                     qgeom["component"]) + "_" + str(qgeom['name'])
-                jj_to_port_boundary = self.current_app.create_lumped_port_to_sheet(  # noqa: F841
-                    sheet_name=poly_sheet.name,
-                    portname=jj_name_port,
-                    axisdir=endpoints_3d,
-                    impedance=impedance)
+                # pyaedt has no create_lumped_port_to_sheet (neither 0.2x nor
+                # 1.x); lumped_port on an existing sheet is the replacement.
+                jj_to_port_boundary = self.current_app.lumped_port(  # noqa: F841
+                    assignment=poly_sheet.name,
+                    create_port_sheet=False,
+                    integration_line=endpoints_3d,
+                    impedance=impedance,
+                    name=jj_name_port)
         else:
             # Looks QGeometry table to pull Lj and Cj
             jj_geom_table = self.design.qgeometry.tables['junction']
@@ -620,11 +623,11 @@ class QHFSSPyaedt(QPyaedt):
             Cvalue = parse_entry(jj_of_interest['aedt_hfss_capacitance'][0])
 
             lumped_rlc_boundary = self.current_app.assign_lumped_rlc_to_sheet(  # noqa: F841
-                sheet_name=poly_sheet.name,
-                sourcename=f'rlc_{poly_sheet.name}',
-                axisdir=endpoints_3d,
-                Lvalue=Lvalue,
-                Cvalue=Cvalue)
+                assignment=poly_sheet.name,
+                name=f'rlc_{poly_sheet.name}',
+                start_direction=endpoints_3d,
+                inductance=Lvalue,
+                capacitance=Cvalue)
 
     def draw_sample_holder(self):
         """Adds a vacuum box to HFSS design.  The xy coordinates are determined by
@@ -665,11 +668,11 @@ class QHFSSPyaedt(QPyaedt):
             name=box_name,
             cover_surface=True,
             close_surface=True,
-            matname="vacuum")
+            material="vacuum")
 
         self.current_app.modeler.thicken_sheet(sample_holder_rectangle.id,
                                                thickness=vac_height,
-                                               bBothSides=True)
+                                               both_sides=True)
 
     def add_ports(self, port_list: list, port_list_dict: dict, layer_num: int):
         # Should be overwritten by drivenmodal, since eigenmode does not have ports.

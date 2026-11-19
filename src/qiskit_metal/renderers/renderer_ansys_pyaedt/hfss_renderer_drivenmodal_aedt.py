@@ -180,8 +180,10 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             new_setup.props["MaximumPasses"] = MaximumPasses
         elif SolveType == "Broadband":
             new_setup.enable_adaptive_setup_broadband(
-                low_frequency=f"{BroadbandLowFreq}GHz",
-                high_frquency=f"{BroadbandHighFreq}GHz",
+                # Positional: pyaedt 0.2x spells this keyword "high_frquency",
+                # pyaedt 1.x spells it "high_frequency".
+                f"{BroadbandLowFreq}GHz",
+                f"{BroadbandHighFreq}GHz",
                 max_passes=MaximumPasses,
                 max_delta_s=MaxDeltaE,
             )
@@ -245,12 +247,12 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
         if setup_name in self.current_app.setup_names:
             try:
                 sweep = self.current_app.create_linear_count_sweep(
-                    setupname=setup_name,
+                    setup=setup_name,
                     unit=unit,
-                    freqstart=start_ghz,
-                    freqstop=stop_ghz,
+                    start_frequency=start_ghz,
+                    stop_frequency=stop_ghz,
                     num_of_freq_points=count,
-                    sweepname=name,
+                    name=name,
                     save_fields=save_fields,
                     sweep_type=type,
                     interpolation_tol=interpolation_tol,
@@ -267,12 +269,12 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             self.add_hfss_dm_setup(setup_name)
             try:
                 sweep = self.current_app.create_linear_count_sweep(
-                    setupname=setup_name,
+                    setup=setup_name,
                     unit=unit,
-                    freqstart=start_ghz,
-                    freqstop=stop_ghz,
+                    start_frequency=start_ghz,
+                    stop_frequency=stop_ghz,
                     num_of_freq_points=count,
-                    sweepname=name,
+                    name=name,
                     save_fields=save_fields,
                     sweep_type=type,
                     interpolation_tol=interpolation_tol,
@@ -671,12 +673,15 @@ class QHFSSDrivenmodalPyaedt(QHFSSPyaedt):
             poly_port.show_arrow = True
             poly_port.color = (128, 0, 128)
 
-            lumped_port = self.current_app.create_lumped_port_to_sheet(  # noqa: F841
-                sheet_name=poly_port.name,
-                # Name is under excitation folder, so can reuse.
-                portname=poly_port.name,
-                axisdir=endpoints_3d,
+            # pyaedt has no create_lumped_port_to_sheet (neither 0.2x nor
+            # 1.x); lumped_port on an existing sheet is the replacement.
+            lumped_port = self.current_app.lumped_port(  # noqa: F841
+                assignment=poly_port.name,
+                create_port_sheet=False,
+                integration_line=endpoints_3d,
                 impedance=impedance,
+                # Name is under excitation folder, so can reuse.
+                name=poly_port.name,
             )
 
     def add_mesh(self):

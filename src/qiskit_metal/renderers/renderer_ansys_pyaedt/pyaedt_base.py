@@ -366,7 +366,7 @@ class QPyaedt(QRendererAnalysis):
             name=name,
             cover_surface=False,
             close_surface=False,
-            matname=material,
+            material=material,
         )
 
         # The transparency is hardcoded.  Ugh.
@@ -393,13 +393,13 @@ class QPyaedt(QRendererAnalysis):
             )
             a_name = a_polyline_wider.name  # noqa: F841
             a_polyline_width_thickened = self.current_app.modeler.thicken_sheet(
-                a_polyline_wider.id, thickness=thickness, bBothSides=True
+                a_polyline_wider.id, thickness=thickness, both_sides=True
             )
 
         else:
             # no widening, so just thicken it.
             a_polyline_width_thickened = self.current_app.modeler.thicken_sheet(
-                a_polyline.id, thickness=thickness, bBothSides=True
+                a_polyline.id, thickness=thickness, both_sides=True
             )
 
         # # Thicken after fillet.
@@ -476,7 +476,7 @@ class QPyaedt(QRendererAnalysis):
             name=name,
             cover_surface=True,
             close_surface=True,
-            matname=material,
+            material=material,
         )
 
         # Subtract interior shapes, if any
@@ -490,18 +490,18 @@ class QPyaedt(QRendererAnalysis):
                     points_3d_interior[:-1],
                     close_surface=True,
                     cover_surface=True,
-                    matname=material,
+                    material=material,
                 )
                 inner_shape_ids.append(inner_shape.id)
             result = self.current_app.modeler.subtract(
-                name, inner_shape_ids, keepOriginals=False
+                name, inner_shape_ids, keep_originals=False
             )
             self.current_app.modeler.thicken_sheet(
-                name, thickness=thickness, bBothSides=True
+                name, thickness=thickness, both_sides=True
             )
         else:  # No interiors
             self.current_app.modeler.thicken_sheet(
-                a_polyline.id, thickness=thickness, bBothSides=True
+                a_polyline.id, thickness=thickness, both_sides=True
             )
 
         if subtract is True and fill_value is True:
@@ -512,9 +512,9 @@ class QPyaedt(QRendererAnalysis):
             if layer not in self.chip_subtract_dict:
                 self.chip_subtract_dict[layer] = list()
 
-            self.chip_subtract_dict[layer].append(
-                self.current_app.modeler.object_id_dict[name]
-            )
+            # Modeler has no object_id_dict (neither pyaedt 0.2x nor 1.x);
+            # use the id of the object drawn above, as the path branch does.
+            self.chip_subtract_dict[layer].append(a_polyline.id)
 
             # # Input chip info into self.chip_subtract_dict
             # if chip_name not in self.chip_subtract_dict:
@@ -566,7 +566,8 @@ class QPyaedt(QRendererAnalysis):
     def force_exit_ansys(self):
         """This will allow user to force closing of Ansys."""
 
-        self._desktop.force_close_desktop()
+        # pyaedt's Desktop has no force_close_desktop (neither 0.2x nor 1.x).
+        self._desktop.close_desktop()
 
     def _close_renderer(self):
         """
@@ -679,11 +680,11 @@ class QPyaedt(QRendererAnalysis):
                 name=box_name,
                 cover_surface=True,
                 close_surface=True,
-                matname=value["material"],
+                material=value["material"],
             )
 
             self.current_app.modeler.thicken_sheet(
-                box_at_layer_datatype.id, thickness=value["thickness"], bBothSides=True
+                box_at_layer_datatype.id, thickness=value["thickness"], both_sides=True
             )
 
             self.fill_info[key]["box_id"] = box_at_layer_datatype.id
@@ -727,7 +728,7 @@ class QPyaedt(QRendererAnalysis):
 
         shortline_name = f"{a_polyline.name}_shortline"
         shortline = self.current_app.modeler.create_polyline(
-            [p0, p1], name=shortline_name, close_surface=False, matname=material
+            [p0, p1], name=shortline_name, close_surface=False, material=material
         )
 
         a_polyline_width = shortline.sweep_along_path(a_polyline)
@@ -776,14 +777,14 @@ class QPyaedt(QRendererAnalysis):
             [start_vec_xyz, end_vec_xyz],
             name=endcap_name,
             cover_surface=False,
-            matname=material,
+            material=material,
             close_surface=False,
             xsection_type="Line",
             xsection_width=2 * gap + width,
         )
 
         thickened = self.current_app.modeler.thicken_sheet(
-            endcap_reference.id, thickness=thickness, bBothSides=True
+            endcap_reference.id, thickness=thickness, both_sides=True
         )
         if fill:
             if layer not in self.chip_subtract_dict:
@@ -852,7 +853,7 @@ class QPyaedt(QRendererAnalysis):
             self.current_app.modeler.subtract(
                 self.fill_info[key]["box_name"],
                 self.chip_subtract_dict[layer_num],
-                keepOriginals=False,
+                keep_originals=False,
             )
 
         # if is_rectangle(qc_shapely):  # Draw as rectangle
