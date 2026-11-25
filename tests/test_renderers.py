@@ -761,6 +761,9 @@ class TestRenderers(unittest.TestCase):
 
         import qiskit_metal.renderers.renderer_ansys_pyaedt as pkg
 
+        # Old pyaedt 0.2x keyword names. Some are generic (sheet_name,
+        # axisdir, Lvalue), so this flags them on any call in the package,
+        # not only pyaedt calls; rename a local helper's parameter if it trips.
         removed = {
             "matname",
             "bBothSides",
