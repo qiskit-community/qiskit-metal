@@ -772,8 +772,10 @@
             <span class="n">new_setup</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">"MaximumPasses"</span><span class="p">]</span> <span class="o">=</span> <span class="n">MaximumPasses</span>
         <span class="k">elif</span> <span class="n">SolveType</span> <span class="o">==</span> <span class="s2">"Broadband"</span><span class="p">:</span>
             <span class="n">new_setup</span><span class="o">.</span><span class="n">enable_adaptive_setup_broadband</span><span class="p">(</span>
-                <span class="n">low_frequency</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">BroadbandLowFreq</span><span class="si">}</span><span class="s2">GHz"</span><span class="p">,</span>
-                <span class="n">high_frquency</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">BroadbandHighFreq</span><span class="si">}</span><span class="s2">GHz"</span><span class="p">,</span>
+                <span class="c1"># Positional: pyaedt 0.2x spells this keyword "high_frquency",</span>
+                <span class="c1"># pyaedt 1.x spells it "high_frequency".</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">BroadbandLowFreq</span><span class="si">}</span><span class="s2">GHz"</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">BroadbandHighFreq</span><span class="si">}</span><span class="s2">GHz"</span><span class="p">,</span>
                 <span class="n">max_passes</span><span class="o">=</span><span class="n">MaximumPasses</span><span class="p">,</span>
                 <span class="n">max_delta_s</span><span class="o">=</span><span class="n">MaxDeltaE</span><span class="p">,</span>
             <span class="p">)</span>
@@ -840,12 +842,12 @@
         <span class="k">if</span> <span class="n">setup_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">setup_names</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">sweep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">create_linear_count_sweep</span><span class="p">(</span>
-                    <span class="n">setupname</span><span class="o">=</span><span class="n">setup_name</span><span class="p">,</span>
+                    <span class="n">setup</span><span class="o">=</span><span class="n">setup_name</span><span class="p">,</span>
                     <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">,</span>
-                    <span class="n">freqstart</span><span class="o">=</span><span class="n">start_ghz</span><span class="p">,</span>
-                    <span class="n">freqstop</span><span class="o">=</span><span class="n">stop_ghz</span><span class="p">,</span>
+                    <span class="n">start_frequency</span><span class="o">=</span><span class="n">start_ghz</span><span class="p">,</span>
+                    <span class="n">stop_frequency</span><span class="o">=</span><span class="n">stop_ghz</span><span class="p">,</span>
                     <span class="n">num_of_freq_points</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
-                    <span class="n">sweepname</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                     <span class="n">save_fields</span><span class="o">=</span><span class="n">save_fields</span><span class="p">,</span>
                     <span class="n">sweep_type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span>
                     <span class="n">interpolation_tol</span><span class="o">=</span><span class="n">interpolation_tol</span><span class="p">,</span>
@@ -862,12 +864,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">add_hfss_dm_setup</span><span class="p">(</span><span class="n">setup_name</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">sweep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">create_linear_count_sweep</span><span class="p">(</span>
-                    <span class="n">setupname</span><span class="o">=</span><span class="n">setup_name</span><span class="p">,</span>
+                    <span class="n">setup</span><span class="o">=</span><span class="n">setup_name</span><span class="p">,</span>
                     <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">,</span>
-                    <span class="n">freqstart</span><span class="o">=</span><span class="n">start_ghz</span><span class="p">,</span>
-                    <span class="n">freqstop</span><span class="o">=</span><span class="n">stop_ghz</span><span class="p">,</span>
+                    <span class="n">start_frequency</span><span class="o">=</span><span class="n">start_ghz</span><span class="p">,</span>
+                    <span class="n">stop_frequency</span><span class="o">=</span><span class="n">stop_ghz</span><span class="p">,</span>
                     <span class="n">num_of_freq_points</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
-                    <span class="n">sweepname</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                     <span class="n">save_fields</span><span class="o">=</span><span class="n">save_fields</span><span class="p">,</span>
                     <span class="n">sweep_type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span>
                     <span class="n">interpolation_tol</span><span class="o">=</span><span class="n">interpolation_tol</span><span class="p">,</span>
@@ -1299,12 +1301,15 @@
             <span class="n">poly_port</span><span class="o">.</span><span class="n">show_arrow</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">poly_port</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
 
-            <span class="n">lumped_port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">create_lumped_port_to_sheet</span><span class="p">(</span>  <span class="c1"># noqa: F841</span>
-                <span class="n">sheet_name</span><span class="o">=</span><span class="n">poly_port</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="c1"># Name is under excitation folder, so can reuse.</span>
-                <span class="n">portname</span><span class="o">=</span><span class="n">poly_port</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">axisdir</span><span class="o">=</span><span class="n">endpoints_3d</span><span class="p">,</span>
+            <span class="c1"># pyaedt has no create_lumped_port_to_sheet (neither 0.2x nor</span>
+            <span class="c1"># 1.x); lumped_port on an existing sheet is the replacement.</span>
+            <span class="n">lumped_port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">lumped_port</span><span class="p">(</span>  <span class="c1"># noqa: F841</span>
+                <span class="n">assignment</span><span class="o">=</span><span class="n">poly_port</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">create_port_sheet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">integration_line</span><span class="o">=</span><span class="n">endpoints_3d</span><span class="p">,</span>
                 <span class="n">impedance</span><span class="o">=</span><span class="n">impedance</span><span class="p">,</span>
+                <span class="c1"># Name is under excitation folder, so can reuse.</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">poly_port</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">)</span></div>
 
 
@@ -1332,7 +1337,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/11/16</div>
+              Last updated on 2026/11/25</div>
           </div>
           <div class="right-details">
             

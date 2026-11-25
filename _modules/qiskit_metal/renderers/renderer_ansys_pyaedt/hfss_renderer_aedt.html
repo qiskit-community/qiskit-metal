@@ -1223,11 +1223,14 @@
                 <span class="n">impedance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jj_to_port_dict</span><span class="p">[</span><span class="n">search_junction</span><span class="p">]</span>
                 <span class="n">jj_name_port</span> <span class="o">=</span> <span class="s2">"JJ_rect_"</span> <span class="o">+</span> <span class="s2">"R_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span>
                     <span class="n">qgeom</span><span class="p">[</span><span class="s2">"component"</span><span class="p">])</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">qgeom</span><span class="p">[</span><span class="s1">'name'</span><span class="p">])</span>
-                <span class="n">jj_to_port_boundary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">create_lumped_port_to_sheet</span><span class="p">(</span>  <span class="c1"># noqa: F841</span>
-                    <span class="n">sheet_name</span><span class="o">=</span><span class="n">poly_sheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                    <span class="n">portname</span><span class="o">=</span><span class="n">jj_name_port</span><span class="p">,</span>
-                    <span class="n">axisdir</span><span class="o">=</span><span class="n">endpoints_3d</span><span class="p">,</span>
-                    <span class="n">impedance</span><span class="o">=</span><span class="n">impedance</span><span class="p">)</span>
+                <span class="c1"># pyaedt has no create_lumped_port_to_sheet (neither 0.2x nor</span>
+                <span class="c1"># 1.x); lumped_port on an existing sheet is the replacement.</span>
+                <span class="n">jj_to_port_boundary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">lumped_port</span><span class="p">(</span>  <span class="c1"># noqa: F841</span>
+                    <span class="n">assignment</span><span class="o">=</span><span class="n">poly_sheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">create_port_sheet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">integration_line</span><span class="o">=</span><span class="n">endpoints_3d</span><span class="p">,</span>
+                    <span class="n">impedance</span><span class="o">=</span><span class="n">impedance</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">jj_name_port</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Looks QGeometry table to pull Lj and Cj</span>
             <span class="n">jj_geom_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">qgeometry</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">'junction'</span><span class="p">]</span>
@@ -1236,11 +1239,11 @@
             <span class="n">Cvalue</span> <span class="o">=</span> <span class="n">parse_entry</span><span class="p">(</span><span class="n">jj_of_interest</span><span class="p">[</span><span class="s1">'aedt_hfss_capacitance'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 
             <span class="n">lumped_rlc_boundary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">assign_lumped_rlc_to_sheet</span><span class="p">(</span>  <span class="c1"># noqa: F841</span>
-                <span class="n">sheet_name</span><span class="o">=</span><span class="n">poly_sheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">sourcename</span><span class="o">=</span><span class="sa">f</span><span class="s1">'rlc_</span><span class="si">{</span><span class="n">poly_sheet</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span>
-                <span class="n">axisdir</span><span class="o">=</span><span class="n">endpoints_3d</span><span class="p">,</span>
-                <span class="n">Lvalue</span><span class="o">=</span><span class="n">Lvalue</span><span class="p">,</span>
-                <span class="n">Cvalue</span><span class="o">=</span><span class="n">Cvalue</span><span class="p">)</span></div>
+                <span class="n">assignment</span><span class="o">=</span><span class="n">poly_sheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s1">'rlc_</span><span class="si">{</span><span class="n">poly_sheet</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span>
+                <span class="n">start_direction</span><span class="o">=</span><span class="n">endpoints_3d</span><span class="p">,</span>
+                <span class="n">inductance</span><span class="o">=</span><span class="n">Lvalue</span><span class="p">,</span>
+                <span class="n">capacitance</span><span class="o">=</span><span class="n">Cvalue</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSPyaedt.draw_sample_holder">
@@ -1284,11 +1287,11 @@
             <span class="n">name</span><span class="o">=</span><span class="n">box_name</span><span class="p">,</span>
             <span class="n">cover_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">close_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">matname</span><span class="o">=</span><span class="s2">"vacuum"</span><span class="p">)</span>
+            <span class="n">material</span><span class="o">=</span><span class="s2">"vacuum"</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">thicken_sheet</span><span class="p">(</span><span class="n">sample_holder_rectangle</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                                                <span class="n">thickness</span><span class="o">=</span><span class="n">vac_height</span><span class="p">,</span>
-                                               <span class="n">bBothSides</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+                                               <span class="n">both_sides</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="QHFSSPyaedt.add_ports">
@@ -1621,7 +1624,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/11/16</div>
+              Last updated on 2026/11/25</div>
           </div>
           <div class="right-details">
             

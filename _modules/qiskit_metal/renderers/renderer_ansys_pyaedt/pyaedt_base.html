@@ -976,7 +976,7 @@
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
             <span class="n">cover_surface</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">close_surface</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">matname</span><span class="o">=</span><span class="n">material</span><span class="p">,</span>
+            <span class="n">material</span><span class="o">=</span><span class="n">material</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># The transparency is hardcoded.  Ugh.</span>
@@ -1003,13 +1003,13 @@
             <span class="p">)</span>
             <span class="n">a_name</span> <span class="o">=</span> <span class="n">a_polyline_wider</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># noqa: F841</span>
             <span class="n">a_polyline_width_thickened</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">thicken_sheet</span><span class="p">(</span>
-                <span class="n">a_polyline_wider</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">bBothSides</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">a_polyline_wider</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">both_sides</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># no widening, so just thicken it.</span>
             <span class="n">a_polyline_width_thickened</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">thicken_sheet</span><span class="p">(</span>
-                <span class="n">a_polyline</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">bBothSides</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">a_polyline</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">both_sides</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
 
         <span class="c1"># # Thicken after fillet.</span>
@@ -1089,7 +1089,7 @@
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
             <span class="n">cover_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">close_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">matname</span><span class="o">=</span><span class="n">material</span><span class="p">,</span>
+            <span class="n">material</span><span class="o">=</span><span class="n">material</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># Subtract interior shapes, if any</span>
@@ -1103,18 +1103,18 @@
                     <span class="n">points_3d_interior</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
                     <span class="n">close_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">cover_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                    <span class="n">matname</span><span class="o">=</span><span class="n">material</span><span class="p">,</span>
+                    <span class="n">material</span><span class="o">=</span><span class="n">material</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">inner_shape_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inner_shape</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span>
-                <span class="n">name</span><span class="p">,</span> <span class="n">inner_shape_ids</span><span class="p">,</span> <span class="n">keepOriginals</span><span class="o">=</span><span class="kc">False</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">inner_shape_ids</span><span class="p">,</span> <span class="n">keep_originals</span><span class="o">=</span><span class="kc">False</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">thicken_sheet</span><span class="p">(</span>
-                <span class="n">name</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">bBothSides</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">both_sides</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># No interiors</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">thicken_sheet</span><span class="p">(</span>
-                <span class="n">a_polyline</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">bBothSides</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">a_polyline</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">both_sides</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">subtract</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">fill_value</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
@@ -1125,9 +1125,9 @@
             <span class="k">if</span> <span class="n">layer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chip_subtract_dict</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">chip_subtract_dict</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">chip_subtract_dict</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">object_id_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-            <span class="p">)</span></div>
+            <span class="c1"># Modeler has no object_id_dict (neither pyaedt 0.2x nor 1.x);</span>
+            <span class="c1"># use the id of the object drawn above, as the path branch does.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">chip_subtract_dict</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a_polyline</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
 
 
             <span class="c1"># # Input chip info into self.chip_subtract_dict</span>
@@ -1182,7 +1182,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">force_exit_ansys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""This will allow user to force closing of Ansys."""</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_desktop</span><span class="o">.</span><span class="n">force_close_desktop</span><span class="p">()</span></div>
+        <span class="c1"># pyaedt's Desktop has no force_close_desktop (neither 0.2x nor 1.x).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_desktop</span><span class="o">.</span><span class="n">close_desktop</span><span class="p">()</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_close_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1310,11 +1311,11 @@
                 <span class="n">name</span><span class="o">=</span><span class="n">box_name</span><span class="p">,</span>
                 <span class="n">cover_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">close_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">matname</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="s2">"material"</span><span class="p">],</span>
+                <span class="n">material</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="s2">"material"</span><span class="p">],</span>
             <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">thicken_sheet</span><span class="p">(</span>
-                <span class="n">box_at_layer_datatype</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="s2">"thickness"</span><span class="p">],</span> <span class="n">bBothSides</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">box_at_layer_datatype</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="s2">"thickness"</span><span class="p">],</span> <span class="n">both_sides</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">fill_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">"box_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_at_layer_datatype</span><span class="o">.</span><span class="n">id</span>
@@ -1364,7 +1365,7 @@
 
         <span class="n">shortline_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">a_polyline</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_shortline"</span>
         <span class="n">shortline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">create_polyline</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">shortline_name</span><span class="p">,</span> <span class="n">close_surface</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matname</span><span class="o">=</span><span class="n">material</span>
+            <span class="p">[</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">shortline_name</span><span class="p">,</span> <span class="n">close_surface</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">material</span>
         <span class="p">)</span>
 
         <span class="n">a_polyline_width</span> <span class="o">=</span> <span class="n">shortline</span><span class="o">.</span><span class="n">sweep_along_path</span><span class="p">(</span><span class="n">a_polyline</span><span class="p">)</span>
@@ -1416,14 +1417,14 @@
             <span class="p">[</span><span class="n">start_vec_xyz</span><span class="p">,</span> <span class="n">end_vec_xyz</span><span class="p">],</span>
             <span class="n">name</span><span class="o">=</span><span class="n">endcap_name</span><span class="p">,</span>
             <span class="n">cover_surface</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">matname</span><span class="o">=</span><span class="n">material</span><span class="p">,</span>
+            <span class="n">material</span><span class="o">=</span><span class="n">material</span><span class="p">,</span>
             <span class="n">close_surface</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">xsection_type</span><span class="o">=</span><span class="s2">"Line"</span><span class="p">,</span>
             <span class="n">xsection_width</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gap</span> <span class="o">+</span> <span class="n">width</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">thickened</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">thicken_sheet</span><span class="p">(</span>
-            <span class="n">endcap_reference</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">bBothSides</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">endcap_reference</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">both_sides</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">fill</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">layer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chip_subtract_dict</span><span class="p">:</span>
@@ -1501,7 +1502,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">current_app</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">fill_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">"box_name"</span><span class="p">],</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">chip_subtract_dict</span><span class="p">[</span><span class="n">layer_num</span><span class="p">],</span>
-                <span class="n">keepOriginals</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">keep_originals</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span></div>
 
 
@@ -1886,7 +1887,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2026/11/16</div>
+              Last updated on 2026/11/25</div>
           </div>
           <div class="right-details">
             
