@@ -230,16 +230,18 @@ py3.11 and 3.14 on macos/windows) + `lint` + `env-consistency` + `coverage` +
 `tests-lite` (including notebook-execute) + `tests-deps-pandas3` /
 `tests-deps-lowest` (dependency bounds outside `uv.lock`).
 
-## Status snapshot (as of v0.10.0, November 2026)
+## Status snapshot (as of v0.10.2, November 2026)
 
-- Latest release: **v0.10.0** (November 2026) — Python 3.11 minimum,
+- Latest release: **v0.10.2** (November 2026) — pyaedt renderers work on
+  pyaedt 1.x / Python 3.14 (#1272). v0.10.1 added the component catalog,
+  KLayout tools and `python -m qiskit_metal.watch`. v0.10.0: Python 3.11 minimum,
   analysis and geometry fixes (#1202–#1253), docs overhaul. v0.9.0 added
   Python 3.13/3.14, numpy 2 and the open-source FEM path. v0.8.1 was GUI stability and interactive editing; v0.8.0 added
   design-rule checking (`qiskit_metal.validation`, #1169) and the
   `QMplRenderer` die outline. (**Note:** a `v0.7.7`
   tag/GitHub Release exist on `a7efeeb1` but were never published to
   PyPI — see `changelog.md`. PyPI went 0.7.6 → 0.8.0 directly.)
-- Test count: **~865 collected** with all extras installed (GUI
+- Test count: **~1,115 collected** with all extras installed (GUI
   display tests skip without a display). macOS GUI subprocess tests
   (`test_gui_init`, `test_gui_nudge`) occasionally hit a native crash
   in the child (#1048); their failure output now shows the crash stack
