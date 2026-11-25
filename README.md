@@ -29,13 +29,13 @@
   <a href="https://qiskit-community.github.io/qiskit-metal/orchestration.html"><b>Scripting and agent use</b></a>
 </p>
 
-**What's new** (v0.9.0 to v0.10.1, see the [release notes](https://github.com/qiskit-community/qiskit-metal/releases)):
+**What's new** (v0.9.0 to v0.10.2, see the [release notes](https://github.com/qiskit-community/qiskit-metal/releases)):
 
 - **Open-source simulation:** a gmsh + scikit-fem Maxwell solver (`qiskit_metal.analyses.fem`) and tutorials 4.41–4.46 on package modes and qubit couplings, with no Ansys license.
 - **Design-rule checks:** `validate(design)` with shape rules and waivers; a GDS layer-properties file and starter rule deck for [KLayout](https://qiskit-community.github.io/qiskit-metal/klayout.html).
 - **Scripting:** `python -m qiskit_metal.watch my_design.py` re-runs a script on save and renders the chip; repeatable GDS export with `SOURCE_DATE_EPOCH`.
 - **Docs:** a [component catalog](https://qiskit-community.github.io/qiskit-metal/qcomponents-gallery.html) with default options and pins for every component, a task-organized [How do I...?](https://qiskit-community.github.io/qiskit-metal/how-do-i.html) page, and a [simulation pathways](https://qiskit-community.github.io/qiskit-metal/simulation-pathways.html) guide.
-- **Python 3.11 to 3.14** and numpy 2; many fixes to the analytic formulas, GDS export and routing (see *Behavior changes* in the [changelog](./changelog.md)).
+- **Python 3.11 to 3.14** and numpy 2, including the pyaedt (Ansys) renderers on pyaedt 1.x; many fixes to the analytic formulas, GDS export and routing (see *Behavior changes* in the [changelog](./changelog.md)).
 
 ### 🚀 Try it now — zero install
 
