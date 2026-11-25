@@ -748,6 +748,47 @@ class TestRenderers(unittest.TestCase):
                 )
         self.assertIsNone(result)
 
+    def test_pyaedt_renderers_use_no_removed_pyaedt_keywords(self):
+        """The pyaedt renderers must not pass keyword names that pyaedt 1.x
+        removed. pyaedt 0.2x still accepted these old names as deprecated
+        aliases, so they worked under the <0.24 pin but raise TypeError on
+        pyaedt 1.x (Python 3.14): ``create_polyline(matname=...)`` stopped
+        ``render_design()`` before any geometry was drawn. Each replacement
+        is the parameter name in both pyaedt 0.21 and 1.x. Reads the source,
+        so neither pyaedt nor AEDT is needed."""
+        import ast
+        import pathlib
+
+        import qiskit_metal.renderers.renderer_ansys_pyaedt as pkg
+
+        # Old pyaedt 0.2x keyword names. Some are generic (sheet_name,
+        # axisdir, Lvalue), so this flags them on any call in the package,
+        # not only pyaedt calls; rename a local helper's parameter if it trips.
+        removed = {
+            "matname",
+            "bBothSides",
+            "keepOriginals",
+            "setupname",
+            "freqstart",
+            "freqstop",
+            "sweepname",
+            "sheet_name",
+            "sourcename",
+            "axisdir",
+            "Lvalue",
+            "Cvalue",
+            "high_frquency",
+        }
+        found = []
+        for path in sorted(pathlib.Path(pkg.__file__).parent.glob("*.py")):
+            tree = ast.parse(path.read_text(encoding="utf-8"))
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Call):
+                    for kw in node.keywords:
+                        if kw.arg in removed:
+                            found.append(f"{path.name}:{node.lineno} {kw.arg}=")
+        self.assertEqual(found, [], "keywords removed in pyaedt 1.x")
+
     def test_pyaedt_hfss_valid_input_arguments_accepts_omitted_lists(self):
         """QHFSSPyaedt.valid_input_arguments must accept None or empty
         port_list / jj_to_port. Commit cc3165fb8 turned the assignments

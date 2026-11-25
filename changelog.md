@@ -6,6 +6,13 @@ For the offical user-facing changelog for a particular release can be found in t
 
 The changelog for all releases can be found in the release page: [![Releases](https://img.shields.io/github/release/Qiskit/qiskit-metal.svg?style=popout-square)](https://github.com/Qiskit/qiskit-metal/releases)
 
+## Unreleased
+
+### Fixed
+
+- **PyAEDT renderers on pyaedt 1.x** (#1185). `render_design()` stopped at the first shape with `TypeError: create_polyline() got an unexpected keyword argument 'matname'`. The renderers passed keyword names that pyaedt 0.2x still accepted as deprecated aliases and pyaedt 1.x removed (`matname`, `bBothSides`, `keepOriginals`, the old `create_linear_count_sweep` and `assign_lumped_rlc_to_sheet` names). They now use the current names, which are the parameter names in both pyaedt 0.21 and 1.x. The broadband setup passes its frequencies by position, because pyaedt 0.2x spells that keyword `high_frquency` and 1.x spells it `high_frequency`. A new test fails if a removed name comes back. Checked in AEDT 2026.1 with Python 3.14 and pyaedt 1.10 (eigenmode design renders, `ValidateDesign` passes); the solve and the driven-modal port path are not yet run live.
+- **PyAEDT renderers: calls that no pyaedt version has.** Subtracting geometry read `modeler.object_id_dict`, lumped ports called `create_lumped_port_to_sheet`, and `force_exit_ansys()` called `Desktop.force_close_desktop`; none exist in pyaedt 0.21 or 1.x. They now use the id of the drawn polygon, `lumped_port(create_port_sheet=False)` and `Desktop.close_desktop()`.
+
 ## Quantum Metal v0.10.1 (fixes, scripting and KLayout tools, component catalog, docs restructure)
 
 ### Added
